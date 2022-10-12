@@ -1,17 +1,50 @@
 <!DOCTYPE html><!--
 
-rip music :(
 
+tutorial stuff:
+
+-go to a field to collect pollen, go to hive to make honey
+
+-press 'c' to convert ur pollen(testing thing), and h to get buffs, 'o' is a testing thing long agoooo
+
+-hover ur mouse over the effects(if u have them) at the top to see what they do
+
+-become a hive near the front of the big green hill place, directly right of red cannon, on the ground, 3 colors, red, blue, white
+
+-use iventory items by clicking on the in the iventory to hold them. while holding, put ur mouse outside the inventory and click to use them. things like oil and glue give buffs, but things like treats and eggs u give to bees, put into the hive.
+
+-jump while mid air to use glider, jump using glider to put it away
+
+-becoming a hive color gives u gear. the boots are kinda needed to explore
+
+-red hives use flames to collect pollen
+-blue hives makes bubbles to fill up balloons, which gives more honey when converted at the hive
+-white hives are unstable right now but they use goo and marks to get honey
+
+-obviously hives get more pollen when farming in the same color field(red hives suck in blue fields, and vice versa)
+
+-all bees are lvl 20 by default rn cuz testing, make them the corrent lvls by feeding them. feeding them restarts them at lvl 2(a lvl is gained from the treat)
+
+-bitter berries cause mutations is 1% chance, 3% is bee is radioactive(caused by neonberry)
+
+-beequips can be put on bees. a bit broken rn, but works. the beequips are deleted changing to new hive color
+
+-the shop is just...there for me to have the code there...
+
+
+
+
+rip music :(
 
 
 cool!
 
-red: 29b, 21b without dark scythe
-blue: 36b, 30b without tide popper
-white: 32b, 10b without gummyballer lol
+red: 46b
+blue: 51b
+white: 52b
 
-yay i random bug just happens to me :D
-my luck is magnificent
+
+TODO: finish mark and vector bee rework
 
 
 -->
@@ -131,6 +164,21 @@ my luck is magnificent
         border:none;
         color:rgb(255,255,255);
         font-size:17px;
+        font-family:trebuchet ms;
+    }
+    
+    #feedUntilGifted{
+        
+        margin-top:100px;
+        margin-left:160px;
+        transition-duration:0s;
+        border-radius:6px;
+        position:fixed;
+        background-color:rgb(255,200,0);
+        border:none;
+        color:rgb(255,255,255);
+        font-size:16.5px;
+        width:135px;
         font-family:trebuchet ms;
     }
     
@@ -281,7 +329,7 @@ my luck is magnificent
     
     in vec4 instance_pos;
     //pos.w = rot
-    in vec3 instance_uv;
+    in vec4 instance_uv;
     
     out vec3 pixUV;
     
@@ -289,9 +337,9 @@ my luck is magnificent
     
     void main(){
         
-        pixUV=vec3(vertUV,0)+instance_uv;
+        pixUV=vec3(vertUV,0)+instance_uv.xyz;
         
-        vec3 vp=vertPos;
+        vec3 vp=vertPos*instance_uv.w;
         float s=sin(instance_pos.w);
         float c=cos(instance_pos.w);
         
@@ -628,6 +676,11 @@ my luck is magnificent
     void main(){
         
         vec4 c=texture(tex,pixUV)*vec4(pixColor,1);
+        
+        if(c.a<0.3){
+            
+            discard;
+        }
         
         fragColor=c;
     }
@@ -1096,16 +1149,6 @@ my luck is magnificent
         <path d='M15 25C5 24 5 13 15 5M15 25C25 24 25 13 15 5' fill='rgb(30,0,0)'></path>
         <path d='M15 25C10 24 10 17 15 10M15 25C20 24 20 17 15 10' fill='rgb(105,0,0)'></path>
         <text id='flameFuel_amount' x='28' y='28' style='font-family:calibri;font-size:13px;' text-anchor='end'></text>
-        
-    </svg>
-    
-    <svg id='markSurge' style='width:30;height:30;display:none'>
-        
-        <rect width='30' height='30' fill='rgb(205,205,205)'></rect>
-        <rect id='markSurge_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0.45'></rect>
-        <circle cx='15' cy='15' r='12'fill='rgb(180,180,180)'></circle>
-        <path d='M5 5L25 25M25 5L5 25' stroke='rgb(205,205,205)' stroke-width='3'></path>
-        <text id='markSurge_amount' x='28' y='28' style='font-family:calibri;font-size:13px;' text-anchor='end'></text>
         
     </svg>
     
@@ -1680,7 +1723,7 @@ my luck is magnificent
     
 </div>
 
-<div class='uiPage' style='position:absolute;margin:0px;z-index:-2;overflow-y:auto;overflow-x:hidden;width:200px;height:500px;background-color:rgba(195,195,195,0.9);margin-top:140px;display:none;padding:3px;'>
+<div class='uiPage' style='position:absolute;margin:0px;z-index:-2;overflow-y:auto;overflow-x:hidden;width:200px;height:455px;background-color:rgba(195,195,195,0.9);margin-top:140px;display:none;padding:3px;'>
     
     <!--not an item, only used for item cost ui here-->
     <svg id='honey' style='width:200;height:70;cursor:pointer'>
@@ -2163,21 +2206,11 @@ my luck is magnificent
     
 </div>
 
-<div class='uiPage' style='position:absolute;margin:0px;z-index:-2;overflow-y:auto;overflow-x:hidden;width:200px;height:500px;background-color:rgba(195,195,195,0.9);margin-top:140px;display:none;padding:3px;font-size:13px;'>
-    
-    
-</div>
+<div class='uiPage' style='position:absolute;margin:0px;z-index:-2;overflow-y:auto;overflow-x:hidden;width:200px;height:455px;background-color:rgba(195,195,195,0.9);margin-top:140px;display:none;padding:3px;font-size:13px;'></div>
 
-<div class='uiPage' style='position:absolute;margin:0px;z-index:-2;overflow-y:auto;overflow-x:hidden;width:200px;height:500px;background-color:rgba(195,195,195,0.9);margin-top:140px;display:none;padding:3px;font-size:13px;'>
-    
-    
-</div>
+<div class='uiPage' style='position:absolute;margin:0px;z-index:-2;overflow-y:auto;overflow-x:hidden;width:200px;height:455px;background-color:rgba(195,195,195,0.9);margin-top:140px;display:none;padding:3px;font-size:13px;'></div>
 
-<div class='uiPage' style='position:absolute;margin:0px;z-index:-2;overflow-y:auto;overflow-x:hidden;width:200px;height:500px;background-color:rgba(195,195,195,0.9);margin-top:140px;display:none;padding:3px;font-size:13px;'>
-    
-    
-    
-</div>
+<div class='uiPage' style='position:absolute;margin:0px;z-index:-2;overflow-y:auto;overflow-x:hidden;width:200px;height:455px;background-color:rgba(195,195,195,0.9);margin-top:140px;display:none;padding:3px;font-size:13px;'></div>
 
 <div id='howManyToFeed' style='position:fixed;width:300px;height:160px;z-index:1;left:50%;top:50%;transform:translate(-50%,-50%);display:none'>
     
@@ -2186,6 +2219,7 @@ my luck is magnificent
     <button id='feedThisAmount'>Feed:</button>
     <input id='feedAmount' value='1' type='number' min='1'>
     <button id='cancelFeeding'>Cancel</button>
+    <button id='feedUntilGifted'>⚠️ Until Gifted</button>
     
 </div>
 
@@ -2360,11 +2394,10 @@ document.getElementById('runFullScreen').addEventListener('click',function(){
     runForFullScreen()
 })
 
-let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,BEE_COLLECT=0,BEE_FLY=0,then,dt,frameCount=0,TIME=0,player,honeyMarkConvert=TIME,markSurgeCollect=TIME
+let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,BEE_COLLECT=0,BEE_FLY=0,then,dt,frameCount=0,TIME=0,player,honeyMarkConvert=TIME
 
 MATH=(function(MATH){
     
-    MATH.ORIGIN=[0,0,0]
     MATH.Z=[0,0,1]
     MATH.TO_DEG=180/Math.PI
     MATH.TO_RAD=Math.PI/180
@@ -2650,6 +2683,16 @@ MATH=(function(MATH){
         return pre+suf
     }
     
+    MATH._log=function(a,b){
+        
+        return Math.log(b)/Math.log(a)
+    }
+    
+    MATH.simulateProbabilityTries=function(p){
+        
+        return Math.ceil(MATH._log(1-p,-Math.random()+1))
+    }
+    
     return MATH
     
 })({})
@@ -2842,14 +2885,12 @@ let triggers={
             player.addSlot('looker')
             player.addSlot('fire')
             player.addSlot('rage')
-            player.addSlot('stubborn')
             player.addSlot('rad')
             player.addSlot('rascal')
             player.addSlot('commander')
             player.addSlot('riley')
             player.addSlot('riley')
-            player.addSlot('riley')
-            player.addSlot('riley')
+            player.addSlot('shy')
             player.addSlot('brave')
             player.addSlot('windy')
             player.addSlot('tabby')
@@ -2872,9 +2913,11 @@ let triggers={
             player.addSlot('vector')
             player.addSlot('vector')
             player.addSlot('vector')
+            player.addSlot('carpenter')
+            player.addSlot('carpenter')
+            player.addSlot('carpenter')
+            player.addSlot('carpenter')
             player.addSlot('photon')
-            player.addSlot('spicy')
-            player.addSlot('spicy')
             player.addSlot('spicy')
             player.addSlot('spicy')
             player.addSlot('spicy')
@@ -2937,7 +2980,7 @@ let triggers={
             player.addSlot('diamond')
             player.addSlot('hasty')
             player.addSlot('hasty')
-            player.addSlot('hasty')
+            player.addSlot('ninja')
             player.addSlot('music')
             player.addSlot('music')
             player.addSlot('music')
@@ -3007,6 +3050,7 @@ let triggers={
             player.hive=[[]]
             player.addSlot('basic')
             player.addSlot('buoyant')
+            player.addSlot('bomber')
             player.addSlot('looker')
             player.addSlot('rage')
             player.addSlot('stubborn')
@@ -3017,17 +3061,21 @@ let triggers={
             player.addSlot('hasty')
             player.addSlot('hasty')
             player.addSlot('hasty')
-            player.addSlot('hasty')
             player.addSlot('music')
             player.addSlot('music')
             player.addSlot('music')
             player.addSlot('music')
-            player.addSlot('gummy')
-            player.addSlot('gummy')
-            player.addSlot('gummy')
+            player.addSlot('crimson')
+            player.addSlot('cobalt')
+            player.addSlot('lion')
             player.addSlot('gummy')
             player.addSlot('photon')
             player.addSlot('tabby')
+            player.addSlot('carpenter')
+            player.addSlot('carpenter')
+            player.addSlot('carpenter')
+            player.addSlot('carpenter')
+            player.addSlot('carpenter')
             player.addSlot('vector')
             player.addSlot('vector')
             player.addSlot('vector')
@@ -3042,13 +3090,8 @@ let triggers={
             player.addSlot('vector')
             player.addSlot('vector')
             player.addSlot('vector')
-            player.addSlot('vector')
-            player.addSlot('vector')
-            player.addSlot('vector')
-            player.addSlot('vector')
-            player.addSlot('vector')
-            player.addSlot('vector')
-            player.addSlot('precise')
+            player.addSlot('fuzzy')
+            player.addSlot('fuzzy')
             player.addSlot('precise')
             player.addSlot('precise')
             player.addSlot('precise')
@@ -3203,13 +3246,13 @@ let beeInfo={
     
     spicy:{
         
-        u:128*9/2048,v:0,meshPartId:4,gatherSpeed:4,gatherAmount:14,speed:14,convertSpeed:2,convertAmount:200,tokens:['inferno','flameFuel'],attack:5,attackTokens:['inferno','flameFuel','rage'],energy:20,particles:function(bee){if(player.flameHeatStack){ParticleRenderer.add({x:bee.pos[0],y:bee.pos[1],z:bee.pos[2],vx:MATH.random(-0.7,0.7),vy:MATH.random(-0.3,0.3),vz:MATH.random(-0.7,0.7),grav:1.25,size:110,col:[1,1,1],life:1.5,rotVel:MATH.random(-3,3),alpha:(player.flameHeatStack-1)*2})}},favoriteTreat:'strawberry',rarity:'mythic',color:'red',description:'Some like it hot - this bee likes it scorching. Even the honey it makes is spicy.',giftedHiveBonus:{oper:'*',stat:'flameLife,flamePollen',num:1.25}
+        u:128*9/2048,v:0,meshPartId:4,gatherSpeed:4,gatherAmount:14,speed:14,convertSpeed:2,convertAmount:200,tokens:['inferno','flameFuel'],attack:5,attackTokens:['inferno','flameFuel','rage'],energy:20,particles:function(bee){if(player.flameHeatStack){ParticleRenderer.add({x:bee.pos[0],y:bee.pos[1],z:bee.pos[2],vx:MATH.random(-0.7,0.7),vy:MATH.random(-0.3,0.3),vz:MATH.random(-0.7,0.7),grav:1.25,size:110,col:[1,1,1],life:1.5,rotVel:MATH.random(-3,3),alpha:(player.flameHeatStack-1)*2})}},favoriteTreat:'strawberry',rarity:'mythic',color:'red',description:'Some like it hot - this bee likes it scorching. Even the honey it makes is spicy.',giftedHiveBonus:{oper:'*',stat:'flameLife',num:1.25}
         
     },
     
     vector:{
         
-        u:1280/2048,v:0,meshPartId:2,gatherSpeed:4,gatherAmount:18,speed:16.24,convertSpeed:2.72,convertAmount:144,tokens:['pollenMarkToken','honeyMarkToken','markSurge','triangulate'],attack:5,energy:45.6,favoriteTreat:'sunflowerSeed',rarity:'mythic',color:'white',description:'A bee brought to life by an extremely complex trigonometric equation.',giftedHiveBonus:{oper:'*',stat:'markDuration',num:1.25}
+        u:1280/2048,v:0,meshPartId:2,gatherSpeed:4,gatherAmount:18,speed:16.24,convertSpeed:2.72,convertAmount:144,tokens:['pollenMarkToken','markSurge','triangulate'],attack:5,energy:45.6,favoriteTreat:'pineapple',rarity:'mythic',color:'white',description:'A bee brought to life by an extremely complex trigonometric equation.',giftedHiveBonus:{oper:'*',stat:'markDuration',num:1.15}
         
     },
     
@@ -3259,25 +3302,25 @@ let beeInfo={
     
     bumble:{
         
-        u:128*3/2048,v:256/2048,meshPartId:0,gatherSpeed:4,gatherAmount:18,speed:10.5,tokens:['blueBomb'],convertSpeed:4,convertAmount:80,attack:1,attackTokens:[],energy:50,favoriteTreat:'blueberries',rarity:'rare',color:'blue',description:'A mellow fellow who moves a little slow, but works harder and longer than others.',giftedHiveBonus:{oper:'*',stat:'capacityMultiplier',num:1.1}
+        u:128*3/2048,v:256/2048,meshPartId:0,gatherSpeed:4,gatherAmount:18,speed:10.5,tokens:['blueBomb'],convertSpeed:4,convertAmount:80,attack:1,attackTokens:[],energy:50,favoriteTreat:'blueberry',rarity:'rare',color:'blue',description:'A mellow fellow who moves a little slow, but works harder and longer than others.',giftedHiveBonus:{oper:'*',stat:'capacityMultiplier',num:1.1}
         
     },
     
     rascal:{
         
-        u:128*4/2048,v:256/2048,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:16.1,tokens:['redBomb'],convertSpeed:4,convertAmount:80,attack:3,attackTokens:[],energy:20,favoriteTreat:'strawberries',rarity:'rare',color:'red',description:'A mischevious bee who moves quick and hits hard. Keep an eye out on this one!',giftedHiveBonus:{oper:'*',stat:'redBombPollen',num:1.3}
+        u:128*4/2048,v:256/2048,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:16.1,tokens:['redBomb'],convertSpeed:4,convertAmount:80,attack:3,attackTokens:[],energy:20,favoriteTreat:'strawberry',rarity:'rare',color:'red',description:'A mischevious bee who moves quick and hits hard. Keep an eye out on this one!',giftedHiveBonus:{oper:'*',stat:'redBombPollen',num:1.3}
         
     },
     
     cool:{
         
-        u:128*5/2048,v:256/2048,meshPartId:0,gatherSpeed:3,gatherAmount:10,speed:14,tokens:['blueBoost'],convertSpeed:4,convertAmount:80,attack:2,attackTokens:[],energy:20,favoriteTreat:'blueberries',rarity:'rare',color:'blue',description:"A sarcastic bee who's a little better than the others. Sometimes boosts pollen from Blue flowers.",giftedHiveBonus:{oper:'*',stat:'bluePollen',num:1.15}
+        u:128*5/2048,v:256/2048,meshPartId:0,gatherSpeed:3,gatherAmount:10,speed:14,tokens:['blueBoost'],convertSpeed:4,convertAmount:80,attack:2,attackTokens:[],energy:20,favoriteTreat:'blueberry',rarity:'rare',color:'blue',description:"A sarcastic bee who's a little better than the others. Sometimes boosts pollen from Blue flowers.",giftedHiveBonus:{oper:'*',stat:'bluePollen',num:1.15}
         
     },
     
     rad:{
         
-        u:128*6/2048,v:256/2048,meshPartId:0,gatherSpeed:4,gatherAmount:13,speed:14,tokens:['redBomb'],convertSpeed:3,convertAmount:80,attack:1,attackTokens:[],energy:20,favoriteTreat:'strawberries',rarity:'rare',color:'red',description:'A stylish bee with a taste for red flowers. Everyone wants to be this bee.',giftedHiveBonus:{oper:'*',stat:'redPollen',num:1.15}
+        u:128*6/2048,v:256/2048,meshPartId:0,gatherSpeed:4,gatherAmount:13,speed:14,tokens:['redBomb'],convertSpeed:3,convertAmount:80,attack:1,attackTokens:[],energy:20,favoriteTreat:'strawberry',rarity:'rare',color:'red',description:'A stylish bee with a taste for red flowers. Everyone wants to be this bee.',giftedHiveBonus:{oper:'*',stat:'redPollen',num:1.15}
         
     },
     
@@ -3308,7 +3351,7 @@ let beeInfo={
     
     honey:{
         
-        u:128*12/2048,v:256/2048,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:14,convertSpeed:2,convertAmount:360,attack:1,energy:20,tokens:['honeyMark'],favoriteTreat:'sunflowerSeed',rarity:'epic',color:'white',description:"A satisfied bee always full with the finest honey. If you're lucky it will share some.",giftedHiveBonus:{oper:'*',stat:'honeyFromTokens',num:1.5}
+        u:128*12/2048,v:256/2048,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:14,convertSpeed:2,convertAmount:360,attack:1,energy:20,tokens:['honeyMarkToken'],favoriteTreat:'sunflowerSeed',rarity:'epic',color:'white',description:"A satisfied bee always full with the finest honey. If you're lucky it will share some.",giftedHiveBonus:{oper:'*',stat:'honeyFromTokens',num:1.5}
     },
     
     tabby:{
@@ -3318,12 +3361,32 @@ let beeInfo={
     
     diamond:{
         
-        u:128*14/2048,v:256/2048,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:14,convertSpeed:4,convertAmount:1000,attack:1,energy:20,tokens:['blueBomb_'],rarity:'legendary',color:'blue',description:"This affectionate bee was raised by cats. It becomes a better worker as it warms up to you",giftedHiveBonus:{oper:'*',stat:'convertRate',num:1.5},particles:function(bee){ParticleRenderer.add({x:bee.pos[0]+MATH.random(-0.5,0.5),y:bee.pos[1]+MATH.random(-0.5,0.5),z:bee.pos[2]+MATH.random(-0.5,0.5),vx:0,vy:0,vz:0,grav:0,size:MATH.random(15,70),col:[1,1,1],life:0.25,rotVel:MATH.random(-6,6),alpha:1})}
+        u:128*14/2048,v:256/2048,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:14,convertSpeed:4,convertAmount:1000,attack:1,energy:20,tokens:['blueBomb_'],rarity:'legendary',color:'blue',description:"This affectionate bee was raised by cats. It becomes a better worker as it warms up to you",giftedHiveBonus:{oper:'*',stat:'convertRate',num:1.5},particles:function(bee){ParticleRenderer.add({x:bee.pos[0]+MATH.random(-0.5,0.5),y:bee.pos[1]+MATH.random(-0.5,0.5),z:bee.pos[2]+MATH.random(-0.5,0.5),vx:0,vy:0,vz:0,grav:0,size:MATH.random(15,70),col:[1,1,1],life:0.25,rotVel:MATH.random(-6,6),alpha:1})},favoriteTreat:'blueberry'
     },
     
     demon:{
         
-        u:128*15/2048,v:256/2048,meshPartId:11,gatherSpeed:4,gatherAmount:35,speed:10.5,convertSpeed:4,convertAmount:60,attack:8,energy:20,tokens:['redBomb','redBomb_'],rarity:'legendary',color:'red',description:"A powerful bee with magical powers fueled by pure hatred.",giftedHiveBonus:{oper:'+',stat:'instantBombConversion',num:0.15},gatheringPassive:function(bee){if(Math.random()<(bee.gifted?0.75:0.55)){objects.explosions.push(new Explosion({col:[1,0.5,0],pos:[Math.round(bee.pos[0]),bee.pos[1]-0.225,Math.round(bee.pos[2])],life:0.5,size:1.5,speed:0.5,aftershock:0.01,height:0.01}));objects.flames.push(new Flame(player.fieldIn,bee.flowerCollecting[0],bee.flowerCollecting[1]))}},particles:function(bee){ParticleRenderer.add({x:bee.pos[0],y:bee.pos[1],z:bee.pos[2],vx:MATH.random(-0.3,0.3),vy:MATH.random(-0.3,0.3),vz:MATH.random(-0.3,0.3),grav:0,size:MATH.random(80,130),col:[1,MATH.random(0.4,0.7),0],life:1.5,rotVel:MATH.random(-3,3),alpha:2.5})}
+        u:128*15/2048,v:256/2048,meshPartId:11,gatherSpeed:4,gatherAmount:35,speed:10.5,convertSpeed:4,convertAmount:60,attack:8,energy:20,tokens:['redBomb','redBomb_'],rarity:'legendary',color:'red',description:"A powerful bee with magical powers fueled by pure hatred.",giftedHiveBonus:{oper:'+',stat:'instantBombConversion',num:0.15},gatheringPassive:function(bee){if(Math.random()<(bee.gifted?0.75:0.55)){objects.explosions.push(new Explosion({col:[1,0.5,0],pos:[Math.round(bee.pos[0]),bee.pos[1]-0.225,Math.round(bee.pos[2])],life:0.5,size:1.5,speed:0.5,aftershock:0.01,height:0.01}));objects.flames.push(new Flame(player.fieldIn,bee.flowerCollecting[0],bee.flowerCollecting[1]))}},particles:function(bee){ParticleRenderer.add({x:bee.pos[0],y:bee.pos[1],z:bee.pos[2],vx:MATH.random(-0.3,0.3),vy:MATH.random(-0.3,0.3),vz:MATH.random(-0.3,0.3),grav:0,size:MATH.random(80,130),col:[1,MATH.random(0.4,0.7),0],life:1.5,rotVel:MATH.random(-3,3),alpha:2.5})},favoriteTreat:'pineapple'
+    },
+    
+    carpenter:{
+        
+        u:128*0/2048,v:256*2/2048,meshPartId:0,gatherSpeed:3,gatherAmount:10,speed:11.2,convertSpeed:4,convertAmount:120,attack:4,energy:25,tokens:['pollenMarkToken','honeyMarkToken'],rarity:'legendary',color:'white',description:"A bee with a knack for construction. It built its own body out of wood.",giftedHiveBonus:{oper:'*',stat:'pollenFromTools',num:1.25},favoriteTreat:'sunflowerSeed'
+    },
+    
+    lion:{
+        
+        u:128*1/2048,v:256*2/2048,meshPartId:0,gatherSpeed:4,gatherAmount:20,speed:19.6,convertSpeed:2,convertAmount:160,attack:9,energy:60,tokens:['whiteBomb_'],rarity:'legendary',color:'white',description:"Half lion, half bee. This is the king of both the jungle and bee hive.",giftedHiveBonus:{oper:'+',stat:'whiteBeeAttack',num:2},favoriteTreat:'pineapple'
+    },
+    
+    ninja:{
+        
+        u:128*2/2048,v:256*2/2048,meshPartId:0,gatherSpeed:2,gatherAmount:10,speed:21,convertSpeed:2,convertAmount:80,attack:4,energy:20,tokens:['haste','blueBomb_'],rarity:'legendary',color:'white',description:"This bee trained vigorously for years to become the swiftest bee that has ever lived.",giftedHiveBonus:{oper:'*',stat:'beeSpeed',num:1.05},favoriteTreat:'sunflowerSeed'
+    },
+    
+    shy:{
+        
+        u:128*3/2048,v:256*2/2048,meshPartId:0,gatherSpeed:2,gatherAmount:10,speed:18.2,convertSpeed:4,convertAmount:320,attack:2,energy:40,tokens:['redBoost','redBomb_'],rarity:'legendary',color:'white',description:"This talented bee doesn't like to socialize, it just wants to work and be left alone.",giftedHiveBonus:{oper:'*',stat:'redBeeAbilityRate',num:1.15},favoriteTreat:'sunflowerSeed'
     },
 }
 
@@ -3337,9 +3400,9 @@ let effects={
         svg:document.getElementById('haste'),
         cooldown:document.getElementById('haste_cooldown'),
         amount:document.getElementById('haste_amount'),
-        maxCooldown:15,
+        maxCooldown:20,
         maxAmount:10,
-        tokenLife:12.5,
+        tokenLife:4,
         
         update:(amount,player)=>{
             
@@ -3376,13 +3439,13 @@ let effects={
         
         trialCooldown:20,trialRate:0.5,
         statsToAddTo:['focusTokens','battleTokens'],
-        u:128/1024,v:0,
+        u:128/2048,v:0,
         svg:document.getElementById('focus'),
         cooldown:document.getElementById('focus_cooldown'),
         amount:document.getElementById('focus_amount'),
         maxCooldown:20,
         maxAmount:10,
-        tokenLife:15,
+        tokenLife:4,
         
         update:(amount,player)=>{
             
@@ -3399,13 +3462,13 @@ let effects={
         
         trialCooldown:35,trialRate:0.5,
         statsToAddTo:['melodyTokens','battleTokens'],
-        u:256/1024,v:0,
+        u:256/2048,v:0,
         svg:document.getElementById('melody'),
         cooldown:document.getElementById('melody_cooldown'),
         amount:document.getElementById('melody_amount'),
         maxCooldown:30,
         maxAmount:1,
-        tokenLife:17.5,
+        tokenLife:8,
         
         update:(amount,player)=>{
             
@@ -3420,11 +3483,11 @@ let effects={
     
     link:{
         
-        trialCooldown:25,trialRate:0.8,
+        trialCooldown:20,trialRate:0.75,
         statsToAddTo:['linkTokens','battleTokens'],
-        u:128*3/1024,v:0,
+        u:128*3/2048,v:0,
         canBeLinked:false,
-        tokenLife:12.5,
+        tokenLife:4,
         
         func:function(){
             
@@ -3450,13 +3513,13 @@ let effects={
     
     bombCombo:{
         
-        u:128*4/1024,v:0,
+        u:128*4/2048,v:0,
         svg:document.getElementById('bombCombo'),
         cooldown:document.getElementById('bombCombo_cooldown'),
         amount:document.getElementById('bombCombo_amount'),
         maxCooldown:5,
         maxAmount:10,
-        tokenLife:9,
+        tokenLife:4,
         
         update:(amount,player)=>{
             
@@ -3475,8 +3538,8 @@ let effects={
         
         trialCooldown:15,trialRate:0.3,
         statsToAddTo:['bombTokens'],
-        u:128*4/1024,v:0,
-        tokenLife:10,
+        u:128*4/2048,v:0,
+        tokenLife:4,
         
         func:function(params){
             
@@ -3498,8 +3561,8 @@ let effects={
         
         trialCooldown:15,trialRate:0.3,
         statsToAddTo:['redBombTokens','redAbilityTokens','bombTokens'],
-        u:128*5/1024,v:0,
-        tokenLife:10,
+        u:128*5/2048,v:0,
+        tokenLife:4,
         
         func:function(params){
             
@@ -3521,8 +3584,8 @@ let effects={
         
         trialCooldown:15,trialRate:0.3,
         statsToAddTo:['blueBombTokens','blueAbilityTokens','bombTokens'],
-        u:128*6/1024,v:0,
-        tokenLife:10,
+        u:128*6/2048,v:0,
+        tokenLife:4,
         
         func:function(params){
             
@@ -3544,8 +3607,8 @@ let effects={
         
         trialCooldown:15,trialRate:0.4,
         statsToAddTo:['bombTokens'],
-        u:128*7/1024,v:0,
-        tokenLife:10,
+        u:128*7/2048,v:0,
+        tokenLife:4,
         
         func:function(params){
             
@@ -3567,8 +3630,8 @@ let effects={
         
         trialCooldown:15,trialRate:0.4,
         statsToAddTo:['redBombTokens','redAbilityTokens','bombTokens'],
-        u:0,v:128/1024,
-        tokenLife:10,
+        u:0,v:128/2048,
+        tokenLife:4,
         
         func:function(params){
             
@@ -3590,8 +3653,8 @@ let effects={
         
         trialCooldown:15,trialRate:0.4,
         statsToAddTo:['blueBombTokens','blueAbilityTokens','bombTokens'],
-        u:128/1024,v:128/1024,
-        tokenLife:10,
+        u:128/2048,v:128/2048,
+        tokenLife:4,
         
         func:function(params){
             
@@ -3613,13 +3676,13 @@ let effects={
         
         trialCooldown:25,trialRate:0.6,
         statsToAddTo:['blueBoostTokens','blueAbilityTokens','boostTokens'],
-        u:128*2/1024,v:128/1024,
+        u:128*2/2048,v:128/2048,
         svg:document.getElementById('blueBoost'),
         cooldown:document.getElementById('blueBoost_cooldown'),
         amount:document.getElementById('blueBoost_amount'),
-        maxCooldown:25,
+        maxCooldown:15,
         maxAmount:10,
-        tokenLife:15,
+        tokenLife:4,
         
         update:(amount,player)=>{
             
@@ -3636,13 +3699,13 @@ let effects={
         
         trialCooldown:25,trialRate:0.6,
         statsToAddTo:['redBoostTokens','redAbilityTokens','boostTokens'],
-        u:128*3/1024,v:128/1024,
+        u:128*3/2048,v:128/2048,
         svg:document.getElementById('redBoost'),
         cooldown:document.getElementById('redBoost_cooldown'),
         amount:document.getElementById('redBoost_amount'),
-        maxCooldown:25,
+        maxCooldown:15,
         maxAmount:10,
-        tokenLife:15,
+        tokenLife:4,
         
         update:(amount,player)=>{
             
@@ -3657,15 +3720,15 @@ let effects={
     
     whiteBoost:{
         
-        trialCooldown:15,trialRate:0.5,
+        trialCooldown:5,trialRate:0.9,
         statsToAddTo:['boostTokens'],
-        u:128*4/1024,v:128/1024,
+        u:128*4/2048,v:128/2048,
         svg:document.getElementById('whiteBoost'),
         cooldown:document.getElementById('whiteBoost_cooldown'),
         amount:document.getElementById('whiteBoost_amount'),
-        maxCooldown:25,
+        maxCooldown:15,
         maxAmount:10,
-        tokenLife:15,
+        tokenLife:4,
         
         update:(amount,player)=>{
             
@@ -3682,13 +3745,13 @@ let effects={
         
         trialCooldown:25,trialRate:0.8,
         statsToAddTo:['rageTokens','battleTokens','redAbilityTokens'],
-        u:128*6/1024,v:256*2/1024,
+        u:128*6/2048,v:256*2/2048,
         svg:document.getElementById('rage'),
         cooldown:document.getElementById('rage_cooldown'),
         amount:document.getElementById('rage_amount'),
         maxCooldown:30,
         maxAmount:3,
-        tokenLife:17.5,
+        tokenLife:24,
         
         update:(amount,player)=>{
             
@@ -3705,12 +3768,12 @@ let effects={
     
     flameHeat:{
         
-        u:128*5/1024,v:128/1024,
+        u:128*5/2048,v:128/2048,
         svg:document.getElementById('flameHeat'),
         cooldown:document.getElementById('flameHeat_cooldown'),
         amount:document.getElementById('flameHeat_amount'),
         maxCooldown:20,
-        tokenLife:69,
+        tokenLife:4,
         amountFromCooldown:true,
         
         update:(amount,player)=>{
@@ -3728,12 +3791,12 @@ let effects={
     
     darkHeat:{
         
-        u:128*5/1024,v:128/1024,
+        u:128*5/2048,v:128/2048,
         svg:document.getElementById('darkHeat'),
         cooldown:document.getElementById('darkHeat_cooldown'),
         amount:document.getElementById('darkHeat_amount'),
         maxCooldown:0,
-        tokenLife:69,
+        tokenLife:4,
         maxAmount:100,
         
         update:(amount,player)=>{
@@ -3751,10 +3814,10 @@ let effects={
     
     pollenMarkToken:{
         
-        trialCooldown:30,trialRate:0.5,
+        trialCooldown:32.5,trialRate:0.5,
         statsToAddTo:['markTokens'],
-        u:128*6/1024,v:128/1024,
-        tokenLife:15,
+        u:128*6/2048,v:128/2048,
+        tokenLife:8,
         
         func:function(params){
             
@@ -3768,16 +3831,33 @@ let effects={
     
     honeyMarkToken:{
         
-        trialCooldown:30,trialRate:0.5,
+        trialCooldown:22.5,trialRate:0.6,
         statsToAddTo:['markTokens'],
-        u:128*7/1024,v:128/1024,
-        tokenLife:15,
+        u:128*7/2048,v:128/2048,
+        tokenLife:8,
         
         func:function(params){
             
             if(player.fieldIn===params.field){
                 
                 objects.marks.push(new Mark(params.field,(Math.random()*fieldInfo[params.field].width)|0,(Math.random()*fieldInfo[params.field].length)|0,'honeyMark',params.bee.level))
+                
+            }
+        }
+    },
+    
+    preciseMarkToken:{
+        
+        trialCooldown:30,trialRate:0.5,
+        statsToAddTo:['markTokens'],
+        u:128*0/2048,v:128*8/2048,
+        tokenLife:8,
+        
+        func:function(params){
+            
+            if(player.fieldIn===params.field){
+                
+                objects.marks.push(new Mark(params.field,(Math.random()*fieldInfo[params.field].width)|0,(Math.random()*fieldInfo[params.field].length)|0,'preciseMark',params.bee.level))
                 
             }
         }
@@ -3790,7 +3870,7 @@ let effects={
         cooldown:document.getElementById('pollenMark_cooldown'),
         amount:document.getElementById('pollenMark_amount'),
         maxCooldown:0,
-        tokenLife:69,
+        tokenLife:4,
         maxAmount:3,
         
         update:(amount,player)=>{
@@ -3814,7 +3894,7 @@ let effects={
         cooldown:document.getElementById('honeyMark_cooldown'),
         amount:document.getElementById('honeyMark_amount'),
         maxCooldown:0,
-        tokenLife:69,
+        tokenLife:4,
         maxAmount:3,
         
         update:(amount,player)=>{
@@ -3844,28 +3924,27 @@ let effects={
         cooldown:document.getElementById('preciseMark_cooldown'),
         amount:document.getElementById('preciseMark_amount'),
         maxCooldown:0,
-        tokenLife:69,
+        tokenLife:4,
         maxAmount:3,
         
         update:(amount,player)=>{
             
-            player.criticalChance+=amount*0.05
+            player.criticalChance+=amount*0.07
             player.superCritChance+=amount*0.07
-            player.superCritPower*=amount*0.25+1
         },
         
         getMessage:(amount)=>{
             
-            return 'Precise Mark\n+'+amount*5+'% critical chance\n+'+amount*7+'% super-crit chance\nx'+(amount*0.25+1)+' super-crit power'
+            return 'Precise Mark\n+'+amount*7+'% critical chance\n+'+amount*7+'% super-crit chance'
         }
     },
     
     inferno:{
         
-        trialCooldown:20,trialRate:0.25,
+        trialCooldown:20,trialRate:0.5,
         statsToAddTo:['redAbilityTokens','battleTokens'],
-        u:0,v:256/1024,
-        tokenLife:15,
+        u:0,v:256/2048,
+        tokenLife:4,
         
         func:function(params){
             
@@ -3911,14 +3990,14 @@ let effects={
     
     flameFuel:{
         
-        trialCooldown:30,trialRate:0.4,
-        u:128/1024,v:256/1024,
+        trialCooldown:30,trialRate:0.3,
+        u:128/2048,v:256/2048,
         svg:document.getElementById('flameFuel'),
         cooldown:document.getElementById('flameFuel_cooldown'),
         amount:document.getElementById('flameFuel_amount'),
         maxCooldown:15,
         maxAmount:1,
-        tokenLife:17.5,
+        tokenLife:4,
         
         update:(amount,player)=>{
             
@@ -3933,39 +4012,25 @@ let effects={
     
     markSurge:{
         
-        trialCooldown:25,trialRate:0.4,
-        u:256/1024,v:256/1024,
-        svg:document.getElementById('markSurge'),
-        cooldown:document.getElementById('markSurge_cooldown'),
-        amount:document.getElementById('markSurge_amount'),
-        maxCooldown:5.1,
-        maxAmount:1,
-        tokenLife:12.5,
+        trialCooldown:25,trialRate:0.25,
+        u:256/2048,v:256/2048,
+        tokenLife:4,
         
-        update:(amount,player)=>{
+        func:function(){
             
-            if(TIME-markSurgeCollect>1){
+            for(let i in objects.marks){
                 
-                markSurgeCollect=TIME
-                
-                for(let i in objects.marks){
-                    
-                    objects.marks[i].surge((i/objects.marks.length)-0.01)
-                }
+                objects.marks[i].surge((i/objects.marks.length)*0.5)
             }
-        },
-        
-        getMessage:(amount)=>{
             
-            return 'Mark Surge\ntodo'
-        }
+        },
     },
     
     triangulate:{
         
-        trialCooldown:20,trialRate:0.5,
-        u:128*7/1024,v:256*2/1024,
-        tokenLife:12.5,
+        trialCooldown:20,trialRate:0.25,
+        u:128*7/2048,v:256*2/2048,
+        tokenLife:4,
         
         func:function(params){
             
@@ -3982,8 +4047,8 @@ let effects={
     pollenHaze:{
         
         trialCooldown:150,trialRate:0.075,
-        u:0,v:256*2.5/1024,
-        tokenLife:20,
+        u:0,v:256*2.5/2048,
+        tokenLife:8,
         
         func:function(params){
             
@@ -4003,8 +4068,8 @@ let effects={
     fuzzBomb:{
         
         trialCooldown:25,trialRate:0.5,
-        u:128/1024,v:256*2.5/1024,
-        tokenLife:10,
+        u:128/2048,v:256*2.5/2048,
+        tokenLife:4,
         
         func:function(params){
             
@@ -4019,22 +4084,22 @@ let effects={
     
     precision:{
         
-        u:128*5/1024,v:256*2/1024,
+        u:128*5/2048,v:256*2/2048,
         svg:document.getElementById('precision'),
         cooldown:document.getElementById('precision_cooldown'),
         amount:document.getElementById('precision_amount'),
-        maxCooldown:45,
-        tokenLife:20,
+        maxCooldown:60,
+        tokenLife:4,
         maxAmount:10,
         
         update:(amount,player)=>{
             
-            player.superCritChance+=amount*0.035
+            player.superCritChance+=amount*0.02
         },
         
         getMessage:(amount)=>{
             
-            return 'Precision\n+'+amount*3.5+'% critical chance\n+'+amount*5+'% super-crit chance'
+            return 'Precision\n+'+amount*2+'% super-crit chance'
         }
     },
     
@@ -4042,8 +4107,8 @@ let effects={
         
         trialCooldown:35,trialRate:0.25,
         statsToAddTo:['blueAbilityTokens','battleTokens'],
-        u:128*3/1024,v:256/1024,
-        tokenLife:15,
+        u:128*3/2048,v:256/2048,
+        tokenLife:4,
         
         func:function(params){
             
@@ -4058,8 +4123,8 @@ let effects={
         
         trialCooldown:30,trialRate:0.25,
         statsToAddTo:['blueAbilityTokens'],
-        u:128*4/1024,v:256/1024,
-        tokenLife:15,
+        u:128*4/2048,v:256/2048,
+        tokenLife:4,
         
         func:function(params){
             
@@ -4089,8 +4154,8 @@ let effects={
         
         trialCooldown:150,trialRate:0.05,
         statsToAddTo:['blueAbilityTokens'],
-        u:128*5/1024,v:256/1024,
-        tokenLife:17.5,
+        u:128*5/2048,v:256/2048,
+        tokenLife:4,
         
         func:function(params){
             
@@ -4120,7 +4185,7 @@ let effects={
         cooldown:document.getElementById('balloonAura_cooldown'),
         amount:document.getElementById('balloonAura_amount'),
         maxCooldown:0,
-        tokenLife:69,
+        tokenLife:4,
         maxAmount:10,
         
         update:(amount,player)=>{
@@ -4145,7 +4210,7 @@ let effects={
         cooldown:document.getElementById('balloonBlessing_cooldown'),
         amount:document.getElementById('balloonBlessing_amount'),
         maxCooldown:60*60,
-        tokenLife:69,
+        tokenLife:4,
         maxAmount:10000,
         
         update:(amount,player)=>{
@@ -4162,10 +4227,10 @@ let effects={
     
     gummyBlob:{
         
-        trialCooldown:15,trialRate:0.5,
+        trialCooldown:10,trialRate:0.6,
         statsToAddTo:['gummyBeeTokens'],
-        u:128*6/1024,v:256/1024,
-        tokenLife:10,
+        u:128*6/2048,v:256/2048,
+        tokenLife:8,
         
         func:function(params){
             
@@ -4196,10 +4261,10 @@ let effects={
     
     gummyBarrage:{
         
-        trialCooldown:30,trialRate:0.7,
+        trialCooldown:15,trialRate:0.6,
         statsToAddTo:['gummyBeeTokens'],
-        u:128*7/1024,v:256/1024,
-        tokenLife:15,
+        u:128*7/2048,v:256/2048,
+        tokenLife:8,
         
         func:function(params){
             
@@ -4236,8 +4301,8 @@ let effects={
         
         trialCooldown:22.5,trialRate:0.25,
         statsToAddTo:['redAbilityTokens','battleTokens'],
-        u:128*4/1024,v:256*2/1024,
-        tokenLife:17.5,
+        u:128*4/2048,v:256*2/2048,
+        tokenLife:8,
         
         func:function(params){
             
@@ -4260,7 +4325,7 @@ let effects={
         amount:document.getElementById('glueBuff_amount'),
         maxCooldown:10*60,
         maxAmount:1,
-        tokenLife:69,
+        tokenLife:4,
         
         update:(amount,player)=>{
             
@@ -4282,7 +4347,7 @@ let effects={
         amount:document.getElementById('oilBuff_amount'),
         maxCooldown:10*60,
         maxAmount:1,
-        tokenLife:69,
+        tokenLife:4,
         
         update:(amount,player)=>{
             
@@ -4304,7 +4369,7 @@ let effects={
         amount:document.getElementById('enzymesBuff_amount'),
         maxCooldown:10*60,
         maxAmount:1,
-        tokenLife:69,
+        tokenLife:4,
         
         update:(amount,player)=>{
             
@@ -4328,7 +4393,7 @@ let effects={
         amount:document.getElementById('redExtractBuff_amount'),
         maxCooldown:10*60,
         maxAmount:1,
-        tokenLife:69,
+        tokenLife:4,
         
         update:(amount,player)=>{
             
@@ -4349,7 +4414,7 @@ let effects={
         amount:document.getElementById('blueExtractBuff_amount'),
         maxCooldown:10*60,
         maxAmount:1,
-        tokenLife:69,
+        tokenLife:4,
         
         update:(amount,player)=>{
             
@@ -4370,7 +4435,7 @@ let effects={
         amount:document.getElementById('tropicalDrinkBuff_amount'),
         maxCooldown:10*60,
         maxAmount:1,
-        tokenLife:69,
+        tokenLife:4,
         
         update:(amount,player)=>{
             
@@ -4392,7 +4457,7 @@ let effects={
         amount:document.getElementById('purplePotionBuff_amount'),
         maxCooldown:10*60,
         maxAmount:1,
-        tokenLife:69,
+        tokenLife:4,
         
         update:(amount,player)=>{
             
@@ -4417,7 +4482,7 @@ let effects={
         amount:document.getElementById('superSmoothieBuff_amount'),
         maxCooldown:20*60,
         maxAmount:1,
-        tokenLife:69,
+        tokenLife:4,
         
         update:(amount,player)=>{
             
@@ -4452,7 +4517,7 @@ let effects={
         amount:document.getElementById('stingerBuff_amount'),
         maxCooldown:45,
         maxAmount:1,
-        tokenLife:69,
+        tokenLife:4,
         
         update:(amount,player)=>{
             
@@ -4483,7 +4548,7 @@ let effects={
         
         getMessage:(amount)=>{
             
-            return 'Pop Star Aura\nx'+Math.min(player.popStarSize*0.0175+1,6)+' blue pollen\n+10% instant blue conversion\nx1.25 bubble pollen\nx1.5 capacity'
+            return 'Pop Star Aura\nx'+Math.min(player.popStarSize*0.0125+1,6)+' blue pollen\n+10% instant blue conversion\nx1.25 bubble pollen\nx1.5 capacity'
         }
     },
     
@@ -4520,7 +4585,7 @@ let effects={
         
         update:(amount,player)=>{
             
-            player.goo*=Math.min(player.gummyStarSize*0.0000000002+1,4)
+            player.goo*=Math.min(player.gummyStarSize*0.00000000055+1,4)
             player.whitePollen*=1.1
             player.whiteFieldCapacity*=2
             player.instantGooConversion+=0.25
@@ -4528,18 +4593,18 @@ let effects={
         
         getMessage:(amount)=>{
             
-            return 'Gummy Star Aura\nx'+Math.min(player.gummyStarSize*0.0000000002+1,4).toFixed(3)+' goo\n+25% instant goo conversion\nx2 white field capacity\nx1.1 white pollen'
+            return 'Gummy Star Aura\nx'+Math.min(player.gummyStarSize*0.00000000055+1,4).toFixed(3)+' goo\n+25% instant goo conversion\nx2 white field capacity\nx1.25 white pollen'
         }
     },
     
     bubbleBloat:{
         
-        u:128*5/1024,v:128/1024,
+        u:128*5/2048,v:128/2048,
         svg:document.getElementById('bubbleBloat'),
         cooldown:document.getElementById('bubbleBloat_cooldown'),
         amount:document.getElementById('bubbleBloat_amount'),
         maxCooldown:60*60,
-        tokenLife:69,
+        tokenLife:4,
         amountFromCooldown:true,
         
         update:(amount,player)=>{
@@ -4557,12 +4622,12 @@ let effects={
     
     gummyBall:{
         
-        u:128*5/1024,v:128/1024,
+        u:128*5/2048,v:128/2048,
         svg:document.getElementById('gummyBall'),
         cooldown:document.getElementById('gummyBall_cooldown'),
         amount:document.getElementById('gummyBall_amount'),
         maxCooldown:180,
-        tokenLife:69,
+        tokenLife:4,
         amountFromCooldown:true,
         
         update:(amount,player)=>{
@@ -4581,7 +4646,7 @@ let effects={
         
         getMessage:(amount)=>{
             
-            return 'Gummyball\nx'+(amount*1.5+1).toFixed(2)+' gummyball size\nx'+(amount*0.1+1).toFixed(2)+' white pollen'
+            return 'Gummyball\nx'+(amount*1.5+1).toFixed(2)+' gummyball size\nx'+(amount*0.2+1).toFixed(2)+' white pollen'
         }
     },
     
@@ -4593,7 +4658,7 @@ let effects={
         amount:document.getElementById('gummyBallCombo_amount'),
         maxCooldown:10,
         maxAmount:1000,
-        tokenLife:69,
+        tokenLife:4,
         
         update:(amount,player)=>{
             
@@ -4614,7 +4679,7 @@ let effects={
         cooldown:document.getElementById('guidingStarAura_cooldown'),
         amount:document.getElementById('guidingStarAura_amount'),
         maxCooldown:0,
-        tokenLife:69,
+        tokenLife:4,
         maxAmount:1,
         
         update:(amount,player)=>{
@@ -4662,7 +4727,7 @@ let effects={
         cooldown:document.getElementById('scorchingStarPassive_cooldown'),
         amount:document.getElementById('scorchingStarPassive_amount'),
         maxCooldown:60,
-        triggerVal:30,
+        triggerVal:20,
         triggerType:'redBoostTokens',
         currentVal:0,
         currentCooldown:0,
@@ -4686,7 +4751,7 @@ let effects={
         cooldown:document.getElementById('gummyStarPassive_cooldown'),
         amount:document.getElementById('gummyStarPassive_amount'),
         maxCooldown:60,
-        triggerVal:30,
+        triggerVal:15,
         triggerType:'gummyBeeTokens',
         currentVal:0,
         currentCooldown:0,
@@ -4699,7 +4764,7 @@ let effects={
         
         getMessage:(amount)=>{
             
-            return "Gummy Star\nEvery 30 gummy bee tokens summons a Gummy Star, lasting for 45s. It grows based on how much goo you collect, and gives up to x4 goo, while always giving x1.25 white pollen, x2 white field capacity and 25% instant goo conversion. After disappearing, it spreads 20(+the amount of digits in the star's size) honey tokens, with a total value of approximately 1,000(+7.5% of the star's size). Cooldown: 1m"
+            return "Gummy Star\nEvery 15 gummy bee tokens summons a Gummy Star, lasting for 45s. It grows based on how much goo you collect, and gives up to x4 goo, while always giving x1.25 white pollen, x2 white field capacity and 25% instant goo conversion. After disappearing, it spreads 20(+the amount of digits in the star's size) honey tokens, with a total value of approximately 1,000(+7.5% of the star's size). Cooldown: 1m"
         }
     },
     
@@ -4783,12 +4848,12 @@ let effects={
     
     tidalSurge:{
         
-        u:128*5/1024,v:128/1024,
+        u:128*5/2048,v:128/2048,
         svg:document.getElementById('tidalSurge'),
         cooldown:document.getElementById('tidalSurge_cooldown'),
         amount:document.getElementById('tidalSurge_amount'),
         maxCooldown:10,
-        tokenLife:69,
+        tokenLife:4,
         amountFromCooldown:true,
         
         update:(amount,player)=>{
@@ -4806,12 +4871,12 @@ let effects={
     
     tideBlessing:{
         
-        u:128*5/1024,v:128/1024,
+        u:128*5/2048,v:128/2048,
         svg:document.getElementById('tideBlessing'),
         cooldown:document.getElementById('tideBlessing_cooldown'),
         amount:document.getElementById('tideBlessing_amount'),
         maxCooldown:4*60*60,
-        tokenLife:69,
+        tokenLife:4,
         amountFromCooldown:true,
         
         update:(amount,player)=>{
@@ -4831,7 +4896,7 @@ let effects={
     
     coconutShield:{
         
-        u:128*6/1024,v:256*2/1024,
+        u:128*6/2048,v:256*2/2048,
         svg:document.getElementById('coconutShield'),
         cooldown:document.getElementById('coconutShield_cooldown'),
         amount:document.getElementById('coconutShield_amount'),
@@ -4854,7 +4919,7 @@ let effects={
     
     gummyMorph:{
         
-        u:128*6/1024,v:256*2/1024,
+        u:128*6/2048,v:256*2/2048,
         svg:document.getElementById('gummyMorph'),
         cooldown:document.getElementById('gummyMorph_cooldown'),
         amount:document.getElementById('gummyMorph_amount'),
@@ -5253,8 +5318,8 @@ let effects={
         
         trialCooldown:25,trialRate:0.6,
         statsToAddTo:['redAbilityTokens'],
-        u:128*1/1024,v:128*6/1024,
-        tokenLife:17.5,
+        u:128*1/2048,v:128*6/2048,
+        tokenLife:12,
         
         func:function(params){
             
@@ -5271,8 +5336,8 @@ let effects={
         
         trialCooldown:25,trialRate:0.6,
         statsToAddTo:['blueAbilityTokens'],
-        u:128*2/1024,v:128*6/1024,
-        tokenLife:17.5,
+        u:128*2/2048,v:128*6/2048,
+        tokenLife:12,
         
         func:function(params){
             
@@ -5289,13 +5354,13 @@ let effects={
         
         trialCooldown:35,trialRate:0.7,
         statsToAddTo:['redAbilityTokens','redBombTokens'],
-        u:128*3/1024,v:128*6/1024,
+        u:128*3/2048,v:128*6/2048,
         svg:document.getElementById('redBombSync'),
         cooldown:document.getElementById('redBombSync_cooldown'),
         amount:document.getElementById('redBombSync_amount'),
         maxCooldown:25,
         maxAmount:1,
-        tokenLife:15,
+        tokenLife:24,
         
         update:(amount,player)=>{
             
@@ -5312,13 +5377,13 @@ let effects={
         
         trialCooldown:35,trialRate:0.7,
         statsToAddTo:['blueAbilityTokens','blueBombTokens'],
-        u:128*4/1024,v:128*6/1024,
+        u:128*4/2048,v:128*6/2048,
         svg:document.getElementById('blueBombSync'),
         cooldown:document.getElementById('blueBombSync_cooldown'),
         amount:document.getElementById('blueBombSync_amount'),
         maxCooldown:25,
         maxAmount:1,
-        tokenLife:15,
+        tokenLife:24,
         
         update:(amount,player)=>{
             
@@ -5335,8 +5400,8 @@ let effects={
         
         trialCooldown:30,trialRate:0.4,
         statsToAddTo:[],
-        u:128*5/1024,v:128*6/1024,
-        tokenLife:20,
+        u:128*5/2048,v:128*6/2048,
+        tokenLife:12,
         
         func:function(params){
             
@@ -5356,10 +5421,12 @@ let effects={
         
         trialCooldown:60,trialRate:0.5,
         statsToAddTo:[],
-        u:128*6/1024,v:128*6/1024,
-        tokenLife:40,
+        u:128*6/2048,v:128*6/2048,
+        tokenLife:24,
         
         func:function(params){
+            
+            player.addEffect('whiteBoost')
             
             let f=Math.random()<0.25&&player.fieldIn?player.fieldIn:0
                 
@@ -5386,10 +5453,12 @@ let effects={
         
         trialCooldown:75,trialRate:0.5,
         statsToAddTo:[],
-        u:128*7/1024,v:128*6/1024,
-        tokenLife:50,
+        u:128*7/2048,v:128*6/2048,
+        tokenLife:24,
         
         func:function(params){
+            
+            player.addEffect('whiteBoost')
             
             if(player.fieldIn){
                 
@@ -5400,12 +5469,12 @@ let effects={
     
     cloudBoost:{
         
-        u:128*5/1024,v:128/1024,
+        u:128*5/2048,v:128/2048,
         svg:document.getElementById('cloudBoost'),
         cooldown:document.getElementById('cloudBoost_cooldown'),
         amount:document.getElementById('cloudBoost_amount'),
         maxCooldown:7.5,
-        tokenLife:69,
+        tokenLife:4,
         amountFromCooldown:true,
         
         update:(amount,player)=>{
@@ -5425,8 +5494,8 @@ let effects={
         
         trialCooldown:35,trialRate:0.333,
         statsToAddTo:[],
-        u:128*4/1024,v:128*7/1024,
-        tokenLife:50,
+        u:128*4/2048,v:128*7/2048,
+        tokenLife:12,
         
         func:function(params){
             
@@ -5441,13 +5510,13 @@ let effects={
         
         trialCooldown:90,trialRate:1,
         statsToAddTo:[],
-        u:128*5/1024,v:128*7/1024,
+        u:128*5/2048,v:128*7/2048,
         svg:document.getElementById('tabbyLove'),
         cooldown:document.getElementById('tabbyLove_cooldown'),
         amount:document.getElementById('tabbyLove_amount'),
         maxCooldown:Infinity,
         maxAmount:1000,
-        tokenLife:50,
+        tokenLife:16,
         
         update:(amount,player)=>{
             
@@ -5766,7 +5835,7 @@ let items={
     
     gumdrops:{
         
-        amount:0,u:128/1024,v:128*7/1024,
+        amount:0,u:128/2048,v:128*7/2048,
         use:function(){
             
             if(player.fieldIn){
@@ -5801,7 +5870,7 @@ let items={
     
     coconut:{
         
-        amount:0,u:128*2/1024,v:128*7/1024,
+        amount:0,u:128*2/2048,v:128*7/2048,
         use:function(){
             
             if(player.fieldIn){
@@ -5816,7 +5885,7 @@ let items={
     
     stinger:{
         
-        amount:0,u:128*3/1024,v:128*7/1024,
+        amount:0,u:128*3/2048,v:128*7/2048,
         use:function(){
             
             items.stinger.amount--
@@ -5826,7 +5895,7 @@ let items={
     
     glue:{
         
-        amount:0,u:0,v:128*3/1024,
+        amount:0,u:0,v:128*3/2048,
         use:function(){
             
             items.glue.amount--
@@ -5836,7 +5905,7 @@ let items={
     
     oil:{
         
-        amount:0,u:128/1024,v:128*3/1024,
+        amount:0,u:128/2048,v:128*3/2048,
         use:function(){
             
             items.oil.amount--
@@ -5846,7 +5915,7 @@ let items={
     
     enzymes:{
         
-        amount:0,u:128*2/1024,v:128*3/1024,
+        amount:0,u:128*2/2048,v:128*3/2048,
         use:function(){
             
             items.enzymes.amount--
@@ -5856,7 +5925,7 @@ let items={
     
     redExtract:{
         
-        amount:0,u:128*3/1024,v:128*3/1024,
+        amount:0,u:128*3/2048,v:128*3/2048,
         use:function(){
             
             items.redExtract.amount--
@@ -5866,7 +5935,7 @@ let items={
     
     blueExtract:{
         
-        amount:0,u:128*4/1024,v:128*3/1024,
+        amount:0,u:128*4/2048,v:128*3/2048,
         use:function(){
             
             items.blueExtract.amount--
@@ -5876,7 +5945,7 @@ let items={
     
     tropicalDrink:{
         
-        amount:0,u:128*5/1024,v:128*3/1024,
+        amount:0,u:128*5/2048,v:128*3/2048,
         use:function(){
             
             items.tropicalDrink.amount--
@@ -5886,7 +5955,7 @@ let items={
     
     purplePotion:{
         
-        amount:0,u:128*6/1024,v:128*3/1024,
+        amount:0,u:128*6/2048,v:128*3/2048,
         use:function(){
             
             items.purplePotion.amount--
@@ -5896,7 +5965,7 @@ let items={
     
     superSmoothie:{
         
-        amount:0,u:128*7/1024,v:128*3/1024,
+        amount:0,u:128*7/2048,v:128*3/2048,
         use:function(){
             
             items.superSmoothie.amount--
@@ -5910,7 +5979,7 @@ let items={
             
             return slot.type!==null
         },
-        amount:0,u:128*6/1024,v:128*7/1024,
+        amount:0,u:128*6/2048,v:128*7/2048,
         use:function(){
             
             howManyToFeed.style.display='block'
@@ -5936,7 +6005,7 @@ let items={
                 
                 if(Math.random()<1-Math.pow(1-(1/(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].radioactive>0?30:100)),amount)){
                     
-                    player.addMessage('☢️ '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' bee gained a mutation! ☢️',[50,225,90],16)
+                    player.addMessage('☢️ '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' bee gained a mutation! ☢️',[50,225,90])
                     
                     let stat=['abilityRate','gatherAmount','convertAmount','maxEnergy','attack','gatherAmount','convertAmount','maxEnergy','attack','gatherAmount','convertAmount','maxEnergy','attack','gatherAmount','convertAmount','maxEnergy','attack','gatherAmount','convertAmount','maxEnergy','attack','gatherAmount','convertAmount','maxEnergy','attack','gatherAmount','convertAmount','maxEnergy','attack','gatherAmount','convertAmount','maxEnergy','attack'],oper,num,level=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.level-1
                     
@@ -5958,7 +6027,7 @@ let items={
                     
                     player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.mutation={stat:stat,num:num,oper:oper}
                     
-                    player.addMessage('☢️ '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' got '+oper.replace('*','x')+num+' '+MATH.doGrammar(stat.replace('max','')).toLowerCase()+'! ☢️',[50,225,90],16)
+                    player.addMessage('☢️ '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' got '+oper.replace('*','x')+num+' '+MATH.doGrammar(stat.replace('max','')).toLowerCase()+'! ☢️',[50,225,90])
                     
                 }
                 
@@ -5990,7 +6059,7 @@ let items={
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.computeLevel(l)
                 textRenderer.add(amount*100+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.2)
                 
-                player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr,16)
+                player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
                 player.addMessage('by '+MATH.addCommas(amount*100)+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
                 player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
                 
@@ -6004,7 +6073,7 @@ let items={
             
             return slot.type!==null
         },
-        amount:0,u:128*7/1024,v:128*7/1024,
+        amount:0,u:128*7/2048,v:128*7/2048,
         use:function(){
             
             howManyToFeed.style.display='block'
@@ -6030,7 +6099,7 @@ let items={
                 
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].radioactive=(3*60)+((amount-1)*5)
                 
-                player.addMessage('☢️ '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' bee became radioactive for '+MATH.doTime(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].radioactive)+' ☢️',[50,225,90],16)
+                player.addMessage('☢️ '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' bee became radioactive for '+MATH.doTime(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].radioactive)+' ☢️',[50,225,90])
                 
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond+=amount*500
                 
@@ -6060,7 +6129,7 @@ let items={
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.computeLevel(l)
                 textRenderer.add(amount*500+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.2)
                 
-                player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr,16)
+                player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
                 player.addMessage('by '+MATH.addCommas(amount*500)+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
                 player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
                 
@@ -6074,7 +6143,7 @@ let items={
             
             return slot.type!==null
         },
-        amount:1000,u:0,v:128*4/1024,
+        amount:1000,u:0,v:128*4/2048,
         use:function(){
             
             howManyToFeed.style.display='block'
@@ -6126,7 +6195,7 @@ let items={
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.computeLevel(l)
                 textRenderer.add(amount*10+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.2)
                 
-                player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr,16)
+                player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
                 player.addMessage('by '+MATH.addCommas(amount*10)+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
                 player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
                 
@@ -6140,12 +6209,14 @@ let items={
             
             return slot.type!==null
         },
-        amount:0,u:128/1024,v:128*4/1024,
+        amount:0,u:128/2048,v:128*4/2048,
         use:function(){
             
             howManyToFeed.style.display='block'
             feedAmount.value=1
             howManyMessage.innerHTML='How many blueberries will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
+            
+            document.getElementById('feedUntilGifted').style.display=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='blueberry'&&!player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted?'block':'none'
             
             howManyToFeed.onmousemove=function(){
                 
@@ -6157,10 +6228,10 @@ let items={
                 howManyToFeed.style.display='none'
             }
             
-            document.getElementById('feedThisAmount').onclick=function(){
+            let feed=function(amount){
+                
                 howManyToFeed.style.display='none'
                 
-                let amount=feedAmount.value
                 items.blueberry.amount-=amount
                 player.updateInventory()
                 
@@ -6196,14 +6267,36 @@ let items={
                 
                 if(isFavorite){
                     
-                    player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee loves blueberries! ╰(*°▽°*)╯",COLORS.bondArr,16)
+                    player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee loves blueberries! ╰(*°▽°*)╯",COLORS.bondArr)
                 }
                 
-                player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr,16)
-                player.addMessage('by '+MATH.doGrammar(bondToAdd)+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
+                player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
+                player.addMessage('by '+bondToAdd+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
                 player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
                 
             }
+            
+            document.getElementById('feedThisAmount').onclick=function(){feed(feedAmount.value)}
+            
+            document.getElementById('feedUntilGifted').onclick=function(){
+                
+                let am=MATH.simulateProbabilityTries(1/15000)
+                
+                if(am<items.blueberry.amount){
+                    
+                    player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted=true
+                    player.addMessage('After '+MATH.abvNumber(am+'')+' treats.....',COLORS.honey)
+                    player.addMessage('⭐ The treat made the bee gifted! ⭐',COLORS.honey)
+                    feed(am)
+                    player.updateHive()
+                    
+                } else {
+                    
+                    player.addMessage('The treat failed to make the bee gifted :(',COLORS.redArr)
+                    feed(items.blueberry.amount)
+                }
+            }
+            
         }
     },
     
@@ -6213,12 +6306,14 @@ let items={
             
             return slot.type!==null
         },
-        amount:0,u:128*2/1024,v:128*4/1024,
+        amount:0,u:128*2/2048,v:128*4/2048,
         use:function(){
             
             howManyToFeed.style.display='block'
             feedAmount.value=1
             howManyMessage.innerHTML='How many strawberries will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
+            
+            document.getElementById('feedUntilGifted').style.display=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='strawberry'&&!player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted?'block':'none'
             
             howManyToFeed.onmousemove=function(){
                 
@@ -6230,11 +6325,11 @@ let items={
                 howManyToFeed.style.display='none'
             }
             
-            document.getElementById('feedThisAmount').onclick=function(){
+            let feed=function(amount){
+                
                 howManyToFeed.style.display='none'
                 
-                let amount=feedAmount.value
-                items.strawberry.amount-=amount
+                items.blueberry.amount-=amount
                 player.updateInventory()
                 
                 let isFavorite=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='strawberry',bondToAdd=amount*25*(isFavorite?2:1)
@@ -6269,14 +6364,36 @@ let items={
                 
                 if(isFavorite){
                     
-                    player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee loves strawberries! ╰(*°▽°*)╯",COLORS.bondArr,16)
+                    player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee loves strawberries! ╰(*°▽°*)╯",COLORS.bondArr)
                 }
                 
-                player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr,16)
+                player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
                 player.addMessage('by '+bondToAdd+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
                 player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
                 
             }
+            
+            document.getElementById('feedThisAmount').onclick=function(){feed(feedAmount.value)}
+            
+            document.getElementById('feedUntilGifted').onclick=function(){
+                
+                let am=MATH.simulateProbabilityTries(1/15000)
+                
+                if(am<items.strawberry.amount){
+                    
+                    player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted=true
+                    player.addMessage('After '+MATH.abvNumber(am+'')+' treats.....',COLORS.honey)
+                    player.addMessage('⭐ The treat made the bee gifted! ⭐',COLORS.honey)
+                    feed(am)
+                    player.updateHive()
+                    
+                } else {
+                    
+                    player.addMessage('The treat failed to make the bee gifted :(',COLORS.redArr)
+                    feed(items.strawberry.amount)
+                }
+            }
+            
         }
     },
     
@@ -6286,12 +6403,14 @@ let items={
             
             return slot.type!==null
         },
-        amount:0,u:128*2/1024,v:128*5/1024,
+        amount:0,u:128*2/2048,v:128*5/2048,
         use:function(){
             
             howManyToFeed.style.display='block'
             feedAmount.value=1
-            howManyMessage.innerHTML='How many pinapples will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
+            howManyMessage.innerHTML='How many pineapples will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
+            
+            document.getElementById('feedUntilGifted').style.display=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='pineapple'&&!player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted?'block':'none'
             
             howManyToFeed.onmousemove=function(){
                 
@@ -6303,10 +6422,10 @@ let items={
                 howManyToFeed.style.display='none'
             }
             
-            document.getElementById('feedThisAmount').onclick=function(){
+            let feed=function(amount){
+                
                 howManyToFeed.style.display='none'
                 
-                let amount=feedAmount.value
                 items.pineapple.amount-=amount
                 player.updateInventory()
                 
@@ -6342,14 +6461,36 @@ let items={
                 
                 if(isFavorite){
                     
-                    player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee loves pineapple! ╰(*°▽°*)╯",COLORS.bondArr,16)
+                    player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee loves pineapple! ╰(*°▽°*)╯",COLORS.bondArr)
                 }
                 
-                player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr,16)
-                player.addMessage('by '+MATH.addCommas(bondToAdd)+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
+                player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
+                player.addMessage('by '+bondToAdd+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
                 player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
                 
             }
+            
+            document.getElementById('feedThisAmount').onclick=function(){feed(feedAmount.value)}
+            
+            document.getElementById('feedUntilGifted').onclick=function(){
+                
+                let am=MATH.simulateProbabilityTries(1/15000)
+                
+                if(am<items.pineapple.amount){
+                    
+                    player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted=true
+                    player.addMessage('After '+MATH.abvNumber(am+'')+' treats.....',COLORS.honey)
+                    player.addMessage('⭐ The treat made the bee gifted! ⭐',COLORS.honey)
+                    feed(am)
+                    player.updateHive()
+                    
+                } else {
+                    
+                    player.addMessage('The treat failed to make the bee gifted :(',COLORS.redArr)
+                    feed(items.pineapple.amount)
+                }
+            }
+            
         }
     },
     
@@ -6359,12 +6500,14 @@ let items={
             
             return slot.type!==null
         },
-        amount:0,u:128*3/1024,v:128*5/1024,
+        amount:0,u:128*3/2048,v:128*5/2048,
         use:function(){
             
             howManyToFeed.style.display='block'
             feedAmount.value=1
             howManyMessage.innerHTML='How many sunflower seeds will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
+            
+            document.getElementById('feedUntilGifted').style.display=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='sunflowerSeed'&&!player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted?'block':'none'
             
             howManyToFeed.onmousemove=function(){
                 
@@ -6376,10 +6519,10 @@ let items={
                 howManyToFeed.style.display='none'
             }
             
-            document.getElementById('feedThisAmount').onclick=function(){
+            let feed=function(amount){
+                
                 howManyToFeed.style.display='none'
                 
-                let amount=feedAmount.value
                 items.sunflowerSeed.amount-=amount
                 player.updateInventory()
                 
@@ -6415,14 +6558,36 @@ let items={
                 
                 if(isFavorite){
                     
-                    player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee loves sunflower seeds! ╰(*°▽°*)╯",COLORS.bondArr,16)
+                    player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee loves sunflower seeds! ╰(*°▽°*)╯",COLORS.bondArr)
                 }
                 
-                player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr,16)
-                player.addMessage('by '+MATH.addCommas(bondToAdd)+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
+                player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
+                player.addMessage('by '+bondToAdd+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
                 player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
                 
             }
+            
+            document.getElementById('feedThisAmount').onclick=function(){feed(feedAmount.value)}
+            
+            document.getElementById('feedUntilGifted').onclick=function(){
+                
+                let am=MATH.simulateProbabilityTries(1/15000)
+                
+                if(am<items.sunflowerSeed.amount){
+                    
+                    player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted=true
+                    player.addMessage('After '+MATH.abvNumber(am+'')+' treats.....',COLORS.honey)
+                    player.addMessage('⭐ The treat made the bee gifted! ⭐',COLORS.honey)
+                    feed(am)
+                    player.updateHive()
+                    
+                } else {
+                    
+                    player.addMessage('The treat failed to make the bee gifted :(',COLORS.redArr)
+                    feed(items.sunflowerSeed.amount)
+                }
+            }
+            
         }
     },
     
@@ -6432,7 +6597,7 @@ let items={
             
             return slot.type!=='basic'
         },
-        amount:0,u:128*4/1024,v:128*5/1024,
+        amount:0,u:128*4/2048,v:128*5/2048,
         use:function(){
             
             items.basicEgg.amount--
@@ -6452,7 +6617,7 @@ let items={
             
             return true
         },
-        amount:0,u:128*5/1024,v:128*5/1024,
+        amount:0,u:128*5/2048,v:128*5/2048,
         use:function(){
             
             let types={mythic:1/4000,legendary:0.075-(1/4000),epic:0.325,rare:0.6},r=Math.random(),type,c=0
@@ -6497,7 +6662,7 @@ let items={
             
             return true
         },
-        amount:0,u:128*6/1024,v:128*5/1024,
+        amount:0,u:128*6/2048,v:128*5/2048,
         use:function(){
             
             let types={mythic:1/500,legendary:0.3-(1/500),epic:0.7},r=Math.random(),type,c=0
@@ -6541,7 +6706,7 @@ let items={
             
             return true
         },
-        amount:0,u:128*7/1024,v:128*5/1024,
+        amount:0,u:128*7/2048,v:128*5/2048,
         use:function(){
             
             let types={mythic:0.05,legendary:0.95},r=Math.random(),type,c=0
@@ -6585,7 +6750,7 @@ let items={
             
             return true
         },
-        amount:0,u:128*0/1024,v:128*6/1024,
+        amount:0,u:128*0/2048,v:128*6/2048,
         use:function(){
             
             let types=[]
@@ -6612,7 +6777,7 @@ let items={
     
     glitter:{
         
-        amount:0,u:0,v:128*7/1024,
+        amount:0,u:0,v:128*7/2048,
         use:function(){
             
             
@@ -6959,7 +7124,7 @@ class Bee {
                         
                         let g=this.attackTokens[i]
                         
-                        if((TIME-g.timer)*player.beeAbilityRate*this.abilityRate>=g.cooldown&&Math.random()<=g.rate){
+                        if((TIME-g.timer)*player[beeInfo[this.type].color+'BeeAbilityRate']*this.abilityRate>=g.cooldown&&Math.random()<=g.rate){
                             
                             openTokens.push(i)
                         }
@@ -7074,7 +7239,7 @@ class Bee {
                         
                         let g=this.gatheringTokens[i]
                         
-                        if((TIME-g.timer)*player.beeAbilityRate*this.abilityRate>=g.cooldown&&Math.random()<=g.rate){
+                        if((TIME-g.timer)*player[beeInfo[this.type].color+'BeeAbilityRate']*this.abilityRate>=g.cooldown&&Math.random()<=g.rate){
                             
                             openTokens.push(i)
                         }
@@ -7615,7 +7780,7 @@ class TempBee {
                         
                         let g=this.attackTokens[i]
                         
-                        if((TIME-g.timer)*player.beeAbilityRate>=g.cooldown&&Math.random()<=g.rate){
+                        if((TIME-g.timer)*player[beeInfo[this.type].color+'BeeAbilityRate']>=g.cooldown&&Math.random()<=g.rate){
                             
                             openTokens.push(i)
                         }
@@ -7730,7 +7895,7 @@ class TempBee {
                         
                         let g=this.gatheringTokens[i]
                         
-                        if((TIME-g.timer)*player.beeAbilityRate>=g.cooldown&&Math.random()<=g.rate){
+                        if((TIME-g.timer)*player[beeInfo[this.type].color+'BeeAbilityRate']>=g.cooldown&&Math.random()<=g.rate){
                             
                             openTokens.push(i)
                         }
@@ -8007,7 +8172,7 @@ class Flame {
             this.pos=[this.x+fieldInfo[this.field].x,fieldInfo[this.field].y+0.5,this.z+fieldInfo[this.field].z]
         }
         
-        this.collectTimer=TIME+Math.random()
+        this.collectTimer=TIME+MATH.random(0.5,1)
         this.particleTimer=TIME
         
         if(player.flameFuel){
@@ -8088,7 +8253,7 @@ class Flame {
             
             if(!this.isStatic&&player.fieldIn===this.field){
                 
-                collectPollen({x:this.x,z:this.z,pattern:this.dark?[[0,0],[1,1],[1,-1],[-1,1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1],[2,0],[-2,0],[0,-2],[0,2]]:[[0,0],[1,1],[1,-1],[-1,1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]],amount:{r:9,w:4,b:1},stackHeight:0.7,multiplier:player.flamePollen*player.flameBonus,instantConversion:player.instantFlameConversion,field:this.field})
+                collectPollen({x:this.x,z:this.z,pattern:this.dark?[[0,0],[1,1],[1,-1],[-1,1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1],[2,0],[-2,0],[0,-2],[0,2]]:[[0,0],[1,1],[1,-1],[-1,1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]],amount:{r:10,w:5,b:1},stackHeight:0.7,multiplier:player.flamePollen*player.flameBonus,instantConversion:player.instantFlameConversion,field:this.field})
             }
         }
         
@@ -8110,7 +8275,7 @@ class Flame {
         
         if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1])+Math.abs(player.body.position.z-this.pos[2])<2){
             
-            player.stats.scorchingStar+=dt*(this.dark?100:75)
+            player.stats.scorchingStar+=dt*(this.dark?120:90)
             player.addEffect('flameHeat',this.dark?0.00025:0.0001)
         }
         
@@ -8272,13 +8437,15 @@ class Mark {
         
         this.gummyBallHitTimer=0
         this.beeLevel=beeLevel
-        this.life=(7+(type==='precise'?15:0)+(beeLevel-1)*0.5)*player.markDuration
+        this.life=((type==='precise'?12:7)+(beeLevel-1)*0.2)*player.markDuration
         this.field=field
         this.x=x
         this.z=z
         this.pos=[fieldInfo[this.field].x+this.x,fieldInfo[this.field].y+0.5,fieldInfo[this.field].z+this.z]
+        this.surgeLimit=5
+        this.rot=Math.random()*6.12
         
-        this.diameter=(type==='precise'?9:7)+beeLevel*0.05
+        this.diameter=(type==='precise'?12:8)
         this.sqSize=(this.diameter*0.5)*(this.diameter*0.5)
         
         this.type=type
@@ -8303,7 +8470,8 @@ class Mark {
     
     surge(time=0){
         
-        this.surgeAfter=time
+        if(this.surgeLimit>0)
+            this.surgeAfter=time
     }
     
     die(index){
@@ -8314,23 +8482,33 @@ class Mark {
     update(){
         
         this.life-=dt
+        this.rot+=dt*2
         
         if(vec3.sqrDist(this.pos,[player.body.position.x,player.body.position.y,player.body.position.z])<=this.sqSize){
             
             player.addEffect(this.type)
+            
+            meshes.explosions.instanceData.push(this.pos[0],this.pos[1]+3.6,this.pos[2],0,1,0,1,0.45,1)
+            
+        } else {
+            
+            meshes.explosions.instanceData.push(this.pos[0],this.pos[1]+3.6,this.pos[2],0.8,0.4,0,0.85,0.45,1)
         }
         
         meshes.explosions.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1,1,1,0.075,this.diameter,0.01)
         
-        meshes.explosions.instanceData.push(this.pos[0],this.pos[1]-8.5,this.pos[2],this.typeCol[0],this.typeCol[1],this.typeCol[2],1,0.3,80)
-        
-        meshes.explosions.instanceData.push(this.pos[0],this.pos[1]+3.3,this.pos[2],1,1,1,1,0.45,1)
+        meshes.cylinder_explosions.instanceData.push(this.pos[0],this.pos[1]+1.5,this.pos[2],0.9,0.8,0.4,1,0.125,27)
+        meshes.cylinder_explosions.instanceData.push(this.pos[0],this.pos[1]+3.3,this.pos[2],0.9,0.8,0.4,1,0.4,0.5)
+        meshes.tokens.instanceData.push(this.pos[0],this.pos[1]+2.25,this.pos[2],this.rot,effects[this.type+'Token'].u,effects[this.type+'Token'].v,1,1.35)
         
         this.surgeAfter-=dt
         
         if(this.surgeAfter<=0){
             
             this.surgeAfter=Infinity
+            this.surgeLimit--
+            this.life+=1+this.beeLevel*0.1
+            
             let f=this
             
             objects.explosions.push(new ReverseExplosion({col:[1,1,0],pos:f.pos,life:0.3,size:this.diameter*0.8,alpha:0.75}))
@@ -8341,7 +8519,7 @@ class Mark {
                 
             } else if(f.type==='pollenMark'){
                 
-                collectPollen({x:f.x,z:f.z,pattern:f.flowers,amount:7,yOffset:2.25+Math.random()*0.5,stackOffset:0.4+Math.random()*0.6,field:this.field,multiplier:this.beeLevel*0.1+1,replenish:1})
+                collectPollen({x:f.x,z:f.z,pattern:f.flowers,amount:7,yOffset:2.25+Math.random()*0.5,stackOffset:0.4+Math.random()*0.6,field:this.field,multiplier:this.beeLevel*0.1+1})
                 
             } else if(f.type==='preciseMark'){
                 
@@ -8775,23 +8953,36 @@ class Triangulate {
         
         for(let i in objects.tokens){
             
-            if(objects.tokens[i].canBeLinked&&MATH.pointInTriangle(Math.round(objects.tokens[i].pos[0]-fieldInfo[this.field].x),Math.round(objects.tokens[i].pos[2]-fieldInfo[this.field].z),px,pz,tx,tz,bx,bz)){
+            if(MATH.pointInTriangle(Math.round(objects.tokens[i].pos[0]-fieldInfo[this.field].x),Math.round(objects.tokens[i].pos[2]-fieldInfo[this.field].z),px,pz,tx,tz,bx,bz)){
                 
                 objects.tokens[i].collect()
             }
         }
         
-        let extraPollenFromMarks=0
+        let containsPollenMark=1,containsHoneyMark,containsPreciseMark,extraPollenFromMarks=1
         
         for(let i in objects.marks){
             
             if(MATH.pointInTriangle(objects.marks[i].x,objects.marks[i].z,px,pz,tx,tz,bx,bz)){
                 
-                extraPollenFromMarks+=0.5
+                extraPollenFromMarks=1.5
+                
+                if(objects.marks[i].type==='pollenMark'){
+                    
+                    containsPollenMark=2
+                    
+                } else if(objects.marks[i].type==='honeyMark'){
+                    
+                    containsHoneyMark=true
+                    
+                } else {
+                    
+                    containsPreciseMark=true
+                }
             }
         }
         
-        collectPollen({x:0,z:0,pattern:f,amount:10+this.bee.level,yOffset:2.5,stackHeight:0.7,field:this.field,otherPos:[(minX+maxX)*0.5+fieldInfo[this.field].x,player.body.position.y+0.5,(minZ+maxZ)*0.5+fieldInfo[this.field].z],multiplier:extraPollenFromMarks+1})
+        collectPollen({x:0,z:0,pattern:f,amount:10+this.bee.level*2,yOffset:2.5,stackHeight:0.8,field:this.field,otherPos:[(minX+maxX)*0.5+fieldInfo[this.field].x,player.body.position.y+0.5,(minZ+maxZ)*0.5+fieldInfo[this.field].z],multiplier:{r:extraPollenFromMarks,b:extraPollenFromMarks,w:containsPollenMark*extraPollenFromMarks},alwaysCrit:containsPreciseMark,instantConversion:containsHoneyMark?0.5:0})
         
         objects.explosions.push(new ReverseExplosion({col:[1,1,1],pos:this.bee.pos.slice(),life:0.25,size:2,alpha:1,height:1}))
         objects.explosions.push(new ReverseExplosion({col:[1,1,1],pos:this.tokenPos,life:0.25,size:2,alpha:1,height:1}))
@@ -9874,7 +10065,6 @@ class GummyBall {
         this.vel=player.bodyDir.slice()
         vec3.scale(this.vel,this.vel,17.5)
         this.life=this.size*15+0.5
-        this.lifespan=this.life
         this.collectTimer=0
         this.rad=this.size*0.35+0.5
         this.pos=[player.body.position.x,fieldInfo[player.fieldIn].y+0.5+this.rad,player.body.position.z,0]
@@ -9964,7 +10154,7 @@ class GummyBall {
         gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
         gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
         gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
-        gl.uniform2f(glCache.mob_instanceInfo2,this.rad*2,this.life*2/this.lifespan)
+        gl.uniform2f(glCache.mob_instanceInfo2,this.rad*2,this.life)
         gl.drawElements(gl.TRIANGLES,meshes.gummyBall.indexAmount,gl.UNSIGNED_SHORT,0)
         
         textRenderer.addSingle('x'+this.amount,this.pos,COLORS.whiteArr,-3)
@@ -10942,7 +11132,7 @@ class Mesh {
                 
                 for(let t=0,inc=MATH.TWO_PI/sides;t<=MATH.TWO_PI;t+=inc){
                     
-                    let t1=t-inc*0.5,t2=t+inc*0.5,s=shading?Math.sin(t1)*0.3+0.7:1
+                    let t1=t-inc*0.5,t2=t+inc*0.5,s=shading?Math.sin(t1)*0.1+0.9:1
                     _verts.push(
                         Math.cos(t1)*rad,Math.sin(t1)*rad,hei*0.5,r*s,g*s,b*s,a,0,0,0,
                         Math.cos(t1)*rad2,Math.sin(t1)*rad2,-hei*0.5,r*s,g*s,b*s,a,0,0,0,
@@ -10959,8 +11149,8 @@ class Mesh {
                     
                     let t1=t-inc*0.5,t2=t+inc*0.5
                     _verts.push(
-                        Math.cos(t1)*rad,Math.sin(t1)*rad,hei*0.5,r*0.4,g*0.4,b*0.4,a,0,0,0,
-                        Math.cos(t2)*rad,Math.sin(t2)*rad,hei*0.5,r*0.4,g*0.4,b*0.4,a,0,0,0)
+                        Math.cos(t1)*rad,Math.sin(t1)*rad,hei*0.5,r*0.9,g*0.9,b*0.9,a,0,0,0,
+                        Math.cos(t2)*rad,Math.sin(t2)*rad,hei*0.5,r*0.9,g*0.9,b*0.9,a,0,0,0)
                 }
                 for(let l=_verts.length/10,i=_v;i<l;i++){
                     
@@ -10972,8 +11162,8 @@ class Mesh {
                     let t1=t-inc*0.5,t2=t+inc*0.5
                     _verts.push(
                         
-                        Math.cos(t1)*rad2,Math.sin(t1)*rad2,-hei*0.5,r,g,b,a,0,0,0,
-                        Math.cos(t2)*rad2,Math.sin(t2)*rad2,-hei*0.5,r,g,b,a,0,0,0)
+                        Math.cos(t1)*rad2,Math.sin(t1)*rad2,-hei*0.5,r*0.7,g*0.7,b*0.7,a,0,0,0,
+                        Math.cos(t2)*rad2,Math.sin(t2)*rad2,-hei*0.5,r*0.7,g*0.7,b*0.7,a,0,0,0)
                 }
                 for(let l=_verts.length/10,i=_v;i<l;i++){
                     
@@ -11422,7 +11612,7 @@ let textures=(function(out){
             out.effects=gl.createTexture()
             
             gl.bindTexture(gl.TEXTURE_2D,out.effects)
-            gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1024,1024,0,gl.RGBA,gl.UNSIGNED_BYTE,tex_ctx.getImageData(0,0,1024,1024))
+            gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,2048,2048,0,gl.RGBA,gl.UNSIGNED_BYTE,tex_ctx.getImageData(0,0,2048,2048))
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
             gl.generateMipmap(gl.TEXTURE_2D)
@@ -11715,7 +11905,9 @@ let gear={
                 stats.capacityMultiplier*=1.75
                 stats.whiteFieldCapacity*=1.5
                 stats.goo*=1.75
-                stats.beeAbilityRate*=1.2
+                stats.redBeeAbilityRate*=1.2
+                stats.blueBeeAbilityRate*=1.2
+                stats.whiteBeeAbilityRate*=1.2
                 stats.bluePollen*=1.25
                 stats.whitePollen*=1.5
                 stats.redPollen*=1.25
@@ -11756,7 +11948,9 @@ let gear={
                 stats.honeyAtHive*=1.1
                 stats.bubblePollen*=1.25
                 stats.blueBombPollen*=1.25
-                stats.beeAbilityRate*=1.2
+                stats.redBeeAbilityRate*=1.2
+                stats.blueBeeAbilityRate*=1.2
+                stats.whiteBeeAbilityRate*=1.2
                 stats.defense+=0.3
                 player.addEffect('diamondDrainPassive')
                 player.addEffect('bubbleBombsPassive')
@@ -11783,14 +11977,16 @@ let gear={
                 
                 stats.capacityMultiplier*=1.75
                 stats.redFieldCapacity*=1.5
-                stats.redPollen*=1.75
+                stats.redPollen*=2
                 stats.beeAttack*=1.25
                 stats.redBeeAttack+=2
                 stats.whiteBeeAttack+=1
                 stats.blueBeeAttack+=1
                 stats.instantFlameConversion+=0.5
                 stats.flamePollen*=1.75
-                stats.beeAbilityRate*=1.2
+                stats.redBeeAbilityRate*=1.2
+                stats.blueBeeAbilityRate*=1.2
+                stats.whiteBeeAbilityRate*=1.2
                 stats.beeEnergy*=1.25
                 stats.defense+=0.35
                 player.addEffect('xFlamePassive')
@@ -12079,7 +12275,9 @@ player=(function(out){
         beeSpeed:1,
         honeyAtHive:1,
         tokenLifespan:1,
-        beeAbilityRate:1,
+        redBeeAbilityRate:1,
+        blueBeeAbilityRate:1,
+        whiteBeeAbilityRate:1,
         beeAttack:1,
         beeEnergy:1,
         flameHeatStack:1,
@@ -12145,6 +12343,7 @@ player=(function(out){
     
     out.onStartChat=function(){
         
+        document.exitPointerLock()
         actionWarning.style.display='none'
         dialogueBox.style.display='block'
         NPCName.innerHTML=MATH.doGrammar(out.currentNPC)
@@ -12157,6 +12356,7 @@ player=(function(out){
     
     out.onStartShop=function(){
         
+        document.exitPointerLock()
         shopUI.style.display='block'
         shops[out.currentShop].currentIndex=0
         out.viewMatrixToChange=shops[out.currentShop].items[shops[out.currentShop].currentIndex].viewMatrix
@@ -12273,8 +12473,8 @@ player=(function(out){
         
         out.health=100
         out.dead=false
-        out.body.position.x=0
-        out.body.position.y=2
+        out.body.position.x=10
+        out.body.position.y=0
         out.body.position.z=0
     }
     
@@ -12530,7 +12730,7 @@ player=(function(out){
             
             if(beeInfo[objects.bees[i].type].color==='red'){
                 
-                out.flameBonus+=objects.bees[i].gifted?0.06:0.03
+                out.flameBonus+=objects.bees[i].gifted?0.08:0.04
             }
             
             if(objects.bees[i].type==='crimson'){
@@ -12920,7 +13120,7 @@ player=(function(out){
                 out.respawn()
             }
             
-            ctx.fillStyle='rgb(255,0,0,0.2)'
+            ctx.fillStyle='rgb(225,0,0,0.4)'
             ctx.fillRect(0,0,width,height)
         }
         
@@ -13010,7 +13210,7 @@ player=(function(out){
         
         if(currentPage===2&&TIME-player.statsStringLastUpdate>0.5){
             player.statsStringLastUpdate=TIME
-            player.statString='<br>FPS: '+(1/dt).toFixed(2)+'<br>Delta Time: '+dt.toFixed(4)+'<br><br>Convert Rate: '+Math.round(player.convertRate*100)+'%<br>Red Pollen: '+Math.round(player.redPollen*100)+'%<br>Blue Pollen: '+Math.round(player.bluePollen*100)+'%<br>White Pollen: '+Math.round(player.whitePollen*100)+'%<br>Walk Speed: '+player.walkSpeed.toFixed(1)+'<br>Jump Power: '+player.jumpPower.toFixed(1)+'<br>Instant Red Conversion: '+Math.round(player.instantRedConversion*100)+'%<br>Instant Blue Conversion: '+Math.round(player.instantBlueConversion*100)+'%<br>Instant White Conversion: '+Math.round(player.instantWhiteConversion*100)+'%<br>Instant Flame Conversion: '+Math.round(player.instantFlameConversion*100)+'%<br>Critical Chance: '+Math.round(player.criticalChance*100)+'%<br>Critical Power: '+Math.round(player.criticalPower*100)+'%<br>Super-Crit Chance: '+Math.round(player.superCritChance*100)+'%<br>Super-Crit Power: '+Math.round(player.superCritPower*100)+'%<br>Goo: '+Math.round(player.goo*100)+'%<br>Instant Goo Conversion: '+Math.round(player.instantGooConversion*100)+'%<br>Flame Pollen: '+Math.round(player.flamePollen*100)+'%<br>Bubble Pollen: '+Math.round(player.bubblePollen*100)+'%<br>Pollen From Tools: '+Math.round(player.pollenFromTools*100)+'%<br>Pollen From Bees: '+Math.round(player.pollenFromBees*100)+'%<br>White Bomb Pollen: '+Math.round(player.whiteBombPollen*100)+'%<br>Red Bomb Pollen: '+Math.round(player.redBombPollen*100)+'%<br>Blue Bomb Pollen: '+Math.round(player.blueBombPollen*100)+'%<br>White Bee Attack: '+player.whiteBeeAttack+'<br>Blue Bee Attack: '+player.blueBeeAttack+'<br>Red Bee Attack: '+player.redBeeAttack+'<br>Bee Attack Multiplier: '+Math.round(player.beeAttack*100)+'%<br>Honey From Tokens: '+Math.round(player.honeyFromTokens*100)+'%<br>Bee Ability Rate: '+Math.round(player.beeAbilityRate*100)+'%<br>Bee Movespeed: '+Math.round(player.beeSpeed*100)+'%<br>Bee Energy: '+Math.round(player.beeEnergy*100)+'%<br>Honey At Hive: '+Math.round(player.honeyAtHive*100)+'%<br>Convert Total: '+Math.round(player.convertTotal)
+            player.statString='<br>FPS: '+(1/dt).toFixed(2)+'<br>Delta Time: '+dt.toFixed(4)+'<br><br>Convert Rate: '+Math.round(player.convertRate*100)+'%<br>Red Pollen: '+Math.round(player.redPollen*100)+'%<br>Blue Pollen: '+Math.round(player.bluePollen*100)+'%<br>White Pollen: '+Math.round(player.whitePollen*100)+'%<br>Walk Speed: '+player.walkSpeed.toFixed(1)+'<br>Jump Power: '+player.jumpPower.toFixed(1)+'<br>Instant Red Conversion: '+Math.round(player.instantRedConversion*100)+'%<br>Instant Blue Conversion: '+Math.round(player.instantBlueConversion*100)+'%<br>Instant White Conversion: '+Math.round(player.instantWhiteConversion*100)+'%<br>Instant Flame Conversion: '+Math.round(player.instantFlameConversion*100)+'%<br>Critical Chance: '+Math.round(player.criticalChance*100)+'%<br>Critical Power: '+Math.round(player.criticalPower*100)+'%<br>Super-Crit Chance: '+Math.round(player.superCritChance*100)+'%<br>Super-Crit Power: '+Math.round(player.superCritPower*100)+'%<br>Goo: '+Math.round(player.goo*100)+'%<br>Instant Goo Conversion: '+Math.round(player.instantGooConversion*100)+'%<br>Flame Pollen: '+Math.round(player.flamePollen*100)+'%<br>Bubble Pollen: '+Math.round(player.bubblePollen*100)+'%<br>Pollen From Tools: '+Math.round(player.pollenFromTools*100)+'%<br>Pollen From Bees: '+Math.round(player.pollenFromBees*100)+'%<br>White Bomb Pollen: '+Math.round(player.whiteBombPollen*100)+'%<br>Red Bomb Pollen: '+Math.round(player.redBombPollen*100)+'%<br>Blue Bomb Pollen: '+Math.round(player.blueBombPollen*100)+'%<br>White Bee Attack: '+player.whiteBeeAttack+'<br>Blue Bee Attack: '+player.blueBeeAttack+'<br>Red Bee Attack: '+player.redBeeAttack+'<br>Bee Attack Multiplier: '+Math.round(player.beeAttack*100)+'%<br>Honey From Tokens: '+Math.round(player.honeyFromTokens*100)+'%<br>Red Bee Ability Rate: '+Math.round(player.redBeeAbilityRate*100)+'%<br>Blue Bee Ability Rate: '+Math.round(player.blueBeeAbilityRate*100)+'%<br>White Bee Ability Rate: '+Math.round(player.whiteBeeAbilityRate*100)+'%<br>Bee Movespeed: '+Math.round(player.beeSpeed*100)+'%<br>Bee Energy: '+Math.round(player.beeEnergy*100)+'%<br>Honey At Hive: '+Math.round(player.honeyAtHive*100)+'%<br>Convert Total: '+Math.round(player.convertTotal)
             
             pages[2].innerHTML='<div style="color:'+(player.setting_enablePollenText?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenText">Pollen Text: '+(player.setting_enablePollenText?'On':'Off')+'</div>'+'<div style="color:'+(player.setting_enablePollenAbv?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenAbv">Abbreviate Pollen: '+(player.setting_enablePollenAbv?'On':'Off')+'</div>'+player.statString
             
@@ -13396,7 +13596,7 @@ player=(function(out){
         
         let s=dt*out.walkSpeed*(out.grounded?1:0.75),cdir=out.cosYaw,sdir=out.sinYaw
         
-        if(!out.currentNPC&&!out.removeAirFrictionUntilGrounded&&!out.isGliding){
+        if(!out.currentNPC&&!out.currentShop&&!out.removeAirFrictionUntilGrounded&&!out.isGliding){
             
             let dx=0,dz=0,c=0
             
@@ -13549,7 +13749,7 @@ player=(function(out){
                     
                     if(player.hive[y][x].beequip){
                         
-                        textRenderer.addDecal([player.hivePos[0]+x*0.8+0,player.hivePos[1]+y*0.8-2,player.hivePos[2]+0.1],'flower',[-1.3,-1.3])
+                        textRenderer.addDecal([player.hivePos[0]+x*0.8+0,player.hivePos[1]+y*0.8-2.25,player.hivePos[2]+0.1],player.hive[y][x].beequip.type,[-1.3,-1.3])
                         
                     }
                         
@@ -13834,6 +14034,12 @@ let user=(function(out){
                 
                 if(player.beequipDragging){
                     
+                    if(player.currentGear.beequips[player.beequipLookingAt].bee){
+                        
+                        player.hive[player.currentGear.beequips[player.beequipLookingAt].bee[1]][player.currentGear.beequips[player.beequipLookingAt].bee[0]].beequip=null
+                        
+                    }
+                    
                     player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip=player.beequipDragging
                     player.currentGear.beequips[player.beequipLookingAt].bee=player.hiveIndex
                     player.beequipDragging=false
@@ -13842,6 +14048,7 @@ let user=(function(out){
                 } else {
                     
                     items[player.itemDragging].use()
+                    player.updateInventory()
                     player.itemDragging=false
                 }
             }
@@ -13915,6 +14122,7 @@ let textRenderer=(function(out){
         rect:[128/1024,0],
         flower:[128*2/1024,0],
         glow:[128*3/1024,0],
+        candycane:[128*4/1024,0],
         
     }
     
@@ -14874,20 +15082,20 @@ class Token {
     
     update(){
         
-        this.life-=dt+dt
+        this.life-=dt
         
         if(this.collected){
             
-            this.pos[1]+=(this.pos[1]+5-this.pos[1])*0.01
+            this.pos[1]+=(this.pos[1]+5-this.pos[1])*dt
             this.rotation+=dt*20
             
-            meshes.tokens.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.rotation,effects[this.type].u,effects[this.type].v,this.life*5)
+            meshes.tokens.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.rotation,effects[this.type].u,effects[this.type].v,this.life*5,1)
             
         } else {
             
-            this.rotation+=dt+dt
+            this.rotation+=dt*2.6
             
-            meshes.tokens.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.rotation,effects[this.type].u,effects[this.type].v,this.life*0.15)
+            meshes.tokens.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.rotation,effects[this.type].u,effects[this.type].v,this.life*0.3,1)
             
             if(Math.abs(this.pos[0]-player.body.position.x)+Math.abs(this.pos[1]-player.body.position.y)+Math.abs(this.pos[2]-player.body.position.z)<1.75){
                 
@@ -14903,7 +15111,7 @@ class LootToken {
     
     constructor(life,pos,type,amount,canBeLinked=false,source){
         
-        this.life=life*2
+        this.life=life
         this.pos=pos
         this.type=type
         this.amount=Math.abs(amount)
@@ -14913,8 +15121,8 @@ class LootToken {
         
         if(this.type==='honey'){
             
-            this.u=128*3/1024
-            this.v=128*4/1024
+            this.u=128*3/2048
+            this.v=128*4/2048
             
         } else {
             
@@ -14958,16 +15166,16 @@ class LootToken {
         
         if(this.collected){
             
-            this.pos[1]+=(this.pos[1]+5-this.pos[1])*0.01
+            this.pos[1]+=(this.pos[1]+5-this.pos[1])*dt
             this.rotation+=dt*20
             
-            meshes.tokens.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.rotation,this.u,this.v,this.life*5)
+            meshes.tokens.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.rotation,this.u,this.v,this.life*5,1)
             
         } else {
             
-            this.rotation+=dt+dt
+            this.rotation+=dt*2.6
             
-            meshes.tokens.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.rotation,this.u,this.v,this.life*0.15)
+            meshes.tokens.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.rotation,this.u,this.v,this.life*0.3,1)
             
             if(Math.abs(this.pos[0]-player.body.position.x)+Math.abs(this.pos[1]-player.body.position.y)+Math.abs(this.pos[2]-player.body.position.z)<1.75){
                 
@@ -14987,7 +15195,7 @@ let verts=[],index=[]
 let s=25,r=0.5
 for(let i=0,inc=MATH.TWO_PI/s;i<MATH.TWO_PI;i+=inc){
     
-    let s=Math.sin(i),c=Math.cos(i),texSize=128/1024
+    let s=Math.sin(i),c=Math.cos(i),texSize=128/2048
     
     verts.push(s*r,c*r,0.05,(s*0.495+0.5)*texSize,(-c*0.495+0.5)*texSize,
                 s*r,c*r,-0.05,(s*0.495+0.5)*texSize,(-c*0.495+0.5)*texSize)
@@ -16432,8 +16640,8 @@ function collectPollen(params){
                     
                     if(params.isGummyBaller){
                         
-                        player.addEffect('gummyBall',(f.goo*0.3)/180)
-                        f.goo=Math.max(0,f.goo*0.75)
+                        player.addEffect('gummyBall',(f.goo*0.45)/180)
+                        f.goo*=0.5
                     }
                 }
                 
@@ -16527,200 +16735,6 @@ function collectPollen(params){
     return total.r+total.b+total.w+balloon.r+balloon.b+balloon.w
 }
 
-// function collectPollen(x,z,pattern,amount,yOffset=2,stackOffset,replenish,field=player.fieldIn,convertPercent,alwaysCrit,otherPos,gooTrail,isGummyBaller,multiplier=1){
-    
-//     if(player.pollen>=player.capacity||pattern.length<1){return}
-    
-//     if(typeof amount==='number'){
-        
-//         let a=amount
-//         amount={r:a,w:a,b:a}
-//     }
-    
-//     let f=fieldInfo[field],totalRed=0,totalBlue=0,totalWhite=0,ex=stackOffset||0.425,redCrit=alwaysCrit||Math.random()<player.criticalChance?(Math.random()<player.superCritChance?2:1):0,whiteCrit=alwaysCrit||Math.random()<player.criticalChance?(Math.random()<player.superCritChance?2:1):0,blueCrit=alwaysCrit||Math.random()<player.criticalChance?(Math.random()<player.superCritChance?2:1):0,goo=0,balloonRed=0,balloonWhite=0,balloonBlue=0,totalGoo=0
-    
-//     for(let i in pattern){
-        
-//         let p=pattern[i]
-        
-//         let _x=x+p[0],_z=z+p[1]
-        
-//         if(_x>=0&&_x<f.width&&_z>=0&&_z<f.length){
-            
-//             updateFlower(field,_x,_z,function(f){
-                
-//                 let c,cp
-                
-//                 switch(f.color){
-                    
-//                     case 'white':
-//                         cp=player.whitePollen*multiplier
-//                         c=whiteCrit===0?1:(whiteCrit===1?player.criticalPower:player.superCritPower)
-//                     break
-                    
-//                     case 'red':
-//                         cp=player.redPollen*multiplier
-//                         c=redCrit===0?1:(redCrit===1?player.criticalPower:player.superCritPower)
-//                     break
-                    
-//                     case 'blue':
-//                         cp=player.bluePollen*multiplier
-//                         c=blueCrit===0?1:(blueCrit===1?player.criticalPower:player.superCritPower)
-//                     break
-//                 }
-                
-//                 let am=amount[f.color[0]]
-                
-//                 let amountToCollect=Math.min(am*c/f.level,f.height*100)
-//                 if(replenish){
-                    
-//                     f.height=Math.min(replenish+f.height-amountToCollect*0.01,1)
-                    
-//                 } else {
-                    
-//                     f.height-=amountToCollect*0.01
-//                 }
-                
-//                 amountToCollect*=cp
-                
-//                 if(gooTrail){
-                    
-//                     f.goo=1
-//                 }
-                
-//                 if(f.goo){
-                    
-//                     amountToCollect*=player.goo
-//                     goo++
-//                     totalGoo+=amountToCollect*f.level*f.level
-                    
-//                     if(isGummyBaller){
-                        
-//                         player.addEffect('gummyBall',(f.goo*0.2)/80)
-//                         f.goo=Math.max(0,f.goo*0.6)
-//                     }
-//                 }
-                
-//                 if(f.balloon){
-                    
-//                     let a=amountToCollect*f.level*f.level
-                    
-//                     switch(f.color){
-                        
-//                         case 'white': 
-//                             a*=1.1
-//                             balloonWhite+=a
-//                         break
-                        
-//                         case 'red': 
-//                             a*=1.1
-//                             balloonRed+=a
-//                         break
-                        
-//                         case 'blue': 
-//                             a*=1.2
-//                             balloonBlue+=a
-//                         break
-//                     }
-                    
-//                     f.balloon.pollen+=f.balloon.golden?a*1.25:a
-                    
-//                 } else {
-                    
-//                     switch(f.color){
-                        
-//                         case 'white': 
-//                             totalWhite+=amountToCollect*f.level*f.level
-//                         break
-                        
-//                         case 'red': 
-//                             totalRed+=amountToCollect*f.level*f.level
-//                         break
-                        
-//                         case 'blue': 
-//                             totalBlue+=amountToCollect*f.level*f.level
-//                         break
-//                     }
-//                 }
-                
-//             },true,isGummyBaller||gooTrail,false)
-//         }
-//     }
-    
-//     totalWhite=Math.round(totalWhite)
-//     totalRed=Math.round(totalRed)
-//     totalBlue=Math.round(totalBlue)
-    
-//     balloonWhite=Math.round(balloonWhite)
-//     balloonRed=Math.round(balloonRed)
-//     balloonBlue=Math.round(balloonBlue)
-    
-//     totalGoo=Math.round(totalGoo)
-    
-//     let stack=[]
-    
-//     if(totalWhite||balloonWhite)stack.push({c:'white',v:totalWhite+balloonWhite})
-//     if(totalRed||balloonRed)stack.push({c:'red',v:totalRed+balloonRed})
-//     if(totalBlue||balloonBlue)stack.push({c:'blue',v:totalBlue+balloonBlue})
-    
-//     if(stack[1]&&stack[0].v>stack[1].v){
-        
-//         let n=stack[0]
-//         stack[0]=stack[1]
-//         stack[1]=n
-//     }
-    
-//     if(stack[2]&&stack[0].v>stack[2].v){
-        
-//         let n=stack[0]
-//         stack[0]=stack[2]
-//         stack[2]=n
-//     }
-    
-//     if(stack[1]&&stack[2]&&stack[1].v>stack[2].v){
-        
-//         let n=stack[1]
-//         stack[1]=stack[2]
-//         stack[2]=n
-//     }
-    
-//     let crits={white:whiteCrit,red:redCrit,blue:blueCrit}
-    
-//     for(let i in stack){
-        
-//         textRenderer.add(stack[i].v,otherPos?[otherPos[0],otherPos[1]+yOffset+ex*i,otherPos[2]]:[f.x+x,f.y+yOffset+ex*i,f.z+z],COLORS[stack[i].c+'Arr'],crits[stack[i].c])
-//     }
-    
-//     goo=goo*0.075/pattern.length
-    
-//     let instantConversion
-    
-//     if(convertPercent){
-        
-//         instantConversion=Math.round((totalWhite+totalRed+totalBlue)*convertPercent)
-        
-//     } else {
-        
-//         instantConversion=Math.round((totalWhite*(player.instantWhiteConversion+goo))+(totalRed*(player.instantRedConversion+goo))+(totalBlue*(player.instantBlueConversion+goo)))
-//     }
-    
-//     player.honey+=instantConversion
-    
-//     if(instantConversion){
-        
-//         textRenderer.add(instantConversion,[player.body.position.x,player.body.position.y+yOffset*0.8+0.4+Math.random()*0.4,player.body.position.z],COLORS.honey,0,'+',0.75)
-//     }
-    
-//     player.pollen=Math.min(player.pollen+((totalWhite+totalRed+totalBlue)-instantConversion),player.capacity)
-    
-//     player.stats.redPollen+=totalRed
-//     player.stats.bluePollen+=totalBlue
-//     player.stats.whitePollen+=totalWhite
-//     player.stats.goo+=totalGoo
-    
-//     return totalWhite+totalRed+totalBlue
-// }
-
 function createField(name,x,y,z,w,l,c,_l,genralColorComp){
     
     fieldInfo[name]={x:x,y:y,z:z,width:w,length:l,getColor:c,getLevel:_l,haze:{},generalColorComp:genralColorComp}
@@ -16736,7 +16750,7 @@ function createField(name,x,y,z,w,l,c,_l,genralColorComp){
     }
 }
 
-createField('testField1',-11.5-16*2,-1.5,0,14,14,function(){
+createField('testField1',-1.5-16*2,-1.5,0,14,14,function(){
     
     let c=Math.random()
     
@@ -16747,18 +16761,18 @@ createField('testField1',-11.5-16*2,-1.5,0,14,14,function(){
     return 5
 },{r:0,b:0.8,w:0.2})
 
-createField('testField2',-11.5-16,-1.5,0,14,14,function(){
+createField('testField2',-1.5-16,-1.5,0,14,14,function(){
     
     let c=Math.random()
     
-    return Math.random()<0.3?Math.random()<0.5?'blue':'red':'white'
+    return Math.random()<0.2?Math.random()<0.5?'blue':'red':'white'
     
 },function(){
     
     return 5
 },{w:0.7,b:0.15,r:0.15})
 
-createField('testField3',-11.5,-1.5,0,14,14,function(){
+createField('testField3',-1.5,-1.5,0,14,14,function(){
     
     let c=Math.random()
     
@@ -16992,6 +17006,7 @@ window.deleteBeequip=function(){
     player.updateHive()
 }
 
+let bearMesh=new Mesh()
 
 function loop(now){
     
@@ -17243,6 +17258,35 @@ function loop(now){
         }
     }
     
+    if(frameCount%2===0){
+        
+        bearMesh.setMeshFromFunction(function(box,a,cylinder,sphere,d,e,star){
+            
+            let x=16,y=-0.3,z=3,s=1,t=TIME,t1=Math.sin(t*2.1)*5-0.5
+            
+            box(x,y+Math.cos(t1*MATH.TO_RAD*2)*s*0.6,z+Math.sin(t1*MATH.TO_RAD*2)*s*0.6,1.1*s,0.9*s,0.6*s,[t1*2,0,0],[0.9,0.9,0.9],false,false)
+            box(x,y+Math.cos(t1*MATH.TO_RAD*2.75)*s*1.65,z+Math.sin(t1*MATH.TO_RAD*2.75)*s*1.65,1.2*s,1.15*s,0.6*s,[t1*4,0,0],[0.9,0.9,0.9],false,false)
+            box(x,y,z,1.1*s,0.25*s,0.6*s,[t1,0,0],[0.9,0.9,0.9],false,false)
+            box(x+s/1.25,y-Math.cos(t1*MATH.TO_RAD*3.5*2)*s*0.65+s*1.15,z-Math.sin(t1*MATH.TO_RAD*3.5*2)*s*0.2,0.5*s,1.15*s,0.5*s,[t1*3.5*2,0,9],[0.9,0.9,0.9],false,false)
+            s/=1.25
+            box(x-0.35*s,y-0.55*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[t1*1.25-10,0,-5],[0.9,0.9,0.9],false,false)
+            box(x-0.42*s,y-1.15*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[10-t1*0.5,0,-5],[0.9,0.9,0.9],false,false)
+            box(x+0.35*s,y-0.55*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[t1*1.25-10,0,5],[0.9,0.9,0.9],false,false)
+            box(x+0.42*s,y-1.15*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[10-t1*0.5,0,5],[0.9,0.9,0.9],false,false)
+            s*=1.25
+            cylinder(x-0.6*s,y+Math.cos(t1*MATH.TO_RAD*3)*s*2.2,z+Math.sin(t1*MATH.TO_RAD*3)*s*2.2,0.3*s,0.6*s,8,0.9,0.9,0.9,1,t1*4,0,0,0.3*s,false,true)
+            cylinder(x+0.6*s,y+Math.cos(t1*MATH.TO_RAD*3)*s*2.2,z+Math.sin(t1*MATH.TO_RAD*3)*s*2.2,0.3*s,0.6*s,8,0.9,0.9,0.9,1,t1*4,0,0,0.3*s,false,true)
+            t1=Math.sin(t*2.1+0.5)*5-0.5
+            box(x-1*s/1.25,y-Math.cos(t1*MATH.TO_RAD*3.5*2)*s*0.65+s*1.15,z-Math.sin(t1*MATH.TO_RAD*3.5*2)*s*0.2,0.5*s,1.15*s,0.5*s,[t1*3.5*2,0,-9],[0.9,0.9,0.9],false,false)
+            
+        })
+        
+        bearMesh.setBuffers()
+    
+    }
+    
+    bearMesh.render()
+    
     gl.bindTexture(gl.TEXTURE_2D,textures.bees)
     player.hiveMesh.render()
     player.sprinklerMesh.render()
@@ -17281,9 +17325,9 @@ function loop(now){
         
         let t=i
         
-        meshes.bees.instanceData.push(amountOfBeesInBeeLine*1.5-22,1,0,0,0,1,0,beeInfo[t].u,beeInfo[t].v,beeInfo[t].meshPartId)
+        meshes.bees.instanceData.push(amountOfBeesInBeeLine*1.5-30,1,0,0,0,1,0,beeInfo[t].u,beeInfo[t].v,beeInfo[t].meshPartId)
         amountOfBeesInBeeLine++
-        textRenderer.addSingle(i,[amountOfBeesInBeeLine*1.5-23.5,1.5,0],COLORS.whiteArr,-1,false,false)
+        textRenderer.addSingle(i,[amountOfBeesInBeeLine*1.5-31.5,1.5,0],COLORS.whiteArr,-1,false,false)
     }
     
     gl.bindTexture(gl.TEXTURE_2D,textures.bees)
@@ -17313,11 +17357,9 @@ function loop(now){
     
     gl.uniformMatrix4fv(glCache.token_viewMatrix,gl.FALSE,player.viewMatrix)
     
-    meshes.tokens.instanceData=[]
-    
     for(let i=objects.tokens.length;i--;){
         
-        if(objects.tokens[i].update(dt*2)){
+        if(objects.tokens[i].update(dt)){
             
             objects.tokens[i].die(i)
         }
@@ -17333,15 +17375,16 @@ function loop(now){
     gl.bindBuffer(gl.ARRAY_BUFFER,meshes.tokens.instanceBuffer)
     gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(meshes.tokens.instanceData),gl.DYNAMIC_DRAW)
     
-    gl.vertexAttribPointer(glCache.token_instancePos,4,gl.FLOAT,gl.FALSE,28,0)
+    gl.vertexAttribPointer(glCache.token_instancePos,4,gl.FLOAT,gl.FALSE,32,0)
     gl.vertexAttribDivisor(glCache.token_instancePos,1)
-    gl.vertexAttribPointer(glCache.token_instanceUV,3,gl.FLOAT,gl.FALSE,28,16)
+    gl.vertexAttribPointer(glCache.token_instanceUV,4,gl.FLOAT,gl.FALSE,32,16)
     gl.vertexAttribDivisor(glCache.token_instanceUV,1)
     
-    gl.drawElementsInstanced(gl.TRIANGLES,meshes.token.indexAmount,gl.UNSIGNED_SHORT,0,objects.tokens.length)
+    gl.drawElementsInstanced(gl.TRIANGLES,meshes.token.indexAmount,gl.UNSIGNED_SHORT,0,objects.tokens.length+objects.marks.length)
     
     gl.vertexAttribDivisor(glCache.token_instancePos,0)
     gl.vertexAttribDivisor(glCache.token_instanceUV,0)
+    meshes.tokens.instanceData=[]
     
     gl.depthMask(false)
     
@@ -17393,34 +17436,29 @@ function loop(now){
     
     player.updateHiveBalloon()
     
-    gl.bindBuffer(gl.ARRAY_BUFFER,meshes.explosion.vertBuffer)
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.explosion.indexBuffer)
-    gl.vertexAttribPointer(glCache.explosion_vertPos,3,gl.FLOAT,gl.FLASE,12,0)
-    
-    gl.bindBuffer(gl.ARRAY_BUFFER,meshes.explosions.instanceBuffer)
-    gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(meshes.explosions.instanceData),gl.DYNAMIC_DRAW)
-    
-    gl.vertexAttribPointer(glCache.explosion_instancePos,3,gl.FLOAT,gl.FLASE,36,0)
-    gl.vertexAttribDivisor(glCache.explosion_instancePos,1)
-    gl.vertexAttribPointer(glCache.explosion_instanceColor,4,gl.FLOAT,gl.FLASE,36,12)
-    gl.vertexAttribDivisor(glCache.explosion_instanceColor,1)
-    gl.vertexAttribPointer(glCache.explosion_instanceScale,2,gl.FLOAT,gl.FLASE,36,28)
-    gl.vertexAttribDivisor(glCache.explosion_instanceScale,1)
-    
-    gl.drawElementsInstanced(gl.TRIANGLES,meshes.explosion.indexAmount,gl.UNSIGNED_SHORT,0,meshes.explosions.instanceData.length*MATH.INV_9)
-    
     gl.bindBuffer(gl.ARRAY_BUFFER,meshes.cylinder_explosion.vertBuffer)
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.cylinder_explosion.indexBuffer)
     gl.vertexAttribPointer(glCache.explosion_vertPos,3,gl.FLOAT,gl.FLASE,12,0)
     
     gl.bindBuffer(gl.ARRAY_BUFFER,meshes.cylinder_explosions.instanceBuffer)
     gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(meshes.cylinder_explosions.instanceData),gl.DYNAMIC_DRAW)
+    gl.vertexAttribPointer(glCache.explosion_instancePos,3,gl.FLOAT,gl.FLASE,36,0)
+    gl.vertexAttribDivisor(glCache.explosion_instancePos,1)
+    gl.vertexAttribPointer(glCache.explosion_instanceColor,4,gl.FLOAT,gl.FLASE,36,12)
+    gl.vertexAttribDivisor(glCache.explosion_instanceColor,1)
+    gl.vertexAttribPointer(glCache.explosion_instanceScale,2,gl.FLOAT,gl.FLASE,36,28)
+    gl.vertexAttribDivisor(glCache.explosion_instanceScale,1)
+    gl.drawElementsInstanced(gl.TRIANGLES,meshes.cylinder_explosion.indexAmount,gl.UNSIGNED_SHORT,0,meshes.cylinder_explosions.instanceData.length*MATH.INV_9)
     
+    gl.bindBuffer(gl.ARRAY_BUFFER,meshes.explosion.vertBuffer)
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.explosion.indexBuffer)
+    gl.vertexAttribPointer(glCache.explosion_vertPos,3,gl.FLOAT,gl.FLASE,12,0)
+    gl.bindBuffer(gl.ARRAY_BUFFER,meshes.explosions.instanceBuffer)
+    gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(meshes.explosions.instanceData),gl.DYNAMIC_DRAW)
     gl.vertexAttribPointer(glCache.explosion_instancePos,3,gl.FLOAT,gl.FLASE,36,0)
     gl.vertexAttribPointer(glCache.explosion_instanceColor,4,gl.FLOAT,gl.FLASE,36,12)
     gl.vertexAttribPointer(glCache.explosion_instanceScale,2,gl.FLOAT,gl.FLASE,36,28)
-    
-    gl.drawElementsInstanced(gl.TRIANGLES,meshes.cylinder_explosion.indexAmount,gl.UNSIGNED_SHORT,0,meshes.cylinder_explosions.instanceData.length*MATH.INV_9)
+    gl.drawElementsInstanced(gl.TRIANGLES,meshes.explosion.indexAmount,gl.UNSIGNED_SHORT,0,meshes.explosions.instanceData.length*MATH.INV_9)
     
     gl.vertexAttribDivisor(glCache.explosion_instancePos,0)
     gl.vertexAttribDivisor(glCache.explosion_instanceColor,0)
