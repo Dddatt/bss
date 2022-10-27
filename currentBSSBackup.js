@@ -1,6 +1,23 @@
 <!DOCTYPE html><!--
 
 
+yay we now have music! more pain making all of the sounds :)
+also the sounds have to be around multiples of 5 secs or else they break so i have to edit them
+
+
+
+rn im creating the map so the mesh code thing is on the screen, but i'm using fullscreen for that so click the run button in a ka environment to close it and also stuff is wack in fullscreen rn so i can make the map better
+
+or if u want then mess around with it lol
+
+
+
+red: 33b
+blue: 40b bruh
+white: 34b
+
+
+
 tutorial stuff:
 
 -go to a field to collect pollen, go to hive to make honey
@@ -32,19 +49,6 @@ tutorial stuff:
 -the shop is just...there for me to have the code there...
 
 
-
-
-rip music :(
-
-
-cool!
-
-red: 46b
-blue: 51b
-white: 52b
-
-
-TODO: finish mark and vector bee rework
 
 
 -->
@@ -268,12 +272,14 @@ TODO: finish mark and vector bee rework
     out vec4 fragColor;
     
     uniform sampler2D tex;
+    uniform float isNight;
     
     void main(){
         
         vec4 t=texture(tex,pixUV.xy);
         
-        fragColor=vec4(mix(mix(mix(pixColor.rgb,t.rgb,t.a),pixColor.rgb,pixUV.z),vec3(1,1,0.8),smoothstep(0.0,100.0,pixPos.z)*0.6),pixColor.w);
+        fragColor=vec4(mix(mix(mix(pixColor.rgb,t.rgb,t.a),pixColor.rgb,pixUV.z),vec3(1,1,0.7),smoothstep(20.0,120.0,pixPos.z)*0.7)*isNight,pixColor.w);
+        
     }
     
 </script>
@@ -311,11 +317,13 @@ TODO: finish mark and vector bee rework
     
     out vec4 fragColor;
     
+    uniform float isNight;
+    
     void main(){
         
         vec3 normal=normalize(pixNormal);
         float shade=dot(normal,LIGHT_DIR)*0.4+0.6;
-        fragColor=vec4(pixColor*shade,1.0);
+        fragColor=vec4(pixColor*shade*isNight,1.0);
     }
     
 </script>
@@ -364,10 +372,11 @@ TODO: finish mark and vector bee rework
     out vec4 fragColor;
     
     uniform sampler2D tex;
+    uniform float isNight;
     
     void main(){
         
-        fragColor=vec4(texture(tex,pixUV.xy).rgb,pixUV.z);
+        fragColor=vec4(texture(tex,pixUV.xy).rgb*isNight,pixUV.z);
     }
     
 </script>
@@ -404,6 +413,7 @@ TODO: finish mark and vector bee rework
     out vec4 fragColor;
     
     uniform sampler2D tex;
+    uniform float isNight;
     
     void main(){
         
@@ -416,11 +426,11 @@ TODO: finish mark and vector bee rework
         
         if(goo<0.0){
             
-            fragColor=vec4(mix(c,vec3(0.1,1,0.5),-goo),1.0);
+            fragColor=vec4(mix(c,vec3(0.1,1,0.5),-goo)*isNight,1.0);
             
         } else {
             
-            fragColor=vec4(mix(c,vec3(1,0.2,1),goo),1.0);
+            fragColor=vec4(mix(c,vec3(1,0.2,1),goo)*isNight,1.0);
         }
     }
     
@@ -488,16 +498,17 @@ TODO: finish mark and vector bee rework
     out vec4 fragColor;
     
     uniform sampler2D tex;
+    uniform float isNight;
     
     void main(){
         
         if(pixUV.z>0.1){
             
-            fragColor=vec4(texture(tex,pixUV.xy).rgb*pixUV.z,1);
+            fragColor=vec4(texture(tex,pixUV.xy).rgb*pixUV.z*isNight,1);
             
         } else {
             
-            fragColor=vec4(0.1,0.4,1,0.4);
+            fragColor=vec4(vec3(0.1,0.4,1)*isNight,0.4);
         }
     }
     
@@ -699,10 +710,11 @@ TODO: finish mark and vector bee rework
     uniform mat4 viewMatrix;
     uniform vec4 instance_info1;
     uniform vec2 instance_info2;
+    uniform float isNight;
     
     void main(){
         
-        pixColor=vec4(vertColor,instance_info2.y);
+        pixColor=vec4(vertColor*isNight,instance_info2.y);
         vec3 vp=vertPos*instance_info2.x;
         
         float s=sin(instance_info1.w);
@@ -746,10 +758,11 @@ TODO: finish mark and vector bee rework
     out vec4 pixColor;
     
     uniform mat4 viewMatrix;
+    uniform float isNight;
     
     void main(){
         
-        pixColor=vertCol;
+        pixColor=vec4(vertCol.xyz*isNight,vertCol.w);
         gl_Position=viewMatrix*vec4(vertPos,1);
     }
     
@@ -2277,7 +2290,7 @@ TODO: finish mark and vector bee rework
 
 <div id='passiveActivationPopup' style='position:fixed;z-index:1'></div>
 
-<div id='meshCreator' style='position:fixed;background-color:rgb(200,200,200,0.4);left:0%;top:25%;width:300px;height:450px;display:none'>
+<div id='meshCreator' style='position:fixed;background-color:rgb(200,200,200,0.4);left:500px;top:0px;width:300px;height:450px;'>
     
     <button id='runMeshStr' style='margin:3px'>Run</button>
     <span style='margin:3px;display:block'></span>
@@ -2291,15 +2304,149 @@ TODO: finish mark and vector bee rework
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js'></script>
 
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/music_popStar.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/music_scorchingStar.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/music_gummyStar.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/music_frog.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/music_inflateBalloons.js"></script>
+
+<script type='application/javascript'>
+
+    window.audio_ctx=new AudioContext()
+	
+	function dataURItoBlob(dataURI) {
+		
+		let byteString=atob(dataURI.split(',')[1]),
+		    mimeString=dataURI.split(',')[0].split(':')[1].split(';')[0],
+		    ab=new ArrayBuffer(byteString.length),
+		    ia=new Uint8Array(ab)
+		
+		for(let i=0;i<byteString.length;i++){
+            
+            ia[i]=byteString.charCodeAt(i)
+		}
+		
+		return new Blob([ab],{type:mimeString})
+	}
+	
+	function resample(sourceAudioBuffer,desiredSampleRate,resolve){
+		let offlineCtx=new OfflineAudioContext(sourceAudioBuffer.numberOfChannels,sourceAudioBuffer.duration*desiredSampleRate,desiredSampleRate),
+		cloneBuffer=offlineCtx.createBuffer(sourceAudioBuffer.numberOfChannels,sourceAudioBuffer.length,sourceAudioBuffer.sampleRate)
+		
+		for(let channel=0;channel<sourceAudioBuffer.numberOfChannels;channel++){
+		   
+            cloneBuffer.copyToChannel(sourceAudioBuffer.getChannelData(channel),channel)
+		}
+		
+		let source=offlineCtx.createBufferSource()
+		
+		source.buffer=cloneBuffer
+		source.connect(offlineCtx.destination)
+		
+		offlineCtx.oncomplete=e=>resolve(e.renderedBuffer)
+		offlineCtx.startRendering()
+		
+		source.start(0)
+	}
+	
+	function emptyArr(n){
+	       
+		return new Float32Array(n)
+	}
+	
+	function playSound(sound,vol) {
+		
+		let src=window['music_'+sound]
+		
+		let SAMPLE_RATE=16000
+		
+		if(!window['blob_'+sound]){
+		    
+		    window['blob_'+sound]=dataURItoBlob(src)
+		}
+		
+		let audioBufferPromise=new Promise(resolve=>window['blob_'+sound].arrayBuffer().then(arrBuffer=>audio_ctx.decodeAudioData(arrBuffer,resolve)))
+		
+		audioBufferPromise.then(buffer=>new Promise(resolve=>window['resampled_'+sound]||(function(){window['resampled_'+sound]=resample(buffer,SAMPLE_RATE,resolve);return window['resampled_'+sound]})())).then(buffer=>{
+		    
+			let phase=200,skipLength=5.25,freq=1/(phase*MATH.TWO_PI)
+			
+			if(!window['channelData_'+sound]){
+			    
+			    window['channelData_'+sound]=buffer.getChannelData(0)
+			}
+			
+			let channelData=window['channelData_'+sound]
+			
+			let pcm=new Float32Array(SAMPLE_RATE*phase*2)
+			
+			let numSeconds=channelData.length/SAMPLE_RATE
+
+			let gain=audio_ctx.createGain()
+			gain.connect(audio_ctx.destination)
+		    
+			gain.gain.value=vol
+			
+			for (let i=0,j=0;i<numSeconds;i+=skipLength,j++){
+			    
+				let start=SAMPLE_RATE*i,end=SAMPLE_RATE*(i+phase)
+                
+				pcm.set(channelData.subarray(start|0,end|0),SAMPLE_RATE*phase)
+				
+				console.log('wave'+j+'_'+sound)
+				
+				if(!window['wave'+j+'_'+sound]){
+				    
+    				let waveShaper=audio_ctx.createWaveShaper()
+    				let oscA=audio_ctx.createOscillator()
+    				
+    				oscA.connect(waveShaper)
+        			waveShaper.connect(gain)
+    				
+    				waveShaper.curve=pcm
+    				
+    				window['wave'+j+'_'+sound]=waveShaper
+    				
+    				oscA.frequency.value=freq
+    				
+    				oscA.start(i+audio_ctx.currentTime)
+    				oscA.stop(i+skipLength+audio_ctx.currentTime)
+    				window['osc'+j+'_'+sound]=oscA
+    				
+				} else {
+				    
+				    window['osc'+j+'_'+sound].disconnect(window['wave'+j+'_'+sound])
+				    
+    				let oscA=audio_ctx.createOscillator()
+    				
+    				oscA.connect(window['wave'+j+'_'+sound])
+    				
+    				oscA.frequency.value=freq
+    				
+    				oscA.start(i+audio_ctx.currentTime)
+    				oscA.stop(i+skipLength+audio_ctx.currentTime)
+    				window['osc'+j+'_'+sound]=oscA
+				}
+				
+			}
+		})
+		
+		
+	}
+	
+	window.playSound=play
+	
+</script>
+
 <script type='application/javascript'>
 
 var _M=Math
 
 function main(){
 
-let Math=_M,hiveColor=(Math.random()*3)|0
+let Math=_M
 
-let width=window.innerWidth+1,height=window.innerHeight+1,half_width=width*0.5,half_height=height*0.5,aspect=width/height,FETCHED_CODE={}
+let width=window.thisProgramIsInFullScreen?500:window.innerWidth+1,height=window.thisProgramIsInFullScreen?500:window.innerHeight+1,half_width=width*0.5,half_height=height*0.5,aspect=width/height,FETCHED_CODE={}
 
 let glCanvas=document.getElementById('gl-canvas')
 let gl=glCanvas.getContext('webgl2',{antialias:true})
@@ -2328,8 +2475,8 @@ gl.viewport(0,0,width,height)
 
 window.onresize=()=>{
     
-    width=window.innerWidth
-    height=window.innerHeight
+    width=window.thisProgramIsInFullScreen?500:window.innerWidth+1
+    height=window.thisProgramIsInFullScreen?500:window.innerHeight+1
     
     glCanvas.width=width
     glCanvas.height=height
@@ -2394,7 +2541,7 @@ document.getElementById('runFullScreen').addEventListener('click',function(){
     runForFullScreen()
 })
 
-let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,BEE_COLLECT=0,BEE_FLY=0,then,dt,frameCount=0,TIME=0,player,honeyMarkConvert=TIME
+let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,BEE_COLLECT=0,BEE_FLY=0,then,dt,frameCount=0,TIME=0,player,honeyMarkConvert=TIME,NIGHT_DARKNESS=0.7
 
 MATH=(function(MATH){
     
@@ -2415,6 +2562,24 @@ MATH=(function(MATH){
     
     MATH.random=(a,b)=>Math.random()*(b-a)+a
     MATH.constrain=(x,a,b)=>x<a?a:x>b?b:x
+    
+    MATH.map=(value, istart, istop, ostart, ostop)=>{
+      return ostart+(ostop-ostart)*((value-istart)/(istop-istart))
+    }
+    
+    MATH.generateBezierCurve=function(a,b,c1,c2,t){
+        
+        let l=vec3.lerp
+        
+        let a_c1=l([],a,c1,t),
+            c1_c2=l([],c1,c2,t),
+            b_c2=l([],b,c2,t),
+            p1=l([],a_c1,c1_c2,t),
+            p2=l([],b_c2,c1_c2,t)
+            
+        return l(p1,p1,p2,t)
+        
+    }
     
     MATH.mult=function(m,a,b){
     //optimized to multiply view and projection matrix
@@ -2858,12 +3023,12 @@ let triggers={
     
     cool_shop:{
         
-        minX:-25,maxX:25,minY:-3,maxY:4,minZ:15,maxZ:25
+        minX:-25,maxX:-20,minY:-3,maxY:4,minZ:20,maxZ:25
     },
     
     become_red_hive:{
         
-        isMachine:true,minX:33-2+10,maxX:33+2+10,minY:0,maxY:5,minZ:-8-2,maxZ:-8+2,message:'become red hive',func:function(player){
+        isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:4-1,maxZ:4+1,message:'become red hive',func:function(player){
             player.currentGear={
                 
                 boots:'gummyBoots',
@@ -2896,7 +3061,7 @@ let triggers={
             player.addSlot('tabby')
             player.addSlot('hasty')
             player.addSlot('hasty')
-            player.addSlot('hasty')
+            player.addSlot('fuzzy')
             player.addSlot('music')
             player.addSlot('music')
             player.addSlot('music')
@@ -2931,11 +3096,6 @@ let triggers={
             player.addSlot('spicy')
             player.addSlot('spicy')
             player.addSlot('crimson')
-            player.addSlot('fuzzy')
-            player.addSlot('fuzzy')
-            player.addSlot('fuzzy')
-            player.addSlot('fuzzy')
-            player.addSlot('fuzzy')
             player.updateHive()
             if(!player.temp_active_saw){
                 
@@ -2947,7 +3107,7 @@ let triggers={
     
     become_blue_hive:{
         
-        isMachine:true,minX:33-2+14,maxX:33+2+14,minY:0,maxY:5,minZ:-8-2,maxZ:-8+2,message:'become blue hive',func:function(player){
+        isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:6-1,maxZ:6+1,message:'become blue hive',func:function(player){
             
             player.currentGear={
                 
@@ -2973,13 +3133,13 @@ let triggers={
             player.addSlot('bumble')
             player.addSlot('bucko')
             player.addSlot('cool')
-            player.addSlot('stubborn')
+            player.addSlot('frosty')
             player.addSlot('commander')
             player.addSlot('windy')
             player.addSlot('tabby')
             player.addSlot('diamond')
             player.addSlot('hasty')
-            player.addSlot('hasty')
+            player.addSlot('fuzzy')
             player.addSlot('ninja')
             player.addSlot('music')
             player.addSlot('music')
@@ -3016,11 +3176,6 @@ let triggers={
             player.addSlot('tadpole')
             player.addSlot('photon')
             player.addSlot('cobalt')
-            player.addSlot('fuzzy')
-            player.addSlot('fuzzy')
-            player.addSlot('fuzzy')
-            player.addSlot('fuzzy')
-            player.addSlot('fuzzy')
             player.updateHive()
             player.addEffect('balloonBlessing',false,50)
             player.addEffect('tideBlessing',1)
@@ -3030,7 +3185,7 @@ let triggers={
     
     become_white_hive:{
         
-        isMachine:true,minX:33-2+18,maxX:33+2+18,minY:0,maxY:5,minZ:-8-2,maxZ:-8+2,message:'become white hive',func:function(player){
+        isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:8-1,maxZ:8+1,message:'become white hive',func:function(player){
             player.currentGear={
                 
                 boots:'gummyBoots',
@@ -3058,7 +3213,7 @@ let triggers={
             player.addSlot('windy')
             player.addSlot('honey')
             player.addSlot('commander')
-            player.addSlot('hasty')
+            player.addSlot('shocked')
             player.addSlot('hasty')
             player.addSlot('hasty')
             player.addSlot('music')
@@ -3075,8 +3230,8 @@ let triggers={
             player.addSlot('carpenter')
             player.addSlot('carpenter')
             player.addSlot('carpenter')
-            player.addSlot('carpenter')
-            player.addSlot('vector')
+            player.addSlot('demo')
+            player.addSlot('exhausted')
             player.addSlot('vector')
             player.addSlot('vector')
             player.addSlot('vector')
@@ -3098,11 +3253,6 @@ let triggers={
             player.addSlot('precise')
             player.addSlot('precise')
             player.addSlot('precise')
-            player.addSlot('fuzzy')
-            player.addSlot('fuzzy')
-            player.addSlot('fuzzy')
-            player.addSlot('fuzzy')
-            player.addSlot('fuzzy')
             player.updateHive()
             
             if(!player.temp_active_saw){
@@ -3172,12 +3322,12 @@ let beeInfo={
     
     fire:{
         
-        u:(256+128)/2048,v:0,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:11.5,gatheringPassive:function(bee){if(Math.random()<(bee.gifted?0.5:0.35)){objects.explosions.push(new Explosion({col:[1,0.5,0],pos:[Math.round(bee.pos[0]),bee.pos[1]-0.225,Math.round(bee.pos[2])],life:0.5,size:1.5,speed:0.5,aftershock:0.01,height:0.01}));objects.flames.push(new Flame(player.fieldIn,bee.flowerCollecting[0],bee.flowerCollecting[1]))}},particles:function(bee){ParticleRenderer.add({x:bee.pos[0],y:bee.pos[1],z:bee.pos[2],vx:MATH.random(-0.3,0.3),vy:MATH.random(-0.3,0.3),vz:MATH.random(-0.3,0.3),grav:0,size:MATH.random(80,120),col:[1,MATH.random(0.4,0.7),0],life:1.5,rotVel:MATH.random(-3,3),alpha:2.5})},convertSpeed:4,convertAmount:80,attack:4,tokens:['redBomb_'],energy:25,favoriteTreat:'pineapple',rarity:'epic',color:'red',description:'As an egg, this bee was accidentally left in the trunk of a car in the middle of the summer for over 3 days!',giftedHiveBonus:{oper:'*',stat:'flamePollen',num:1.5}
+        u:(256+128)/2048,v:0,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:11.5,gatheringPassive:function(bee){if(Math.random()<(bee.gifted?0.5:0.35)){objects.explosions.push(new Explosion({col:[1,0.5,0],pos:[Math.round(bee.pos[0]),bee.pos[1]-0.225,Math.round(bee.pos[2])],life:0.5,size:1.5,speed:0.5,aftershock:0.01,height:0.01}));objects.flames.push(new Flame(player.fieldIn,bee.flowerCollecting[0],bee.flowerCollecting[1]))}},particles:function(bee){ParticleRenderer.add({x:bee.pos[0],y:bee.pos[1],z:bee.pos[2],vx:MATH.random(-0.3,0.3),vy:MATH.random(-0.3,0.3),vz:MATH.random(-0.3,0.3),grav:0,size:MATH.random(80,120),col:[player.isNight,MATH.random(0.4,0.7)*player.isNight,0],life:1.5,rotVel:MATH.random(-3,3),alpha:2.5})},convertSpeed:4,convertAmount:80,attack:4,tokens:['redBomb'],energy:25,favoriteTreat:'pineapple',rarity:'epic',color:'red',description:'As an egg, this bee was accidentally left in the trunk of a car in the middle of the summer for over 3 days!',giftedHiveBonus:{oper:'*',stat:'flamePollen',num:1.5}
     },
     
     bubble:{
         
-        u:(256+256)/2048,v:0,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:16.1,gatheringPassive:function(bee){if(Math.random()<(bee.gifted?0.5:0.35)){objects.bubbles.push(new Bubble(player.fieldIn,bee.flowerCollecting[0],bee.flowerCollecting[1]))}},particles:function(bee){ParticleRenderer.add({x:bee.pos[0],y:bee.pos[1],z:bee.pos[2],vx:MATH.random(-0.3,0.3),vy:MATH.random(-0.3,0.3),vz:MATH.random(-0.3,0.3),grav:0,size:MATH.random(35,70),col:[MATH.random(0.1,0.3),MATH.random(0.4,0.6),MATH.random(0.8,1)],life:1.5,rotVel:MATH.random(-3,3),alpha:2.5})},convertSpeed:4,convertAmount:160,attack:3,tokens:['blueBomb_'],energy:20,favoriteTreat:'blueberry',rarity:'epic',color:'blue',description:'As a larva, this bee lived in the ocean. It loves Blue flowers cause they remind it of home.',giftedHiveBonus:{oper:'*',stat:'bubblePollen',num:1.5}
+        u:(256+256)/2048,v:0,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:16.1,gatheringPassive:function(bee){if(Math.random()<(bee.gifted?0.5:0.35)){objects.bubbles.push(new Bubble(player.fieldIn,bee.flowerCollecting[0],bee.flowerCollecting[1]))}},particles:function(bee){ParticleRenderer.add({x:bee.pos[0],y:bee.pos[1],z:bee.pos[2],vx:MATH.random(-0.3,0.3),vy:MATH.random(-0.3,0.3),vz:MATH.random(-0.3,0.3),grav:0,size:MATH.random(35,70),col:[MATH.random(0.1,0.3)*player.isNight,MATH.random(0.4,0.6)*player.isNight,MATH.random(0.8,1)*player.isNight],life:1.5,rotVel:MATH.random(-3,3),alpha:2.5})},convertSpeed:4,convertAmount:160,attack:3,tokens:['blueBomb'],energy:20,favoriteTreat:'blueberry',rarity:'epic',color:'blue',description:'As a larva, this bee lived in the ocean. It loves Blue flowers cause they remind it of home.',giftedHiveBonus:{oper:'*',stat:'bubblePollen',num:1.5}
     },
     
     hasty:{
@@ -3204,7 +3354,7 @@ let beeInfo={
             
             let f=fieldInfo[player.fieldIn]
             
-            for(let i=0,l=MATH.random(-1+(bee.level*0.05),3);i<l;i++){
+            for(let i=0,l=MATH.random(-1+(bee.level*0.05),6);i<l;i++){
                 
                 let r=(Math.random()*fs.length)|0
                 let x=fs[r][0]+bee.flowerCollecting[0],z=fs[r][1]+bee.flowerCollecting[1]
@@ -3229,12 +3379,12 @@ let beeInfo={
                     
                     for(let j=0;j<6;j++){
                         
-                        ParticleRenderer.add({x:x+f.x,y:f.y+0.5,z:z+f.z,vx:MATH.random(-1,1),vy:Math.random()*2,vz:MATH.random(-1,1),grav:-3,size:100,col:[1,1,MATH.random(0.6,1)],life:2.5,rotVel:MATH.random(-3,3),alpha:2})
+                        ParticleRenderer.add({x:x+f.x,y:f.y+0.5,z:z+f.z,vx:MATH.random(-1,1),vy:Math.random()*2,vz:MATH.random(-1,1),grav:-3,size:100,col:[player.isNight,player.isNight,MATH.random(0.6,1)*player.isNight],life:2.5,rotVel:MATH.random(-3,3),alpha:2})
                     }
                 }
             }
             
-        },particles:function(bee){ParticleRenderer.add({x:bee.pos[0],y:bee.pos[1],z:bee.pos[2],vx:MATH.random(-1,1),vy:MATH.random(0.5,1.4),vz:MATH.random(-1,1),grav:-3,size:MATH.random(25,60),col:[1,1,MATH.random(0.6,1)],life:0.75,rotVel:MATH.random(-3,3),alpha:10})},tokens:['pollenHaze','fuzzBomb','whiteBomb_'],favoriteTreat:'pineapple',rarity:'mythic',color:'white',description:'This unkempt ball of fluff is actually a bee. Its fur aids in the pollination of flowers.',giftedHiveBonus:{oper:'*',stat:'whiteBombPollen',num:1.1}
+        },particles:function(bee){ParticleRenderer.add({x:bee.pos[0],y:bee.pos[1],z:bee.pos[2],vx:MATH.random(-1,1),vy:MATH.random(0.5,1.4),vz:MATH.random(-1,1),grav:-3,size:MATH.random(25,60),col:[player.isNight,player.isNight,MATH.random(0.6,1)*player.isNight],life:0.75,rotVel:MATH.random(-3,3),alpha:10})},tokens:['pollenHaze','fuzzBomb','whiteBomb_'],favoriteTreat:'pineapple',rarity:'mythic',color:'white',description:'This unkempt ball of fluff is actually a bee. Its fur aids in the pollination of flowers.',giftedHiveBonus:{oper:'*',stat:'whiteBombPollen',num:1.1}
         
     },
     
@@ -3246,7 +3396,7 @@ let beeInfo={
     
     spicy:{
         
-        u:128*9/2048,v:0,meshPartId:4,gatherSpeed:4,gatherAmount:14,speed:14,convertSpeed:2,convertAmount:200,tokens:['inferno','flameFuel'],attack:5,attackTokens:['inferno','flameFuel','rage'],energy:20,particles:function(bee){if(player.flameHeatStack){ParticleRenderer.add({x:bee.pos[0],y:bee.pos[1],z:bee.pos[2],vx:MATH.random(-0.7,0.7),vy:MATH.random(-0.3,0.3),vz:MATH.random(-0.7,0.7),grav:1.25,size:110,col:[1,1,1],life:1.5,rotVel:MATH.random(-3,3),alpha:(player.flameHeatStack-1)*2})}},favoriteTreat:'strawberry',rarity:'mythic',color:'red',description:'Some like it hot - this bee likes it scorching. Even the honey it makes is spicy.',giftedHiveBonus:{oper:'*',stat:'flameLife',num:1.25}
+        u:128*9/2048,v:0,meshPartId:4,gatherSpeed:4,gatherAmount:14,speed:14,convertSpeed:2,convertAmount:200,tokens:['inferno','flameFuel'],attack:5,attackTokens:['inferno','flameFuel','rage'],energy:20,particles:function(bee){if(player.flameHeatStack){ParticleRenderer.add({x:bee.pos[0],y:bee.pos[1],z:bee.pos[2],vx:MATH.random(-0.7,0.7),vy:MATH.random(-0.3,0.3),vz:MATH.random(-0.7,0.7),grav:1.25,size:110,col:[player.isNight,player.isNight,player.isNight],life:1.5,rotVel:MATH.random(-3,3),alpha:(player.flameHeatStack-1)*2})}},favoriteTreat:'strawberry',rarity:'mythic',color:'red',description:'Some like it hot - this bee likes it scorching. Even the honey it makes is spicy.',giftedHiveBonus:{oper:'*',stat:'flameLife',num:1.25}
         
     },
     
@@ -3269,7 +3419,7 @@ let beeInfo={
     
     gummy:{
         
-        u:128*13/2048,v:0,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:14,convertSpeed:4,convertAmount:700,tokens:['gummyBlob','gummyBarrage'],attack:3,energy:50,rarity:'event',color:'white',description:"A squishy bee who's sweet as sugar. Covers flowers in goo to grant you bonus honey!",giftedHiveBonus:{oper:'+',stat:'honeyPerPollen',num:1.05}
+        u:128*13/2048,v:0,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:14,convertSpeed:4,convertAmount:700,tokens:['gummyBlob','gummyBarrage','whiteBoost'],attack:3,energy:50,rarity:'event',color:'white',description:"A squishy bee who's sweet as sugar. Covers flowers in goo to grant you bonus honey!",giftedHiveBonus:{oper:'+',stat:'honeyPerPollen',num:1.05}
         
     },
     
@@ -3297,7 +3447,7 @@ let beeInfo={
     
     photon:{
         
-        u:128*2/2048,v:256/2048,meshPartId:6,gatherSpeed:2,gatherAmount:20,speed:21,convertSpeed:2,convertAmount:240,tokens:['beamStorm','haste'],attackTokens:['haste'],attack:3,energy:Infinity,rarity:'event',color:'white',description:"An entity made of pure light temporarily taking on the form of a bee.",giftedHiveBonus:{oper:'+',stat:'instantWhiteConversion,instantBlueConversion,instantRedConversion',num:0.05},trails:[{length:10,size:0.25,color:[1,1,0,0.5],skipFrame:2,skipAdd:2}]
+        u:128*2/2048,v:256/2048,meshPartId:6,gatherSpeed:2,gatherAmount:20,speed:21,convertSpeed:2,convertAmount:240,tokens:['beamStorm','haste','whiteBoost'],attackTokens:['haste'],attack:3,energy:Infinity,rarity:'event',color:'white',description:"An entity made of pure light temporarily taking on the form of a bee.",giftedHiveBonus:{oper:'+',stat:'instantWhiteConversion,instantBlueConversion,instantRedConversion',num:0.05},trails:[{length:10,size:0.25,color:[1,1,0,0.5],skipFrame:2,skipAdd:2}]
     },
     
     bumble:{
@@ -3387,6 +3537,26 @@ let beeInfo={
     shy:{
         
         u:128*3/2048,v:256*2/2048,meshPartId:0,gatherSpeed:2,gatherAmount:10,speed:18.2,convertSpeed:4,convertAmount:320,attack:2,energy:40,tokens:['redBoost','redBomb_'],rarity:'legendary',color:'white',description:"This talented bee doesn't like to socialize, it just wants to work and be left alone.",giftedHiveBonus:{oper:'*',stat:'redBeeAbilityRate',num:1.15},favoriteTreat:'sunflowerSeed'
+    },
+    
+    demo:{
+        
+        u:128*4/2048,v:256*2/2048,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:16.8,convertSpeed:4,convertAmount:200,attack:3,energy:20,tokens:['whiteBomb_'],rarity:'epic',color:'white',description:"An elite Bomber Bee who has worked its way up the ranks. It is an expert in explosives.",giftedHiveBonus:{oper:'*',stat:'whiteBombPollen',num:1.3},favoriteTreat:'sunflowerSeed'
+    },
+    
+    exhausted:{
+        
+        u:128*5/2048,v:256*2/2048,meshPartId:0,gatherSpeed:4.6,gatherAmount:10,speed:10.5,convertSpeed:4,convertAmount:240,attack:1,energy:Infinity,tokens:['whiteBomb','link'],rarity:'epic',color:'white',description:"This bee suffers from insomnia. It moves slowly, but it never has to sleep.",giftedHiveBonus:{oper:'*',stat:'whiteFieldCapacity',num:1.2},favoriteTreat:'pineapple'
+    },
+    
+    shocked:{
+        
+        u:128*6/2048,v:256*2/2048,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:19.6,convertSpeed:2,convertAmount:80,attack:2,energy:Infinity,tokens:['haste','link'],rarity:'epic',color:'white',description:"This bee is startled by everything it comes across. It has learned special talents to cope.",giftedHiveBonus:{oper:'*',stat:'whitePollen',num:1.25},favoriteTreat:'pineapple'
+    },
+    
+    frosty:{
+        
+        u:128*7/2048,v:256*2/2048,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:11.2,convertSpeed:4,convertAmount:80,attack:1,energy:25,tokens:['blueBoost','blueBomb_'],rarity:'epic',color:'white',description:"This bee is startled by everything it comes across. It has learned special talents to cope.",giftedHiveBonus:{oper:'*',stat:'blueBombPollen',num:1.3},favoriteTreat:'blueberry'
     },
 }
 
@@ -3628,7 +3798,7 @@ let effects={
     
     redBomb_:{
         
-        trialCooldown:15,trialRate:0.4,
+        trialCooldown:20,trialRate:0.3,
         statsToAddTo:['redBombTokens','redAbilityTokens','bombTokens'],
         u:0,v:128/2048,
         tokenLife:4,
@@ -3651,7 +3821,7 @@ let effects={
     
     blueBomb_:{
         
-        trialCooldown:15,trialRate:0.4,
+        trialCooldown:20,trialRate:0.3,
         statsToAddTo:['blueBombTokens','blueAbilityTokens','bombTokens'],
         u:128/2048,v:128/2048,
         tokenLife:4,
@@ -3720,7 +3890,7 @@ let effects={
     
     whiteBoost:{
         
-        trialCooldown:5,trialRate:0.9,
+        trialCooldown:15,trialRate:0.8,
         statsToAddTo:['boostTokens'],
         u:128*4/2048,v:128/2048,
         svg:document.getElementById('whiteBoost'),
@@ -3903,7 +4073,7 @@ let effects={
                 
                 honeyMarkConvert=TIME
                 
-                let a=Math.min(Math.round(player.convertTotal*amount*0.15),player.pollen)
+                let a=Math.min(Math.round(player.convertTotal*amount*0.25),player.pollen)
                 player.pollen-=a
                 player.honey+=a
                 if(player.setting_enablePollenText)
@@ -4046,7 +4216,7 @@ let effects={
     
     pollenHaze:{
         
-        trialCooldown:150,trialRate:0.075,
+        trialCooldown:150,trialRate:1,
         u:0,v:256*2.5/2048,
         tokenLife:8,
         
@@ -4056,11 +4226,11 @@ let effects={
                 
                 if(!fieldInfo[params.field].haze.start){
                     
-                    objects.explosions.push(new Explosion({col:[1,1,0],pos:[(fieldInfo[params.field].width-1)*0.5+fieldInfo[params.field].x,fieldInfo[params.field].y+0.75,(fieldInfo[params.field].length-1)*0.5+fieldInfo[params.field].z],life:30+params.bee.level*0.5,size:(fieldInfo[params.field].width+fieldInfo[params.field].length)*0.5*1.5,speed:0.1,aftershock:0,maxAlpha:0.15,backface:true}))
+                    objects.explosions.push(new Explosion({col:[1,1,0],pos:[(fieldInfo[params.field].width-1)*0.5+fieldInfo[params.field].x,fieldInfo[params.field].y+0.75,(fieldInfo[params.field].length-1)*0.5+fieldInfo[params.field].z],life:30,size:(fieldInfo[params.field].width+fieldInfo[params.field].length)*0.5*1.5,speed:0.1,aftershock:0,maxAlpha:0.15,backface:true,primitive:'cylinder_explosions',height:8/((fieldInfo[params.field].width+fieldInfo[params.field].length)*0.5*1.5)}))
                     
                 }
                 
-                fieldInfo[params.field].haze={start:TIME+params.bee.level*0.5,delay:TIME}
+                fieldInfo[params.field].haze={start:TIME,delay:TIME}
             }
         }
     },
@@ -4075,9 +4245,10 @@ let effects={
             
             if(player.fieldIn===params.field){
                 
-                objects.fuzzBombs.push(new FuzzBomb(params.field,params.bee.level))
-                objects.fuzzBombs.push(new FuzzBomb(params.field,params.bee.level))
-                objects.fuzzBombs.push(new FuzzBomb(params.field,params.bee.level))
+                for(let i=0;i<2+((params.bee.level*0.2)|0);i++){
+                    
+                    objects.fuzzBombs.push(new FuzzBomb(params.field,params.bee.level))
+                }
             }
         }
     },
@@ -4116,6 +4287,8 @@ let effects={
                 
                 objects.mobs.push(new Frog(params.field,params.x,params.z,params.bee))
             }
+            
+            window.playSound('frog',0.3)
         }
     },
     
@@ -4139,7 +4312,6 @@ let effects={
                         b.inflateCounter--
                         
                         b.pollen+=b.cap*(0.01+params.bee.level*0.001)
-                        
                         objects.explosions.push(new ReverseExplosion({col:b.golden?[0.9,0.9,0]:[0,0,0.8],pos:b.pos,life:0.75,size:b.displaySize+1,alpha:0.9,height:1,primitive:'explosions',transformHeight:true}))
                         
                     }
@@ -4147,6 +4319,8 @@ let effects={
                 
                 objects.balloons.push(new Balloon(params.field,params.x,params.z,params.bee.gifted&&Math.random()<0.1+params.bee.level*0.01,params.bee.level-1))
             }
+            
+            window.playSound('inflateBalloons',1)
         }
     },
     
@@ -4306,13 +4480,17 @@ let effects={
         
         func:function(params){
             
-            if(params.field===player.fieldIn&&player.fieldIn){
+            if(params.field===player.fieldIn&&player.fieldIn&&!player.attacked.length){
                 
                 params.bee.startTargetPractice()
                 
             } else {
                 
-                player.addEffect(Math.random()<0.4?'precision':'focus')
+                player.addEffect('precision')
+                player.addEffect('focus')
+                player.stats.focusTokens++
+                player.addEffect('redBoost')
+                player.stats.redBoostTokens++
             }
         }
     },
@@ -4535,7 +4713,7 @@ let effects={
         svg:document.getElementById('popStarAura'),
         cooldown:document.getElementById('popStarAura_cooldown'),
         amount:document.getElementById('popStarAura_amount'),
-        maxCooldown:45,
+        maxCooldown:50,
         maxAmount:1,
         
         update:(amount,player)=>{
@@ -4557,21 +4735,21 @@ let effects={
         svg:document.getElementById('scorchingStarAura'),
         cooldown:document.getElementById('scorchingStarAura_cooldown'),
         amount:document.getElementById('scorchingStarAura_amount'),
-        maxCooldown:45,
+        maxCooldown:50,
         maxAmount:1,
         
         update:(amount,player)=>{
             
             player.redPollen*=Math.min(player.scorchingStarSize*0.00045+1,7)
             player.convertRate*=Math.min(player.scorchingStarSize*0.0004+1,4)
-            player.flamePollen*=1.75
+            player.flamePollen*=2
             player.beeAttack*=Math.min(player.scorchingStarSize*0.0003+1,3)
             player.instantRedConversion+=0.10
         },
         
         getMessage:(amount)=>{
             
-            return 'Scorching Star Aura\nx'+Math.min(player.scorchingStarSize*0.00045+1,7).toFixed(2)+' red pollen\nx'+Math.min(player.scorchingStarSize*0.0004+1,4).toFixed(2)+' convert rate\nx1.75 flame pollen\nx'+Math.min(player.scorchingStarSize*0.0003+1,3).toFixed(2)+' bee attack\n+10% instant red conversion'
+            return 'Scorching Star Aura\nx'+Math.min(player.scorchingStarSize*0.00045+1,7).toFixed(2)+' red pollen\nx'+Math.min(player.scorchingStarSize*0.0004+1,4).toFixed(2)+' convert rate\nx2 flame pollen\nx'+Math.min(player.scorchingStarSize*0.0003+1,3).toFixed(2)+' bee attack\n+10% instant red conversion'
         }
     },
     
@@ -4580,7 +4758,7 @@ let effects={
         svg:document.getElementById('gummyStarAura'),
         cooldown:document.getElementById('gummyStarAura_cooldown'),
         amount:document.getElementById('gummyStarAura_amount'),
-        maxCooldown:45,
+        maxCooldown:50,
         maxAmount:1,
         
         update:(amount,player)=>{
@@ -4712,11 +4890,14 @@ let effects={
         activate(){
             
             objects.mobs.push(new PopStar())
+            window.playSound('popStar',1)
+            window.setTimeout(function(){window.playSound('popStar',1)},15250)
+            window.setTimeout(function(){window.playSound('popStar',1)},15250*2)
         },
         
         getMessage:(amount)=>{
             
-            return "Pop Star\nEvery 30 blue bomb tokens summons a Pop Star, lasting for 45s, and applies 1m of bubble bloat. It grows for every bubble popped, granting x1.5 capacity, x1.25 bubble pollen, 10% instant blue conversion, and up to x5 blue pollen. Upon summoning, it also applies 30s of Bubble Bloat. Popping a bubble while the star is active gives 1s(2s if golden) of Bubble Bloat, up to 1h. Bubble Bloat gives up to x6 convert rate, x6 blue field capacity, and x1.5 bubble pollen. When the Pop Star disappears, it spawns 1 bubble for every 10 of the star's size, with an extra 5. Cooldown: 1m"
+            return "Pop Star\nEvery 30 blue bomb tokens summons a Pop Star, lasting for 45s, and applies 1m of bubble bloat. It grows for every bubble popped, granting x1.5 capacity, x1.25 bubble pollen, 10% instant blue conversion, and up to x5 blue pollen. Upon summoning, it also applies 30s of Bubble Bloat. Popping a bubble while the star is active gives 1s(2s if golden) of Bubble Bloat, up to 1h. Bubble Bloat gives up to x6 convert rate, x6 blue field capacity, and x1.5 bubble pollen. When the Pop Star disappears, it spawns 1 bubble for every 10 of the star's size, with an extra 5. The star's aura lasts for an extra 5 secs after it disappears. Cooldown: 1m"
         }
     },
     
@@ -4727,7 +4908,7 @@ let effects={
         cooldown:document.getElementById('scorchingStarPassive_cooldown'),
         amount:document.getElementById('scorchingStarPassive_amount'),
         maxCooldown:60,
-        triggerVal:20,
+        triggerVal:15,
         triggerType:'redBoostTokens',
         currentVal:0,
         currentCooldown:0,
@@ -4736,11 +4917,14 @@ let effects={
         activate(){
             
             objects.mobs.push(new ScorchingStar())
+            window.playSound('scorchingStar',1)
+            window.setTimeout(function(){window.playSound('scorchingStar',1)},15250)
+            window.setTimeout(function(){window.playSound('scorchingStar',1)},15250*2)
         },
         
         getMessage:(amount)=>{
             
-            return "Scorching Star\nEvery 30 red boost tokens summons a Scorching Star, lasting for 45s. It grows by 75(100 if dark) every second for every flame nearby. It grants up to x7 red pollen, x4 convert rate, x1.75 flame pollen, and +10% instant red conversion. Upon disappearing, it spawns 1 flame for every 500 of the star's size, with an extra 5. Cooldown: 1m"
+            return "Scorching Star\nEvery 15 red boost tokens summons a Scorching Star, lasting for 45s. It grows by 75(100 if dark) every second for every flame nearby. It grants up to x7 red pollen, x4 convert rate, x2 flame pollen, and +10% instant red conversion. The star's aura lasts for an extra 5 secs after it disappears. Cooldown: 1m"
         }
     },
     
@@ -4760,11 +4944,14 @@ let effects={
         activate(){
             
             objects.mobs.push(new GummyStar())
+            window.playSound('gummyStar',1)
+            window.setTimeout(function(){window.playSound('gummyStar',1)},15250)
+            window.setTimeout(function(){window.playSound('gummyStar',1)},15250*2)
         },
         
         getMessage:(amount)=>{
             
-            return "Gummy Star\nEvery 15 gummy bee tokens summons a Gummy Star, lasting for 45s. It grows based on how much goo you collect, and gives up to x4 goo, while always giving x1.25 white pollen, x2 white field capacity and 25% instant goo conversion. After disappearing, it spreads 20(+the amount of digits in the star's size) honey tokens, with a total value of approximately 1,000(+7.5% of the star's size). Cooldown: 1m"
+            return "Gummy Star\nEvery 15 gummy bee tokens summons a Gummy Star, lasting for 45s. It grows based on how much goo you collect, and gives up to x4 goo, while always giving x1.25 white pollen, x2 white field capacity and 25% instant goo conversion. After disappearing, it spreads 20(+the amount of digits in the star's size) honey tokens, with a total value of approximately 1,000(+7.5% of the star's size). The star's aura lasts for an extra 5 secs after it disappears.  Cooldown: 1m"
         }
     },
     
@@ -5067,7 +5254,7 @@ let effects={
             
             let dirs=[[-1,1],[1,-1],[-1,-1],[1,1]]
             
-            if(player.fieldIn){
+            if(player.fieldIn&&!player.attacked.length){
                 
                 objects.flames.push(new Flame(player.fieldIn,player.flowerIn.x,player.flowerIn.z))
                 
@@ -5121,7 +5308,7 @@ let effects={
             
             let dirs=[[-1,0],[0,-1],[0,1],[1,0]]
             
-            if(player.fieldIn){
+            if(player.fieldIn&&!player.attacked.length){
                 
                 objects.flames.push(new Flame(player.fieldIn,player.flowerIn.x,player.flowerIn.z))
                 
@@ -5589,8 +5776,8 @@ let tools={
     shovel:{
         
         collectPattern:[[0,0],[0,-1]],
-        collectAmount:1,
-        cooldown:0.9,
+        collectAmount:2,
+        cooldown:0.8,
         mesh:function(box){
             
             box(-0.3,0,0.6,0.1,0.1,0.8,false,[0.5,0.2,0])
@@ -5656,7 +5843,7 @@ let tools={
     darkScythe:{
         
         collectPattern:[[0,-3],[0,-4],[1,-5],[1,-4],[1,-3],[2,-5],[2,-4],[2,-3],[3,-3],[3,-5],[4,-1],[-1,-3],[-1,-4],[-2,-3],[-3,-3],[0,-5],[-1,-5],[-2,-4],[-4,-2],[3,-4],[4,-4],[2,-2],[3,-2],[-2,-2],[-3,-2],[-4,-1]],
-        collectAmount:10,
+        collectAmount:13,
         cooldown:0.575,
         mesh:function(box){
             
@@ -5677,7 +5864,9 @@ let tools={
             
             // if(!player.fieldIn){return}
             
-            if(player.fieldIn){
+            objects.mobs.push(new DarkScoopingTrail())
+            
+            if(player.fieldIn&&!player.attacked.length){
                 
                 let x=Math.round(player.body.position.x-fieldInfo[player.fieldIn].x),z=Math.round(player.body.position.z-fieldInfo[player.fieldIn].z),a=[]
                 
@@ -5740,7 +5929,7 @@ let tools={
     tidePopper:{
         
         collectPattern:[[0,0],[-1,0],[1,0],[-2,0],[2,0],[-1,-1],[0,-1],[1,-1],[-1,-2],[0,-2],[1,-2],[-1,-3],[0,-3],[1,-3],[-1,-4],[0,-4],[1,-4],[-1,-5],[0,-5],[1,-5],[0,-6],[0,-7],[0,-8]],
-        collectAmount:10,
+        collectAmount:13,
         cooldown:1,
         mesh:function(box,unusedcuznotrelevant,cylinder,sphere,finalRotation){
             
@@ -5792,16 +5981,14 @@ let tools={
         cooldown:1,
         mesh:function(box,unusedcuznotrelevant,cylinder,sphere,finalRotation){
             
-            //teal [0.1,1,0.5] purple [1,0.2,1]
-            
             cylinder(-0.4,-0.1,0.4,0.15,0.35,15,0.26,2.7,1.1,90,0,0,0.15)
             cylinder(-0.4,0.8,0.4,0.1,1.75,15,1.5,0.15,1.5,90,0,0,0.1)
             sphere(-0.4,1.6,0.4,0.5,1,0.26,2.7,1.1)
             cylinder(-0.4,1.75,0.4,0.45,0.25,15,1.5,0.15,1.5,90,0,0,0.6)
             sphere(-0.4-0.3,1.85,0.4,0.25,1,0.26,2.7,1.1)
             sphere(-0.4+0.3,1.85,0.4,0.25,1,0.26,2.7,1.1)
-            sphere(-0.4,1.85,0.4-0.3,0.25,1,1.5*1.25,0.65*1.25,1.5*1.25)
-            sphere(-0.4,1.85,0.4+0.3,0.25,1,1.5*1.25,0.65*1.25,1.5*1.25)
+            sphere(-0.4,1.85,0.4-0.3,0.25,1,1.5*1.75,0.65*1.75,1.5*1.75)
+            sphere(-0.4,1.85,0.4+0.3,0.25,1,1.5*1.75,0.65*1.75,1.5*1.75)
             
         },
         ability:function(){
@@ -5815,7 +6002,7 @@ let tools={
             player.lagPos[1]+=(player.body.position.y-player.lagPos[1])*dt*12.5
             player.lagPos[2]+=(player.body.position.z-player.lagPos[2])*dt*12.5
             
-            meshes.explosions.instanceData.push(player.lagPos[0]+x,player.lagPos[1]+2+player.gummyBallSize*0.3,player.lagPos[2]+z,0.9,0.18,0.9,1,player.gummyBallSize*0.5,1)
+            meshes.explosions.instanceData.push(player.lagPos[0]+x,player.lagPos[1]+2+player.gummyBallSize*0.3,player.lagPos[2]+z,0.9*player.isNight,0.18*player.isNight,0.9*player.isNight,1,player.gummyBallSize*0.5,1)
             
             toolParticle-=dt
             
@@ -7060,7 +7247,7 @@ class Bee {
             
             case 'moveToAttack':
                 
-                if(this.attackMob.state!=='attack'){
+                if(!player.attacked.length||!this.attackMob||this.attackMob.state!=='attack'){
                     
                     this.state='moveToPlayer'
                     return
@@ -7085,7 +7272,7 @@ class Bee {
             
             case 'attack':
                 
-                if(this.attackMob.state!=='attack'){
+                if(!player.attacked.length||!this.attackMob||this.attackMob.state!=='attack'){
                     
                     this.state='moveToPlayer'
                     return
@@ -7101,21 +7288,31 @@ class Bee {
                     
                     this.attackMob=player.attacked[(Math.random()*player.attacked.length)|0]
                     
-                    if(Math.random()<(this.type==='precise'?Math.max(Math.pow(2,(this.gifted?2:1)+this.level-this.attackMob.level),0.05):Math.pow(2,this.level-this.attackMob.level))){
+                    if(Math.random()<(this.attackMob.blocking?0.85:0)){
+                        this.energy--
                         
-                        let h=(this.attack+player[beeInfo[this.type].color+'BeeAttack'])*player.beeAttack*(this.type==='precise'?this.gifted?2.25:1.5:1)
-                        
-                        this.attackMob.damage(h)
-                        
-                        if(this.type==='precise'){
-                            
-                            objects.explosions.push(new Explosion({col:[1,0,0],pos:this.pos,life:0.75,size:1.75,speed:0.3,aftershock:0}))
-                        }
+                        textRenderer.add('BLOCK',[this.attackMob.pos[0],this.attackMob.pos[1]+Math.random()*2.75+1.5,this.attackMob.pos[2]],[255,255,255],0,'',1.25,false)
                         
                     } else {
-                        
-                        textRenderer.add('MISS',[this.attackMob.pos[0],this.attackMob.pos[1]+Math.random()*2.75+1.5,this.attackMob.pos[2]],[255,255,255],0,'',1.25,false)
-                        
+                    
+                        if(Math.random()<(this.type==='precise'?Math.max(Math.pow(2,(this.gifted?2:1)+this.level-this.attackMob.level),0.05):Math.pow(2,this.level-this.attackMob.level))){
+                            
+                            let h=(this.attack+player[beeInfo[this.type].color+'BeeAttack'])*player.beeAttack*(this.type==='precise'?this.gifted?2.25:1.5:1)
+                            
+                            this.attackMob.damage(h)
+                            
+                            if(this.type==='precise'){
+                                
+                                objects.explosions.push(new Explosion({col:[1,0,0],pos:this.pos,life:0.75,size:1.75,speed:0.3,aftershock:0}))
+                            }
+                            
+                        } else {
+                            
+                            this.energy--
+                            
+                            textRenderer.add('MISS',[this.attackMob.pos[0],this.attackMob.pos[1]+Math.random()*2.75+1.5,this.attackMob.pos[2]],[255,255,255],0,'',1.25,false)
+                            
+                        }
                     }
                     
                     let token,openTokens=[]
@@ -7137,7 +7334,7 @@ class Bee {
                         
                         token=this.attackTokens[token].type
                         
-                        objects.tokens.push(new Token(effects[token].tokenLife,[Math.round(this.pos[0]),Math.round(this.pos[1])+0.5,Math.round(this.pos[2])],token,{field:player.fieldIn,x:this.flowerCollecting[0],z:this.flowerCollecting[1],bee:this},true))
+                        objects.tokens.push(new Token(effects[token].tokenLife,[Math.round(this.pos[0]),player.body.position.y+0.5,Math.round(this.pos[2])],token,{field:player.fieldIn,x:this.flowerCollecting[0],z:this.flowerCollecting[1],bee:this},true))
                         
                     }
                 }
@@ -7494,7 +7691,6 @@ class Bee {
                         ParticleRenderer.add({x:this.pos[0],y:this.pos[1],z:this.pos[2],vx:vx*m,vy:vy*m,vz:vz*m,grav:0,size:400,col:[1,0,0],life:0.4,rotVel:MATH.random(-9,9),alpha:1000})
                     
                     }
-                
                 }
                 
                 if(this.targetPracticeTimer<=0){
@@ -7535,7 +7731,7 @@ class Bee {
                             if(i!==2)
                                 objects.tokens.push(new Token(effects.focus.tokenLife,[_t.pos[0],_t.pos[1]+0.5,_t.pos[2]],'focus',{field:_t.field,x:_t.x,z:_t.z}))
                             
-                            collectPollen({x:_t.x,z:_t.z,pattern:[[-4,0],[-3,-2],[-3,-1],[-3,0],[-3,1],[-3,2],[-2,-3],[-2,-2],[-2,-1],[-2,0],[-2,1],[-2,2],[-2,3],[-1,-3],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[-1,3],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[0,1],[0,2],[0,3],[0,4],[1,-3],[1,-2],[1,-1],[1,0],[1,1],[1,2],[1,3],[2,-3],[2,-2],[2,-1],[2,0],[2,1],[2,2],[2,3],[3,-2],[3,-1],[3,0],[3,1],[3,2],[4,0]],amount:(this.attack+player[beeInfo[this.type].color+'BeeAttack'])*player.beeAttack*0.75,yOffset:2+Math.random()*0.4,stackHeight:0.5+Math.random()*0.5,instantConversion:(player.flameHeatStack-1)*0.5,multiplier:player.flameHeatStack*5,field:_t.field})
+                            collectPollen({x:_t.x,z:_t.z,pattern:[[-4,0],[-3,-2],[-3,-1],[-3,0],[-3,1],[-3,2],[-2,-3],[-2,-2],[-2,-1],[-2,0],[-2,1],[-2,2],[-2,3],[-1,-3],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[-1,3],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[0,1],[0,2],[0,3],[0,4],[1,-3],[1,-2],[1,-1],[1,0],[1,1],[1,2],[1,3],[2,-3],[2,-2],[2,-1],[2,0],[2,1],[2,2],[2,3],[3,-2],[3,-1],[3,0],[3,1],[3,2],[4,0]],amount:(this.attack+player[beeInfo[this.type].color+'BeeAttack'])*player.beeAttack*(this.level*0.1+1),yOffset:2+Math.random()*0.4,stackHeight:0.5+Math.random()*0.5,instantConversion:(player.flameHeatStack-1)*0.5,multiplier:player.flameHeatStack*4,field:_t.field})
                             
                         } else {
                             
@@ -7716,7 +7912,7 @@ class TempBee {
             
             case 'moveToAttack':
                 
-                if(this.attackMob.state!=='attack'){
+                if(!player.attacked.length||!this.attackMob||this.attackMob.state!=='attack'){
                     
                     this.state='moveToPlayer'
                     return
@@ -7741,7 +7937,7 @@ class TempBee {
             
             case 'attack':
                 
-                if(this.attackMob.state!=='attack'){
+                if(!player.attacked.length||!this.attackMob||this.attackMob.state!=='attack'){
                     
                     this.state='moveToPlayer'
                     return
@@ -8106,6 +8302,7 @@ class Explosion {
         this.params.height=this.params.height||1
         this.maxAlpha=params.maxAlpha||1
         this.backface=params.backface===undefined?false:params.backface
+        this.primitive=params.primitive||'explosions'
     }
     
     die(index){
@@ -8118,7 +8315,7 @@ class Explosion {
         this.params.life-=dt
         this.size+=Math.max((this.params.size-this.size)*this.params.speed,this.params.aftershock)
         
-        meshes.explosions.instanceData.push(this.params.pos[0],this.params.pos[1],this.params.pos[2],this.params.col[0],this.params.col[1],this.params.col[2],Math.min(this.params.life*this.lifespan,this.maxAlpha),this.backface?-this.size:this.size,this.params.height)
+        meshes[this.primitive].instanceData.push(this.params.pos[0],this.params.pos[1],this.params.pos[2],this.params.col[0],this.params.col[1],this.params.col[2],Math.min(this.params.life*this.lifespan,this.maxAlpha),this.backface?-this.size:this.size,this.params.height)
         
         return this.params.life<=0
     }
@@ -8182,10 +8379,10 @@ class Flame {
             this.oilPos=[player.body.position.x,player.body.position.y+0.3,player.body.position.z]
             this.oilTrail=new TrailRenderer.Trail({length:10,size:0.75,triangle:true,color:[0.1,0,0,1]})
             
-            player.pollen-=Math.min(Math.ceil(player.convertTotal*0.25),player.pollen)
-            player.honey+=Math.min(Math.ceil(player.convertTotal*0.25),player.pollen)
+            player.pollen-=Math.min(Math.ceil(player.convertTotal*0.15),player.pollen)
+            player.honey+=Math.min(Math.ceil(player.convertTotal*0.15),player.pollen)
             if(player.setting_enablePollenText)
-                textRenderer.add(Math.min(Math.ceil(player.convertTotal*0.25),player.pollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
+                textRenderer.add(Math.min(Math.ceil(player.convertTotal*0.15),player.pollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
         }
     }
     
@@ -8208,10 +8405,10 @@ class Flame {
             if(player.flameFuel){
                 
                 this.life*=1.5
-                player.pollen-=Math.min(Math.ceil(player.convertTotal*0.25),player.pollen)
-                player.honey+=Math.min(Math.ceil(player.convertTotal*0.25),player.pollen)
+                player.pollen-=Math.min(Math.ceil(player.convertTotal*0.15),player.pollen)
+                player.honey+=Math.min(Math.ceil(player.convertTotal*0.15),player.pollen)
                 if(player.setting_enablePollenText)
-                    textRenderer.add(Math.min(Math.ceil(player.convertTotal*0.25),player.pollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
+                    textRenderer.add(Math.min(Math.ceil(player.convertTotal*0.15),player.pollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
                 this.getRidOfOilTrailTimer=2
                 this.oilT=0
                 this.oilPos=[player.body.position.x,player.body.position.y+0.3,player.body.position.z]
@@ -8360,7 +8557,7 @@ class Bubble {
             this.pop()
         }
         
-        meshes.explosions.instanceData.push(this.pos[0],this.pos[1]+0.3,this.pos[2],this.col[0],this.col[1],this.col[2],Math.min(this.life*0.35,this.golden?0.8:0.7),Math.min((TIME-this.birth)*15,3),1)
+        meshes.explosions.instanceData.push(this.pos[0],this.pos[1]+0.3,this.pos[2],this.col[0]*player.isNight,this.col[1]*player.isNight,this.col[2]*player.isNight,Math.min(this.life*0.35,this.golden?0.8:0.7),Math.min((TIME-this.birth)*15,3),1)
         
         return this.life<=0
     }
@@ -8375,8 +8572,8 @@ class Sprinkler {
         this.z=null
         this.timer=TIME
         
-        this.power=0.75
-        this.rate=0.9
+        this.power=0.5
+        this.rate=0.8
         this.diameter=15
         
         let p=this.power
@@ -8497,7 +8694,7 @@ class Mark {
         
         meshes.explosions.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1,1,1,0.075,this.diameter,0.01)
         
-        meshes.cylinder_explosions.instanceData.push(this.pos[0],this.pos[1]+1.5,this.pos[2],0.9,0.8,0.4,1,0.125,27)
+        meshes.cylinder_explosions.instanceData.push(this.pos[0],this.pos[1]+1.5,this.pos[2],0.9*player.isNight,0.8*player.isNight,0.4*player.isNight,1,0.125,27)
         meshes.cylinder_explosions.instanceData.push(this.pos[0],this.pos[1]+3.3,this.pos[2],0.9,0.8,0.4,1,0.4,0.5)
         meshes.tokens.instanceData.push(this.pos[0],this.pos[1]+2.25,this.pos[2],this.rot,effects[this.type+'Token'].u,effects[this.type+'Token'].v,1,1.35)
         
@@ -8747,8 +8944,8 @@ class Balloon {
             this.displaySize+=(this.size-this.displaySize)*0.025
             this.pos[1]=this.y+this.displaySize*0.5-1
             
-            meshes.cylinder_explosions.instanceData.push(this.pos[0],this.pos[1]-this.displaySize*0.5-1,this.pos[2],1,1,1,0.5,0.03,67)
-            meshes.explosions.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.col[0],this.col[1],this.col[2],this.col[3],this.displaySize,1.03)
+            meshes.cylinder_explosions.instanceData.push(this.pos[0],this.pos[1]-this.displaySize*0.5-1,this.pos[2],player.isNight,player.isNight,player.isNight,0.5,0.03,67)
+            meshes.explosions.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.col[0]*player.isNight,this.col[1]*player.isNight,this.col[2]*player.isNight,this.col[3],this.displaySize,1.03)
             
             meshes.explosions.instanceData.push(this.pos[0],this.y-4,this.pos[2],0,0,0,0.35,7,0.01)
             
@@ -8823,16 +9020,12 @@ class Balloon {
             
             vec3.scaleAndAdd(this.pos,this.pos,this.moveDir,dt)
             
-            meshes.cylinder_explosions.instanceData.push(this.pos[0],this.pos[1]-this.displaySize*0.5-1,this.pos[2],1,1,1,0.5,0.03,67)
+            meshes.cylinder_explosions.instanceData.push(this.pos[0],this.pos[1]-this.displaySize*0.5-1,this.pos[2],player.isNight,player.isNight,player.isNight,0.5,0.03,67)
             
-            meshes.explosions.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.col[0],this.col[1],this.col[2],this.col[3],this.displaySize,1.05)
+            meshes.explosions.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.col[0]*player.isNight,this.col[1]*player.isNight,this.col[2]*player.isNight,this.col[3],this.displaySize,1.05)
             
-            meshes.explosions.instanceData.push(0,0,0,0,0,0,0,0,0)
             textRenderer.addSingle(this.pollen+'/'+this.cap,this.pos,COLORS.whiteArr,-0.465,true,true,0.175)
             
-            textRenderer.addDecalRaw(...this.pos,0,0,...textRenderer.decalUV['rect'],0,0.4,0,1,0.25,0)
-            
-            textRenderer.addDecalRaw(...this.pos,(-0.5+(this.pollen*this.invCap)*0.5)/(this.pollen*this.invCap),0,...textRenderer.decalUV['rect'],0.1,0.85,0.1,this.pollen*this.invCap,0.25,0)
             textRenderer.addDecalRaw(...this.pos,1.1,-0.1,...textRenderer.decalUV['flower'],1,1,1,-0.44,-0.44,0)
             
             
@@ -8871,12 +9064,11 @@ class Target {
             let amountToConvert=Math.min((player.convertTotal*0.5)+(10*this.bee.convertAmount*player.convertRate)*(player.flameHeatStack*5),player.pollen)
             
             player.pollen-=amountToConvert
-            player.honey+=Math.ceil(amountToConvert*0.5)
             
             if(player.setting_enablePollenText)
                 textRenderer.add(Math.ceil(amountToConvert*0.5),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
             
-            let hpt=amountToConvert*0.5/5
+            let hpt=amountToConvert/5
             
             for(let i=0;i<MATH.TWO_PI;i+=MATH.TWO_PI/5){
                 
@@ -9047,7 +9239,7 @@ class FuzzBomb {
                 
                 let x=p[i][0]+this.x,z=p[i][1]+this.z
                 
-                if(x>=0&&x<fieldInfo[this.field].width&&z>=0&&z<fieldInfo[this.field].length&&Math.random()<(0.2+this.beeLevel*0.0075)){
+                if(x>=0&&x<fieldInfo[this.field].width&&z>=0&&z<fieldInfo[this.field].length){
                     
                     updateFlower(this.field,x,z,function(f){
                         
@@ -9310,7 +9502,7 @@ class Beetle {
                     
                     for(let f in objects.flames){
                         
-                        if(Math.abs(this.pos[0]-objects.flames[f].pos[0])+Math.abs(this.pos[1]-objects.flames[f].pos[1])+Math.abs(this.pos[2]-objects.flames[f].pos[2])<2.25){
+                        if(Math.abs(this.pos[0]-objects.flames[f].pos[0])+Math.abs(this.pos[2]-objects.flames[f].pos[2])<2.25){
                             
                             this.damage(objects.flames[f].dark?25:15)
                         }
@@ -9334,14 +9526,61 @@ class Beetle {
                 
                 vec2.normalize(d,d)
                 
-                if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])>1.75){
+                if(!this.aimPos){
                     
-                    this.pos[0]+=d[0]*dt*4
-                    this.pos[2]+=d[1]*dt*4
+                    if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])>5){
+                        
+                        this.pos[0]+=d[0]*dt*4
+                        this.pos[2]+=d[1]*dt*4
+                        
+                    } else {
+                        
+                        this.aimPos=[player.body.position.x,player.body.position.y,player.body.position.z]
+                        this.landPos=this.pos.slice()
+                        this.lungeState=0
+                        this.aimTimer=1.5
+                    }
                     
                 } else {
                     
-                    player.damage(15*dt)
+                    this.aimTimer-=dt
+                    
+                    if(this.aimTimer<=0){
+                        
+                        if(!this.lungeState){
+                            
+                            d=[this.aimPos[0]-this.pos[0],this.aimPos[2]-this.pos[2]]
+                    
+                            vec2.normalize(d,d)
+                            
+                            this.pos[0]+=d[0]*dt*15
+                            this.pos[2]+=d[1]*dt*15
+                            
+                            if(Math.abs(this.aimPos[0]-this.pos[0])+Math.abs(this.aimPos[2]-this.pos[2])<1.5){
+                                
+                                this.lungeState=1
+                                
+                                if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])<1.75){
+                                    player.damage(20)
+                                }
+                            }
+                            
+                        } else {
+                            
+                            d=[this.landPos[0]-this.pos[0],this.landPos[2]-this.pos[2]]
+                    
+                            vec2.normalize(d,d)
+                            
+                            this.pos[0]+=d[0]*dt*15
+                            this.pos[2]+=d[1]*dt*15
+                            
+                            if(Math.abs(this.landPos[0]-this.pos[0])+Math.abs(this.landPos[2]-this.pos[2])<0.75){
+                                
+                                this.aimPos=undefined
+                                this.aimTimer=1.5
+                            }
+                        }
+                    }
                 }
                 
                 this.pos[3]=Math.atan2(d[1],d[0])+MATH.HALF_PI
@@ -9354,8 +9593,14 @@ class Beetle {
                 gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
                 gl.drawElements(gl.TRIANGLES,meshes.beetle.indexAmount,gl.UNSIGNED_SHORT,0)
                 
-                textRenderer.addCTX('Rhino Beetle (Level '+this.level+')',[this.pos[0],this.pos[1]+1,this.pos[2]],COLORS.whiteArr,100)
-                textRenderer.addCTX(MATH.addCommas((this.health|0)+'')+'/'+MATH.addCommas(this.maxHealth+''),[this.pos[0],this.pos[1]+0.5,this.pos[2]],COLORS.whiteArr,100)
+                this.pos[1]+=1
+                textRenderer.addCTX('Rhino Beetle (Level '+this.level+')',[this.pos[0],this.pos[1]+0.4,this.pos[2]],COLORS.whiteArr,100)
+                
+                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV['rect'],0.6,0,0,2.5,0.4,0)
+                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.health/this.maxHealth)*0.5)/(this.health/this.maxHealth),0,...textRenderer.decalUV['rect'],0.2,0.85,0.2,this.health*2.5/this.maxHealth,0.4,0)
+                
+                textRenderer.addSingle('HP: '+MATH.addCommas((this.health|0)+''),this.pos,COLORS.whiteArr,-1,false,false)
+                this.pos[1]-=1
                 
             break
             
@@ -9392,6 +9637,15 @@ class Beetle {
                 gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
                 gl.drawElements(gl.TRIANGLES,meshes.beetle.indexAmount,gl.UNSIGNED_SHORT,0)
                 
+                this.pos[1]+=1
+                textRenderer.addCTX('Rhino Beetle (Level '+this.level+')',[this.pos[0],this.pos[1]+0.4,this.pos[2]],COLORS.whiteArr,100)
+                
+                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV['rect'],0.6,0,0,2.5,0.4,0)
+                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.health/this.maxHealth)*0.5)/(this.health/this.maxHealth),0,...textRenderer.decalUV['rect'],0.2,0.85,0.2,this.health*2.5/this.maxHealth,0.4,0)
+                
+                textRenderer.addSingle('HP: '+MATH.addCommas((this.health|0)+''),this.pos,COLORS.whiteArr,-1,false,false)
+                this.pos[1]-=1
+                
             break
             
             case 'dead':
@@ -9405,6 +9659,156 @@ class Beetle {
                 }
                 
             break
+        }
+        
+    }
+}
+
+class MondoChick {
+    
+    constructor(field,level){
+        
+        this.field=field
+        this.state='attack'
+        this.starSawHitTimer=0
+        this.level=level
+        this.health=300000
+        this.maxHealth=this.health
+        this.spawnPos=[fieldInfo[this.field].x+0.5*fieldInfo[this.field].width,fieldInfo[this.field].y+2.5,fieldInfo[this.field].z+0.5*fieldInfo[this.field].length]
+        this.pos=this.spawnPos
+        this.checkTimer=TIME
+        this.flameTimer=0
+        this.waitTimer=0
+        this.target=[this.pos[0],this.pos[2]]
+        this.damageTimer=0
+        this.bodySize=2.25
+        this.timeLimit=10*60
+        this.maxTimeLimit=this.timeLimit
+        this.fallenEggShellEffect=0
+    }
+    
+    die(index){
+        
+        objects.mobs.splice(index,1)
+    }
+    
+    damage(am){
+        
+        let crit=Math.random()<player.criticalChance,superCrit=Math.random()<player.superCritChance,d=am*(crit?superCrit?player.superCritPower*player.criticalPower:player.criticalPower:1)
+        
+        this.health-=d|0
+        textRenderer.add((d|0)+'',[this.pos[0],this.pos[1]+Math.random()*2.75+1.5,this.pos[2]],[255,0,0],crit?superCrit?2:1:0,'',1.25)
+        
+    }
+    
+    update(){
+        
+        switch(this.state){
+            
+            case 'dead':
+                
+                return true
+                
+            break
+            
+            case 'attack':
+                
+                if(this.health<=0||this.timeLimit<=0){
+                    
+                    // player.stats.mondoChicken++
+                    this.state='dead'
+                    
+                    return
+                }
+                
+                this.timeLimit-=dt
+                this.starSawHitTimer-=dt
+                this.flameTimer-=dt
+                
+                if(this.flameTimer<=0){
+                    
+                    this.flameTimer=1
+                    
+                    for(let f in objects.flames){
+                        
+                        if(Math.abs(this.pos[0]-objects.flames[f].pos[0])+Math.abs(this.pos[2]-objects.flames[f].pos[2])<this.bodySize){
+                            
+                            this.damage(objects.flames[f].dark?25:15)
+                        }
+                    }
+                }
+                
+                if(player.fieldIn===this.field){
+                    
+                    player.attacked.push(this)
+                }
+                
+                let d=[this.target[0]-this.pos[0],this.target[1]-this.pos[2]]
+                if(Math.abs(d[0])+Math.abs(d[1])<0.75){
+                    
+                    this.target=[fieldInfo[this.field].x+MATH.random(0.2,0.8)*fieldInfo[this.field].width,fieldInfo[this.field].z+MATH.random(0.2,0.8)*fieldInfo[this.field].length]
+                    d=[this.target[0]-this.pos[0],this.target[1]-this.pos[2]]
+                    if(Math.random()<0.25) this.waitTimer=5
+                    
+                }
+                
+                vec2.normalize(d,d)
+                
+                this.running=false
+                this.waitTimer-=dt
+                
+                if(this.waitTimer<=0){
+                    
+                    this.pos[0]+=d[0]*dt*6
+                    this.pos[2]+=d[1]*dt*6
+                    this.running=true
+                }
+                
+                this.damageTimer-=dt
+                
+                if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])<this.bodySize&&this.damageTimer<=0){
+                    
+                    player.damage(35)
+                    this.damageTimer=1
+                }
+                
+                this.pos[1]+=1
+                textRenderer.addCTX('Mondo Chick (Level '+this.level+')',[this.pos[0],this.pos[1]+0.9,this.pos[2]],COLORS.whiteArr,100)
+                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,1.5,...textRenderer.decalUV['rect'],0.61*0.5,0.42*0.5,0.27*0.5,2.5,0.4,0)
+                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.timeLimit/this.maxTimeLimit)*0.5)/(this.timeLimit/this.maxTimeLimit),1.5,...textRenderer.decalUV['rect'],0.61,0.42,0.27,this.timeLimit*2.5/this.maxTimeLimit,0.4,0)
+                
+                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV['rect'],0.6,0,0,2.5,0.4,0)
+                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.health/this.maxHealth)*0.5)/(this.health/this.maxHealth),0,...textRenderer.decalUV['rect'],0.2,0.85,0.2,this.health*2.5/this.maxHealth,0.4,0)
+                
+                textRenderer.addSingle('HP: '+MATH.addCommas((this.health|0)+''),this.pos,COLORS.whiteArr,-1,false,false)
+                textRenderer.addSingle('Time: '+MATH.doTime((this.timeLimit|0)+''),this.pos,COLORS.whiteArr,-1,false,false,0,0.6)
+            
+                this.pos[1]-=1
+                this.blocking=false
+                
+                meshes.explosions.instanceData.push(this.pos[0],this.pos[1]+this.fallenEggShellEffect,this.pos[2],0.9*player.isNight,0.9*player.isNight,0.9*player.isNight,this.fallenEggShellEffect*0.5+1,4,1.15)
+                
+                if(!this.running){
+                    
+                    this.blocking=true
+                    this.fallenEggShellEffect=0
+                    return
+                }
+                
+                this.fallenEggShellEffect-=dt*15
+                
+                this.pos[3]=Math.atan2(d[1],d[0])+MATH.HALF_PI+Math.sin(TIME*30)*0.2
+                
+                gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
+                gl.uniform2f(glCache.mob_instanceInfo2,1,1)
+                gl.bindBuffer(gl.ARRAY_BUFFER,meshes.mondoChick.vertBuffer)
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.mondoChick.indexBuffer)
+                gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
+                gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
+                gl.drawElements(gl.TRIANGLES,meshes.mondoChick.indexAmount,gl.UNSIGNED_SHORT,0)
+                
+            break
+            
         }
         
     }
@@ -9512,15 +9916,6 @@ class ScorchingStar {
         objects.explosions.push(new Explosion({col:[0.75,0,0],pos:p,life:0.4,size:this.size*1.25,speed:0.25,aftershock:0.05,maxAlpha:0.5}))
         
         objects.explosions.push(new Explosion({col:[0.75,0,0],pos:p,life:0.4,size:this.size*1.5,speed:0.7,aftershock:0.1,maxAlpha:0.3}))
-        
-        if(player.fieldIn){
-            
-            for(let i=0,l=this.value*0.002+5;i<l;i++){
-                
-                objects.flames.push(new Flame(player.fieldIn,(Math.random()*fieldInfo[player.fieldIn].width)|0,(Math.random()*fieldInfo[player.fieldIn].length)|0))
-                
-            }
-        }
         
         objects.mobs.splice(index,1)
     }
@@ -9641,7 +10036,7 @@ class StarSaw {
         
         this.collectTimer=0
         this.lastCollectedAmount=0
-        this.life=3000000
+        this.life=30000000
     }
     
     die(index){
@@ -9719,7 +10114,7 @@ class StarSaw {
             
             this.collectTimer=0.1
             
-            let amountToConvert=Math.min(Math.round(player.beeAttack*this.lastCollectedAmount*player.convertRate*0.15*(player.redBeeAttack+player.blueBeeAttack+player.whiteBeeAttack)),player.pollen)
+            let amountToConvert=Math.min(Math.round(player.beeAttack*this.lastCollectedAmount*2.5*(player.redBeeAttack+player.blueBeeAttack+player.whiteBeeAttack)),player.pollen)
             
             if(amountToConvert){
                 
@@ -10225,7 +10620,7 @@ class Coconut {
             
             meshes.explosions.instanceData.push(this.pos[0],this.pos[1],this.pos[2],0,1,0,this.glow,this.displaySize,0.001)
             meshes.explosions.instanceData.push(this.pos[0],this.y,this.pos[2],1,1,1,0.15,-this.displaySize-1,1)
-            meshes.explosions.instanceData.push(this.pos[0],this.y,this.pos[2],0.3,0.1,0,1,this.displaySize,1)
+            meshes.explosions.instanceData.push(this.pos[0],this.y,this.pos[2],0.3*player.isNight,0.1*player.isNight,0,1,this.displaySize,1)
             
             return this.y+this.displaySize<this.pos[1]||!player.fieldIn
             
@@ -10373,10 +10768,12 @@ class Cloud {
             }
         }
         
-        meshes.explosions.instanceData.push(this.pos[0]-0.45,this.pos[1],this.pos[2],0.7,0.7,0.7,0.8,2.1,0.9)
-        meshes.explosions.instanceData.push(this.pos[0]+0.45,this.pos[1],this.pos[2]+0.7,0.7,0.7,0.7,0.8,1.8,0.9)
-        meshes.explosions.instanceData.push(this.pos[0]-0.5,this.pos[1],this.pos[2]-0.8,0.7,0.7,0.7,0.8,1.9,0.9)
-        meshes.explosions.instanceData.push(this.pos[0]+0.75,this.pos[1],this.pos[2]-0.3,0.7,0.7,0.7,0.8,2.2,0.9)
+        let c=0.7*player.isNight
+        
+        meshes.explosions.instanceData.push(this.pos[0]-0.45,this.pos[1],this.pos[2],c,c,c,0.8,2.1,0.9)
+        meshes.explosions.instanceData.push(this.pos[0]+0.45,this.pos[1],this.pos[2]+0.7,c,c,c,0.8,1.8,0.9)
+        meshes.explosions.instanceData.push(this.pos[0]-0.5,this.pos[1],this.pos[2]-0.8,c,c,c,0.8,1.9,0.9)
+        meshes.explosions.instanceData.push(this.pos[0]+0.75,this.pos[1],this.pos[2]-0.3,c,c,c,0.8,2.2,0.9)
         
         if(Math.abs(this.pos[0]-this.moveTo[0])+Math.abs(this.pos[2]-this.moveTo[1])<1){
             
@@ -10541,6 +10938,64 @@ class Scratch {
         gl.drawElements(gl.TRIANGLES,meshes.scratch.indexAmount,gl.UNSIGNED_SHORT,0)
         
         return this.life<=0
+    }
+}
+
+class DarkScoopingTrail {
+    
+    constructor(){
+        
+        this.bodyPos=[player.body.position.x,player.body.position.y,player.body.position.z]
+        
+        let d=player.bodyDir.slice(),
+            r=[-d[2],0,d[0]]
+        
+        this.startPos=[d[0]*2+r[0]*4,0.05,d[2]*2+r[2]*4]
+        this.endPos=[d[0]*2-r[0]*4,0.05,d[2]*2-r[2]*4]
+        
+        this.control2=vec3.scale([],this.startPos,2)
+        this.control1=vec3.scale([],this.endPos,5.25)
+        
+        this.lifespan=0.3
+        this.life=this.lifespan
+        this.trail=new TrailRenderer.Trail({length:15,size:0.5,triangle:true,color:[0.8,0,0.8,0.6],fadeTo:[0.5,0,0,0.6]})
+        
+        this.lastPos=[]
+    }
+    
+    die(index){
+        
+        this.trail.splice=true
+        objects.mobs.splice(index,1)
+    }
+    
+    update(){
+        
+        if(this.waitTimer>0){
+            
+            this.waitTimer-=dt
+            this.trail.addPos(vec3.add(this.lastPos,this.lastPos,this.lastVel))
+            
+            return this.waitTimer<=0
+        }
+        
+        this.life-=dt
+        
+        let p=MATH.generateBezierCurve(this.endPos,this.control1,this.control2,this.startPos,MATH.constrain(this.life*(1/this.lifespan),0,1))
+        
+        vec3.add(p,p,this.bodyPos)
+        
+        this.trail.addPos(p)
+        
+        this.lastVel=vec3.sub([],this.lastPos,p)
+        
+        this.lastPos=p
+        
+        if(this.life<=0){
+            
+            this.waitTimer=0.5
+            vec3.scale(this.lastVel,this.lastVel,-0.01)
+        }
     }
 }
 
@@ -10744,6 +11199,7 @@ let staticGeometryProgram=createProgram('static_geometry_vsh','static_geometry_f
 let initGlCache=function(glCache){
     
     glCache.static_viewMatrix=gl.getUniformLocation(staticGeometryProgram,'viewMatrix')
+    glCache.static_isNight=gl.getUniformLocation(staticGeometryProgram,'isNight')
     glCache.static_vertPos=gl.getAttribLocation(staticGeometryProgram,'vertPos')
     gl.enableVertexAttribArray(glCache.static_vertPos)
     glCache.static_vertColor=gl.getAttribLocation(staticGeometryProgram,'vertColor')
@@ -10753,6 +11209,7 @@ let initGlCache=function(glCache){
     
     glCache.dynamic_viewMatrix=gl.getUniformLocation(dynamicGeometryProgram,'viewMatrix')
     glCache.dynamic_modelMatrix=gl.getUniformLocation(dynamicGeometryProgram,'modelMatrix')
+    glCache.dynamic_isNight=gl.getUniformLocation(dynamicGeometryProgram,'isNight')
     glCache.dynamic_vertPos=gl.getAttribLocation(dynamicGeometryProgram,'vertPos')
     gl.enableVertexAttribArray(glCache.dynamic_vertPos)
     glCache.dynamic_vertColor=gl.getAttribLocation(dynamicGeometryProgram,'vertColor')
@@ -10761,6 +11218,7 @@ let initGlCache=function(glCache){
     gl.enableVertexAttribArray(glCache.dynamic_vertNormal)
     
     glCache.token_viewMatrix=gl.getUniformLocation(tokenGeometryProgram,'viewMatrix')
+    glCache.token_isNight=gl.getUniformLocation(tokenGeometryProgram,'isNight')
     glCache.token_vertPos=gl.getAttribLocation(tokenGeometryProgram,'vertPos')
     gl.enableVertexAttribArray(glCache.token_vertPos)
     glCache.token_vertUV=gl.getAttribLocation(tokenGeometryProgram,'vertUV')
@@ -10771,6 +11229,7 @@ let initGlCache=function(glCache){
     gl.enableVertexAttribArray(glCache.token_instanceUV)
     
     glCache.flower_viewMatrix=gl.getUniformLocation(flowerGeometryProgram,'viewMatrix')
+    glCache.flower_isNight=gl.getUniformLocation(flowerGeometryProgram,'isNight')
     glCache.flower_vertPos=gl.getAttribLocation(flowerGeometryProgram,'vertPos')
     gl.enableVertexAttribArray(glCache.flower_vertPos)
     glCache.flower_vertUV=gl.getAttribLocation(flowerGeometryProgram,'vertUV')
@@ -10779,6 +11238,7 @@ let initGlCache=function(glCache){
     gl.enableVertexAttribArray(glCache.flower_vertGoo)
     
     glCache.bee_viewMatrix=gl.getUniformLocation(beeGeometryProgram,'viewMatrix')
+    glCache.bee_isNight=gl.getUniformLocation(beeGeometryProgram,'isNight')
     glCache.bee_vertPos=gl.getAttribLocation(beeGeometryProgram,'vertPos')
     gl.enableVertexAttribArray(glCache.bee_vertPos)
     glCache.bee_vertUV=gl.getAttribLocation(beeGeometryProgram,'vertUV')
@@ -10827,6 +11287,7 @@ let initGlCache=function(glCache){
     glCache.text_viewMatrix=gl.getUniformLocation(textRendererProgram,'viewMatrix')
     
     glCache.mob_viewMatrix=gl.getUniformLocation(mobRendererProgram,'viewMatrix')
+    glCache.mob_isNight=gl.getUniformLocation(mobRendererProgram,'isNight')
     glCache.mob_vertPos=gl.getAttribLocation(mobRendererProgram,'vertPos')
     gl.enableVertexAttribArray(glCache.mob_vertPos)
     glCache.mob_vertColor=gl.getAttribLocation(mobRendererProgram,'vertColor')
@@ -10839,6 +11300,7 @@ let initGlCache=function(glCache){
     gl.enableVertexAttribArray(glCache.trail_vertPos)
     glCache.trail_vertColor=gl.getAttribLocation(trailRendererProgram,'vertCol')
     gl.enableVertexAttribArray(glCache.trail_vertColor)
+    glCache.trail_isNight=gl.getUniformLocation(trailRendererProgram,'isNight')
     
     return glCache
     
@@ -10886,7 +11348,7 @@ class Mesh {
                 }
             }
             
-            addBox=function(x,y,z,w,h,l,rot,col,physics=true,textures=true){
+            addBox=function(x,y,z,w,h,l,rot,col,physics=true,textures=true,mesh=true){
                 
                 rot=rot||[0,0,0]
                 
@@ -10960,6 +11422,8 @@ class Mesh {
                     h=0
                     l=0
                 }
+                
+                if(!mesh){return}
                 
                 verts.push(
                     
@@ -11127,7 +11591,7 @@ class Mesh {
                 index.push(..._index)
             }
             
-            addCylinder=function(x,y,z,rad,hei,sides,r,g,b,a,rx,ry,rz,r2,physics=true,shading=true){
+            addCylinder=function(x,y,z,rad,hei,sides,r,g,b,a,rx,ry,rz,r2,shading=true){
                 let rad2=r2??rad,vl=verts.length/10,_verts=[],_index=[]
                 
                 for(let t=0,inc=MATH.TWO_PI/sides;t<=MATH.TWO_PI;t+=inc){
@@ -11204,31 +11668,15 @@ class Mesh {
                 
                 verts.push(..._verts)
                 
-                if(physics){
-                    
-                    let B=new CANNON.Body({
-                        
-                        shape:new CANNON.Box(new CANNON.Vec3(r,r,hei*0.5)),
-                        mass:0,
-                        position:new CANNON.Vec3(x,y,z),
-                        quaternion:new CANNON.Quaternion(...rotQuat),
-                        collisionFilterGroup:STATIC_PHYSICS_GROUP,
-                        collisionFilterMask:PLAYER_PHYSICS_GROUP,
-                        
-                    })
-                    
-                    B.parentMeshGlobalID=DIS.meshGlobalID
-                    world.addBody(B)
-                }
             }
             
-            addSphere=function(x,y,z,rad,detail,r,g,b,a,textures){
+            addSphere=function(x,y,z,rad,detail,r,g,b,a,ys=1){
                 
                 let _m=MATH.icosphere(detail),_verts=[],_index=[]
                 
                 for(let i=0,l=_m.verts.length;i<l;i+=3){
                     
-                    _verts.push(_m.verts[i]*rad+x,_m.verts[i+1]*rad+y,_m.verts[i+2]*rad+z,r,g,b,a,textures?(Math.atan2(_m.verts[i],_m.verts[i+2])/3.14159)*0.5+0.5:0,textures?_m.verts[i+1]*0.5+0.5:0,0)
+                    _verts.push(_m.verts[i]*rad+x,_m.verts[i+1]*rad*ys+y,_m.verts[i+2]*rad+z,r,g,b,a,0,0,0)
                 }
                 
                 for(let i in _m.index){
@@ -11689,7 +12137,7 @@ let textures=(function(out){
         t(i,i*50+30,40)
     }
     
-    let chars=['+','⇆',',','/','.']
+    let chars='+⇆,/-:'
     
     for(let i=0;i<chars.length;i++){
         
@@ -11891,7 +12339,7 @@ let gear={
             mesh:function(box,cylinder,sphere){
                 
                 sphere(0,0.5,0,0.5*1.414,2,1.6,0.4,1.6)
-                cylinder(0,0.65,0,0.26*1.414,0.075,10,0.2,2,1,90,0,0)
+                cylinder(0,0.65,0,0.26*1.414,0.075,10,0.6,20,2,90,0,0)
                 cylinder(0,0.85,0,0.15,0.2,10,0.2,2,1,90,0,0)
                 cylinder(0,0.35,0,0.52*0.5*1.415,0.45,10,1.6,0.4,1.6,90,0,0)
                 box(-0.1,0.4,0.32,0.05,0.1,0.1,false,[0.2,2,1])
@@ -11977,7 +12425,7 @@ let gear={
                 
                 stats.capacityMultiplier*=1.75
                 stats.redFieldCapacity*=1.5
-                stats.redPollen*=2
+                stats.redPollen*=1.75
                 stats.beeAttack*=1.25
                 stats.redBeeAttack+=2
                 stats.whiteBeeAttack+=1
@@ -12218,6 +12666,23 @@ let gear={
 
 player=(function(out){
     
+    out.sunSwitchTimer=60
+    out.skyColor=[0.4,0.6,1]
+    out.updateMapLightTimer=0
+    out.isNight=0.999
+    
+    out.turnNight=function(){
+        
+        out.targetLight=NIGHT_DARKNESS
+    }
+    
+    out.turnDay=function(){
+        
+        out.targetLight=1
+    }
+    
+    out.turnDay()
+    
     out.radioactiveParticleTimer=0
     out.setting_enablePollenText=true
     
@@ -12225,6 +12690,7 @@ player=(function(out){
         
         out.health-=am-am*out.defense
         out.stats.coconutShield++
+        textRenderer.add((am|0)+'',[out.body.position.x,out.body.position.y+Math.random()*1.5+1.5,out.body.position.z],[255,0,0],0,'',1.25)
     }
     
     out.lagPos=[0,0,0]
@@ -12552,9 +13018,9 @@ player=(function(out){
         
         out.hiveBalloon.displaySize+=(out.hiveBalloon.size-out.hiveBalloon.displaySize)*0.015
         
-        meshes.explosions.instanceData.push(out.hivePos[0]+1.5,out.hivePos[1]-1.5+out.hiveBalloon.displaySize*0.5,out.hivePos[2]+3,0,0,0.6,0.75,out.hiveBalloon.displaySize,1.05)
+        meshes.explosions.instanceData.push(out.hivePos[0]+1.5,out.hivePos[1]-1.5+out.hiveBalloon.displaySize*0.5,out.hivePos[2]+3,0,0,0.6*player.isNight,0.75,out.hiveBalloon.displaySize,1.05)
             
-        meshes.cylinder_explosions.instanceData.push(out.hivePos[0]+1.5,out.hivePos[1]-2.5,out.hivePos[2]+3,1,1,1,1,0.05,40)
+        meshes.cylinder_explosions.instanceData.push(out.hivePos[0]+1.5,out.hivePos[1]-2.5,out.hivePos[2]+3,player.isNight,player.isNight,player.isNight,1,0.05,40)
         
         textRenderer.addSingle(p,[out.hivePos[0]+1.5,out.hivePos[1]-1.6+out.hiveBalloon.displaySize*0.5,out.hivePos[2]+3],COLORS.whiteArr,-1)
         
@@ -13132,7 +13598,7 @@ player=(function(out){
             out.sprinklers[out.currentSprinkler].set(player.fieldIn,player.flowerIn.x,player.flowerIn.z)
             out.currentSprinkler=(out.currentSprinkler+1)%(out.sprinklers.length)
             
-            out.sprinklerMesh.setMeshFromFunction(function(box){
+            out.sprinklerMesh.setMeshFromFunction(function(box,a,cylinder){
                 
                 for(let i in out.sprinklers){
                     
@@ -13140,7 +13606,19 @@ player=(function(out){
                     
                     if(s.field){
                         
-                        box(s.x+fieldInfo[s.field].x,fieldInfo[s.field].y+0.35,s.z+fieldInfo[s.field].z,0.3,1.2,0.3,false,[0.2,0.2,0.2],false,false)
+                        let x=s.x+fieldInfo[s.field].x,
+                            y=fieldInfo[s.field].y+0.5,
+                            z=s.z+fieldInfo[s.field].z
+                        
+                        // box(x,y,z,0.3,1.2,0.3,false,[0.3,0.3,0.3],false,false)
+                        cylinder(x,y+0.25,z,0.15,2.5,10,0.9,0.9,0.5,1,90,0,0)
+                        cylinder(x,y+1.5,z,0.2,0.15,10,1,1,0.5,1,90,0,0)
+                        box(x,y+0.7,z,0.9,0.9,0.35,false,[0.2,10,10],false,false)
+                        cylinder(x+0.4,y+1.1,z,0.25,0.35,10,0.2,10,10,1,0,0,0,0.25,false)
+                        cylinder(x-0.4,y+1.1,z,0.25,0.35,10,0.2,10,10,1,0,0,0,0.25,false)
+                        cylinder(x,y+0.7,z,0.3,0.375,10,0.5,0.5,0.5,1,0,0,0,0.25,false)
+                        cylinder(x,y+0.7,z,0.1,0.5,10,0.2,10,10,1,0,0,0,0.1,false)
+                        
                     }
                 }
             })
@@ -13440,8 +13918,60 @@ player=(function(out){
             ctx.drawImage(texCanvas,beeInfo[bee].u*2048,beeInfo[bee].v*2048,128,128,-45,-95+Math.sin(TIME*2)*7,90,90)
             
             ctx.setTransform(1,0,0,1,0,0)
-            
         }
+        
+        out.sunSwitchTimer-=dt
+        
+        if(out.sunSwitchTimer<=0){
+            
+            if(out.isNight<0.9){
+                
+                out.turnDay()
+                out.sunSwitchTimer=4*60
+                
+            } else {
+                
+                out.turnNight()
+                out.sunSwitchTimer=1.5*60
+            }
+        }
+        
+        if(out.isNight!==out.targetLight){
+            
+            out.isNight=MATH.constrain(out.isNight+(dt/7.5)*Math.sign(out.targetLight-out.isNight),NIGHT_DARKNESS,1)
+            
+            vec3.scale(out.skyColor,[0.4,0.6,1],MATH.map(out.isNight,NIGHT_DARKNESS,1,0,1))
+            
+            gl.useProgram(staticGeometryProgram)
+            gl.uniform1f(glCache.static_isNight,out.isNight)
+            gl.useProgram(dynamicGeometryProgram)
+            gl.uniform1f(glCache.dynamic_isNight,out.isNight)
+            gl.useProgram(tokenGeometryProgram)
+            gl.uniform1f(glCache.token_isNight,out.isNight)
+            gl.useProgram(flowerGeometryProgram)
+            gl.uniform1f(glCache.flower_isNight,out.isNight)
+            gl.useProgram(beeGeometryProgram)
+            gl.uniform1f(glCache.bee_isNight,out.isNight)
+            gl.useProgram(mobRendererProgram)
+            gl.uniform1f(glCache.mob_isNight,out.isNight)
+            gl.useProgram(trailRendererProgram)
+            gl.uniform1f(glCache.trail_isNight,out.isNight)
+            
+            out.updateMapLightTimer-=dt
+            
+            if(out.updateMapLightTimer<=0){
+                
+                UPDATE_MAP_MESH()
+                out.updateMapLightTimer=0.25
+                out.keepMapUpToDate=true
+            }
+            
+        } else if(out.keepMapUpToDate){
+            
+            out.keepMapUpToDate=false
+            UPDATE_MAP_MESH()
+        }
+        
     }
     
     out.addMessage=function(m,color=[30,70,255]){
@@ -13791,7 +14321,7 @@ player=(function(out){
                     f.level=Math.max(f.ogLevel,f.level-1)
                 }
                 
-                if(TIME-fieldInfo[i].haze.start<30&&TIME-fieldInfo[i].haze.delay>0.15){
+                if(TIME-fieldInfo[i].haze.start<30&&TIME-fieldInfo[i].haze.delay>0.07){
                     
                     fieldInfo[i].haze.delay=TIME
                     
@@ -14185,8 +14715,9 @@ let textRenderer=(function(out){
         '⇆':[0.1,0.14],
         ',':[0.2075,0.14],
         '/':[0.3,0.13],
-        '.':[0.4,0.13],
-        ':':[0.4,0.13],
+        '.':[0.2075,0.14],
+        '-':[0.4,0.13],
+        ':':[0.5,0.13],
         a:[0,0.25],
         b:[0.1,0.25],
         c:[0.2,0.25],
@@ -14284,7 +14815,7 @@ let textRenderer=(function(out){
         
     }
     
-    out.addSingle=function(message,pos,color,scale=1,splitCommas=true,addCommas=true,offx=0){
+    out.addSingle=function(message,pos,color,scale=1,splitCommas=true,addCommas=true,offx=0,offy=0){
         let m=message
         
         if(splitCommas){
@@ -14311,7 +14842,7 @@ let textRenderer=(function(out){
         
         for(let i=0;i<m.length;i++){
             
-            out.instanceData.push(pos[0],pos[1],pos[2],(i-((m.length-1)*0.5))*(!splitCommas?0.135:0.145)+offx,0,charUV[m[i]][0],charUV[m[i]][1],color[0]*MATH.INV_255,color[1]*MATH.INV_255,color[2]*MATH.INV_255,s,s,0)
+            out.instanceData.push(pos[0],pos[1],pos[2],(i-((m.length-1)*0.5))*(!splitCommas?0.135:0.145)+offx,offy,charUV[m[i]][0],charUV[m[i]][1],color[0]*MATH.INV_255,color[1]*MATH.INV_255,color[2]*MATH.INV_255,s,s,0)
             
         }
         
@@ -14442,9 +14973,13 @@ let textRenderer=(function(out){
             p[0]/=p[3]
             p[1]/=p[3]
             
-            ctx.font=(t.scale/p[2])+'px arial'
-            ctx.strokeText(t.message,p[0]*half_width+half_width,height-(p[1]*half_height+half_height))
-            ctx.fillText(t.message,p[0]*half_width+half_width,height-(p[1]*half_height+half_height))
+            if(p[2]>0){
+                
+                ctx.lineWidth=t.scale*0.2/p[2]
+                ctx.font=(t.scale/p[2])+'px arial'
+                ctx.strokeText(t.message,p[0]*half_width+half_width,height-(p[1]*half_height+half_height))
+                ctx.fillText(t.message,p[0]*half_width+half_width,height-(p[1]*half_height+half_height))
+            }
         }
         
         out.ctxData=[]
@@ -15379,7 +15914,7 @@ function star(innerRad,outerRad,thickness,depth,r,g,b,la=0.75,lb=0.25,x=0,y=0,z=
     index.push(..._index)
 }
 
-function c(x,y,z,rad,hei,sides,r,g,b,rx,ry,rz,r2,bottom,top,shading=true){
+function c(x,y,z,rad,hei,sides,r,g,b,rx,ry,rz,r2,bottom=true,top=true,shading=true){
     
     let rad2=r2??rad,vl=verts.length/6,_verts=[],_index=[]
     
@@ -15389,10 +15924,10 @@ function c(x,y,z,rad,hei,sides,r,g,b,rx,ry,rz,r2,bottom,top,shading=true){
             
             let t1=t-inc*0.5,t2=t+inc*0.5
             _verts.push(
-                Math.cos(t1)*rad,Math.sin(t1)*rad,hei*0.5,r*(Math.cos(t1)*0.4+0.8),g*(Math.cos(t1)*0.4+0.8),b*(Math.cos(t1)*0.4+0.8),
-                Math.cos(t1)*rad2,Math.sin(t1)*rad2,-hei*0.5,r*(Math.cos(t1)*0.4+0.8),g*(Math.cos(t1)*0.4+0.8),b*(Math.cos(t1)*0.4+0.8),
-                Math.cos(t2)*rad,Math.sin(t2)*rad,hei*0.5,r*(Math.cos(t2)*0.4+0.8),g*(Math.cos(t2)*0.4+0.8),b*(Math.cos(t2)*0.4+0.8),
-                Math.cos(t2)*rad2,Math.sin(t2)*rad2,-hei*0.5,r*(Math.cos(t2)*0.4+0.8),g*(Math.cos(t2)*0.4+0.8),b*(Math.cos(t2)*0.4+0.8))
+                Math.cos(t1)*rad,Math.sin(t1)*rad,hei*0.5,r*(Math.cos(t1)*0.1+0.9),g*(Math.cos(t1)*0.1+0.9),b*(Math.cos(t1)*0.1+0.9),
+                Math.cos(t1)*rad2,Math.sin(t1)*rad2,-hei*0.5,r*(Math.cos(t1)*0.1+0.9),g*(Math.cos(t1)*0.1+0.9),b*(Math.cos(t1)*0.1+0.9),
+                Math.cos(t2)*rad,Math.sin(t2)*rad,hei*0.5,r*(Math.cos(t2)*0.1+0.9),g*(Math.cos(t2)*0.1+0.9),b*(Math.cos(t2)*0.1+0.9),
+                Math.cos(t2)*rad2,Math.sin(t2)*rad2,-hei*0.5,r*(Math.cos(t2)*0.1+0.9),g*(Math.cos(t2)*0.1+0.9),b*(Math.cos(t2)*0.1+0.9))
             
             let _vl=_verts.length/6
             _index.push(_vl,_vl+1,_vl+2,_vl+3,_vl+2,_vl+1)
@@ -15911,6 +16446,91 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
 
 meshes.beetle.indexAmount=index.length
 
+meshes.mondoChick={}
+meshes.mondoChick.vertBuffer=gl.createBuffer()
+meshes.mondoChick.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+c(0,0.85,0,1.2,0.5,10,0.9,0.9,0.9,-90,0,0,1.5,true,true,true)
+c(0,0.85+0.5,0,0.7,0.5,10,0.9,0.9,0.9,-90,0,0,1.2,true,true,true)
+c(0,0.85+1-0.15,0,0.2,0.2,10,0.9,0.9,0.9,-90,0,0,0.7,true,true,true)
+
+for(let i=0;i<verts.length;i+=6){
+    
+    let _t=vec3.rotateX([],[verts[i],verts[i+1],verts[i+2]],[0,0,0],0.3)
+    
+    verts[i]=_t[0]
+    verts[i+1]=_t[1]
+    verts[i+2]=_t[2]
+}
+
+c(0,-0.85,0,1.5,0.5,10,0.9,0.9,0.9,-90,0,0,1.2,true,true,true)
+c(0,-0.85-0.5,0,1.2,0.5,10,0.9,0.9,0.9,-90,0,0,0.7,true,true,true)
+c(0,-0.85-1+0.15,0,0.7,0.2,10,0.8,0.8,0.8,-90,0,0,0.2,true,true,true)
+
+for(let i=0;i<verts.length;i+=6){
+    
+    verts[i]*=1.2
+    verts[i+1]*=1.2
+    verts[i+2]*=1.2
+}
+
+c(0,0.075,-0.8,0.15,0.4,10,1,0.5,0,0.001,90,0)
+
+b(0,0,0,1.5,1.5,1.5,1,1,0.6,15,0,0)
+b(0.9,0,0,0.2,0.5,0.75,1.2,0,0,15,20,0)
+b(-0.9,0,0,0.2,0.5,0.75,0,0,1.2,15,-20,0)
+b(0.5,-2,-0.4,1,0.1,2,1,0.5,0.1,0.001,-30,0)
+b(-0.5,-2,-0.4,1,0.1,2,1,0.5,0.1,0.001,30,0)
+
+let _s=MATH.icosphere(1),_vl=verts.length/6
+
+for(let i=0;i<_s.verts.length;i+=3){
+    
+    _s.verts[i]*=0.175
+    _s.verts[i+1]*=0.175
+    _s.verts[i+2]*=0.175
+    _s.verts[i+2]-=0.7
+    _s.verts[i+1]+=0.4
+    _s.verts[i]+=0.3
+    
+    verts.push(_s.verts[i],_s.verts[i+1],_s.verts[i+2],0,0,0)
+}
+
+
+for(let i in _s.index){
+    
+    index.push(_s.index[i]+_vl)
+}
+_s=MATH.icosphere(1)
+_vl=verts.length/6
+
+for(let i=0;i<_s.verts.length;i+=3){
+    
+    _s.verts[i]*=0.175
+    _s.verts[i+1]*=0.175
+    _s.verts[i+2]*=0.175
+    _s.verts[i+2]-=0.7
+    _s.verts[i+1]+=0.4
+    _s.verts[i]-=0.3
+    
+    verts.push(_s.verts[i],_s.verts[i+1],_s.verts[i+2],0,0,0)
+}
+
+
+for(let i in _s.index){
+    
+    index.push(_s.index[i]+_vl)
+}
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.mondoChick.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.mondoChick.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.mondoChick.indexAmount=index.length
+
 meshes.petalShuriken={}
 meshes.petalShuriken.vertBuffer=gl.createBuffer()
 meshes.petalShuriken.indexBuffer=gl.createBuffer()
@@ -16097,8 +16717,8 @@ meshes.shiningDiamond.indexBuffer=gl.createBuffer()
 verts=[]
 index=[]
 
-c(0,0,0,1,1.25,10,1,1,1,-90,0,0,0,true,false,false)
-c(0,0.875,0,0.6,0.5,10,1,1,1,-90,0,0,1,false,true,false)
+c(0,0,0,1,1.25,10,100,100,100,-90,0,0,0,true,false,false)
+c(0,0.875,0,0.6,0.5,10,100,100,100,-90,0,0,1,false,true,false)
 
 gl.bindBuffer(gl.ARRAY_BUFFER,meshes.shiningDiamond.vertBuffer)
 gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
@@ -16145,13 +16765,12 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
 
 meshes.scratch.indexAmount=index.length
 
-let mesh=new Mesh(true)
+player.createdMesh=`
+    
+    box(23,-1,4,1,1,1,false,[1,0,0],false,false);
+box(23,-1,6,1,1,1,false,[0,0,1],false,false);    
+box(23,-1,8,1,1,1,false,[1,1,1],false,false);    
 
-    // box(player.hivePos[0]+7.5-5.9,player.hivePos[1],player.hivePos[2]-0.75,4.55,17.5,1,false,COLORS.honey_normalized,true)
-    
-mesh.setMeshFromFunction(function(box,a,cylinder,sphere,d,e,star){
-    
-    player.createdMesh=`
     
     box(5,-1.5,20,10,0.1,10,false,[1,1,1],false,false)
     box(0,-2,0,500,1,500,false,[0,0.8,0]);
@@ -16167,20 +16786,20 @@ box(60.5,0,-19,50,4.29,50,false,[1*0.8,0.7*0.8,0.3*0.8]);
 box(53,-1.5,-19,50,0.1,50,false,[0.4,0.3,0.2],false);
 box(60.5,0,7.6,50,16,14,false,[1*0.8,0.7*0.8,0.3*0.8]);
 
-box(7.5,0,-24.5,30,25,19,false,[0.3,0.7,1.2],true,false);
-box(7.5,7,-26,30,21,10,false,[0.3,0.7,1.2],true,false);
-box(7.5,12,-29.2,30,21,4.5,false,[0.3,0.7,1.2],false,false);
-box(7.5,22.775,-41.4,30,7,20,false,[0.3,0.7,1.2],true,false);
-box(7.5,17.85,-24.5,30,4,21.5,[40,0,0],[0.3,0.7,1.2],true,false);
-box(25,0,-46,47,52.55,9,false,[0.3,0.7,1.2],true,false);
-box(65,0,-51,33,62,9,false,[0.3,0.7,1.2],true,false);
-box(80,0,-30,4,62,50,false,[0.3,0.7,1.2],true,false);
-box(82,0,-11,4,62,55.5,[0,-75,0],[0.3,0.7,1.2],true,false);
-box(56.5,0,24.2-4.5+1,4,62,53,false,[0.3,0.7,1.2],true,false);
+box(7.5,0,-24.5,30,25,19,false,WALL,true,false);
+box(7.5,7,-26,30,21,10,false,WALL,true,false);
+box(7.5,12,-29.2,30,21,4.5,false,WALL,false,false);
+box(7.5,22.775,-41.4,30,7,20,false,WALL,true,false);
+box(7.5,17.85,-24.5,30,4,21.5,[40,0,0],WALL,true,false);
+box(25,0,-46,47,52.55,9,false,WALL,true,false);
+box(65,0,-51,33,62,9,false,WALL,true,false);
+box(80,0,-30,4,62,50,false,WALL,true,false);
+box(72.5,0,-5.5,4,62,18,[0,-75,0],WALL,true,false);
+box(64,0,24.2-4.5+1,4,62,53,false,WALL,true,false);
 box(30,0,-34.5,65,25.05,19,false,[0,0.8,0],true,false);
 box(57,0,-26,5,21,5,[0,45,0],[0,0.8,0],true,false);
-box(52,0,-41.5,21,31,20,false,[0,0.8,0],true,false);
-box(57,16.75,-49,21,2.5,36,[0,45,0],[0,0.8,0],true,false);
+box(52,0,-40,21,31,20,false,[0,0.8,0],true,false);
+box(55,16.75,-47,21,2.5,36,[0,55,0],[0,0.8,0],true,false);
 box(70,18,-29,21,5,50,false,[0,0.8,0],true,false);
 box(61,12,-40.5,3,8,31,false,[0,0.8,0],true,false);
 box(72,12,-16,25,8,3,false,[0,0.8,0],true,false);
@@ -16193,14 +16812,14 @@ box(75.25,24,-16.5,1.5,12,1.5,[-14,10,0],[0.9,0.9,1],true,false);
 box(75,23.5,-16-0.5,2.25,2,2.25,[0,10,0],[0.7,0.7,1],true,false);
 box(75,23.5,-26,2,2,2,[0,-6,0],[0.7,0.7,1],true,false);
 box(75,29,-21,1.755,11,1.5,[-90,0.6,3],[0.7,0.7,1],true,false);
-cylinder(75,27.5,-23.5,0.1,2,5,0.6,0.5,0.1,1,90,0,0,0.1,false);
-cylinder(75,27.5,-21.5,0.1,2,5,0.6,0.5,0.1,1,90,0,0,0.1,false);
-cylinder(75,27.5,-19.5,0.1,2,5,0.6,0.5,0.1,1,90,0,0,0.1,false);
+cylinder(75,27.5,-23.5,0.1,2,5,0.6,0.5,0.1,1,90,0,0,0.1);
+cylinder(75,27.5,-21.5,0.1,2,5,0.6,0.5,0.1,1,90,0,0,0.1);
+cylinder(75,27.5,-19.5,0.1,2,5,0.6,0.5,0.1,1,90,0,0,0.1);
 box(75,25.5,-23.5,0.2,3.5,1.5,[6,-5,0],[0.86,1,1.7],true,false);
 box(75,25.5,-21.5,0.2,3.5,1.5,[0,5,0],[0.9,1,1.7],true,false);
 box(75,25.5,-19.5,0.2,3.5,1.5,[-8,6,0],[0.86,1,1.7],true,false);
-cylinder(68,23,-21.5,2.4,0.6,18,0.9,0.9,1.1,1,90,0,0,2.4,false);
-cylinder(68,22.95,-21.5,2.6,0.6,18,0.4,0.4,0.6,1,90,0,0,2.6,false);
+cylinder(68,23,-21.5,2.4,0.6,18,1.3,1.3,1.6,1,90,0,0,2.4);
+cylinder(68,22.95,-21.5,2.6,0.6,18,0.4,0.4,0.6,1,90,0,0,2.6);
 box(63,7,-5,20,18,18,[1,-11,0],[0.5,0.5,0.5]);
 box(69,19,-4.5,27,8,5,[0,-10,7],[1*0.6,0.7*0.6,0.3*0.6]);
 
@@ -16254,27 +16873,27 @@ box(17.75,13.25,-40.5,0.5,0.5,2.32,false,[1,0,0],true,false);
 box(18.25,13.25,-40.5,0.5,0.5,2.32,false,[0,0.4,1],true,false);
 
 cylinder(18,15,-40.5,1.25,2.5,15,1,1,1,1,90,0,0);
-cylinder(18,15,-39.25,0.75,0.05,15,0.5,0.4,0,1,false);
-cylinder(18,15.5,-39.2,0.125,0.05,5,0.3,0.2,0,1,false);
-cylinder(18.35,15.2,-39.2,0.125,0.05,5,0.3,0.2,0,1,false);
-cylinder(17.9,15.1,-39.2,0.125,0.05,5,0.3,0.2,0,1,false);
+cylinder(18,15,-39.25,0.75,0.05,15,0.5,0.4,0,1);
+cylinder(18,15.5,-39.2,0.125,0.05,5,0.3,0.2,0,1);
+cylinder(18.35,15.2,-39.2,0.125,0.05,5,0.3,0.2,0,1);
+cylinder(17.9,15.1,-39.2,0.125,0.05,5,0.3,0.2,0,1);
 cylinder(18,16.5,-40.5,1.5,0.5,15,0.7,0.7,0.7,0.2,90,0,0);
 
 
-cylinder(40,15,-40.5,0.75,7,15,1,0.7,0.3,1,90,0,0,0.5,false);
+cylinder(40,15,-40.5,0.75,7,15,1,0.7,0.3,1,90,0,0,0.5);
 box(38.5,18,-40.5,4,0.3,5,[20,-90,0],[0,0.9,0],false,false)
 box(39.2,18,-39,4,0.3,4.5,[20,-45,0],[0,0.9,0],false,false)
 box(40,18,-39,4,0.3,4.7,[20,45,0],[0,0.9,0],false,false)
 box(41.5,18,-40.5,4.3,0.3,4,[20,70,0],[0,0.9,0],false,false)
 
 
-cylinder(68,21,-45,1,6,18,1,0.2,0,1,0.001,100,8,0,false);
-cylinder(71.4,21.5,-45.6,0.5,1,18,1,0.2,0,1,0.001,100,8,1,false);
+cylinder(68,21,-45,1,6,18,1,0.2,0,1,0.001,100,8,0);
+cylinder(71.4,21.5,-45.6,0.5,1,18,1,0.2,0,1,0.001,100,8,1);
 box(72,21.7,-45.7,2,0.2,0.2,[0,0,25],[0,0.6,0],false,false);
 
 
-cylinder(76,21.2,-39,1.5,7,18,1,0.8,0,1,-11,5,8,0,false);
-cylinder(76.25,21.99,-35.1,0.75,1,18,1,0.8,0,1,-11,5,8,1.53,false);
+cylinder(76,21.2,-39,1.5,7,18,1,0.8,0,1,-11,5,8,0);
+cylinder(76.25,21.99,-35.1,0.75,1,18,1,0.8,0,1,-11,5,8,1.53);
 box(76.25,21.99,-34.5,0.2,0.2,3,[-30,0,0],[0,0.6,0],false,false);
 
 sphere=arguments[3];
@@ -16310,9 +16929,261 @@ box(35.5,5.9,13.5+8.75-2.4,1.5,2.8,1.5,[45,0,0],[1,0,0.2],true,false);
 box(35.5,5.9,13.5+8.75+2.4,1.5,2.8,1.5,[-45,0,0],[1,0,0.2],true,false);
 box(35.5,9.5,13.5+8.75,0.75,5,16,false,[0.95,0.05,0.05],true,false);
 box(35.5,4,13.5+8.75,1.2,6,5,[90,0,0],[0,0.8,0,0.6],false,false);
+box(62,20,13.5+8.75,15,11.25,11.25,[45,0,0],[0.95,0.05,0.05],true,false);
+box(52,12.5,13.5+8.75,9,1.25,7,false,[0.95,0.05,0.05],true,false);
+box(59,14,13.5+8.75,10,8,8,[45,0,0],[1,1,1],false,false);
+box(62,15,13.5+8.75,15,10,16,false,[0.95,0.05,0.05],true,false);
+box(61,23.5,12.15+14,17,2,13,[45,0,0],[1,1,1],true,false);
+box(61,23.5,14.85-14+8.75*2,17,2,13,[-45,0,0],[1,1,1],true,false);
+box(51.75,6,13.5+8.75,1,12,6,false,[1,1,1],false,false);
+box(35.25,12.5,13.5+8.75,1.5,1.5,17,false,[1,1,1],true,false);
+box(40.5,6,12.25+8.75*2,9,12,0.25,false,[1,1,1],false,false);
+box(48.75,3.5,20.25+8.75,3,3,1,false,[0.2,0.2,0.2],true,true);
+box(48.75,3.5,20.2+8.75,2,2,1,false,[1000,0,0],false,false);
+box(34.5,9.5,-25.25,3,3,1,[0,0,45],[0.2,0.2,0.2],true,true);
+box(34.5,9.5,-25.2,2,2,1,[0,0,45],[0,1000,1000],false,false);
+
+box(40.5,10,13,0.25,5.5,0.25,[25,0,0],[0.4,0.2,0.1],false,false);
+box(42.5,10,13,0.25,5.5,0.25,[25,0,0],[0.4,0.2,0.1],false,false);
+box(41.5,10+Math.cos(25*0.0174533)*2,13+Math.sin(25*0.0174533)*2,2,0.25,0.25,[0,0,0],[0.4,0.2,0.1],false,false);
+box(41.5,10+Math.cos(25*0.0174533),13+Math.sin(25*0.0174533),2,0.25,0.25,[0,0,0],[0.4,0.2,0.1],false,false);
+box(41.5,10,13,2,0.25,0.25,[0,0,0],[0.4,0.2,0.1],false,false);
+box(41.5,10+Math.cos(25*0.0174533)*-1,13+Math.sin(25*0.0174533)*-1,2,0.25,0.25,[0,0,0],[0.4,0.2,0.1],false,false);
+box(41.5,10+Math.cos(25*0.0174533)*-2,13+Math.sin(25*0.0174533)*-2,2,0.25,0.25,[0,0,0],[0.4,0.2,0.1],false,false);
+box(41.5,10,13,2,5.5,0.4,[25,0,0],[0.4,0.2,0.1],true,true,false);
+
+box(40.5+8,4.7,15.5,0.25,6.5,0.25,[-15,0,0],[0.4,0.2,0.1],false,false);
+box(42.5+8,4.7,15.5,0.25,6.5,0.25,[-15,0,0],[0.4,0.2,0.1],false,false);
+box(41.5+8,4.7+Math.cos(15*0.0174533)*2,15.5-Math.sin(15*0.0174533)*2,2,0.25,0.25,[0,0,0],[0.4,0.2,0.1],false,false);
+box(41.5+8,4.7+Math.cos(15*0.0174533),15.5-Math.sin(15*0.0174533),2,0.25,0.25,[0,0,0],[0.4,0.2,0.1],false,false);
+box(41.5+8,4.7,15.5,2,0.25,0.25,[0,0,0],[0.4,0.2,0.1],false,false);
+box(41.5+8,4.7+Math.cos(15*0.0174533)*-1,15.5-Math.sin(15*0.0174533)*-1,2,0.25,0.25,[0,0,0],[0.4,0.2,0.1],false,false);
+box(41.5+8,4.7+Math.cos(15*0.0174533)*-2,15.5-Math.sin(15*0.0174533)*-2,2,0.25,0.25,[0,0,0],[0.4,0.2,0.1],false,false);
+box(41.5+8,4.7,15.5,2,7,0.4,[-15,0,0],[0.4,0.2,0.1],true,true,false);
 
 box(32.05+1.5,0,49.5+1.5,13,17.5,13,false,[1*0.4,0.7*0.4,0.3*0.4]);
 box(28.55,-5.175,49.5-7.44,3,20,20,[55,0,0],[1*0.4,0.7*0.4,0.3*0.4]);
+box(37.5,0,57,5,25,11,false,[0.5,0.5,0.5],true,true);
+box(32.1-0.5,0.5,57.5,9,25,10,false,[0.4,0.4,0.4],true,true);
+box(35,4.5,63,9,25,5,[0,10,14],[0.5,0.5,0.5],true,true);
+
+box(28-1.5,3.5,49.5-7-3,1.5,0.25,6,false,[1.2,0,0],false,false);
+box(28-1.5,3.1,46.15-7.5-3,1.5,0.25,2,[-25,0,0],[1.2,0,0],false,false);
+box(28-1.5*2,3.5,49.5-7-3,1.5,0.25,6,false,[1.2,1.2,1.2],false,false);
+box(28-1.5*2,3.1,46.15-7.5-3,1.5,0.25,2,[-25,0,0],[1.2,1.2,1.2],false,false);
+box(28-1.5*3,3.5,49.5-7-3,1.5,0.25,6,false,[1.2,0,0],false,false);
+box(28-1.5*3,3.1,46.15-7.5-3,1.5,0.25,2,[-25,0,0],[1.2,0,0],false,false);
+box(28-1.5*4,3.5,49.5-7-3,1.5,0.25,6,false,[1.2,1.2,1.2],false,false);
+box(28-1.5*4,3.1,46.15-7.5-3,1.5,0.25,2,[-25,0,0],[1.2,1.2,1.2],false,false);
+box(28-1.5*5,3.5,49.5-7-3,1.5,0.25,6,false,[1.2,0,0],false,false);
+box(28-1.5*5,3.1,46.15-7.5-3,1.5,0.25,2,[-25,0,0],[1.2,0,0],false,false);
+box(28-1.5*6,3.5,49.5-7-3,1.5,0.25,6,false,[1.2,1.2,1.2],false,false);
+box(28-1.5*6,3.1,46.15-7.5-3,1.5,0.25,2,[-25,0,0],[1.2,1.2,1.2],false,false);
+box(28-1.5*7,3.5,49.5-7-3,1.5,0.25,6,false,[1.2,0,0],false,false);
+box(28-1.5*7,3.1,46.15-7.5-3,1.5,0.25,2,[-25,0,0],[1.2,0,0],false,false);
+box(28-1.5*8,3.5,49.5-7-3,1.5,0.25,6,false,[1.2,1.2,1.2],false,false);
+box(28-1.5*8,3.1,46.15-7.5-3,1.5,0.25,2,[-25,0,0],[1.2,1.2,1.2],false,false);
+box(28-1.5*9,3.5,49.5-7-3,1.5,0.25,6,false,[1.2,0,0],false,false);
+box(28-1.5*9,3.1,46.15-7.5-3,1.5,0.25,2,[-25,0,0],[1.2,0,0],false,false);
+box(28-1.5*4.5,3.5,49.5-7-3,15,0.5,6,false,[1.2,0,0],true,false,false);
+box(28-1.5*4.5,3.1,46.15-7.5-3,15,0.5,2,[-25,0,0],[1.2,0,0],true,false,false);
+
+box(13.5,-0.3,40-3,0.4,4,0.8,false,[1.05,1.05,1.05],false,false);
+box(13.5,-0.3,42-3,0.4,4,0.8,false,[1.05,1.05,1.05],false,false);
+box(13.5,-0.3,44-3,0.4,4,0.8,false,[1.05,1.05,1.05],false,false);
+box(13.5,-0.3,38-3,0.4,4,0.8,false,[1.05,1.05,1.05],false,false);
+box(13.5,-0.3,36-3,0.4,4,0.8,false,[1.05,1.05,1.05],false,false);
+box(13.5,0.8,39-1.5,0.4,12,0.5,[91,0,0],[1.05,1.05,1.05],false,false);
+box(13.5,-0.3,39-1.5,0.4,12,0.5,[88,0,0],[1.05,1.05,1.05],false,false);
+box(13.5,-0.3,39-3,0.4,4,12,false,[1.05,1.05,1.05,0.5],true,false,false);
+box(20.75,-2,42,14,7.375,0.5,false,[0.4,0.25,0.08],true,false);
+box(20.75,-1.5,42.15,13.9,9.75,0.75,false,[0.4,0.3,0.2,0.9],true,false);
+box(21.25,-1.5,49.5-7-3,15,0.25,10,false,[0.9,0,0],false,false);
+
+box(-15,0,57.25,91,4,30,false,[0.9,0.9,0.1],true,false);
+
+function sunflower(x,y,z,s,f){
+    
+   
+   cylinder(x+0.15*s,y,z-0.15*s,0.4*s,1.5*s,10,0,0.6,0,1,90,0,0,0.4*s);
+   cylinder(x,y+1.5*s,z,0.4*s,1.5*s,10,0,0.6,0,1,90,0,0,0.4*s);
+
+   cylinder(x,y+3.2*s,z,0.75*s,0.9*s,10,0.5,0.4,0.1,1,0.001,f?0:-90,0,0.75*s);
+
+   if(f){
+         
+       for(let j=0;j<6.28318;j+=6.28318/5){
+       
+           cylinder(x+Math.sin(j)*s,y+3.2*s+Math.cos(j)*s,z,0.7*s,0.8*s,10,1.1,1.1,0,1);
+       }
+    } else {
+        
+       for(let j=0;j<6.28318;j+=6.28318/5){
+       
+           cylinder(x,y+3.2*s+Math.sin(j)*s,z+Math.cos(j)*s,0.7*s,0.8*s,10,1.1,1.1,0,1,0.001,-90,0);
+       }
+    }
+}
+
+sunflower(26,-1,30,0.8,0)
+sunflower(15,-1,19,0.7,0)
+sunflower(26.4,-1,19,0.5,0)
+sunflower(16,-1,15,0.875,1)
+sunflower(16,-1,15,0.875,1)
+
+
+function mushroom(x,y,z,s){
+    
+    cylinder(x,y,z,0.4*s,s*2,10,0.9,0.9,0.6,1,90,0,0,0.4*s);
+    cylinder(x,y+1.375*s,z,1.4*s,s,10,1,0,0,1,90,0,0);
+    cylinder(x,y+2.125*s,z,1.4*s,s*0.5,10,1,0,0,1,90,0,0,s*0.6);
+    box(x+1.375*s,y+s*1.4,z,0.4*s,s*0.1,0.4*s,[0,30,90],[1.1,1.1,1.1],false,false);
+    box(x+0.45*s,y+s*2,z-s*1,0.5*s,s*0.1,0.5*s,[80,-60,90],[1.1,1.1,1.1],false,false);
+    box(x-1*s,y+s*2.1,z,0.5*s,s*0.1,0.5*s,[0,0,35],[1.1,1.1,1.1],false,false);
+    box(x,y+s*1.55,z+s*1.35,0.5*s,s*0.5,0.1*s,[0,0,20],[1.1,1.1,1.1],false,false);
+    box(x-s*0.95,y+s*1.55,z-s*0.95,0.5*s,s*0.5,0.1*s,[0,45,0],[1.1,1.1,1.1],false,false);
+    box(x+0.6*s,y+s*2.175,z+s*0.6,0.5*s,s*0.1,0.5*s,[32,45,0],[1.1,1.1,1.1],false,false);
+
+}
+
+mushroom(9,1,32,2.5,0)
+mushroom(-3,0,38,1.3,0)
+mushroom(-6,-1,29,0.5,0)
+box(5.5,-1.25,41.5,5,4,6,[0,62,0],[0,0.5,0],false,true);
+box(5.5,-0.1,41.5,3,4,4,[0,22,0],[0,0.5,0],false,true);
+
+function strawberry(x,y,z,s,f){
+    
+    cylinder(x,y+1.375*s,z,s,s,10,1,0,0,1,90,0,0,0.8*s);
+    cylinder(x,y+2.125*s,z,0.8*s,s*0.5,10,1,0,0,1,90,0,0,0);
+    cylinder(x,y+0.725*s,z,0.5*s,s*0.3,10,1,0,0,1,90,0,0,s);
+
+    for(let i=0;i<6.28318;i+=6.28318/4){
+
+        box(x+Math.sin(i)*0.5*s,y+0.5*s,z+Math.cos(i)*0.5*s,1*s,s*0.15,1*s,[Math.random()*20+7,i*59.29578,0],[0,0.6,0],false,false);
+    }
+
+    box(x+0.7*s,y+1.4*s,z+0.5*s,0.1*s,s*0.1,0.1*s,false,[0.8,0.8,0.6],false,false);
+    box(x-0.76*s,y+1.7*s,z-0.3*s,0.1*s,s*0.1,0.1*s,false,[0.8,0.8,0.6],false,false);
+    box(x-0.3*s,y+1.4*s,z-0.82*s,0.1*s,s*0.1,0.1*s,false,[0.8,0.8,0.6],false,false);
+    box(x+0.3*s,y+1.6*s,z-0.8*s,0.1*s,s*0.1,0.1*s,false,[0.8,0.8,0.6],false,false);
+    box(x+0.2*s,y+2.15*s,z-0.2*s,0.1*s,s*0.1,0.1*s,false,[0.8,0.8,0.6],false,false);
+    box(x+0*s,y+2.15*s,z+0.3*s,0.1*s,s*0.1,0.1*s,false,[0.8,0.8,0.6],false,false);
+    box(x-0.58*s,y+1.65*s,z+0.58*s,0.1*s,s*0.1,0.1*s,false,[0.8,0.8,0.6],false,false);
+    box(x+0.85*s,y+1.25*s,z-0.25*s,0.1*s,s*0.1,0.1*s,false,[0.8,0.8,0.6],false,false);
+    box(x-0.15*s,y+1.3*s,z+0.85*s,0.1*s,s*0.1,0.1*s,false,[0.8,0.8,0.6],false,false);
+    box(x+0.67*s,y+1.9*s,z+0.2*s,0.1*s,s*0.1,0.1*s,false,[0.8,0.8,0.6],false,false);
+    box(x-0.87*s,y+1.3*s,z+0*s,0.1*s,s*0.1,0.1*s,false,[0.8,0.8,0.6],false,false);
+    box(x-0.3*s,y+2.1*s,z-0.2*s,0.1*s,s*0.1,0.1*s,false,[0.8,0.8,0.6],false,false);
+}
+
+strawberry(21,2.1,48.5,1.25)
+strawberry(20,2.1,60,2)
+strawberry(18,2.1,59,0.9)
+strawberry(9,2.1,48,1)
+strawberry(8,2.1,60,1.5)
+
+box(17.27,0.9995,44.5,14,5,4,[0,0,20],[0.2,0.6,1.2],true,false);
+box(25,3.074,55.564,4,12,20,[-22.97,0,0],[0.2,0.6,1.2],true,false);
+box(26,2.74,44.5,6,6,4,false,[0.2,0.6,1.2],true,false);
+
+box(-11,4.5,62,7,8,3,false,[0,0,0,0.95],false,false);
+box(-6.5,4.5,62,3,7,3.75,[0,0,10],[0.4,0.4,0.4],false,true);
+box(-8.5,8,62,3,3,3.75,[0,0,50],[0.4,0.4,0.4],false,true);
+box(-10.5,8.5,62,3,3,3.75,[0,0,90],[0.4,0.4,0.4],false,true);
+box(-13,8,62,4,3,3.75,[0,0,35],[0.4,0.4,0.4],false,true);
+box(-15,4,62,3,7,3.75,[0,0,-5],[0.4,0.4,0.4],false,true);
+
+box(-16,3,59,0.2,10,0.1,[28,20,0],[1.2,1.2,1.2],false,false);
+box(-17,6,60,0.2,10,0.1,[38,0,0],[1.2,1.2,1.2],false,false);
+box(-18,6,60,0.2,10,0.1,[38,20,0],[1.2,1.2,1.2],false,false);
+box(-16,6,60,0.2,10,0.1,[38,-20,0],[1.2,1.2,1.2],false,false);
+box(-19,6,60.5,0.2,10,0.1,[38,40,0],[1.2,1.2,1.2],false,false);
+box(-18,4,60.5,0.2,10,0.1,[38,-40,0],[1.2,1.2,1.2],false,false);
+box(-18,4,60.5,0.2,10,0.1,[38,40,0],[1.2,1.2,1.2],false,false);
+box(-19,4,60.5,0.2,10,0.1,[38,10,0],[1.2,1.2,1.2],false,false);
+box(-15,4,59.5,0.2,10,0.1,[38,30,0],[1.2,1.2,1.2],false,false);
+box(-16+13,3,59,0.2,10,0.1,[28,20,0],[1.2,1.2,1.2],false,false);
+box(-17+13,6,60,0.2,10,0.1,[38,0,0],[1.2,1.2,1.2],false,false);
+box(-18+13,6,60,0.2,10,0.1,[38,20,0],[1.2,1.2,1.2],false,false);
+box(-16+13,6,60,0.2,10,0.1,[38,-20,0],[1.2,1.2,1.2],false,false);
+box(-19+13,6,60.5,0.2,10,0.1,[38,40,0],[1.2,1.2,1.2],false,false);
+box(-17+13,4,59,0.2,10,0.1,[38,-50,0],[1.2,1.2,1.2],false,false);
+box(-18+13,4,60.5,0.2,10,0.1,[38,-40,0],[1.2,1.2,1.2],false,false);
+box(-19+13,4,60.5,0.2,10,0.1,[38,10,0],[1.2,1.2,1.2],false,false);
+box(-14+13,4,59.5,0.2,10,0.1,[38,-30,0],[1.2,1.2,1.2],false,false);
+
+box(-11,-4.62,36.8,7,10,14,[-15,0,0],[0.9,0.9,0.1],true,false);
+box(-27+20,34-30,68.76-25.5,2,10,2,false,[0.3,0.6,1],true,false);
+box(-35+20,34-30,68.76-25.5,2,10,2,false,[0.3,0.6,1],true,false);
+box(-31+20,38-30,68.76-25.5,2,10,2,[0,0,90],[0.3,0.6,1],true,false);
+box(-28+20,36.75-30,68.75-25.5,2,3.5,2,[0,0,45],[0.3,0.6,1],true,false);
+box(-34+20,36.75-30,68.75-25.5,2,3.5,2,[0,0,-45],[0.3,0.6,1],true,false);
+box(-31+20,34-30,68.76-25.5,8,9,1.8,[0,0,90],[0,0.8,0,0.6],false,false);
+
+box(-4.5,3.5,42.5,0.8,4,0.4,false,[1.05,1.05,1.05],false,false);
+box(-4.5+2,3.5,42.5,0.8,4,0.4,false,[1.05,1.05,1.05],false,false);
+box(-4.5+4,3.5,42.5,0.8,4,0.4,false,[1.05,1.05,1.05],false,false);
+box(-4.5+6,3.5,42.5,0.8,4,0.4,false,[1.05,1.05,1.05],false,false);
+box(-4.5+6,3.5,42.5,0.8,4,0.4,false,[1.05,1.05,1.05],false,false);
+box(-4.5+2,4.5,42.5,0.5,8,0.4,[0,0,92],[1.05,1.05,1.05],false,false);
+box(-4.5+2,3.25,42.5,0.5,8,0.4,[0,0,89],[1.05,1.05,1.05],false,false);
+box(-2.1,3,42.5-0.05,5,8,0.5,[0,0,90],[1.05,1.05,1.05],true,false,false);
+
+box(-17,3.5,42.5,0.8,4,0.4,false,[1.05,1.05,1.05],false,false);
+box(-17-2,3.5,42.5,0.8,4,0.4,false,[1.05,1.05,1.05],false,false);
+box(-17-4,3.5,42.5,0.8,4,0.4,false,[1.05,1.05,1.05],false,false);
+box(-17-6,3.5,42.5,0.8,4,0.4,false,[1.05,1.05,1.05],false,false);
+box(-17-6,3.5,42.5,0.8,4,0.4,false,[1.05,1.05,1.05],false,false);
+box(-17-2,4.5,42.5,0.5,8,0.4,[0,0,90],[1.05,1.05,1.05],false,false);
+box(-17-2,3.25,42.5,0.5,8,0.4,[0,0,86],[1.05,1.05,1.05],false,false);
+box(-19.4,3,42.5-0.05,5,8,0.5,[0,0,90],[1.05,1.05,1.05],true,false,false);
+
+function bamboo(x,y,z){
+    
+    cylinder(x,y,z,0.3,7,10,0.4,0.7,0.4,1,90,0,0);
+    cylinder(x,y+0.5,z,0.35,0.5,10,0.2,0.5,0.3,1,90,0,0);
+    cylinder(x,y-2.5,z,0.35,0.5,10,0.2,0.5,0.3,1,90,0,0);
+    cylinder(x,y+3.5,z,0.35,0.5,10,0.2,0.5,0.3,1,90,0,0);
+
+    for(let i=3;i<10;i++){
+         
+         box(x,y+i-6,z,0.95,0.2,0.2,[0,Math.random()*360,Math.random()*100-50],[0.15,0.6,0.3],false,false);
+    }
+
+}
+
+bamboo(-34,5.5,61)
+bamboo(-36,5.3,61)
+bamboo(-35,5.1,60)
+bamboo(-52,5.5,60.5)
+bamboo(-50.5,5.3,61)
+
+box(-38,3.5,45.75,13,4,7,false,[0.9,0.9,0.1],true,false);
+box(-54.5,0.48,54.8,4,5,20,[20,0,0],[0.2,0.6,1.2],true,false);
+box(-58.5,4.25,54.9,4,10,20,[-21,0,0],[0.2,0.6,1.2],true,false);
+box(-56.5,3.75,44.26,8,5,4,false,[0.2,0.6,1.2],true,false);
+
+box(-70.49,7,49,20,30,13.5,false,[0.6,0.6,0.6],true,true);
+box(-78,8.985,57.425,5,20,17,[33,0,0],[0.6,0.6,0.6],true,true);
+box(-110.5,0,95,100,25,100,false,[0.2,0.7,0.2],true,false);
+
+box(-37-7.5,19.255-7,85.5,0.5,15,14.95,[0,0,90],[1.1,1.1,0.1],false,false);
+box(-37-7.5,19.255+5,85.5,0.5,15.495,14.95,[0,0,90],[1.2,0.95,0.1],true,false);
+box(-37,17.5,85.5,0.5,14,15,false,[1.2,0.95,0.1],true,false);
+box(-37-15,17.5,85.5,0.5,14,15,false,[1.2,0.95,0.1],true,false);
+box(-37-7.5,17.5,85.5+7.5,0.5,14,15.5,[0,90,0],[1.2,0.95,0.1],true,false);
+box(-37-7.5,17.5+3.5,85.5-7.25,0.5,7,15.5,[0,90,0],[1.2,0.95,0.1],true,false);
+box(-37-7.5,17.5+3,85.5-7.25,0.6,4,15.49,[0,90,0],[1.2,1.2,1.2],true,false);
+box(-37-7.5+4,17.5,85.5-7.25,0.4,14,7,[0,90,0],[0.5,0.5,0,0.5],true,false);
+box(-37-7.5-5.75,17.5,85.5-7.25,0.4,14,3.95,[0,90,0],[0.5,0.5,0,0.5],true,false);
+
+box(-65,15.6,95,15,50,4,false,WALL,true,false);
+box(-82.9,15.6,113.05,45,50,4,[0,57.5,0],WALL,true,false);
+box(-102,15.6,122,45,50,4,[0,160,0],WALL,true,false);
+box(-120,15.6,92,4,50,60,false,WALL,true,false);
+box(-110,15.6,61.6,4,50,60,[0,-75,0],WALL,true,false);
+box(-82.5,15.6,5.75,4,50,100,false,WALL,true,false);
 
 function rose(x,y,z,s){
 
@@ -16335,13 +17206,15 @@ box(58.5,0,41,13,10,13,[0,40,0],[0.4,0.4,0.4]);
 box(55,0,36,8,7,8,[0,10,0],[0.4,0.4,0.4]);
 
 box(56,0,62.5,23,25,35,false,[0.2,0.7,0.2],true,false);
-box(32.5,0,82.5,60,25,40,false,[0.2,0.7,0.2],true,false);
+box(-5,0,82.5,150,25,40,false,[0.2,0.7,0.2],true,false);
+box(-25,0,82.5,110,25,40.15,false,[0.2,0.7,0.2],false,false);
 box(43,-5.6,51.8,6,37,20,[59,0,0],[0.2,0.5,1.1],true,false);
-box(56.5,0,82,4,62,28,false,[0.3,0.7,1.2],true,false);
-box(56.5,25.25,60,4,11.5,35,false,[0.3,0.7,1.2],true,false);
-box(53,15,90,16,6,20,false,[0.4,0.4,0.4]);
+box(58,0,90,4,62,28,false,WALL,true,false);
+box(60.595,0,74.215,4,62,9,[0,-45,0],WALL,true,false);
+box(64,25.25,60,4,11.5,35,false,WALL,true,false);
+box(53,15,90,016,6,20,false,[0.4,0.4,0.4]);
 box(53,13,81,10,5,10,[0,40,0],[0.45,0.45,0.45]);
-box(53,12,76,9,5,7,[0,15,0],[0.35,0.35,0.35]);
+///box(53,12,76,9,5,7,[0,15,0],[0.35,0.35,0.35]);
 
 function pineTree(x,y,z,s){
 
@@ -16369,12 +17242,12 @@ pineTree(45,15,75.5,0.5);
 function cactus(x,y,z,s,r){
 
     
-    cylinder(x,y,z,0.5*s,6*s,15*s,0,0.8,0,1,90,0,0,0.5*s,true,false);
+    cylinder(x,y,z,0.5*s,6*s,15*s,0,0.8,0,1,90,0,0,0.5*s,false);
     sphere(x,y+3*s,z,s,1,0,0.8,0,1);
-    cylinder(x,y,z,0.5*s,4*s,15*s,0,0.8,0,1,0,0,0,0.5*s,true,false);
+    cylinder(x,y,z,0.5*s,4*s,15*s,0,0.8,0,1,0,0,0,0.5*s,false);
     sphere(x,y,z-s*2*r,1.05*s,1,0,0.8,0,1);
     sphere(x,y,z+2*s*r,1.1*s,1,0,0.8,0,1);
-    cylinder(x,y+s,z+2*s*r,0.5*s,2*s,15*s,0,0.8,0,1,90,0,0,0.5*s,true,false);
+    cylinder(x,y+s,z+2*s*r,0.5*s,2*s,15*s,0,0.8,0,1,90,0,0,0.5*s,false);
     sphere(x,y+2*s,z+2*s*r,s,1,0,0.8,0,1);
 
     box(x+0.5*s,y,z+0.5*s*r,0.15,0.15,0.15,false,[0.5,0.5,0.5],false,false);
@@ -16421,11 +17294,11 @@ box(2.39,20.15,73.75,1,4,22.5,false,[1.2,1.2,1.2],true,false);
 box(-4.75,20.15,63,15,4,1,false,[1.2,1.2,1.2],true,false);
 box(-21.25,19.21,77.47,27.5,15,30,[0,0,-33.1],[0.65,0.65,0.65]);d
 
-box(20,9.2,95,82.5,62,4,[0,0,-15],[0.3,0.7,1.2],true,false);
-box(-51.5,14.2,95,43,62,4,[0,0,15],[0.3,0.7,1.2],true,false);
-box(-10,13,95,15,62,4,false,[0.3,0.7,1.2],true,false);
-box(-38,13,95,15,62,4,false,[0.3,0.7,1.2],true,false);
-box(-25,45.25,95,27.5,9,4,false,[0.3,0.7,1.2],true,false);
+box(20,9.2,95,82.5,62,4,[0,0,-15],WALL,true,false);
+box(-47.6,15.25,95,35,62,4,[0,0,15],WALL,true,false);
+box(-10,13,95,15,62,4,false,WALL,true,false);
+box(-38,13,95,15,62,4,false,WALL,true,false);
+box(-25,45.25,95,27.5,9,4,false,WALL,true,false);
 
 box(-22.25,32,69.75,8,10,4,false,[0.48,0.48,0.48]);
 box(-25,38,69,4,4,4.5,[0,0,20],[0.48,0.48,0.48]);
@@ -16436,7 +17309,7 @@ box(-28,36.75,68.76,2,3.5,2,[0,0,45],[0.3,0.6,1],true,false);
 box(-34,36.75,68.76,2,3.5,2,[0,0,-45],[0.3,0.6,1],true,false);
 box(-31,34,68.76,8,9,1.8,[0,0,90],[0,0.8,0,0.6],false,false);
 
-cylinder(30.85,5.5,-8,1.2,6,10,1,0,0,1,-40,-35,0,1.2,false);
+cylinder(30.85,5.5,-8,1.2,6,10,1,0,0,1,-40,-35,0,1.2);
 box(33,3,-8.5,1,2.5,2.5,[0,-35,0],[0.1,0.1,0.1],false,false);
 box(30.6,3,-10.2,1,2.5,2.5,[0,-35,0],[0.1,0.1,0.1],false,false);
 
@@ -16472,20 +17345,23 @@ box(-5-1.5,34.5+1.75,83.5,0.15+0.5,3.25,3.25,[0,0,90],[0,1.1,0],true,false);
 
 
 
-
-
-
-
 `
 
+let mesh=new Mesh(true)
 
+function UPDATE_MAP_MESH(){
     
-    let f=Object.constructor('box','a','cylinder','sphere','d','e','star',player.createdMesh)
-    
-    f(box,a,cylinder,sphere,d,e,star)
-})
+    mesh.setMeshFromFunction(function(box,a,cylinder,sphere,d,e,star){
+        
+        let f=Object.constructor('box','a','cylinder','sphere','d','e','star',player.createdMesh.replaceAll('WALL','['+(0.3*MATH.map(player.isNight,NIGHT_DARKNESS,1,0,1)+','+(0.7*MATH.map(player.isNight,NIGHT_DARKNESS,1,0,1))+','+(1.2*MATH.map(player.isNight,NIGHT_DARKNESS,1,0,1))+']')))
+        
+        f(box,a,cylinder,sphere,d,e,star)
+    })
 
-mesh.setBuffers()
+    mesh.setBuffers()
+}
+
+UPDATE_MAP_MESH()
 
 let flowers={},texSize=256/1024,texOffset=-1/1024
 
@@ -16628,7 +17504,7 @@ function collectPollen(params){
                 
                 let amountToCollect=Math.min(amount[f.color[0]],f.height*100),amp=amountToCollect*0.01
                 
-                f.height-=Math.min(params.depleteAll?f.height:(amp*3+multiplier[f.color[0]]*0.00025)/f.level,f.height)
+                f.height-=Math.min(params.depleteAll?f.height:amp/((f.level-1)*0.5+1),f.height)
                 
                 amountToCollect*=multiplier[f.color[0]]
                 amountToCollect*=f.level
@@ -16701,7 +17577,7 @@ function collectPollen(params){
         
         for(let i in stack){
             
-            textRenderer.add(stack[i].v,params.otherPos?[params.otherPos[0],params.otherPos[1]+yOffset+stackHeight*i,params.otherPos[2]]:[f.x+x,f.y+yOffset+stackHeight*i+((stack[i].v+'').length*0.25),f.z+z],COLORS[stack[i].c+'Arr'],crit[stack[i].c[0]])
+            textRenderer.add(stack[i].v,params.otherPos?[params.otherPos[0],params.otherPos[1]+yOffset+stackHeight*i,params.otherPos[2]]:[f.x+x,f.y+yOffset+stackHeight*i+((stack[i].v+'').length*0.3),f.z+z],COLORS[stack[i].c+'Arr'],crit[stack[i].c[0]])
             
         }
     }
@@ -16722,7 +17598,7 @@ function collectPollen(params){
     
     if(totalHoney&&player.setting_enablePollenText){
         
-        textRenderer.add(totalHoney,[player.body.position.x,player.body.position.y+yOffset*0.8+0.4+Math.random()*0.5,player.body.position.z],COLORS.honey,0,'+',0.85)
+        textRenderer.add(totalHoney,[player.body.position.x,player.body.position.y+yOffset*0.8+0.4+Math.random()*0.75,player.body.position.z],COLORS.honey,0,'+',0.85)
     }
     
     player.pollen=Math.min(player.pollen+Math.ceil((total.w+total.r+total.b+totalGoo)-totalHoney-totalGoo*0.1),player.capacity)
@@ -16861,7 +17737,7 @@ createField('mountainTopField',-35,33,73,15,15,function(){
     return 3
 },{r:0.5,b:0.5,w:0})
 
-createField('sunflowerField',15.5,-1.5,18,11,19,function(){
+createField('sunflowerField',15.5,-1.5,16,11,18,function(){
     
     let c=Math.random()
     
@@ -16871,6 +17747,50 @@ createField('sunflowerField',15.5,-1.5,18,11,19,function(){
     
     return Math.random()<0.1?2:1
 },{w:0.7,b:0.15,r:0.15})
+
+createField('mushroomField',-6,-1.5,29,19,13,function(){
+    
+    let c=Math.random()
+    
+    return Math.random()<0.69?'red':'white'
+    
+},function(){
+    
+    return Math.random()<0.9?1:2
+},{w:0.31,b:0,r:0.69})
+
+createField('strawberryField',7.5,2,47,15,15,function(){
+    
+    let c=Math.random()
+    
+    return Math.random()<0.69?'red':'white'
+    
+},function(){
+    
+    return Math.random()<0.04?3:Math.random()<0.8?2:1
+},{w:0.31,b:0,r:0.69})
+
+createField('spiderField',-20,2,47.5,19,14,function(){
+    
+    let c=Math.random()
+    
+    return 'white'
+    
+},function(){
+    
+    return Math.random()<0.8?2:Math.random()<0.5?3:1
+},{w:1,b:0,r:0})
+
+createField('bambooField',-52,2,50,21,13,function(){
+    
+    let c=Math.random()
+    
+    return Math.random()<0.25?'white':'blue'
+    
+},function(){
+    
+    return Math.random()<0.75?2:Math.random()<0.25?3:1
+},{w:0.25,b:0.75,r:0})
 
 
 flowers.mesh={}
@@ -16932,15 +17852,28 @@ ctx.textBaseline='middle'
 
 objects.mobs.push(new Beetle([0,-0.8,20],{minX:0,maxX:10,minZ:15,maxZ:25,minY:-3,maxY:6},1))
 
+if(window.thisProgramIsInFullScreen){
+    
+    document.getElementById('UIBar').style.display='none'
+    document.getElementById('honeyAndPollenAmount').style.display='none'
+    document.getElementById('abilityUI').style.display='none'
+}
 
 document.getElementById('runMeshStr').onclick=function(){
     
-    mesh.setMeshFromFunction(function(box,a,cylinder,c,d,e,star){
-        player.createdMesh=document.getElementById('meshStr').value
-        let f=Object.constructor('box','a','cylinder','c','d','e','star',player.createdMesh)
+    if(!window.thisProgramIsInFullScreen){
         
-        f(box,a,cylinder,c,d,e,star)
-    })
+        let copyText=document.getElementById('meshStr')
+        copyText.select()
+        document.execCommand('copy')
+        copyText.setSelectionRange(0,0)
+        document.getElementById('meshCreator').style.display='none'
+        return
+    }
+    
+    player.createdMesh=document.getElementById('meshStr').value
+    
+    UPDATE_MAP_MESH()
     
     mesh.setBuffers()
     
@@ -17007,6 +17940,9 @@ window.deleteBeequip=function(){
 }
 
 let bearMesh=new Mesh()
+
+
+objects.mobs.push(new MondoChick('mountainTopField',7))
 
 function loop(now){
     
@@ -17157,7 +18093,7 @@ function loop(now){
         }
     }
     
-    gl.clearColor(0.4,0.6,1,1)
+    gl.clearColor(...player.skyColor,1)
     gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT)
     
     player.updatePhysics()
@@ -17287,9 +18223,10 @@ function loop(now){
     
     bearMesh.render()
     
+    player.sprinklerMesh.render()
+    
     gl.bindTexture(gl.TEXTURE_2D,textures.bees)
     player.hiveMesh.render()
-    player.sprinklerMesh.render()
     
     player.updateFields()
     
@@ -17325,9 +18262,9 @@ function loop(now){
         
         let t=i
         
-        meshes.bees.instanceData.push(amountOfBeesInBeeLine*1.5-30,1,0,0,0,1,0,beeInfo[t].u,beeInfo[t].v,beeInfo[t].meshPartId)
+        meshes.bees.instanceData.push(amountOfBeesInBeeLine*1.5-40,1,-1,0,0,1,0,beeInfo[t].u,beeInfo[t].v,beeInfo[t].meshPartId)
         amountOfBeesInBeeLine++
-        textRenderer.addSingle(i,[amountOfBeesInBeeLine*1.5-31.5,1.5,0],COLORS.whiteArr,-1,false,false)
+        textRenderer.addSingle(i,[amountOfBeesInBeeLine*1.5-41.5,1.5,-1],COLORS.whiteArr,-1,false,false)
     }
     
     gl.bindTexture(gl.TEXTURE_2D,textures.bees)
@@ -17470,7 +18407,6 @@ function loop(now){
     TrailRenderer.render()
     
     gl.depthMask(true)
-    textRenderer.render(dt,Math.sin(TIME*20))
     
     gl.useProgram(mobRendererProgram)
     gl.uniformMatrix4fv(glCache.mob_viewMatrix,gl.FALSE,player.viewMatrix)
@@ -17489,6 +18425,10 @@ function loop(now){
             objects.mobs[i].die(i)
         }
     }
+    
+    gl.disable(gl.DEPTH_TEST)
+    textRenderer.render(dt,Math.sin(TIME*20))
+    gl.enable(gl.DEPTH_TEST)
     
     ctx.drawImage(gl.canvas,0,0)
     
