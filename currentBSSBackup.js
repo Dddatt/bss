@@ -1685,15 +1685,19 @@ tutorial stuff:
 
 <div id='hoverText' style='background-color:rgb(0,0,0);position:fixed;color:rgb(255,255,255);display:none;text-align:center;padding:5px'></div>
 
-<div id='useFullscreen' style='position:fixed;z-index:1;padding-left:15px;background-color:rgb(200,200,200);top:0px;left:0px;bottom:0px;right:0px;'>
+<div id='useFullscreen' style='position:fixed;z-index:1;background-color:rgb(0, 179, 255);top:0px;left:0px;bottom:0px;right:0px;'>
     
-    <header style='margin-left:150px;margin-bottom:0px;font-size:35px;'>Play in Fullscreen?</header>
-    <p style='margin-left:212px;margin-top:0px;'>(recommended!)</p>
+    <img style='position:fixed;left:0px;top:0px;margin:0px;padding:0px;width:600px;height:600px;z-index:-1' src='https://www.khanacademy.org/computer-programming/background/5476309507031040/latest.png'>
+    
+    <header style='text-align:center;margin-bottom:0px;font-size:35px;'>Bee Swarm Simulator</header>
+    <p style='text-align:center;margin-top:0px;'>Dat Approved!</p>
     
     <span style='display:block;margin-top:50px;'></span>
-    <button id='runFullScreen' style='margin-left:190px;width:200px;height:50px;'>Yes!!!!</button>
+    <button id='runFullScreen' style='margin-left:10px;width:200px;height:50px;background-color:rgb(248, 255, 150);'>New Fullscreen Game</button>
     <span style='display:block;margin-top:50px;'></span>
-    <button id='noFullScreen' style='margin-left:190px;width:200px;height:50px;'>No,thanks...</button>
+    <button id='noFullScreen' style='margin-left:10px;width:200px;height:50px;background-color:rgb(157, 255, 150)'>New Local Game</button>
+    <span style='display:block;margin-top:50px;'></span>
+    <button id='loadSavedGame' style='margin-left:10px;width:200px;height:50px;background-color:rgb(166, 166, 166)'>Load Saved Game<br>(not completed)</button>
     <!--<p></p>-->
 </div>
 
@@ -2309,6 +2313,15 @@ tutorial stuff:
 <script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/music_gummyStar.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/music_frog.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/music_inflateBalloons.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/music_haste.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/music_bombToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/music_markToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/music_melodyToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/music_focusToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/music_rageToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/music_surpriseParty.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/music_infernoToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/music_flameFuelToken.js"></script>
 
 <script type='application/javascript'>
 
@@ -3573,6 +3586,7 @@ let effects={
         maxCooldown:20,
         maxAmount:10,
         tokenLife:4,
+        sound:function(){window.playSound('haste',0.4)},
         
         update:(amount,player)=>{
             
@@ -3616,6 +3630,7 @@ let effects={
         maxCooldown:20,
         maxAmount:10,
         tokenLife:4,
+        sound:function(){window.playSound('focusToken',0.3)},
         
         update:(amount,player)=>{
             
@@ -3630,7 +3645,7 @@ let effects={
     
     melody:{
         
-        trialCooldown:35,trialRate:0.5,
+        trialCooldown:35,trialRate:0.35,
         statsToAddTo:['melodyTokens','battleTokens'],
         u:256/2048,v:0,
         svg:document.getElementById('melody'),
@@ -3639,6 +3654,7 @@ let effects={
         maxCooldown:30,
         maxAmount:1,
         tokenLife:8,
+        sound:function(){window.playSound('melodyToken',0.5)},
         
         update:(amount,player)=>{
             
@@ -3724,6 +3740,7 @@ let effects={
             }
             
             player.addEffect('bombCombo')
+            window.playSound('bombToken',0.5)
         }
     },
     
@@ -3747,6 +3764,7 @@ let effects={
             }
             
             player.addEffect('bombCombo')
+            window.playSound('bombToken',0.5)
         }
     },
     
@@ -3770,6 +3788,7 @@ let effects={
             }
             
             player.addEffect('bombCombo')
+            window.playSound('bombToken',0.5)
         }
     },
     
@@ -3793,6 +3812,7 @@ let effects={
             }
             
             player.addEffect('bombCombo')
+            window.playSound('bombToken',0.5)
         }
     },
     
@@ -3816,6 +3836,7 @@ let effects={
             }
             
             player.addEffect('bombCombo')
+            window.playSound('bombToken',0.5)
         }
     },
     
@@ -3839,6 +3860,7 @@ let effects={
             }
             
             player.addEffect('bombCombo')
+            window.playSound('bombToken',0.5)
         }
     },
     
@@ -3922,6 +3944,7 @@ let effects={
         maxCooldown:30,
         maxAmount:3,
         tokenLife:24,
+        sound:function(){window.playSound('rageToken',1)},
         
         update:(amount,player)=>{
             
@@ -3996,6 +4019,8 @@ let effects={
                 objects.marks.push(new Mark(params.field,(Math.random()*fieldInfo[params.field].width)|0,(Math.random()*fieldInfo[params.field].length)|0,'pollenMark',params.bee.level))
                 
             }
+            
+            window.playSound('markToken',0.6)
         }
     },
     
@@ -4013,6 +4038,8 @@ let effects={
                 objects.marks.push(new Mark(params.field,(Math.random()*fieldInfo[params.field].width)|0,(Math.random()*fieldInfo[params.field].length)|0,'honeyMark',params.bee.level))
                 
             }
+            
+            window.playSound('markToken',0.6)
         }
     },
     
@@ -4115,6 +4142,7 @@ let effects={
         statsToAddTo:['redAbilityTokens','battleTokens'],
         u:0,v:256/2048,
         tokenLife:4,
+        sound:function(){window.playSound('infernoToken',0.4)},
         
         func:function(params){
             
@@ -4168,6 +4196,7 @@ let effects={
         maxCooldown:15,
         maxAmount:1,
         tokenLife:4,
+        sound:function(){window.playSound('flameFuelToken',0.4)},
         
         update:(amount,player)=>{
             
@@ -4349,6 +4378,8 @@ let effects={
                 objects.balloons.push(new Balloon(params.field,params.x,params.z,true,params.bee.level))
                 
             }
+            
+            window.playSound('surpriseParty',0.8)
         }
     },
     
@@ -4713,7 +4744,7 @@ let effects={
         svg:document.getElementById('popStarAura'),
         cooldown:document.getElementById('popStarAura_cooldown'),
         amount:document.getElementById('popStarAura_amount'),
-        maxCooldown:50,
+        maxCooldown:55,
         maxAmount:1,
         
         update:(amount,player)=>{
@@ -4735,7 +4766,7 @@ let effects={
         svg:document.getElementById('scorchingStarAura'),
         cooldown:document.getElementById('scorchingStarAura_cooldown'),
         amount:document.getElementById('scorchingStarAura_amount'),
-        maxCooldown:50,
+        maxCooldown:55,
         maxAmount:1,
         
         update:(amount,player)=>{
@@ -4758,7 +4789,7 @@ let effects={
         svg:document.getElementById('gummyStarAura'),
         cooldown:document.getElementById('gummyStarAura_cooldown'),
         amount:document.getElementById('gummyStarAura_amount'),
-        maxCooldown:50,
+        maxCooldown:55,
         maxAmount:1,
         
         update:(amount,player)=>{
@@ -4897,7 +4928,7 @@ let effects={
         
         getMessage:(amount)=>{
             
-            return "Pop Star\nEvery 30 blue bomb tokens summons a Pop Star, lasting for 45s, and applies 1m of bubble bloat. It grows for every bubble popped, granting x1.5 capacity, x1.25 bubble pollen, 10% instant blue conversion, and up to x5 blue pollen. Upon summoning, it also applies 30s of Bubble Bloat. Popping a bubble while the star is active gives 1s(2s if golden) of Bubble Bloat, up to 1h. Bubble Bloat gives up to x6 convert rate, x6 blue field capacity, and x1.5 bubble pollen. When the Pop Star disappears, it spawns 1 bubble for every 10 of the star's size, with an extra 5. The star's aura lasts for an extra 5 secs after it disappears. Cooldown: 1m"
+            return "Pop Star\nEvery 30 blue bomb tokens summons a Pop Star, lasting for 45s, and applies 1m of bubble bloat. It grows for every bubble popped, granting x1.5 capacity, x1.25 bubble pollen, 10% instant blue conversion, and up to x5 blue pollen. Upon summoning, it also applies 30s of Bubble Bloat. Popping a bubble while the star is active gives 1s(2s if golden) of Bubble Bloat, up to 1h. Bubble Bloat gives up to x6 convert rate, x6 blue field capacity, and x1.5 bubble pollen. When the Pop Star disappears, it spawns 1 bubble for every 10 of the star's size, with an extra 5. The star's aura lasts for an extra 10 secs after it disappears. Cooldown: 1m"
         }
     },
     
@@ -4924,7 +4955,7 @@ let effects={
         
         getMessage:(amount)=>{
             
-            return "Scorching Star\nEvery 15 red boost tokens summons a Scorching Star, lasting for 45s. It grows by 75(100 if dark) every second for every flame nearby. It grants up to x7 red pollen, x4 convert rate, x2 flame pollen, and +10% instant red conversion. The star's aura lasts for an extra 5 secs after it disappears. Cooldown: 1m"
+            return "Scorching Star\nEvery 15 red boost tokens summons a Scorching Star, lasting for 45s. It grows by 75(100 if dark) every second for every flame nearby. It grants up to x7 red pollen, x4 convert rate, x2 flame pollen, and +10% instant red conversion. The star's aura lasts for an extra 10 secs after it disappears. Cooldown: 1m"
         }
     },
     
@@ -4951,7 +4982,7 @@ let effects={
         
         getMessage:(amount)=>{
             
-            return "Gummy Star\nEvery 15 gummy bee tokens summons a Gummy Star, lasting for 45s. It grows based on how much goo you collect, and gives up to x4 goo, while always giving x1.25 white pollen, x2 white field capacity and 25% instant goo conversion. After disappearing, it spreads 20(+the amount of digits in the star's size) honey tokens, with a total value of approximately 1,000(+7.5% of the star's size). The star's aura lasts for an extra 5 secs after it disappears.  Cooldown: 1m"
+            return "Gummy Star\nEvery 15 gummy bee tokens summons a Gummy Star, lasting for 45s. It grows based on how much goo you collect, and gives up to x4 goo, while always giving x1.25 white pollen, x2 white field capacity and 25% instant goo conversion. After disappearing, it spreads 20(+the amount of digits in the star's size) honey tokens, with a total value of approximately 1,000(+7.5% of the star's size). The star's aura lasts for an extra 10 secs after it disappears.  Cooldown: 1m"
         }
     },
     
@@ -7039,6 +7070,46 @@ let beequips={
             
             return {bee:b[b.length-1]===','?b.substr(0,b.length-1):b,player:p[p.length-1]===','?p.substr(0,p.length-1):p}
         }
+    },
+    
+    boombox:{
+        
+        svgCode:`<svg onmousedown='window.functionToRunOnBeequipClick(#ID)' style='width:200;height:70;cursor:pointer;border-radius:8px'><rect width='200' height='70' fill='rgb(255,255,255)'></rect><rect width='70' height='70' fill='rgb(225,225,225)'></rect><text x='132' y='15' style='font-family:trebuchet ms;font-size:16.5px;' fill='rgb(0,0,0)' text-anchor='middle'>Boombox</text><text x='132' y='31' style='font-family:trebuchet ms;font-size:10px;' fill='rgb(0,0,0)' text-anchor='middle'>Energize and motivate your</text><text x='132' y='43' style='font-family:trebuchet ms;font-size:9.9px;' fill='rgb(0,0,0)' text-anchor='middle'>bees with upbeat musical</text><text x='132' y='54' style='font-family:trebuchet ms;font-size:10px;' fill='rgb(0,0,0)' text-anchor='middle'>hits by Bee Gees or</text><text x='133' y='65' style='font-family:trebuchet ms;font-size:9.7px;' fill='rgb(0,0,0)' text-anchor='middle'>Beethoven!</text><text style=''></text><rect x='26' y='23' width='20' height='22' rx='6' stroke='rgb(0,170,0)' stroke-width='3.5' fill='rgb(0,0,0,0)'></rect>
+<rect x='19' y='30' width='35' height='20' rx='4' stroke='black' stroke-width='1.5' fill='rgb(19, 93, 212)'></rect>
+<circle cx='30' cy='38' r='5' stroke='black' stroke-width='1' fill='rgb(251, 255, 0)'></circle>
+<circle cx='45' cy='38' r='5' stroke='black' stroke-width='1' fill='rgb(251, 255, 0)'></circle>
+<circle cx='30' cy='38' r='1.5' fill='rgb(0, 0, 0)'></circle>
+<circle cx='45' cy='38' r='1.5' fill='rgb(0, 0, 0)'></circle>
+<rect x='32' y='45' width='5' height='3' fill='rgb(255,0,255)'></rect><rect x='39' y='45' width='5' height='3' fill='rgb(255,0,0)'></rect></svg>`,
+        potentials:[4,4,4,4,3,5,5],
+        level:7,
+        color:'any',
+        // reqStr:"<br><br><p style='font-size:15px;'>Bee</p><br>",
+        reqStr:"<br><br><br><br>",
+        canUseOnSlot:function(slot){
+            
+            return slot.type
+        },
+        
+        generateStats:function(potential){
+            
+            let b='',p='',np=potential/5 
+            
+            b+='*'+(MATH.random(1.1,1.2)*(np*0.1+1)).toFixed(2)+' abilityRate,'
+            
+            b+='*'+MATH.random(1.1,np*0.25+1).toFixed(2)+' maxEnergy,'
+            b+='*'+(MATH.random(1.05,1.175)*(np*0.1+1)).toFixed(2)+' speed'
+            
+            if(Math.random()<np*0.35){
+                
+                p+='*'+(MATH.random(1.01,1.04)*(np*0.01+1)).toFixed(2)+' convertRate'
+                
+            }
+            
+            return {bee:b[b.length-1]===','?b.substr(0,b.length-1):b,player:p[p.length-1]===','?p.substr(0,p.length-1):p}
+        },
+        
+        extraAbility:'gathering_melody'
     }
 }
 
@@ -7133,6 +7204,9 @@ class Bee {
             this.beeOffsets.push(beeInfo[this.type].trails[i].beeOffset||0)
             
         }
+    }
+    
+    computeLevel(newLevel){
         
         this.gatheringTokens=[]
         
@@ -7149,10 +7223,6 @@ class Bee {
             this.attackTokens[i]={type:beeInfo[this.type].attackTokens[i],cooldown:effects[beeInfo[this.type].attackTokens[i]].trialCooldown,rate:effects[beeInfo[this.type].attackTokens[i]].trialRate,timer:-10000}
             
         }
-        
-    }
-    
-    computeLevel(newLevel){
         
         this.level=newLevel
         
@@ -7198,6 +7268,15 @@ class Bee {
                     this[str.substr(str.indexOf(' ')+1,str.length)]+=Number(str.substr(1,str.indexOf(' ')-1))
                     
                 }
+            }
+            
+            if(beequips[player.hive[this.hiveY][this.hiveX].beequip.type].extraAbility){
+                
+                let ab=beequips[player.hive[this.hiveY][this.hiveX].beequip.type].extraAbility.split('_')
+                
+                this[ab[0]+'Tokens'].push({type:ab[1],cooldown:effects[ab[1]].trialCooldown,rate:effects[ab[1]].trialRate,timer:-10000})
+                
+                console.log(this.gatheringTokens)
             }
         }
         
@@ -7719,6 +7798,7 @@ class Bee {
                         if(!t[0]||!t[1]){
                             
                             objects.marks.push(new Mark(this.targets[2].field,this.targets[2].x,this.targets[2].z,'preciseMark',this.level))
+                            window.playSound('markToken',0.6)
                         }
                     }
                     
@@ -8194,6 +8274,7 @@ class TempBee {
                         if(!t[0]||!t[1]){
                             
                             objects.marks.push(new Mark(this.targets[2].field,this.targets[2].x,this.targets[2].z,'preciseMark',this.level))
+                            window.playSound('markToken',0.6)
                         }
                     }
                     
@@ -13390,12 +13471,13 @@ player=(function(out){
                 }
             }
             
-            out.beequipPageHTML+="<div onmousedown='window.selectBeequip()' style='position:fixed;left:5px;top:250px;background-color:rgb(240, 196, 0);border:2px solid black;border-radius:4px;text-align:center;width:90px;height:20px;cursor:pointer;'><svg style='margin:0px;width:100px;height:20px'><text x='30' y='16' style='color:black;font-family:cursive;font-size:17px'>Equip</text></svg></div><div onmousedown='window.deleteBeequip()' style='position:fixed;top:250px;background-color:rgb(240, 0, 0);border:2px solid black;border-radius:4px;left:105px;text-align:center;width:90px;height:20px;cursor:pointer;'><svg style='margin:0px;width:100px;height:20px'><text x='20' y='16' style='color:black;font-family:cursive;font-size:17px'>Delete</text></svg></div><svg style='position:fixed;border-radius:10px;background-color:rgb(240,240,240);width:75px;height:75px;margin-top:28px'>"+c+"<div onmousedown='window.exitBeequipLooking()' style='position:fixed;background-color:rgb(240,0,0);border:2px solid black;border-radius:4px;text-align:center;font-size:19px;font-family:trebuchet ms;width:20px;height:20px;cursor:pointer;'><svg style='margin:0px;width:20px;height:20px'><path stroke='black' stroke-width='2' d='M5 4L15 16M15 4L5 16'></path></svg></div><div style='position:fixed;background-color:rgb(240,240,240);border-radius:10px;text-align:center;font-size:19px;font-family:trebuchet ms;margin-left:28px;width:172px;padding-bottom:2px;'>"+MATH.doGrammar(out.currentGear.beequips[out.beequipLookingAt].type.replaceAll('candycane','candyCane'))+"</div><div style='position:fixed;background-color:rgb(240,240,240);margin-left:80px;margin-top:29px;border-radius:10px;font-size:13px;padding-top:0px;font-family:trebuchet ms;width:113px;padding-left:7px;padding-top:3px;padding-bottom:3px;'>Level: "+beequips[out.currentGear.beequips[out.beequipLookingAt].type].level+"</div><div style='position:fixed;background-color:rgb(240,240,240);margin-left:80px;margin-top:55px;border-radius:10px;padding-left:7px;padding-top:3px;padding-bottom:3px;font-size:13px;font-family:trebuchet ms;width:113px;'>Color: "+MATH.doGrammar(beequips[out.currentGear.beequips[out.beequipLookingAt].type].color)+"</div><div style='position:fixed;background-color:rgb(240,240,240);margin-left:80px;margin-top:81px;border-radius:10px;padding-left:7px;padding-top:3px;padding-bottom:3px;font-size:13px;font-family:trebuchet ms;width:113px;'>Potential: "+out.currentGear.beequips[out.beequipLookingAt].potential+"</div><svg style='postition:fixed;left:0px;top:107px;width:20px;height:20px'><path stroke='black' stroke-width='2' d='M5 4L15 16M15 4L5 16'></path></svg><div style='background-color:rgb(240,240,240);margin-left:0px;margin-top:112px;border-radius:10px;padding-left:7px;padding-top:3px;padding-bottom:3px;font-size:12px;font-family:trebuchet ms;width:193px;'>"+_d+beequips[out.currentGear.beequips[out.beequipLookingAt].type].reqStr+stats+"</div>"
+            out.beequipPageHTML+="<div onmousedown='window.selectBeequip()' style='position:fixed;left:5px;top:250px;background-color:rgb(240, 196, 0);border:2px solid black;border-radius:4px;text-align:center;width:90px;height:20px;cursor:pointer;'><svg style='margin:0px;width:100px;height:20px'><text x='30' y='16' style='color:black;font-family:cursive;font-size:17px'>Equip</text></svg></div><div onmousedown='window.deleteBeequip()' style='position:fixed;top:250px;background-color:rgb(240, 0, 0);border:2px solid black;border-radius:4px;left:105px;text-align:center;width:90px;height:20px;cursor:pointer;'><svg style='margin:0px;width:100px;height:20px'><text x='20' y='16' style='color:black;font-family:cursive;font-size:17px'>Delete</text></svg></div><svg style='position:fixed;border-radius:10px;background-color:rgb(240,240,240);width:75px;height:75px;margin-top:28px'>"+c+"<div onmousedown='window.exitBeequipLooking()' style='position:fixed;background-color:rgb(240,0,0);border:2px solid black;border-radius:4px;text-align:center;font-size:19px;font-family:trebuchet ms;width:20px;height:20px;cursor:pointer;'><svg style='margin:0px;width:20px;height:20px'><path stroke='black' stroke-width='2' d='M5 4L15 16M15 4L5 16'></path></svg></div><div style='position:fixed;background-color:rgb(240,240,240);border-radius:10px;text-align:center;font-size:19px;font-family:trebuchet ms;margin-left:28px;width:172px;padding-bottom:2px;'>"+MATH.doGrammar(out.currentGear.beequips[out.beequipLookingAt].type.replaceAll('candycane','candyCane'))+"</div><div style='position:fixed;background-color:rgb(240,240,240);margin-left:80px;margin-top:29px;border-radius:10px;font-size:13px;padding-top:0px;font-family:trebuchet ms;width:113px;padding-left:7px;padding-top:3px;padding-bottom:3px;'>Level: "+beequips[out.currentGear.beequips[out.beequipLookingAt].type].level+"</div><div style='position:fixed;background-color:rgb(240,240,240);margin-left:80px;margin-top:55px;border-radius:10px;padding-left:7px;padding-top:3px;padding-bottom:3px;font-size:13px;font-family:trebuchet ms;width:113px;'>Color: "+MATH.doGrammar(beequips[out.currentGear.beequips[out.beequipLookingAt].type].color)+"</div><div style='position:fixed;background-color:rgb(240,240,240);margin-left:80px;margin-top:81px;border-radius:10px;padding-left:7px;padding-top:3px;padding-bottom:3px;font-size:13px;font-family:trebuchet ms;width:113px;'>Potential: "+out.currentGear.beequips[out.beequipLookingAt].potential+"</div><svg style='postition:fixed;left:0px;top:107px;width:20px;height:20px'><path stroke='black' stroke-width='2' d='M5 4L15 16M15 4L5 16'></path></svg><div style='background-color:rgb(240,240,240);margin-left:0px;margin-top:112px;border-radius:10px;padding-left:7px;padding-top:3px;padding-bottom:3px;font-size:12px;font-family:trebuchet ms;width:193px;'>"+_d+beequips[out.currentGear.beequips[out.beequipLookingAt].type].reqStr+stats+(beequips[out.currentGear.beequips[out.beequipLookingAt].type].extraAbility?'<br><p style="font-size:15px">+Ability: '+MATH.doGrammar(beequips[out.currentGear.beequips[out.beequipLookingAt].type].extraAbility.split('_')[1])+'</p>':'')+"</div>"
             
         }
     }
     
     out.generateBeequip('candycane')
+    out.generateBeequip('boombox')
     
     out.updateGear=function(){
         
@@ -14653,6 +14735,7 @@ let textRenderer=(function(out){
         flower:[128*2/1024,0],
         glow:[128*3/1024,0],
         candycane:[128*4/1024,0],
+        boombox:[128*5/1024,0],
         
     }
     
@@ -15567,7 +15650,7 @@ class Token {
         
         this.funcParams=funcParams
         this.backupFunc=backupFunc?effects[type].backupFunc:null
-        this.life=life*player.tokenLifespan
+        this.life=life*player.tokenLifespan*1.5
         this.pos=pos
         this.type=type
         this.rotation=Math.random()*MATH.TWO_PI
@@ -15611,6 +15694,11 @@ class Token {
             } else {
                 
                 player.addEffect(this.type)
+            }
+            
+            if(effects[this.type].sound){
+                
+                effects[this.type].sound()
             }
         }
     }
@@ -17164,8 +17252,9 @@ box(-54.5,0.48,54.8,4,5,20,[20,0,0],[0.2,0.6,1.2],true,false);
 box(-58.5,4.25,54.9,4,10,20,[-21,0,0],[0.2,0.6,1.2],true,false);
 box(-56.5,3.75,44.26,8,5,4,false,[0.2,0.6,1.2],true,false);
 
-box(-70.49,7,49,20,30,13.5,false,[0.6,0.6,0.6],true,true);
-box(-78,8.985,57.425,5,20,17,[33,0,0],[0.6,0.6,0.6],true,true);
+box(-70.49,7,49,20,30,13.5,false,[0.5,0.5,0.5],true,true);
+box(-78,8.71,57.85,5,20,18,[33,0,0],[0.5,0.5,0.5],true,true);
+box(-84.5,9,61,8,20,8,false,[0.4,0.4,0.4],true,true);
 box(-110.5,0,95,100,25,100,false,[0.2,0.7,0.2],true,false);
 
 box(-37-7.5,19.255-7,85.5,0.5,15,14.95,[0,0,90],[1.1,1.1,0.1],false,false);
@@ -17179,11 +17268,57 @@ box(-37-7.5+4,17.5,85.5-7.25,0.4,14,7,[0,90,0],[0.5,0.5,0,0.5],true,false);
 box(-37-7.5-5.75,17.5,85.5-7.25,0.4,14,3.95,[0,90,0],[0.5,0.5,0,0.5],true,false);
 
 box(-65,15.6,95,15,50,4,false,WALL,true,false);
-box(-82.9,15.6,113.05,45,50,4,[0,57.5,0],WALL,true,false);
-box(-102,15.6,122,45,50,4,[0,160,0],WALL,true,false);
-box(-120,15.6,92,4,50,60,false,WALL,true,false);
-box(-110,15.6,61.6,4,50,60,[0,-75,0],WALL,true,false);
-box(-82.5,15.6,5.75,4,50,100,false,WALL,true,false);
+box(-76.5,15.6,115.25,45,50,4,[0,75,0],WALL,true,false);
+box(-97,15.6,130,45,50,4,[0,170,0],WALL,true,false);
+box(-113,15.6,97,4,50,60,false,WALL,true,false);
+box(-100,15.6,59,4,50,30,[0,-60,0],WALL,true,false);
+box(-110.5,15.6,55,4,50,60,[0,-90,0],WALL,true,false);
+box(-82.5,15.6,5.75+1,4,50,100,false,WALL,true,false);
+
+cylinder(-95,14,82,18,4,9,0.5,0.25,0.05,1,90,0,0,13);
+cylinder(-95,14,82,18,4,9,0.5,0.25,0.05,1,90,180/9,0,13);
+cylinder(-95,14.01,82,11,4,20,0.5*2.5,0.4*2.5,0.1*2.5,1,90,0,0);
+box(-110,14,81,10,4,13,false,[0.5*0.75,0.25*0.75,0.05*0.75],true,false);
+
+box(-95,15,80,11,2,12,false,[1,1,1],true,false,false);
+
+for(let i=210;i<360+180;i+=360/13){
+    
+    box(-95+Math.cos(i*0.017253)*14.5,13.25,82+Math.sin(i*0.017253)*14.5,7,2,6,[42,95-i,0],[1,1,1],true,false,false);
+    box(-95+Math.cos(i*0.017253)*8,15,82+Math.sin(i*0.017253)*8,8,2,8,[0,i,0],[1,1,1],true,false,false);
+}
+
+function pineapple(x,y,z,s){
+    
+    sphere(x,y,z,s,1,1,0.9,0.1,1,1.25);
+    box(x,y+s*0.5,z+0.1*s,0.4*s,0.9*s,0.1*s,[45,0,0],[0,0.6,0],false,false);
+    box(x+0.1*s,y+s*0.5,z,0.4*s,0.9*s,0.1*s,[45,90,0],[0,0.6,0],false,false);
+    box(x,y+s*0.5,z-0.1*s,0.4*s,0.9*s,0.1*s,[45,180,0],[0,0.6,0],false,false);
+    box(x-0.1*s,y+s*0.5,z,0.4*s,0.9*s,0.1*s,[45,270,0],[0,0.6,0],false,false);
+    box(x,y+s*0.5,z,0.4*s,1*s,0.1*s,[30,0+45,0],[0,0.6,0],false,false);
+    box(x,y+s*0.5,z,0.4*s,1*s,0.1*s,[30,90+45,0],[0,0.6,0],false,false);
+    box(x,y+s*0.5,z,0.4*s,1*s,0.1*s,[30,180+45,0],[0,0.6,0],false,false);
+    box(x,y,z,0.95*s,0.95*s*1.25,0.95*s,false,[0,0.6,0,0.4],true,false,false);
+    
+    box(x,y+s*0.5,z,0.4*s,1*s,0.1*s,[30,270+45,0],[0,0.6,0],false,false);
+}
+
+pineapple(-55,13.5,78,4)
+pineapple(-70,13.5,78,2.5)
+pineapple(-72.5,15,90,6)
+
+box(-69,35-21,89-30,2.5,3,7,[0,90,0],[1,1,1],true,false);
+box(-69-Math.sin(90*0.017453)*0.8,35-21,89-30+Math.cos(90*0.017453)*0.8,2.5,7,2.5,[0,90,0],[1,1,1],true,false);
+box(-69-Math.sin(90*0.017453)*0.8,38.75-21,89-30+Math.cos(90*0.017453)*0.8,2.5,0.5,2.5,[0,90,0],[0,1,0],false,false);
+box(-69-Math.sin(90*0.017453)*0.8,37.4-21,89-30+Math.cos(90*0.017453)*0.8,2.55,1,1,[0,90,0],[1,0.7,0],false,false);
+box(-69-Math.sin(90*0.017453)*2.25,35.25-21,89-30+Math.cos(90*0.017453)*2.25,2.55,1.5,1.6,[0,90,0],[0.5,0.5,0.5],false,false);
+box(-69-Math.sin(90*0.017453)*-1.4,35.25-21,89-30+Math.cos(90*0.017453)*-1.4,2.55,1.5,3.3,[0,90,0],[0.5,0.5,0.5],false,false);
+
+box(-103,16,115,50,10,30,[0,-30,0],[0.5,0.5,0.5],true,true);
+box(-83,13.5,107,7,10,8,[0,40,0],[0.42,0.42,0.42],true,true);
+box(-83,11,107,40,10,20,[0,10,0],[0.42,0.42,0.42],true,true);
+box(-95,18,102.5,3,3,0.5,[-35*0.4,-25,35],[0.33,0.33,0.33],false,true);
+box(-105,15,96.7,6,6,0.5,[-25*0.5,-28,27],[0.33,0.33,0.33],false,true);
 
 function rose(x,y,z,s){
 
@@ -17334,6 +17469,19 @@ box(-5,34.5,83.5,0.15,3,3,false,[1.1,1.1,1.1],true,false);
 box(-5-1.5,34.5,83.5-1.5,0.15,3,3,[0,90,0],[1.1,1.1,1.1],true,false);
 box(-5-1.5,34.5,83.5+1.5,0.15,3,3,[0,90,0],[1.1,1.1,1.1],true,false);
 box(-5-1.5,34.5+1.75,83.5,0.15+0.5,3.25,3.25,[0,0,90],[0,1.1,0],true,false);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -17791,6 +17939,28 @@ createField('bambooField',-52,2,50,21,13,function(){
     
     return Math.random()<0.75?2:Math.random()<0.25?3:1
 },{w:0.25,b:0.75,r:0})
+
+createField('pineapplePatch',-71.5,12.5,78,19,15,function(){
+    
+    let c=Math.random()
+    
+    return Math.random()<0.89?'white':Math.random()>0.56?'blue':'red'
+    
+},function(){
+    
+    return Math.random()<0.5?2:Math.random()<0.38?1:3
+},{w:0.89,b:0.05,r:0.06})
+
+createField('stumpField',-102,16,75,15,15,function(){
+    
+    let c=Math.random()
+    
+    return Math.random()<0.8?'blue':Math.random()>0.2?'white':'red'
+    
+},function(){
+    
+    return 3
+},{w:0.15,b:0.8,r:0.05})
 
 
 flowers.mesh={}
