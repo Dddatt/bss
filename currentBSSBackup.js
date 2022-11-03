@@ -12,9 +12,9 @@ or if u want then mess around with it lol
 
 
 
-red: 33b
-blue: 40b bruh
-white: 34b
+red: 57b
+blue: 56b
+white: 111b erm yikes
 
 
 
@@ -1068,6 +1068,22 @@ tutorial stuff:
         <rect x='12' y='12' width='6' height='6' fill='rgb(200,200,200)'></rect>
         <path stroke='rgb(255,255,255)' stroke-width='2' d='M10 15L20 15M15 10L15 20'></path>
         <text id='whiteBoost_amount' x='28' y='28' style='font-family:calibri;font-size:13px;' text-anchor='end'></text>
+        
+    </svg>
+    
+    <svg id='babyLove' style='width:30;height:30;display:none'>
+    
+        <rect width='30' height='30' fill='rgb(140, 227, 244)'></rect>
+        <rect id='babyLove_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0.45'></rect>
+        <path stroke='rgb(50, 50, 50)' stroke-width='1.5' d='M5 10C 7 5 13 5 15 9C 19 5 24 6 24 11C 25 14 14 20 15 25C 10 14 6 19 5 10' fill='rgb(240, 177, 226)' transform='scale(1.2,1.2) translate(-2,-3)'></path>
+        <circle cx='12.4' cy='11.4' r='1' fill='rgb(70,70,70)'></circle>
+        <circle cx='18.4' cy='10.5' r='1' fill='rgb(70,70,70)'></circle>
+        <circle cx='15.8' cy='12.2' r='0.75' fill='rgb(70,70,70)'></circle>
+        <circle cx='10.2' cy='23.4' r='1.5' fill='rgb(234, 34, 105)' transform='scale(1,0.6)'></circle>
+        <circle cx='20.5' cy='21.6' r='1.5' fill='rgb(234, 34, 105)' transform='scale(1,0.6)'></circle>
+        <path stroke='rgb(70, 70, 70)' stroke-width='0.8' d='M 13 15.5C 14 15 16 17.6 18 14.5C 17 19 15 18.2 13 15.5' fill='rgb(220,220,220)'></path>
+        
+        <text id='babyLove_amount' x='28' y='28' style='font-family:calibri;font-size:13px;' text-anchor='end'></text>
         
     </svg>
     
@@ -2459,7 +2475,7 @@ function main(){
 
 let Math=_M
 
-let width=window.thisProgramIsInFullScreen?500:window.innerWidth+1,height=window.thisProgramIsInFullScreen?500:window.innerHeight+1,half_width=width*0.5,half_height=height*0.5,aspect=width/height,FETCHED_CODE={}
+let width=window.thisProgramIsInFullScreen?500:window.innerWidth+1,height=window.thisProgramIsInFullScreen?500:window.innerHeight+1,half_width=width*0.5,half_height=height*0.5,aspect=width/height,FETCHED_CODE={},beeCanvas
 
 let glCanvas=document.getElementById('gl-canvas')
 let gl=glCanvas.getContext('webgl2',{antialias:true})
@@ -3078,20 +3094,20 @@ let triggers={
             player.addSlot('music')
             player.addSlot('music')
             player.addSlot('music')
-            player.addSlot('music')
+            player.addSlot('tadpole')
+            player.addSlot('tadpole')
+            player.addSlot('tadpole')
             player.addSlot('gummy')
             player.addSlot('precise')
             player.addSlot('precise')
             player.addSlot('precise')
             player.addSlot('precise')
             player.addSlot('precise')
-            player.addSlot('precise')
             player.addSlot('vector')
             player.addSlot('vector')
             player.addSlot('vector')
             player.addSlot('vector')
             player.addSlot('vector')
-            player.addSlot('carpenter')
             player.addSlot('carpenter')
             player.addSlot('carpenter')
             player.addSlot('carpenter')
@@ -3234,7 +3250,9 @@ let triggers={
             player.addSlot('music')
             player.addSlot('music')
             player.addSlot('crimson')
-            player.addSlot('cobalt')
+            player.addSlot('tadpole')
+            player.addSlot('tadpole')
+            player.addSlot('tadpole')
             player.addSlot('lion')
             player.addSlot('gummy')
             player.addSlot('photon')
@@ -3257,10 +3275,8 @@ let triggers={
             player.addSlot('vector')
             player.addSlot('vector')
             player.addSlot('vector')
-            player.addSlot('vector')
             player.addSlot('fuzzy')
             player.addSlot('fuzzy')
-            player.addSlot('precise')
             player.addSlot('precise')
             player.addSlot('precise')
             player.addSlot('precise')
@@ -3421,7 +3437,7 @@ let beeInfo={
     
     tadpole:{
         
-        u:128*11/2048,v:0,meshPartId:0,gatherSpeed:6,gatherAmount:10,speed:11.2,convertSpeed:4,convertAmount:120,tokens:['summonFrog','blueBoost'],attack:0.5,energy:10,gatheringPassive:function(bee){if(Math.random()<(bee.gifted?0.75:0.55)){objects.bubbles.push(new Bubble(player.fieldIn,bee.flowerCollecting[0],bee.flowerCollecting[1]))}},favoriteTreat:'blueberry',rarity:'mythic',color:'blue',description:'A tiny amphibious bee who wants to become a frog when it grows up.',giftedHiveBonus:{oper:'*',stat:'bluePollen',num:1.1},trails:[{length:8,size:0.15,color:[29/215, 133/215, 72/215,1],skipFrame:3,skipAdd:3,vertical:true}]
+        u:128*11/2048,v:0,meshPartId:0,gatherSpeed:6,gatherAmount:10,speed:11.2,convertSpeed:4,convertAmount:120,tokens:['summonFrog','blueBoost','babyLove*'],attack:0.5,energy:10,gatheringPassive:function(bee){if(Math.random()<(bee.gifted?0.75:0.55)){objects.bubbles.push(new Bubble(player.fieldIn,bee.flowerCollecting[0],bee.flowerCollecting[1]))}},favoriteTreat:'blueberry',rarity:'mythic',color:'blue',description:'A tiny amphibious bee who wants to become a frog when it grows up.',giftedHiveBonus:{oper:'*',stat:'bluePollen',num:1.1},trails:[{length:8,size:0.15,color:[29/215, 133/215, 72/215,1],skipFrame:3,skipAdd:3,vertical:true}]
     },
     
     buoyant:{
@@ -3534,12 +3550,12 @@ let beeInfo={
     
     carpenter:{
         
-        u:128*0/2048,v:256*2/2048,meshPartId:0,gatherSpeed:3,gatherAmount:10,speed:11.2,convertSpeed:4,convertAmount:120,attack:4,energy:25,tokens:['pollenMarkToken','honeyMarkToken'],rarity:'legendary',color:'white',description:"A bee with a knack for construction. It built its own body out of wood.",giftedHiveBonus:{oper:'*',stat:'pollenFromTools',num:1.25},favoriteTreat:'sunflowerSeed'
+        u:128*0/2048,v:256*2/2048,meshPartId:12,gatherSpeed:3,gatherAmount:10,speed:11.2,convertSpeed:4,convertAmount:120,attack:4,energy:25,tokens:['pollenMarkToken','honeyMarkToken'],rarity:'legendary',color:'white',description:"A bee with a knack for construction. It built its own body out of wood.",giftedHiveBonus:{oper:'*',stat:'pollenFromTools',num:1.25},favoriteTreat:'sunflowerSeed'
     },
     
     lion:{
         
-        u:128*1/2048,v:256*2/2048,meshPartId:0,gatherSpeed:4,gatherAmount:20,speed:19.6,convertSpeed:2,convertAmount:160,attack:9,energy:60,tokens:['whiteBomb_'],rarity:'legendary',color:'white',description:"Half lion, half bee. This is the king of both the jungle and bee hive.",giftedHiveBonus:{oper:'+',stat:'whiteBeeAttack',num:2},favoriteTreat:'pineapple'
+        u:128*1/2048,v:256*2/2048,meshPartId:13,gatherSpeed:4,gatherAmount:20,speed:19.6,convertSpeed:2,convertAmount:160,attack:9,energy:60,tokens:['whiteBomb_'],rarity:'legendary',color:'white',description:"Half lion, half bee. This is the king of both the jungle and bee hive.",giftedHiveBonus:{oper:'+',stat:'whiteBeeAttack',num:2},favoriteTreat:'pineapple'
     },
     
     ninja:{
@@ -3549,7 +3565,7 @@ let beeInfo={
     
     shy:{
         
-        u:128*3/2048,v:256*2/2048,meshPartId:0,gatherSpeed:2,gatherAmount:10,speed:18.2,convertSpeed:4,convertAmount:320,attack:2,energy:40,tokens:['redBoost','redBomb_'],rarity:'legendary',color:'white',description:"This talented bee doesn't like to socialize, it just wants to work and be left alone.",giftedHiveBonus:{oper:'*',stat:'redBeeAbilityRate',num:1.15},favoriteTreat:'sunflowerSeed'
+        u:128*3/2048,v:256*2/2048,meshPartId:0,gatherSpeed:2,gatherAmount:10,speed:18.2,convertSpeed:4,convertAmount:320,attack:2,energy:40,tokens:['redBoost','redBomb_'],rarity:'legendary',color:'white',description:"This talented bee doesn't like to socialize, it just wants to work and be left alone.",giftedHiveBonus:{oper:'*',stat:'redBeeAbilityRate',num:1.15},favoriteTreat:'sunflowerSeed',particles:function(bee){if(Math.random()<0.2){ParticleRenderer.add({x:bee.pos[0],y:bee.pos[1],z:bee.pos[2],vx:MATH.random(-0.1,0.1),vy:MATH.random(-0.1,0.1),vz:MATH.random(-0.1,0.1),grav:0,size:MATH.random(200,350),col:[0.6,0.6,0.6],life:1.5,rotVel:MATH.random(-2,2),alpha:0.25})}}
     },
     
     demo:{
@@ -3569,7 +3585,12 @@ let beeInfo={
     
     frosty:{
         
-        u:128*7/2048,v:256*2/2048,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:11.2,convertSpeed:4,convertAmount:80,attack:1,energy:25,tokens:['blueBoost','blueBomb_'],rarity:'epic',color:'white',description:"This bee is startled by everything it comes across. It has learned special talents to cope.",giftedHiveBonus:{oper:'*',stat:'blueBombPollen',num:1.3},favoriteTreat:'blueberry'
+        u:128*7/2048,v:256*2/2048,meshPartId:14,gatherSpeed:4,gatherAmount:10,speed:11.2,convertSpeed:4,convertAmount:80,attack:1,energy:25,tokens:['blueBoost','blueBomb_'],rarity:'epic',color:'white',description:"A bee made of snow. It magically came to life after someone put a top hat on its head.",giftedHiveBonus:{oper:'*',stat:'blueBombPollen',num:1.3},favoriteTreat:'blueberry'
+    },
+    
+    baby:{
+        
+        u:128*8/2048,v:256*2/2048,meshPartId:0,gatherSpeed:5,gatherAmount:10,speed:10.5,convertSpeed:5,convertAmount:80,attack:0,energy:15,tokens:['babyLove'],rarity:'legendary',color:'white',description:"This little bee isn't very good at bee tasks yet, but it's guaranteed to bring you joy (and luck).",giftedHiveBonus:{oper:'+',stat:'lootLuck',num:0.25},favoriteTreat:'strawberry'
     },
 }
 
@@ -3933,6 +3954,31 @@ let effects={
         }
     },
     
+    babyLove:{
+        
+        trialCooldown:40,trialRate:0.5,
+        u:128*1/2048,v:256*4/2048,
+        svg:document.getElementById('babyLove'),
+        cooldown:document.getElementById('babyLove_cooldown'),
+        amount:document.getElementById('babyLove_amount'),
+        maxCooldown:30,
+        maxAmount:1,
+        tokenLife:8,
+        // sound:function(){window.playSound('babyLoveToken',1)},
+        
+        update:(amount,player)=>{
+            
+            player.redPollen*=2
+            player.whitePollen*=2
+            player.bluePollen*=2
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Baby Love\nx2 pollen'
+        }
+    },
+    
     rage:{
         
         trialCooldown:25,trialRate:0.8,
@@ -4100,7 +4146,7 @@ let effects={
                 
                 honeyMarkConvert=TIME
                 
-                let a=Math.min(Math.round(player.convertTotal*amount*0.25),player.pollen)
+                let a=Math.min(Math.round(player.convertTotal*amount*0.5),player.pollen)
                 player.pollen-=a
                 player.honey+=a
                 if(player.setting_enablePollenText)
@@ -7212,7 +7258,9 @@ class Bee {
         
         for(let i in beeInfo[this.type].tokens){
             
-            this.gatheringTokens[i]={type:beeInfo[this.type].tokens[i],cooldown:effects[beeInfo[this.type].tokens[i]].trialCooldown,rate:effects[beeInfo[this.type].tokens[i]].trialRate,timer:-10000}
+            let t=beeInfo[this.type].tokens[i].replace('*',''),g=beeInfo[this.type].tokens[i].indexOf('*')>-1
+            
+            this.gatheringTokens[i]={type:t,cooldown:effects[t].trialCooldown,rate:effects[t].trialRate,timer:-10000,requireGifted:g}
             
         }
         
@@ -7220,7 +7268,9 @@ class Bee {
         
         for(let i in beeInfo[this.type].attackTokens){
             
-            this.attackTokens[i]={type:beeInfo[this.type].attackTokens[i],cooldown:effects[beeInfo[this.type].attackTokens[i]].trialCooldown,rate:effects[beeInfo[this.type].attackTokens[i]].trialRate,timer:-10000}
+            let t=beeInfo[this.type].attackTokens[i].replace('*',''),g=beeInfo[this.type].attackTokens[i].indexOf('*')>-1
+            
+            this.attackTokens[i]={type:t,cooldown:effects[t].trialCooldown,rate:effects[t].trialRate,timer:-10000,requireGifted:g}
             
         }
         
@@ -7400,7 +7450,7 @@ class Bee {
                         
                         let g=this.attackTokens[i]
                         
-                        if((TIME-g.timer)*player[beeInfo[this.type].color+'BeeAbilityRate']*this.abilityRate>=g.cooldown&&Math.random()<=g.rate){
+                        if((TIME-g.timer)*player[beeInfo[this.type].color+'BeeAbilityRate']*this.abilityRate>=g.cooldown&&Math.random()<=g.rate&&(g.requireGifted&&this.gifted||!g.requireGifted)){
                             
                             openTokens.push(i)
                         }
@@ -7515,7 +7565,7 @@ class Bee {
                         
                         let g=this.gatheringTokens[i]
                         
-                        if((TIME-g.timer)*player[beeInfo[this.type].color+'BeeAbilityRate']*this.abilityRate>=g.cooldown&&Math.random()<=g.rate){
+                        if((TIME-g.timer)*player[beeInfo[this.type].color+'BeeAbilityRate']*this.abilityRate>=g.cooldown&&Math.random()<=g.rate&&(g.requireGifted&&this.gifted||!g.requireGifted)){
                             
                             openTokens.push(i)
                         }
@@ -7591,7 +7641,7 @@ class Bee {
                     this.state='moveToHiveToConvert'
                     player.honey+=this.pollen*player.honeyAtHive
                     
-                    textRenderer.add(this.pollen,[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
+                    textRenderer.add(Math.ceil(this.pollen*player.honeyAtHive),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
                     
                     this.pollen=0
                     
@@ -10713,7 +10763,7 @@ class DrainingDiamond {
     
     constructor(){
         
-        this.life=2
+        this.life=2.5
         this.pos=[player.body.position.x,player.body.position.y,player.body.position.z,0]
         this.y=this.pos[1]+2
         this.r=15
@@ -10725,6 +10775,8 @@ class DrainingDiamond {
         
         player.honey+=am*2
         player.pollen-=am
+        
+        player.addMessage('+'+MATH.addCommas((am*2)+'')+' Honey (from Diamond Drain)')
         
         objects.mobs.splice(index,1)
     }
@@ -10742,7 +10794,7 @@ class DrainingDiamond {
             this.pos[1]+=(this.y-this.pos[1])*dt*4
         }
         
-        if(this.life>0.5){
+        if(this.life>0.7){
             
             this.pos[3]+=(this.r-this.pos[3])*dt*4
             gl.bindBuffer(gl.ARRAY_BUFFER,meshes.drainingDiamond.vertBuffer)
@@ -10750,7 +10802,7 @@ class DrainingDiamond {
             gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
             gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
             gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
-            gl.uniform2f(glCache.mob_instanceInfo2,1.2,0.75)
+            gl.uniform2f(glCache.mob_instanceInfo2,1.6,0.75)
             gl.drawElements(gl.TRIANGLES,meshes.drainingDiamond.indexAmount,gl.UNSIGNED_SHORT,0)
             
         } else {
@@ -10760,7 +10812,7 @@ class DrainingDiamond {
             gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
             gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
             gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
-            gl.uniform2f(glCache.mob_instanceInfo2,1.2,1)
+            gl.uniform2f(glCache.mob_instanceInfo2,1.6,1)
             gl.drawElements(gl.TRIANGLES,meshes.shiningDiamond.indexAmount,gl.UNSIGNED_SHORT,0)
         }
         
@@ -11418,7 +11470,7 @@ class Mesh {
     
     setMeshFromFunction(func){
         
-        let verts=[],index=[],addBox,addHiveSlot,addCylinder,addSphere,applyFinalRotation,addGiftedRing,addStar,DIS=this
+        let verts=[],index=[],addBox,addHiveSlot,addCylinder,addSphere,applyFinalRotation,addGiftedRing,addStar,addLimbBox,addLimbCylinder,DIS=this
         
         if(this.isStatic){
             
@@ -11580,17 +11632,19 @@ class Mesh {
             
             addGiftedRing=function(x,y,z,w,h){
                 
-                let vl=verts.length/10,r=1,g=0.95,b=0
+                // let vl=verts.length/10,r=1,g=0.95,b=0
                 
-                verts.push(
+                // verts.push(
                     
-                    x-w,y-h,z,r,g,b,1,0,0,1,
-                    x+w,y-h,z,r,g,b,1,0,0,1,
-                    x+w,y+h,z,r,g,b,1,0,0,1,
-                    x-w,y+h,z,r,g,b,1,0,0,1,
-                )
+                //     x-w,y-h,z,r,g,b,1,0,0,1,
+                //     x+w,y-h,z,r,g,b,1,0,0,1,
+                //     x+w,y+h,z,r,g,b,1,0,0,1,
+                //     x-w,y+h,z,r,g,b,1,0,0,1,
+                // )
                 
-                index.push(vl,vl+1,vl+2,vl+2,vl+3,vl)
+                // index.push(vl,vl+1,vl+2,vl+2,vl+3,vl)
+                
+                addBox(x,y,z,w*2,h*2,0.25,false,[100,100,0],false,false)
             }
             
             addStar=function(x,y,z,innerRad,outerRad,thickness,depth,r,g,b,la=0.75,lb=0.25,rx=0,ry=0,rz=0){
@@ -11767,6 +11821,186 @@ class Mesh {
                 
                 verts.push(..._verts)
                 index.push(..._index)
+            }
+            
+            addLimbBox=function(x,y,z,w,h,l,rot,u,_v){
+                
+                rot=rot||[0,0,0]
+                
+                let rotation=quat.fromEuler([],rot[0],rot[1],rot[2])
+                let model=mat4.fromRotationTranslation([],rotation,[x,y,z,1]),a=1
+                
+                let v=[
+                    
+                    [-0.5*w,0.5*h,-0.5*l],
+                    [-0.5*w,0.5*h,0.5*l],
+                    [0.5*w,0.5*h,0.5*l],
+                    [0.5*w,0.5*h,-0.5*l],
+                    [-0.5*w,-0.5*h,-0.5*l],
+                    [-0.5*w,-0.5*h,0.5*l],
+                    [0.5*w,-0.5*h,0.5*l],
+                    [0.5*w,-0.5*h,-0.5*l],
+                ]
+                
+                let shade=[]
+                
+                let normals=[
+                    
+                    [0,1,0],
+                    [0,0,1],
+                    [0,0,-1],
+                    [1,0,0],
+                    [-1,0,0],
+                    [0,-1,0],
+                ]
+                
+                for(var i=0,_l=v.length;i<_l;i++){
+                    
+                    vec3.transformMat4(v[i],v[i],model)
+                    
+                    if(i<6){
+                        
+                        vec3.transformQuat(normals[i],normals[i],rotation)
+                        let n=normals[i]
+                        let d=n[0]*lightDir[0]+n[1]*lightDir[1]+n[2]*lightDir[2]
+                        shade[i]=d*0.8+0.65
+                        
+                    }
+                }
+                
+                let vl=verts.length/10,tv=126/1024,col=[1,1,1]
+                
+                u+=1/1024
+                _v+=1/1024
+                
+                verts.push(
+                    
+                    v[0][0],v[0][1],v[0][2],col[0]*shade[0],col[1]*shade[0],col[2]*shade[0],a,u,_v,0,
+                    v[1][0],v[1][1],v[1][2],col[0]*shade[0],col[1]*shade[0],col[2]*shade[0],a,u,_v,0,
+                    v[2][0],v[2][1],v[2][2],col[0]*shade[0],col[1]*shade[0],col[2]*shade[0],a,u,_v,0,
+                    v[3][0],v[3][1],v[3][2],col[0]*shade[0],col[1]*shade[0],col[2]*shade[0],a,u,_v,0,
+                    
+                    v[1][0],v[1][1],v[1][2],col[0]*shade[1],col[1]*shade[1],col[2]*shade[1],a,u,_v,0,
+                    v[2][0],v[2][1],v[2][2],col[0]*shade[1],col[1]*shade[1],col[2]*shade[1],a,u+tv,_v,0,
+                    v[5][0],v[5][1],v[5][2],col[0]*shade[1],col[1]*shade[1],col[2]*shade[1],a,u,_v+tv,0,
+                    v[6][0],v[6][1],v[6][2],col[0]*shade[1],col[1]*shade[1],col[2]*shade[1],a,u+tv,_v+tv,0,
+                    
+                    v[0][0],v[0][1],v[0][2],col[0]*shade[2],col[1]*shade[2],col[2]*shade[2],a,u,_v,0,
+                    v[3][0],v[3][1],v[3][2],col[0]*shade[2],col[1]*shade[2],col[2]*shade[2],a,u,_v,0,
+                    v[4][0],v[4][1],v[4][2],col[0]*shade[2],col[1]*shade[2],col[2]*shade[2],a,u,_v,0,
+                    v[7][0],v[7][1],v[7][2],col[0]*shade[2],col[1]*shade[2],col[2]*shade[2],a,u,_v,0,
+                    
+                    v[2][0],v[2][1],v[2][2],col[0]*shade[3],col[1]*shade[3],col[2]*shade[3],a,u,_v,0,
+                    v[3][0],v[3][1],v[3][2],col[0]*shade[3],col[1]*shade[3],col[2]*shade[3],a,u,_v,0,
+                    v[6][0],v[6][1],v[6][2],col[0]*shade[3],col[1]*shade[3],col[2]*shade[3],a,u,_v,0,
+                    v[7][0],v[7][1],v[7][2],col[0]*shade[3],col[1]*shade[3],col[2]*shade[3],a,u,_v,0,
+                    
+                    v[0][0],v[0][1],v[0][2],col[0]*shade[4],col[1]*shade[4],col[2]*shade[4],a,u,_v,0,
+                    v[1][0],v[1][1],v[1][2],col[0]*shade[4],col[1]*shade[4],col[2]*shade[4],a,u,_v,0,
+                    v[4][0],v[4][1],v[4][2],col[0]*shade[4],col[1]*shade[4],col[2]*shade[4],a,u,_v,0,
+                    v[5][0],v[5][1],v[5][2],col[0]*shade[4],col[1]*shade[4],col[2]*shade[4],a,u,_v,0,
+                    
+                    v[4][0],v[4][1],v[4][2],col[0]*shade[5],col[1]*shade[5],col[2]*shade[5],a,u,_v,0,
+                    v[5][0],v[5][1],v[5][2],col[0]*shade[5],col[1]*shade[5],col[2]*shade[5],a,u,_v,0,
+                    v[6][0],v[6][1],v[6][2],col[0]*shade[5],col[1]*shade[5],col[2]*shade[5],a,u,_v,0,
+                    v[7][0],v[7][1],v[7][2],col[0]*shade[5],col[1]*shade[5],col[2]*shade[5],a,u,_v,0,
+                    
+                )
+                
+                index.push(
+                    
+                    0+vl,1+vl,2+vl,
+                    0+vl,2+vl,3+vl,
+                    5+vl,6+vl,7+vl,
+                    6+vl,5+vl,4+vl,
+                    8+vl,9+vl,10+vl,
+                    11+vl,10+vl,9+vl,
+                    14+vl,13+vl,12+vl,
+                    13+vl,14+vl,15+vl,
+                    18+vl,17+vl,16+vl,
+                    17+vl,18+vl,19+vl,
+                    22+vl,21+vl,20+vl,
+                    23+vl,22+vl,20+vl
+                )
+            }
+            
+            addLimbCylinder=function(x,y,z,rad,hei,sides,r,g,b,a,rx,ry,rz,r2,shading=true){
+                let rad2=r2??rad,vl=verts.length/10,_verts=[],_index=[]
+                
+                for(let t=0,inc=MATH.TWO_PI/sides;t<=MATH.TWO_PI;t+=inc){
+                    
+                    let t1=t-inc*0.5,t2=t+inc*0.5,s=shading?Math.sin(t1)*0.1+0.9:1
+                    _verts.push(
+                        Math.cos(t1)*rad,Math.sin(t1)*rad,hei*0.5,r*s,g*s,b*s,a,0,0,0,
+                        Math.cos(t1)*rad2,Math.sin(t1)*rad2,-hei*0.5,r*s,g*s,b*s,a,0,0,0,
+                        Math.cos(t2)*rad,Math.sin(t2)*rad,hei*0.5,r*s,g*s,b*s,a,0,0,0,
+                        Math.cos(t2)*rad2,Math.sin(t2)*rad2,-hei*0.5,r*s,g*s,b*s,a,0,0,0)
+                    
+                    let _vl=_verts.length/10
+                    _index.push(_vl,_vl+1,_vl+2,_vl+3,_vl+2,_vl+1)
+                }
+                
+                let _v=_verts.length/10
+                
+                for(let t=0,inc=MATH.TWO_PI/sides;t<=MATH.TWO_PI;t+=inc){
+                    
+                    let t1=t-inc*0.5,t2=t+inc*0.5
+                    _verts.push(
+                        Math.cos(t1)*rad,Math.sin(t1)*rad,hei*0.5,r*0.9,g*0.9,b*0.9,a,0,0,0,
+                        Math.cos(t2)*rad,Math.sin(t2)*rad,hei*0.5,r*0.9,g*0.9,b*0.9,a,0,0,0)
+                }
+                for(let l=_verts.length/10,i=_v;i<l;i++){
+                    
+                    _index.push(_v,i,i+2)
+                }
+                _v=_verts.length/10
+                for(let t=0,inc=MATH.TWO_PI/sides;t<=MATH.TWO_PI;t+=inc){
+                    
+                    let t1=t-inc*0.5,t2=t+inc*0.5
+                    _verts.push(
+                        
+                        Math.cos(t1)*rad2,Math.sin(t1)*rad2,-hei*0.5,r*0.7,g*0.7,b*0.7,a,0,0,0,
+                        Math.cos(t2)*rad2,Math.sin(t2)*rad2,-hei*0.5,r*0.7,g*0.7,b*0.7,a,0,0,0)
+                }
+                for(let l=_verts.length/10,i=_v;i<l;i++){
+                    
+                    _index.push(i,i-1,_v)
+                }
+                
+                for(let i in _index){
+                    
+                    _index[i]+=vl
+                }
+                
+                index.push(..._index)
+                
+                let rotQuat=quat.fromEuler([],rx,ry,rz)
+                
+                for(let i=0;i<_verts.length;i+=10){
+                    
+                    if(rx){
+                        
+                        let rotated=vec3.transformQuat([],[_verts[i],_verts[i+1],_verts[i+2]],rotQuat)
+                        _verts[i]=rotated[0]+x
+                        _verts[i+1]=rotated[1]+y
+                        _verts[i+2]=rotated[2]+z
+                        
+                        rotated=vec3.transformQuat(rotated,[_verts[i+7],_verts[i+8],_verts[i+9]],rotQuat)
+                        
+                        _verts[i+7]=rotated[0]
+                        _verts[i+8]=rotated[1]
+                        _verts[i+9]=rotated[2]
+                        
+                    } else {
+                        
+                        _verts[i]+=x
+                        _verts[i+1]+=y
+                        _verts[i+2]+=z
+                    }
+                }
+                
+                verts.push(..._verts)
+                
             }
             
         } else {
@@ -12055,7 +12289,7 @@ class Mesh {
             }
         }
         
-        func(addBox,addHiveSlot,addCylinder,addSphere,applyFinalRotation,addGiftedRing,addStar)
+        func(addBox,addHiveSlot,addCylinder,addSphere,applyFinalRotation,addGiftedRing,addStar,addLimbBox,addLimbCylinder)
         this.setMesh(verts,index)
     }
     
@@ -12138,8 +12372,6 @@ let textures=(function(out){
             
             f(tex_ctx)
             
-            out.effects=gl.createTexture()
-            
             gl.bindTexture(gl.TEXTURE_2D,out.effects)
             gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,2048,2048,0,gl.RGBA,gl.UNSIGNED_BYTE,tex_ctx.getImageData(0,0,2048,2048))
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
@@ -12157,9 +12389,7 @@ let textures=(function(out){
     out.effects=gl.createTexture()
     
     gl.bindTexture(gl.TEXTURE_2D,out.effects)
-    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1024,1024,0,gl.RGBA,gl.UNSIGNED_BYTE,tex_ctx.getImageData(0,0,1024,1024))
-    gl.generateMipmap(gl.TEXTURE_2D)
-    
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([0,0,0,1]))
     fetchCodeFromProgram('effectsTexture',5503726222622720)
     loadTexture1()
     
@@ -12176,8 +12406,6 @@ let textures=(function(out){
             let f=Object.constructor('tex_ctx',FETCHED_CODE.flowersTexture)
             
             f(tex_ctx)
-            
-            out.flowers=gl.createTexture()
             
             gl.bindTexture(gl.TEXTURE_2D,out.flowers)
             gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1024,1024,0,gl.RGBA,gl.UNSIGNED_BYTE,tex_ctx.getImageData(0,0,1024,1024))
@@ -12196,12 +12424,9 @@ let textures=(function(out){
     out.flowers=gl.createTexture()
     
     gl.bindTexture(gl.TEXTURE_2D,out.flowers)
-    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1024,1024,0,gl.RGBA,gl.UNSIGNED_BYTE,tex_ctx.getImageData(0,0,1024,1024))
-    gl.generateMipmap(gl.TEXTURE_2D)
-    
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([0,0,0,1]))
     fetchCodeFromProgram('flowersTexture',5172660060340224)
     loadTexture3()
-    
     
     tex_ctx.clearRect(0,0,512,600)
     tex_ctx.font='bold 60px arial'
@@ -12289,14 +12514,20 @@ let textures=(function(out){
             
             f(tex_ctx)
             
-            out.bees=gl.createTexture()
+            let data=tex_ctx.getImageData(0,0,2048,2048)
             
             gl.bindTexture(gl.TEXTURE_2D,out.bees)
-            gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,2048,2048,0,gl.RGBA,gl.UNSIGNED_BYTE,tex_ctx.getImageData(0,0,2048,2048))
+            gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,2048,2048,0,gl.RGBA,gl.UNSIGNED_BYTE,data)
             
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
             gl.generateMipmap(gl.TEXTURE_2D)
+            
+            beeCanvas=document.createElement('canvas')
+            beeCanvas.width=2048
+            beeCanvas.height=2048
+            let beeCanvasCtx=beeCanvas.getContext('2d')
+            beeCanvasCtx.putImageData(data,0,0)
             
             FETCHED_CODE.beesTexture=''
             
@@ -12309,8 +12540,7 @@ let textures=(function(out){
     out.bees=gl.createTexture()
     
     gl.bindTexture(gl.TEXTURE_2D,out.bees)
-    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,2048,2048,0,gl.RGBA,gl.UNSIGNED_BYTE,tex_ctx.getImageData(0,0,2048,2048))
-    gl.generateMipmap(gl.TEXTURE_2D)
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([0,0,0,1]))
     fetchCodeFromProgram('beesTexture',6745707267538944)
     loadTexture2()
     
@@ -12345,11 +12575,44 @@ let textures=(function(out){
     out.decals=gl.createTexture()
     
     gl.bindTexture(gl.TEXTURE_2D,out.decals)
-    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1024,1024,0,gl.RGBA,gl.UNSIGNED_BYTE,tex_ctx.getImageData(0,0,1024,1024))
-    
-    gl.generateMipmap(gl.TEXTURE_2D)
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([0,0,0,1]))
     fetchCodeFromProgram('decalsTexture',6119846204456960)
     loadTexture4()
+    
+    function loadTexture5(){
+        
+        if(FETCHED_CODE.bearTexture){
+            
+            FETCHED_CODE.bearTexture=FETCHED_CODE.bearTexture.split('#')
+            
+            FETCHED_CODE.bearTexture=FETCHED_CODE.bearTexture[1]
+            
+            FETCHED_CODE.bearTexture=FETCHED_CODE.bearTexture.substr(0,FETCHED_CODE.bearTexture.length-3)
+            
+            let f=Object.constructor('tex_ctx',FETCHED_CODE.bearTexture)
+            
+            f(tex_ctx)
+            
+            gl.bindTexture(gl.TEXTURE_2D,out.bear)
+            gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1024,1024,0,gl.RGBA,gl.UNSIGNED_BYTE,tex_ctx.getImageData(0,0,1024,1024))
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+            gl.generateMipmap(gl.TEXTURE_2D)
+            
+            FETCHED_CODE.bearTexture=''
+            
+        } else {
+            
+            window.setTimeout(loadTexture5,250)
+        }
+    }    
+    
+    out.bear=gl.createTexture()
+    
+    gl.bindTexture(gl.TEXTURE_2D,out.bear)
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([0,0,0,1]))
+    fetchCodeFromProgram('bearTexture',5322361823346688)
+    loadTexture5()
     
     return out
     
@@ -13997,7 +14260,7 @@ player=(function(out){
             ctx.fillText(MATH.doGrammar(beeInfo[bee].color)+'     '+MATH.doGrammar(beeInfo[bee].rarity),0,23)
             
             ctx.rotate(Math.cos(TIME*5)*0.1)
-            ctx.drawImage(texCanvas,beeInfo[bee].u*2048,beeInfo[bee].v*2048,128,128,-45,-95+Math.sin(TIME*2)*7,90,90)
+            ctx.drawImage(beeCanvas,beeInfo[bee].u*2048,beeInfo[bee].v*2048,128,128,-45,-95+Math.sin(TIME*2)*7,90,90)
             
             ctx.setTransform(1,0,0,1,0,0)
         }
@@ -14044,7 +14307,7 @@ player=(function(out){
             if(out.updateMapLightTimer<=0){
                 
                 UPDATE_MAP_MESH()
-                out.updateMapLightTimer=0.25
+                out.updateMapLightTimer=0.5
                 out.keepMapUpToDate=true
             }
             
@@ -16294,6 +16557,19 @@ _b(0,0.1,-0.42,0.075,0.075,0.4,0.01,0.01,10,45,0,0)
 _b(-0.175,0.2,0.225,0.07,0.3,0.07,0.01,0.09,11,0,0,35)
 _b(0.175,0.2,0.225,0.07,0.3,0.07,0.01,0.09,11,0,0,-35)
 
+_b(0,0.3,0,0.2,0.2,0.25,0.37,0.09,12)
+_c(0,0.3,0.225,0.1,0.05,8,0.37,0.09,12,90,0,180)
+_c(0,0.3,0.1,0.05,0.1,6,0.37,0.09,12,90,0,180)
+_b(0.05,0.35,-0.2,0.06,0.06,0.25,0.37,0.09,12,-10,0,0)
+_b(-0.05,0.35,-0.2,0.06,0.06,0.25,0.37,0.09,12,-10,0,0)
+
+_b(0,0,0.125,0.55,0.55,0.2,0.4,-0.18,13)
+_b(0,0,0.125,0.55,0.55,0.2,0.4,-0.18,13)
+
+_c(0,0.175,0.125,0.16,0.05,10,0.1,-0.13,14)
+_c(0,0.22,0.125,0.1,0.05,10,0.01,0.09,14)
+_c(0,0.3375,0.125,0.1,0.0675,10,0.1,-0.13,14)
+
 function fluff(x,y,z,r,s){
     
     let shade=MATH.random(0.7,0.9),v=[[x+s,y,z],[x-s,y,z],[x,y+s*0.8,z-s]],vl=verts.length/7
@@ -17205,8 +17481,8 @@ box(-11,-4.62,36.8,7,10,14,[-15,0,0],[0.9,0.9,0.1],true,false);
 box(-27+20,34-30,68.76-25.5,2,10,2,false,[0.3,0.6,1],true,false);
 box(-35+20,34-30,68.76-25.5,2,10,2,false,[0.3,0.6,1],true,false);
 box(-31+20,38-30,68.76-25.5,2,10,2,[0,0,90],[0.3,0.6,1],true,false);
-box(-28+20,36.75-30,68.75-25.5,2,3.5,2,[0,0,45],[0.3,0.6,1],true,false);
-box(-34+20,36.75-30,68.75-25.5,2,3.5,2,[0,0,-45],[0.3,0.6,1],true,false);
+box(-28+20,36.75-30,68.76-25.5,2,3.5,2,[0,0,45],[0.3,0.6,1],true,false);
+box(-34+20,36.75-30,68.76-25.5,2,3.5,2,[0,0,-45],[0.3,0.6,1],true,false);
 box(-31+20,34-30,68.76-25.5,8,9,1.8,[0,0,90],[0,0.8,0,0.6],false,false);
 
 box(-4.5,3.5,42.5,0.8,4,0.4,false,[1.05,1.05,1.05],false,false);
@@ -17278,7 +17554,7 @@ box(-82.5,15.6,5.75+1,4,50,100,false,WALL,true,false);
 cylinder(-95,14,82,18,4,9,0.5,0.25,0.05,1,90,0,0,13);
 cylinder(-95,14,82,18,4,9,0.5,0.25,0.05,1,90,180/9,0,13);
 cylinder(-95,14.01,82,11,4,20,0.5*2.5,0.4*2.5,0.1*2.5,1,90,0,0);
-box(-110,14,81,10,4,13,false,[0.5*0.75,0.25*0.75,0.05*0.75],true,false);
+box(-110,14,81,10,4,15,false,[0.5*0.75,0.25*0.75,0.05*0.75],true,false);
 
 box(-95,15,80,11,2,12,false,[1,1,1],true,false,false);
 
@@ -17287,6 +17563,14 @@ for(let i=210;i<360+180;i+=360/13){
     box(-95+Math.cos(i*0.017253)*14.5,13.25,82+Math.sin(i*0.017253)*14.5,7,2,6,[42,95-i,0],[1,1,1],true,false,false);
     box(-95+Math.cos(i*0.017253)*8,15,82+Math.sin(i*0.017253)*8,8,2,8,[0,i,0],[1,1,1],true,false,false);
 }
+
+
+box(-110,18,81-5,5,5,3,false,[0.5,0.5,0.5],false,true);
+box(-110,18,81+5,5,5,3,false,[0.5,0.5,0.5],false,true);
+box(-110,21,81+4,5,5,3,[-30,0,0],[0.5,0.5,0.5],false,true);
+box(-110,21,81-4,5,5,3,[30,0,0],[0.5,0.5,0.5],false,true);
+box(-110,22.5,81,5,8,2.5,[90,0,0],[0.5,0.5,0.5],false,true);
+box(-110.5,18,81,5,8,8,false,[0,0,0],false,true);
 
 function pineapple(x,y,z,s){
     
@@ -17319,6 +17603,58 @@ box(-83,13.5,107,7,10,8,[0,40,0],[0.42,0.42,0.42],true,true);
 box(-83,11,107,40,10,20,[0,10,0],[0.42,0.42,0.42],true,true);
 box(-95,18,102.5,3,3,0.5,[-35*0.4,-25,35],[0.33,0.33,0.33],false,true);
 box(-105,15,96.7,6,6,0.5,[-25*0.5,-28,27],[0.33,0.33,0.33],false,true);
+
+box(-103,21.5,122.5,14,1,1.5,false,[0,0.1,0.6],true,false);
+box(-103,21.5,104,14,1,1.5,false,[0,0.1,0.6],true,false);
+box(-109.5,21.5,(104+122.5)*0.5,20,1,1.5,[0,90,0],[0,0.1,0.6],true,false);
+box(-95.5,21.5,105.75,5,1,1.5,[0,90,0],[0,0.1,0.6],true,false);
+box(-95.5,21.5,120.75,5,1,1.5,[0,90,0],[0,0.1,0.6],true,false);
+box(-93.25,21.5,118,6,1,1.5,false,[0,0.1,0.6],true,false);
+box(-93.25,21.5,118,6,1,1.5,false,[0,0.1,0.6],true,false);
+box(-93.25,21.5,108,6,1,1.5,false,[0,0.1,0.6],true,false);
+box(-91,21.5,109,2,1,1.5,[0,90,0],[0,0.1,0.6],true,false);
+box(-91,21.5,117,2,1,1.5,[0,90,0],[0,0.1,0.6],true,false);
+
+box(-102.5,21.5,122.5,14,15,0.75,false,[1,0.7,0.6],true,false);
+box(-102.5,21.5,104,14,15,0.75,false,[1,0.7,0.6],true,false);
+box(-109.5,21.5,(104+122.5)*0.5,19.25,15,0.75,[0,90,0],[1,0.7,0.6],true,false);
+box(-95.5,21.5,106,4.75,15,0.75,[0,90,0],[1,0.7,0.6],true,false);
+box(-95.5,21.5,120.5,4.75,15,0.75,[0,90,0],[1,0.7,0.6],true,false);
+box(-93.25,21.5,118,5.25,15,0.75,false,[1,0.7,0.6],true,false);
+box(-93.25,21.5,118,5.25,15,0.75,false,[1,0.7,0.6],true,false);
+box(-93.25,21.5,108,5.25,15,0.75,false,[1,0.7,0.6],true,false);
+box(-91,21.5,109,2,15,0.75,[0,90,0],[1,0.7,0.6],true,false);
+box(-91,21.5,117,2,15,0.75,[0,90,0],[1,0.7,0.6],true,false);
+box(-91,27,112.5,7,4,0.75,[0,90,0],[1,0.7,0.6],true,false);
+
+box(-91,21.5,116,2,7,1.5,[0,90,0],[0,0.1,0.6],true,false);
+box(-91,21.5,110,2,7,1.5,[0,90,0],[0,0.1,0.6],true,false);
+box(-91,27,113,4,5,1.5,[0,90,0],[0,0.1,0.6],true,false);
+box(-91,22,113,4,5,1.22,[0,90,0],[0,0.8,0,0.6],false,false);
+
+box(-93,29.375,113,12,0.75,6,[0,90,0],[0,0.1,0.6],true,false);
+box(-102.5,29.375,113,20,0.75,16,[0,90,0],[0,0.1,0.6],true,false);
+
+box(-93,20.7,113,11,0.75,5,[0,90,0],[0.3,0.5,0.7],false,false);
+box(-102.5,20.7,113,19,0.75,15,[0,90,0],[0.3,0.5,0.7],false,false);
+box(-102.5,20.7,113,4,1,13,[0,90,0],[0,0.1,0.6],false,false);
+
+box(-88,20.7,113,5,1,6,[0,90,0],[0,0.1,0.6],false,false);
+
+box(-61-1,14,62,0.4,4,0.8,false,[1.05,1.05,1.05],false,false);
+box(-61-1,14,62-2,0.4,4,0.8,false,[1.05,1.05,1.05],false,false);
+box(-61-1,14,62-4,0.4,4,0.8,false,[1.05,1.05,1.05],false,false);
+box(-61-1,14,62-6,0.4,4,0.8,false,[1.05,1.05,1.05],false,false);
+box(-61-1,13.75,62-3,0.4,8,0.5,[93,0,0],[1.05,1.05,1.05],false,false);
+box(-61-1,14.75,62-3,0.4,8,0.5,[89,0,0],[1.05,1.05,1.05],false,false);
+box(-61-1,14,62-3,0.5,8,4,[90,0,0],[1.05,1.05,1.05,0.5],true,false,false);
+
+box(-27-27.5,34-20,68.76-5.25,2,10,2,false,[0.3,0.6,1],true,false);
+box(-35-27.5,34-20,68.76-5.25,2,10,2,false,[0.3,0.6,1],true,false);
+box(-31-27.5,38-20,68.76-5.25,2,10,2,[0,0,90],[0.3,0.6,1],true,false);
+box(-28-27.5,36.75-20,68.76-5.25,2,3.5,2,[0,0,45],[0.3,0.6,1],true,false);
+box(-34-27.5,36.75-20,68.76-5.25,2,3.5,2,[0,0,-45],[0.3,0.6,1],true,false);
+box(-31-27.5,34-20,68.76-5.25,8,9,1.8,[0,0,90],[0,0.8,0,0.6],false,false);
 
 function rose(x,y,z,s){
 
@@ -17469,28 +17805,6 @@ box(-5,34.5,83.5,0.15,3,3,false,[1.1,1.1,1.1],true,false);
 box(-5-1.5,34.5,83.5-1.5,0.15,3,3,[0,90,0],[1.1,1.1,1.1],true,false);
 box(-5-1.5,34.5,83.5+1.5,0.15,3,3,[0,90,0],[1.1,1.1,1.1],true,false);
 box(-5-1.5,34.5+1.75,83.5,0.15+0.5,3.25,3.25,[0,0,90],[0,1.1,0],true,false);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 `
@@ -17962,6 +18276,17 @@ createField('stumpField',-102,16,75,15,15,function(){
     return 3
 },{w:0.15,b:0.8,r:0.05})
 
+createField('blueFlowerField',-53,-1.5,32,25,10,function(){
+    
+    let c=Math.random()
+    
+    return Math.random()<0.69?'blue':'white'
+    
+},function(){
+    
+    return Math.random()<0.89?1:2
+},{w:0.31,r:0,b:0.69})
+
 
 flowers.mesh={}
 flowers.mesh.vertBuffer=gl.createBuffer()
@@ -18055,7 +18380,8 @@ document.getElementById('runMeshStr').onclick=function(){
 
 document.getElementById('meshStr').value=player.createdMesh
 
-// player.addSlot('basic')
+//player.addSlot('baby')
+
 player.updateHive()
 player.addEffect('tabbyLove',false,false,1000)
 
@@ -18335,6 +18661,7 @@ function loop(now){
         if(player.canUseItem){
             
             player.beeHighlightMesh.setMeshFromFunction(function(box){
+                
                 if(player.itemDragging&&items[player.itemDragging].canUseOnSlot(player.hive[player.hiveIndex[1]][player.hiveIndex[0]])||player.beequipDragging&&beequips[player.beequipDragging.type].canUseOnSlot(player.hive[player.hiveIndex[1]][player.hiveIndex[0]])){
                     
                     box(player.hivePos[0]+player.hiveIndex[0]*0.8,player.hivePos[1]+player.hiveIndex[1]*0.8-2.25,player.hivePos[2]-0.2,0.8,0.8,0.1,false,[0,100,0],false,false)
@@ -18364,26 +18691,30 @@ function loop(now){
         }
     }
     
+    player.sprinklerMesh.render()
+    
+    gl.bindTexture(gl.TEXTURE_2D,textures.bear)
+    
     if(frameCount%2===0){
         
-        bearMesh.setMeshFromFunction(function(box,a,cylinder,sphere,d,e,star){
+        bearMesh.setMeshFromFunction(function(box,a,cylinder,sphere,d,e,star,limbBox,limbCylinder){
             
             let x=16,y=-0.3,z=3,s=1,t=TIME,t1=Math.sin(t*2.1)*5-0.5
             
-            box(x,y+Math.cos(t1*MATH.TO_RAD*2)*s*0.6,z+Math.sin(t1*MATH.TO_RAD*2)*s*0.6,1.1*s,0.9*s,0.6*s,[t1*2,0,0],[0.9,0.9,0.9],false,false)
-            box(x,y+Math.cos(t1*MATH.TO_RAD*2.75)*s*1.65,z+Math.sin(t1*MATH.TO_RAD*2.75)*s*1.65,1.2*s,1.15*s,0.6*s,[t1*4,0,0],[0.9,0.9,0.9],false,false)
-            box(x,y,z,1.1*s,0.25*s,0.6*s,[t1,0,0],[0.9,0.9,0.9],false,false)
-            box(x+s/1.25,y-Math.cos(t1*MATH.TO_RAD*3.5*2)*s*0.65+s*1.15,z-Math.sin(t1*MATH.TO_RAD*3.5*2)*s*0.2,0.5*s,1.15*s,0.5*s,[t1*3.5*2,0,9],[0.9,0.9,0.9],false,false)
+            limbBox(x,y+Math.cos(t1*MATH.TO_RAD*2)*s*0.6,z+Math.sin(t1*MATH.TO_RAD*2)*s*0.6,1.1*s,0.9*s,0.6*s,[t1*2,0,0],0,0)
+            limbBox(x,y+Math.cos(t1*MATH.TO_RAD*2.75)*s*1.65,z+Math.sin(t1*MATH.TO_RAD*2.75)*s*1.65,1.2*s,1.15*s,0.6*s,[t1*4,0,0],0,0)
+            limbBox(x,y,z,1.1*s,0.25*s,0.6*s,[t1,0,0],0,0)
+            limbBox(x+s/1.25,y-Math.cos(t1*MATH.TO_RAD*3.5*2)*s*0.65+s*1.15,z-Math.sin(t1*MATH.TO_RAD*3.5*2)*s*0.2,0.5*s,1.15*s,0.5*s,[t1*3.5*2,0,9],0,0)
             s/=1.25
-            box(x-0.35*s,y-0.55*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[t1*1.25-10,0,-5],[0.9,0.9,0.9],false,false)
-            box(x-0.42*s,y-1.15*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[10-t1*0.5,0,-5],[0.9,0.9,0.9],false,false)
-            box(x+0.35*s,y-0.55*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[t1*1.25-10,0,5],[0.9,0.9,0.9],false,false)
-            box(x+0.42*s,y-1.15*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[10-t1*0.5,0,5],[0.9,0.9,0.9],false,false)
+            limbBox(x-0.35*s,y-0.55*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[t1*1.25-10,0,-5],0,0)
+            limbBox(x-0.42*s,y-1.15*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[10-t1*0.5,0,-5],0,0)
+            limbBox(x+0.35*s,y-0.55*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[t1*1.25-10,0,5],0,0)
+            limbBox(x+0.42*s,y-1.15*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[10-t1*0.5,0,5],0,0)
             s*=1.25
-            cylinder(x-0.6*s,y+Math.cos(t1*MATH.TO_RAD*3)*s*2.2,z+Math.sin(t1*MATH.TO_RAD*3)*s*2.2,0.3*s,0.6*s,8,0.9,0.9,0.9,1,t1*4,0,0,0.3*s,false,true)
-            cylinder(x+0.6*s,y+Math.cos(t1*MATH.TO_RAD*3)*s*2.2,z+Math.sin(t1*MATH.TO_RAD*3)*s*2.2,0.3*s,0.6*s,8,0.9,0.9,0.9,1,t1*4,0,0,0.3*s,false,true)
+            limbCylinder(x-0.6*s,y+Math.cos(t1*MATH.TO_RAD*3)*s*2.2,z+Math.sin(t1*MATH.TO_RAD*3)*s*2.2,0.3*s,0.6*s,8,0.9,0.9,0.9,1,t1*4,0,0,0.3*s,false,true)
+            limbCylinder(x+0.6*s,y+Math.cos(t1*MATH.TO_RAD*3)*s*2.2,z+Math.sin(t1*MATH.TO_RAD*3)*s*2.2,0.3*s,0.6*s,8,0.9,0.9,0.9,1,t1*4,0,0,0.3*s,false,true)
             t1=Math.sin(t*2.1+0.5)*5-0.5
-            box(x-1*s/1.25,y-Math.cos(t1*MATH.TO_RAD*3.5*2)*s*0.65+s*1.15,z-Math.sin(t1*MATH.TO_RAD*3.5*2)*s*0.2,0.5*s,1.15*s,0.5*s,[t1*3.5*2,0,-9],[0.9,0.9,0.9],false,false)
+            limbBox(x-1*s/1.25,y-Math.cos(t1*MATH.TO_RAD*3.5*2)*s*0.65+s*1.15,z-Math.sin(t1*MATH.TO_RAD*3.5*2)*s*0.2,0.5*s,1.15*s,0.5*s,[t1*3.5*2,0,-9],0,0)
             
         })
         
@@ -18392,8 +18723,6 @@ function loop(now){
     }
     
     bearMesh.render()
-    
-    player.sprinklerMesh.render()
     
     gl.bindTexture(gl.TEXTURE_2D,textures.bees)
     player.hiveMesh.render()
