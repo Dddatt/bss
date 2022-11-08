@@ -1,54 +1,10 @@
 <!DOCTYPE html><!--
 
+had 2 get rid of comnts 4 max spce in d prog so it save
 
-yay we now have music! more pain making all of the sounds :)
-also the sounds have to be around multiples of 5 secs or else they break so i have to edit them
-
-
-
-rn im creating the map so the mesh code thing is on the screen, but i'm using fullscreen for that so click the run button in a ka environment to close it and also stuff is wack in fullscreen rn so i can make the map better
-
-or if u want then mess around with it lol
-
-
-
-red: 57b
-blue: 56b
-white: 111b erm yikes
-
-
-
-tutorial stuff:
-
--go to a field to collect pollen, go to hive to make honey
-
--press 'c' to convert ur pollen(testing thing), and h to get buffs, 'o' is a testing thing long agoooo
-
--hover ur mouse over the effects(if u have them) at the top to see what they do
-
--become a hive near the front of the big green hill place, directly right of red cannon, on the ground, 3 colors, red, blue, white
-
--use iventory items by clicking on the in the iventory to hold them. while holding, put ur mouse outside the inventory and click to use them. things like oil and glue give buffs, but things like treats and eggs u give to bees, put into the hive.
-
--jump while mid air to use glider, jump using glider to put it away
-
--becoming a hive color gives u gear. the boots are kinda needed to explore
-
--red hives use flames to collect pollen
--blue hives makes bubbles to fill up balloons, which gives more honey when converted at the hive
--white hives are unstable right now but they use goo and marks to get honey
-
--obviously hives get more pollen when farming in the same color field(red hives suck in blue fields, and vice versa)
-
--all bees are lvl 20 by default rn cuz testing, make them the corrent lvls by feeding them. feeding them restarts them at lvl 2(a lvl is gained from the treat)
-
--bitter berries cause mutations is 1% chance, 3% is bee is radioactive(caused by neonberry)
-
--beequips can be put on bees. a bit broken rn, but works. the beequips are deleted changing to new hive color
-
--the shop is just...there for me to have the code there...
-
-
+r:77
+b:95
+w:89
 
 
 -->
@@ -235,553 +191,6 @@ tutorial stuff:
     }
     
 </style>
-
-<script id='static_geometry_vsh' type='GLSL3D'>#version 300 es
-
-    precision lowp float;
-    
-    in vec3 vertPos;
-    in vec4 vertColor;
-    in vec3 vertUV;
-    
-    out vec3 pixPos;
-    out vec4 pixColor;
-    out vec3 pixUV;
-    
-    uniform mat4 viewMatrix;
-    
-    void main(){
-        
-        vec4 pos=viewMatrix*vec4(vertPos,1);
-        pixColor=vertColor;
-        pixUV=vertUV;
-        pixPos=pos.xyz;
-        gl_Position=pos;
-    }
-    
-</script>
-
-<script id='static_geometry_fsh' type='GLSL3D'>#version 300 es
-    
-    precision lowp float;
-    
-    in vec3 pixPos;
-    in vec4 pixColor;
-    in vec3 pixUV;
-    
-    out vec4 fragColor;
-    
-    uniform sampler2D tex;
-    uniform float isNight;
-    
-    void main(){
-        
-        vec4 t=texture(tex,pixUV.xy);
-        
-        fragColor=vec4(mix(mix(mix(pixColor.rgb,t.rgb,t.a),pixColor.rgb,pixUV.z),vec3(1,1,0.7),smoothstep(20.0,120.0,pixPos.z)*0.7)*isNight,pixColor.w);
-        
-    }
-    
-</script>
-
-<script id='dynamic_geometry_vsh' type='GLSL3D'>#version 300 es
-
-    precision lowp float;
-    
-    in vec3 vertPos;
-    in vec3 vertColor;
-    in vec3 vertNormal;
-    
-    out vec3 pixColor;
-    out vec3 pixNormal;
-    
-    uniform mat4 viewMatrix;
-    uniform mat4 modelMatrix;
-    
-    void main(){
-        
-        vec4 pos=viewMatrix*modelMatrix*vec4(vertPos,1);
-        pixColor=vertColor;
-        pixNormal=mat3(modelMatrix)*vertNormal;
-        gl_Position=pos;
-    }
-    
-</script>
-
-<script id='dynamic_geometry_fsh' type='GLSL3D'>#version 300 es
-    
-    precision lowp float;
-    
-    in vec3 pixColor;
-    in vec3 pixNormal;
-    
-    out vec4 fragColor;
-    
-    uniform float isNight;
-    
-    void main(){
-        
-        vec3 normal=normalize(pixNormal);
-        float shade=dot(normal,LIGHT_DIR)*0.4+0.6;
-        fragColor=vec4(pixColor*shade*isNight,1.0);
-    }
-    
-</script>
-
-<script id='token_geometry_vsh' type='GLSL3D'>#version 300 es
-
-    precision lowp float;
-    
-    in vec3 vertPos;
-    in vec2 vertUV;
-    
-    in vec4 instance_pos;
-    //pos.w = rot
-    in vec4 instance_uv;
-    
-    out vec3 pixUV;
-    
-    uniform mat4 viewMatrix;
-    
-    void main(){
-        
-        pixUV=vec3(vertUV,0)+instance_uv.xyz;
-        
-        vec3 vp=vertPos*instance_uv.w;
-        float s=sin(instance_pos.w);
-        float c=cos(instance_pos.w);
-        
-        vp=vec3(
-            
-            vp.x*s-vp.z*c,
-            vp.y,
-            vp.x*c+vp.z*s
-        );
-        
-        gl_Position=viewMatrix*vec4(vp+instance_pos.xyz,1);
-    }
-    
-</script>
-
-<script id='token_geometry_fsh' type='GLSL3D'>#version 300 es
-    
-    precision lowp float;
-    
-    in vec3 pixUV;
-    
-    out vec4 fragColor;
-    
-    uniform sampler2D tex;
-    uniform float isNight;
-    
-    void main(){
-        
-        fragColor=vec4(texture(tex,pixUV.xy).rgb*isNight,pixUV.z);
-    }
-    
-</script>
-
-<script id='flower_geometry_vsh' type='GLSL3D'>#version 300 es
-
-    precision lowp float;
-    
-    in vec3 vertPos;
-    in vec4 vertUV;
-    in float vertGoo;
-    
-    out vec4 pixUV;
-    out float goo;
-    
-    uniform mat4 viewMatrix;
-    
-    void main(){
-        
-        pixUV=vertUV;
-        goo=vertGoo;
-        gl_Position=viewMatrix*vec4(vertPos,1);
-    }
-    
-</script>
-
-<script id='flower_geometry_fsh' type='GLSL3D'>#version 300 es
-    
-    precision lowp float;
-    
-    in vec4 pixUV;
-    in float goo;
-    
-    out vec4 fragColor;
-    
-    uniform sampler2D tex;
-    uniform float isNight;
-    
-    void main(){
-        
-        vec3 c=mix(vec3(0,0.6,0),texture(tex,pixUV.xy).rgb*min(pixUV.w,1.0),pixUV.z);
-        
-        if(c.r+c.g<=0.1){
-            
-            c=vec3(0,0.35,0);
-        }
-        
-        if(goo<0.0){
-            
-            fragColor=vec4(mix(c,vec3(0.1,1,0.5),-goo)*isNight,1.0);
-            
-        } else {
-            
-            fragColor=vec4(mix(c,vec3(1,0.2,1),goo)*isNight,1.0);
-        }
-    }
-    
-</script>
-
-<script id='bee_geometry_vsh' type='GLSL3D'>#version 300 es
-
-    precision lowp float;
-    
-    in vec3 vertPos;
-    in vec4 vertUV;
-    
-    in vec3 instance_pos;
-    in vec4 instance_rotation;
-    in vec3 instance_uv;
-    
-    out vec3 pixUV;
-    
-    uniform mat4 viewMatrix;
-    
-    void main(){
-        
-        pixUV=vertUV.xyz+vec3(instance_uv.xy,0);
-        
-        if(instance_uv.z!=vertUV.w&&vertUV.w!=0.0){
-            
-            gl_Position=vec4(0,0,0,1);
-            
-        } else {
-            
-            vec3 del=normalize(instance_rotation.xyz);
-            
-            //i cant bee-lieve these few lines of code are compacted versions of euler angle from direction, quaternion definition from x-y euler angles, local z-axis rotation, and vec3 transformation :o
-            //those 4 things would probably take like 125 lines lol
-            //i guess i'm really good at optimizing lol
-            
-            float pitch=asin(-del.y)*0.5;
-            float yaw=atan(del.x,del.z)*0.5;
-            float roll=instance_rotation.w*0.5;
-            
-            vec3 s=vec3(sin(pitch),sin(yaw),sin(roll));
-            vec3 c=vec3(cos(pitch),cos(yaw),cos(roll));
-            
-            vec4 quaternion=vec4(s.x*c.y,c.x*s.y,-s.x*s.y,c.x*c.y);
-            
-            quaternion=vec4(quaternion.x*c.z+quaternion.y*s.z,quaternion.y*c.z-quaternion.x*s.z,quaternion.z*c.z+quaternion.w*s.z,(quaternion.w*c.z-quaternion.z*s.z)*2.0);
-            
-            vec3 u=vec3(quaternion.y*vertPos.z-quaternion.z*vertPos.y,quaternion.z*vertPos.x-quaternion.x*vertPos.z,quaternion.x*vertPos.y-quaternion.y*vertPos.x);
-            
-            vec3 uu=vec3(quaternion.y*u.z-quaternion.z*u.y,quaternion.z*u.x-quaternion.x*u.z,quaternion.x*u.y-quaternion.y*u.x);
-            
-            gl_Position=viewMatrix*vec4(vertPos+u*quaternion.w+uu*2.0+instance_pos,1);
-            
-        }
-    }
-    
-</script>
-
-<script id='bee_geometry_fsh' type='GLSL3D'>#version 300 es
-    
-    precision lowp float;
-    
-    in vec3 pixUV;
-    
-    out vec4 fragColor;
-    
-    uniform sampler2D tex;
-    uniform float isNight;
-    
-    void main(){
-        
-        if(pixUV.z>0.1){
-            
-            fragColor=vec4(texture(tex,pixUV.xy).rgb*pixUV.z*isNight,1);
-            
-        } else {
-            
-            fragColor=vec4(vec3(0.1,0.4,1)*isNight,0.4);
-        }
-    }
-    
-</script>
-
-<script id='particle_renderer_vsh' type='GLSL3D'>
-
-    #version 300 es
-    
-    precision lowp float;
-    
-    uniform mat4 viewMatrix;
-    
-    in vec3 vertPos;
-    in vec4 vertColor;
-    in float vertSize;
-    in float vertRot;
-    
-    out float particleSize;
-    out vec2 particlePos;
-    out vec4 pixColor;
-    out vec2 particleRot;
-    
-    void main(){
-        
-        vec4 pos=viewMatrix*vec4(vertPos,1);
-        pixColor=vertColor;
-        particlePos=pos.xy/pos.w;
-        gl_Position=pos;
-        float projSize=(vertSize/pos.z)*1.5*SCREEN_CHANGE;
-        gl_PointSize=projSize;
-        particleSize=projSize*0.5;
-        particleRot=vec2(sin(vertRot),cos(vertRot));
-        
-    }
-    
-</script>
-
-<script id='particle_renderer_fsh' type='GLSL3D'>
-    
-    #version 300 es
-    
-    precision lowp float;
-    
-    in float particleSize;
-    in vec2 particlePos;
-    in vec4 pixColor;
-    in vec2 particleRot;
-    
-    out vec4 fragColor;
-    
-    void main(){
-        
-        vec2 ssPos=(gl_FragCoord.xy-vec2(HALF_WIDTH,HALF_HEIGHT))*vec2(INV_HALF_WIDTH,INV_HALF_HEIGHT);
-        
-        vec2 del=particlePos-ssPos;
-        
-        del.x*=ASPECT;
-        
-        del=vec2(
-            
-            del.x*particleRot.x-del.y*particleRot.y,
-            del.x*particleRot.y+del.y*particleRot.x
-            
-        );
-        
-        if(abs(del.x)+abs(del.y)>particleSize*INV_AVG_HALF_WIDTH_HEIGHT){
-            discard;
-        }
-        
-        fragColor=pixColor;
-    }
-    
-</script>
-
-<script id='explosion_renderer_vsh' type='GLSL3D'>#version 300 es
-
-    precision lowp float;
-    
-    in vec3 vertPos;
-    
-    in vec3 instance_pos;
-    in vec4 instance_color;
-    in vec2 instance_scale;
-    
-    out vec4 pixColor;
-    
-    uniform mat4 viewMatrix;
-    
-    void main(){
-        
-        pixColor=instance_color;
-        gl_Position=viewMatrix*vec4(vertPos*instance_scale.x*vec3(1,instance_scale.y,1)+instance_pos,1);
-    }
-    
-</script>
-
-<script id='explosion_renderer_fsh' type='GLSL3D'>#version 300 es
-    
-    precision lowp float;
-    
-    in vec4 pixColor;
-    
-    out vec4 fragColor;
-    
-    void main(){
-        
-        fragColor=pixColor;
-    }
-    
-</script>
-
-<script id='text_renderer_vsh' type='GLSL3D'>
-    
-    #version 300 es
-    
-    precision lowp float;
-    
-    uniform mat4 viewMatrix;
-    
-    in vec2 vertPos;
-    in vec2 vertUV;
-    
-    in vec3 instance_origin;
-    in vec2 instance_offset;
-    in vec2 instance_uv;
-    in vec3 instance_color;
-    in vec3 instance_info;
-    
-    out vec3 pixColor;
-    out vec2 pixUV;
-    
-    void main(){
-        
-        pixColor=instance_color;
-        pixUV=vertUV+instance_uv;
-        
-        vec4 originPos=viewMatrix*vec4(instance_origin,1);
-        
-        float s=sin(instance_info.z);
-        float c=cos(instance_info.z);
-        
-        vec2 vp=(vertPos+instance_offset)*instance_info.xy;
-        
-        vp=vec2(
-            
-            (vp.x*c-vp.y*s)*INV_ASPECT,
-            vp.x*s+vp.y*c
-        );
-        
-        vec4 pos=originPos+vec4(vp,0,0);
-        
-        if(pos.w<2.0&&pos.w>0.0){
-            
-            pos.w=2.0;
-        }
-        
-        gl_Position=pos;
-    }
-    
-</script>
-
-<script id='text_renderer_fsh' type='GLSL3D'>
-    
-    #version 300 es
-    
-    precision lowp float;
-    
-    uniform sampler2D tex;
-    
-    in vec2 pixUV;
-    in vec3 pixColor;
-    
-    out vec4 fragColor;
-    
-    void main(){
-        
-        vec4 c=texture(tex,pixUV)*vec4(pixColor,1);
-        
-        if(c.a<0.3){
-            
-            discard;
-        }
-        
-        fragColor=c;
-    }
-    
-</script>
-
-<script id='mob_renderer_vsh' type='GLSL3D'>#version 300 es
-
-    precision lowp float;
-    
-    in vec3 vertPos;
-    in vec3 vertColor;
-    
-    out vec4 pixColor;
-    
-    uniform mat4 viewMatrix;
-    uniform vec4 instance_info1;
-    uniform vec2 instance_info2;
-    uniform float isNight;
-    
-    void main(){
-        
-        pixColor=vec4(vertColor*isNight,instance_info2.y);
-        vec3 vp=vertPos*instance_info2.x;
-        
-        float s=sin(instance_info1.w);
-        float c=cos(instance_info1.w);
-        
-        vp=vec3(
-            
-            vp.x*c-vp.z*s,
-            vp.y,
-            vp.x*s+vp.z*c
-        );
-        
-        vec4 pos=viewMatrix*vec4(vp+instance_info1.xyz,1);
-        gl_Position=pos;
-    }
-    
-</script>
-
-<script id='mob_renderer_fsh' type='GLSL3D'>#version 300 es
-    
-    precision lowp float;
-    
-    in vec4 pixColor;
-    
-    out vec4 fragColor;
-    
-    void main(){
-        
-        fragColor=pixColor;
-    }
-    
-</script>
-
-<script id='trail_renderer_vsh' type='GLSL3D'>#version 300 es
-
-    precision lowp float;
-    
-    in vec3 vertPos;
-    in vec4 vertCol;
-    
-    out vec4 pixColor;
-    
-    uniform mat4 viewMatrix;
-    uniform float isNight;
-    
-    void main(){
-        
-        pixColor=vec4(vertCol.xyz*isNight,vertCol.w);
-        gl_Position=viewMatrix*vec4(vertPos,1);
-    }
-    
-</script>
-
-<script id='trail_renderer_fsh' type='GLSL3D'>#version 300 es
-    
-    precision lowp float;
-    
-    in vec4 pixColor;
-    
-    out vec4 fragColor;
-    
-    void main(){
-        
-        fragColor=pixColor;
-    }
-    
-</script>
 
 <div id='abilityUI' style='margin:5px;padding:0px;margin-top:35px;position:fixed'>
     
@@ -1084,6 +493,15 @@ tutorial stuff:
         <path stroke='rgb(70, 70, 70)' stroke-width='0.8' d='M 13 15.5C 14 15 16 17.6 18 14.5C 17 19 15 18.2 13 15.5' fill='rgb(220,220,220)'></path>
         
         <text id='babyLove_amount' x='28' y='28' style='font-family:calibri;font-size:13px;' text-anchor='end'></text>
+        
+    </svg>
+    
+    <svg id='inspire' style='width:30;height:30;display:none'>
+    
+        <rect width='30' height='30' fill='rgb(100, 100, 100)'></rect>
+        <rect id='inspire_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0.45'></rect>
+        <path stroke='rgb(255, 241, 43)' stroke-width='1.5' d='M23.78 7.73L29.39 40.45L0.00 25.00L-29.39 40.45L-23.78 7.73L-47.55 -15.45L-14.69 -20.23L-0.00 -50.00L14.69 -20.23L47.55 -15.45L23.78 7.73' fill='rgb(255, 241, 43)' transform='scale(0.2,0.2) translate(75,75)'></path>
+        <text id='inspire_amount' x='28' y='28' style='font-family:calibri;font-size:13px;' text-anchor='end'></text>
         
     </svg>
     
@@ -1675,7 +1093,7 @@ tutorial stuff:
     
 </div>
 
-<div id='honeyAndPollenAmount' style='position:fixed;margin:0px;top:0px;z-index:-1;'>
+<div id='honeyAndPollenAmount' style='position:fixed;margin:0px;top:0px;left:51.5%;width:600px;z-index:-1;transform:translate(-50%,0px);'>
     
     <svg style='margin:0px;width:600;height:35;'>
         
@@ -1699,7 +1117,7 @@ tutorial stuff:
     </svg>
 </div>
 
-<div id='hoverText' style='background-color:rgb(0,0,0);position:fixed;color:rgb(255,255,255);display:none;text-align:center;padding:5px'></div>
+<div id='hoverText' style='background-color:rgb(0,0,0);position:fixed;color:rgb(255,255,255);display:none;text-align:center;padding:5px;z-index:1'></div>
 
 <div id='useFullscreen' style='position:fixed;z-index:1;background-color:rgb(0, 179, 255);top:0px;left:0px;bottom:0px;right:0px;'>
     
@@ -2318,11 +1736,26 @@ tutorial stuff:
     
 </div>
 
+<div class='hotbarSlot' style='position:fixed;top:93%;left:25%;width:36px;height:36px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;border:6px solid rgb(200,200,200)'></div>
+<div class='hotbarSlot' style='position:fixed;top:93%;left:35%;width:36px;height:36px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;border:6px solid rgb(200,200,200)'></div>
+<div class='hotbarSlot' style='position:fixed;top:93%;left:45%;width:36px;height:36px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;border:6px solid rgb(200,200,200)'></div>
+<div class='hotbarSlot' style='position:fixed;top:93%;left:55%;width:36px;height:36px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;border:6px solid rgb(200,200,200)'></div>
+<div class='hotbarSlot' style='position:fixed;top:93%;left:65%;width:36px;height:36px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;border:6px solid rgb(200,200,200)'></div>
+<div class='hotbarSlot' style='position:fixed;top:93%;left:75%;width:36px;height:36px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;border:6px solid rgb(200,200,200)'></div>
+<div class='autoHotbarButton' style='position:fixed;top:98.5%;left:25%;width:37px;height:9px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;padding-top:1px;font-family:trebuchet ms;font-size:7px;text-align:center'></div>
+<div class='autoHotbarButton' style='position:fixed;top:98.5%;left:35%;width:35px;height:14px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;padding-top:1px;font-family:trebuchet ms;font-size:7px;text-align:center'></div>
+<div class='autoHotbarButton' style='position:fixed;top:98.5%;left:45%;width:35px;height:14px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;padding-top:1px;font-family:trebuchet ms;font-size:7px;text-align:center'></div>
+<div class='autoHotbarButton' style='position:fixed;top:98.5%;left:55%;width:35px;height:14px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;padding-top:1px;font-family:trebuchet ms;font-size:7px;text-align:center'></div>
+<div class='autoHotbarButton' style='position:fixed;top:98.5%;left:65%;width:35px;height:14px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;padding-top:1px;font-family:trebuchet ms;font-size:7px;text-align:center'></div>
+<div class='autoHotbarButton' style='position:fixed;top:98.5%;left:75%;width:35px;height:14px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;padding-top:1px;font-family:trebuchet ms;font-size:7px;text-align:center'></div>
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"></script>
-
 <script src='https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js'></script>
+
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/MathHelper.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/GLSLShaders.js"></script>
 
 <script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/music_popStar.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/music_scorchingStar.js"></script>
@@ -2341,137 +1774,122 @@ tutorial stuff:
 
 <script type='application/javascript'>
 
-    window.audio_ctx=new AudioContext()
-	
-	function dataURItoBlob(dataURI) {
-		
-		let byteString=atob(dataURI.split(',')[1]),
-		    mimeString=dataURI.split(',')[0].split(':')[1].split(';')[0],
-		    ab=new ArrayBuffer(byteString.length),
-		    ia=new Uint8Array(ab)
-		
-		for(let i=0;i<byteString.length;i++){
-            
-            ia[i]=byteString.charCodeAt(i)
-		}
-		
-		return new Blob([ab],{type:mimeString})
-	}
-	
-	function resample(sourceAudioBuffer,desiredSampleRate,resolve){
-		let offlineCtx=new OfflineAudioContext(sourceAudioBuffer.numberOfChannels,sourceAudioBuffer.duration*desiredSampleRate,desiredSampleRate),
-		cloneBuffer=offlineCtx.createBuffer(sourceAudioBuffer.numberOfChannels,sourceAudioBuffer.length,sourceAudioBuffer.sampleRate)
-		
-		for(let channel=0;channel<sourceAudioBuffer.numberOfChannels;channel++){
-		   
-            cloneBuffer.copyToChannel(sourceAudioBuffer.getChannelData(channel),channel)
-		}
-		
-		let source=offlineCtx.createBufferSource()
-		
-		source.buffer=cloneBuffer
-		source.connect(offlineCtx.destination)
-		
-		offlineCtx.oncomplete=e=>resolve(e.renderedBuffer)
-		offlineCtx.startRendering()
-		
-		source.start(0)
-	}
-	
-	function emptyArr(n){
-	       
-		return new Float32Array(n)
-	}
-	
-	function playSound(sound,vol) {
-		
-		let src=window['music_'+sound]
-		
-		let SAMPLE_RATE=16000
-		
-		if(!window['blob_'+sound]){
-		    
-		    window['blob_'+sound]=dataURItoBlob(src)
-		}
-		
-		let audioBufferPromise=new Promise(resolve=>window['blob_'+sound].arrayBuffer().then(arrBuffer=>audio_ctx.decodeAudioData(arrBuffer,resolve)))
-		
-		audioBufferPromise.then(buffer=>new Promise(resolve=>window['resampled_'+sound]||(function(){window['resampled_'+sound]=resample(buffer,SAMPLE_RATE,resolve);return window['resampled_'+sound]})())).then(buffer=>{
-		    
-			let phase=200,skipLength=5.25,freq=1/(phase*MATH.TWO_PI)
-			
-			if(!window['channelData_'+sound]){
-			    
-			    window['channelData_'+sound]=buffer.getChannelData(0)
-			}
-			
-			let channelData=window['channelData_'+sound]
-			
-			let pcm=new Float32Array(SAMPLE_RATE*phase*2)
-			
-			let numSeconds=channelData.length/SAMPLE_RATE
-
-			let gain=audio_ctx.createGain()
-			gain.connect(audio_ctx.destination)
-		    
-			gain.gain.value=vol
-			
-			for (let i=0,j=0;i<numSeconds;i+=skipLength,j++){
-			    
-				let start=SAMPLE_RATE*i,end=SAMPLE_RATE*(i+phase)
-                
-				pcm.set(channelData.subarray(start|0,end|0),SAMPLE_RATE*phase)
-				
-				console.log('wave'+j+'_'+sound)
-				
-				if(!window['wave'+j+'_'+sound]){
-				    
-    				let waveShaper=audio_ctx.createWaveShaper()
-    				let oscA=audio_ctx.createOscillator()
-    				
-    				oscA.connect(waveShaper)
-        			waveShaper.connect(gain)
-    				
-    				waveShaper.curve=pcm
-    				
-    				window['wave'+j+'_'+sound]=waveShaper
-    				
-    				oscA.frequency.value=freq
-    				
-    				oscA.start(i+audio_ctx.currentTime)
-    				oscA.stop(i+skipLength+audio_ctx.currentTime)
-    				window['osc'+j+'_'+sound]=oscA
-    				
-				} else {
-				    
-				    window['osc'+j+'_'+sound].disconnect(window['wave'+j+'_'+sound])
-				    
-    				let oscA=audio_ctx.createOscillator()
-    				
-    				oscA.connect(window['wave'+j+'_'+sound])
-    				
-    				oscA.frequency.value=freq
-    				
-    				oscA.start(i+audio_ctx.currentTime)
-    				oscA.stop(i+skipLength+audio_ctx.currentTime)
-    				window['osc'+j+'_'+sound]=oscA
-				}
-				
-			}
-		})
-		
-		
-	}
-	
-	window.playSound=play
-	
-</script>
-
-<script type='application/javascript'>
-
 var _M=Math
 
 function main(){
+
+let audio_ctx=new AudioContext(),soundCache={}
+
+function dataURItoBlob(dataURI) {
+	
+	let byteString=atob(dataURI.split(',')[1]),
+	    mimeString=dataURI.split(',')[0].split(':')[1].split(';')[0],
+	    ab=new ArrayBuffer(byteString.length),
+	    ia=new Uint8Array(ab)
+	
+	for(let i=0;i<byteString.length;i++){
+        
+        ia[i]=byteString.charCodeAt(i)
+	}
+	
+	return new Blob([ab],{type:mimeString})
+}
+
+function resample(sourceAudioBuffer,desiredSampleRate,resolve){
+    
+	let offlineCtx=new OfflineAudioContext(sourceAudioBuffer.numberOfChannels,sourceAudioBuffer.duration*desiredSampleRate,desiredSampleRate),
+	cloneBuffer=offlineCtx.createBuffer(sourceAudioBuffer.numberOfChannels,sourceAudioBuffer.length,sourceAudioBuffer.sampleRate)
+	
+	for(let channel=0;channel<sourceAudioBuffer.numberOfChannels;channel++){
+	   
+        cloneBuffer.copyToChannel(sourceAudioBuffer.getChannelData(channel),channel)
+	}
+	
+	let source=offlineCtx.createBufferSource()
+	
+	source.buffer=cloneBuffer
+	source.connect(offlineCtx.destination)
+	
+	offlineCtx.oncomplete=e=>resolve(e.renderedBuffer)
+	offlineCtx.startRendering()
+	
+	source.start(0)
+}
+
+function playSound(sound,vol) {
+	
+	let src=window['music_'+sound]
+	
+	let SAMPLE_RATE=16000
+	
+	if(!soundCache['blob_'+sound]){
+	    
+	    soundCache['blob_'+sound]=dataURItoBlob(src)
+	}
+	
+	let audioBufferPromise=new Promise(resolve=>soundCache['blob_'+sound].arrayBuffer().then(arrBuffer=>audio_ctx.decodeAudioData(arrBuffer,resolve)))
+	
+	audioBufferPromise.then(buffer=>new Promise(resolve=>soundCache['resampled_'+sound]||(function(){soundCache['resampled_'+sound]=resample(buffer,SAMPLE_RATE,resolve);return soundCache['resampled_'+sound]})())).then(buffer=>{
+	    
+		let phase=200,skipLength=5.25,freq=1/(phase*MATH.TWO_PI)
+		
+		if(!soundCache['channelData_'+sound]){
+		    
+		    soundCache['channelData_'+sound]=buffer.getChannelData(0)
+		}
+		
+		let channelData=soundCache['channelData_'+sound]
+		
+		let pcm=new Float32Array(SAMPLE_RATE*phase*2)
+		
+		let numSeconds=channelData.length/SAMPLE_RATE
+
+		let gain=audio_ctx.createGain()
+		gain.connect(audio_ctx.destination)
+	    
+		gain.gain.value=vol
+		
+		for (let i=0,j=0;i<numSeconds;i+=skipLength,j++){
+		    
+			let start=SAMPLE_RATE*i,end=SAMPLE_RATE*(i+phase)
+            
+			pcm.set(channelData.subarray(start|0,end|0),SAMPLE_RATE*phase)
+			
+			if(!soundCache['wave'+j+'_'+sound]){
+			    
+				let waveShaper=audio_ctx.createWaveShaper()
+				let oscA=audio_ctx.createOscillator()
+				
+				oscA.connect(waveShaper)
+    			waveShaper.connect(gain)
+				
+				waveShaper.curve=pcm
+				
+				soundCache['wave'+j+'_'+sound]=waveShaper
+				
+				oscA.frequency.value=freq
+				
+				oscA.start(i+audio_ctx.currentTime)
+				oscA.stop(i+skipLength+audio_ctx.currentTime)
+				soundCache['osc'+j+'_'+sound]=oscA
+				
+			} else {
+			    
+			    soundCache['osc'+j+'_'+sound].disconnect(soundCache['wave'+j+'_'+sound])
+			    
+				let oscA=audio_ctx.createOscillator()
+				
+				oscA.connect(soundCache['wave'+j+'_'+sound])
+				
+				oscA.frequency.value=freq
+				
+				oscA.start(i+audio_ctx.currentTime)
+				oscA.stop(i+skipLength+audio_ctx.currentTime)
+				soundCache['osc'+j+'_'+sound]=oscA
+			}
+		}
+	})
+}
 
 let Math=_M
 
@@ -2572,325 +1990,6 @@ document.getElementById('runFullScreen').addEventListener('click',function(){
 
 let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,BEE_COLLECT=0,BEE_FLY=0,then,dt,frameCount=0,TIME=0,player,honeyMarkConvert=TIME,NIGHT_DARKNESS=0.7
 
-MATH=(function(MATH){
-    
-    MATH.Z=[0,0,1]
-    MATH.TO_DEG=180/Math.PI
-    MATH.TO_RAD=Math.PI/180
-    MATH.HALF_TO_RAD=MATH.TO_RAD*0.5
-    MATH.HALF_PI=Math.PI*0.5
-    MATH.THIRD_PI=Math.PI/3
-    MATH.Y_AXIS=[0,1,0]
-    MATH.TWO_PI=Math.PI*2
-    MATH.INV_255=1/255
-    MATH.INV_13=1/13
-    MATH.INV_9=1/9
-    MATH.EIGHTth_PI=Math.PI/8
-    MATH.QUATER_PI=Math.PI*0.25
-    MATH.PI_SUB_QUATER=Math.PI-MATH.QUATER_PI
-    
-    MATH.random=(a,b)=>Math.random()*(b-a)+a
-    MATH.constrain=(x,a,b)=>x<a?a:x>b?b:x
-    
-    MATH.map=(value, istart, istop, ostart, ostop)=>{
-      return ostart+(ostop-ostart)*((value-istart)/(istop-istart))
-    }
-    
-    MATH.generateBezierCurve=function(a,b,c1,c2,t){
-        
-        let l=vec3.lerp
-        
-        let a_c1=l([],a,c1,t),
-            c1_c2=l([],c1,c2,t),
-            b_c2=l([],b,c2,t),
-            p1=l([],a_c1,c1_c2,t),
-            p2=l([],b_c2,c1_c2,t)
-            
-        return l(p1,p1,p2,t)
-        
-    }
-    
-    MATH.mult=function(m,a,b){
-    //optimized to multiply view and projection matrix
-    //a=proj,b=view
-        
-        b=b.slice()
-        
-        m[0]=b[0]*a[0]
-        m[1]=b[1]*a[5]
-        m[2]=b[2]*a[10]+b[3]*a[14]
-        m[3]=-b[2]
-        m[4]=b[4]*a[0]
-        m[5]=b[5]*a[5]
-        m[6]=b[6]*a[10]+b[7]*a[14]
-        m[7]=-b[6]
-        m[8]=b[8]*a[0]
-        m[9]=b[9]*a[5]
-        m[10]=b[10]*a[10]+b[11]*a[14]
-        m[11]=-b[10]
-        m[12]=b[12]*a[0]
-        m[13]=b[13]*a[5]
-        m[14]=b[12]*a[2]+b[13]*a[6]+b[14]*a[10]+b[15]*a[14]
-        m[15]=-b[14]+b[15]*a[15]
-        
-        return m
-    }
-    
-    MATH.translate=function(m,x,y,z){
-        
-        let a=m
-        
-        a[12]=x*a[0]+y*a[4]+z*a[8]+a[12]
-        a[13]=x*a[1]+y*a[5]+z*a[9]+a[13]
-        a[14]=x*a[2]+y*a[6]+z*a[10]+a[14]
-        a[15]=x*a[3]+y*a[7]+z*a[11]+a[15]
-        
-        return a
-    }
-    
-    MATH.xRotate=function(m,c,s){
-        
-		let a=m
-		let t=a[1]
-		a[1]=t*c+a[2]*s
-		a[2]=t*-s+a[2]*c
-		t=a[5]
-		a[5]=t*c+a[6]*s
-		a[6]=t*-s+a[6]*c
-		t=a[9]
-		a[9]=t*c+a[10]*s
-		a[10]=t*-s+a[10]*c
-		t=a[13]
-		a[13]=t*c+a[14]*s
-		a[14]=t*-s+a[14]*c
-		
-		return a
-    }
-    
-    MATH.yRotate=function(m,c,s){
-        
-        m[0]=c
-        m[1]=0
-        m[2]=-s
-        m[3]=0
-        m[4]=0
-        m[5]=1
-        m[6]=0
-        m[7]=0
-        m[8]=s
-        m[9]=0
-        m[10]=c
-        m[11]=0
-        m[12]=0
-        m[13]=0
-        m[14]=0
-        m[15]=1
-        
-        return m
-    }
-    
-    MATH.lerpMatrix=function(out,m,t){
-        
-        out[0]=(m[0]-out[0])*t+out[0]
-        out[1]=(m[1]-out[1])*t+out[1]
-        out[2]=(m[2]-out[2])*t+out[2]
-        out[3]=(m[3]-out[3])*t+out[3]
-        out[4]=(m[4]-out[4])*t+out[4]
-        out[5]=(m[5]-out[5])*t+out[5]
-        out[6]=(m[6]-out[6])*t+out[6]
-        out[7]=(m[7]-out[7])*t+out[7]
-        out[8]=(m[8]-out[8])*t+out[8]
-        out[9]=(m[9]-out[9])*t+out[9]
-        out[10]=(m[10]-out[10])*t+out[10]
-        out[11]=(m[11]-out[11])*t+out[11]
-        out[12]=(m[12]-out[12])*t+out[12]
-        out[13]=(m[13]-out[13])*t+out[13]
-        out[14]=(m[14]-out[14])*t+out[14]
-        out[15]=(m[15]-out[15])*t+out[15]
-        
-    }
-    
-    MATH.addCommas=function(s){
-        
-        for(let i=s.length-3;i>0;i-=3){
-            
-            s=s.substr(0,i)+','+s.substr(i,s.length)
-        }
-        
-        return s
-    }
-    
-    MATH.lerp=function(a,b,x){
-        
-        return x*(b-a)+a
-    }
-    
-    MATH.icosphere=function(order=0){
-        
-        let f=(1+5**0.5)*0.5;
-        let T=4**order;
-        
-        let vertices=new Float32Array((10*T+2)*3);
-        vertices.set(Float32Array.of(
-        -1,f,0,1,f,0,-1,-f,0,1,-f,0,
-        0,-1,f,0,1,f,0,-1,-f,0,1,-f,
-        f,0,-1,f,0,1,-f,0,-1,-f,0,1));
-        let triangles=Uint32Array.of(
-        0,11,5,0,5,1,0,1,7,0,7,10,0,10,11,
-        11,10,2,5,11,4,1,5,9,7,1,8,10,7,6,
-        3,9,4,3,4,2,3,2,6,3,6,8,3,8,9,
-        9,8,1,4,9,5,2,4,11,6,2,10,8,6,7);
-        
-        let v=12
-        let midCache=order?new Map():null;
-        
-        function addMidPoint(a,b) {
-            
-            let key=Math.floor((a+b)*(a+b+1)*0.5)+Math.min(a,b)
-            let i=midCache.get(key)
-            if (i!==undefined){ midCache.delete(key); return i }
-            midCache.set(key,v)
-            for (let k=0; k < 3; k++) vertices[3*v+k]=(vertices[3*a+k]+vertices[3*b+k])*0.5
-            i=v++
-            return i
-        }
-        
-        let trianglesPrev=triangles
-        
-        for (let i=0;i<order;i++){
-            
-            triangles=new Uint32Array(trianglesPrev.length<<2)
-            
-            for (let k=0;k<trianglesPrev.length;k+=3){
-                
-              let v1=trianglesPrev[k]
-              let v2=trianglesPrev[k+1]
-              let v3=trianglesPrev[k+2]
-              let a=addMidPoint(v1,v2)
-              let b=addMidPoint(v2,v3)
-              let c=addMidPoint(v3,v1)
-              let t=k<<2
-              triangles[t++]=v1; triangles[t++]=a; triangles[t++]=c;
-              triangles[t++]=v2; triangles[t++]=b; triangles[t++]=a;
-              triangles[t++]=v3; triangles[t++]=c; triangles[t++]=b;
-              triangles[t++]=a;  triangles[t++]=b; triangles[t++]=c;
-            }
-            
-            trianglesPrev=triangles
-        }
-        
-        for (let i=0;i<vertices.length;i+=3) {
-            
-            let m=0.5/Math.hypot(vertices[i],vertices[i+1],vertices[i+2])
-            vertices[i]*=m
-            vertices[i+1]*=m
-            vertices[i+2]*=m
-        }
-        
-        return {verts:vertices,index:triangles}
-    }
-    
-    MATH.doGrammar=function(s){
-        
-        let str=s.slice(),_s=''
-        
-        for(let i in str){
-            
-            if(str[i].toUpperCase()===str[i]){
-                
-                _s=_s+' '+str[i]
-                
-            } else {
-                
-                _s=_s+str[i]
-            }
-        }
-        
-        return _s[0].toUpperCase()+_s.substr(1,_s.length)
-    }
-    
-    MATH.doTime=function(s){
-        
-        return (s>=60?((0.0166666667*s)|0)+'m ':'')+(s|0)%60+'s'
-    }
-    
-    MATH.doPlural=function(s){
-        
-        if(s[s.length-1]==='s'){
-            
-            return s
-            
-        } else {
-            
-            if(s[s.length-1]==='y'){
-                
-                return s.substr(0,s.length-1)+'ies'
-                
-            } else {
-                
-                return s+'s'
-            }
-        }
-    }
-    
-    MATH.pointInTriangle=function(x,y,ax,ay,bx,by,cx,cy){
-        
-        let tri=[[ax,ay],[bx,by],[cx,cy]],pt=[x,y]
-        
-        let a=1/(-tri[1][1]*tri[2][0]+tri[0][1]*(-tri[1][0]+tri[2][0])+tri[0][0]*(tri[1][1]-tri[2][1])+tri[1][0]*tri[2][1]),
-            s=a*(tri[2][0]*tri[0][1]-tri[0][0]*tri[2][1]+(tri[2][1]-tri[0][1])*pt[0]+(tri[0][0]-tri[2][0])*pt[1])
-            
-        if(s<0){
-            
-            return
-            
-        }else{
-            
-            let t=a*(tri[0][0]*tri[1][1]-tri[1][0]*tri[0][1]+(tri[0][1]-tri[1][1])*pt[0]+(tri[1][0]-tri[0][0])*pt[1])
-            
-            return((t>0) && (1-s-t>0))
-            
-        }
-    }
-    
-    MATH.doStatGrammar=function(s){
-        
-        return s==='rhinoBeetle'?'Defeat':'Collect'
-    }
-    
-    MATH.indexOfArrays=function(arr,val){
-        
-        let s=JSON.stringify(val)
-        let a=arr.map(JSON.stringify)
-        
-        return a.indexOf(s)
-    }
-    
-    MATH.abvNumber=function(n){
-        
-        let l=((n.length-1)/3)|0,suf=' KMBTQ'[l]||'',i=(n.length)%3,pre=n.substr(0,3)
-        
-        pre=pre.substr(0,i)+'.'+pre.substr(i,3)
-        pre=pre[0]==='.'?pre.substr(1,3):pre
-        pre=pre[pre.length-1]==='0'&&pre.includes('.')&&suf!==' '?pre.substr(0,pre.length-1):pre
-        pre=pre[pre.length-1]==='.'?pre.substr(0,pre.length-1):pre
-        return pre+suf
-    }
-    
-    MATH._log=function(a,b){
-        
-        return Math.log(b)/Math.log(a)
-    }
-    
-    MATH.simulateProbabilityTries=function(p){
-        
-        return Math.ceil(MATH._log(1-p,-Math.random()+1))
-    }
-    
-    return MATH
-    
-})({})
-
 gl.enable(gl.BLEND)
 gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)
 
@@ -2912,6 +2011,8 @@ let settingsButton=document.getElementById('settingsButton')
 let beequipButton=document.getElementById('beequipButton')
 let pages=document.getElementsByClassName('uiPage')
 let currentPage=null
+let hotbarSlots=document.getElementsByClassName('hotbarSlot')
+let autoHotbarButtons=document.getElementsByClassName('autoHotbarButton')
 
 let _code=pages[0].innerHTML
 
@@ -2926,7 +2027,86 @@ for(let i in _svgs){
     _svgs[i]='<svg id="'+_svgs[i]
     
     itemSVGCode[name]=_svgs[i].split('</text>')
-    itemSVGCode[name]='<svg style="transform:translate(0px,7px);width:150px;height:36px;"><g transform="scale(0.77,0.77) translate(0,-10)"><text x="70" y="45" stroke="rgb(0,0,0)" stroke-width="3" style="font-family:cursive;font-size:20px;">AMOUNTOFITEMREQUIREDTOCRAFT</text><text x="70" y="45" fill="TEXTCOLORDEPENDINGONIFENOUGHITEMS" style="font-family:cursive;font-size:20px;">AMOUNTOFITEMREQUIREDTOCRAFT</text>'+(itemSVGCode[name][itemSVGCode[name].length-1]).substr(0,itemSVGCode[name][itemSVGCode[name].length-1].indexOf('</svg>'))+'</g><title>'+MATH.doGrammar(name)+'</title></svg>'
+    itemSVGCode[name]='<svg style="transform:translate(0px,7px);width:150px;height:36px;"><g transform="scale(0.77,0.77) translate(0,-10)"><text x="70" y="45" stroke="rgb(0,0,0)" stroke-width="3" style="font-family:cursive;font-size:20px;">AMOUNTOFITEMREQUIREDTOCRAFT</text><text x="70" y="45" fill="TEXTCOLORDEPENDINGONIFENOUGHITEMS" style="font-family:cursive;font-size:20px;">AMOUNTOFITEMREQUIREDTOCRAFT</text>'+(itemSVGCode[name][itemSVGCode[name].length-1]).substr(0,itemSVGCode[name][itemSVGCode[name].length-1].indexOf('</svg>'))+'</g><title>'+MATH.doGrammar(name)+'</title><text x="36" y="34" fill="rgb(0,0,0)" style="font-family:cursive;font-size:10px;" text-anchor="end">AMOUNTININVENTORY</text></svg>'
+}
+
+for(let i in hotbarSlots){
+    
+    hotbarSlots[i].onmousedown=function(){
+        
+        if(player.itemDragging&&player.itemDragging!==hotbarSlots[i].itemType){
+            
+            hotbarSlots[i].innerHTML=itemSVGCode[player.itemDragging].replaceAll('AMOUNTININVENTORY',items[player.itemDragging].amount).replaceAll('AMOUNTOFITEMREQUIREDTOCRAFT','').replace('translate(0px,7px)','translate(-2px,2px)').replace('scale(0.77,0.77)','scale(0.5,0.5)')
+            
+            hotbarSlots[i].style.backgroundColor='rgb(235,235,235)'
+            hotbarSlots[i].itemType=player.itemDragging
+            
+            autoHotbarButtons[i].style.display=items[player.itemDragging].autoUse?'block':'none'
+            autoHotbarButtons[i].autoEnabled=false
+            autoHotbarButtons[i].style.backgroundColor='rgb(255,0,0,0.85)'
+            autoHotbarButtons[i].innerHTML='AUTO: OFF'
+            autoHotbarButtons[i].onmousedown=function(){
+                
+                autoHotbarButtons[i].autoEnabled=!autoHotbarButtons[i].autoEnabled
+                autoHotbarButtons[i].style.backgroundColor=autoHotbarButtons[i].autoEnabled?'rgb(0,255,0,0.7)':'rgb(255,0,0,0.7)'
+                autoHotbarButtons[i].innerHTML='AUTO: '+(autoHotbarButtons[i].autoEnabled?'ON':'OFF')
+                
+                if(autoHotbarButtons[i].autoEnabled){
+                    
+                    autoHotbarButtons[i].interval=window.setInterval(function(){
+                        items[hotbarSlots[i].itemType].use()
+                        items[hotbarSlots[i].itemType].cooldown=TIME
+                        player.updateInventory()
+                        
+                    },1000*items[hotbarSlots[i].itemType].maxCooldown)
+                    
+                } else {
+                    
+                    window.clearInterval(autoHotbarButtons[i].interval)
+                }
+            }
+            
+            for(let j in hotbarSlots){
+                
+                if(hotbarSlots[j].itemType===player.itemDragging&&i!==j){
+                    hotbarSlots[j].innerHTML=''
+                    hotbarSlots[j].style.backgroundColor='rgb(0,0,0,0)'
+                    hotbarSlots[j].itemType=false
+                    autoHotbarButtons[j].style.display='none'
+                    autoHotbarButtons[j].autoEnabled=false
+                }
+            }
+            
+            player.itemDragging=false
+            
+        } else if(player.itemDragging===hotbarSlots[i].itemType){
+            hotbarSlots[i].innerHTML=''
+            hotbarSlots[i].style.backgroundColor='rgb(0,0,0,0)'
+            hotbarSlots[i].itemType=false
+            autoHotbarButtons[i].style.display='none'
+            autoHotbarButtons[i].autoEnabled=false
+            player.itemDragging=false
+            
+        } else if(!player.itemDragging&&hotbarSlots[i].itemType){
+            if(items[hotbarSlots[i].itemType].canUseOnSlot){
+                
+                player.itemDragging=hotbarSlots[i].itemType
+                
+            } else {
+                
+                if(TIME-items[hotbarSlots[i].itemType].cooldown>items[hotbarSlots[i].itemType].maxCooldown){
+                    
+                    items[hotbarSlots[i].itemType].use()
+                    items[hotbarSlots[i].itemType].cooldown=TIME
+                    player.updateInventory()
+                    
+                } else {
+                    
+                    player.addMessage('Item is on a cooldown of '+MATH.doTime(items[hotbarSlots[i].itemType].maxCooldown-(TIME-items[hotbarSlots[i].itemType].cooldown))+'!',COLORS.redArr)
+                }
+            }
+        }
+    }
 }
 
 document.getElementById('honey').style.display='none'
@@ -3045,9 +2225,19 @@ let triggers={
         maxZ:-4+4.5*0.5
     },
     
-    dat_NPC:{
+    // dat_NPC:{
         
-        minX:-18,maxX:-13,minY:-3,maxY:4,minZ:-4,maxZ:0
+    //     minX:-18,maxX:-13,minY:-3,maxY:4,minZ:-4,maxZ:0
+    // },
+    
+    blackBear_NPC:{
+        
+        minX:29-2.5,maxX:29+2.5,minY:-2,maxY:4,minZ:0.5-2.5,maxZ:0.5+2.5
+    },
+    
+    polarBear_NPC:{
+        
+        minX:-1.5-2,maxX:-1.5+2,minY:20,maxY:26,minZ:66-2,maxZ:66+2
     },
     
     cool_shop:{
@@ -3067,7 +2257,7 @@ let triggers={
                 leftGuard:'crimsonGuard',
                 rightGuard:'cobaltGuard',
                 glider:'glider',
-                supremeStarAmulet:'*2.5 capacityMultiplier,*1.5 convertRate,*1.1 redPollen,*1.1 bluePollen,*1.1 whitePollen,*1.6 redPollen,+0.1 instantBlueConversion,+0.1 instantWhiteConversion,+0.1 instantRedConversion,+0.05 criticalChance',
+                supremeStarAmulet:'*2.5 capacityMultiplier,*1.5 convertRate,*1.1 redPollen,*1.1 bluePollen,*1.1 whitePollen,*1.6 redPollen,+0.1 instantBlueConversion,+0.1 instantWhiteConversion,+0.1 instantRedConversion,+0.05 criticalChance,P scorchingStarPassive',
                 beequips:[],
             }
             
@@ -3147,7 +2337,7 @@ let triggers={
                 leftGuard:'crimsonGuard',
                 rightGuard:'cobaltGuard',
                 glider:'glider',
-                supremeStarAmulet:'*2.5 capacityMultiplier,*1.5 convertRate,*1.1 redPollen,*1.1 bluePollen,*1.1 whitePollen,*1.6 bluePollen,+0.1 instantBlueConversion,+0.1 instantWhiteConversion,+0.1 instantRedConversion,+0.05 criticalChance',
+                supremeStarAmulet:'*2.5 capacityMultiplier,*1.5 convertRate,*1.1 redPollen,*1.1 bluePollen,*1.1 whitePollen,*1.6 bluePollen,+0.1 instantBlueConversion,+0.1 instantWhiteConversion,+0.1 instantRedConversion,+0.05 criticalChance,P popStarPassive',
                 beequips:[],
             }
             
@@ -3224,7 +2414,7 @@ let triggers={
                 leftGuard:'crimsonGuard',
                 rightGuard:'cobaltGuard',
                 glider:'glider',
-                supremeStarAmulet:'*2.5 capacityMultiplier,*1.5 convertRate,*1.1 redPollen,*1.1 bluePollen,*1.1 whitePollen,*1.6 whitePollen,+0.1 instantBlueConversion,+0.1 instantWhiteConversion,+0.1 instantRedConversion,+0.05 criticalChance',
+                supremeStarAmulet:'*2.5 capacityMultiplier,*1.5 convertRate,*1.1 redPollen,*1.1 bluePollen,*1.1 whitePollen,*1.6 whitePollen,+0.1 instantBlueConversion,+0.1 instantWhiteConversion,+0.1 instantRedConversion,+0.05 criticalChance,P gummyStarPassive',
                 beequips:[],
             }
             
@@ -3298,7 +2488,7 @@ let triggers={
         isMachine:true,minX:33-4,maxX:33+4,minY:0,maxY:3,minZ:-13-4,maxZ:-13+4,message:'Use Red Cannon',func:function(player){
             
             player.body.position.x=34
-            player.body.position.y=2.5
+            player.body.position.y=3
             player.body.position.z=-12
             player.body.velocity.x=-18.1
             player.body.velocity.y=52
@@ -3322,7 +2512,7 @@ let triggers={
                 
             } else {
                 
-                player.addMessage('You need to have pollen to convert!',[255,0,0])
+                player.addMessage('You need to have pollen to convert!',COLORS.redArr)
             }
         }
     }
@@ -3413,7 +2603,7 @@ let beeInfo={
                 }
             }
             
-        },particles:function(bee){ParticleRenderer.add({x:bee.pos[0],y:bee.pos[1],z:bee.pos[2],vx:MATH.random(-1,1),vy:MATH.random(0.5,1.4),vz:MATH.random(-1,1),grav:-3,size:MATH.random(25,60),col:[player.isNight,player.isNight,MATH.random(0.6,1)*player.isNight],life:0.75,rotVel:MATH.random(-3,3),alpha:10})},tokens:['pollenHaze','fuzzBomb','whiteBomb_'],favoriteTreat:'pineapple',rarity:'mythic',color:'white',description:'This unkempt ball of fluff is actually a bee. Its fur aids in the pollination of flowers.',giftedHiveBonus:{oper:'*',stat:'whiteBombPollen',num:1.1}
+        },particles:function(bee){ParticleRenderer.add({x:bee.pos[0],y:bee.pos[1],z:bee.pos[2],vx:MATH.random(-1,1),vy:MATH.random(0.5,1.4),vz:MATH.random(-1,1),grav:-3,size:MATH.random(25,60),col:[player.isNight,player.isNight,MATH.random(0.6,1)*player.isNight],life:0.75,rotVel:MATH.random(-3,3),alpha:10})},tokens:['pollenHaze*','fuzzBomb','whiteBomb_'],favoriteTreat:'pineapple',rarity:'mythic',color:'white',description:'This unkempt ball of fluff is actually a bee. Its fur aids in the pollination of flowers.',giftedHiveBonus:{oper:'*',stat:'whiteBombPollen',num:1.1}
         
     },
     
@@ -3425,13 +2615,13 @@ let beeInfo={
     
     spicy:{
         
-        u:128*9/2048,v:0,meshPartId:4,gatherSpeed:4,gatherAmount:14,speed:14,convertSpeed:2,convertAmount:200,tokens:['inferno','flameFuel'],attack:5,attackTokens:['inferno','flameFuel','rage'],energy:20,particles:function(bee){if(player.flameHeatStack){ParticleRenderer.add({x:bee.pos[0],y:bee.pos[1],z:bee.pos[2],vx:MATH.random(-0.7,0.7),vy:MATH.random(-0.3,0.3),vz:MATH.random(-0.7,0.7),grav:1.25,size:110,col:[player.isNight,player.isNight,player.isNight],life:1.5,rotVel:MATH.random(-3,3),alpha:(player.flameHeatStack-1)*2})}},favoriteTreat:'strawberry',rarity:'mythic',color:'red',description:'Some like it hot - this bee likes it scorching. Even the honey it makes is spicy.',giftedHiveBonus:{oper:'*',stat:'flameLife',num:1.25}
+        u:128*9/2048,v:0,meshPartId:4,gatherSpeed:4,gatherAmount:14,speed:14,convertSpeed:2,convertAmount:200,tokens:['inferno','flameFuel*'],attack:5,attackTokens:['inferno','flameFuel*','rage'],energy:20,particles:function(bee){if(player.flameHeatStack){ParticleRenderer.add({x:bee.pos[0],y:bee.pos[1],z:bee.pos[2],vx:MATH.random(-0.7,0.7),vy:MATH.random(-0.3,0.3),vz:MATH.random(-0.7,0.7),grav:1.25,size:110,col:[player.isNight,player.isNight,player.isNight],life:1.5,rotVel:MATH.random(-3,3),alpha:(player.flameHeatStack-1)*2})}},favoriteTreat:'strawberry',rarity:'mythic',color:'red',description:'Some like it hot - this bee likes it scorching. Even the honey it makes is spicy.',giftedHiveBonus:{oper:'*',stat:'flameLife',num:1.25}
         
     },
     
     vector:{
         
-        u:1280/2048,v:0,meshPartId:2,gatherSpeed:4,gatherAmount:18,speed:16.24,convertSpeed:2.72,convertAmount:144,tokens:['pollenMarkToken','markSurge','triangulate'],attack:5,energy:45.6,favoriteTreat:'pineapple',rarity:'mythic',color:'white',description:'A bee brought to life by an extremely complex trigonometric equation.',giftedHiveBonus:{oper:'*',stat:'markDuration',num:1.15}
+        u:1280/2048,v:0,meshPartId:2,gatherSpeed:4,gatherAmount:18,speed:16.24,convertSpeed:2.72,convertAmount:144,tokens:['pollenMarkToken','markSurge*','triangulate'],attack:5,energy:45.6,favoriteTreat:'pineapple',rarity:'mythic',color:'white',description:'A bee brought to life by an extremely complex trigonometric equation.',giftedHiveBonus:{oper:'*',stat:'markDuration',num:1.15}
         
     },
     
@@ -3442,7 +2632,7 @@ let beeInfo={
     
     buoyant:{
         
-        u:128*12/2048,v:0,meshPartId:3,gatherSpeed:5,gatherAmount:15,speed:14,convertSpeed:3,convertAmount:150,tokens:['inflateBalloons','surpriseParty','blueBomb_'],attack:3,energy:60,favoriteTreat:'blueberry',rarity:'mythic',color:'blue',description:"Just like a balloon, nothing can keep this bee down. It's always ready to party.",giftedHiveBonus:{oper:'*',stat:'capacityMultiplier',num:1.2}
+        u:128*12/2048,v:0,meshPartId:3,gatherSpeed:5,gatherAmount:15,speed:14,convertSpeed:3,convertAmount:150,tokens:['inflateBalloons','surpriseParty*','blueBomb_'],attack:3,energy:60,favoriteTreat:'blueberry',rarity:'mythic',color:'blue',description:"Just like a balloon, nothing can keep this bee down. It's always ready to party.",giftedHiveBonus:{oper:'*',stat:'capacityMultiplier',num:1.2}
         
     },
     
@@ -3607,7 +2797,7 @@ let effects={
         maxCooldown:20,
         maxAmount:10,
         tokenLife:4,
-        sound:function(){window.playSound('haste',0.4)},
+        sound:function(){playSound('haste',0.4)},
         
         update:(amount,player)=>{
             
@@ -3651,7 +2841,7 @@ let effects={
         maxCooldown:20,
         maxAmount:10,
         tokenLife:4,
-        sound:function(){window.playSound('focusToken',0.3)},
+        sound:function(){playSound('focusToken',0.3)},
         
         update:(amount,player)=>{
             
@@ -3675,7 +2865,7 @@ let effects={
         maxCooldown:30,
         maxAmount:1,
         tokenLife:8,
-        sound:function(){window.playSound('melodyToken',0.5)},
+        sound:function(){playSound('melodyToken',0.5)},
         
         update:(amount,player)=>{
             
@@ -3691,7 +2881,7 @@ let effects={
     link:{
         
         trialCooldown:20,trialRate:0.75,
-        statsToAddTo:['linkTokens','battleTokens'],
+        statsToAddTo:['battleTokens'],
         u:128*3/2048,v:0,
         canBeLinked:false,
         tokenLife:4,
@@ -3761,7 +2951,7 @@ let effects={
             }
             
             player.addEffect('bombCombo')
-            window.playSound('bombToken',0.5)
+            playSound('bombToken',0.5)
         }
     },
     
@@ -3785,7 +2975,7 @@ let effects={
             }
             
             player.addEffect('bombCombo')
-            window.playSound('bombToken',0.5)
+            playSound('bombToken',0.5)
         }
     },
     
@@ -3809,7 +2999,7 @@ let effects={
             }
             
             player.addEffect('bombCombo')
-            window.playSound('bombToken',0.5)
+            playSound('bombToken',0.5)
         }
     },
     
@@ -3833,7 +3023,7 @@ let effects={
             }
             
             player.addEffect('bombCombo')
-            window.playSound('bombToken',0.5)
+            playSound('bombToken',0.5)
         }
     },
     
@@ -3857,7 +3047,7 @@ let effects={
             }
             
             player.addEffect('bombCombo')
-            window.playSound('bombToken',0.5)
+            playSound('bombToken',0.5)
         }
     },
     
@@ -3881,7 +3071,7 @@ let effects={
             }
             
             player.addEffect('bombCombo')
-            window.playSound('bombToken',0.5)
+            playSound('bombToken',0.5)
         }
     },
     
@@ -3964,7 +3154,7 @@ let effects={
         maxCooldown:30,
         maxAmount:1,
         tokenLife:8,
-        // sound:function(){window.playSound('babyLoveToken',1)},
+        // sound:function(){playSound('babyLoveToken',1)},
         
         update:(amount,player)=>{
             
@@ -3979,6 +3169,32 @@ let effects={
         }
     },
     
+    inspire:{
+        
+        trialCooldown:60,trialRate:0.01,
+        statsToAddTo:['inspireTokens'],
+        u:128*2/2048,v:256*4/2048,
+        svg:document.getElementById('inspire'),
+        cooldown:document.getElementById('inspire_cooldown'),
+        amount:document.getElementById('inspire_amount'),
+        maxCooldown:5,
+        maxAmount:50,
+        tokenLife:8,
+        // sound:function(){playSound('inspireToken',1)},
+        
+        update:(amount,player)=>{
+            
+            player.redPollen*=amount+1
+            player.whitePollen*=amount+1
+            player.bluePollen*=amount+1
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Inspire\nx'+(amount+1)+' pollen'
+        }
+    },
+    
     rage:{
         
         trialCooldown:25,trialRate:0.8,
@@ -3990,7 +3206,7 @@ let effects={
         maxCooldown:30,
         maxAmount:3,
         tokenLife:24,
-        sound:function(){window.playSound('rageToken',1)},
+        sound:function(){playSound('rageToken',1)},
         
         update:(amount,player)=>{
             
@@ -4053,7 +3269,7 @@ let effects={
     
     pollenMarkToken:{
         
-        trialCooldown:32.5,trialRate:0.5,
+        trialCooldown:25,trialRate:0.35,
         statsToAddTo:['markTokens'],
         u:128*6/2048,v:128/2048,
         tokenLife:8,
@@ -4066,13 +3282,13 @@ let effects={
                 
             }
             
-            window.playSound('markToken',0.6)
+            playSound('markToken',0.6)
         }
     },
     
     honeyMarkToken:{
         
-        trialCooldown:22.5,trialRate:0.6,
+        trialCooldown:20,trialRate:0.35,
         statsToAddTo:['markTokens'],
         u:128*7/2048,v:128/2048,
         tokenLife:8,
@@ -4085,7 +3301,7 @@ let effects={
                 
             }
             
-            window.playSound('markToken',0.6)
+            playSound('markToken',0.6)
         }
     },
     
@@ -4188,7 +3404,7 @@ let effects={
         statsToAddTo:['redAbilityTokens','battleTokens'],
         u:0,v:256/2048,
         tokenLife:4,
-        sound:function(){window.playSound('infernoToken',0.4)},
+        sound:function(){playSound('infernoToken',0.4)},
         
         func:function(params){
             
@@ -4242,7 +3458,7 @@ let effects={
         maxCooldown:15,
         maxAmount:1,
         tokenLife:4,
-        sound:function(){window.playSound('flameFuelToken',0.4)},
+        sound:function(){playSound('flameFuelToken',0.4)},
         
         update:(amount,player)=>{
             
@@ -4363,7 +3579,7 @@ let effects={
                 objects.mobs.push(new Frog(params.field,params.x,params.z,params.bee))
             }
             
-            window.playSound('frog',0.3)
+            playSound('frog',0.3)
         }
     },
     
@@ -4395,7 +3611,7 @@ let effects={
                 objects.balloons.push(new Balloon(params.field,params.x,params.z,params.bee.gifted&&Math.random()<0.1+params.bee.level*0.01,params.bee.level-1))
             }
             
-            window.playSound('inflateBalloons',1)
+            playSound('inflateBalloons',1)
         }
     },
     
@@ -4425,7 +3641,7 @@ let effects={
                 
             }
             
-            window.playSound('surpriseParty',0.8)
+            playSound('surpriseParty',0.8)
         }
     },
     
@@ -4466,8 +3682,8 @@ let effects={
         
         update:(amount,player)=>{
             
-            player.capacity*=amount*0.0125+1
-            player.honeyAtHive*=amount*0.006+1
+            player.capacity*=amount*0.03+1
+            player.honeyAtHive*=amount*0.015+1
         },
         
         getMessage:(amount)=>{
@@ -4795,15 +4011,15 @@ let effects={
         
         update:(amount,player)=>{
             
-            player.bluePollen*=Math.min(player.popStarSize*0.0125+1,5)
+            player.bluePollen*=Math.min(player.popStarSize*0.0125+2,5)
             player.instantBlueConversion+=0.15
             player.bubblePollen*=1.25
-            player.capacity*=1.5
+            player.blueFieldCapacity*=1.75
         },
         
         getMessage:(amount)=>{
             
-            return 'Pop Star Aura\nx'+Math.min(player.popStarSize*0.0125+1,6)+' blue pollen\n+10% instant blue conversion\nx1.25 bubble pollen\nx1.5 capacity'
+            return 'Pop Star Aura\nx'+Math.min(player.popStarSize*0.0125+2,5)+' blue pollen\n+15% instant blue conversion\nx1.25 bubble pollen\nx1.75 blue field capacity'
         }
     },
     
@@ -4817,16 +4033,16 @@ let effects={
         
         update:(amount,player)=>{
             
-            player.redPollen*=Math.min(player.scorchingStarSize*0.00045+1,7)
-            player.convertRate*=Math.min(player.scorchingStarSize*0.0004+1,4)
-            player.flamePollen*=2
+            player.redPollen*=Math.min(player.scorchingStarSize*0.000425+2,5)
+            player.convertRate*=Math.min(player.scorchingStarSize*0.000425+2,5)
             player.beeAttack*=Math.min(player.scorchingStarSize*0.0003+1,3)
-            player.instantRedConversion+=0.10
+            player.instantRedConversion+=0.15
+            player.redFieldCapacity*=1.75
         },
         
         getMessage:(amount)=>{
             
-            return 'Scorching Star Aura\nx'+Math.min(player.scorchingStarSize*0.00045+1,7).toFixed(2)+' red pollen\nx'+Math.min(player.scorchingStarSize*0.0004+1,4).toFixed(2)+' convert rate\nx2 flame pollen\nx'+Math.min(player.scorchingStarSize*0.0003+1,3).toFixed(2)+' bee attack\n+10% instant red conversion'
+            return 'Scorching Star Aura\nx'+Math.min(player.scorchingStarSize*0.000425+2,5).toFixed(2)+' red pollen\nx'+Math.min(player.scorchingStarSize*0.000425+2,5).toFixed(2)+' convert rate\nx'+Math.min(player.scorchingStarSize*0.0003+1,3).toFixed(2)+' bee attack\n+15% instant red conversion\nx1.75 red field capacity'
         }
     },
     
@@ -4840,15 +4056,16 @@ let effects={
         
         update:(amount,player)=>{
             
-            player.goo*=Math.min(player.gummyStarSize*0.00000000055+1,4)
-            player.whitePollen*=1.1
-            player.whiteFieldCapacity*=2
-            player.instantGooConversion+=0.25
+            player.goo*=Math.min(player.gummyStarSize*0.00000000035+1,2)
+            player.whitePollen*=Math.min(player.gummyStarSize*0.00000000035+1,2)
+            player.whiteFieldCapacity*=1.75
+            player.instantGooConversion+=0.1
+            player.instantWhiteConversion+=0.1
         },
         
         getMessage:(amount)=>{
             
-            return 'Gummy Star Aura\nx'+Math.min(player.gummyStarSize*0.00000000055+1,4).toFixed(3)+' goo\n+25% instant goo conversion\nx2 white field capacity\nx1.25 white pollen'
+            return 'Gummy Star Aura\nx'+Math.min(player.gummyStarSize*0.00000000035+1,2).toFixed(2)+' goo\nx'+Math.min(player.gummyStarSize*0.00000000035+1,2).toFixed(2)+' white pollen\n+25% instant goo conversion\nx1.75 white field capacity'
         }
     },
     
@@ -4888,7 +4105,7 @@ let effects={
         update:(amount,player)=>{
             
             player.gummyBallSize*=amount*1.5+1
-            player.whitePollen*=amount*0.1+1
+            player.whitePollen*=amount*0.15+1
             
             if(amount>=0.99||user.keys[' ']&&player.grounded&&amount>=0.3){
                 if(player.fieldIn){
@@ -4917,13 +4134,13 @@ let effects={
         
         update:(amount,player)=>{
             
-            player.goo*=MATH.lerp(1,3,amount*0.001)
+            player.goo*=MATH.lerp(1,2,amount*0.001)
             player.whitePollen*=1.1
         },
         
         getMessage:(amount)=>{
             
-            return 'Gummyball Combo\nx'+MATH.lerp(1,3,amount*0.001).toFixed(2)+' goo\nx1.1 white pollen'
+            return 'Gummyball Combo\nx'+MATH.lerp(1,2,amount*0.001).toFixed(2)+' goo\nx1.1 white pollen'
         }
     },
     
@@ -4967,14 +4184,14 @@ let effects={
         activate(){
             
             objects.mobs.push(new PopStar())
-            window.playSound('popStar',1)
-            window.setTimeout(function(){window.playSound('popStar',1)},15250)
-            window.setTimeout(function(){window.playSound('popStar',1)},15250*2)
+            playSound('popStar',1)
+            window.setTimeout(function(){playSound('popStar',1)},15250)
+            window.setTimeout(function(){playSound('popStar',1)},15250*2)
         },
         
         getMessage:(amount)=>{
             
-            return "Pop Star\nEvery 30 blue bomb tokens summons a Pop Star, lasting for 45s, and applies 1m of bubble bloat. It grows for every bubble popped, granting x1.5 capacity, x1.25 bubble pollen, 10% instant blue conversion, and up to x5 blue pollen. Upon summoning, it also applies 30s of Bubble Bloat. Popping a bubble while the star is active gives 1s(2s if golden) of Bubble Bloat, up to 1h. Bubble Bloat gives up to x6 convert rate, x6 blue field capacity, and x1.5 bubble pollen. When the Pop Star disappears, it spawns 1 bubble for every 10 of the star's size, with an extra 5. The star's aura lasts for an extra 10 secs after it disappears. Cooldown: 1m"
+            return "Pop Star\nEvery 30 blue bomb tokens summons a Pop Star, lasting for 45s, and applies 1m of bubble bloat. It grows for every bubble popped, granting x1.75 blue field capacity, x1.25 bubble pollen, 10% instant blue conversion, and up to x5 blue pollen. Upon summoning, it also applies 30s of Bubble Bloat. Popping a bubble while the star is active gives 1s(2s if golden) of Bubble Bloat, up to 1h. Bubble Bloat gives up to x6 convert rate, x6 blue field capacity, and x1.5 bubble pollen. When the Pop Star disappears, it spawns 1 bubble for every 10 of the star's size, with an extra 5. The star's aura lasts for an extra 10 secs after it disappears. Cooldown: 1m"
         }
     },
     
@@ -4994,14 +4211,14 @@ let effects={
         activate(){
             
             objects.mobs.push(new ScorchingStar())
-            window.playSound('scorchingStar',1)
-            window.setTimeout(function(){window.playSound('scorchingStar',1)},15250)
-            window.setTimeout(function(){window.playSound('scorchingStar',1)},15250*2)
+            playSound('scorchingStar',1)
+            window.setTimeout(function(){playSound('scorchingStar',1)},15250)
+            window.setTimeout(function(){playSound('scorchingStar',1)},15250*2)
         },
         
         getMessage:(amount)=>{
             
-            return "Scorching Star\nEvery 15 red boost tokens summons a Scorching Star, lasting for 45s. It grows by 75(100 if dark) every second for every flame nearby. It grants up to x7 red pollen, x4 convert rate, x2 flame pollen, and +10% instant red conversion. The star's aura lasts for an extra 10 secs after it disappears. Cooldown: 1m"
+            return "Scorching Star\nEvery 15 red boost tokens summons a Scorching Star, lasting for 45s. It grows by 75(100 if dark) every second for every flame nearby. It grants up to x5 red pollen, x5 convert rate, +15% instant red conversion, and x1.75 red field capacity. The star's aura lasts for an extra 10 secs after it disappears. Cooldown: 1m"
         }
     },
     
@@ -5021,14 +4238,14 @@ let effects={
         activate(){
             
             objects.mobs.push(new GummyStar())
-            window.playSound('gummyStar',1)
-            window.setTimeout(function(){window.playSound('gummyStar',1)},15250)
-            window.setTimeout(function(){window.playSound('gummyStar',1)},15250*2)
+            playSound('gummyStar',1)
+            window.setTimeout(function(){playSound('gummyStar',1)},15250)
+            window.setTimeout(function(){playSound('gummyStar',1)},15250*2)
         },
         
         getMessage:(amount)=>{
             
-            return "Gummy Star\nEvery 15 gummy bee tokens summons a Gummy Star, lasting for 45s. It grows based on how much goo you collect, and gives up to x4 goo, while always giving x1.25 white pollen, x2 white field capacity and 25% instant goo conversion. After disappearing, it spreads 20(+the amount of digits in the star's size) honey tokens, with a total value of approximately 1,000(+7.5% of the star's size). The star's aura lasts for an extra 10 secs after it disappears.  Cooldown: 1m"
+            return "Gummy Star\nEvery 15 gummy bee tokens summons a Gummy Star, lasting for 45s. It grows based on how much goo you collect, giving up to x2 goo and x2 white pollen, while always giving x1.75 white field capacity, +10% instant white conversion and +10% instant goo conversion. After disappearing, it spreads 20(+the amount of digits in the star's size) honey tokens, with a total value of approximately 1,000(+7.5% of the star's size). The star's aura lasts for an extra 10 secs after it disappears.  Cooldown: 1m"
         }
     },
     
@@ -5260,7 +4477,7 @@ let effects={
         amount:document.getElementById('inspireCoconutsPassive_amount'),
         maxCooldown:0.5,
         triggerVal:5,
-        triggerType:'linkTokens',
+        triggerType:'inspireTokens',
         currentVal:0,
         currentCooldown:0,
         startVal:0,
@@ -6099,7 +5316,7 @@ let items={
     
     gumdrops:{
         
-        amount:0,u:128/2048,v:128*7/2048,
+        amount:0,u:128/2048,v:128*7/2048,cooldown:4,autoUse:true,
         use:function(){
             
             if(player.fieldIn){
@@ -6128,13 +5345,16 @@ let items={
                     objects.explosions.push(new Explosion({col:[1,0.2,1],pos:[fieldInfo[player.fieldIn].x+ox,fieldInfo[player.fieldIn].y+0.5,fieldInfo[player.fieldIn].z+oz],life:0.75,size:r*1.5,speed:0.5,aftershock:0.005,height:0.3}))
                     
                 }
+            } else {
+                
+                player.addMessage('You must be standing in a field to use gumdrops!',COLORS.redArr)
             }
         }
     },
     
     coconut:{
         
-        amount:0,u:128*2/2048,v:128*7/2048,
+        amount:0,u:128*2/2048,v:128*7/2048,cooldown:10,autoUse:true,
         use:function(){
             
             if(player.fieldIn){
@@ -6143,6 +5363,9 @@ let items={
                 
                 objects.mobs.push(new Coconut((Math.random()*fieldInfo[player.fieldIn].width)|0,(Math.random()*fieldInfo[player.fieldIn].length)|0,0))
                 
+            } else {
+                
+                player.addMessage('You must be standing in a field to use coconuts!',COLORS.redArr)
             }
         }
     },
@@ -7051,6 +6274,9 @@ let items={
 
 for(let i in items){
     
+    items[i].maxCooldown=items[i].canUseOnSlot?0:items[i].cooldown||1
+    items[i].cooldown=0
+    
     if(i!=='honey'){
         
         items[i].svg=document.getElementById(i)
@@ -7254,13 +6480,13 @@ class Bee {
     
     computeLevel(newLevel){
         
-        this.gatheringTokens=[]
+        this.gatheringTokens=[{type:'inspire',cooldown:effects.inspire.trialCooldown,rate:effects.inspire.trialRate,timer:-10000,requireGifted:true}]
         
         for(let i in beeInfo[this.type].tokens){
             
             let t=beeInfo[this.type].tokens[i].replace('*',''),g=beeInfo[this.type].tokens[i].indexOf('*')>-1
             
-            this.gatheringTokens[i]={type:t,cooldown:effects[t].trialCooldown,rate:effects[t].trialRate,timer:-10000,requireGifted:g}
+            this.gatheringTokens.push({type:t,cooldown:effects[t].trialCooldown,rate:effects[t].trialRate,timer:-10000,requireGifted:g})
             
         }
         
@@ -7270,7 +6496,7 @@ class Bee {
             
             let t=beeInfo[this.type].attackTokens[i].replace('*',''),g=beeInfo[this.type].attackTokens[i].indexOf('*')>-1
             
-            this.attackTokens[i]={type:t,cooldown:effects[t].trialCooldown,rate:effects[t].trialRate,timer:-10000,requireGifted:g}
+            this.attackTokens.push({type:t,cooldown:effects[t].trialCooldown,rate:effects[t].trialRate,timer:-10000,requireGifted:g})
             
         }
         
@@ -7848,7 +7074,7 @@ class Bee {
                         if(!t[0]||!t[1]){
                             
                             objects.marks.push(new Mark(this.targets[2].field,this.targets[2].x,this.targets[2].z,'preciseMark',this.level))
-                            window.playSound('markToken',0.6)
+                            playSound('markToken',0.6)
                         }
                     }
                     
@@ -8324,7 +7550,7 @@ class TempBee {
                         if(!t[0]||!t[1]){
                             
                             objects.marks.push(new Mark(this.targets[2].field,this.targets[2].x,this.targets[2].z,'preciseMark',this.level))
-                            window.playSound('markToken',0.6)
+                            playSound('markToken',0.6)
                         }
                     }
                     
@@ -9179,7 +8405,7 @@ class Target {
         this.z=z
         this.type=type
         this.pos=[fieldInfo[this.field].x+this.x,fieldInfo[this.field].y+0.51,fieldInfo[this.field].z+this.z]
-        this.col=this.type===3?[0.9,0,0.9]:[1,0.7,0]
+        this.col=this.type===3&&bee.gifted?[0.9,0,0.9]:[1,0.7,0]
         
         this.trail=new TrailRenderer.Trail({length:2,size:0.025,color:[1,0,0,1]})
     }
@@ -10413,7 +9639,7 @@ class Wave {
                     this.balloonsHit.push(b.id)
                     objects.explosions.push(new Explosion({col:[0.1,0.5,1],pos:[this.pos[0],this.y+4,this.pos[2]],life:0.5,size:b.displaySize*1.5,speed:0.4,aftershock:0.01}))
                     
-                    let am=Math.round(Math.min(b.pollen,player.convertTotal*0.01))
+                    let am=Math.round(Math.min(b.pollen,b.cap*0.01))
                     b.pollen-=am
                     
                     let hpt=Math.round(am*(b.golden?1.05:1)/3),off=Math.random()*MATH.TWO_PI
@@ -10683,7 +9909,7 @@ class GummyBall {
         gl.uniform2f(glCache.mob_instanceInfo2,this.rad*2,this.life)
         gl.drawElements(gl.TRIANGLES,meshes.gummyBall.indexAmount,gl.UNSIGNED_SHORT,0)
         
-        textRenderer.addSingle('x'+this.amount,this.pos,COLORS.whiteArr,-3)
+        textRenderer.addSingle('x'+MATH.addCommas(this.amount+''),this.pos,COLORS.whiteArr,-3,true,false)
         
         this.collectTimer-=dt
         
@@ -11300,8 +10526,8 @@ let noise = function(x, y, z) {
 
 function createProgram(vsh,fsh){
     
-    let vshText=document.getElementById(vsh).text.trim().replaceAll('INV_AVG_HALF_WIDTH_HEIGHT',2/((width+height)*0.5)).replaceAll('INV_HALF_WIDTH',1/(width*0.5)).replaceAll('INV_HALF_HEIGHT',1/(height*0.5)).replaceAll('INV_WIDTH',1/width).replaceAll('INV_HEIGHT',1/height).replaceAll('HALF_WIDTH',width*0.5+0.0000001).replaceAll('HALF_HEIGHT',height*0.5+0.0000001).replaceAll('INV_ASPECT',1/(aspect)+0.00001).replaceAll('ASPECT',aspect+0.000001).replaceAll('SCREEN_CHANGE',(((width+height)*0.5)/600)+0.00001)
-    let fshText=document.getElementById(fsh).text.trim().replaceAll('LIGHT_DIR','vec3('+lightDir[0]+','+lightDir[1]+','+lightDir[2]+')').replaceAll('INV_AVG_HALF_WIDTH_HEIGHT',2/((width+height)*0.5)).replaceAll('INV_HALF_WIDTH',1/(width*0.5)).replaceAll('INV_HALF_HEIGHT',1/(height*0.5)).replaceAll('INV_WIDTH',1/width).replaceAll('INV_HEIGHT',1/height).replaceAll('HALF_WIDTH',width*0.5+0.0000001).replaceAll('HALF_HEIGHT',height*0.5+0.0000001).replaceAll('INV_ASPECT',1/(aspect)+0.00001).replaceAll('ASPECT',aspect+0.00001).replaceAll('SCREEN_CHANGE',(((width+height)*0.5)/600)+0.00001)
+    let vshText=window['glsl_'+vsh].trim().replaceAll('INV_AVG_HALF_WIDTH_HEIGHT',2/((width+height)*0.5)).replaceAll('INV_HALF_WIDTH',1/(width*0.5)).replaceAll('INV_HALF_HEIGHT',1/(height*0.5)).replaceAll('INV_WIDTH',1/width).replaceAll('INV_HEIGHT',1/height).replaceAll('HALF_WIDTH',width*0.5+0.0000001).replaceAll('HALF_HEIGHT',height*0.5+0.0000001).replaceAll('INV_ASPECT',1/(aspect)+0.00001).replaceAll('ASPECT',aspect+0.000001).replaceAll('SCREEN_CHANGE',(((width+height)*0.5)/600)+0.00001)
+    let fshText=window['glsl_'+fsh].trim().replaceAll('LIGHT_DIR','vec3('+lightDir[0]+','+lightDir[1]+','+lightDir[2]+')').replaceAll('INV_AVG_HALF_WIDTH_HEIGHT',2/((width+height)*0.5)).replaceAll('INV_HALF_WIDTH',1/(width*0.5)).replaceAll('INV_HALF_HEIGHT',1/(height*0.5)).replaceAll('INV_WIDTH',1/width).replaceAll('INV_HEIGHT',1/height).replaceAll('HALF_WIDTH',width*0.5+0.0000001).replaceAll('HALF_HEIGHT',height*0.5+0.0000001).replaceAll('INV_ASPECT',1/(aspect)+0.00001).replaceAll('ASPECT',aspect+0.00001).replaceAll('SCREEN_CHANGE',(((width+height)*0.5)/600)+0.00001)
     
     vsh=gl.createShader(gl.VERTEX_SHADER)
     fsh=gl.createShader(gl.FRAGMENT_SHADER)
@@ -11823,7 +11049,7 @@ class Mesh {
                 index.push(..._index)
             }
             
-            addLimbBox=function(x,y,z,w,h,l,rot,u,_v){
+            addLimbBox=function(AArot,x,y,z,w,h,l,rot,u,_v,useTex=false){
                 
                 rot=rot||[0,0,0]
                 
@@ -11866,9 +11092,40 @@ class Mesh {
                         shade[i]=d*0.8+0.65
                         
                     }
+                    
+                    switch(AArot){
+                        
+                        case 1:
+                            
+                            let _temp=v[i][0]
+                            v[i][0]=-v[i][2]
+                            v[i][2]=_temp
+                            
+                        break
+                        
+                        case 2:
+                            
+                            v[i][0]=-v[i][0]
+                            v[i][2]=-v[i][2]
+                            
+                        break
+                        
+                        case 3:
+                            
+                            let __temp=v[i][0]
+                            v[i][0]=v[i][2]
+                            v[i][2]=-__temp
+                            
+                        break
+                    }
                 }
                 
                 let vl=verts.length/10,tv=126/1024,col=[1,1,1]
+                
+                if(!useTex){
+                    
+                    tv=0
+                }
                 
                 u+=1/1024
                 _v+=1/1024
@@ -11924,17 +11181,21 @@ class Mesh {
                 )
             }
             
-            addLimbCylinder=function(x,y,z,rad,hei,sides,r,g,b,a,rx,ry,rz,r2,shading=true){
-                let rad2=r2??rad,vl=verts.length/10,_verts=[],_index=[]
+            addLimbCylinder=function(AArot,x,y,z,rad,hei,sides,r,g,b,a,rx,ry,rz,u,__v){
+                
+                u+=1/1024
+                __v+=1/1024
+                
+                let rad2=rad,vl=verts.length/10,_verts=[],_index=[]
                 
                 for(let t=0,inc=MATH.TWO_PI/sides;t<=MATH.TWO_PI;t+=inc){
                     
-                    let t1=t-inc*0.5,t2=t+inc*0.5,s=shading?Math.sin(t1)*0.1+0.9:1
+                    let t1=t-inc*0.5,t2=t+inc*0.5,s=Math.sin(t1)*0.1+0.9
                     _verts.push(
-                        Math.cos(t1)*rad,Math.sin(t1)*rad,hei*0.5,r*s,g*s,b*s,a,0,0,0,
-                        Math.cos(t1)*rad2,Math.sin(t1)*rad2,-hei*0.5,r*s,g*s,b*s,a,0,0,0,
-                        Math.cos(t2)*rad,Math.sin(t2)*rad,hei*0.5,r*s,g*s,b*s,a,0,0,0,
-                        Math.cos(t2)*rad2,Math.sin(t2)*rad2,-hei*0.5,r*s,g*s,b*s,a,0,0,0)
+                        Math.cos(t1)*rad,Math.sin(t1)*rad,hei*0.5,r*s,g*s,b*s,a,u,__v,0,
+                        Math.cos(t1)*rad2,Math.sin(t1)*rad2,-hei*0.5,r*s,g*s,b*s,a,u,__v,0,
+                        Math.cos(t2)*rad,Math.sin(t2)*rad,hei*0.5,r*s,g*s,b*s,a,u,__v,0,
+                        Math.cos(t2)*rad2,Math.sin(t2)*rad2,-hei*0.5,r*s,g*s,b*s,a,u,__v,0)
                     
                     let _vl=_verts.length/10
                     _index.push(_vl,_vl+1,_vl+2,_vl+3,_vl+2,_vl+1)
@@ -11946,8 +11207,8 @@ class Mesh {
                     
                     let t1=t-inc*0.5,t2=t+inc*0.5
                     _verts.push(
-                        Math.cos(t1)*rad,Math.sin(t1)*rad,hei*0.5,r*0.9,g*0.9,b*0.9,a,0,0,0,
-                        Math.cos(t2)*rad,Math.sin(t2)*rad,hei*0.5,r*0.9,g*0.9,b*0.9,a,0,0,0)
+                        Math.cos(t1)*rad,Math.sin(t1)*rad,hei*0.5,r*0.9,g*0.9,b*0.9,a,u,__v,0,
+                        Math.cos(t2)*rad,Math.sin(t2)*rad,hei*0.5,r*0.9,g*0.9,b*0.9,a,u,__v,0)
                 }
                 for(let l=_verts.length/10,i=_v;i<l;i++){
                     
@@ -11959,8 +11220,8 @@ class Mesh {
                     let t1=t-inc*0.5,t2=t+inc*0.5
                     _verts.push(
                         
-                        Math.cos(t1)*rad2,Math.sin(t1)*rad2,-hei*0.5,r*0.7,g*0.7,b*0.7,a,0,0,0,
-                        Math.cos(t2)*rad2,Math.sin(t2)*rad2,-hei*0.5,r*0.7,g*0.7,b*0.7,a,0,0,0)
+                        Math.cos(t1)*rad2,Math.sin(t1)*rad2,-hei*0.5,r*0.7,g*0.7,b*0.7,a,u,__v,0,
+                        Math.cos(t2)*rad2,Math.sin(t2)*rad2,-hei*0.5,r*0.7,g*0.7,b*0.7,a,u,__v,0)
                 }
                 for(let l=_verts.length/10,i=_v;i<l;i++){
                     
@@ -11996,6 +11257,32 @@ class Mesh {
                         _verts[i]+=x
                         _verts[i+1]+=y
                         _verts[i+2]+=z
+                    }
+                    
+                    switch(AArot){
+                        
+                        case 1:
+                            
+                            let _temp=_verts[i]
+                            _verts[i]=-_verts[i+2]
+                            _verts[i+2]=_temp
+                            
+                        break
+                        
+                        case 2:
+                            
+                            _verts[i]=-_verts[i]
+                            _verts[i+2]=-_verts[i+2]
+                            
+                        break
+                        
+                        case 3:
+                            
+                            let __temp=_verts[i]
+                            _verts[i]=_verts[i+2]
+                            _verts[i+2]=-__temp
+                            
+                        break
                     }
                 }
                 
@@ -12700,9 +11987,10 @@ let gear={
                 stats.redBeeAbilityRate*=1.2
                 stats.blueBeeAbilityRate*=1.2
                 stats.whiteBeeAbilityRate*=1.2
-                stats.bluePollen*=1.25
+                stats.bluePollen*=1.35
+                stats.whitePollen*=1.35
+                stats.redPollen*=1.35
                 stats.whitePollen*=1.5
-                stats.redPollen*=1.25
                 stats.instantGooConversion+=0.25
                 stats.pollenFromBees*=1.5
                 stats.honeyFromTokens*=1.5
@@ -12710,7 +11998,6 @@ let gear={
                 stats.defense+=0.3
                 player.addEffect('gummyMorphPassive')
                 player.addEffect('coinScatterPassive')
-                player.addEffect('gummyStarPassive')
             }
         },
         
@@ -12746,7 +12033,6 @@ let gear={
                 stats.defense+=0.3
                 player.addEffect('diamondDrainPassive')
                 player.addEffect('bubbleBombsPassive')
-                player.addEffect('popStarPassive')
             }
         },
         
@@ -12783,7 +12069,6 @@ let gear={
                 stats.defense+=0.35
                 player.addEffect('xFlamePassive')
                 player.addEffect('ignitePassive')
-                player.addEffect('scorchingStarPassive')
             }
         },
     },
@@ -13183,7 +12468,7 @@ player=(function(out){
             
             let c=cost[i].split(' ')
             
-            itemCostSVG.innerHTML+=itemSVGCode[c[1]].replaceAll('AMOUNTOFITEMREQUIREDTOCRAFT','x'+(c[0].length<6?MATH.addCommas(c[0]):MATH.abvNumber(c[0]))).replaceAll('TEXTCOLORDEPENDINGONIFENOUGHITEMS',c[1]==='honey'&&player.honey<Number(c[0])||c[1]!=='honey'&&items[c[1]].amount<Number(c[0])?'rgb(255,0,0)':'rgb(255,255,255)')
+            itemCostSVG.innerHTML+=itemSVGCode[c[1]].replaceAll('AMOUNTININVENTORY','').replaceAll('AMOUNTOFITEMREQUIREDTOCRAFT','x'+(c[0].length<6?MATH.addCommas(c[0]):MATH.abvNumber(c[0]))).replaceAll('TEXTCOLORDEPENDINGONIFENOUGHITEMS',c[1]==='honey'&&player.honey<Number(c[0])||c[1]!=='honey'&&items[c[1]].amount<Number(c[0])?'rgb(255,0,0)':'rgb(255,255,255)')
         }
         
         leftShopButton.onclick=function(){
@@ -13312,6 +12597,14 @@ player=(function(out){
                 
                 items[i].svg.style.display='inline'
                 items[i].amountText.textContent='x'+items[i].amount
+            }
+            
+            for(let j in hotbarSlots){
+                
+                if(hotbarSlots[j].itemType===i){
+                    
+                    hotbarSlots[j].innerHTML=itemSVGCode[hotbarSlots[j].itemType].replaceAll('AMOUNTININVENTORY',items[hotbarSlots[j].itemType].amount).replaceAll('AMOUNTOFITEMREQUIREDTOCRAFT','').replace('translate(0px,7px)','translate(-2px,2px)').replace('scale(0.77,0.77)','scale(0.5,0.5)')
+                }
             }
         }
     }
@@ -13620,10 +12913,13 @@ player=(function(out){
                         
                         out.defaultStats[str.substr(str.indexOf(' ')+1,str.length)]*=Number(str.substr(1,str.indexOf(' ')-1))
                         
-                    } else {
+                    } else if(str[0]==='+'){
                         
                         out.defaultStats[str.substr(str.indexOf(' ')+1,str.length)]+=Number(str.substr(1,str.indexOf(' ')-1))
                         
+                    } else {
+                        
+                        out.addEffect(str.split(' ')[1])
                     }
                 }
                 
@@ -13955,7 +13251,6 @@ player=(function(out){
                             y=fieldInfo[s.field].y+0.5,
                             z=s.z+fieldInfo[s.field].z
                         
-                        // box(x,y,z,0.3,1.2,0.3,false,[0.3,0.3,0.3],false,false)
                         cylinder(x,y+0.25,z,0.15,2.5,10,0.9,0.9,0.5,1,90,0,0)
                         cylinder(x,y+1.5,z,0.2,0.15,10,1,1,0.5,1,90,0,0)
                         box(x,y+0.7,z,0.9,0.9,0.35,false,[0.2,10,10],false,false)
@@ -14814,26 +14109,38 @@ function computeSceneViewMatrix(x,y,z,yaw,pitch){
 
 let NPCs={
     
-    dat:{
-        
-        viewMatrix:[-12,0,0,-1,0],
-        
-        dialogueIndex:0,
-        dialogue:['Hello! This is me, Dat, a terrible 3d designer...\nAnyways click in this blue dialogue box to continue','This is the current NPC and quest system, which is pretty good. Right now the quest menu icon on the bar is just a rectangle...','In there you can see your progress in your quests, and...that\'s it...','Here\'s your quest, and maybe the last thing you\'ll hear from me b4 i go :( so check your quests list for a weird tongue-twisting quest',function(){player.addQuest('The Last Best Stress Test Quest\'s Request Mess',[['bluePollen',75000],['redPollen',50000],['whitePollen',25000],['goo',2500],['abilityTokens',50],['honeyTokens',3],['rhinoBeetle',1]],'dat');NPCs.dat.activeQuest=true;},'Cool ya did my quest so here\'s your rewards...',function(){
+    //function(){player.addQuest('The Last Best Stress Test Quest\'s Request Mess',[['bluePollen',75000],['redPollen',50000],['whitePollen',25000],['goo',2500],['abilityTokens',50],['honeyTokens',3],['rhinoBeetle',1]],'dat');NPCs.dat.activeQuest=true;}
+    
+    //function(){
             
-            for(let i in player.quests){
+    //         for(let i in player.quests){
                 
-                if(player.quests[i].NPC==='dat'){
+    //             if(player.quests[i].NPC==='dat'){
                     
-                    player.quests.splice(i,1)
-                }
-            }
+    //                 player.quests.splice(i,1)
+    //             }
+    //         }
             
-            player.honey+=12345678
-            textRenderer.add(12345678+'',[player.body.position.x,player.body.position.y+2,player.body.position.z],COLORS.honey,0,'+')
-            player.addMessage('+'+MATH.addCommas(12345678+'')+' Honey (from your fren)')
-            
-        },'This is just here as the last message from this npc...but cool that you really checked lol \nthere\'s this bug where you\'re stuck here but am too lazy to fix...'],
+    //         player.honey+=12345678
+    //         textRenderer.add(12345678+'',[player.body.position.x,player.body.position.y+2,player.body.position.z],COLORS.honey,0,'+')
+    //         player.addMessage('+'+MATH.addCommas(12345678+'')+' Honey (from your fren)')
+    
+    blackBear:{
+        
+        viewMatrix:[24,2,0.5,MATH.HALF_PI,-0.25],
+        dialogueIndex:0,
+        dialogue:['sady i had 2 trim dis dlog 4 spce 4 code'],
+        mesh:new Mesh(),
+        meshParams:{x:0.5,y:0,z:-31.5,r:1,s:1.2,texture:{face:{u:0,v:0},torso:{texture:false,u:0,v:0.5}}}
+    },
+    
+    polarBear:{
+        
+        viewMatrix:[-1.5,24.5,60,Math.PI,-0.25],
+        dialogueIndex:0,
+        dialogue:['sady i had 2 trim dis dlog 4 spce 4 code and also my skin color is a bit off it looks ugly with the snow'],
+        mesh:new Mesh(),
+        meshParams:{x:1.5,y:22,z:-68,r:2,s:1.2,texture:{face:{u:1,v:0},torso:{texture:false,u:1,v:0}}}
     },
 }
 
@@ -14848,7 +14155,7 @@ let shops={
         
         items:[{
             name:'gummyMask',
-            desc:'The offical mask of a gummy soldier.<br><br>x2 goo<br>x1.75 capacity<br>x1.25 white pollen<br>x1.25 pollen<br>+25% instant goo conversion<br>x1.5 honey from tokens<br>x1.5 pollen from bees<br>x1.75 convert rate<br>+30% defense<br>x1.2 bee ability rate<br>+Passive: Gummy Morph<br>+Passive: Coin Scatter',
+            desc:'The offical mask of a gummy soldier.<br><br>x2 goo<br>x1.75 capacity<br>x1.5 white pollen<br>x1.35 pollen<br>+25% instant goo conversion<br>x1.5 honey from tokens<br>x1.5 pollen from bees<br>x1.75 convert rate<br>+30% defense<br>x1.2 bee ability rate<br>+Passive: Gummy Morph<br>+Passive: Coin Scatter',
             slot:'mask',
             cost:['5000000000 honey','250 glue','100 enzymes','100 oil','100 glitter'],
             viewMatrix:[25,5,16,-Math.PI,-0.3],
@@ -14922,8 +14229,17 @@ let user=(function(out){
                     
                 } else {
                     
-                    items[player.itemDragging].use()
-                    player.updateInventory()
+                    if(TIME-items[player.itemDragging].cooldown>items[player.itemDragging].maxCooldown){
+                        
+                        items[player.itemDragging].use()
+                        items[player.itemDragging].cooldown=TIME
+                        player.updateInventory()
+                        
+                    } else {
+                        
+                        player.addMessage('Item is on a cooldown of '+MATH.doTime(items[player.itemDragging].maxCooldown-(TIME-items[player.itemDragging].cooldown))+'!',COLORS.redArr)
+                    }
+                    
                     player.itemDragging=false
                 }
             }
@@ -14958,6 +14274,25 @@ let user=(function(out){
         
         out.keys[e.key.toLowerCase()]=true
         out.clickedKeys[e.key.toLowerCase()]=true
+        
+        if('123456'.indexOf(e.key)>-1){
+            
+            let n=Number(e.key)-1
+            
+            if(hotbarSlots[n].itemType){
+                
+                if(TIME-items[hotbarSlots[n].itemType].cooldown>items[hotbarSlots[n].itemType].maxCooldown){
+                    
+                    items[hotbarSlots[n].itemType].use()
+                    items[hotbarSlots[n].itemType].cooldown=TIME
+                    player.updateInventory()
+                    
+                } else {
+                    
+                    player.addMessage('Item is on a cooldown of '+MATH.doTime(items[hotbarSlots[n].itemType].maxCooldown-(TIME-items[hotbarSlots[n].itemType].cooldown))+'!',COLORS.redArr)
+                }
+            }
+        }
     }
     
     document.onkeyup=function(e){
@@ -17145,9 +16480,9 @@ box(7.5,0,-12.5,30,25,5,false,[0.3,0.2,0],true,false);
 
 box(24.5,-2.2,-10,4,8,5,[-55,0,0],[1*0.8,0.7*0.8,0.3*0.8]);
 box(51,0,-29,50,4.29,50,false,[1*0.8,0.7*0.8,0.3*0.8]);
-box(25,0,-36.84,10,4.29,50,false,[1*0.8,0.7*0.8,0.3*0.8]);
-box(60.5,0,-19,50,4.29,50,false,[1*0.8,0.7*0.8,0.3*0.8]);
-box(53,-1.5,-19,50,0.1,50,false,[0.4,0.3,0.2],false);
+box(21,0,-36.84,10,4.29,50,false,[1*0.8,0.7*0.8,0.3*0.8]);
+box(60.5,0,0,50,4.29,8,false,[1*0.8,0.7*0.8,0.3*0.8]);
+box(51.01,-1.5,-19,50,0.1,50,false,[0.4,0.3,0.2],false);
 box(60.5,0,7.6,50,16,14,false,[1*0.8,0.7*0.8,0.3*0.8]);
 
 box(7.5,0,-24.5,30,25,19,false,WALL,true,false);
@@ -17685,7 +17020,6 @@ box(60.595,0,74.215,4,62,9,[0,-45,0],WALL,true,false);
 box(64,25.25,60,4,11.5,35,false,WALL,true,false);
 box(53,15,90,016,6,20,false,[0.4,0.4,0.4]);
 box(53,13,81,10,5,10,[0,40,0],[0.45,0.45,0.45]);
-///box(53,12,76,9,5,7,[0,15,0],[0.35,0.35,0.35]);
 
 function pineTree(x,y,z,s){
 
@@ -17805,6 +17139,7 @@ box(-5,34.5,83.5,0.15,3,3,false,[1.1,1.1,1.1],true,false);
 box(-5-1.5,34.5,83.5-1.5,0.15,3,3,[0,90,0],[1.1,1.1,1.1],true,false);
 box(-5-1.5,34.5,83.5+1.5,0.15,3,3,[0,90,0],[1.1,1.1,1.1],true,false);
 box(-5-1.5,34.5+1.75,83.5,0.15+0.5,3.25,3.25,[0,0,90],[0,1.1,0],true,false);
+
 
 
 `
@@ -18300,39 +17635,19 @@ gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(flowers.mesh.verts),gl.DYNAMIC_D
 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,flowers.mesh.indexBuffer)
 gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(flowers.mesh.index),gl.DYNAMIC_DRAW)
 
-for(let i=0;i<50;i++)
+for(let i=0;i<25;i++)
 player.addSlot(null)
 
 player.updateHive()
 player.updateGear()
 
-objects.tokens.push(new LootToken(10000,[-8,-1,-6],'glue',1000000))
-objects.tokens.push(new LootToken(10000,[-7,-1,-6],'oil',1000000))
-objects.tokens.push(new LootToken(10000,[-6,-1,-6],'enzymes',1000000))
-objects.tokens.push(new LootToken(10000,[-5,-1,-6],'redExtract',1000000))
-objects.tokens.push(new LootToken(10000,[-4,-1,-6],'blueExtract',1000000))
-objects.tokens.push(new LootToken(10000,[-3,-1,-6],'tropicalDrink',1000000))
-objects.tokens.push(new LootToken(10000,[-2,-1,-6],'purplePotion',1000000))
-objects.tokens.push(new LootToken(10000,[-1,-1,-6],'superSmoothie',100))
-objects.tokens.push(new LootToken(10000,[0,-1,-6],'treat',100000000))
-objects.tokens.push(new LootToken(10000,[1,-1,-6],'blueberry',100000000))
-objects.tokens.push(new LootToken(10000,[2,-1,-6],'strawberry',100000000))
-objects.tokens.push(new LootToken(10000,[3,-1,-6],'pineapple',100000000000))
-objects.tokens.push(new LootToken(10000,[4,-1,-6],'sunflowerSeed',100000000))
-objects.tokens.push(new LootToken(10000,[5,-1,-6],'basicEgg',1000000))
-objects.tokens.push(new LootToken(10000,[6,-1,-6],'silverEgg',1000000))
-objects.tokens.push(new LootToken(10000,[7,-1,-6],'goldEgg',1000000))
-objects.tokens.push(new LootToken(10000,[8,-1,-6],'diamondEgg',1000000))
-objects.tokens.push(new LootToken(10000,[9,-1,-6],'mythicEgg',1000000))
-objects.tokens.push(new LootToken(10000,[10,-1,-6],'glitter',1000000))
-objects.tokens.push(new LootToken(10000,[11,-1,-6],'gumdrops',1000000))
-objects.tokens.push(new LootToken(10000,[12,-1,-6],'coconut',1000000))
-objects.tokens.push(new LootToken(10000,[13,-1,-6],'stinger',1000000))
-objects.tokens.push(new LootToken(10000,[14,-1,-6],'bitterberry',1000000))
-objects.tokens.push(new LootToken(10000,[15,-1,-6],'neonberry',1000000))
-
-
-objects.tokens.push(new LootToken(10000,[3,2,-6],'honey',1000000000))
+let ct=0
+for(let i in items){
+    
+    ct++
+    objects.tokens.push(new LootToken(10000,[-8+ct,-1,-6],i,1000000))
+    
+}
 
 player.pointerLocked=false
 
@@ -18434,9 +17749,6 @@ window.deleteBeequip=function(){
     player.updateBeequipPage()
     player.updateHive()
 }
-
-let bearMesh=new Mesh()
-
 
 objects.mobs.push(new MondoChick('mountainTopField',7))
 
@@ -18695,34 +18007,54 @@ function loop(now){
     
     gl.bindTexture(gl.TEXTURE_2D,textures.bear)
     
-    if(frameCount%2===0){
+    let minDist=Infinity,minNPC
+    
+    for(let i in NPCs){
         
-        bearMesh.setMeshFromFunction(function(box,a,cylinder,sphere,d,e,star,limbBox,limbCylinder){
+        if(!NPCs[i].computedMesh){
             
-            let x=16,y=-0.3,z=3,s=1,t=TIME,t1=Math.sin(t*2.1)*5-0.5
+            minDist=0
+            minNPC=i
+            NPCs[i].computedMesh=true
+            break
+        }
+        
+        let d=Math.abs(player.body.position.x-(triggers[i+'_NPC'].minX+triggers[i+'_NPC'].maxX)*0.5)+Math.abs(player.body.position.y-(triggers[i+'_NPC'].minY+triggers[i+'_NPC'].maxY)*0.5)+Math.abs(player.body.position.z-(triggers[i+'_NPC'].minZ+triggers[i+'_NPC'].maxZ)*0.5)
+        
+        if(minDist>d){
             
-            limbBox(x,y+Math.cos(t1*MATH.TO_RAD*2)*s*0.6,z+Math.sin(t1*MATH.TO_RAD*2)*s*0.6,1.1*s,0.9*s,0.6*s,[t1*2,0,0],0,0)
-            limbBox(x,y+Math.cos(t1*MATH.TO_RAD*2.75)*s*1.65,z+Math.sin(t1*MATH.TO_RAD*2.75)*s*1.65,1.2*s,1.15*s,0.6*s,[t1*4,0,0],0,0)
-            limbBox(x,y,z,1.1*s,0.25*s,0.6*s,[t1,0,0],0,0)
-            limbBox(x+s/1.25,y-Math.cos(t1*MATH.TO_RAD*3.5*2)*s*0.65+s*1.15,z-Math.sin(t1*MATH.TO_RAD*3.5*2)*s*0.2,0.5*s,1.15*s,0.5*s,[t1*3.5*2,0,9],0,0)
+            minDist=d
+            minNPC=i
+        }
+        
+        NPCs[i].mesh.render()
+    }
+    
+    if(frameCount%2===0&&minDist<75){
+        
+        NPCs[minNPC].mesh.setMeshFromFunction(function(box,a,cylinder,sphere,d,e,star,limbBox,limbCylinder){
+            
+            let x=NPCs[minNPC].meshParams.x,y=NPCs[minNPC].meshParams.y,z=NPCs[minNPC].meshParams.z,r=NPCs[minNPC].meshParams.r,s=NPCs[minNPC].meshParams.s,t=TIME,t1=Math.sin(t*2.1)*5-0.5
+            
+            limbBox(r,x,y+Math.cos(t1*MATH.TO_RAD*2)*s*0.6,z+Math.sin(t1*MATH.TO_RAD*2)*s*0.6,1.1*s,0.9*s,0.6*s,[t1*2,0,0],NPCs[minNPC].meshParams.texture.torso.u*128/1024,NPCs[minNPC].meshParams.texture.torso.v*128/1024,NPCs[minNPC].meshParams.texture.torso.texture)
+            limbBox(r,x,y+Math.cos(t1*MATH.TO_RAD*2.75)*s*1.65,z+Math.sin(t1*MATH.TO_RAD*2.75)*s*1.65,1.2*s,1.15*s,0.6*s,[t1*4,0,0],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024,true)
+            limbBox(r,x,y,z,1.1*s,0.25*s,0.6*s,[t1,0,0],NPCs[minNPC].meshParams.texture.torso.u*128/1024,NPCs[minNPC].meshParams.texture.torso.v*128/1024)
+            limbBox(r,x+s/1.25,y-Math.cos(t1*MATH.TO_RAD*3.5*2)*s*0.65+s*1.15,z-Math.sin(t1*MATH.TO_RAD*3.5*2)*s*0.2,0.5*s,1.15*s,0.5*s,[t1*3.5*2,0,9],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
             s/=1.25
-            limbBox(x-0.35*s,y-0.55*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[t1*1.25-10,0,-5],0,0)
-            limbBox(x-0.42*s,y-1.15*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[10-t1*0.5,0,-5],0,0)
-            limbBox(x+0.35*s,y-0.55*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[t1*1.25-10,0,5],0,0)
-            limbBox(x+0.42*s,y-1.15*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[10-t1*0.5,0,5],0,0)
+            limbBox(r,x-0.35*s,y-0.55*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[t1*1.25-10,0,-5],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
+            limbBox(r,x-0.42*s,y-1.15*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[10-t1*0.5,0,-5],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
+            limbBox(r,x+0.35*s,y-0.55*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[t1*1.25-10,0,5],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
+            limbBox(r,x+0.42*s,y-1.15*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[10-t1*0.5,0,5],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
             s*=1.25
-            limbCylinder(x-0.6*s,y+Math.cos(t1*MATH.TO_RAD*3)*s*2.2,z+Math.sin(t1*MATH.TO_RAD*3)*s*2.2,0.3*s,0.6*s,8,0.9,0.9,0.9,1,t1*4,0,0,0.3*s,false,true)
-            limbCylinder(x+0.6*s,y+Math.cos(t1*MATH.TO_RAD*3)*s*2.2,z+Math.sin(t1*MATH.TO_RAD*3)*s*2.2,0.3*s,0.6*s,8,0.9,0.9,0.9,1,t1*4,0,0,0.3*s,false,true)
+            limbCylinder(r,x-0.6*s,y+Math.cos(t1*MATH.TO_RAD*3)*s*2.2,z+Math.sin(t1*MATH.TO_RAD*3)*s*2.2,0.3*s,0.6*s,10,0.9,0.9,0.9,1,t1*4,0,0,NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
+            limbCylinder(r,x+0.6*s,y+Math.cos(t1*MATH.TO_RAD*3)*s*2.2,z+Math.sin(t1*MATH.TO_RAD*3)*s*2.2,0.3*s,0.6*s,10,0.9,0.9,0.9,1,t1*4,0,0,NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
             t1=Math.sin(t*2.1+0.5)*5-0.5
-            limbBox(x-1*s/1.25,y-Math.cos(t1*MATH.TO_RAD*3.5*2)*s*0.65+s*1.15,z-Math.sin(t1*MATH.TO_RAD*3.5*2)*s*0.2,0.5*s,1.15*s,0.5*s,[t1*3.5*2,0,-9],0,0)
+            limbBox(r,x-1*s/1.25,y-Math.cos(t1*MATH.TO_RAD*3.5*2)*s*0.65+s*1.15,z-Math.sin(t1*MATH.TO_RAD*3.5*2)*s*0.2,0.5*s,1.15*s,0.5*s,[t1*3.5*2,0,-9],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
             
         })
         
-        bearMesh.setBuffers()
-    
+        NPCs[minNPC].mesh.setBuffers()
     }
-    
-    bearMesh.render()
     
     gl.bindTexture(gl.TEXTURE_2D,textures.bees)
     player.hiveMesh.render()
@@ -18938,7 +18270,6 @@ function loop(now){
     if(user.clickedKeys.h){
         
         player.addEffect('haste')
-        // player.addEffect('haste__')
         player.addEffect('focus')
         player.addEffect('melody')
         player.addEffect('bombCombo')
@@ -18970,8 +18301,8 @@ if(window.thisProgramIsInFullScreen){
     noFullScreen()
 }
 }
-//<script>
 
+//<script>
 
 </script>
     </body>
