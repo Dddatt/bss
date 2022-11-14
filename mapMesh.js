@@ -1,4 +1,4 @@
-window.mapMesh=`
+window.mapMesh = `
 
 
     

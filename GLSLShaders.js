@@ -1,4 +1,4 @@
-window.glsl_static_geometry_vsh=`#version 300 es
+window.glsl_static_geometry_vsh = `#version 300 es
 
     precision lowp float;
     
@@ -21,7 +21,7 @@ window.glsl_static_geometry_vsh=`#version 300 es
         gl_Position=pos;
     }
 `
-window.glsl_static_geometry_fsh=`#version 300 es
+window.glsl_static_geometry_fsh = `#version 300 es
     
     precision lowp float;
     
@@ -42,7 +42,7 @@ window.glsl_static_geometry_fsh=`#version 300 es
         
     }
 `
-window.glsl_dynamic_geometry_vsh=`#version 300 es
+window.glsl_dynamic_geometry_vsh = `#version 300 es
 
     precision lowp float;
     
@@ -64,7 +64,7 @@ window.glsl_dynamic_geometry_vsh=`#version 300 es
         gl_Position=pos;
     }
 `
-window.glsl_dynamic_geometry_fsh=`#version 300 es
+window.glsl_dynamic_geometry_fsh = `#version 300 es
     
     precision lowp float;
     
@@ -82,7 +82,7 @@ window.glsl_dynamic_geometry_fsh=`#version 300 es
         fragColor=vec4(pixColor*shade*isNight,1.0);
     }
 `
-window.glsl_token_geometry_vsh=`#version 300 es
+window.glsl_token_geometry_vsh = `#version 300 es
 
     precision lowp float;
     
@@ -116,7 +116,7 @@ window.glsl_token_geometry_vsh=`#version 300 es
     }
 `
 
-window.glsl_token_geometry_fsh=`#version 300 es
+window.glsl_token_geometry_fsh = `#version 300 es
     
     precision lowp float;
     
@@ -132,7 +132,7 @@ window.glsl_token_geometry_fsh=`#version 300 es
         fragColor=vec4(texture(tex,pixUV.xy).rgb*isNight,pixUV.z);
     }
 `
-window.glsl_flower_geometry_vsh=`#version 300 es
+window.glsl_flower_geometry_vsh = `#version 300 es
 
     precision lowp float;
     
@@ -153,7 +153,7 @@ window.glsl_flower_geometry_vsh=`#version 300 es
     }
 `
 
-window.glsl_flower_geometry_fsh=`#version 300 es
+window.glsl_flower_geometry_fsh = `#version 300 es
     
     precision lowp float;
     
@@ -184,7 +184,7 @@ window.glsl_flower_geometry_fsh=`#version 300 es
         }
     }
 `
-window.glsl_bee_geometry_vsh=`#version 300 es
+window.glsl_bee_geometry_vsh = `#version 300 es
 
     precision lowp float;
     
@@ -231,7 +231,7 @@ window.glsl_bee_geometry_vsh=`#version 300 es
         }
     }
 `
-window.glsl_bee_geometry_fsh=`#version 300 es
+window.glsl_bee_geometry_fsh = `#version 300 es
     
     precision lowp float;
     
@@ -255,7 +255,7 @@ window.glsl_bee_geometry_fsh=`#version 300 es
     }
 `
 
-window.glsl_particle_renderer_vsh=`#version 300 es
+window.glsl_particle_renderer_vsh = `#version 300 es
     
     precision lowp float;
     
@@ -285,7 +285,7 @@ window.glsl_particle_renderer_vsh=`#version 300 es
     }
 `
 
-window.glsl_particle_renderer_fsh=`#version 300 es
+window.glsl_particle_renderer_fsh = `#version 300 es
     
     precision lowp float;
     
@@ -319,7 +319,7 @@ window.glsl_particle_renderer_fsh=`#version 300 es
     }
 `
 
-window.glsl_explosion_renderer_vsh=`#version 300 es
+window.glsl_explosion_renderer_vsh = `#version 300 es
 
     precision lowp float;
     
@@ -339,7 +339,7 @@ window.glsl_explosion_renderer_vsh=`#version 300 es
         gl_Position=viewMatrix*vec4(vertPos*instance_scale.x*vec3(1,instance_scale.y,1)+instance_pos,1);
     }
 `
-window.glsl_explosion_renderer_fsh=`#version 300 es
+window.glsl_explosion_renderer_fsh = `#version 300 es
     
     precision lowp float;
     
@@ -352,7 +352,7 @@ window.glsl_explosion_renderer_fsh=`#version 300 es
         fragColor=pixColor;
     }
 `
-window.glsl_text_renderer_vsh=`#version 300 es
+window.glsl_text_renderer_vsh = `#version 300 es
     
     precision lowp float;
     
@@ -398,7 +398,7 @@ window.glsl_text_renderer_vsh=`#version 300 es
         gl_Position=pos;
     }
 `
-window.glsl_text_renderer_fsh=`#version 300 es
+window.glsl_text_renderer_fsh = `#version 300 es
     
     precision lowp float;
     
@@ -421,7 +421,7 @@ window.glsl_text_renderer_fsh=`#version 300 es
         fragColor=c;
     }
 `
-window.glsl_mob_renderer_vsh=`#version 300 es
+window.glsl_mob_renderer_vsh = `#version 300 es
 
     precision lowp float;
     
@@ -454,7 +454,7 @@ window.glsl_mob_renderer_vsh=`#version 300 es
         gl_Position=pos;
     }
 `
-window.glsl_mob_renderer_fsh=`#version 300 es
+window.glsl_mob_renderer_fsh = `#version 300 es
     
     precision lowp float;
     
@@ -467,7 +467,7 @@ window.glsl_mob_renderer_fsh=`#version 300 es
         fragColor=pixColor;
     }
 `
-window.glsl_trail_renderer_vsh=`#version 300 es
+window.glsl_trail_renderer_vsh = `#version 300 es
 
     precision lowp float;
     
@@ -485,7 +485,7 @@ window.glsl_trail_renderer_vsh=`#version 300 es
         gl_Position=viewMatrix*vec4(vertPos,1);
     }
 `
-window.glsl_trail_renderer_fsh=`#version 300 es
+window.glsl_trail_renderer_fsh = `#version 300 es
     
     precision lowp float;
     
