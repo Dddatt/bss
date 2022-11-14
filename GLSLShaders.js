@@ -413,7 +413,7 @@ window.glsl_text_renderer_fsh=`#version 300 es
         
         vec4 c=texture(tex,pixUV)*vec4(pixColor,1);
         
-        if(c.a<0.3){
+        if(c.a<0.01){
             
             discard;
         }
