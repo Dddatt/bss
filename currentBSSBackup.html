@@ -1,227 +1,225 @@
-<!DOCTYPE html><!--
+<!DOCTYPE html>
+<!--
+
+    Notes to self:
+
+    -add royal/star jelly
+    -make precise bee auto shoot after activating all 3 targets in target pratice
+    -add more sounds 4 inspire and things
+    -add petal storm passive
+    -update background after the noob shop and star hall
+    -add more mobs
+    -adjust balloon size
+    -fix items can be used with super smoothie|purp pot
+    -fix the big rock and ground z fighting in front of 100 bee zone from far away cuz of depth buffer error
+    -add hitbox 4 coco disp
+    -redo mob loot drop code, using info from wiki
+    -add a way to scale bee instances
+    -fix the rocks by pine tree
+    -add werewolf cave
+    -fix all the 5-15 bee zone skips
+    -add requirements to use cannons/flinging thingies
+    -fix text on mythic egg
+    -fix html <defs> needing different ids making gradients break in svgs
+    -fix random words in item svgs in mask requirements
+    -add r/b portals
+    -add 30 bee zone
+    -add killbricks
 
 
+    Had 2 get rid of comnts 4 max spce in d prog so it save
 
-
-notes to self:
-
--add royal/star jelly
--make precise bee auto shoot after activating all 3 targets in target pratice
--add more sounds 4 inspire and things
--add petal storm passive
--update background after the noob shop and star hall
--add more mobs
--adjust balloon size
--fix items can be used with super smoothie|purp pot
--fix the big rock and ground z fighting in front of 100 bee zone from far away cuz of depth buffer error
--add hitbox 4 coco disp
--redo mob loot drop code, using info from wiki
--add a way to scale bee instances
--fix the rocks by pine tree
--add werewolf cave
--fix all the 5-15 bee zone skips
--add requirements to use cannons/flinging thingies
--fix text on mythic egg
--fix html <defs> needing different ids making gradients break in svgs
--fix random words in item svgs in mask requirements
--add r/b portals
--add 30 bee zone
--add killbricks
-
-
-
-
-had 2 get rid of comnts 4 max spce in d prog so it save
-
-r:103
-b:160 yikes
-w:90
-
+    r:103
+    b:160 yikes
+    w:90
 
 -->
 <html>
     <head>
         <meta charset="utf-8">
         <title>bss</title>
+
+        <style>
+    
+            body{
+                
+                overflow:hidden;
+                margin:0;
+                font-family:cursive;
+            }
+            
+            input {
+                
+                height:24px;
+                outline:none;
+                background-color:rgb(255,255,255);
+                border:none;
+                border-bottom:4px solid black;
+                transition-duration:0.4s;
+                border-radius:5px;
+            }
+            
+            input:hover {
+                
+                background-color:rgb(200,200,255);
+            }
+            
+            input:focus {
+                
+                background-color:rgb(170,200,255);
+            }
+            
+            button {
+                
+                width:60px;
+                height:30px;
+                transition-duration:0.4s;
+                border-radius:8px;
+                font-size:16px;
+                background-color:rgb(255,255,255);
+            }
+            
+            button:hover {
+                
+                cursor:pointer;
+                border-radius:13px;
+                background-color:rgb(150,255,205);
+            }
+            
+            #purchaseButton {
+                
+                transition-duration:0s;
+                border:none;
+            }
+            
+            #purchaseButton:hover {
+                
+                outline:2px solid rgb(0,0,0,0.4);
+            }
+            
+            #leftShopButton:hover,#rightShopButton:hover{
+                
+                outline:2px solid rgb(0,0,0,0.4);
+            }
+            
+            #gl-canvas,#tex-canvas{
+                
+                display:none;
+            }
+            
+            #ui-canvas{
+                
+                position:fixed;
+                left:0;
+                top:0;
+                z-index:-2;
+            }
+            
+            div::-webkit-scrollbar,{
+                
+                width:5px;
+                height:8px;
+                background-color:rgb(200,200,200); 
+            }
+            
+            div::-webkit-scrollbar-thumb{
+                
+                background:rgb(120,120,120);
+                border-radius:10px;
+            }
+            
+            #inventoryButton:hover,#settingsButton:hover,#questButton:hover,#beequipButton:hover{
+                
+                transition-duration:0.4s;
+                background-color:rgba(0,0,0,0.2);
+                cursor:pointer;
+            }
+            
+            #feedThisAmount{
+                
+                margin-top:50px;
+                margin-left:5px;
+                transition-duration:0s;
+                border-radius:6px;
+                position:fixed;
+                background-color:rgb(0,200,0);
+                border:none;
+                color:rgb(255,255,255);
+                font-size:17px;
+                font-family:trebuchet ms;
+            }
+            
+            #feedUntilGifted{
+                
+                margin-top:100px;
+                margin-left:160px;
+                transition-duration:0s;
+                border-radius:6px;
+                position:fixed;
+                background-color:rgb(255,200,0);
+                border:none;
+                color:rgb(255,255,255);
+                font-size:16.5px;
+                width:135px;
+                font-family:trebuchet ms;
+            }
+            
+            #feedThisAmount:hover{
+                
+                background-color:rgb(0,170,0);
+            }
+            
+            #feedAmount{
+                
+                margin-top:50px;
+                margin-left:75px;
+                transition-duration:0s;
+                border-radius:6px;
+                position:fixed;
+                background-color:rgb(0,30,205);
+                border:none;
+                color:rgb(255,255,255);
+                font-size:17px;
+                font-family:arial;
+                height:19px;
+                width:200px;
+                padding:5px;
+                padding-left:10px;
+            }
+            
+            #cancelFeeding{
+                
+                margin-top:100px;
+                margin-left:5px;
+                transition-duration:0s;
+                border-radius:6px;
+                position:fixed;
+                background-color:rgb(255,30,30);
+                border:none;
+                color:rgb(255,255,255);
+                font-size:17px;
+                width:70px;
+                font-family:trebuchet ms;
+            }
+            
+            #cancelFeeding:hover{
+                
+                background-color:rgb(200,0,0);
+            }
+            
+            #actionHoverDarken:hover{
+                
+                background-color:rgb(0,0,0,0.3);
+            }
+            
+        </style>
+
     </head>
     <body onload='main()'>
-<canvas id='gl-canvas'></canvas>
-<canvas id='ui-canvas'></canvas>
-<canvas id='tex-canvas' width='2048' height='2048'></canvas>
-<style>
-    
-    body{
-        
-        overflow:hidden;
-        margin:0;
-        font-family:cursive;
-    }
-    
-    input {
-        
-        height:24px;
-        outline:none;
-        background-color:rgb(255,255,255);
-        border:none;
-        border-bottom:4px solid black;
-        transition-duration:0.4s;
-        border-radius:5px;
-    }
-    
-    input:hover {
-        
-        background-color:rgb(200,200,255);
-    }
-    
-    input:focus {
-        
-        background-color:rgb(170,200,255);
-    }
-    
-    button {
-        
-        width:60px;
-        height:30px;
-        transition-duration:0.4s;
-        border-radius:8px;
-        font-size:16px;
-        background-color:rgb(255,255,255);
-    }
-    
-    button:hover {
-        
-        cursor:pointer;
-        border-radius:13px;
-        background-color:rgb(150,255,205);
-    }
-    
-    #purchaseButton {
-        
-        transition-duration:0s;
-        border:none;
-    }
-    
-    #purchaseButton:hover {
-        
-        outline:2px solid rgb(0,0,0,0.4);
-    }
-    
-    #leftShopButton:hover,#rightShopButton:hover{
-        
-        outline:2px solid rgb(0,0,0,0.4);
-    }
-    
-    #gl-canvas,#tex-canvas{
-        
-        display:none;
-	}
-	
-	#ui-canvas{
-        
-        position:fixed;
-        left:0;
-        top:0;
-        z-index:-2;
-	}
-	
-	div::-webkit-scrollbar,{
-	    
-        width:5px;
-        height:8px;
-        background-color:rgb(200,200,200); 
-    }
-    
-    div::-webkit-scrollbar-thumb{
-        
-        background:rgb(120,120,120);
-        border-radius:10px;
-    }
-    
-    #inventoryButton:hover,#settingsButton:hover,#questButton:hover,#beequipButton:hover{
-        
-        transition-duration:0.4s;
-        background-color:rgba(0,0,0,0.2);
-        cursor:pointer;
-    }
-    
-    #feedThisAmount{
-        
-        margin-top:50px;
-        margin-left:5px;
-        transition-duration:0s;
-        border-radius:6px;
-        position:fixed;
-        background-color:rgb(0,200,0);
-        border:none;
-        color:rgb(255,255,255);
-        font-size:17px;
-        font-family:trebuchet ms;
-    }
-    
-    #feedUntilGifted{
-        
-        margin-top:100px;
-        margin-left:160px;
-        transition-duration:0s;
-        border-radius:6px;
-        position:fixed;
-        background-color:rgb(255,200,0);
-        border:none;
-        color:rgb(255,255,255);
-        font-size:16.5px;
-        width:135px;
-        font-family:trebuchet ms;
-    }
-    
-    #feedThisAmount:hover{
-        
-        background-color:rgb(0,170,0);
-    }
-    
-    #feedAmount{
-        
-        margin-top:50px;
-        margin-left:75px;
-        transition-duration:0s;
-        border-radius:6px;
-        position:fixed;
-        background-color:rgb(0,30,205);
-        border:none;
-        color:rgb(255,255,255);
-        font-size:17px;
-        font-family:arial;
-        height:19px;
-        width:200px;
-        padding:5px;
-        padding-left:10px;
-    }
-    
-    #cancelFeeding{
-        
-        margin-top:100px;
-        margin-left:5px;
-        transition-duration:0s;
-        border-radius:6px;
-        position:fixed;
-        background-color:rgb(255,30,30);
-        border:none;
-        color:rgb(255,255,255);
-        font-size:17px;
-        width:70px;
-        font-family:trebuchet ms;
-    }
-    
-    #cancelFeeding:hover{
-        
-        background-color:rgb(200,0,0);
-    }
-    
-    #actionHoverDarken:hover{
-        
-        background-color:rgb(0,0,0,0.3);
-    }
-    
-</style>
+
+        <canvas id='gl-canvas'></canvas>
+    <canvas id='ui-canvas'></canvas>
+    <canvas id='tex-canvas' width='2048' height='2048'></canvas>
 
 <div id='abilityUI' style='margin:5px;padding:0px;margin-top:35px;position:fixed'>
     
