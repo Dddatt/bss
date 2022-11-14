@@ -1,5 +1,36 @@
 <!DOCTYPE html><!--
 
+
+
+
+notes to self:
+
+-add royal/star jelly
+-make precise bee auto shoot after activating all 3 targets in target pratice
+-add more sounds 4 inspire and things
+-add petal storm passive
+-update background after the noob shop and star hall
+-add more mobs
+-adjust balloon size
+-fix items can be used with super smoothie|purp pot
+-fix the big rock and ground z fighting in front of 100 bee zone from far away cuz of depth buffer error
+-add hitbox 4 coco disp
+-redo mob loot drop code, using info from wiki
+-add a way to scale bee instances
+-fix the rocks by pine tree
+-add werewolf cave
+-fix all the 5-15 bee zone skips
+-add requirements to use cannons/flinging thingies
+-fix text on mythic egg
+-fix html <defs> needing different ids making gradients break in svgs
+-fix random words in item svgs in mask requirements
+-add r/b portals
+-add 30 bee zone
+-add killbricks
+
+
+
+
 had 2 get rid of comnts 4 max spce in d prog so it save
 
 r:103
@@ -1774,8 +1805,8 @@ w:90
 <script src='https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js'></script>
 
 <script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/MathHelper.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/GLSLShaders.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/mapMesh.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.1/GLSLShaders.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.0/mapMesh.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/music_popStar.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/music_scorchingStar.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/Dddatt/bss/music_gummyStar.js"></script>
@@ -1980,7 +2011,7 @@ function runForFullScreen(){
         
         let w=window.open()
         w.document.open()
-        w.document.write(FETCHED_CODE.webCode.replaceAll('\u0040','').replace('var _M=Math','var _M=Math;window.thisProgramIsInFullScreen=true'))
+        w.document.write(FETCHED_CODE.webCode.replace('var _M=Math','var _M=Math;window.thisProgramIsInFullScreen=true'))
         w.document.close()
         
         FETCHED_CODE.webCode=''
@@ -2244,11 +2275,6 @@ let triggers={
         maxZ:-4+4.5*0.5
     },
     
-    // dat_NPC:{
-        
-    //     minX:-18,maxX:-13,minY:-3,maxY:4,minZ:-4,maxZ:0
-    // },
-    
     blackBear_NPC:{
         
         minX:29-2.5,maxX:29+2.5,minY:-2,maxY:4,minZ:0.5-2.5,maxZ:0.5+2.5
@@ -2261,7 +2287,7 @@ let triggers={
     
     cool_shop:{
         
-        minX:-25,maxX:-20,minY:-3,maxY:4,minZ:20,maxZ:25
+        minX:-20,maxX:-20,minY:-3,maxY:4,minZ:20,maxZ:25
     },
     
     become_red_hive:{
@@ -2501,6 +2527,40 @@ let triggers={
             player.body.velocity.x=-18.1
             player.body.velocity.y=52
             player.body.velocity.z=27
+            player.removeAirFrictionUntilGrounded=true
+            player.isGliding=false
+            player.grounded=false
+            player.updateGear()
+        }
+    },
+    
+    yellow_cannon:{
+        
+        isMachine:true,minX:-67-3,maxX:-67+3,minY:22,maxY:26,minZ:49-3,maxZ:49+3,message:'Use Yellow Cannon',func:function(player){
+            
+            player.body.position.x=-67
+            player.body.position.y=24
+            player.body.position.z=49
+            player.body.velocity.x=31
+            player.body.velocity.y=20
+            player.body.velocity.z=-19
+            player.removeAirFrictionUntilGrounded=true
+            player.isGliding=false
+            player.grounded=false
+            player.updateGear()
+        }
+    },
+    
+    slingshot:{
+        
+        isMachine:true,minX:-25-2.5,maxX:-25+2.5,minY:1,maxY:8,minZ:24.5-2.5,maxZ:24.5+2.5,message:'Use Slingshot',func:function(player){
+            
+            player.body.position.x=-25
+            player.body.position.y=3.5
+            player.body.position.z=24.5
+            player.body.velocity.x=-12
+            player.body.velocity.y=32
+            player.body.velocity.z=21
             player.removeAirFrictionUntilGrounded=true
             player.isGliding=false
             player.grounded=false
@@ -3179,13 +3239,13 @@ let effects={
     
     inspire:{
         
-        trialCooldown:60,trialRate:0.01,
+        trialCooldown:60,trialRate:0.02,
         statsToAddTo:['inspireTokens'],
         u:128*2/2048,v:256*4/2048,
         svg:document.getElementById('inspire'),
         cooldown:document.getElementById('inspire_cooldown'),
         amount:document.getElementById('inspire_amount'),
-        maxCooldown:5,
+        maxCooldown:7.5,
         maxAmount:50,
         tokenLife:8,
         // sound:function(){playSound('inspireToken',1)},
@@ -3370,7 +3430,7 @@ let effects={
                 
                 honeyMarkConvert=TIME
                 
-                let a=Math.min(Math.round(player.convertTotal*amount*0.5),player.pollen)
+                let a=Math.min(Math.round(player.capacity*amount*0.05),player.pollen)
                 player.pollen-=a
                 player.honey+=a
                 if(player.setting_enablePollenText)
@@ -4337,7 +4397,7 @@ let effects={
         svg:document.getElementById('starSawPassive'),
         cooldown:document.getElementById('starSawPassive_cooldown'),
         amount:document.getElementById('starSawPassive_amount'),
-        maxCooldown:45,
+        maxCooldown:40,
         triggerVal:2,
         triggerType:'stingerUsed',
         currentVal:0,
@@ -6334,7 +6394,7 @@ let items={
 
 for(let i in items){
     
-    items[i].maxCooldown=items[i].canUseOnSlot?0:items[i].cooldown||1
+    items[i].maxCooldown=items[i].cooldown||0
     items[i].cooldown=0
     
     if(i!=='honey'){
@@ -6442,6 +6502,38 @@ let beequips={
         },
         
         extraAbility:'gathering_melody'
+    },
+    
+    pencil:{
+        
+        svgCode:`<svg onmousedown='window.functionToRunOnBeequipClick(#ID)' style='width:200;height:70;cursor:pointer;border-radius:8px'><rect width='200' height='70' fill='rgb(255,255,255)'></rect><rect width='70' height='70' fill='rgb(225,225,225)'></rect><text x='132' y='15' style='font-family:trebuchet ms;font-size:16.5px;' fill='rgb(0,0,0)' text-anchor='middle'>Pencil</text><text x='132' y='33' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>A special pencil only</text><text x='132' y='46' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>for the smartest of</text><text x='132' y='59' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>bees(and people).</text><text style=''></text><g transform='scale(0.9,0.9) rotate(20) translate(12,-15)'><rect x='34' y='16' width='7' height='40' stroke='black' stroke-width='2' fill='rgb(86, 252, 136)'></rect><rect x='34' y='15' width='7' height='7' stroke='black' stroke-width='2' fill='rgb(250, 110, 147)'></rect><rect x='34' y='20' width='7' height='4' stroke='black' stroke-width='2' fill='rgb(170,170,170)'></rect><path stroke='black' stroke-width='2' fill='rgb(214, 193, 101)' d='M 34 57 L 41 57L 37.5 65z'></path><rect x='36.6' y='61' width='1' height='1' stroke='black' stroke-width='2' fill='rgb(0,0,0)'></rect></g></svg>`,
+        potentials:[2,3,3,3,3],
+        level:4,
+        color:'any',
+        // reqStr:"<br><br><p style='font-size:15px;'>Bee</p><br>",
+        reqStr:"<br><br><br><br>",
+        canUseOnSlot:function(slot){
+            
+            return slot.type
+        },
+        
+        generateStats:function(potential){
+            
+            let b='',p='',np=potential/5 
+            
+            b+='*'+MATH.random(1.15,1.35).toFixed(2)+' abilityRate,'
+            
+            b+='*'+MATH.random(1.1,np*0.35+1).toFixed(2)+' maxEnergy,'
+            if(Math.random()<np*0.35){
+                
+                b+='+'+(MATH.random(5,potential*3+10)|0)+' convertAount'
+                
+            }
+            
+            return {bee:b[b.length-1]===','?b.substr(0,b.length-1):b,player:p[p.length-1]===','?p.substr(0,p.length-1):p}
+        },
+        
+        extraAbility:'gathering_focus'
     }
 }
 
@@ -6612,7 +6704,6 @@ class Bee {
                 
                 this[ab[0]+'Tokens'].push({type:ab[1],cooldown:effects[ab[1]].trialCooldown,rate:effects[ab[1]].trialRate,timer:-10000})
                 
-                console.log(this.gatheringTokens)
             }
         }
         
@@ -7990,7 +8081,7 @@ class Sprinkler {
         this.timer=TIME
         
         this.power=0.5
-        this.rate=0.8
+        this.rate=1
         this.diameter=15
         
         let p=this.power
@@ -8038,7 +8129,7 @@ class Sprinkler {
                 updateFlower(this.field,this.flowers[i][0],this.flowers[i][1],this.func,true,false,false)
             }
             
-            objects.explosions.push(new Explosion({col:[0.1,0.4,1],pos:[this.x+fieldInfo[this.field].x,fieldInfo[this.field].y+0.5,this.z+fieldInfo[this.field].z],life:1,size:this.diameter,speed:0.15,aftershock:0.01,height:0.01}))
+            objects.explosions.push(new Explosion({col:[0.1,0.4,1],pos:[this.x+fieldInfo[this.field].x,fieldInfo[this.field].y+0.5,this.z+fieldInfo[this.field].z],life:1,size:this.diameter,speed:0.15,aftershock:0.01,height:0.1}))
             
         }
         
@@ -8263,7 +8354,7 @@ class Balloon {
         
         this.id=globalBalloonID++
         this.golden=golden
-        this.col=this.golden?[0.875*0.85,0.85*0.85,0.1*0.85,0.8]:[0,0,0.6,0.7]
+        this.col=this.golden?[0.875*0.85,0.7*0.85,0.1*0.85,0.8]:[0,0,0.6,0.7]
         this.checkBubble=TIME
         this.life=20+beeLevel
         this.field=field
@@ -8285,7 +8376,7 @@ class Balloon {
         this.prevFlowers=[]
         this.flowers=[]
         
-        let rad=4,sqRad=3.2*3.2
+        let rad=4,sqRad=3.7*3.7
         
         for(let x=-rad;x<=rad;x++){
             
@@ -8326,8 +8417,11 @@ class Balloon {
                 
                 for(let j in this.prevFlowers){
                     
-                    flowers[this.field][this.prevFlowers[j][1]][this.prevFlowers[j][0]].balloon=false
+                    if(flowers[this.field][this.prevFlowers[j][1]][this.prevFlowers[j][0]].balloon===this){
                         
+                        flowers[this.field][this.prevFlowers[j][1]][this.prevFlowers[j][0]].balloon=false
+                        
+                    }
                 }
                 
                 this.prevFlowers=[]
@@ -8340,7 +8434,11 @@ class Balloon {
                     
                     if(nx>=0&&nx<fieldInfo[this.field].width&&nz>=0&&nz<fieldInfo[this.field].length){
                         
-                        flowers[this.field][nz][nx].balloon=this
+                        if(!flowers[this.field][nz][nx].balloon||flowers[this.field][nz][nx].balloon.pollen>this.pollen){
+                            
+                            flowers[this.field][nz][nx].balloon=this
+                        }
+                        
                         this.prevFlowers.push([nx,nz])
                     }
                 }
@@ -8365,6 +8463,11 @@ class Balloon {
             meshes.explosions.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.col[0]*player.isNight,this.col[1]*player.isNight,this.col[2]*player.isNight,this.col[3],this.displaySize,1.03)
             
             meshes.explosions.instanceData.push(this.pos[0],this.y-4,this.pos[2],0,0,0,0.35,7,0.01)
+            
+            if(this.golden){
+                
+                textRenderer.addDecalRaw(...this.pos,0,0,...textRenderer.decalUV['lightrays'],1,1,0.7,this.displaySize*1.5,this.displaySize*1.5,TIME)
+            }
             
             textRenderer.addSingle(this.pollen+'/'+this.cap,this.pos,COLORS.whiteArr,-0.465,true,true,0.175)
             
@@ -8441,11 +8544,14 @@ class Balloon {
             
             meshes.explosions.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.col[0]*player.isNight,this.col[1]*player.isNight,this.col[2]*player.isNight,this.col[3],this.displaySize,1.05)
             
+            if(this.golden){
+                
+                textRenderer.addDecalRaw(...this.pos,0,0,...textRenderer.decalUV['lightrays'],1,1,0.7,this.displaySize*1.5,this.displaySize*1.5,TIME)
+            }
+            
             textRenderer.addSingle(this.pollen+'/'+this.cap,this.pos,COLORS.whiteArr,-0.465,true,true,0.175)
             
             textRenderer.addDecalRaw(...this.pos,1.1,-0.1,...textRenderer.decalUV['flower'],1,1,1,-0.44,-0.44,0)
-            
-            
             
             if(vec3.sqrDist(this.pos,player.hivePos)<9){
                 
@@ -8825,7 +8931,7 @@ class Beetle {
         
         this.starSawHitTimer=0
         this.level=level
-        this.health=health||(level-1)*100+5000000
+        this.health=health||(level-1)*6+8
         this.maxHealth=this.health
         this.spawnPos=spawnPos
         this.pos=spawnPos
@@ -8834,6 +8940,7 @@ class Beetle {
         this.checkTimer=TIME
         this.respawnTimer=0
         this.flameTimer=0
+        this.damageTimer=0
     }
     
     die(index){
@@ -8876,7 +8983,7 @@ class Beetle {
                     
                     player.stats.rhinoBeetle++
                     this.state='dead'
-                    this.respawnTimer=30
+                    this.respawnTimer=3*60
                     
                     let amountOfTokens=Math.min(5+player.lootLuck-1,this.level+5+(MATH.random(1,3)|0)),radius=amountOfTokens*0.2+1.5
                     
@@ -8937,6 +9044,14 @@ class Beetle {
                         
                         this.state='moveToHide'
                     }
+                }
+                
+                this.damageTimer-=dt
+                
+                if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])<2&&this.damageTimer<=0&&this.aimTimer>0){
+                    
+                    player.damage(20)
+                    this.damageTimer=1.5
                 }
                 
                 let d=[player.body.position.x-this.pos[0],player.body.position.z-this.pos[2]]
@@ -9318,6 +9433,7 @@ class ScorchingStar {
         this.value=0
         player.scorchingStarSize=0
         player.addEffect('scorchingStarAura')
+        this.particleTimer=0
     }
     
     die(index){
@@ -9356,6 +9472,14 @@ class ScorchingStar {
         
         let p=[player.body.position.x+dir[0],player.body.position.y+this.size*2+Math.sin(TIME*3)*this.size-0.5,player.body.position.z+dir[2],-player.playerAngle+Math.PI]
         
+        this.particleTimer-=dt
+        
+        if(this.particleTimer<0){
+            
+            ParticleRenderer.add({x:p[0]+MATH.random(-this.size,this.size),y:p[1]+MATH.random(-this.size,this.size),z:p[2]+MATH.random(-this.size,this.size),vx:0,vy:0,vz:0,grav:0,size:80,col:[1,Math.random()*0.3+0.6,0],life:1,rotVel:0,alpha:2,rot:MATH.HALF_PI})
+            this.particleTimer=0.1
+        }
+        
         gl.uniform4fv(glCache.mob_instanceInfo1,p)
         gl.uniform2f(glCache.mob_instanceInfo2,this.size,1)
         gl.drawElements(gl.TRIANGLES,meshes.scorchingStar.indexAmount,gl.UNSIGNED_SHORT,0)
@@ -9367,6 +9491,7 @@ class ScorchingStar {
         textRenderer.addSingle((this.value|0).toString(),p.slice(),COLORS.whiteArr,-2)
         p[1]-=0.3
         textRenderer.addSingle(MATH.doTime(this.life),p,COLORS.whiteArr,-1)
+        
         
         return this.life<=0
     }
@@ -9453,7 +9578,7 @@ class StarSaw {
         
         this.collectTimer=0
         this.lastCollectedAmount=0
-        this.life=60
+        this.life=45
     }
     
     die(index){
@@ -12511,6 +12636,7 @@ player=(function(out){
         redPollen:0,
         bluePollen:0,
         whitePollen:0,
+        pollen:0,
         abilityTokens:0,
         honeyTokens:0,
         rhinoBeetle:0,
@@ -12519,6 +12645,11 @@ player=(function(out){
         scorchingStar:0,
         coconutShield:0,
         stingerUsed:0,
+    }
+    
+    for(let i in items){
+        
+        out.stats[i+'Tokens']=0
     }
     
     for(let i in LIST_OF_STATS_FOR_PLAYER){
@@ -12599,9 +12730,16 @@ player=(function(out){
         }
         
         out.quests=[{name:name,req:req,NPC:NPC},...out.quests]
+        
+        NPCs[NPC].activeQuest=true
     }
     
     dialogueBox.onclick=function(){
+        
+        if(typeof NPCs[out.currentNPC].dialogue[NPCs[out.currentNPC].dialogueIndex]==='object'){
+            
+            return
+        }
         
         NPCs[out.currentNPC].dialogueIndex++
         
@@ -12617,6 +12755,19 @@ player=(function(out){
             dialogueBox.style.display='none'
             out.viewMatrixToChange=undefined
             
+        } else if(typeof NPCs[out.currentNPC].dialogue[NPCs[out.currentNPC].dialogueIndex]==='object'){
+            
+            let htmlCode=''
+            
+            for(let i in NPCs[out.currentNPC].dialogue[NPCs[out.currentNPC].dialogueIndex]){
+                
+                htmlCode+='<button style="border-radius:5px;background-color:rgb(30,70,255);width:420px;height:30px;font-size:17px;font-family:cursive;text-align:start;border:none;color:rgb(255,255,255);margin-top:10px;padding-bottom:10px;" onclick="window.NPCDialogueChoice'+i+'()">• '+NPCs[out.currentNPC].dialogue[NPCs[out.currentNPC].dialogueIndex][i][0]+'</button>'
+                window['NPCDialogueChoice'+i]=NPCs[out.currentNPC].dialogue[NPCs[out.currentNPC].dialogueIndex][i][1]
+            }
+            
+            NPCDialogue.innerHTML=htmlCode
+            
+            
         } else {
             
             out.currentNPC=null
@@ -12625,8 +12776,15 @@ player=(function(out){
         }
     }
     
-    out.onStartChat=function(){
+    out.onStartChat=function(i){
         
+        if(NPCs[i].dialogue[NPCs[i].dialogueIndex]===undefined){
+            
+            player.addMessage(MATH.doGrammar(i)+' has nothing to say anymore!',COLORS.redArr)
+            return
+        }
+        
+        out.currentNPC=i
         document.exitPointerLock()
         actionWarning.style.display='none'
         dialogueBox.style.display='block'
@@ -13237,6 +13395,7 @@ player=(function(out){
     
     out.generateBeequip('candycane')
     out.generateBeequip('boombox')
+    out.generateBeequip('pencil')
     
     out.updateGear=function(){
         
@@ -13511,7 +13670,7 @@ player=(function(out){
                         <rect x='0' y='0' width='${((out.stats[out.quests[i].req[j][0]]-out.quests[i].req[j][2])/out.quests[i].req[j][1])*195}' height='30' fill='rgb(0,255,0)'></rect>
                         <text fill='rgb(0,0,0)' x='97.5' y='12' text-anchor='middle' style='font-family:calibri;font-size:13px;'>${MATH.doStatGrammar(out.quests[i].req[j][0])+' '+MATH.addCommas(out.quests[i].req[j][1].toString())+' '+MATH.doGrammar(out.quests[i].req[j][0])}</text>
                         
-                        <text fill='rgb(0,0,0)' x='97.5' y='25' text-anchor='middle' style='font-family:calibri;font-size:13px;'>(${MATH.addCommas((out.stats[out.quests[i].req[j][0]]-out.quests[i].req[j][2]).toString())})</text>
+                        <text fill='rgb(0,0,0)' x='97.5' y='25' text-anchor='middle' style='font-family:calibri;font-size:13px;'>(${(MATH.constrain((out.stats[out.quests[i].req[j][0]]-out.quests[i].req[j][2])/out.quests[i].req[j][1],0,1)*100).toFixed(0)+'%'})</text>
                         
                         </svg>`
                         
@@ -13585,14 +13744,12 @@ player=(function(out){
                         
                         actionWarning.onclick=function(){
                             
-                            player.currentNPC=i
-                            player.onStartChat()
+                            player.onStartChat(i)
                         }
                         
                         if(user.clickedKeys.e){
                             
-                            player.currentNPC=i
-                            player.onStartChat()
+                            player.onStartChat(i)
                         }
                     }
                 }
@@ -13830,8 +13987,7 @@ player=(function(out){
             s=232/met
         }
         
-        
-        if(m.indexOf('(from')>-1){
+        if(   false&&    m.indexOf('(from')>-1){
             
             let i=m.indexOf('(from')+6,f=m.substr(i,m.length).replace(')',''),v=m.indexOf('+')+1,vx=m.indexOf(' '),dis=m.substr(v,vx).replaceAll(',','')-1,found=false
             
@@ -14309,27 +14465,16 @@ function computeSceneViewMatrix(x,y,z,yaw,pitch){
 
 let NPCs={
     
-    //function(){player.addQuest('The Last Best Stress Test Quest\'s Request Mess',[['bluePollen',75000],['redPollen',50000],['whitePollen',25000],['goo',2500],['abilityTokens',50],['honeyTokens',3],['rhinoBeetle',1]],'dat');NPCs.dat.activeQuest=true;}
-    
-    //function(){
-            
-    //         for(let i in player.quests){
-                
-    //             if(player.quests[i].NPC==='dat'){
-                    
-    //                 player.quests.splice(i,1)
-    //             }
-    //         }
-            
-    //         player.honey+=12345678
-    //         textRenderer.add(12345678+'',[player.body.position.x,player.body.position.y+2,player.body.position.z],COLORS.honey,0,'+')
-    //         player.addMessage('+'+MATH.addCommas(12345678+'')+' Honey (from your fren)')
+    //choice in dialouge
+    //[['2 + 3',function(){NPCs.blackBear.dialogue.push('','5! :D');NPCs.blackBear.dialogueIndex++}],['9 + 10',function(){NPCs.blackBear.dialogue.push('','21! :D');NPCs.blackBear.dialogueIndex++}]]
     
     blackBear:{
         
         viewMatrix:[24,2,0.5,MATH.HALF_PI,-0.25],
+        exclaimPos:[29,0.5,0.5],
         dialogueIndex:0,
-        dialogue:['sady i had 2 trim dis dlog 4 spce 4 code'],
+        dialogue:["Hi, I'm Black Bear, and I'm a bear! I give you quests, rewards, and information about the game so you can progress!","Don't skip my dialogue you lazy people, cuz I'm useful and don't blab blab like in the real game!","Here's your first quest:",function(){player.addQuest('Sunflower Start',[['pollenFromSunflowerField',100]],'blackBear');},"Wow! Ya did it! Now here's your rewards:",function(){for(let i in player.quests){if(player.quests[i].NPC==='blackBear'){player.quests.splice(i,1)}}player.honey+=200;player.addMessage('+200 Honey (from Black Bear)')},"With your brand-new honey, go buy a basic egg from the shop near the dandelion field over there!(shop is non-existsent rn ;-;)","Hatch it to get more bees and increase your honey making!","Here's your next quest:",function(){player.addQuest('Dandelion Deed',[['pollenFromDandelionField',200]],'blackBear');},"Great! Now here's more honey and a Royal Jelly!(royal jelly is non-existent rn) Use the jelly on a basic bee to transform it into a better type of bee!",function(){for(let i in player.quests){if(player.quests[i].NPC==='blackBear'){player.quests.splice(i,1)}}player.honey+=250;player.addMessage('+250 Honey (from Black Bear)')},"Here's another quest:",function(){player.addQuest('Pollen Fetcher',[['pollen',500]],'blackBear');},"Cool! Here's a lot more honey:",function(){for(let i in player.quests){if(player.quests[i].NPC==='blackBear'){player.quests.splice(i,1)}}player.honey+=400;player.addMessage('+400 Honey (from Black Bear)')},"It's time to upgrade your tools! Go into the green shop over there, and buy a new collector or backpack! After you do that, complete this quest:",function(){player.addQuest('Red Request',[['redPollen',500]],'blackBear');},"Cool! Try buying more bee eggs using honey when you can afford them!",function(){for(let i in player.quests){if(player.quests[i].NPC==='blackBear'){player.quests.splice(i,1)}}player.honey+=800;player.addMessage('+800 Honey (from Black Bear)')},"Why not try exploring and talking to other bears while completing this quest?",function(){player.addQuest('Hiding in the Blue',[['bluePollen',900]],'blackBear');},"Awesome! Here's more Royal Jelly and honey!",function(){for(let i in player.quests){if(player.quests[i].NPC==='blackBear'){player.quests.splice(i,1)}}player.honey+=800;player.addMessage('+800 Honey (from Black Bear)')},"Remember, keep getting more bees and using Royal Jelly on them. Try to not use Royal Jelly on the transformed bees, and make your basic bees better first!","If you have more than 5 bees already, try going into the 5 bee zone! It has many more flowers, but beware of the monsters! Anyways, here's a new quest:",function(){player.addQuest('Variety Fetcher',[['bluePollen',1000],['redPollen',1000],['whitePollen',1000]],'blackBear');},"Nice! Here's your first special reward, a Silver Egg!",function(){for(let i in player.quests){if(player.quests[i].NPC==='blackBear'){player.quests.splice(i,1)}}player.honey+=1000;items.silverEgg.amount++;player.updateInventory();player.addMessage('+1000 Honey (from Black Bear)');player.addMessage('+1 Silver Egg (from Black Bear)')},"You're done with the beginner quests! Now, you can complete questlines to recieve special rewards!","This is the start of the Gold Egg questlines! After 3 more quests, you will recieve a new type of egg, hatching improved bees! Ready for more?",function(){player.addQuest('Bamboo Boogie',[['pollenFromBambooField',2500]],'blackBear');},"Great! Many of the special bees have better stats and abilities! They can boost you pollen collection by large amounts.","Here are your rewards:",function(){for(let i in player.quests){if(player.quests[i].NPC==='blackBear'){player.quests.splice(i,1)}}player.honey+=1250;player.addMessage('+1250 Honey (from Black Bear)')},"You have 2 more quest to complete before earning the Gold Egg! Here's the next quest:",function(){player.addQuest('Cobweb Sweeper',[['pollenFromSpiderField',3250]],'blackBear');},"Great job! Keep unlocking more gear and bees!",function(){for(let i in player.quests){if(player.quests[i].NPC==='blackBear'){player.quests.splice(i,1)}}player.honey+=2000;player.addMessage('+2000 Honey (from Black Bear)')},"Many fields have different colors of flowers, and those give different pollen types. Bees perform better in their own color's field!","Try collecting more red pollen:",function(){player.addQuest('Red Request 2',[['redPollen',4000]],'blackBear');},"Epic! It's good to have a nice with different types of bees to better collect pollen from all the fields!",function(){for(let i in player.quests){if(player.quests[i].NPC==='blackBear'){player.quests.splice(i,1)}}player.honey+=2500;player.addMessage('+2500 Honey (from Black Bear)')},"There are many rarities of bees, like: common, rare, epic, legendary, and mythic! Legendary and mythic bees are some of the rarest, and only good beekeepers like me own them.","Anyways, it's your last quest until the prized Gold Egg! Get to work!",function(){player.addQuest('Red + Blue = Gold',[['redPollen',6000],['bluePollen',6000]],'blackBear');},"Wow! Not a lot of players are able to get their hands on the Gold Egg, but you're special! Hatch it for an epic bee!",function(){for(let i in player.quests){if(player.quests[i].NPC==='blackBear'){player.quests.splice(i,1)}}player.honey+=4000;items.goldEgg.amount++;player.updateInventory();player.addMessage('+4000 Honey (from Black Bear)');player.addMessage('+1 Gold Egg (from Black Bear)')},"It's the start of a new questline: The Diamond Egg!","Remember the special legendary bees I showed you? Hatch one with the Diamond Egg! Complete 7 more quests to discover a new legendary bee!",function(){player.addQuest('Lucky Landscaping',[['pollenFromCloverField',10000]],'blackBear');},"Good job! Here's a lot of honey!",function(){for(let i in player.quests){if(player.quests[i].NPC==='blackBear'){player.quests.splice(i,1)}}player.honey+=7500;player.addMessage('+7500 Honey (from Black Bear)');},"While progressing through the game, make sure to keep upgrading your tools and hive!","If you haven't, hatch 10 bees to explore the 10 bee zone. Discover new fields and shops around the map!","Also, remember to complete other bear's quests, too. They may give even better rewards than mine!",function(){player.addQuest('Pineapple Picking',[['pollenFromPineapplePatch',15000]],'blackBear');},"Cool! Keep expanding and improving your hive and gear for more honey!",
+        function(){for(let i in player.quests){if(player.quests[i].NPC==='blackBear'){player.quests.splice(i,1)}}player.honey+=10000;player.addMessage('+10000 Honey (from Black Bear)');},"5 more quests to go until the Diamond Egg!",'ugh writing dialogue is so confusing the code is so messed up and takes up so much space ;-; i cant belive the og game dev wrote like 6+9+20+20+20 however many quests that is for black bear and did all that like 8 times more'],
         mesh:new Mesh(),
         meshParams:{x:0.5,y:0,z:-31.5,r:1,s:1.2,texture:{face:{u:0,v:0},torso:{texture:false,u:0,v:0.5}}}
     },
@@ -14337,8 +14482,9 @@ let NPCs={
     polarBear:{
         
         viewMatrix:[-1.5,24.5,60,Math.PI,-0.25],
+        exclaimPos:[-1.5,23.5,66],
         dialogueIndex:0,
-        dialogue:['sady i had 2 trim dis dlog 4 spce 4 code and also my skin color is a bit off it looks ugly with the snow'],
+        dialogue:['heres a test quest',function(){player.addQuest('test quest',[['bluePollen',75000],['redPollen',50000],['whitePollen',25000],['goo',2500],['abilityTokens',50],['honeyTokens',3],['basicEggTokens',1],['rhinoBeetle',1]],'polarBear');},'ok cool',function(){for(let i in player.quests){if(player.quests[i].NPC==='polarBear'){player.quests.splice(i,1)}}player.honey+=12345678;textRenderer.add(12345678+'',[player.body.position.x,player.body.position.y+2,player.body.position.z],COLORS.honey,0,'+');player.addMessage('+'+MATH.addCommas(12345678+'')+' Honey (from your fren)')}],
         mesh:new Mesh(),
         meshParams:{x:1.5,y:22,z:-68,r:2,s:1.2,texture:{face:{u:1,v:0},torso:{texture:false,u:1,v:0}}}
     },
@@ -14474,6 +14620,11 @@ let user=(function(out){
         
         out.keys[e.key.toLowerCase()]=true
         out.clickedKeys[e.key.toLowerCase()]=true
+    }
+    
+    document.onkeyup=function(e){
+        
+        out.keys[e.key.toLowerCase()]=false
         
         if('123456'.indexOf(e.key)>-1){
             
@@ -14493,11 +14644,6 @@ let user=(function(out){
                 }
             }
         }
-    }
-    
-    document.onkeyup=function(e){
-        
-        out.keys[e.key.toLowerCase()]=false
     }
     
     uiCanvas.oncontextmenu=function(e){
@@ -14534,6 +14680,9 @@ let textRenderer=(function(out){
         glow:[128*3/1024,0],
         candycane:[128*4/1024,0],
         boombox:[128*5/1024,0],
+        pencil:[128*6/1024,0],
+        exclaim:[128*7/1024,0],
+        lightrays:[128*0/1024,128/1024],
         
     }
     
@@ -15563,6 +15712,8 @@ class LootToken {
             
             this.collected=true
             this.life=0.75
+            
+            player.stats[this.type+'Tokens']++
             
             if(this.type==='honey'){
                 
@@ -16966,10 +17117,17 @@ function collectPollen(params){
     player.stats.whitePollen+=total.w+balloon.w
     player.stats.goo+=totalGoo
     
-    return total.r+total.b+total.w+balloon.r+balloon.b+balloon.w
+    let totalCollected=total.r+total.b+total.w+balloon.r+balloon.b+balloon.w
+    
+    player.stats['pollenFrom'+(params.field||player.fieldIn)]+=totalCollected
+    player.stats.pollen+=totalCollected
+    
+    return totalCollected
 }
 
 function createField(name,x,y,z,w,l,c,_l,genralColorComp){
+    
+    player.stats['pollenFrom'+name]=0
     
     fieldInfo[name]={x:x,y:y,z:z,width:w,length:l,getColor:c,getLevel:_l,haze:{},generalColorComp:genralColorComp}
     
@@ -16984,41 +17142,8 @@ function createField(name,x,y,z,w,l,c,_l,genralColorComp){
     }
 }
 
-createField('testField1',-1.5-16*2,-1.5,0,14,14,function(){
-    
-    let c=Math.random()
-    
-    return Math.random()<0.2?'white':'blue'
-    
-},function(){
-    
-    return 5
-},{r:0,b:0.8,w:0.2})
 
-createField('testField2',-1.5-16,-1.5,0,14,14,function(){
-    
-    let c=Math.random()
-    
-    return Math.random()<0.2?Math.random()<0.5?'blue':'red':'white'
-    
-},function(){
-    
-    return 5
-},{w:0.7,b:0.15,r:0.15})
-
-createField('testField3',-1.5,-1.5,0,14,14,function(){
-    
-    let c=Math.random()
-    
-    return Math.random()<0.2?'white':'red'
-    
-},function(){
-    
-    return 5
-},{r:0.8,b:0,w:0.2})
-
-
-createField('coconutField',25,12.5,-39.5,17,14,function(){
+createField('CoconutField',25,12.5,-39.5,17,14,function(){
     
     let c=Math.random()
     
@@ -17029,7 +17154,7 @@ createField('coconutField',25,12.5,-39.5,17,14,function(){
     return 3
 },{w:0.9,b:0.04,r:0.06})
 
-createField('pepperPatch',61,20.5,-44,15,15,function(){
+createField('PepperPatch',61,20.5,-44,15,15,function(){
     
     let c=Math.random()
     
@@ -17040,7 +17165,7 @@ createField('pepperPatch',61,20.5,-44,15,15,function(){
     return 3
 },{b:0,r:0.9,w:0.1})
 
-createField('roseField',31,2,31.5,19,13,function(){
+createField('RoseField',31,2,31.5,19,13,function(){
     
     let c=Math.random()
     
@@ -17051,7 +17176,7 @@ createField('roseField',31,2,31.5,19,13,function(){
     return Math.random()<0.5?3:Math.random()<0.12?1:2
 },{r:0.88,w:0.12,b:0})
 
-createField('pineTreeForest',31,12.5,74,15,19,function(){
+createField('PineTreeForest',31,12.5,74,15,19,function(){
     
     let c=Math.random()
     
@@ -17062,7 +17187,7 @@ createField('pineTreeForest',31,12.5,74,15,19,function(){
     return Math.random()<0.46?3:Math.random()<0.6?1:2
 },{w:0.1,b:0.9,r:0})
 
-createField('pumpkinPatch',4,12.5,76.5,18,12,function(){
+createField('PumpkinPatch',4,12.5,76.5,18,12,function(){
     
     let c=Math.random()
     
@@ -17073,7 +17198,7 @@ createField('pumpkinPatch',4,12.5,76.5,18,12,function(){
     return Math.random()<0.76?3:2
 },{w:0.57,r:(1-0.57)*0.52,b:(1-0.57)*0.48})
 
-createField('cactusField',4,12.5,63.5,18,11,function(){
+createField('CactusField',4,12.5,63.5,18,11,function(){
     
     let c=Math.random()
     
@@ -17084,7 +17209,7 @@ createField('cactusField',4,12.5,63.5,18,11,function(){
     return Math.random()<0.56?3:2
 },{w:0.06,b:(1-0.06)*0.58,r:(1-0.06)*0.42})
 
-createField('mountainTopField',-35,33,73,15,15,function(){
+createField('MountainTopField',-35,33,73,15,15,function(){
     
     let c=Math.random()
     
@@ -17095,7 +17220,7 @@ createField('mountainTopField',-35,33,73,15,15,function(){
     return 3
 },{r:0.5,b:0.5,w:0})
 
-createField('sunflowerField',15.5,-1.5,16,11,18,function(){
+createField('SunflowerField',15.5,-1.5,16,11,18,function(){
     
     let c=Math.random()
     
@@ -17106,7 +17231,7 @@ createField('sunflowerField',15.5,-1.5,16,11,18,function(){
     return Math.random()<0.1?2:1
 },{w:0.7,b:0.15,r:0.15})
 
-createField('mushroomField',-6,-1.5,29,19,13,function(){
+createField('MushroomField',-6,-1.5,29,19,13,function(){
     
     let c=Math.random()
     
@@ -17117,7 +17242,7 @@ createField('mushroomField',-6,-1.5,29,19,13,function(){
     return Math.random()<0.9?1:2
 },{w:0.31,b:0,r:0.69})
 
-createField('strawberryField',7.5,2,47,15,15,function(){
+createField('StrawberryField',7.5,2,47,15,15,function(){
     
     let c=Math.random()
     
@@ -17128,7 +17253,7 @@ createField('strawberryField',7.5,2,47,15,15,function(){
     return Math.random()<0.04?3:Math.random()<0.8?2:1
 },{w:0.31,b:0,r:0.69})
 
-createField('spiderField',-20,2,47.5,19,14,function(){
+createField('SpiderField',-20,2,47.5,19,14,function(){
     
     let c=Math.random()
     
@@ -17139,7 +17264,7 @@ createField('spiderField',-20,2,47.5,19,14,function(){
     return Math.random()<0.8?2:Math.random()<0.5?3:1
 },{w:1,b:0,r:0})
 
-createField('bambooField',-52,2,50,21,13,function(){
+createField('BambooField',-52,2,50,21,13,function(){
     
     let c=Math.random()
     
@@ -17150,7 +17275,7 @@ createField('bambooField',-52,2,50,21,13,function(){
     return Math.random()<0.75?2:Math.random()<0.25?3:1
 },{w:0.25,b:0.75,r:0})
 
-createField('pineapplePatch',-71.5,12.5,78,19,15,function(){
+createField('PineapplePatch',-71.5,12.5,78,19,15,function(){
     
     let c=Math.random()
     
@@ -17161,7 +17286,7 @@ createField('pineapplePatch',-71.5,12.5,78,19,15,function(){
     return Math.random()<0.5?2:Math.random()<0.38?1:3
 },{w:0.89,b:0.05,r:0.06})
 
-createField('stumpField',-102,16,75,15,15,function(){
+createField('StumpField',-102,16,75,15,15,function(){
     
     let c=Math.random()
     
@@ -17172,7 +17297,7 @@ createField('stumpField',-102,16,75,15,15,function(){
     return 3
 },{w:0.15,b:0.8,r:0.05})
 
-createField('blueFlowerField',-53,-1.5,32,25,10,function(){
+createField('BlueFlowerField',-55,-1.5,29,24,13,function(){
     
     let c=Math.random()
     
@@ -17182,6 +17307,28 @@ createField('blueFlowerField',-53,-1.5,32,25,10,function(){
     
     return Math.random()<0.89?1:2
 },{w:0.31,r:0,b:0.69})
+
+createField('CloverField',-50,4,8.5,18,18,function(){
+    
+    let c=Math.random()
+    
+    return Math.random()<0.32?'white':Math.random()<0.5?'blue':'red'
+    
+},function(){
+    
+    return Math.random()<0.51?1:2
+},{w:0.32,r:0.34,b:0.34})
+
+createField('DandelionField',-15,-1.5,7,19,13,function(){
+    
+    let c=Math.random()
+    
+    return Math.random()<0.85?'white':Math.random()<0.366?'blue':'red'
+    
+},function(){
+    
+    return Math.random()<0.871?1:2
+},{w:0.85,r:0.05,b:0.1})
 
 
 flowers.mesh={}
@@ -17220,8 +17367,22 @@ document.addEventListener('pointerlockchange',function(e){
 
 ctx.textAlign='center'
 ctx.textBaseline='middle'
+// -71.5,12.5,78,19,15
 
-objects.mobs.push(new Beetle([0,-0.8,20],{minX:0,maxX:10,minZ:15,maxZ:25,minY:-3,maxY:6},1))
+//bamb
+objects.mobs.push(new Beetle([-50,3,61],{minX:-52,maxX:-52+21,minZ:50,maxZ:50+13,minY:1,maxY:7},3))
+objects.mobs.push(new Beetle([-33,3,61],{minX:-52,maxX:-52+21,minZ:50,maxZ:50+13,minY:1,maxY:7},2))
+
+//bluf
+objects.mobs.push(new Beetle([-55+22,-0.5,29+11],{minX:-55,maxX:-55+24,minZ:29,maxZ:29+13,minY:-2,maxY:5},1))
+
+//clov
+objects.mobs.push(new Beetle([-50+17,5,9.5],{minX:-50,maxX:-50+18,minZ:8.5,maxZ:8.5+18,minY:3,maxY:8},2))
+
+//pineap
+objects.mobs.push(new Beetle([-71.5+17,13.5,78+9],{minX:-71.5,maxX:-71.5+19,minZ:78,maxZ:78+15,minY:11.5,maxY:18},5))
+
+
 
 if(window.thisProgramIsInFullScreen){
     
@@ -17311,7 +17472,9 @@ window.deleteBeequip=function(){
     player.updateHive()
 }
 
-objects.mobs.push(new MondoChick('mountainTopField',7))
+objects.mobs.push(new MondoChick('MountainTopField',7))
+
+// objects.mobs.push(new Balloon('DandelionField',5,5,true,1))
 
 function loop(now){
     
@@ -17589,32 +17752,42 @@ function loop(now){
         }
         
         NPCs[i].mesh.render()
+        
     }
     
-    if(frameCount%2===0&&minDist<75){
+    if(minDist<75){
         
-        NPCs[minNPC].mesh.setMeshFromFunction(function(box,a,cylinder,sphere,d,e,star,limbBox,limbCylinder){
+        if(minDist<45){
             
-            let x=NPCs[minNPC].meshParams.x,y=NPCs[minNPC].meshParams.y,z=NPCs[minNPC].meshParams.z,r=NPCs[minNPC].meshParams.r,s=NPCs[minNPC].meshParams.s,t=TIME,t1=Math.sin(t*2.1)*5-0.5
+            textRenderer.addDecalRaw(...NPCs[minNPC].exclaimPos,0,0,...textRenderer.decalUV['exclaim'],1,1,1,5,4,Math.PI)
             
-            limbBox(r,x,y+Math.cos(t1*MATH.TO_RAD*2)*s*0.6,z+Math.sin(t1*MATH.TO_RAD*2)*s*0.6,1.1*s,0.9*s,0.6*s,[t1*2,0,0],NPCs[minNPC].meshParams.texture.torso.u*128/1024,NPCs[minNPC].meshParams.texture.torso.v*128/1024,NPCs[minNPC].meshParams.texture.torso.texture)
-            limbBox(r,x,y+Math.cos(t1*MATH.TO_RAD*2.75)*s*1.65,z+Math.sin(t1*MATH.TO_RAD*2.75)*s*1.65,1.2*s,1.15*s,0.6*s,[t1*4,0,0],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024,true)
-            limbBox(r,x,y,z,1.1*s,0.25*s,0.6*s,[t1,0,0],NPCs[minNPC].meshParams.texture.torso.u*128/1024,NPCs[minNPC].meshParams.texture.torso.v*128/1024)
-            limbBox(r,x+s/1.25,y-Math.cos(t1*MATH.TO_RAD*3.5*2)*s*0.65+s*1.15,z-Math.sin(t1*MATH.TO_RAD*3.5*2)*s*0.2,0.5*s,1.15*s,0.5*s,[t1*3.5*2,0,9],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
-            s/=1.25
-            limbBox(r,x-0.35*s,y-0.55*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[t1*1.25-10,0,-5],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
-            limbBox(r,x-0.42*s,y-1.15*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[10-t1*0.5,0,-5],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
-            limbBox(r,x+0.35*s,y-0.55*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[t1*1.25-10,0,5],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
-            limbBox(r,x+0.42*s,y-1.15*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[10-t1*0.5,0,5],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
-            s*=1.25
-            limbCylinder(r,x-0.6*s,y+Math.cos(t1*MATH.TO_RAD*3)*s*2.2,z+Math.sin(t1*MATH.TO_RAD*3)*s*2.2,0.3*s,0.6*s,10,0.9,0.9,0.9,1,t1*4,0,0,NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
-            limbCylinder(r,x+0.6*s,y+Math.cos(t1*MATH.TO_RAD*3)*s*2.2,z+Math.sin(t1*MATH.TO_RAD*3)*s*2.2,0.3*s,0.6*s,10,0.9,0.9,0.9,1,t1*4,0,0,NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
-            t1=Math.sin(t*2.1+0.5)*5-0.5
-            limbBox(r,x-1*s/1.25,y-Math.cos(t1*MATH.TO_RAD*3.5*2)*s*0.65+s*1.15,z-Math.sin(t1*MATH.TO_RAD*3.5*2)*s*0.2,0.5*s,1.15*s,0.5*s,[t1*3.5*2,0,-9],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
-            
-        })
+        }
         
-        NPCs[minNPC].mesh.setBuffers()
+        if(frameCount%2===0){
+            
+            NPCs[minNPC].mesh.setMeshFromFunction(function(box,a,cylinder,sphere,d,e,star,limbBox,limbCylinder){
+                
+                let x=NPCs[minNPC].meshParams.x,y=NPCs[minNPC].meshParams.y,z=NPCs[minNPC].meshParams.z,r=NPCs[minNPC].meshParams.r,s=NPCs[minNPC].meshParams.s,t=TIME,t1=Math.sin(t*2.1)*5-0.5
+                
+                limbBox(r,x,y+Math.cos(t1*MATH.TO_RAD*2)*s*0.6,z+Math.sin(t1*MATH.TO_RAD*2)*s*0.6,1.1*s,0.9*s,0.6*s,[t1*2,0,0],NPCs[minNPC].meshParams.texture.torso.u*128/1024,NPCs[minNPC].meshParams.texture.torso.v*128/1024,NPCs[minNPC].meshParams.texture.torso.texture)
+                limbBox(r,x,y+Math.cos(t1*MATH.TO_RAD*2.75)*s*1.65,z+Math.sin(t1*MATH.TO_RAD*2.75)*s*1.65,1.2*s,1.15*s,0.6*s,[t1*4,0,0],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024,true)
+                limbBox(r,x,y,z,1.1*s,0.25*s,0.6*s,[t1,0,0],NPCs[minNPC].meshParams.texture.torso.u*128/1024,NPCs[minNPC].meshParams.texture.torso.v*128/1024)
+                limbBox(r,x+s/1.25,y-Math.cos(t1*MATH.TO_RAD*3.5*2)*s*0.65+s*1.15,z-Math.sin(t1*MATH.TO_RAD*3.5*2)*s*0.2,0.5*s,1.15*s,0.5*s,[t1*3.5*2,0,9],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
+                s/=1.25
+                limbBox(r,x-0.35*s,y-0.55*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[t1*1.25-10,0,-5],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
+                limbBox(r,x-0.42*s,y-1.15*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[10-t1*0.5,0,-5],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
+                limbBox(r,x+0.35*s,y-0.55*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[t1*1.25-10,0,5],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
+                limbBox(r,x+0.42*s,y-1.15*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[10-t1*0.5,0,5],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
+                s*=1.25
+                limbCylinder(r,x-0.6*s,y+Math.cos(t1*MATH.TO_RAD*3)*s*2.2,z+Math.sin(t1*MATH.TO_RAD*3)*s*2.2,0.3*s,0.6*s,10,0.9,0.9,0.9,1,t1*4,0,0,NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
+                limbCylinder(r,x+0.6*s,y+Math.cos(t1*MATH.TO_RAD*3)*s*2.2,z+Math.sin(t1*MATH.TO_RAD*3)*s*2.2,0.3*s,0.6*s,10,0.9,0.9,0.9,1,t1*4,0,0,NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
+                t1=Math.sin(t*2.1+0.5)*5-0.5
+                limbBox(r,x-1*s/1.25,y-Math.cos(t1*MATH.TO_RAD*3.5*2)*s*0.65+s*1.15,z-Math.sin(t1*MATH.TO_RAD*3.5*2)*s*0.2,0.5*s,1.15*s,0.5*s,[t1*3.5*2,0,-9],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
+                
+            })
+            
+            NPCs[minNPC].mesh.setBuffers()
+        }
     }
     
     gl.bindTexture(gl.TEXTURE_2D,textures.bees)
