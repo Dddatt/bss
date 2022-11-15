@@ -1,6 +1,6 @@
 # bee swarm ka ripoff edition
 
-##Githunk link
+## Github link
 https://dddatt.github.io/bss/currentBSSBackup.html
 
 some stuffs for my bee swarm remake cuz the ka programs limit u to like 700k bytes of code and also serves as a backup :)
