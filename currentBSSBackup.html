@@ -1,40 +1,39 @@
-<!DOCTYPE html>
-<!--
+<!DOCTYPE html><!--
 
-    Notes to self:
+notes to self:
 
-    -add royal/star jelly
-    -make precise bee auto shoot after activating all 3 targets in target pratice
-    -add more sounds 4 inspire and things
-    -add petal storm passive
-    -update background after the noob shop and star hall
-    -add more mobs
-    -adjust balloon size
-    -fix items can be used with super smoothie|purp pot
-    -fix the big rock and ground z fighting in front of 100 bee zone from far away cuz of depth buffer error
-    -add hitbox 4 coco disp
-    -redo mob loot drop code, using info from wiki
-    -add a way to scale bee instances
-    -fix the rocks by pine tree
-    -add werewolf cave
-    -fix all the 5-15 bee zone skips
-    -add requirements to use cannons/flinging thingies
-    -fix text on mythic egg
-    -fix html <defs> needing different ids making gradients break in svgs
-    -fix random words in item svgs in mask requirements
-    -add r/b portals
-    -add 30 bee zone
-    -add killbricks
+-make precise bee auto shoot after activating all 3 targets in target pratice
+-add more sounds 4 inspire and things
+-add petal storm passive
+-update background after the noob shop and star hall
+-add more mobs
+-adjust balloon size
+-fix items can be used with super smoothie|purp pot
+-fix the big rock and ground z fighting in front of 100 bee zone from far away cuz of depth buffer error
+-add hitbox 4 coco disp
+-add a way to scale bee instances
+-fix the rocks by pine tree
+-add werewolf cave
+-fix all the 5-15 bee zone skips
+-add requirements to use cannons/flinging thingies
+-fix text on mythic egg
+-fix html <defs> needing different ids making gradients break in svgs
+-fix random words in item svgs in mask requirements
+-add r/b portals
+-add 30 bee zone
+-add killbricks
 
 
-    Had 2 get rid of comnts 4 max spce in d prog so it save
 
-    r:103
-    b:160 yikes
-    w:90
+
+had 2 get rid of comnts 4 max spce in d prog so it save
+
+r, in pepper:88 :(
+b, in pine tree:90-150 if u rush or not
+w, coconut:204 oh dear
+
 
 -->
-
 <html>
     <head>
         <meta charset="utf-8">
@@ -1711,6 +1710,45 @@
         <path fill='rgb(0,0,0,0.3)' d='M47 25C 57 56 35 60 23 50C 32 48 41 50 50 35'></path>
     </svg>
     
+    <svg id='royalJelly' style='width:200;height:70;cursor:pointer;border-radius:5px'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='130' y='18' style='font-family:trebuchet ms;font-size:17px;' fill='rgb(0,0,0)' text-anchor='middle'>Royal Jelly</text>
+        <text x='130' y='39' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>Transforms a bee</text>
+        <text x='130' y='54' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'> into a special bee!</text>
+        <text id='royalJelly_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='scale(1.1,1.1) translate(-6,-3)'>
+        <rect x='25' y='30' width='25' height='25' rx='6' fill='rgb(94, 235, 214)' stroke='black' stroke-width='2'></rect>
+        <text x='32' y='46' style='font-family:Brush Script MT' fill='rgb(168, 50, 201)'>R</text>
+        <path stroke='black' stroke-width='2' fill='rgb(245, 202, 12)' d='M 26 30L 25 22L 33 27L 37 17L 41 27L 48 22L 48 30'></path>
+        <circle cx='25' cy='23' r='3' fill='rgb(245, 229, 12)' stroke='black' stroke-width='1.5'></circle>
+        <circle cx='48' cy='23' r='3' fill='rgb(245, 229, 12)' stroke='black' stroke-width='1.5'></circle>
+        <circle cx='37' cy='15' r='3.5' fill='rgb(245, 229, 12)' stroke='black' stroke-width='1.5'></circle>
+        </g>
+    </svg>
+    
+    <svg id='starJelly' style='width:200;height:70;cursor:pointer;border-radius:5px'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='130' y='18' style='font-family:trebuchet ms;font-size:17px;' fill='rgb(0,0,0)' text-anchor='middle'>Star Jelly</text>
+        <text x='130' y='39' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>Transforms a bee</text>
+        <text x='130' y='53' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'> into a gifted </text>
+        <text x='130' y='66' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'> special bee!</text>
+        <text id='starJelly_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='scale(1.1,1.1) translate(-6,-3)'>
+        <rect x='25' y='30' width='25' height='25' rx='6' fill='rgb(94, 235, 214)' stroke='black' stroke-width='2'></rect>
+        <path stroke='black' stroke-width='2' fill='rgb(245, 202, 12)' d='M 26 30L 25 22L 33 27L 37 17L 41 27L 48 22L 48 30'></path>
+        <circle cx='25' cy='23' r='3' fill='rgb(245, 229, 12)' stroke='black' stroke-width='1.5'></circle>
+        <circle cx='48' cy='23' r='3' fill='rgb(245, 229, 12)' stroke='black' stroke-width='1.5'></circle>
+        <circle cx='37' cy='15' r='3.5' fill='rgb(245, 229, 12)' stroke='black' stroke-width='1.5'></circle>
+        <path fill='rgb(255, 255, 89)' d='M5.71,16.85L8.23,26.33L0.00,21.00L-8.23,26.33L-5.71,16.85L-13.31,10.67L-3.53,10.15L-0.00,1.00L3.53,10.15L13.31,10.67L5.71,16.85z' transform='translate(38,33) scale(0.6,0.6)' stroke='black' stroke-width='1.5'></path>
+        </g>
+    </svg>
+    
 </div>
 
 <div class='uiPage' style='position:absolute;margin:0px;z-index:-2;overflow-y:auto;overflow-x:hidden;width:200px;height:455px;background-color:rgba(195,195,195,0.9);margin-top:140px;display:none;padding:3px;font-size:13px;'></div>
@@ -3226,7 +3264,7 @@ let effects={
     
     babyLove:{
         
-        trialCooldown:40,trialRate:0.5,
+        trialCooldown:35,trialRate:0.6,
         u:128*1/2048,v:256*4/2048,
         svg:document.getElementById('babyLove'),
         cooldown:document.getElementById('babyLove_cooldown'),
@@ -6390,6 +6428,94 @@ let items={
             player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted=Math.random()<1/100
             
             player.beePopup={type:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type,message:'You hatched a...',time:TIME,gifted:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted}
+            
+            player.updateHive()
+        }
+    },
+    
+    royalJelly:{
+        
+        canUseOnSlot:(slot)=>{
+            
+            return slot.type
+        },
+        amount:0,u:128*3/2048,v:128*8/2048,
+        use:function(){
+            
+            let types={mythic:1/4000,legendary:0.075-(1/4000),epic:0.325,rare:0.6},r=Math.random(),type,c=0
+            
+            for(let i in types){
+                
+                if(r<=types[i]+c){
+                    
+                    type=i
+                    break
+                }
+                
+                c+=types[i]
+            }
+            
+            types=[]
+            
+            for(let i in beeInfo){
+                
+                if(beeInfo[i].rarity===type){
+                    
+                    types.push(i)
+                }
+            }
+            
+            type=types[(Math.random()*types.length)|0]
+            
+            items.royalJelly.amount--
+            player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type=type
+            player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted=Math.random()<1/100
+            
+            player.beePopup={type:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type,message:'You got a...',time:TIME,gifted:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted}
+            
+            player.updateHive()
+        }
+    },
+    
+    starJelly:{
+        
+        canUseOnSlot:(slot)=>{
+            
+            return slot.type
+        },
+        amount:0,u:128*4/2048,v:128*8/2048,
+        use:function(){
+            
+            let types={mythic:1/4000,legendary:0.075-(1/4000),epic:0.325,rare:0.6},r=Math.random(),type,c=0
+            
+            for(let i in types){
+                
+                if(r<=types[i]+c){
+                    
+                    type=i
+                    break
+                }
+                
+                c+=types[i]
+            }
+            
+            types=[]
+            
+            for(let i in beeInfo){
+                
+                if(beeInfo[i].rarity===type){
+                    
+                    types.push(i)
+                }
+            }
+            
+            type=types[(Math.random()*types.length)|0]
+            
+            items.starJelly.amount--
+            player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type=type
+            player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted=true
+            
+            player.beePopup={type:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type,message:'You got a...',time:TIME,gifted:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted}
             
             player.updateHive()
         }
