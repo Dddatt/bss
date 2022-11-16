@@ -2,7 +2,6 @@
 
 notes to self:
 
--make precise bee auto shoot after activating all 3 targets in target pratice
 -add more sounds 4 inspire and things
 -add petal storm passive
 -update background after the noob shop and star hall
@@ -28,7 +27,7 @@ notes to self:
 
 had 2 get rid of comnts 4 max spce in d prog so it save
 
-r, in pepper:88 :(
+r, in rose:95 :(
 b, in pine tree:90-150 if u rush or not
 w, coconut:204 oh dear
 
@@ -339,10 +338,25 @@ w, coconut:204 oh dear
         
     </svg>
     
-    <svg id='petalStormPassive' style='width:30;height:30;display:none;'>
+    <svg id='petalStormPassive' style='width:30;height:30;display:none'>
         <circle cx='15' cy='15' r='14' fill='rgb(115,163,0)' stroke='rgb(0,0,0)' stroke-width='2'></circle>
         
-        <path fill='rgb(255,255,255)' d='M15 25L7 18L12 15L 8 11C6 6 15 5 19 13L 20 15L13 20Z' transform='translate(2,0)' stroke='rgb(0,0,255)' stroke-width='2'></path>
+        <g transform='translate(15,15) rotate(48)'>
+            <path fill='rgb(255,255,255,0.25)' d='M 0 0C 7 -20 14 5 0 0' ></path>
+        <path fill='rgb(255,255,255,0.25)' d='M 0 0C 7 -20 14 5 0 0' transform='rotate(122)'></path>
+        <path fill='rgb(255,255,255,0.25)' d='M 0 0C 7 -20 14 5 0 0' transform='rotate(249)'></path>
+        </g>
+        <g transform='translate(15,15) rotate(26)'>
+            <path fill='rgb(255,255,255,0.5)' d='M 0 0C 7 -20 14 5 0 0' ></path>
+        <path fill='rgb(255,255,255,0.5)' d='M 0 0C 7 -20 14 5 0 0' transform='rotate(122)'></path>
+        <path fill='rgb(255,255,255,0.5)' d='M 0 0C 7 -20 14 5 0 0' transform='rotate(249)'></path>
+        </g>
+        
+        <path fill='rgb(255,255,255)' d='M 0 0C 7 -20 14 5 0 0' transform='translate(15,15)'></path>
+        <path fill='rgb(255,255,255)' d='M 0 0C 7 -20 14 5 0 0' transform='translate(15,15) rotate(122)'></path>
+        <path fill='rgb(255,255,255)' d='M 0 0C 7 -20 14 5 0 0' transform='translate(15,15) rotate(249)'></path>
+        
+        <circle fill='rgb(255, 255, 120)' cx='15' cy='15' r='3'></circle>
         
         <rect id='petalStormPassive_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0.45'></rect>
         <text id='petalStormPassive_amount' x='29' y='29' style='font-family:tahoma;font-size:12px;' text-anchor='end' fill='rgb(255,255,255)'></text>
@@ -1719,7 +1733,7 @@ w, coconut:204 oh dear
         <text x='130' y='54' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'> into a special bee!</text>
         <text id='royalJelly_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
         
-        <g transform='scale(1.1,1.1) translate(-6,-3)'>
+        <g transform='scale(1.1,1.1) translate(-6,-6)'>
         <rect x='25' y='30' width='25' height='25' rx='6' fill='rgb(94, 235, 214)' stroke='black' stroke-width='2'></rect>
         <text x='32' y='46' style='font-family:Brush Script MT' fill='rgb(168, 50, 201)'>R</text>
         <path stroke='black' stroke-width='2' fill='rgb(245, 202, 12)' d='M 26 30L 25 22L 33 27L 37 17L 41 27L 48 22L 48 30'></path>
@@ -1739,7 +1753,7 @@ w, coconut:204 oh dear
         <text x='130' y='66' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'> special bee!</text>
         <text id='starJelly_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
         
-        <g transform='scale(1.1,1.1) translate(-6,-3)'>
+        <g transform='scale(1.1,1.1) translate(-6,-6)'>
         <rect x='25' y='30' width='25' height='25' rx='6' fill='rgb(94, 235, 214)' stroke='black' stroke-width='2'></rect>
         <path stroke='black' stroke-width='2' fill='rgb(245, 202, 12)' d='M 26 30L 25 22L 33 27L 37 17L 41 27L 48 22L 48 30'></path>
         <circle cx='25' cy='23' r='3' fill='rgb(245, 229, 12)' stroke='black' stroke-width='1.5'></circle>
@@ -1848,26 +1862,28 @@ w, coconut:204 oh dear
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js'></script>
 
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.3/MathHelper.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.3/GLSLShaders.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.3/mapMesh.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.3/music_popStar2.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.3/music_scorchingStar.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.3/music_gummyStar.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.3/music_frog.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.3/music_inflateBalloons.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.3/music_haste.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.3/music_bombToken.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.3/music_markToken.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.3/music_melodyToken.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.3/music_focusToken.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.3/music_rageToken.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.3/music_surpriseParty.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.3/music_infernoToken.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.3/music_flameFuelToken.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.3/music_babyLove.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.3/music_boostToken.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.3/music_inspireToken.js"></script>
+
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.4/dialogue.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.4/MathHelper.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.4/GLSLShaders.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.4/mapMesh.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.4/music_popStar2.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.4/music_scorchingStar.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.4/music_gummyStar.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.4/music_frog.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.4/music_inflateBalloons.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.4/music_haste.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.4/music_bombToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.4/music_markToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.4/music_melodyToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.4/music_focusToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.4/music_rageToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.4/music_surpriseParty.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.4/music_infernoToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.4/music_flameFuelToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.4/music_babyLove.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.4/music_boostToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.2.4/music_inspireToken.js"></script>
 
 <script type='application/javascript'>
 
@@ -4466,6 +4482,34 @@ let effects={
         getMessage:(amount)=>{
             
             return "star saw wip"
+        }
+    },
+    
+    petalStormPassive:{
+        
+        isPassive:true,
+        svg:document.getElementById('petalStormPassive'),
+        cooldown:document.getElementById('petalStormPassive_cooldown'),
+        amount:document.getElementById('petalStormPassive_amount'),
+        maxCooldown:30,
+        triggerVal:30,
+        triggerType:'boostTokens',
+        currentVal:0,
+        currentCooldown:0,
+        startVal:0,
+        
+        activate(){
+            
+            for(let i=0;i<30;i++){
+                
+                window.setTimeout(function(){objects.mobs.push(new PetalShuriken([player.body.position.x,player.body.position.y+0.25,player.body.position.z],[Math.cos(i*0.75),0,Math.sin(i*0.75)]))},1000*i*0.15)
+                
+            }
+        },
+        
+        getMessage:(amount)=>{
+            
+            return "petal storm wip"
         }
     },
     
@@ -7326,6 +7370,11 @@ class Bee {
                 this.targetPracticeTimer-=dt
                 this.targetExplosionTimer-=dt
                 
+                if(this.targets[0].activated&&this.targets[1].activated&&this.targets[2].activated&&this.targetPracticeTimer>0.75){
+                    
+                    this.targetPracticeTimer=0.75
+                }
+                
                 if(this.targetPracticeTimer<=0.5&&!this.shotParticleProjectile){
                     this.shotParticleProjectile=true
                     
@@ -9057,7 +9106,7 @@ class PetalShuriken {
         gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
         gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
         gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
-        gl.uniform2f(glCache.mob_instanceInfo2,1,this.life)
+        gl.uniform2f(glCache.mob_instanceInfo2,1,this.life*1.75)
         gl.drawElements(gl.TRIANGLES,meshes.petalShuriken.indexAmount,gl.UNSIGNED_SHORT,0)
     
         return this.life<=0
@@ -12831,6 +12880,7 @@ let gear={
                 stats.whiteBeeAttack++
                 stats.whiteBombPollen*=1.5
                 stats.beeEnergy*=1.25
+                player.addEffect('petalStormPassive')
             }
         }
     },
@@ -14869,8 +14919,7 @@ let NPCs={
         viewMatrix:[24,2,0.5,MATH.HALF_PI,-0.25],
         exclaimPos:[29,0.5,0.5],
         dialogueIndex:0,
-        dialogue:["Hi, I'm Black Bear, and I'm a bear! I give you quests, rewards, and information about the game so you can progress!","Don't skip my dialogue you lazy people, cuz I'm useful and don't blab blab like in the real game!","Here's your first quest:",function(){player.addQuest('Sunflower Start',[['pollenFromSunflowerField',100]],'blackBear');},"Wow! Ya did it! Now here's your rewards:",function(){for(let i in player.quests){if(player.quests[i].NPC==='blackBear'){player.quests.splice(i,1)}}player.honey+=200;player.addMessage('+200 Honey (from Black Bear)')},"With your brand-new honey, go buy a basic egg from the shop near the dandelion field over there!(shop is non-existsent rn ;-;)","Hatch it to get more bees and increase your honey making!","Here's your next quest:",function(){player.addQuest('Dandelion Deed',[['pollenFromDandelionField',200]],'blackBear');},"Great! Now here's more honey and a Royal Jelly!(royal jelly is non-existent rn) Use the jelly on a basic bee to transform it into a better type of bee!",function(){for(let i in player.quests){if(player.quests[i].NPC==='blackBear'){player.quests.splice(i,1)}}player.honey+=250;player.addMessage('+250 Honey (from Black Bear)')},"Here's another quest:",function(){player.addQuest('Pollen Fetcher',[['pollen',500]],'blackBear');},"Cool! Here's a lot more honey:",function(){for(let i in player.quests){if(player.quests[i].NPC==='blackBear'){player.quests.splice(i,1)}}player.honey+=400;player.addMessage('+400 Honey (from Black Bear)')},"It's time to upgrade your tools! Go into the green shop over there, and buy a new collector or backpack! After you do that, complete this quest:",function(){player.addQuest('Red Request',[['redPollen',500]],'blackBear');},"Cool! Try buying more bee eggs using honey when you can afford them!",function(){for(let i in player.quests){if(player.quests[i].NPC==='blackBear'){player.quests.splice(i,1)}}player.honey+=800;player.addMessage('+800 Honey (from Black Bear)')},"Why not try exploring and talking to other bears while completing this quest?",function(){player.addQuest('Hiding in the Blue',[['bluePollen',900]],'blackBear');},"Awesome! Here's more Royal Jelly and honey!",function(){for(let i in player.quests){if(player.quests[i].NPC==='blackBear'){player.quests.splice(i,1)}}player.honey+=800;player.addMessage('+800 Honey (from Black Bear)')},"Remember, keep getting more bees and using Royal Jelly on them. Try to not use Royal Jelly on the transformed bees, and make your basic bees better first!","If you have more than 5 bees already, try going into the 5 bee zone! It has many more flowers, but beware of the monsters! Anyways, here's a new quest:",function(){player.addQuest('Variety Fetcher',[['bluePollen',1000],['redPollen',1000],['whitePollen',1000]],'blackBear');},"Nice! Here's your first special reward, a Silver Egg!",function(){for(let i in player.quests){if(player.quests[i].NPC==='blackBear'){player.quests.splice(i,1)}}player.honey+=1000;items.silverEgg.amount++;player.updateInventory();player.addMessage('+1000 Honey (from Black Bear)');player.addMessage('+1 Silver Egg (from Black Bear)')},"You're done with the beginner quests! Now, you can complete questlines to recieve special rewards!","This is the start of the Gold Egg questlines! After 3 more quests, you will recieve a new type of egg, hatching improved bees! Ready for more?",function(){player.addQuest('Bamboo Boogie',[['pollenFromBambooField',2500]],'blackBear');},"Great! Many of the special bees have better stats and abilities! They can boost you pollen collection by large amounts.","Here are your rewards:",function(){for(let i in player.quests){if(player.quests[i].NPC==='blackBear'){player.quests.splice(i,1)}}player.honey+=1250;player.addMessage('+1250 Honey (from Black Bear)')},"You have 2 more quest to complete before earning the Gold Egg! Here's the next quest:",function(){player.addQuest('Cobweb Sweeper',[['pollenFromSpiderField',3250]],'blackBear');},"Great job! Keep unlocking more gear and bees!",function(){for(let i in player.quests){if(player.quests[i].NPC==='blackBear'){player.quests.splice(i,1)}}player.honey+=2000;player.addMessage('+2000 Honey (from Black Bear)')},"Many fields have different colors of flowers, and those give different pollen types. Bees perform better in their own color's field!","Try collecting more red pollen:",function(){player.addQuest('Red Request 2',[['redPollen',4000]],'blackBear');},"Epic! It's good to have a nice with different types of bees to better collect pollen from all the fields!",function(){for(let i in player.quests){if(player.quests[i].NPC==='blackBear'){player.quests.splice(i,1)}}player.honey+=2500;player.addMessage('+2500 Honey (from Black Bear)')},"There are many rarities of bees, like: common, rare, epic, legendary, and mythic! Legendary and mythic bees are some of the rarest, and only good beekeepers like me own them.","Anyways, it's your last quest until the prized Gold Egg! Get to work!",function(){player.addQuest('Red + Blue = Gold',[['redPollen',6000],['bluePollen',6000]],'blackBear');},"Wow! Not a lot of players are able to get their hands on the Gold Egg, but you're special! Hatch it for an epic bee!",function(){for(let i in player.quests){if(player.quests[i].NPC==='blackBear'){player.quests.splice(i,1)}}player.honey+=4000;items.goldEgg.amount++;player.updateInventory();player.addMessage('+4000 Honey (from Black Bear)');player.addMessage('+1 Gold Egg (from Black Bear)')},"It's the start of a new questline: The Diamond Egg!","Remember the special legendary bees I showed you? Hatch one with the Diamond Egg! Complete 7 more quests to discover a new legendary bee!",function(){player.addQuest('Lucky Landscaping',[['pollenFromCloverField',10000]],'blackBear');},"Good job! Here's a lot of honey!",function(){for(let i in player.quests){if(player.quests[i].NPC==='blackBear'){player.quests.splice(i,1)}}player.honey+=7500;player.addMessage('+7500 Honey (from Black Bear)');},"While progressing through the game, make sure to keep upgrading your tools and hive!","If you haven't, hatch 10 bees to explore the 10 bee zone. Discover new fields and shops around the map!","Also, remember to complete other bear's quests, too. They may give even better rewards than mine!",function(){player.addQuest('Pineapple Picking',[['pollenFromPineapplePatch',15000]],'blackBear');},"Cool! Keep expanding and improving your hive and gear for more honey!",
-        function(){for(let i in player.quests){if(player.quests[i].NPC==='blackBear'){player.quests.splice(i,1)}}player.honey+=10000;player.addMessage('+10000 Honey (from Black Bear)');},"5 more quests to go until the Diamond Egg!",'ugh writing dialogue is so confusing the code is so messed up and takes up so much space ;-; i cant belive the og game dev wrote like 6+9+20+20+20 however many quests that is for black bear and did all that like 8 times more'],
+        dialogue:window.dialogue_blackBear(player),
         mesh:new Mesh(),
         meshParams:{x:0.5,y:0,z:-31.5,r:1,s:1.2,texture:{face:{u:0,v:0},torso:{texture:false,u:0,v:0.5}}}
     },
@@ -18396,7 +18445,7 @@ function loop(now){
     
     if(user.clickedKeys.o){
         
-        effects.starShowerPassive.activate()
+        effects.petalStormPassive.activate()
     }
     
     player.attacked=[]
