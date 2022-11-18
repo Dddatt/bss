@@ -12980,6 +12980,8 @@ let gear=window.playerGear
 
 player=(function(out){
     
+    out.eKeyDialoguePress=0
+
     out.sunSwitchTimer=60
     out.skyColor=[0.4,0.6,1]
     out.updateMapLightTimer=0
@@ -13126,6 +13128,7 @@ player=(function(out){
             
         } else if(typeof NPCs[out.currentNPC].dialogue[NPCs[out.currentNPC].dialogueIndex]==='function'){
             
+            console.log(NPCs[out.currentNPC].dialogue[NPCs[out.currentNPC].dialogueIndex])
             NPCs[out.currentNPC].dialogue[NPCs[out.currentNPC].dialogueIndex]()
             NPCs[out.currentNPC].dialogueIndex++
             out.currentNPC=null
@@ -13155,10 +13158,19 @@ player=(function(out){
     
     out.onStartChat=function(i){
         
+        out.eKeyDialoguePress=TIME
+
         if(NPCs[i].dialogue[NPCs[i].dialogueIndex]===undefined){
             
-            player.addMessage(MATH.doGrammar(i)+' has nothing to say anymore!',COLORS.redArr)
-            return
+            if(NPCs[i].repeatable){
+                
+                NPCs[i].dialogue.push(...window['dialogue_'+i](out,items))
+
+            } else {
+
+                player.addMessage(MATH.doGrammar(i)+' has nothing to say anymore!',COLORS.redArr)
+                return
+            }
         }
         
         out.currentNPC=i
@@ -14866,10 +14878,11 @@ let NPCs={
     
     polarBear:{
         
+        repeatable:true,
         viewMatrix:[-1.5,24.5,60,Math.PI,-0.25],
         exclaimPos:[-1.5,23.5,66],
         dialogueIndex:0,
-        dialogue:['heres a test quest',function(){player.addQuest('test quest',[['bluePollen',75000],['redPollen',50000],['whitePollen',25000],['goo',2500],['abilityTokens',50],['honeyTokens',3],['basicEggTokens',1],['rhinoBeetle',1]],'polarBear');},'ok cool',function(){for(let i in player.quests){if(player.quests[i].NPC==='polarBear'){player.quests.splice(i,1)}}player.honey+=12345678;textRenderer.add(12345678+'',[player.body.position.x,player.body.position.y+2,player.body.position.z],COLORS.honey,0,'+');player.addMessage('+'+MATH.addCommas(12345678+'')+' Honey (from your fren)')}],
+        dialogue:[],
         mesh:new Mesh(),
         meshParams:{x:1.5,y:22,z:-68,r:2,s:1.2,texture:{face:{u:1,v:0},torso:{texture:false,u:1,v:0}}}
     },
@@ -15029,6 +15042,11 @@ let user=(function(out){
                     player.addMessage('Item is on a cooldown of '+MATH.doTime(items[hotbarSlots[n].itemType].maxCooldown-(TIME-items[hotbarSlots[n].itemType].cooldown))+'!',COLORS.redArr)
                 }
             }
+        }
+
+        if(e.key==='e'&&player.currentNPC&&TIME-player.eKeyDialoguePress>1){
+            
+            dialogueBox.onclick()
         }
     }
     
