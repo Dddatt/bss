@@ -2151,6 +2151,21 @@ window.onresize=()=>{
     mobRendererProgram=createProgram('mob_renderer_vsh','mob_renderer_fsh')
     trailRendererProgram=createProgram('trail_renderer_vsh','trail_renderer_fsh')
     
+    gl.useProgram(staticGeometryProgram)
+    gl.uniform1f(glCache.static_isNight,out.isNight)
+    gl.useProgram(dynamicGeometryProgram)
+    gl.uniform1f(glCache.dynamic_isNight,out.isNight)
+    gl.useProgram(tokenGeometryProgram)
+    gl.uniform1f(glCache.token_isNight,out.isNight)
+    gl.useProgram(flowerGeometryProgram)
+    gl.uniform1f(glCache.flower_isNight,out.isNight)
+    gl.useProgram(beeGeometryProgram)
+    gl.uniform1f(glCache.bee_isNight,out.isNight)
+    gl.useProgram(mobRendererProgram)
+    gl.uniform1f(glCache.mob_isNight,out.isNight)
+    gl.useProgram(trailRendererProgram)
+    gl.uniform1f(glCache.trail_isNight,out.isNight)
+    
     glCache=initGlCache({})
 }
 
@@ -17783,12 +17798,15 @@ objects.mobs.push(new Ladybug([7.5+14,3,47+1],{minX:7.5,maxX:7.5+15,minZ:47,maxZ
 objects.mobs.push(new Ladybug([-6+11,-0.5,29+12],{minX:-6,maxX:-6+19,minZ:29,maxZ:29+13,minY:-2,maxY:4},1))
 
 
-
 if(window.thisProgramIsInFullScreen){
     
     document.getElementById('UIBar').style.display='none'
     document.getElementById('honeyAndPollenAmount').style.display='none'
     document.getElementById('abilityUI').style.display='none'
+
+} else {
+
+    document.getElementById('meshCreator').style.display='none'
 }
 
 document.getElementById('runMeshStr').onclick=function(){
@@ -17816,8 +17834,6 @@ document.getElementById('runMeshStr').onclick=function(){
 }
 
 document.getElementById('meshStr').value=player.createdMesh
-
-//player.addSlot('baby')
 
 player.updateHive()
 player.addEffect('tabbyLove',false,false,1000)
@@ -17873,8 +17889,6 @@ window.deleteBeequip=function(){
 }
 
 objects.mobs.push(new MondoChick('MountainTopField',7))
-
-// objects.mobs.push(new Balloon('DandelionField',5,5,true,1))
 
 function loop(now){
     
