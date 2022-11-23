@@ -1944,18 +1944,18 @@ w, coconut:204 oh dear
 <div class='autoHotbarButton' style='position:fixed;top:98.5%;left:65%;width:35px;height:14px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;padding-top:1px;font-family:trebuchet ms;font-size:7px;text-align:center'></div>
 <div class='autoHotbarButton' style='position:fixed;top:98.5%;left:75%;width:35px;height:14px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;padding-top:1px;font-family:trebuchet ms;font-size:7px;text-align:center'></div>
 
-<div id='amuletUI' style='position:fixed;margin-left:50%;margin-top:50%;width:250px;height:350px;z-index:2;transform:translate(-50%,-50%);background-color:rgb(255,255,100);border-radius:4px;display:none'>
+<div id='amuletUI' style='position:fixed;left:50%;top:50%;width:250px;height:350px;z-index:2;transform:translate(-50%,-50%) scale(1.25,1.25);background-color:rgb(255,255,100);border-radius:4px;display:none'>
     
     <div style='position:fixed;margin-left:50%;margin-top:0px;width:250px;height:35px;z-index:2;transform:translate(-50%,0px);background-color:rgb(30,200,70);border-bottom:2px solid rgb(0,100,0);text-align:center;font-size:23px;font-family:trebuchet ms;padding-top:5px;border-radius:4px' id='amuletType'></div>
     
     <div style='position:fixed;margin-left:0px;margin-top:48px;width:125px;height:22px;z-index:2;background-color:rgb(255,20,20,0.5);text-align:center;font-size:17px;font-family:trebuchet ms;padding-top:2px'>Old:</div>
     <div style='position:fixed;margin-left:50%;margin-top:48px;width:125px;height:22px;z-index:2;background-color:rgb(0,190,50,0.5);text-align:center;font-size:17px;font-family:trebuchet ms;padding-top:2px'>New:</div>
     
-    <div style='position:fixed;margin-left:0px;margin-top:75px;width:120px;height:220px;z-index:2;font-size:15px;font-family:trebuchet ms;padding-left:5px' id='oldAmuletStats'></div>
-    <div style='position:fixed;margin-left:50%;margin-top:75px;width:120px;height:220px;z-index:2;font-size:15px;font-family:trebuchet ms;padding-left:5px' id='newAmuletStats'></div>
+    <div style='position:fixed;margin-left:0px;margin-top:75px;width:120px;height:220px;z-index:2;font-size:10.5px;font-family:trebuchet ms;padding-left:5px' id='oldAmuletStats'></div>
+    <div style='position:fixed;margin-left:50%;margin-top:75px;width:120px;height:220px;z-index:2;font-size:10.5px;font-family:trebuchet ms;padding-left:5px' id='newAmuletStats'></div>
     
-    <div style='position:fixed;margin-left:4%;margin-top:310px;width:100px;height:28px;z-index:2;background-color:rgb(200,0,0);text-align:center;font-size:19px;font-family:trebuchet ms;padding-top:4px;color:white;border-radius:2px'>Keep Old</div>
-    <div style='position:fixed;margin-left:56%;margin-top:310px;width:100px;height:28px;z-index:2;background-color:rgb(0,130,20);text-align:center;font-size:19px;font-family:trebuchet ms;padding-top:4px;color:white;border-radius:2px'>Replace</div>
+    <div style='position:fixed;margin-left:4%;margin-top:310px;width:100px;height:28px;z-index:2;background-color:rgb(200,0,0);text-align:center;font-size:19px;font-family:trebuchet ms;padding-top:4px;color:white;border-radius:2px' id='keepAmulet'>Keep Old</div>
+    <div style='position:fixed;margin-left:56%;margin-top:310px;width:100px;height:28px;z-index:2;background-color:rgb(0,130,20);text-align:center;font-size:19px;font-family:trebuchet ms;padding-top:4px;color:white;border-radius:2px' id='replaceAmulet'>Replace</div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -2776,21 +2776,80 @@ let triggers={
         }
     },
 
-    // bronze_star_amulet_generator:{
+    bronze_star_amulet_generator:{
         
-    //     isMachine:true,requirements:function(player){
+        isMachine:true,requirements:function(player){
             
             
+
+        },minX:-35.5-Math.sin(45.6*0.0174533)*3-Math.cos(45.6*0.0174533)*12.5-3,maxX:-35.5-Math.sin(45.6*0.0174533)*3-Math.cos(45.6*0.0174533)*12.5+3,minY:11,maxY:50,minZ:-2.75+Math.cos(45.6*0.0174533)*3-Math.sin(45.6*0.0174533)*12.5-3,maxZ:-2.75+Math.cos(45.6*0.0174533)*3-Math.sin(45.6*0.0174533)*12.5+3,message:'Generate a Bronze Star Amulet',func:function(player){
+            
+            let amulet=['*1.25 capacityMultiplier'],final=[]
+
+            amulet.push(...MATH.selectFromArray(['*'+MATH.random(1.05,1.15).toFixed(2)+' POLLEN','*'+MATH.random(1.1,1.3).toFixed(2)+' redPollen','*'+MATH.random(1.1,1.3).toFixed(2)+' bluePollen','*'+MATH.random(1.1,1.3).toFixed(2)+' whitePollen','*'+MATH.random(1.15,1.5).toFixed(2)+' pollenFromBees','+'+MATH.random(0.03,0.08).toFixed(2)+' INSTANT_CONVERSION','*'+MATH.random(1.1,1.2).toFixed(2)+' convertRate','+'+MATH.random(0.01,0.05).toFixed(2)+' beeAbilityRate','+'+MATH.random(0.01,0.05).toFixed(2)+' criticalChance'],3))
+
+            player.showGeneratedAmulet('bronzeStarAmulet',amulet)
+        }
+    },
+
+    silver_star_amulet_generator:{
         
-    //     },minX:0,maxX:5,minY:-2,maxY:6,minZ:0,maxZ:5,message:'Generate a Bronze Star Amulet',func:function(player){
+        isMachine:true,requirements:function(player){
+
+        },minX:-35.5+Math.sin(45.6*0.0174533)*6-Math.cos(45.6*0.0174533)*19.5-3,maxX:-35.5+Math.sin(45.6*0.0174533)*6-Math.cos(45.6*0.0174533)*19.5+3,minY:11,maxY:50,minZ:-2.75-Math.cos(45.6*0.0174533)*6-Math.sin(45.6*0.0174533)*19.5-3,maxZ:-2.75-Math.cos(45.6*0.0174533)*6-Math.sin(45.6*0.0174533)*19.5+3,message:'Generate a Silver Star Amulet',func:function(player){
             
-    //         let amulet=['*1.25 capacityMultiplier'],final=[]
+            let amulet=['*1.5 capacityMultiplier'],final=[]
 
-    //         amulet.push(...MATH.selectFromArray(['*'+MATH.random(1.05,1.15).toFixed(2)+' POLLEN','*'+MATH.random(1.1,1.3).toFixed(2)+' redPollen','*'+MATH.random(1.1,1.3).toFixed(2)+' bluePollen','*'+MATH.random(1.1,1.3).toFixed(2)+' whitePollen','*'+MATH.random(1.15,1.5).toFixed(2)+' pollenFromBees','+'+MATH.random(0.03,0.08).toFixed(2)+' INSTANT_CONVERSION','*'+MATH.random(1.1,1.2).toFixed(2)+' convertRate','+'+MATH.random(0.01,0.05).toFixed(2)+' beeAbilityRate','+'+MATH.random(0.01,0.05).toFixed(2)+' criticalChance'],3))
+            amulet.push(...MATH.selectFromArray(['*'+MATH.random(1.05,1.15).toFixed(2)+' POLLEN','*'+MATH.random(1.1,1.3).toFixed(2)+' redPollen','*'+MATH.random(1.1,1.3).toFixed(2)+' bluePollen','*'+MATH.random(1.1,1.3).toFixed(2)+' whitePollen','*'+MATH.random(1.15,1.5).toFixed(2)+' pollenFromBees','+'+MATH.random(0.03,0.08).toFixed(2)+' INSTANT_CONVERSION','*'+MATH.random(1.1,1.2).toFixed(2)+' convertRate','+'+MATH.random(0.01,0.05).toFixed(2)+' beeAbilityRate','+'+MATH.random(0.01,0.05).toFixed(2)+' criticalChance'],3))
 
-    //         player.showGeneratedAmulet('supremeStarAmulet',amulet)
-    //     }
-    // }
+            player.showGeneratedAmulet('silverStarAmulet',amulet)
+        }
+    },
+
+    gold_star_amulet_generator:{
+        
+        isMachine:true,requirements:function(player){
+            
+            
+
+        },minX:-35.5-Math.sin(45.6*0.0174533)*3-Math.cos(45.6*0.0174533)*26.5-3,maxX:-35.5-Math.sin(45.6*0.0174533)*3-Math.cos(45.6*0.0174533)*26.5+3,minY:11,maxY:50,minZ:-2.75+Math.cos(45.6*0.0174533)*3-Math.sin(45.6*0.0174533)*26.5-3,maxZ:-2.75+Math.cos(45.6*0.0174533)*3-Math.sin(45.6*0.0174533)*26.5+3,message:'Generate a Gold Star Amulet',func:function(player){
+            
+            let amulet=['*1.75 capacityMultiplier'],final=[]
+
+            amulet.push(...MATH.selectFromArray(['*'+MATH.random(1.05,1.15).toFixed(2)+' POLLEN','*'+MATH.random(1.1,1.3).toFixed(2)+' redPollen','*'+MATH.random(1.1,1.3).toFixed(2)+' bluePollen','*'+MATH.random(1.1,1.3).toFixed(2)+' whitePollen','*'+MATH.random(1.15,1.5).toFixed(2)+' pollenFromBees','+'+MATH.random(0.03,0.08).toFixed(2)+' INSTANT_CONVERSION','*'+MATH.random(1.1,1.2).toFixed(2)+' convertRate','+'+MATH.random(0.01,0.05).toFixed(2)+' beeAbilityRate','+'+MATH.random(0.01,0.05).toFixed(2)+' criticalChance'],3))
+
+            player.showGeneratedAmulet('goldStarAmulet',amulet)
+        }
+    },
+
+    diamond_star_amulet_generator:{
+        
+        isMachine:true,requirements:function(player){
+            
+        },minX:-35.5+Math.sin(45.6*0.0174533)*6-Math.cos(45.6*0.0174533)*33.5-3,maxX:-35.5+Math.sin(45.6*0.0174533)*6-Math.cos(45.6*0.0174533)*33.5+3,minY:11,maxY:50,minZ:-2.75-Math.cos(45.6*0.0174533)*6-Math.sin(45.6*0.0174533)*33.5-3,maxZ:-2.75-Math.cos(45.6*0.0174533)*6-Math.sin(45.6*0.0174533)*33.5+3,message:'Generate a Diamond Star Amulet',func:function(player){
+            
+            let amulet=['*2 capacityMultiplier'],final=[]
+
+            amulet.push(...MATH.selectFromArray(['*'+MATH.random(1.05,1.15).toFixed(2)+' POLLEN','*'+MATH.random(1.1,1.3).toFixed(2)+' redPollen','*'+MATH.random(1.1,1.3).toFixed(2)+' bluePollen','*'+MATH.random(1.1,1.3).toFixed(2)+' whitePollen','*'+MATH.random(1.15,1.5).toFixed(2)+' pollenFromBees','+'+MATH.random(0.03,0.08).toFixed(2)+' INSTANT_CONVERSION','*'+MATH.random(1.1,1.2).toFixed(2)+' convertRate','+'+MATH.random(0.01,0.05).toFixed(2)+' beeAbilityRate','+'+MATH.random(0.01,0.05).toFixed(2)+' criticalChance'],3))
+
+            player.showGeneratedAmulet('diamondStarAmulet',amulet)
+        }
+    },
+
+    supreme_star_amulet_generator:{
+        
+        isMachine:true,requirements:function(player){
+            
+
+        },minX:-35.5+Math.sin(45.6*0.0174533)*1.5-Math.cos(45.6*0.0174533)*43-3,maxX:-35.5+Math.sin(45.6*0.0174533)*1.5-Math.cos(45.6*0.0174533)*43+3,minY:11,maxY:50,minZ:-2.75-Math.cos(45.6*0.0174533)*1.5-Math.sin(45.6*0.0174533)*43-3,maxZ:-2.75-Math.cos(45.6*0.0174533)*1.5-Math.sin(45.6*0.0174533)*43+3,message:'Generate a Supreme Star Amulet',func:function(player){
+            
+            let amulet=['*2.5 capacityMultiplier'],final=[]
+
+            amulet.push(...MATH.selectFromArray(['*'+MATH.random(1.05,1.15).toFixed(2)+' POLLEN','*'+MATH.random(1.1,1.3).toFixed(2)+' redPollen','*'+MATH.random(1.1,1.3).toFixed(2)+' bluePollen','*'+MATH.random(1.1,1.3).toFixed(2)+' whitePollen','*'+MATH.random(1.15,1.5).toFixed(2)+' pollenFromBees','+'+MATH.random(0.03,0.08).toFixed(2)+' INSTANT_CONVERSION','*'+MATH.random(1.1,1.2).toFixed(2)+' convertRate','+'+MATH.random(0.01,0.05).toFixed(2)+' beeAbilityRate','+'+MATH.random(0.01,0.05).toFixed(2)+' criticalChance'],3))
+
+            player.showGeneratedAmulet('supremeStarAmulet',amulet)
+        }
+    },
 }
 
 let hoverText=document.getElementById('hoverText')
@@ -13025,11 +13084,30 @@ player=(function(out){
 
     out.showGeneratedAmulet=function(type,amulet){
 
+        let prev_type=type
+
         let final=[]
 
         for(let i in amulet){if(amulet[i].indexOf('POLLEN')>-1){final.push(amulet[i].replace('POLLEN','redPollen'),amulet[i].replace('POLLEN','bluePollen'),amulet[i].replace('POLLEN','whitePollen'));continue}if(amulet[i].indexOf('INSTANT_CONVERSION')>-1){final.push(amulet[i].replace('INSTANT_CONVERSION','instantRedConversion'),amulet[i].replace('INSTANT_CONVERSION','instantBlueConversion'),amulet[i].replace('INSTANT_CONVERSION','instantWhiteConversion'));continue}final.push(amulet[i])}
 
+        final=final.join(',')
+
         document.getElementById('amuletUI').style.display='block'
+        document.getElementById('amuletType').innerHTML=MATH.doGrammar(type)
+        document.getElementById('oldAmuletStats').innerHTML=player.currentGear[prev_type]?player.currentGear[prev_type].split(',').map(x=>x.split(' ')[0]+' '+MATH.doGrammar(x.split(' ')[1])).map(x=>x[0]==='+'?'+'+((Number(x.substr(1,x.indexOf(' ')))*100)|0)+'%'+x.substr(x.indexOf(' '),x.length):x).join('<br>').replaceAll('*','x').replace(' Multiplier',''):'<p style="font-size:25px;padding-left:10px;margin-top:2px">None</p>'
+        document.getElementById('newAmuletStats').innerHTML=amulet.map(x=>x.split(' ')[0]+' '+MATH.doGrammar(x.split(' ')[1].replace('INSTANT_CONVERSION','instantConversion').replace('POLLEN','pollen'))).map(x=>x[0]==='+'?'+'+((Number(x.substr(1,x.indexOf(' ')))*100)|0)+'%'+x.substr(x.indexOf(' '),x.length):x).join('<br>').replaceAll('*','x').replace(' Multiplier','')
+
+        document.getElementById('keepAmulet').onclick=function(){
+
+            document.getElementById('amuletUI').style.display='none'
+        }
+        
+        document.getElementById('replaceAmulet').onclick=function(){
+
+            document.getElementById('amuletUI').style.display='none'
+            out.currentGear[type]=final
+            out.updateGear()
+        }
     }
     
     out.eKeyDialoguePress=0

@@ -1,5 +1,37 @@
 window.playerGear={
     
+    bronzeStarAmulet:{
+        
+        mesh:function(box,cylinder,sphere,star){
+            
+            star(0,1.5,0,0.075,0.15,0.025,0.05,0.5*6.5,0.25*6.5,0.07*6.5)
+        }
+    },
+
+    silverStarAmulet:{
+        
+        mesh:function(box,cylinder,sphere,star){
+            
+            star(0,1.5,0,0.075,0.15,0.025,0.05,5.5,5.5,5.5)
+        }
+    },
+
+    goldStarAmulet:{
+        
+        mesh:function(box,cylinder,sphere,star){
+            
+            star(0,1.5,0,0.075,0.15,0.025,0.05,9,8,0)
+        }
+    },
+
+    diamondStarAmulet:{
+        
+        mesh:function(box,cylinder,sphere,star){
+            
+            star(0,1.5,0,0.075,0.15,0.025,0.05,0,10,10)
+        }
+    },
+
     supremeStarAmulet:{
         
         mesh:function(box,cylinder,sphere,star){
