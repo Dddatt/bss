@@ -649,6 +649,7 @@ box(20,9.2,95,82.5,62,4,[0,0,-15],WALL,true,false);
 box(-47.6,15.25,95,35,62,4,[0,0,15],WALL,true,false);
 box(-10,13,95,15,62,4,false,WALL,true,false);
 box(-38,13,95,15,62,4,false,WALL,true,false);
+box(-25,45.25,95,27.5,9,4,false,WALL,true,false);
 
 
 box(-22.25,32,69.75,8,10,4,false,[0.48,0.48,0.48]);
