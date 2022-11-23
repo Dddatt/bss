@@ -313,6 +313,19 @@ window.MATH = (function (MATH) {
         return Math.ceil(MATH._log(1 - p, -Math.random() + 1))
     }
 
+    MATH.selectFromArray=function(arr,count){
+
+        let res=[]
+
+        for(let i=0,j=(Math.random()*arr.length)|0;i<count&&arr.length;i++,j=(Math.random()*arr.length)|0){
+
+            res.push(arr[j])
+            arr.splice(j,1)
+        }
+
+        return res
+    }
+
     return MATH
 
 })({})

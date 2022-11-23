@@ -1916,7 +1916,7 @@ w, coconut:204 oh dear
 <div id='actionWarning' style='position:fixed;margin-left:50%;margin-top:5px;width:360px;height:60px;z-index:2;transform:translate(-50%,0px);display:none'>
     
     <div style='position:fixed;margin-left:60px;margin-top:0px;width:300px;height:50px;background-color:rgb(30,70,255,0.8);border-radius:3px;padding:0px;font-size:18px;color:white;text-align:center;padding-top:0px' id='actionName'></div>
-    <div style='position:fixed;margin-left:0px;margin-top:0px;width:45px;height:55px;background-color:rgb(200,200,200);border-radius:3px;font-size:40px;color:white;padding-left:15px;padding-top:0px;border:3px solid rgb(50,50,50)'>E</div>
+    <div style='position:fixed;margin-left:0px;margin-top:0px;width:45px;height:55px;background-color:rgb(200,200,200);border-radius:3px;font-size:40px;color:white;padding-left:15px;padding-top:0px;border:3px solid rgb(50,50,50)' id='actionEButton'>E</div>
     <div style='position:fixed;margin-left:0px;margin-top:0px;width:360px;height:50px;padding-left:0px;padding-top:10px' id='actionHoverDarken'></div>
     
 </div>
@@ -1943,6 +1943,20 @@ w, coconut:204 oh dear
 <div class='autoHotbarButton' style='position:fixed;top:98.5%;left:55%;width:35px;height:14px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;padding-top:1px;font-family:trebuchet ms;font-size:7px;text-align:center'></div>
 <div class='autoHotbarButton' style='position:fixed;top:98.5%;left:65%;width:35px;height:14px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;padding-top:1px;font-family:trebuchet ms;font-size:7px;text-align:center'></div>
 <div class='autoHotbarButton' style='position:fixed;top:98.5%;left:75%;width:35px;height:14px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;padding-top:1px;font-family:trebuchet ms;font-size:7px;text-align:center'></div>
+
+<div id='amuletUI' style='position:fixed;margin-left:50%;margin-top:50%;width:250px;height:350px;z-index:2;transform:translate(-50%,-50%);background-color:rgb(255,255,100);border-radius:4px;display:none'>
+    
+    <div style='position:fixed;margin-left:50%;margin-top:0px;width:250px;height:35px;z-index:2;transform:translate(-50%,0px);background-color:rgb(30,200,70);border-bottom:2px solid rgb(0,100,0);text-align:center;font-size:23px;font-family:trebuchet ms;padding-top:5px;border-radius:4px' id='amuletType'></div>
+    
+    <div style='position:fixed;margin-left:0px;margin-top:48px;width:125px;height:22px;z-index:2;background-color:rgb(255,20,20,0.5);text-align:center;font-size:17px;font-family:trebuchet ms;padding-top:2px'>Old:</div>
+    <div style='position:fixed;margin-left:50%;margin-top:48px;width:125px;height:22px;z-index:2;background-color:rgb(0,190,50,0.5);text-align:center;font-size:17px;font-family:trebuchet ms;padding-top:2px'>New:</div>
+    
+    <div style='position:fixed;margin-left:0px;margin-top:75px;width:120px;height:220px;z-index:2;font-size:15px;font-family:trebuchet ms;padding-left:5px' id='oldAmuletStats'></div>
+    <div style='position:fixed;margin-left:50%;margin-top:75px;width:120px;height:220px;z-index:2;font-size:15px;font-family:trebuchet ms;padding-left:5px' id='newAmuletStats'></div>
+    
+    <div style='position:fixed;margin-left:4%;margin-top:310px;width:100px;height:28px;z-index:2;background-color:rgb(200,0,0);text-align:center;font-size:19px;font-family:trebuchet ms;padding-top:4px;color:white;border-radius:2px'>Keep Old</div>
+    <div style='position:fixed;margin-left:56%;margin-top:310px;width:100px;height:28px;z-index:2;background-color:rgb(0,130,20);text-align:center;font-size:19px;font-family:trebuchet ms;padding-top:4px;color:white;border-radius:2px'>Replace</div>
+</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"></script>
@@ -2734,20 +2748,49 @@ let triggers={
     
     mountain_instant_converter:{
         
-        isMachine:true,minX:-39-4,maxX:-39+4,minY:30,maxY:37,minZ:88-4,maxZ:88+4,message:'Use Instant Converter<br>(1 Ticket)',func:function(player){
+        isMachine:true,requirements:function(player){
             
-            if(player.pollen){
-                
-                textRenderer.add(player.pollen,[player.body.position.x,player.body.position.y+1,player.body.position.z],COLORS.honey,1,'⇆')
-                player.honey+=player.pollen
-                player.pollen=0
-                
-            } else {
-                
-                player.addMessage('You need to have pollen to convert!',COLORS.redArr)
-            }
+            if(player.pollen<1) return 'You must have pollen to use the instant converter'
+        
+        },minX:-39-4,maxX:-39+4,minY:30,maxY:37,minZ:88-4,maxZ:88+4,message:'Use Instant Converter<br>(1 Ticket)',func:function(player){
+            
+            textRenderer.add(player.pollen,[player.body.position.x,player.body.position.y+1,player.body.position.z],COLORS.honey,1,'⇆')
+            player.honey+=player.pollen
+            player.pollen=0
+            
         }
-    }
+    },
+    
+    pineapple_instant_converter:{
+        
+        isMachine:true,requirements:function(player){
+            
+            if(player.pollen<1) return 'You must have pollen to use the instant converter'
+        
+        },minX:-69-3,maxX:-69+3,minY:11,maxY:17,minZ:62.5-2.5,maxZ:62.5+2.5,message:'Use Instant Converter<br>(1 Ticket)',func:function(player){
+            
+            textRenderer.add(player.pollen,[player.body.position.x,player.body.position.y+1,player.body.position.z],COLORS.honey,1,'⇆')
+            player.honey+=player.pollen
+            player.pollen=0
+            
+        }
+    },
+
+    // bronze_star_amulet_generator:{
+        
+    //     isMachine:true,requirements:function(player){
+            
+            
+        
+    //     },minX:0,maxX:5,minY:-2,maxY:6,minZ:0,maxZ:5,message:'Generate a Bronze Star Amulet',func:function(player){
+            
+    //         let amulet=['*1.25 capacityMultiplier'],final=[]
+
+    //         amulet.push(...MATH.selectFromArray(['*'+MATH.random(1.05,1.15).toFixed(2)+' POLLEN','*'+MATH.random(1.1,1.3).toFixed(2)+' redPollen','*'+MATH.random(1.1,1.3).toFixed(2)+' bluePollen','*'+MATH.random(1.1,1.3).toFixed(2)+' whitePollen','*'+MATH.random(1.15,1.5).toFixed(2)+' pollenFromBees','+'+MATH.random(0.03,0.08).toFixed(2)+' INSTANT_CONVERSION','*'+MATH.random(1.1,1.2).toFixed(2)+' convertRate','+'+MATH.random(0.01,0.05).toFixed(2)+' beeAbilityRate','+'+MATH.random(0.01,0.05).toFixed(2)+' criticalChance'],3))
+
+    //         player.showGeneratedAmulet('supremeStarAmulet',amulet)
+    //     }
+    // }
 }
 
 let hoverText=document.getElementById('hoverText')
@@ -12979,6 +13022,15 @@ let playerMesh=new Mesh(false)
 let gear=window.playerGear
 
 player=(function(out){
+
+    out.showGeneratedAmulet=function(type,amulet){
+
+        let final=[]
+
+        for(let i in amulet){if(amulet[i].indexOf('POLLEN')>-1){final.push(amulet[i].replace('POLLEN','redPollen'),amulet[i].replace('POLLEN','bluePollen'),amulet[i].replace('POLLEN','whitePollen'));continue}if(amulet[i].indexOf('INSTANT_CONVERSION')>-1){final.push(amulet[i].replace('INSTANT_CONVERSION','instantRedConversion'),amulet[i].replace('INSTANT_CONVERSION','instantBlueConversion'),amulet[i].replace('INSTANT_CONVERSION','instantWhiteConversion'));continue}final.push(amulet[i])}
+
+        document.getElementById('amuletUI').style.display='block'
+    }
     
     out.eKeyDialoguePress=0
 
@@ -18043,13 +18095,27 @@ function loop(now){
             if(triggers[i].colliding){
                 
                 actionWarning.style.display='block'
-                actionName.innerHTML=triggers[i].message
-                
-                if(user.clickedKeys.e){
+
+                let useReq=triggers[i].requirements?triggers[i].requirements(player):false
+
+                if(!useReq){
+
+                    actionName.innerHTML=triggers[i].message
+                    actionName.style.backgroundColor='rgb(30,70,255,0.8)'
+                    document.getElementById('actionEButton').style.display='block'
                     
-                    triggers[i].func(player)
+                    if(user.clickedKeys.e){
+                        
+                        triggers[i].func(player)
+                    }
+
+                } else {
+                    
+                    actionName.innerHTML=useReq
+                    actionName.style.backgroundColor='rgb(255,0,0,0.6)'
+                    document.getElementById('actionEButton').style.display='none'
                 }
-                
+
             } else if(actionName.innerHTML===triggers[i].message){
                 actionName.style.display='block'
                 
