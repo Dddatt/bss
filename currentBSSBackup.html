@@ -1,29 +1,7 @@
 <!DOCTYPE html>
 <!--
 
-notes to self:
-
--update background after the noob shop and star hall
--add more mobs
--adjust balloon size
--fix items can be used with super smoothie|purp pot
--fix the big rock and ground z fighting in front of 10 bee zone from far away cuz of depth buffer error
--add hitbox 4 coco disp
--add a way to scale bee instances
--fix the rocks by pine tree
--add werewolf cave
--fix all the 5-15 bee zone skips
--add requirements to use cannons/flinging thingies
--fix html <defs> needing different ids making gradients break in svgs
--fix random words in item svgs in mask requirements
--add r/b portals
--add 30 bee zone
--add killbricks
-
-
-
-
-had 2 get rid of comnts 4 max spce in d prog so it save
+so erm the ka version is really behind but idk any new way to save some space ;-;
 
 r, in rose:95 :(
 b, in pine tree:90-150 if u rush or not
@@ -2443,6 +2421,26 @@ world.defaultContactMaterial.restitution=0.01
 
 let triggers={
     
+    blue_portal:{
+
+        minX:-73-2,maxX:-73+2,minY:-3,maxY:3,minZ:31-2,maxZ:31+2,isMachine:true,message:'Use Blue Teleporter',func:function(player){
+
+            player.body.position.x=34.5
+            player.body.position.y=9.5
+            player.body.position.z=-23.2
+        }
+    },
+
+    red_portal:{
+
+        minX:48.75-2,maxX:48.75+2,minY:2,maxY:6,minZ:26.95-2,maxZ:26.95+2,isMachine:true,message:'Use Red Teleporter',func:function(player){
+            
+            player.body.position.x=-78.5
+            player.body.position.y=31.5
+            player.body.position.z=48
+        }
+    },
+
     demon_killbrick:{
 
         minX:-45-20,maxX:-45+20,minY:-10,maxY:-5,minZ:-20-15,maxZ:-20+15,contactFunc:function(player){player.health=-Infinity}
