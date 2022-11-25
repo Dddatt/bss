@@ -2443,6 +2443,11 @@ world.defaultContactMaterial.restitution=0.01
 
 let triggers={
     
+    demon_killbrick:{
+
+        minX:-45-20,maxX:-45+20,minY:-10,maxY:-5,minZ:-20-15,maxZ:-20+15,contactFunc:function(player){player.health=-Infinity}
+    },
+
     hive:{
         
         minX:-5.9-4.5*0.5,
@@ -17904,6 +17909,28 @@ createField('DandelionField',-15,-1.5,7,19,13,function(){
     return Math.random()<0.871?1:2
 },{w:0.85,r:0.05,b:0.1})
 
+createField('DandelionField',-15,-1.5,7,19,13,function(){
+    
+    let c=Math.random()
+    
+    return Math.random()<0.85?'white':Math.random()<0.366?'blue':'red'
+    
+},function(){
+    
+    return Math.random()<0.871?1:2
+},{w:0.85,r:0.05,b:0.1})
+
+createField('AntField',-30,5.5,-59,18,12,function(){
+    
+    let c=Math.random()
+    
+    return Math.random()<0.333333?'white':Math.random()<0.5?'blue':'red'
+    
+},function(){
+    
+    return 1
+},{w:0.33333,r:0.33333,b:0.33333})
+
 
 flowers.mesh={}
 flowers.mesh.vertBuffer=gl.createBuffer()
@@ -18187,6 +18214,12 @@ function loop(now){
         
         triggers[i].colliding=player.body.position.x>triggers[i].minX&&player.body.position.x<triggers[i].maxX&&player.body.position.y>triggers[i].minY&&player.body.position.y<triggers[i].maxY&&player.body.position.z>triggers[i].minZ&&player.body.position.z<triggers[i].maxZ
         
+        if(triggers[i].colliding&&triggers[i].contactFunc){
+
+            triggers[i].contactFunc(player)
+            continue
+        }
+
         if(triggers[i].isMachine){
             
             if(triggers[i].colliding){
