@@ -5755,7 +5755,7 @@ let items={
     
     gumdrops:{
         
-        amount:0,u:128/2048,v:128*7/2048,cooldown:4,autoUse:true,
+        amount:0,u:128/2048,v:128*7/2048,cooldown:4,autoUse:true,value:5,
         use:function(){
             
             if(player.fieldIn){
@@ -5793,7 +5793,7 @@ let items={
     
     coconut:{
         
-        amount:0,u:128*2/2048,v:128*7/2048,cooldown:10,autoUse:true,
+        amount:0,u:128*2/2048,v:128*7/2048,cooldown:10,autoUse:true,value:4,
         use:function(){
             
             if(player.fieldIn){
@@ -5811,7 +5811,7 @@ let items={
     
     stinger:{
         
-        amount:0,u:128*3/2048,v:128*7/2048,
+        amount:0,u:128*3/2048,v:128*7/2048,value:10,
         use:function(){
             
             items.stinger.amount--
@@ -5822,7 +5822,7 @@ let items={
     
     glue:{
         
-        amount:0,u:0,v:128*3/2048,
+        amount:0,u:0,v:128*3/2048,value:19,
         use:function(){
             
             items.glue.amount--
@@ -5832,7 +5832,7 @@ let items={
     
     oil:{
         
-        amount:0,u:128/2048,v:128*3/2048,
+        amount:0,u:128/2048,v:128*3/2048,value:17,
         use:function(){
             
             items.oil.amount--
@@ -5842,7 +5842,7 @@ let items={
     
     enzymes:{
         
-        amount:0,u:128*2/2048,v:128*3/2048,
+        amount:0,u:128*2/2048,v:128*3/2048,value:17,
         use:function(){
             
             items.enzymes.amount--
@@ -5852,7 +5852,7 @@ let items={
     
     redExtract:{
         
-        amount:0,u:128*3/2048,v:128*3/2048,
+        amount:0,u:128*3/2048,v:128*3/2048,value:17,
         use:function(){
             
             items.redExtract.amount--
@@ -5862,7 +5862,7 @@ let items={
     
     blueExtract:{
         
-        amount:0,u:128*4/2048,v:128*3/2048,
+        amount:0,u:128*4/2048,v:128*3/2048,value:17,
         use:function(){
             
             items.blueExtract.amount--
@@ -5872,7 +5872,7 @@ let items={
     
     tropicalDrink:{
         
-        amount:0,u:128*5/2048,v:128*3/2048,
+        amount:0,u:128*5/2048,v:128*3/2048,value:20,
         use:function(){
             
             items.tropicalDrink.amount--
@@ -5882,7 +5882,7 @@ let items={
     
     purplePotion:{
         
-        amount:0,u:128*6/2048,v:128*3/2048,
+        amount:0,u:128*6/2048,v:128*3/2048,value:35,
         use:function(){
             
             items.purplePotion.amount--
@@ -5892,7 +5892,7 @@ let items={
     
     superSmoothie:{
         
-        amount:0,u:128*7/2048,v:128*3/2048,
+        amount:0,u:128*7/2048,v:128*3/2048,value:40,
         use:function(){
             
             items.superSmoothie.amount--
@@ -5906,7 +5906,7 @@ let items={
             
             return slot.type!==null
         },
-        amount:0,u:128*6/2048,v:128*7/2048,
+        amount:0,u:128*6/2048,v:128*7/2048,value:10,
         use:function(){
             
             howManyToFeed.style.display='block'
@@ -6000,7 +6000,7 @@ let items={
             
             return slot.type!==null
         },
-        amount:0,u:128*7/2048,v:128*7/2048,
+        amount:0,u:128*7/2048,v:128*7/2048,value:16,
         use:function(){
             
             howManyToFeed.style.display='block'
@@ -6070,7 +6070,7 @@ let items={
             
             return slot.type!==null
         },
-        amount:1000,u:0,v:128*4/2048,
+        amount:1000,u:0,v:128*4/2048,value:1,
         use:function(){
             
             howManyToFeed.style.display='block'
@@ -6136,7 +6136,7 @@ let items={
             
             return slot.type!==null
         },
-        amount:0,u:128/2048,v:128*4/2048,
+        amount:0,u:128/2048,v:128*4/2048,value:2,
         use:function(){
             
             howManyToFeed.style.display='block'
@@ -6233,7 +6233,7 @@ let items={
             
             return slot.type!==null
         },
-        amount:0,u:128*2/2048,v:128*4/2048,
+        amount:0,u:128*2/2048,v:128*4/2048,value:2,
         use:function(){
             
             howManyToFeed.style.display='block'
@@ -6330,7 +6330,7 @@ let items={
             
             return slot.type!==null
         },
-        amount:0,u:128*2/2048,v:128*5/2048,
+        amount:0,u:128*2/2048,v:128*5/2048,value:2,
         use:function(){
             
             howManyToFeed.style.display='block'
@@ -6427,7 +6427,7 @@ let items={
             
             return slot.type!==null
         },
-        amount:0,u:128*3/2048,v:128*5/2048,
+        amount:0,u:128*3/2048,v:128*5/2048,value:2,
         use:function(){
             
             howManyToFeed.style.display='block'
@@ -6524,7 +6524,7 @@ let items={
             
             return slot.type!=='basic'
         },
-        amount:0,u:128*4/2048,v:128*5/2048,
+        amount:0,u:128*4/2048,v:128*5/2048,value:50,
         use:function(){
             
             items.basicEgg.amount--
@@ -6544,7 +6544,7 @@ let items={
             
             return true
         },
-        amount:0,u:128*5/2048,v:128*5/2048,
+        amount:0,u:128*5/2048,v:128*5/2048,value:80,
         use:function(){
             
             let types={mythic:1/4000,legendary:0.075-(1/4000),epic:0.325,rare:0.6},r=Math.random(),type,c=0
@@ -6589,7 +6589,7 @@ let items={
             
             return true
         },
-        amount:0,u:128*6/2048,v:128*5/2048,
+        amount:0,u:128*6/2048,v:128*5/2048,value:125,
         use:function(){
             
             let types={mythic:1/500,legendary:0.3-(1/500),epic:0.7},r=Math.random(),type,c=0
@@ -6633,7 +6633,7 @@ let items={
             
             return true
         },
-        amount:0,u:128*7/2048,v:128*5/2048,
+        amount:0,u:128*7/2048,v:128*5/2048,value:200,
         use:function(){
             
             let types={mythic:0.05,legendary:0.95},r=Math.random(),type,c=0
@@ -6677,7 +6677,7 @@ let items={
             
             return true
         },
-        amount:0,u:128*0/2048,v:128*6/2048,
+        amount:0,u:128*0/2048,v:128*6/2048,value:250,
         use:function(){
             
             let types=[]
@@ -6708,7 +6708,7 @@ let items={
             
             return true
         },
-        amount:0,u:128*5/2048,v:128*8/2048,
+        amount:0,u:128*5/2048,v:128*8/2048,value:150,
         use:function(){
             
             let types={mythic:1/4000,legendary:0.075-(1/4000),epic:0.325,rare:0.6},r=Math.random(),type,c=0
@@ -6753,7 +6753,7 @@ let items={
             
             return true
         },
-        amount:0,u:128*6/2048,v:128*8/2048,
+        amount:0,u:128*6/2048,v:128*8/2048,value:225,
         use:function(){
             
             let types={mythic:1/500,legendary:0.3-(1/500),epic:0.7},r=Math.random(),type,c=0
@@ -6797,7 +6797,7 @@ let items={
             
             return true
         },
-        amount:0,u:128*7/2048,v:128*8/2048,
+        amount:0,u:128*7/2048,v:128*8/2048,value:300,
         use:function(){
             
             let types={mythic:0.05,legendary:0.95},r=Math.random(),type,c=0
@@ -6841,7 +6841,7 @@ let items={
             
             return true
         },
-        amount:0,u:128*0/2048,v:128*9/2048,
+        amount:0,u:128*0/2048,v:128*9/2048,value:375,
         use:function(){
             
             let types=[]
@@ -6872,7 +6872,7 @@ let items={
             
             return true
         },
-        amount:0,u:128*1/2048,v:128*9/2048,
+        amount:0,u:128*1/2048,v:128*9/2048,value:350,
         use:function(){
             
             let types=[],alreadyGot=[]
@@ -6911,7 +6911,7 @@ let items={
             
             return slot.type
         },
-        amount:0,u:128*3/2048,v:128*8/2048,
+        amount:0,u:128*3/2048,v:128*8/2048,value:12,
         use:function(){
             
             let types={mythic:1/4000,legendary:0.075-(1/4000),epic:0.325,rare:0.6},r=Math.random(),type,c=0
@@ -6955,7 +6955,7 @@ let items={
             
             return slot.type
         },
-        amount:0,u:128*4/2048,v:128*8/2048,
+        amount:0,u:128*4/2048,v:128*8/2048,value:40,
         use:function(){
             
             let types={mythic:1/4000,legendary:0.075-(1/4000),epic:0.325,rare:0.6},r=Math.random(),type,c=0
@@ -6995,7 +6995,7 @@ let items={
     
     glitter:{
         
-        amount:0,u:0,v:128*7/2048,
+        amount:0,u:0,v:128*7/2048,value:18,
         use:function(){
             
             
@@ -7175,6 +7175,7 @@ let objects={
     targets:[],
     triangulates:[],
     fuzzBombs:[],
+    planters:[],
     
 },meshes={
     
@@ -11434,6 +11435,167 @@ class Tornado {
         gl.drawElements(gl.TRIANGLES,meshes.tornado.indexAmount,gl.UNSIGNED_SHORT,0)
         
         return this.life<=0
+    }
+}
+
+class Planter {
+    
+    constructor(type){
+        
+        this.growth=0
+        this.maxGrowth={paper:15*60}[type]
+        this.type=type
+        this.field=player.fieldIn
+        this.x=player.flowerIn.x
+        this.z=player.flowerIn.z
+        this.pos=[fieldInfo[this.field].x+this.x,fieldInfo[this.field].y+0.5,fieldInfo[this.field].z+this.z,0]
+
+        this.flowers=[]
+        
+        let rad=5,sqRad=5.5*5.5
+        
+        for(let x=-rad;x<=rad;x++){
+            
+            for(let z=-rad;z<=rad;z++){
+                
+                if(x*x+z*z<=sqRad&&x+this.x>=0&&x+this.x<fieldInfo[this.field].width&&z+this.z>=0&&z+this.z<fieldInfo[this.field].length){
+                    
+                    this.flowers.push([x,z])
+                }
+            }
+        }
+    }
+    
+    die(index){
+        
+        let amountOfTokens={paper:9}[this.type],dropTable=[],dropRates={}
+
+        for(let i in items){
+
+            if(i.toLowerCase().indexOf('egg')>-1)
+                continue
+            
+            dropTable.push(i)
+            dropRates[i]=1/items[i].value
+        }
+
+        if(this.field!=='CoconutField'){
+                
+            dropTable.splice(dropTable.indexOf('coconut'),1)
+            dropTable.splice(dropTable.indexOf('tropicalDrink'),1)
+        }
+
+        if(this.field!=='SpiderField'){
+                
+            dropTable.splice(dropTable.indexOf('stinger'),1)
+        }
+
+        if(this.field==='StumpField'){
+                
+            dropTable.splice(dropTable.indexOf('strawberry'),1)
+            dropTable.splice(dropTable.indexOf('redExtract'),1)
+        }
+
+        if(this.type!=='pesticide'){
+
+            dropTable.splice(dropTable.indexOf('bitterberry'),1)
+            dropTable.splice(dropTable.indexOf('neonberry'),1)
+        }
+
+        if(this.type!=='candy'){
+
+            dropTable.splice(dropTable.indexOf('gumdrops'),1)
+            dropTable.splice(dropTable.indexOf('glue'),1)
+        }
+
+        if(this.type==='paper'){
+
+            dropTable.splice(dropTable.indexOf('glitter'),1)
+            dropTable.splice(dropTable.indexOf('royalJelly'),1)
+            dropTable.splice(dropTable.indexOf('starJelly'),1)
+            dropTable.splice(dropTable.indexOf('purplePotion'),1)
+            dropTable.splice(dropTable.indexOf('superSmoothie'),1)
+        }
+
+        dropRates.strawberry*=fieldInfo[this.field].generalColorComp.r*3.5
+        dropRates.redExtract*=fieldInfo[this.field].generalColorComp.r*2
+        dropRates.pineapple*=fieldInfo[this.field].generalColorComp.w+0.2
+        dropRates.enzymes*=fieldInfo[this.field].generalColorComp.b*0.5+0.5
+        dropRates.sunflowerSeed*=fieldInfo[this.field].generalColorComp.w+0.2
+        dropRates.oil*=fieldInfo[this.field].generalColorComp.r*0.5+0.5
+        dropRates.treat*=fieldInfo[this.field].generalColorComp.w<0.5?0.3:2.5
+        dropRates.blueberry*=fieldInfo[this.field].generalColorComp.b*3.5
+        dropRates.blueExtract*=fieldInfo[this.field].generalColorComp.b*2
+
+        if(this.field==='PineapplePatch'){
+
+            dropRates.pineapple*=10
+            dropRates.enzymes*=17
+            dropRates.treats*=0.15
+        }
+
+        if(this.field==='SunflowerField'){
+
+            dropRates.sunflowerSeed*=10
+            dropRates.oil*=17
+            dropRates.treats*=0.15
+        }
+
+        if(this.field==='CoconutField'){
+
+            dropRates.coconut*=20
+            dropRates.tropicalDrink*=20
+            dropRates.treats*=2
+        }
+
+        let totalChance=0
+
+        for(let i in dropTable){
+
+            totalChance+=dropRates[dropTable[i]]
+        }
+
+        for(let i in dropRates){
+
+            dropRates[i]/=totalChance
+        }
+        
+        for(let i=0;i<amountOfTokens;i++){
+
+            let c=0,it,r=Math.random()
+
+            for(let j in dropTable){
+
+                if(r<=dropRates[dropTable[j]]+c){
+
+                    it=dropTable[j]
+                    break
+                }
+
+                c+=dropRates[dropTable[j]]
+            }
+
+            let f=this.flowers[(Math.random()*this.flowers.length)|0]
+
+            objects.tokens.push(new LootToken(45,[this.pos[0]+f[0],this.pos[1]+0.5,this.pos[2]+f[1]],it,MATH.random(1,(({paper:5}[this.type])/items[it].value)+1)|0,true,MATH.doGrammar(this.type+'Planter')))
+        }
+        
+        objects.planters.splice(index,1)
+    }
+    
+    update(){
+        
+        this.growth+=dt
+
+        gl.bindBuffer(gl.ARRAY_BUFFER,meshes[this.type+'Planter'].vertBuffer)
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes[this.type+'Planter'].indexBuffer)
+        gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
+        gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
+        gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
+        gl.uniform2f(glCache.mob_instanceInfo2,1,1)
+        gl.drawElements(gl.TRIANGLES,meshes[this.type+'Planter'].indexAmount,gl.UNSIGNED_SHORT,0)
+        
+        return this.growth>1
     }
 }
 
@@ -17431,6 +17593,22 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
 
 meshes.scratch.indexAmount=index.length
 
+meshes.paperPlanter={}
+meshes.paperPlanter.vertBuffer=gl.createBuffer()
+meshes.paperPlanter.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0,0,1,1.5,1,1,0.7,0.3)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.paperPlanter.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.paperPlanter.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.paperPlanter.indexAmount=index.length
+
+
 player.createdMesh=window.mapMesh
 
 let mesh=new Mesh(true)
@@ -17702,11 +17880,11 @@ function collectPollen(params){
     return totalCollected
 }
 
-function createField(name,x,y,z,w,l,c,_l,genralColorComp){
+function createField(name,x,y,z,w,l,c,_l,generalColorComp){
     
     player.stats['pollenFrom'+name]=0
     
-    fieldInfo[name]={x:x,y:y,z:z,width:w,length:l,getColor:c,getLevel:_l,haze:{},generalColorComp:genralColorComp}
+    fieldInfo[name]={x:x,y:y,z:z,width:w,length:l,getColor:c,getLevel:_l,haze:{},generalColorComp:generalColorComp}
     
     flowers[name]=[]
     
@@ -18604,7 +18782,7 @@ function loop(now){
     
     if(user.clickedKeys.o){
         
-        effects.petalStormPassive.activate()
+        objects.planters.push(new Planter('paper'))
     }
     
     player.attacked=[]
@@ -18614,6 +18792,14 @@ function loop(now){
         if(objects.mobs[i].update()){
             
             objects.mobs[i].die(i)
+        }
+    }
+
+    for(let i=objects.planters.length;i--;){
+        
+        if(objects.planters[i].update()){
+            
+            objects.planters[i].die(i)
         }
     }
     
