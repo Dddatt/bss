@@ -17703,7 +17703,10 @@ meshes.plasticPlanter.indexBuffer=gl.createBuffer()
 verts=[]
 index=[]
 
-b(0,0,0,1.1,3,1.1,1,0.8,0.4)
+c(0,0,0,0.75,1,10,1,0.8,0.4,-90,0,0,0.45,true,true,true)
+c(0,0.6+0.2,0,0.75,0.8,10,1,0.8,0.4,-90,0,0,0.75,true,true,true)
+c(0,0.75+0.25,0,0.89,0.4,10,1,0.8,0.4,-90,0,0,0.89,true,true,true)
+c(0,0.76+0.25,0,0.65,0.4,10,1*0.35,0.7*0.35,0.3*0.35,-90,0,0,0.65,true,true,true)
 
 gl.bindBuffer(gl.ARRAY_BUFFER,meshes.plasticPlanter.vertBuffer)
 gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
@@ -18976,7 +18979,7 @@ function loop(now){
     
     if(user.clickedKeys.o){
         
-        objects.planters.push(new Planter(...MATH.selectFromArray(['paper','plastic','candy','tacky','redClay','blueClay','tacky','pesticide','petal','plenty'],1)))
+        objects.planters.push(new Planter('plastic'))
     }
     
     player.attacked=[]
