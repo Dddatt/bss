@@ -5882,7 +5882,7 @@ let items={
     
     purplePotion:{
         
-        amount:0,u:128*6/2048,v:128*3/2048,value:35,
+        amount:0,u:128*6/2048,v:128*3/2048,value:95,
         use:function(){
             
             items.purplePotion.amount--
@@ -5892,7 +5892,7 @@ let items={
     
     superSmoothie:{
         
-        amount:0,u:128*7/2048,v:128*3/2048,value:40,
+        amount:0,u:128*7/2048,v:128*3/2048,value:120,
         use:function(){
             
             items.superSmoothie.amount--
@@ -6524,7 +6524,7 @@ let items={
             
             return slot.type!=='basic'
         },
-        amount:0,u:128*4/2048,v:128*5/2048,value:50,
+        amount:0,u:128*4/2048,v:128*5/2048,value:60,
         use:function(){
             
             items.basicEgg.amount--
@@ -6544,7 +6544,7 @@ let items={
             
             return true
         },
-        amount:0,u:128*5/2048,v:128*5/2048,value:80,
+        amount:0,u:128*5/2048,v:128*5/2048,value:90,
         use:function(){
             
             let types={mythic:1/4000,legendary:0.075-(1/4000),epic:0.325,rare:0.6},r=Math.random(),type,c=0
@@ -6911,7 +6911,7 @@ let items={
             
             return slot.type
         },
-        amount:0,u:128*3/2048,v:128*8/2048,value:12,
+        amount:0,u:128*3/2048,v:128*8/2048,value:10,
         use:function(){
             
             let types={mythic:1/4000,legendary:0.075-(1/4000),epic:0.325,rare:0.6},r=Math.random(),type,c=0
@@ -6955,7 +6955,7 @@ let items={
             
             return slot.type
         },
-        amount:0,u:128*4/2048,v:128*8/2048,value:60,
+        amount:0,u:128*4/2048,v:128*8/2048,value:90,
         use:function(){
             
             let types={mythic:1/4000,legendary:0.075-(1/4000),epic:0.325,rare:0.6},r=Math.random(),type,c=0
@@ -11443,7 +11443,7 @@ class Planter {
     constructor(type){
         
         this.growth=0
-        this.maxGrowth={paper:10*60,candy:20*60}[type]
+        this.maxGrowth={paper:10*60,plastic:13*60,candy:16*60,redClay:20*60,blueClay:20*60,pesticide:27*60,petal:30*60,plenty:35*60}[type]
         this.type=type
         this.field=player.fieldIn
         this.x=player.flowerIn.x
@@ -11468,7 +11468,7 @@ class Planter {
     
     die(index){
         
-        let amountOfTokens={paper:9,candy:15}[this.type],dropTable=[],dropRates={}
+        let amountOfTokens={paper:9,plastic:13,candy:15,redClay:17,blueClay:17,tacky:18,pesticide:20,petal:23,plenty:25}[this.type],dropTable=[],dropRates={}
 
         for(let i in items){
 
@@ -11500,14 +11500,37 @@ class Planter {
 
             dropTable.splice(dropTable.indexOf('bitterberry'),1)
             dropTable.splice(dropTable.indexOf('neonberry'),1)
-        }
-
-        if(this.type!=='candy'){
-
-            dropTable.splice(dropTable.indexOf('gumdrops'),1)
-            dropTable.splice(dropTable.indexOf('glue'),1)
 
         } else {
+
+            dropRates.bitterberry*=28
+            dropRates.neonberry*=25
+            dropRates.royalJelly*=1.5
+        }
+
+        if(this.type==='redClay'){
+
+            dropRates.blueberry*=0.25
+            dropRates.blueExtract=0
+            dropRates.redExtract*=2.25
+            dropRates.strawberry*=2
+            dropRates.pineapple*=0.5
+            dropRates.sunflowerSeed*=0.5
+            dropRates.treat*=0.5
+        }
+
+        if(this.type==='blueClay'){
+
+            dropRates.strawberry*=0.25
+            dropRates.redExtract=0
+            dropRates.blueExtract*=2.25
+            dropRates.blueberry*=2
+            dropRates.pineapple*=0.5
+            dropRates.sunflowerSeed*=0.5
+            dropRates.treat*=0.5
+        }
+
+        if(this.type==='candy'){
 
             dropRates.gumdrops*=50
             dropRates.glue*=50
@@ -11523,6 +11546,46 @@ class Planter {
             dropTable.splice(dropTable.indexOf('starJelly'),1)
             dropTable.splice(dropTable.indexOf('purplePotion'),1)
             dropTable.splice(dropTable.indexOf('superSmoothie'),1)
+            dropTable.splice(dropTable.indexOf('gumdrops'),1)
+            dropTable.splice(dropTable.indexOf('glue'),1)
+
+        } else {
+
+            dropRates.blueExtract*=1.5
+            dropRates.redExtract*=1.5
+            dropRates.glitter*=1.5
+            dropRates.royalJelly*=2
+            dropRates.starJelly*=0.75
+        }
+
+        if(this.type==='petal'){
+
+            dropRates.glitter*=4.5
+            dropRates.royalJelly*=4
+            dropRates.starJelly*=4
+            dropRates.gumdrops*=2.5
+            dropRates.glue*=3
+            dropRates.tropicalDrink*=2
+            dropRates.coconut*=2
+        }
+
+        if(this.type==='plenty'){
+
+            dropRates.gumdrops*=2
+            dropRates.glitter*=3
+            dropRates.neonberry*=4
+            dropRates.enzymes*=3
+            dropRates.oil*=3
+            dropRates.redExtract*=3
+            dropRates.blueExtract*=3
+            dropRates.glue*=3.5
+            dropRates.tropicalDrink*=3
+            dropRates.royalJelly*=7
+            dropRates.starJelly*=6
+            dropRates.superSmoothie*=2
+            dropRates.purplePotion*=2
+            dropRates.coconut*=3
+            dropRates.treats*=0.5
         }
 
         dropRates.strawberry*=fieldInfo[this.field].generalColorComp.r*3.5
@@ -11585,7 +11648,7 @@ class Planter {
 
             let f=this.flowers[(Math.random()*this.flowers.length)|0]
 
-            objects.tokens.push(new LootToken(45,[this.pos[0]+f[0],this.pos[1]+0.5,this.pos[2]+f[1]],it,MATH.random(1,(({paper:5,candy:7}[this.type])/items[it].value)+1)|0,true,MATH.doGrammar(this.type+'Planter')))
+            objects.tokens.push(new LootToken(45,[this.pos[0]+f[0],this.pos[1]+0.5,this.pos[2]+f[1]],it,MATH.random(1,(({paper:5,plastic:6,candy:7,redClay:8,blueClay:8,tacky:9,pesticide:9.5,petal:13,plenty:15}[this.type])/items[it].value)+1)|0,true,MATH.doGrammar(this.type+'Planter')))
         }
         
         objects.planters.splice(index,1)
@@ -17634,6 +17697,111 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
 
 meshes.candyPlanter.indexAmount=index.length
 
+meshes.plasticPlanter={}
+meshes.plasticPlanter.vertBuffer=gl.createBuffer()
+meshes.plasticPlanter.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0,0,1.1,3,1.1,1,0.8,0.4)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.plasticPlanter.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.plasticPlanter.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.plasticPlanter.indexAmount=index.length
+
+meshes.pesticidePlanter={}
+meshes.pesticidePlanter.vertBuffer=gl.createBuffer()
+meshes.pesticidePlanter.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0,0,1.1,3,1.1,0,0.8,0.3)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.pesticidePlanter.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.pesticidePlanter.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.pesticidePlanter.indexAmount=index.length
+
+meshes.redClayPlanter={}
+meshes.redClayPlanter.vertBuffer=gl.createBuffer()
+meshes.redClayPlanter.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0,0,1.1,3,1.1,0.8,0,0)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.redClayPlanter.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.redClayPlanter.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.redClayPlanter.indexAmount=index.length
+
+meshes.blueClayPlanter={}
+meshes.blueClayPlanter.vertBuffer=gl.createBuffer()
+meshes.blueClayPlanter.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0,0,1.1,3,1.1,0,0,0.8)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.blueClayPlanter.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.blueClayPlanter.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.blueClayPlanter.indexAmount=index.length
+
+meshes.tackyPlanter={}
+meshes.tackyPlanter.vertBuffer=gl.createBuffer()
+meshes.tackyPlanter.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0,0,1.1,3,1.1,0.2,0.8,0.2)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.tackyPlanter.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.tackyPlanter.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.tackyPlanter.indexAmount=index.length
+
+meshes.petalPlanter={}
+meshes.petalPlanter.vertBuffer=gl.createBuffer()
+meshes.petalPlanter.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0,0,1.1,3,1.1,0.8,0.8,0.8)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.petalPlanter.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.petalPlanter.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.petalPlanter.indexAmount=index.length
+
+meshes.plentyPlanter={}
+meshes.plentyPlanter.vertBuffer=gl.createBuffer()
+meshes.plentyPlanter.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0,0,1.1,3,1.1,1,0.5,0)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.plentyPlanter.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.plentyPlanter.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.plentyPlanter.indexAmount=index.length
+
 
 player.createdMesh=window.mapMesh
 
@@ -18808,7 +18976,7 @@ function loop(now){
     
     if(user.clickedKeys.o){
         
-        objects.planters.push(new Planter(Math.random()<0.5?'paper':'candy'))
+        objects.planters.push(new Planter(...MATH.selectFromArray(['paper','plastic','candy','tacky','redClay','blueClay','tacky','pesticide','petal','plenty'],1)))
     }
     
     player.attacked=[]
