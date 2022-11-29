@@ -17733,7 +17733,27 @@ meshes.pesticidePlanter.indexBuffer=gl.createBuffer()
 verts=[]
 index=[]
 
-b(0,0,0,1.1,3,1.1,0,0.8,0.3)
+c(0,-0.375,0,0.8,0.75,10,0,0.65,0,-90,0,0,0.35,true,true,true)
+c(0,0.375,0,0.35,0.75,10,0,0.65,0,-90,0,0,0.8,true,true,true)
+
+c(0,-0.375+0.375+0.375,0,0.7,0.75,10,0,0.65,0,-90,0,0,0.3,true,true,true)
+c(0,0.375+0.375+0.375,0,0.3,0.75,10,0,0.65,0,-90,0,0,0.7,true,true,true)
+
+c(0,0.375+0.375,0,0.25,1.51,10,0.9,0.9,0,0,0,0,0.25,true,true,true)
+c(0,0.375+0.375,0,0.25,1.51,10,0.9,0.9,0,0.001,90,0,0.25,true,true,true)
+
+c(0,0.375+0.375,0,0.075,1.515,10,0,0,0,0,0,0,0.075,true,true,true)
+c(0,0.375+0.375,0,0.075,1.515,10,0,0,0,0.001,90,0,0.075,true,true,true)
+
+c(0,0.375+0.375+0.15,0,0.05,1.515,10,0,0,0,0,0,0,0.05,true,true,true)
+c(0,0.375+0.375+0.15,0,0.05,1.515,10,0,0,0,0.001,90,0,0.05,true,true,true)
+
+c(0.15,0.375+0.375-0.085,0,0.05,1.515,10,0,0,0,0,0,0,0.05,true,true,true)
+c(0,0.375+0.375-0.085,0.15,0.05,1.515,10,0,0,0,0.001,90,0,0.05,true,true,true)
+c(-0.15,0.375+0.375-0.085,0,0.05,1.515,10,0,0,0,0,0,0,0.05,true,true,true)
+c(0,0.375+0.375-0.05,-0.15,0.05,1.515,10,0,0,0,0.001,90,0,0.05,true,true,true)
+
+c(0,0,0,0.27,3.1,10,1*0.35,0.7*0.35,0.3*0.35,-90,0,0,0.27,true,true,true)
 
 gl.bindBuffer(gl.ARRAY_BUFFER,meshes.pesticidePlanter.vertBuffer)
 gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
@@ -18991,7 +19011,7 @@ function loop(now){
     
     if(user.clickedKeys.o){
         
-        objects.planters.push(new Planter('candy'))
+        objects.planters.push(new Planter('pesticide'))
     }
     
     player.attacked=[]
