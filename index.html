@@ -11572,7 +11572,9 @@ class Planter {
             dropRates.gumdrops*=2.5
             dropRates.glue*=3
             dropRates.tropicalDrink*=2
-            dropRates.coconut*=2
+            dropRates.coconut*=1.5
+            dropRates.bitterberry*=3
+            dropTable.push('bitterberry')
             dropTable.splice(dropTable.indexOf('strawberry'),1)
             dropTable.splice(dropTable.indexOf('blueberry'),1)
             dropTable.splice(dropTable.indexOf('redExtract'),1)
@@ -11581,21 +11583,28 @@ class Planter {
 
         if(this.type==='plenty'){
 
-            dropRates.gumdrops*=2
+            dropRates.gumdrops*=3
             dropRates.glitter*=3
             dropRates.neonberry*=4
-            dropRates.enzymes*=3
-            dropRates.oil*=3
-            dropRates.redExtract*=3
-            dropRates.blueExtract*=3
+            dropRates.bitterberry*=4
+            dropRates.enzymes*=4
+            dropRates.oil*=4
+            dropRates.redExtract*=4
+            dropRates.blueExtract*=4
             dropRates.glue*=3.5
             dropRates.tropicalDrink*=3
-            dropRates.royalJelly*=7
+            dropRates.royalJelly*=4
             dropRates.starJelly*=6
-            dropRates.superSmoothie*=2
-            dropRates.purplePotion*=2
-            dropRates.coconut*=3
-            dropRates.treats*=0.5
+            dropRates.superSmoothie*=3
+            dropRates.purplePotion*=3
+            dropRates.coconut*=1.5
+            dropTable.push('bitterberry')
+            dropTable.push('neonberry')
+            dropTable.splice(dropTable.indexOf('treat'),1)
+            dropTable.splice(dropTable.indexOf('strawberry'),1)
+            dropTable.splice(dropTable.indexOf('blueberry'),1)
+            dropTable.splice(dropTable.indexOf('sunflowerSeed'),1)
+            dropTable.splice(dropTable.indexOf('pineapple'),1)
         }
 
         dropRates.strawberry*=fieldInfo[this.field].generalColorComp.r*3.5
