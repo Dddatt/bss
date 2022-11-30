@@ -431,7 +431,7 @@ w, coconut:204 oh dear
         
     </svg>
 
-    <svg id='comfortingNectar' style='width:30;height:30;'>
+    <svg id='comfortingNectar' style='width:30;height:30;display:none'>
         
         <rect width='30' height='30' fill='rgb(122,153,174)'></rect>
         <rect id='comfortingNectar_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0'></rect>
@@ -442,7 +442,7 @@ w, coconut:204 oh dear
         
     </svg>
 
-    <svg id='invigoratingNectar' style='width:30;height:30;'>
+    <svg id='invigoratingNectar' style='width:30;height:30;display:none'>
         
         <rect width='30' height='30' fill='rgb(174,87,79)'></rect>
         
@@ -456,7 +456,7 @@ w, coconut:204 oh dear
         
     </svg>
 
-    <svg id='motivatingNectar' style='width:30;height:30;'>
+    <svg id='motivatingNectar' style='width:30;height:30;display:none'>
         
         <rect width='30' height='30' fill='rgb(140,116,165)'></rect>
         <rect id='motivatingNectar_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0'></rect>
@@ -471,7 +471,7 @@ w, coconut:204 oh dear
         
     </svg>
 
-    <svg id='refreshingNectar' style='width:30;height:30;'>
+    <svg id='refreshingNectar' style='width:30;height:30;display:none'>
         
         <rect width='30' height='30' fill='rgb(117,174,113)'></rect>
         <rect id='refreshingNectar_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0'></rect>
@@ -486,7 +486,7 @@ w, coconut:204 oh dear
         
     </svg>
 
-    <svg id='satisfyingNectar' style='width:30;height:30;'>
+    <svg id='satisfyingNectar' style='width:30;height:30;display:none'>
         
         <rect width='30' height='30' fill='rgb(174,148,162)'></rect>
         <rect id='satisfyingNectar_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0'></rect>
@@ -2583,6 +2583,11 @@ let triggers={
             player.updateGear()
             player.updateTool('darkScythe')
             player.addEffect('superSmoothieBuff')
+            player.addEffect('comfortingNectar')
+            player.addEffect('refreshingNectar')
+            player.addEffect('invigoratingNectar')
+            player.addEffect('motivatingNectar')
+            player.addEffect('satisfyingNectar')
             player.hive=[[]]
             player.addSlot('basic')
             player.addSlot('looker')
@@ -2658,6 +2663,11 @@ let triggers={
             player.updateGear()
             player.updateTool('tidePopper')
             player.addEffect('superSmoothieBuff')
+            player.addEffect('comfortingNectar')
+            player.addEffect('refreshingNectar')
+            player.addEffect('invigoratingNectar')
+            player.addEffect('motivatingNectar')
+            player.addEffect('satisfyingNectar')
             player.hive=[[]]
             player.addSlot('basic')
             player.addSlot('looker')
@@ -2735,6 +2745,11 @@ let triggers={
             player.updateGear()
             player.updateTool('gummyBaller')
             player.addEffect('superSmoothieBuff')
+            player.addEffect('comfortingNectar')
+            player.addEffect('refreshingNectar')
+            player.addEffect('invigoratingNectar')
+            player.addEffect('motivatingNectar')
+            player.addEffect('satisfyingNectar')
             player.hive=[[]]
             player.addSlot('basic')
             player.addSlot('buoyant')
@@ -2851,7 +2866,7 @@ let triggers={
         },minX:-39-4,maxX:-39+4,minY:30,maxY:37,minZ:88-4,maxZ:88+4,message:'Use Instant Converter<br>(1 Ticket)',func:function(player){
             
             textRenderer.add(player.pollen,[player.body.position.x,player.body.position.y+1,player.body.position.z],COLORS.honey,1,'⇆')
-            player.honey+=player.pollen
+            player.honey+=Math.ceil(player.pollen*player.honeyPerPollen)
             player.pollen=0
             
         }
@@ -2866,7 +2881,7 @@ let triggers={
         },minX:-69-3,maxX:-69+3,minY:11,maxY:17,minZ:62.5-2.5,maxZ:62.5+2.5,message:'Use Instant Converter<br>(1 Ticket)',func:function(player){
             
             textRenderer.add(player.pollen,[player.body.position.x,player.body.position.y+1,player.body.position.z],COLORS.honey,1,'⇆')
-            player.honey+=player.pollen
+            player.honey+=Math.ceil(player.pollen*player.honeyPerPollen)
             player.pollen=0
             
         }
@@ -3087,7 +3102,7 @@ let beeInfo={
     
     gummy:{
         
-        u:128*13/2048,v:0,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:14,convertSpeed:4,convertAmount:700,tokens:['gummyBlob','gummyBarrage','whiteBoost'],attack:3,energy:50,rarity:'event',color:'white',description:"A squishy bee who's sweet as sugar. Covers flowers in goo to grant you bonus honey!",giftedHiveBonus:{oper:'+',stat:'honeyPerPollen',num:1.05}
+        u:128*13/2048,v:0,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:14,convertSpeed:4,convertAmount:700,tokens:['gummyBlob','gummyBarrage','whiteBoost'],attack:3,energy:50,rarity:'event',color:'white',description:"A squishy bee who's sweet as sugar. Covers flowers in goo to grant you bonus honey!",giftedHiveBonus:{oper:'*',stat:'honeyPerPollen',num:1.05}
         
     },
     
@@ -3817,7 +3832,7 @@ let effects={
                 
                 let a=Math.min(Math.round(player.capacity*amount*0.05),player.pollen)
                 player.pollen-=a
-                player.honey+=a
+                player.honey+=Math.ceil(a*player.honeyPerPollen)
                 if(player.setting_enablePollenText)
                     textRenderer.add(a,[player.body.position.x,player.body.position.y+2,player.body.position.z],COLORS.honey,0,'+')
             }
@@ -5539,6 +5554,126 @@ let effects={
         getMessage:(amount)=>{
             
             return 'Tabby Love\nx'+player.tabbyLoveStacks+' Tabby Bee convert rate\nx'+player.tabbyLoveStacks+' Tabby Bee gather amount\nx'+player.tabbyLoveStacks+' pollen from "Scratch"'
+        }
+    },
+
+    comfortingNectar:{
+        
+        u:128*5/2048,v:128/2048,
+        svg:document.getElementById('comfortingNectar'),
+        cooldown:document.getElementById('comfortingNectar_cooldown'),
+        amount:document.getElementById('comfortingNectar_amount'),
+        maxCooldown:60*60*6,
+        tokenLife:4,
+        amountFromCooldown:true,
+        
+        update:(amount,player)=>{
+            
+            player.whiteConvertRate*=(amount*0.9+1.1).toFixed(2)
+            player.bluePollen*=(amount*0.45+1.05).toFixed(2)
+            player.convertRateAtHive*=(amount*0.9+1.1).toFixed(2)
+            player.honeyPerPollen*=(amount*0.04+1.01).toFixed(2)
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Comforting Nectar\nx'+(amount*0.9+1.1).toFixed(2)+' white bee convert rate\nx'+(amount*0.45+1.05).toFixed(2)+' blue pollen\nx'+(amount*0.9+1.1).toFixed(2)+' convert rate at hive\nx'+(amount*0.04+1.01).toFixed(2)+' honey per pollen'
+        }
+    },
+
+    invigoratingNectar:{
+        
+        u:128*5/2048,v:128/2048,
+        svg:document.getElementById('invigoratingNectar'),
+        cooldown:document.getElementById('invigoratingNectar_cooldown'),
+        amount:document.getElementById('invigoratingNectar_amount'),
+        maxCooldown:60*60*6,
+        tokenLife:4,
+        amountFromCooldown:true,
+        
+        update:(amount,player)=>{
+            
+            player.convertRate*=(amount*0.45+1.05).toFixed(2)
+            player.redPollen*=(amount*0.45+1.05).toFixed(2)
+            player.convertRateAtHive*=(amount*0.09+1.01).toFixed(2)
+            player.honeyPerPollen*=(amount*0.04+1.01).toFixed(2)
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Invigorating Nectar\nx'+(amount*0.45+1.05).toFixed(2)+' convert rate\nx'+(amount*0.45+1.05).toFixed(2)+' red pollen\nx'+(amount*0.09+1.01).toFixed(2)+' bee attack\nx'+(amount*0.04+1.01).toFixed(2)+' honey per pollen'
+        }
+    },
+
+    motivatingNectar:{
+        
+        u:128*5/2048,v:128/2048,
+        svg:document.getElementById('motivatingNectar'),
+        cooldown:document.getElementById('motivatingNectar_cooldown'),
+        amount:document.getElementById('motivatingNectar_amount'),
+        maxCooldown:60*60*6,
+        tokenLife:4,
+        amountFromCooldown:true,
+        
+        update:(amount,player)=>{
+            
+            player.convertRate*=(amount*0.45+1.05).toFixed(2)
+            player.bluePollen*=(amount*0.45+1.05).toFixed(2)
+            player.beeAbilityRate*=(amount*0.04+1.01).toFixed(2)
+            player.honeyPerPollen*=(amount*0.04+1.01).toFixed(2)
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Motivating Nectar\nx'+(amount*0.45+1.05).toFixed(2)+' convert rate\nx'+(amount*0.45+1.05).toFixed(2)+' blue pollen\nx'+(amount*0.04+1.01).toFixed(2)+' bee ability rate\nx'+(amount*0.04+1.01).toFixed(2)+' honey per pollen'
+        }
+    },
+
+    refreshingNectar:{
+        
+        u:128*5/2048,v:128/2048,
+        svg:document.getElementById('refreshingNectar'),
+        cooldown:document.getElementById('refreshingNectar_cooldown'),
+        amount:document.getElementById('refreshingNectar_amount'),
+        maxCooldown:60*60*6,
+        tokenLife:4,
+        amountFromCooldown:true,
+        
+        update:(amount,player)=>{
+            
+            player.blueConvertRate*=(amount*0.9+1.1).toFixed(2)
+            player.redPollen*=(amount*0.45+1.05).toFixed(2)
+            player.beeEnergy*=(amount*0.45+1.05).toFixed(2)
+            player.honeyPerPollen*=(amount*0.04+1.01).toFixed(2)
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Refreshing Nectar\nx'+(amount*0.9+1.1).toFixed(2)+' blue bee convert rate\nx'+(amount*0.45+1.05).toFixed(2)+' red pollen\nx'+(amount*0.45+1.05).toFixed(2)+' bee energy\nx'+(amount*0.04+1.01).toFixed(2)+' honey per pollen'
+        }
+    },
+
+    satisfyingNectar:{
+        
+        u:128*5/2048,v:128/2048,
+        svg:document.getElementById('satisfyingNectar'),
+        cooldown:document.getElementById('satisfyingNectar_cooldown'),
+        amount:document.getElementById('satisfyingNectar_amount'),
+        maxCooldown:60*60*6,
+        tokenLife:4,
+        amountFromCooldown:true,
+        
+        update:(amount,player)=>{
+            
+            player.redConvertRate*=(amount*0.9+1.1).toFixed(2)
+            player.whitePollen*=(amount*0.9+1.1).toFixed(2)
+            player.honeyAtHive*=(amount*0.45+1.05).toFixed(2)
+            player.honeyPerPollen*=(amount*0.04+1.01).toFixed(2)
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Satisfying Nectar\nx'+(amount*0.9+1.1).toFixed(2)+' red bee convert rate\nx'+(amount*0.9+1.1).toFixed(2)+' white pollen\nx'+(amount*0.45+1.05).toFixed(2)+' honey at hive\nx'+(amount*0.04+1.01).toFixed(2)+' honey per pollen'
         }
     },
 }
@@ -7690,7 +7825,7 @@ class Bee {
                     this.state='convertHoney'
                     this.convertTimer=this.convertSpeed
                     
-                    let amountToTake=Math.min(Math.round(this.convertAmount*player.convertRate),player.pollen)
+                    let amountToTake=Math.min(Math.round(this.convertAmount*player.convertRate*player[beeInfo[this.type].color+'ConvertRate']*player.convertRateAtHive),player.pollen)
                     
                     if(amountToTake===player.pollen){
                         
@@ -7721,9 +7856,9 @@ class Bee {
                 if(this.convertTimer<=0){
                     
                     this.state='moveToHiveToConvert'
-                    player.honey+=this.pollen*player.honeyAtHive
+                    player.honey+=Math.ceil(this.pollen*player.honeyAtHive*player.honeyPerPollen)
                     
-                    textRenderer.add(Math.ceil(this.pollen*player.honeyAtHive),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
+                    textRenderer.add(Math.ceil(this.pollen*player.honeyAtHive*player.honeyPerPollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
                     
                     this.pollen=0
                     
@@ -7760,7 +7895,7 @@ class Bee {
                     this.state='convertBalloon'
                     this.convertTimer=this.convertSpeed
                     
-                    let amountToTake=Math.min(Math.round(this.convertAmount*player.convertRate*(this.type==='buoyant'?3:1)),player.hiveBalloon.pollen)
+                    let amountToTake=Math.min(Math.round(this.convertAmount*player.convertRate*(this.type==='buoyant'?3:1)*player[beeInfo[this.type].color+'ConvertRate']*player.convertRateAtHive),player.hiveBalloon.pollen)
                     
                     if(amountToTake===player.hiveBalloon.pollen){
                         
@@ -7791,9 +7926,9 @@ class Bee {
                 if(this.convertTimer<=0){
                     
                     this.state='moveToHiveToConvertBalloon'
-                    player.honey+=this.pollen*player.honeyAtHive
+                    player.honey+=Math.ceil(this.pollen*player.honeyAtHive*player.honeyPerPollen)
                     
-                    textRenderer.add(this.pollen,[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
+                    textRenderer.add(Math.ceil(this.pollen*player.honeyAtHive*player.honeyPerPollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
                     
                     this.pollen=0
                     
@@ -8598,9 +8733,9 @@ class Flame {
             this.oilTrail=new TrailRenderer.Trail({length:10,size:0.75,triangle:true,color:[0.1,0,0,1]})
             
             player.pollen-=Math.min(Math.ceil(player.convertTotal*0.15),player.pollen)
-            player.honey+=Math.min(Math.ceil(player.convertTotal*0.15),player.pollen)
+            player.honey+=Math.ceil(Math.min(Math.ceil(player.convertTotal*0.15),player.pollen)*player.honeyPerPollen)
             if(player.setting_enablePollenText)
-                textRenderer.add(Math.min(Math.ceil(player.convertTotal*0.15),player.pollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
+                textRenderer.add(Math.ceil(Math.min(Math.ceil(player.convertTotal*0.15),player.pollen)*player.honeyPerPollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
         }
     }
     
@@ -8624,9 +8759,9 @@ class Flame {
                 
                 this.life*=1.5
                 player.pollen-=Math.min(Math.ceil(player.convertTotal*0.15),player.pollen)
-                player.honey+=Math.min(Math.ceil(player.convertTotal*0.15),player.pollen)
+                player.honey+=Math.ceil(Math.min(Math.ceil(player.convertTotal*0.15),player.pollen)*player.honeyPerPollen)
                 if(player.setting_enablePollenText)
-                    textRenderer.add(Math.min(Math.ceil(player.convertTotal*0.15),player.pollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
+                    textRenderer.add(Math.ceil(Math.min(Math.ceil(player.convertTotal*0.15),player.pollen)*player.honeyPerPollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
                 this.getRidOfOilTrailTimer=2
                 this.oilT=0
                 this.oilPos=[player.body.position.x,player.body.position.y+0.3,player.body.position.z]
@@ -9294,7 +9429,7 @@ class Target {
         
         if(vec3.sqrDist(this.pos,[player.body.position.x,player.body.position.y,player.body.position.z])<=4){
             
-            let amountToConvert=Math.min((player.convertTotal*0.5)+(10*this.bee.convertAmount*player.convertRate)*(player.flameHeatStack*5),player.pollen)
+            let amountToConvert=Math.min((player.convertTotal*0.5)+(10*this.bee.convertAmount*player.convertRate*player[beeInfo[this.bee.type].color+'ConvertRate'])*(player.flameHeatStack*5),player.pollen)
             
             player.pollen-=amountToConvert
             
@@ -9583,13 +9718,13 @@ class PetalShuriken {
                 
                 this.hitBees.push(i)
                 
-                let amountToConvert=Math.ceil(Math.min(player.pollen,10000+b.convertAmount*7.5))
+                let amountToConvert=Math.ceil(Math.min(player.pollen,10000+b.convertAmount*7.5*player[beeInfo[b.type].color+'ConvertRate']))
                 
                 player.pollen-=amountToConvert
-                player.honey+=amountToConvert
+                player.honey+=Math.ceil(amountToConvert*player.honeyPerPollen)
                 
                 if(amountToConvert)
-                    textRenderer.add(amountToConvert.toString(),[b.pos[0],b.pos[1]+0.75,b.pos[2]],COLORS.honey,1,'⇆')
+                    textRenderer.add(Math.ceil(amountToConvert*player.honeyPerPollen)+'',[b.pos[0],b.pos[1]+0.75,b.pos[2]],COLORS.honey,1,'⇆')
             }
         }
         
@@ -10628,7 +10763,7 @@ class StarSaw {
             if(amountToConvert){
                 
                 player.pollen-=amountToConvert
-                player.honey+=amountToConvert
+                player.honey+=Math.ceil(amountToConvert*player.honeyPerPollen)
             }
             
             let x=Math.round(p[0]-fieldInfo[player.fieldIn].x),
@@ -10863,13 +10998,13 @@ class Wave {
                 
                 this.hitBees.push(i)
                 
-                let amountToConvert=Math.ceil(Math.min(player.pollen,10000+b.convertAmount*10))
+                let amountToConvert=Math.ceil(Math.min(player.pollen,10000+b.convertAmount*10*player[beeInfo[b.type].color+'ConvertRate']))
                 
                 player.pollen-=amountToConvert
-                player.honey+=amountToConvert
+                player.honey+=Math.ceil(amountToConvert*player.honeyPerPollen)
                 
                 if(amountToConvert)
-                    textRenderer.add(amountToConvert.toString(),[b.pos[0],b.pos[1]+0.75,b.pos[2]],COLORS.honey,1,'⇆')
+                    textRenderer.add(Math.ceil(amountToConvert*player.honeyPerPollen)+'',[b.pos[0],b.pos[1]+0.75,b.pos[2]],COLORS.honey,1,'⇆')
             }
         }
         
@@ -11272,12 +11407,12 @@ class DrainingDiamond {
     
     die(index){
         
-        let am=Math.min(Math.sqrt(player.convertRate*player.bluePollen)*player.capacity*0.05,player.pollen)
+        let am=Math.ceil(Math.min(Math.sqrt(player.convertRate*player.bluePollen)*player.capacity*0.05,player.pollen))
         
-        player.honey+=am*2
+        player.honey+=Math.ceil(am*2*player.honeyPerPollen)
         player.pollen-=am
         
-        player.addMessage('+'+MATH.addCommas((am*2)+'')+' Honey (from Diamond Drain)')
+        player.addMessage('+'+MATH.addCommas(Math.ceil(am*2*player.honeyPerPollen)+'')+' Honey (from Diamond Drain)')
         
         objects.mobs.splice(index,1)
     }
@@ -13552,7 +13687,12 @@ player=(function(out){
         whiteBombPollen:1,
         blueBombPollen:1,
         instantBombConversion:0,
+        honeyPerPollen:1,
         convertRate:1,
+        redConvertRate:1,
+        blueConvertRate:1,
+        whiteConvertRate:1,
+        convertRateAtHive:1,
         whitePollen:1,
         redPollen:1,
         bluePollen:1,
@@ -14053,7 +14193,7 @@ player=(function(out){
         
         for(let i in objects.bees){
             
-            out.defaultStats.convertTotal+=objects.bees[i].convertAmount
+            out.defaultStats.convertTotal+=objects.bees[i].convertAmount*player[beeInfo[objects.bees[i].type].color+'ConvertRate']
             
             if(objects.bees[i].gifted&&giftedTypes.indexOf(objects.bees[i].type)<0){
                 
@@ -18276,7 +18416,7 @@ function collectPollen(params){
     
     totalHoney+=(total.r)*instantConversion.r+(total.b)*instantConversion.b+(total.w)*instantConversion.w+totalGoo*player.instantGooConversion
     
-    totalHoney=Math.ceil(totalHoney)
+    totalHoney=Math.ceil(totalHoney*player.honeyPerPollen)
     
     player.honey+=totalHoney
     
