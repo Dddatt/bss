@@ -11573,6 +11573,10 @@ class Planter {
             dropRates.glue*=3
             dropRates.tropicalDrink*=2
             dropRates.coconut*=2
+            dropTable.splice(dropTable.indexOf('strawberry'),1)
+            dropTable.splice(dropTable.indexOf('blueberry'),1)
+            dropTable.splice(dropTable.indexOf('redExtract'),1)
+            dropTable.splice(dropTable.indexOf('blueExtract'),1)
         }
 
         if(this.type==='plenty'){
@@ -17824,7 +17828,7 @@ let _ico=MATH.icosphere(1)
 
 for(let i=0;i<_ico.verts.length;i+=3){
 
-    verts.push(_ico.verts[i]*1.75,_ico.verts[i+1]*1.75+0.25,_ico.verts[i+2]*1.75,0.4,1.1*(_ico.verts[i+1]*0.3+0.7),0.4)
+    verts.push(_ico.verts[i]*1.75,_ico.verts[i+1]*1.75+0.25,_ico.verts[i+2]*1.75,0.4*(_ico.verts[i+1]*0.2+0.8),1.1*(_ico.verts[i+1]*0.2+0.8),0.4*(_ico.verts[i+1]*0.2+0.8))
 }
 
 index.push(..._ico.index)
@@ -17861,7 +17865,25 @@ meshes.petalPlanter.indexBuffer=gl.createBuffer()
 verts=[]
 index=[]
 
-b(0,0,0,1.1,3,1.1,0.8,0.8,0.8)
+for(let i=0;i<_ico.verts.length;i+=3){
+
+    verts.push(_ico.verts[i]*1.75,_ico.verts[i+1]*1.75+0.25,_ico.verts[i+2]*1.75,1*(_ico.verts[i+1]*0.2+0.8),1*(_ico.verts[i+1]*0.2+0.8),0.5*(_ico.verts[i+1]*0.2+0.8))
+}
+
+for(let i=0;i<MATH.TWO_PI;i+=MATH.TWO_PI*0.166667){
+    
+    b(Math.sin(i)*0.925,1,Math.cos(i)*0.925,1,0.1,0.85,0.85,0.85,0.85,45,i*MATH.TO_DEG,0)
+}
+
+index.push(..._ico.index)
+
+c(0,0.75+0.25,0,0.825,0.4,10,0.8,0.8,0.8,-90,0,0,0.825,true,true,true)
+c(0,0.76+0.25,0,0.65,0.4,10,1*0.35,0.7*0.35,0.3*0.35,-90,0,0,0.65,true,true,true)
+
+for(let i=0,co=0;i<MATH.TWO_PI;i+=MATH.TWO_PI*0.25,co++){
+
+    c(Math.sin(i)*0.875,0.25,Math.cos(i)*0.875,0.25,0.1,10,...([[0.9,0.9,0],[0,0.9,0]][co%2]),0.001,i*MATH.TO_DEG,0,0.25,true,true,true)
+}
 
 gl.bindBuffer(gl.ARRAY_BUFFER,meshes.petalPlanter.vertBuffer)
 gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
@@ -19059,7 +19081,7 @@ function loop(now){
     
     if(user.clickedKeys.o){
         
-        objects.planters.push(new Planter('tacky'))
+        objects.planters.push(new Planter('petal'))
     }
     
     player.attacked=[]
