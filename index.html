@@ -436,7 +436,7 @@ w, in coco: 600b woah ^-^
     <svg id='comfortingNectar' style='width:30;height:30;display:none'>
         
         <rect width='30' height='30' fill='rgb(122,153,174)'></rect>
-        <rect id='comfortingNectar_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0'></rect>
+        <rect id='comfortingNectar_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0.45'></rect>
         
         <path fill='rgb(175, 218, 248)' d='M 22 26C -2 39 0 -1 19 8C 13 5 5 25 22 24' transform='translate(5,2) scale(0.8,0.75)'></path>
 
@@ -448,7 +448,7 @@ w, in coco: 600b woah ^-^
         
         <rect width='30' height='30' fill='rgb(174,87,79)'></rect>
         
-        <rect id='invigoratingNectar_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0'></rect>
+        <rect id='invigoratingNectar_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0.45'></rect>
         
         <g transform='scale(0.9,0.9) translate(2,4)'>
         <path fill='rgb(248, 124, 113)' d='M15 25 C 1 26 5 10 8 8L 12 16L15 0L18 16L 22 8C 27 12 28 27 15 25'></path>
@@ -461,7 +461,7 @@ w, in coco: 600b woah ^-^
     <svg id='motivatingNectar' style='width:30;height:30;display:none'>
         
         <rect width='30' height='30' fill='rgb(140,116,165)'></rect>
-        <rect id='motivatingNectar_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0'></rect>
+        <rect id='motivatingNectar_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0.45'></rect>
         
         <g transform='translate(1,0) scale(0.95,0.95)'>
         <path fill='rgb(200, 166, 236)' d='M 10 20 C 0 1 30 0 20 20'></path>
@@ -476,7 +476,7 @@ w, in coco: 600b woah ^-^
     <svg id='refreshingNectar' style='width:30;height:30;display:none'>
         
         <rect width='30' height='30' fill='rgb(117,174,113)'></rect>
-        <rect id='refreshingNectar_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0'></rect>
+        <rect id='refreshingNectar_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0.45'></rect>
         
         <g transform='scale(0.9,0.9) translate(2,0)'>
         <path fill='rgb(167, 248, 162)' d='M 15 9 C -6 36 37 34 15 9' transform='scale(1.25,1.25) translate(-3,-5)'></path>
@@ -491,7 +491,7 @@ w, in coco: 600b woah ^-^
     <svg id='satisfyingNectar' style='width:30;height:30;display:none'>
         
         <rect width='30' height='30' fill='rgb(174,148,162)'></rect>
-        <rect id='satisfyingNectar_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0'></rect>
+        <rect id='satisfyingNectar_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0.45'></rect>
         
         <circle cx='15' cy='15' r='10' fill='rgb(248, 211, 231)'></circle>
         <path stroke='rgb(174,148,162)' stroke-width='3' fill='rgb(0,0,0,0)' d='M 19 4 C 4 25 26 3 11 27'></path>
@@ -4749,12 +4749,11 @@ let effects={
             
             player.convertRate*=(amount*5+1).toFixed(2)
             player.blueFieldCapacity*=(amount*5+1).toFixed(2)
-            player.bubblePollen*=(amount*0.5+1).toFixed(2)
         },
         
         getMessage:(amount)=>{
             
-            return 'Bubble Bloat\nx'+(amount*5+1).toFixed(2)+' convert rate\nx'+(amount*5+1).toFixed(2)+' blue field capacity\nx'+(amount*0.5+1).toFixed(2)+' bubble pollen'
+            return 'Bubble Bloat\nx'+(amount*5+1).toFixed(2)+' convert rate\nx'+(amount*5+1).toFixed(2)+' blue field capacity'
         }
     },
     
@@ -4857,7 +4856,7 @@ let effects={
         
         getMessage:(amount)=>{
             
-            return "Pop Star\nEvery 30 blue bomb tokens summons a Pop Star, lasting for 45s, and applies 1m of bubble bloat. It grows for every bubble popped, x1.25 bubble pollen, 20% instant blue conversion, and up to x5 blue pollen. Upon summoning, it also applies 30s of Bubble Bloat. Popping a bubble while the star is active gives 1s(2s if golden) of Bubble Bloat, up to 1h. Bubble Bloat gives up to x6 convert rate, x6 blue field capacity, and x1.5 bubble pollen. When the Pop Star disappears, it spawns 1 bubble for every 10 of the star's size, with an extra 5. Cooldown: 1m"
+            return "Pop Star\nEvery 30 blue bomb tokens summons a Pop Star, lasting for 45s, and applies 1m of bubble bloat. It grows for every bubble popped, x1.25 bubble pollen, 20% instant blue conversion, and up to x5 blue pollen. Upon summoning, it also applies 30s of Bubble Bloat. Popping a bubble while the star is active gives 1s(2s if golden) of Bubble Bloat, up to 1h. Bubble Bloat gives up to x6 convert rate and x6 blue field capacity. When the Pop Star disappears, it spawns 1 bubble for every 10 of the star's size, with an extra 5. Cooldown: 1m"
         }
     },
     
@@ -5760,7 +5759,7 @@ let effects={
 
     comfortingNectar:{
         
-        u:128*5/2048,v:128/2048,
+        u:128*5/2048,v:128/2048,hideAmount:true,
         svg:document.getElementById('comfortingNectar'),
         cooldown:document.getElementById('comfortingNectar_cooldown'),
         amount:document.getElementById('comfortingNectar_amount'),
@@ -5784,7 +5783,7 @@ let effects={
 
     invigoratingNectar:{
         
-        u:128*5/2048,v:128/2048,
+        u:128*5/2048,v:128/2048,hideAmount:true,
         svg:document.getElementById('invigoratingNectar'),
         cooldown:document.getElementById('invigoratingNectar_cooldown'),
         amount:document.getElementById('invigoratingNectar_amount'),
@@ -5808,7 +5807,7 @@ let effects={
 
     motivatingNectar:{
         
-        u:128*5/2048,v:128/2048,
+        u:128*5/2048,v:128/2048,hideAmount:true,
         svg:document.getElementById('motivatingNectar'),
         cooldown:document.getElementById('motivatingNectar_cooldown'),
         amount:document.getElementById('motivatingNectar_amount'),
@@ -5832,7 +5831,7 @@ let effects={
 
     refreshingNectar:{
         
-        u:128*5/2048,v:128/2048,
+        u:128*5/2048,v:128/2048,hideAmount:true,
         svg:document.getElementById('refreshingNectar'),
         cooldown:document.getElementById('refreshingNectar_cooldown'),
         amount:document.getElementById('refreshingNectar_amount'),
@@ -5856,7 +5855,7 @@ let effects={
 
     satisfyingNectar:{
         
-        u:128*5/2048,v:128/2048,
+        u:128*5/2048,v:128/2048,hideAmount:true,
         svg:document.getElementById('satisfyingNectar'),
         cooldown:document.getElementById('satisfyingNectar_cooldown'),
         amount:document.getElementById('satisfyingNectar_amount'),
@@ -11873,6 +11872,8 @@ class Planter {
         
         this.growth=0
         this.maxGrowth={paper:10*60,plastic:13*60,candy:16*60,redClay:20*60,blueClay:20*60,tacky:24*60,pesticide:27*60,petal:30*60,plenty:35*60}[type]
+        this.invGrowth=1/this.maxGrowth
+        this.height={paper:1.5,plastic:1.175,candy:1.175,redClay:1.175,blueClay:1.175,tacky:1.175,pesticide:1.5,petal:1.175,plenty:2.4}[type]
         this.type=type
         this.field=player.fieldIn
         this.x=player.flowerIn.x
@@ -11896,8 +11897,69 @@ class Planter {
     }
     
     die(index){
+
+        let perc=this.growth/this.maxGrowth,nectarBonus
+
+        switch(this.type){
+
+            case 'paper':
+
+                nectarBonus={comforting:0.75,invigorating:0.75,satisfying:0.75,motivating:0.75,refreshing:0.75}
+
+            break
+
+            case 'plastic':
+
+                nectarBonus={comforting:1,invigorating:1,satisfying:1,motivating:1,refreshing:1}
+
+            break
+
+            case 'candy':
+
+                nectarBonus={comforting:1,invigorating:1,satisfying:1,motivating:1.25,refreshing:1}
+
+            break
+
+            case 'redClay':
+
+                nectarBonus={comforting:1,invigorating:1.25,satisfying:1.25,motivating:1,refreshing:1}
+
+            break
+
+            case 'blueClay':
+
+                nectarBonus={comforting:1.25,invigorating:1,satisfying:1,motivating:1,refreshing:1.25}
+
+            break
+
+            case 'tacky':
+
+                nectarBonus={comforting:1.3,invigorating:1,satisfying:1.3,motivating:1,refreshing:1}
+
+            break
+
+            case 'pesticide':
+
+                nectarBonus={comforting:1,invigorating:1,satisfying:1.35,motivating:1.35,refreshing:1}
+
+            break
+
+            case 'petal':
+
+                nectarBonus={comforting:1.5,invigorating:1,satisfying:1.5,motivating:1,refreshing:1}
+
+            break
+
+            case 'plenty':
+
+                nectarBonus={comforting:1.5,invigorating:1.5,satisfying:1.5,motivating:1.5,refreshing:1.5}
+
+            break
+        }
+
+        player.addEffect(fieldInfo[this.field].nectarType,(this.maxGrowth*perc*perc*1.5*nectarBonus[fieldInfo[this.field].nectarType.replace('Nectar','')])/(6*60*60))
         
-        let amountOfTokens={paper:9,plastic:13,candy:15,redClay:17,blueClay:17,tacky:18,pesticide:20,petal:23,plenty:25}[this.type],dropTable=[],dropRates={}
+        let amountOfTokens=Math.ceil({paper:9,plastic:13,candy:15,redClay:17,blueClay:17,tacky:18,pesticide:20,petal:23,plenty:25}[this.type]*perc*perc)+2,dropTable=[],dropRates={}
 
         for(let i in items){
 
@@ -12096,7 +12158,7 @@ class Planter {
 
             let f=this.flowers[(Math.random()*this.flowers.length)|0]
 
-            objects.tokens.push(new LootToken(45,[this.pos[0]+f[0],this.pos[1]+0.5,this.pos[2]+f[1]],it,MATH.random(1,(({paper:5,plastic:6,candy:7,redClay:8,blueClay:8,tacky:9,pesticide:9.5,petal:13,plenty:15}[this.type])/items[it].value)+1)|0,true,MATH.doGrammar(this.type+'Planter')))
+            objects.tokens.push(new LootToken(45,[this.pos[0]+f[0],this.pos[1]+0.5,this.pos[2]+f[1]],it,MATH.random(1,(({paper:5,plastic:6,candy:7,redClay:8,blueClay:8,tacky:9,pesticide:9.5,petal:13,plenty:15}[this.type]*(perc*0.5+0.5))/items[it].value)+1)|0,true,MATH.doGrammar(this.type+'Planter')))
         }
         
         objects.planters.splice(index,1)
@@ -12104,7 +12166,17 @@ class Planter {
     
     update(){
         
-        this.growth+=dt
+        this.growth+=dt*420
+
+        textRenderer.addSingle(MATH.doGrammar(this.type+'Planter')+'     1',[this.pos[0],this.pos[1]+this.height+this.displaySize+0.5,this.pos[2]],COLORS.whiteArr,-0.5,false)
+        
+        textRenderer.addDecalRaw(this.pos[0],this.pos[1]+this.height+this.displaySize+0.5,this.pos[2],0,0,...textRenderer.decalUV['rect'],0,0.4,0,2,0.35,0)
+        
+        textRenderer.addDecalRaw(this.pos[0],this.pos[1]+this.height+this.displaySize+0.5,this.pos[2],(-0.5+(this.growth*this.invGrowth)*0.5)/(this.growth*this.invGrowth),0,...textRenderer.decalUV['rect'],0.1,0.85,0.1,this.growth*this.invGrowth*2,0.35,0)
+
+        this.displaySize={paper:1,plastic:1.25,candy:1.3,redClay:1.35,blueClay:1.35,tacky:1.4,pesticide:1.5,petal:1.75,plenty:2}[this.type]*this.growth*this.invGrowth+0.3
+
+        meshes.explosions.instanceData.push(this.pos[0],this.pos[1]+this.height+this.displaySize*0.5,this.pos[2],0,0.8*player.isNight,0,1,this.displaySize,1.03)
 
         gl.bindBuffer(gl.ARRAY_BUFFER,meshes[this.type+'Planter'].vertBuffer)
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes[this.type+'Planter'].indexBuffer)
@@ -12114,7 +12186,7 @@ class Planter {
         gl.uniform2f(glCache.mob_instanceInfo2,1,1)
         gl.drawElements(gl.TRIANGLES,meshes[this.type+'Planter'].indexAmount,gl.UNSIGNED_SHORT,0)
         
-        return this.growth>1
+        return this.growth>this.maxGrowth
     }
 }
 
@@ -18641,11 +18713,11 @@ function collectPollen(params){
     return totalCollected
 }
 
-function createField(name,x,y,z,w,l,c,_l,generalColorComp){
+function createField(name,x,y,z,w,l,c,_l,generalColorComp,nectarType){
     
     player.stats['pollenFrom'+name]=0
     
-    fieldInfo[name]={x:x,y:y,z:z,width:w,length:l,getColor:c,getLevel:_l,haze:{},generalColorComp:generalColorComp}
+    fieldInfo[name]={x:x,y:y,z:z,width:w,length:l,getColor:c,getLevel:_l,haze:{},generalColorComp:generalColorComp,nectarType:nectarType+'Nectar'}
     
     flowers[name]=[]
     
@@ -18668,7 +18740,7 @@ createField('CoconutField',25,12.5,-39.5,17,14,function(){
 },function(){
     
     return 3
-},{w:0.9,b:0.04,r:0.06})
+},{w:0.9,b:0.04,r:0.06},'refreshing')
 
 createField('PepperPatch',61,20.5,-44,15,15,function(){
     
@@ -18679,7 +18751,7 @@ createField('PepperPatch',61,20.5,-44,15,15,function(){
 },function(){
     
     return 3
-},{b:0,r:0.9,w:0.1})
+},{b:0,r:0.9,w:0.1},'invigorating')
 
 createField('RoseField',31,2,31.5,19,13,function(){
     
@@ -18690,7 +18762,7 @@ createField('RoseField',31,2,31.5,19,13,function(){
 },function(){
     
     return Math.random()<0.5?3:Math.random()<0.12?1:2
-},{r:0.88,w:0.12,b:0})
+},{r:0.88,w:0.12,b:0},'motivating')
 
 createField('PineTreeForest',31,12.5,74,15,19,function(){
     
@@ -18701,7 +18773,7 @@ createField('PineTreeForest',31,12.5,74,15,19,function(){
 },function(){
     
     return Math.random()<0.46?3:Math.random()<0.6?1:2
-},{w:0.1,b:0.9,r:0})
+},{w:0.1,b:0.9,r:0},'comforting')
 
 createField('PumpkinPatch',4,12.5,76.5,18,12,function(){
     
@@ -18712,7 +18784,7 @@ createField('PumpkinPatch',4,12.5,76.5,18,12,function(){
 },function(){
     
     return Math.random()<0.76?3:2
-},{w:0.57,r:(1-0.57)*0.52,b:(1-0.57)*0.48})
+},{w:0.57,r:(1-0.57)*0.52,b:(1-0.57)*0.48},'satisfying')
 
 createField('CactusField',4,12.5,63.5,18,11,function(){
     
@@ -18723,7 +18795,7 @@ createField('CactusField',4,12.5,63.5,18,11,function(){
 },function(){
     
     return Math.random()<0.56?3:2
-},{w:0.06,b:(1-0.06)*0.58,r:(1-0.06)*0.42})
+},{w:0.06,b:(1-0.06)*0.58,r:(1-0.06)*0.42},'invigorating')
 
 createField('MountainTopField',-35,33,73,15,15,function(){
     
@@ -18734,7 +18806,7 @@ createField('MountainTopField',-35,33,73,15,15,function(){
 },function(){
     
     return 3
-},{r:0.5,b:0.5,w:0})
+},{r:0.5,b:0.5,w:0},'invigorating')
 
 createField('SunflowerField',15.5,-1.5,16,11,18,function(){
     
@@ -18745,7 +18817,7 @@ createField('SunflowerField',15.5,-1.5,16,11,18,function(){
 },function(){
     
     return Math.random()<0.1?2:1
-},{w:0.7,b:0.15,r:0.15})
+},{w:0.7,b:0.15,r:0.15},'satisfying')
 
 createField('MushroomField',-6,-1.5,29,19,13,function(){
     
@@ -18756,7 +18828,7 @@ createField('MushroomField',-6,-1.5,29,19,13,function(){
 },function(){
     
     return Math.random()<0.9?1:2
-},{w:0.31,b:0,r:0.69})
+},{w:0.31,b:0,r:0.69},'motivating')
 
 createField('StrawberryField',7.5,2,47,15,15,function(){
     
@@ -18767,7 +18839,7 @@ createField('StrawberryField',7.5,2,47,15,15,function(){
 },function(){
     
     return Math.random()<0.04?3:Math.random()<0.8?2:1
-},{w:0.31,b:0,r:0.69})
+},{w:0.31,b:0,r:0.69},'refreshing')
 
 createField('SpiderField',-20,2,47.5,19,14,function(){
     
@@ -18778,7 +18850,7 @@ createField('SpiderField',-20,2,47.5,19,14,function(){
 },function(){
     
     return Math.random()<0.8?2:Math.random()<0.5?3:1
-},{w:1,b:0,r:0})
+},{w:1,b:0,r:0},'motivating')
 
 createField('BambooField',-52,2,50,21,13,function(){
     
@@ -18789,7 +18861,7 @@ createField('BambooField',-52,2,50,21,13,function(){
 },function(){
     
     return Math.random()<0.75?2:Math.random()<0.25?3:1
-},{w:0.25,b:0.75,r:0})
+},{w:0.25,b:0.75,r:0}),'comforting'
 
 createField('PineapplePatch',-71.5,12.5,78,19,15,function(){
     
@@ -18800,7 +18872,7 @@ createField('PineapplePatch',-71.5,12.5,78,19,15,function(){
 },function(){
     
     return Math.random()<0.5?2:Math.random()<0.38?1:3
-},{w:0.89,b:0.05,r:0.06})
+},{w:0.89,b:0.05,r:0.06},'satisfying')
 
 createField('StumpField',-102,16,75,15,15,function(){
     
@@ -18811,7 +18883,7 @@ createField('StumpField',-102,16,75,15,15,function(){
 },function(){
     
     return 3
-},{w:0.15,b:0.8,r:0.05})
+},{w:0.15,b:0.8,r:0.05},'motivating')
 
 createField('BlueFlowerField',-55,-1.5,29,24,13,function(){
     
@@ -18822,7 +18894,7 @@ createField('BlueFlowerField',-55,-1.5,29,24,13,function(){
 },function(){
     
     return Math.random()<0.89?1:2
-},{w:0.31,r:0,b:0.69})
+},{w:0.31,r:0,b:0.69},'refreshing')
 
 createField('CloverField',-50,4,8.5,18,18,function(){
     
@@ -18833,7 +18905,7 @@ createField('CloverField',-50,4,8.5,18,18,function(){
 },function(){
     
     return Math.random()<0.51?1:2
-},{w:0.32,r:0.34,b:0.34})
+},{w:0.32,r:0.34,b:0.34},'invigorating')
 
 createField('DandelionField',-15,-1.5,7,19,13,function(){
     
@@ -18844,18 +18916,7 @@ createField('DandelionField',-15,-1.5,7,19,13,function(){
 },function(){
     
     return Math.random()<0.871?1:2
-},{w:0.85,r:0.05,b:0.1})
-
-createField('DandelionField',-15,-1.5,7,19,13,function(){
-    
-    let c=Math.random()
-    
-    return Math.random()<0.85?'white':Math.random()<0.366?'blue':'red'
-    
-},function(){
-    
-    return Math.random()<0.871?1:2
-},{w:0.85,r:0.05,b:0.1})
+},{w:0.85,r:0.05,b:0.1},'comforting')
 
 createField('AntField',-30,5.5,-59,18,12,function(){
     
@@ -19107,14 +19168,17 @@ function loop(now){
             
             player.effects[i].cooldown-=dt
             
-            effects[player.effects[i].type].amount.textContent=player.effects[i].amount>1?'x'+player.effects[i].amount:''
-            
-            if(effects[player.effects[i].type].amountFromCooldown){
+            if(effects[player.effects[i].type].hideAmount!==true){
+
+                effects[player.effects[i].type].amount.textContent=player.effects[i].amount>1?'x'+player.effects[i].amount:''
                 
-                player.effects[i].amount=player.effects[i].cooldown/effects[player.effects[i].type].maxCooldown
-                
-                effects[player.effects[i].type].amount.textContent=((player.effects[i].amount*100+1)|0)+'%'
-                
+                if(effects[player.effects[i].type].amountFromCooldown){
+                    
+                    player.effects[i].amount=player.effects[i].cooldown/effects[player.effects[i].type].maxCooldown
+                    
+                    effects[player.effects[i].type].amount.textContent=((player.effects[i].amount*100+1)|0)+'%'
+                    
+                }
             }
             
             effects[player.effects[i].type].cooldown.setAttribute('height',(30-player.effects[i].cooldown*30/effects[player.effects[i].type].maxCooldown)||30)
@@ -19457,6 +19521,37 @@ function loop(now){
     
     ParticleRenderer.render()
     
+    TrailRenderer.render()
+    
+    gl.depthMask(true)
+    
+    gl.useProgram(mobRendererProgram)
+    gl.uniformMatrix4fv(glCache.mob_viewMatrix,gl.FALSE,player.viewMatrix)
+    
+    if(user.clickedKeys.o){
+        
+        let p=['redClay','blueClay','paper','plastic','pesticide','petal','plenty','candy','tacky']
+        objects.planters.push(new Planter(p[(Math.random()*p.length)|0]))
+    }
+    
+    player.attacked=[]
+    
+    for(let i=objects.mobs.length;i--;){
+        
+        if(objects.mobs[i].update()){
+            
+            objects.mobs[i].die(i)
+        }
+    }
+
+    for(let i=objects.planters.length;i--;){
+        
+        if(objects.planters[i].update()){
+            
+            objects.planters[i].die(i)
+        }
+    }
+
     gl.useProgram(explosionRendererProgram)
     
     gl.uniformMatrix4fv(glCache.explosion_viewMatrix,gl.FALSE,player.viewMatrix)
@@ -19533,36 +19628,6 @@ function loop(now){
     
     meshes.explosions.instanceData=[]
     meshes.cylinder_explosions.instanceData=[]
-    
-    TrailRenderer.render()
-    
-    gl.depthMask(true)
-    
-    gl.useProgram(mobRendererProgram)
-    gl.uniformMatrix4fv(glCache.mob_viewMatrix,gl.FALSE,player.viewMatrix)
-    
-    if(user.clickedKeys.o){
-        
-        objects.planters.push(new Planter('plenty'))
-    }
-    
-    player.attacked=[]
-    
-    for(let i=objects.mobs.length;i--;){
-        
-        if(objects.mobs[i].update()){
-            
-            objects.mobs[i].die(i)
-        }
-    }
-
-    for(let i=objects.planters.length;i--;){
-        
-        if(objects.planters[i].update()){
-            
-            objects.planters[i].die(i)
-        }
-    }
     
     gl.disable(gl.DEPTH_TEST)
     textRenderer.render(dt,Math.sin(TIME*20))
