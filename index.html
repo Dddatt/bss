@@ -6181,6 +6181,213 @@ let howManyToFeed=document.getElementById('howManyToFeed'),howManyMessage=docume
 
 let items={
     
+    paperPlanter:{
+        
+        amount:1,u:0,v:0,value:Infinity,
+        use:function(){
+            
+            if(objects.planters.length>3){
+
+                player.addMessage('You can only have 3 planters at once!',COLORS.redArr)
+                return
+            }
+
+            if(player.fieldIn){
+                
+                items.paperPlanter.amount--
+                objects.planters.push(new Planter('paper'))
+                
+            } else {
+                
+                player.addMessage('You must be in a field to place a planter!',COLORS.redArr)
+            }
+        }
+    },
+
+    plasticPlanter:{
+        
+        amount:1,u:0,v:0,value:Infinity,
+        use:function(){
+            
+            if(objects.planters.length>3){
+
+                player.addMessage('You can only have 3 planters at once!',COLORS.redArr)
+                return
+            }
+
+            if(player.fieldIn){
+                
+                items.plasticPlanter.amount--
+                objects.planters.push(new Planter('plastic'))
+                
+            } else {
+                
+                player.addMessage('You must be in a field to place a planter!',COLORS.redArr)
+            }
+        }
+    },
+
+    candyPlanter:{
+        
+        amount:1,u:0,v:0,value:Infinity,
+        use:function(){
+            
+            if(objects.planters.length>3){
+
+                player.addMessage('You can only have 3 planters at once!',COLORS.redArr)
+                return
+            }
+
+            if(player.fieldIn){
+                
+                items.candyPlanter.amount--
+                objects.planters.push(new Planter('candy'))
+                
+            } else {
+                
+                player.addMessage('You must be in a field to place a planter!',COLORS.redArr)
+            }
+        }
+    },
+
+    redClayPlanter:{
+        
+        amount:1,u:0,v:0,value:Infinity,
+        use:function(){
+            
+            if(objects.planters.length>3){
+
+                player.addMessage('You can only have 3 planters at once!',COLORS.redArr)
+                return
+            }
+
+            if(player.fieldIn){
+                
+                items.redClayPlanter.amount--
+                objects.planters.push(new Planter('redClay'))
+                
+            } else {
+                
+                player.addMessage('You must be in a field to place a planter!',COLORS.redArr)
+            }
+        }
+    },
+
+    blueClayPlanter:{
+        
+        amount:1,u:0,v:0,value:Infinity,
+        use:function(){
+            
+            if(objects.planters.length>3){
+
+                player.addMessage('You can only have 3 planters at once!',COLORS.redArr)
+                return
+            }
+
+            if(player.fieldIn){
+                
+                items.blueClayPlanter.amount--
+                objects.planters.push(new Planter('blueClay'))
+                
+            } else {
+                
+                player.addMessage('You must be in a field to place a planter!',COLORS.redArr)
+            }
+        }
+    },
+
+    tackyPlanter:{
+        
+        amount:1,u:0,v:0,value:Infinity,
+        use:function(){
+            
+            if(objects.planters.length>3){
+
+                player.addMessage('You can only have 3 planters at once!',COLORS.redArr)
+                return
+            }
+
+            if(player.fieldIn){
+                
+                items.tackyPlanter.amount--
+                objects.planters.push(new Planter('tacky'))
+                
+            } else {
+                
+                player.addMessage('You must be in a field to place a planter!',COLORS.redArr)
+            }
+        }
+    },
+
+    pesticidePlanter:{
+        
+        amount:1,u:0,v:0,value:Infinity,
+        use:function(){
+            
+            if(objects.planters.length>3){
+
+                player.addMessage('You can only have 3 planters at once!',COLORS.redArr)
+                return
+            }
+
+            if(player.fieldIn){
+                
+                items.pesticidePlanter.amount--
+                objects.planters.push(new Planter('pesticide'))
+                
+            } else {
+                
+                player.addMessage('You must be in a field to place a planter!',COLORS.redArr)
+            }
+        }
+    },
+
+    petalPlanter:{
+        
+        amount:1,u:0,v:0,value:Infinity,
+        use:function(){
+            
+            if(objects.planters.length>3){
+
+                player.addMessage('You can only have 3 planters at once!',COLORS.redArr)
+                return
+            }
+
+            if(player.fieldIn){
+                
+                items.petalPlanter.amount--
+                objects.planters.push(new Planter('petal'))
+                
+            } else {
+                
+                player.addMessage('You must be in a field to place a planter!',COLORS.redArr)
+            }
+        }
+    },
+
+    plentyPlanter:{
+        
+        amount:1,u:0,v:0,value:Infinity,
+        use:function(){
+            
+            if(objects.planters.length>3){
+
+                player.addMessage('You can only have 3 planters at once!',COLORS.redArr)
+                return
+            }
+
+            if(player.fieldIn){
+                
+                items.plentyPlanter.amount--
+                objects.planters.push(new Planter('plenty'))
+                
+            } else {
+                
+                player.addMessage('You must be in a field to place a planter!',COLORS.redArr)
+            }
+        }
+    },
+
     gumdrops:{
         
         amount:0,u:128/2048,v:128*7/2048,cooldown:4,autoUse:true,value:5,
@@ -11879,6 +12086,7 @@ class Planter {
         this.x=player.flowerIn.x
         this.z=player.flowerIn.z
         this.pos=[fieldInfo[this.field].x+this.x,fieldInfo[this.field].y+0.5,fieldInfo[this.field].z+this.z,0]
+        this.hasGrown=false
 
         this.flowers=[]
         
@@ -11894,9 +12102,25 @@ class Planter {
                 }
             }
         }
+
+        let DIS=this
+
+        triggers['harvest_'+this.type+'_planter']={
+
+            minX:this.pos[0]-2,maxX:this.pos[0]+2,minY:this.pos[1]-1,maxY:this.pos[1]+4,minZ:this.pos[2]-2,maxZ:this.pos[2]+2,isMachine:true,message:'Harvest '+MATH.doGrammar(this.type+'Planter')+'<br>(not fully grown)',func:function(player){
+
+                DIS.harvested=true
+            }
+        }
     }
     
     die(index){
+
+        triggers['harvest_'+this.type+'_planter'].minY=100000
+        triggers['harvest_'+this.type+'_planter'].maxY=100000
+
+        items[this.type+'Planter'].amount++
+        player.updateInventory()
 
         let perc=this.growth/this.maxGrowth,nectarBonus
 
@@ -11959,7 +12183,7 @@ class Planter {
 
         player.addEffect(fieldInfo[this.field].nectarType,(this.maxGrowth*perc*perc*1.5*nectarBonus[fieldInfo[this.field].nectarType.replace('Nectar','')])/(6*60*60))
         
-        let amountOfTokens=Math.ceil({paper:9,plastic:13,candy:15,redClay:17,blueClay:17,tacky:18,pesticide:20,petal:23,plenty:25}[this.type]*perc*perc)+2,dropTable=[],dropRates={}
+        let amountOfTokens=Math.ceil({paper:9,plastic:13,candy:15,redClay:17,blueClay:17,tacky:18,pesticide:20,petal:23,plenty:25}[this.type]*perc*perc),dropTable=[],dropRates={}
 
         for(let i in items){
 
@@ -12156,9 +12380,14 @@ class Planter {
                 c+=dropRates[dropTable[j]]
             }
 
-            let f=this.flowers[(Math.random()*this.flowers.length)|0]
+            let f=this.flowers[(Math.random()*this.flowers.length)|0],DIS=this
 
-            objects.tokens.push(new LootToken(45,[this.pos[0]+f[0],this.pos[1]+0.5,this.pos[2]+f[1]],it,MATH.random(1,(({paper:5,plastic:6,candy:7,redClay:8,blueClay:8,tacky:9,pesticide:9.5,petal:13,plenty:15}[this.type]*(perc*0.5+0.5))/items[it].value)+1)|0,true,MATH.doGrammar(this.type+'Planter')))
+            window.setTimeout(function(){
+
+                objects.tokens.push(new LootToken(45,[DIS.pos[0]+f[0],DIS.pos[1]+0.5,DIS.pos[2]+f[1]],it,MATH.random(1,(({paper:5,plastic:6,candy:7,redClay:8,blueClay:8,tacky:9,pesticide:9.5,petal:13,plenty:15}[DIS.type]*(perc*0.5+0.5))/items[it].value)+1)|0,true,MATH.doGrammar(DIS.type+'Planter')))
+
+            },225*i)
+            
         }
         
         objects.planters.splice(index,1)
@@ -12167,6 +12396,26 @@ class Planter {
     update(){
         
         this.growth+=dt*420
+
+        if(this.growth>this.maxGrowth){
+
+            if(!this.hasGrown){
+
+                this.hasGrown=true
+                
+                let DIS=this
+
+                triggers['harvest_'+this.type+'_planter']={
+
+                    minX:this.pos[0]-2,maxX:this.pos[0]+2,minY:this.pos[1]-1,maxY:this.pos[1]+4,minZ:this.pos[2]-2,maxZ:this.pos[2]+2,isMachine:true,message:'Harvest '+MATH.doGrammar(this.type+'Planter'),func:function(player){
+
+                        DIS.harvested=true
+                    }
+                }
+            }
+
+            this.growth=this.maxGrowth
+        }
 
         textRenderer.addSingle(MATH.doGrammar(this.type+'Planter')+'     1',[this.pos[0],this.pos[1]+this.height+this.displaySize+0.5,this.pos[2]],COLORS.whiteArr,-0.5,false)
         
@@ -12186,7 +12435,7 @@ class Planter {
         gl.uniform2f(glCache.mob_instanceInfo2,1,1)
         gl.drawElements(gl.TRIANGLES,meshes[this.type+'Planter'].indexAmount,gl.UNSIGNED_SHORT,0)
         
-        return this.growth>this.maxGrowth
+        return this.harvested
     }
 }
 
@@ -18951,6 +19200,7 @@ player.updateGear()
 let ct=0
 for(let i in items){
     
+    if(i.indexOf('Planter')>-1) continue
     ct++
     objects.tokens.push(new LootToken(10000,[-8+ct,-1,-6],i,1000000))
     
@@ -19529,9 +19779,8 @@ function loop(now){
     gl.uniformMatrix4fv(glCache.mob_viewMatrix,gl.FALSE,player.viewMatrix)
     
     if(user.clickedKeys.o){
-        
-        let p=['redClay','blueClay','paper','plastic','pesticide','petal','plenty','candy','tacky']
-        objects.planters.push(new Planter(p[(Math.random()*p.length)|0]))
+
+
     }
     
     player.attacked=[]
