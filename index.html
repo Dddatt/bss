@@ -2789,11 +2789,11 @@ let triggers={
             player.updateGear()
             player.updateTool('darkScythe')
             player.addEffect('superSmoothieBuff')
-            player.addEffect('comfortingNectar')
-            player.addEffect('refreshingNectar')
-            player.addEffect('invigoratingNectar')
-            player.addEffect('motivatingNectar')
-            player.addEffect('satisfyingNectar')
+            player.addEffect('comfortingNectar',1)
+            player.addEffect('refreshingNectar',1)
+            player.addEffect('invigoratingNectar',1)
+            player.addEffect('motivatingNectar',1)
+            player.addEffect('satisfyingNectar',1)
             player.hive=[[]]
             player.addSlot('basic')
             player.addSlot('looker')
@@ -2869,11 +2869,11 @@ let triggers={
             player.updateGear()
             player.updateTool('tidePopper')
             player.addEffect('superSmoothieBuff')
-            player.addEffect('comfortingNectar')
-            player.addEffect('refreshingNectar')
-            player.addEffect('invigoratingNectar')
-            player.addEffect('motivatingNectar')
-            player.addEffect('satisfyingNectar')
+            player.addEffect('comfortingNectar',1)
+            player.addEffect('refreshingNectar',1)
+            player.addEffect('invigoratingNectar',1)
+            player.addEffect('motivatingNectar',1)
+            player.addEffect('satisfyingNectar',1)
             player.hive=[[]]
             player.addSlot('basic')
             player.addSlot('looker')
@@ -2951,11 +2951,11 @@ let triggers={
             player.updateGear()
             player.updateTool('gummyBaller')
             player.addEffect('superSmoothieBuff')
-            player.addEffect('comfortingNectar')
-            player.addEffect('refreshingNectar')
-            player.addEffect('invigoratingNectar')
-            player.addEffect('motivatingNectar')
-            player.addEffect('satisfyingNectar')
+            player.addEffect('comfortingNectar',1)
+            player.addEffect('refreshingNectar',1)
+            player.addEffect('invigoratingNectar',1)
+            player.addEffect('motivatingNectar',1)
+            player.addEffect('satisfyingNectar',1)
             player.hive=[[]]
             player.addSlot('basic')
             player.addSlot('buoyant')
@@ -5774,6 +5774,7 @@ let effects={
         
         update:(amount,player)=>{
             
+            console.log(amount)
             player.whiteConvertRate*=(amount*0.9+1.1).toFixed(2)
             player.bluePollen*=(amount*0.45+1.05).toFixed(2)
             player.convertRateAtHive*=(amount*0.9+1.1).toFixed(2)
@@ -12254,9 +12255,9 @@ class Planter {
             break
         }
 
-        player.addEffect(fieldInfo[this.field].nectarType,(this.maxGrowth*perc*perc*1.5*nectarBonus[fieldInfo[this.field].nectarType.replace('Nectar','')])/(6*60*60))
+        player.addEffect(fieldInfo[this.field].nectarType,(this.maxGrowth*perc*perc*1.85*nectarBonus[fieldInfo[this.field].nectarType.replace('Nectar','')])/(6*60*60))
         
-        let amountOfTokens=Math.ceil({paper:9,plastic:13,candy:15,redClay:17,blueClay:17,tacky:18,pesticide:20,petal:23,plenty:25}[this.type]*perc*perc),dropTable=[],dropRates={}
+        let amountOfTokens=Math.ceil({paper:9,plastic:13,candy:16,redClay:19,blueClay:19,tacky:22,pesticide:25,petal:27,plenty:30}[this.type]*perc*perc),dropTable=[],dropRates={}
 
         for(let i in items){
 
@@ -12273,10 +12274,13 @@ class Planter {
             dropTable.splice(dropTable.indexOf('tropicalDrink'),1)
         }
 
-        if(this.field!=='SpiderField'||this.field!=='CactusField'){
+        if(this.field==='SpiderField'||this.field==='CactusField'){
                 
+            dropRates.stinger*=2.5
+            
+        } else {
+
             dropTable.splice(dropTable.indexOf('stinger'),1)
-            dropRates.stinger*=2
         }
 
         if(this.field==='StumpField'){
@@ -12295,6 +12299,7 @@ class Planter {
             dropRates.bitterberry*=28
             dropRates.neonberry*=25
             dropRates.royalJelly*=1.5
+            dropRates.stinger*=2
         }
 
         if(this.type==='redClay'){
@@ -12491,11 +12496,11 @@ class Planter {
             this.growth=this.maxGrowth
         }
 
-        textRenderer.addSingle(MATH.doGrammar(this.type+'Planter')+' ('+(this.growth*this.invGrowth).toFixed(1)+' %)',[this.pos[0],this.pos[1]+this.height+this.displaySize+0.5,this.pos[2]],COLORS.whiteArr,-0.5,false)
+        textRenderer.addSingle(MATH.doGrammar(this.type+'Planter')+' ('+(this.growth*this.invGrowth*100).toFixed(1)+' %)',[this.pos[0],this.pos[1]+this.height+this.displaySize+0.5,this.pos[2]],COLORS.whiteArr,-0.6,false)
         
-        textRenderer.addDecalRaw(this.pos[0],this.pos[1]+this.height+this.displaySize+0.5,this.pos[2],0,0,...textRenderer.decalUV['rect'],0,0.4,0,2,0.35,0)
+        textRenderer.addDecalRaw(this.pos[0],this.pos[1]+this.height+this.displaySize+0.5,this.pos[2],0,0,...textRenderer.decalUV['rect'],0,0.4,0,2.25,0.35,0)
         
-        textRenderer.addDecalRaw(this.pos[0],this.pos[1]+this.height+this.displaySize+0.5,this.pos[2],(-0.5+(this.growth*this.invGrowth)*0.5)/(this.growth*this.invGrowth),0,...textRenderer.decalUV['rect'],0.1,0.85,0.1,this.growth*this.invGrowth*2,0.35,0)
+        textRenderer.addDecalRaw(this.pos[0],this.pos[1]+this.height+this.displaySize+0.5,this.pos[2],(-0.5+(this.growth*this.invGrowth)*0.5)/(this.growth*this.invGrowth),0,...textRenderer.decalUV['rect'],0.1,0.85,0.1,this.growth*this.invGrowth*2.25,0.35,0)
 
         this.displaySize={paper:1,plastic:1.25,candy:1.3,redClay:1.35,blueClay:1.35,tacky:1.4,pesticide:1.5,petal:1.75,plenty:2}[this.type]*this.growth*this.invGrowth+0.3
 
@@ -19370,6 +19375,11 @@ function loop(now){
                     effects[player.effects[i].type].amount.textContent=((player.effects[i].amount*100+1)|0)+'%'
                     
                 }
+
+            } else if(effects[player.effects[i].type].amountFromCooldown){
+                
+                player.effects[i].amount=player.effects[i].cooldown/effects[player.effects[i].type].maxCooldown
+                
             }
             
             effects[player.effects[i].type].cooldown.setAttribute('height',(30-player.effects[i].cooldown*30/effects[player.effects[i].type].maxCooldown)||30)
