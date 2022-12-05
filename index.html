@@ -12112,6 +12112,74 @@ class Planter {
                 DIS.harvested=true
             }
         }
+
+        this.growthRate=420
+
+        switch(this.type){
+
+            case 'candy':
+
+                if(this.field==='StrawberryField'||this.field==='CoconutField'||this.field==='PineapplePatch'){
+                    
+                    this.growthRate*=1.25
+                }
+
+            break
+
+            case 'redClay':
+
+                if(fieldInfo[this.field].generalColorComp.r>0.5){
+                    
+                    this.growthRate*=1.25
+                }
+
+            break
+
+            case 'blueClay':
+
+                if(fieldInfo[this.field].generalColorComp.b>0.5){
+                    
+                    this.growthRate*=1.25
+                }
+
+            break
+
+            case 'tacky':
+
+                if(this.field==='CoconutField'||this.field==='DandelionField'||this.field==='MushroomField'||this.field==='SunflowerField'||this.field==='BlueFlowerField'){
+                    
+                    this.growthRate*=1.25
+                }
+
+            break
+
+            case 'pesticide':
+
+                if(this.field==='StrawberryField'||this.field==='SpiderField'||this.field==='BambooField'){
+                    
+                    this.growthRate*=1.35
+                }
+
+            break
+
+            case 'petal':
+
+                if(fieldInfo[this.field].generalColorComp.w>0.5){
+                    
+                    this.growthRate*=1.5
+                }
+
+            break
+
+            case 'plenty':
+
+                if(this.field==='PepperPatch'||this.field==='StumpField'||this.field==='CoconutField'||this.field==='MountainTopField'){
+                    
+                    this.growthRate*=1.5
+                }
+
+            break
+        }
     }
     
     die(index){
@@ -12395,7 +12463,7 @@ class Planter {
     
     update(){
         
-        this.growth+=dt*420
+        this.growth+=dt*this.growthRate
 
         if(this.growth>this.maxGrowth){
 
