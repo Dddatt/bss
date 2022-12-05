@@ -8106,6 +8106,20 @@ class Bee {
                 
                 if(player.fieldIn&&player.pollen<player.capacity){
                     
+                    if(fieldInfo[player.fieldIn].planter){
+
+                        let chance=0.5
+
+                        if(Math.random()<chance){
+
+                            this.state='moveToPlanter'
+                            let t=Math.random()*MATH.TWO_PI
+                            this.collectRot=[Math.sin(t),-4,Math.cos(t)]
+                            
+                            return
+                        }
+                    }
+
                     this.state='moveToFlower'
                     return
                 }
@@ -8131,6 +8145,79 @@ class Bee {
                     
                     this.state='moveToHiveToConvertBalloon'
                 }
+                
+            break
+
+            case 'moveToPlanter':
+                
+                if(!player.fieldIn||player.pollen>=player.capacity||!fieldInfo[player.fieldIn].planter){
+                    
+                    this.state='moveToPlayer'
+                    break
+                }
+                
+                let p=fieldInfo[player.fieldIn].planter
+                
+                this.moveTo=[p.pos[0],p.pos[1]+p.height+p.displaySize+0.2,p.pos[2]]
+                vec3.sub(this.moveDir,this.moveTo,this.pos)
+                vec3.normalize(this.moveDir,this.moveDir)
+                vec3.scaleAndAdd(this.pos,this.pos,this.moveDir,dt*this.speed*player.beeSpeed*(this.type==='spicy'?player.flameHeatStack:1))
+                
+                if(vec3.sqrDist(this.moveTo,this.pos)<0.075){
+                    
+                    this.state='collectPlanter'
+                    this.collectTimer=this.gatherSpeed*(this.type==='spicy'?1/player.flameHeatStack:1)
+                    this.planterSipTime=this.collectTimer
+                    return
+                }
+                
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
+                
+            break
+
+            case 'collectPlanter':
+                
+                if(!player.fieldIn||player.pollen>=player.capacity||!fieldInfo[player.fieldIn].planter){
+                    
+                    this.state='moveToPlayer'
+                    return
+                }
+                
+                this.collectTimer-=dt
+                
+                if(this.collectTimer<=0){
+                    
+                    this.energy--
+
+                    fieldInfo[player.fieldIn].planter.beeSipped(this)
+                    
+                    let token,openTokens=[]
+                    
+                    for(let i in this.gatheringTokens){
+                        
+                        let g=this.gatheringTokens[i]
+                        
+                        if((TIME-g.timer)*player[beeInfo[this.type].color+'BeeAbilityRate']*this.abilityRate>=g.cooldown&&Math.random()<=g.rate&&(g.requireGifted&&this.gifted||!g.requireGifted)){
+                            
+                            openTokens.push(i)
+                        }
+                    }
+                    
+                    if(openTokens.length){
+                        
+                        token=openTokens[(Math.random()*openTokens.length)|0]
+                        this.gatheringTokens[token].timer=TIME
+                        
+                        token=this.gatheringTokens[token].type
+                        
+                        objects.tokens.push(new Token(effects[token].tokenLife,[Math.round(this.pos[0]),fieldInfo[player.fieldIn].y+1,Math.round(this.pos[2])],token,{field:player.fieldIn,x:fieldInfo[player.fieldIn].x|0,z:fieldInfo[player.fieldIn].z|0,bee:this}))
+                        
+                    }
+                    
+                    this.state='moveToFlower'
+                }
+                
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.collectRot[0],this.collectRot[1],this.collectRot[2],BEE_COLLECT,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
                 
             break
             
@@ -8213,7 +8300,7 @@ class Bee {
                     }
                     
                     this.flowerCollecting=[]
-                    this.state='moveToFlower'
+                    this.state='moveToPlayer'
                 }
                 
                 meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.collectRot[0],this.collectRot[1],this.collectRot[2],BEE_COLLECT,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
@@ -12119,7 +12206,7 @@ class Planter {
             }
         }
 
-        this.growthRate=420
+        this.growthRate=1
 
         switch(this.type){
 
@@ -12186,9 +12273,19 @@ class Planter {
 
             break
         }
+        
+        fieldInfo[this.field].planter=this
+    }
+
+    beeSipped(bee){
+
+        this.growth+=bee.gatherAmount*0.025+3
+        player.addEffect(fieldInfo[this.field].nectarType,(bee.planterSipTime*4)/(6*60*60))
     }
     
     die(index){
+
+        fieldInfo[this.field].planter=undefined
 
         triggers['harvest_'+this.type+'_planter'].minY=100000
         triggers['harvest_'+this.type+'_planter'].maxY=100000
@@ -15056,6 +15153,11 @@ player=(function(out){
             textRenderer.add(out.pollen,[player.body.position.x,player.body.position.y+1,player.body.position.z],COLORS.honey,1,'⇆')
             out.honey+=out.pollen
             out.pollen=0
+
+            for(let i in objects.planters){
+
+                objects.planters[i].growth+=dt*500
+            }
         }
         
         let p=Math.min(out.pollen/out.capacity,1)
@@ -19139,6 +19241,10 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(flowers.mesh.index),gl.DY
 
 for(let i=0;i<25;i++)
 player.addSlot(null)
+
+player.addSlot('ninja')
+player.addSlot('ninja')
+player.addSlot('ninja')
 
 player.updateHive()
 player.updateGear()
