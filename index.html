@@ -2239,6 +2239,7 @@ planters are done, u spawn with them in ur inventory, go into a field and place 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js'></script>
 
 <script src="dialogue.js"></script>
+<script src="textures.js"></script>
 <script src="playerGear.js"></script>
 <script src="MathHelper.js"></script>
 <script src="GLSLShaders.js"></script>
@@ -13901,75 +13902,22 @@ let textures=(function(out){
     
     gl.generateMipmap(gl.TEXTURE_2D)
     
-    function loadTexture1(){
-        
-        if(FETCHED_CODE.effectsTexture){
-            
-            FETCHED_CODE.effectsTexture=FETCHED_CODE.effectsTexture.split('#')
-            
-            FETCHED_CODE.effectsTexture=FETCHED_CODE.effectsTexture[1]
-            
-            FETCHED_CODE.effectsTexture=FETCHED_CODE.effectsTexture.substr(0,FETCHED_CODE.effectsTexture.length-3)
-            
-            let f=Object.constructor('tex_ctx',FETCHED_CODE.effectsTexture)
-            
-            f(tex_ctx)
-            
-            gl.bindTexture(gl.TEXTURE_2D,out.effects)
-            gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,2048,2048,0,gl.RGBA,gl.UNSIGNED_BYTE,tex_ctx.getImageData(0,0,2048,2048))
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
-            gl.generateMipmap(gl.TEXTURE_2D)
-            
-            FETCHED_CODE.effectsTexture=''
-            
-        } else {
-            
-            window.setTimeout(loadTexture1,250)
-        }
-    }
-    
+    window.textures_effects(tex_ctx)
     out.effects=gl.createTexture()
-    
     gl.bindTexture(gl.TEXTURE_2D,out.effects)
-    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([0,0,0,1]))
-    fetchCodeFromProgram('effectsTexture',5503726222622720)
-    loadTexture1()
-    
-    function loadTexture3(){
-        
-        if(FETCHED_CODE.flowersTexture){
-            
-            FETCHED_CODE.flowersTexture=FETCHED_CODE.flowersTexture.split('#')
-            
-            FETCHED_CODE.flowersTexture=FETCHED_CODE.flowersTexture[1]
-            
-            FETCHED_CODE.flowersTexture=FETCHED_CODE.flowersTexture.substr(0,FETCHED_CODE.flowersTexture.length-3)
-            
-            let f=Object.constructor('tex_ctx',FETCHED_CODE.flowersTexture)
-            
-            f(tex_ctx)
-            
-            gl.bindTexture(gl.TEXTURE_2D,out.flowers)
-            gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1024,1024,0,gl.RGBA,gl.UNSIGNED_BYTE,tex_ctx.getImageData(0,0,1024,1024))
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
-            gl.generateMipmap(gl.TEXTURE_2D)
-            
-            FETCHED_CODE.flowersTexture=''
-            
-        } else {
-            
-            window.setTimeout(loadTexture3,250)
-        }
-    }
-    
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,2048,2048,0,gl.RGBA,gl.UNSIGNED_BYTE,tex_ctx.getImageData(0,0,2048,2048))
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+    gl.generateMipmap(gl.TEXTURE_2D)
+
+    window.textures_flowers(tex_ctx)
     out.flowers=gl.createTexture()
-    
     gl.bindTexture(gl.TEXTURE_2D,out.flowers)
-    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([0,0,0,1]))
-    fetchCodeFromProgram('flowersTexture',5172660060340224)
-    loadTexture3()
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1024,1024,0,gl.RGBA,gl.UNSIGNED_BYTE,tex_ctx.getImageData(0,0,1024,1024))
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+    gl.generateMipmap(gl.TEXTURE_2D)
+    
     
     tex_ctx.clearRect(0,0,512,600)
     tex_ctx.font='bold 60px arial'
@@ -14043,119 +13991,35 @@ let textures=(function(out){
     gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,512,600,0,gl.RGBA,gl.UNSIGNED_BYTE,tex_ctx.getImageData(0,0,512,600))
     gl.generateMipmap(gl.TEXTURE_2D)
     
-    function loadTexture2(){
-        
-        if(FETCHED_CODE.beesTexture){
-            
-            FETCHED_CODE.beesTexture=FETCHED_CODE.beesTexture.split('#')
-            
-            FETCHED_CODE.beesTexture=FETCHED_CODE.beesTexture[1]
-            
-            FETCHED_CODE.beesTexture=FETCHED_CODE.beesTexture.substr(0,FETCHED_CODE.beesTexture.length-3)
-            
-            let f=Object.constructor('tex_ctx',FETCHED_CODE.beesTexture)
-            
-            f(tex_ctx)
-            
-            let data=tex_ctx.getImageData(0,0,2048,2048)
-            
-            gl.bindTexture(gl.TEXTURE_2D,out.bees)
-            gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,2048,2048,0,gl.RGBA,gl.UNSIGNED_BYTE,data)
-            
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
-            gl.generateMipmap(gl.TEXTURE_2D)
-            
-            beeCanvas=document.createElement('canvas')
-            beeCanvas.width=2048
-            beeCanvas.height=2048
-            let beeCanvasCtx=beeCanvas.getContext('2d')
-            beeCanvasCtx.putImageData(data,0,0)
-            
-            FETCHED_CODE.beesTexture=''
-            
-        } else {
-            
-            window.setTimeout(loadTexture2,250)
-        }
-    }
-    
+    window.textures_bees(tex_ctx)
+    let data=tex_ctx.getImageData(0,0,2048,2048)
     out.bees=gl.createTexture()
-    
     gl.bindTexture(gl.TEXTURE_2D,out.bees)
-    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([0,0,0,1]))
-    fetchCodeFromProgram('beesTexture',6745707267538944)
-    loadTexture2()
-    
-    function loadTexture4(){
-        
-        if(FETCHED_CODE.decalsTexture){
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,2048,2048,0,gl.RGBA,gl.UNSIGNED_BYTE,data)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+    gl.generateMipmap(gl.TEXTURE_2D)
+    beeCanvas=document.createElement('canvas')
+    beeCanvas.width=2048
+    beeCanvas.height=2048
+    let beeCanvasCtx=beeCanvas.getContext('2d')
+    beeCanvasCtx.putImageData(data,0,0)
             
-            FETCHED_CODE.decalsTexture=FETCHED_CODE.decalsTexture.split('#')
-            
-            FETCHED_CODE.decalsTexture=FETCHED_CODE.decalsTexture[1]
-            
-            FETCHED_CODE.decalsTexture=FETCHED_CODE.decalsTexture.substr(0,FETCHED_CODE.decalsTexture.length-3)
-            
-            let f=Object.constructor('tex_ctx',FETCHED_CODE.decalsTexture)
-            
-            f(tex_ctx)
-            
-            gl.bindTexture(gl.TEXTURE_2D,out.decals)
-            gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1024,1024,0,gl.RGBA,gl.UNSIGNED_BYTE,tex_ctx.getImageData(0,0,1024,1024))
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
-            gl.generateMipmap(gl.TEXTURE_2D)
-            
-            FETCHED_CODE.decalsTexture=''
-            
-        } else {
-            
-            window.setTimeout(loadTexture4,250)
-        }
-    }    
-    
+    window.textures_decals(tex_ctx)
     out.decals=gl.createTexture()
-    
     gl.bindTexture(gl.TEXTURE_2D,out.decals)
-    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([0,0,0,1]))
-    fetchCodeFromProgram('decalsTexture',6119846204456960)
-    loadTexture4()
-    
-    function loadTexture5(){
-        
-        if(FETCHED_CODE.bearTexture){
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1024,1024,0,gl.RGBA,gl.UNSIGNED_BYTE,tex_ctx.getImageData(0,0,1024,1024))
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+    gl.generateMipmap(gl.TEXTURE_2D)
             
-            FETCHED_CODE.bearTexture=FETCHED_CODE.bearTexture.split('#')
-            
-            FETCHED_CODE.bearTexture=FETCHED_CODE.bearTexture[1]
-            
-            FETCHED_CODE.bearTexture=FETCHED_CODE.bearTexture.substr(0,FETCHED_CODE.bearTexture.length-3)
-            
-            let f=Object.constructor('tex_ctx',FETCHED_CODE.bearTexture)
-            
-            f(tex_ctx)
-            
-            gl.bindTexture(gl.TEXTURE_2D,out.bear)
-            gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1024,1024,0,gl.RGBA,gl.UNSIGNED_BYTE,tex_ctx.getImageData(0,0,1024,1024))
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
-            gl.generateMipmap(gl.TEXTURE_2D)
-            
-            FETCHED_CODE.bearTexture=''
-            
-        } else {
-            
-            window.setTimeout(loadTexture5,250)
-        }
-    }    
-    
     out.bear=gl.createTexture()
-    
+    window.textures_bear(tex_ctx)
     gl.bindTexture(gl.TEXTURE_2D,out.bear)
-    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([0,0,0,1]))
-    fetchCodeFromProgram('bearTexture',5322361823346688)
-    loadTexture5()
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1024,1024,0,gl.RGBA,gl.UNSIGNED_BYTE,tex_ctx.getImageData(0,0,1024,1024))
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+    gl.generateMipmap(gl.TEXTURE_2D)
     
     return out
     
