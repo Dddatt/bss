@@ -1,3 +1,5 @@
+<div align="center">
+
 # bee swarm ka ripoff edition
 
 ## [Github webpage link](https://dddatt.github.io/bss)
@@ -17,4 +19,4 @@ some stuffs for my bee swarm remake cuz the ka programs limit u to like 700k byt
 [bear textures](https://www.khanacademy.org/computer-programming/bear-atlas/5322361823346688)
 
 [flower textures](https://www.khanacademy.org/computer-programming/flower-atlas/5172660060340224)
-
+</div>
