@@ -12417,7 +12417,7 @@ class Planter {
             this.growth=this.maxGrowth
         }
 
-        textRenderer.addSingle(MATH.doGrammar(this.type+'Planter')+'     1',[this.pos[0],this.pos[1]+this.height+this.displaySize+0.5,this.pos[2]],COLORS.whiteArr,-0.5,false)
+        textRenderer.addSingle(MATH.doGrammar(this.type+'Planter')+' ('+(this.growth*this.invGrowth).toFixed(1)+' %)',[this.pos[0],this.pos[1]+this.height+this.displaySize+0.5,this.pos[2]],COLORS.whiteArr,-0.5,false)
         
         textRenderer.addDecalRaw(this.pos[0],this.pos[1]+this.height+this.displaySize+0.5,this.pos[2],0,0,...textRenderer.decalUV['rect'],0,0.4,0,2,0.35,0)
         
@@ -13913,7 +13913,7 @@ let textures=(function(out){
         t(i,i*50+30,40)
     }
     
-    let chars='+⇆,/-:'
+    let chars='+⇆,/-:()%.'
     
     for(let i=0;i<chars.length;i++){
         
@@ -16311,6 +16311,10 @@ let textRenderer=(function(out){
         '.':[0.2075,0.14],
         '-':[0.4,0.13],
         ':':[0.5,0.13],
+        '(':[0.6,0.13],
+        ')':[0.68,0.13],
+        '%':[0.79,0.12],
+        '.':[0.885,0.13],
         a:[0,0.25],
         b:[0.1,0.25],
         c:[0.2,0.25],
