@@ -2383,12 +2383,7 @@ function playSound(sound,vol) {
 
 let Math=_M
 
-let width=window.thisProgramIsInFullScreen?500:window.innerWidth+1,height=window.thisProgramIsInFullScreen?500:window.innerHeight+1
-
-width=300
-height=300
-
-let half_width=width*0.5,half_height=height*0.5,aspect=width/height,FETCHED_CODE={},beeCanvas
+let width=window.thisProgramIsInFullScreen?500:window.innerWidth+1,height=window.thisProgramIsInFullScreen?500:window.innerHeight+1,half_width=width*0.5,half_height=height*0.5,aspect=width/height,FETCHED_CODE={},beeCanvas
 
 let glCanvas=document.getElementById('gl-canvas')
 let gl=glCanvas.getContext('webgl2',{antialias:true})
@@ -6204,6 +6199,15 @@ let items={
 
             if(player.fieldIn){
                 
+                for(let i in objects.planters){
+
+                    if(player.fieldIn===objects.planters[i].field){
+
+                        player.addMessage('You can only have 1 planter in a field!',COLORS.redArr)
+                        return
+                    }
+                }
+
                 items.paperPlanter.amount--
                 objects.planters.push(new Planter('paper'))
                 
@@ -12328,7 +12332,7 @@ class Planter {
     
     die(index){
 
-        fieldInfo[this.field].degration=Math.min(fieldInfo[this.field].degration+((this.maxGrowth*1.5+(30*60))*0.00027777777),1)
+        fieldInfo[this.field].degration=Math.min(fieldInfo[this.field].degration+((this.maxGrowth+(10*60))*0.00027777777),1)
         fieldInfo[this.field].planter=undefined
 
         triggers['harvest_'+this.type+'_planter'].minY=100000
