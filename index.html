@@ -3,11 +3,12 @@
 
 so erm the ka version is really behind but idk any new way to save some space ;-; except putting the main func outside
 
-sheesh honey spikes up with the new nectar
 
-r, in pep: 315b ._.
-b, in pine: 290b - 611b if u rush convert all the balloons or not O_O
-w, in coco: 600b woah ^-^
+ugh still unbalanced 
+
+r, in pep: 277b, 300b
+b, in pine: 315b - 576b if u rush convert all the balloons or not O_O
+w, in coco: 549b, 746b, 
 
 
 -->
@@ -3939,7 +3940,7 @@ let effects={
     
     pollenMarkToken:{
         
-        trialCooldown:25,trialRate:0.35,
+        trialCooldown:20,trialRate:0.4,
         statsToAddTo:['markTokens','markOrBoostTokens'],
         u:128*6/2048,v:128/2048,
         tokenLife:8,
@@ -3958,7 +3959,7 @@ let effects={
     
     honeyMarkToken:{
         
-        trialCooldown:20,trialRate:0.35,
+        trialCooldown:17.5,trialRate:0.5,
         statsToAddTo:['markTokens','markOrBoostTokens'],
         u:128*7/2048,v:128/2048,
         tokenLife:8,
@@ -4365,13 +4366,13 @@ let effects={
     gummyBlob:{
         
         trialCooldown:10,trialRate:0.6,
-        statsToAddTo:['gummyBeeTokens'],
         u:128*6/2048,v:256/2048,
         tokenLife:8,
         
         func:function(params){
             
-            player.stats.gummyBeeTokens++
+            player.stats.gummyMorph+=3
+
             if(params.field===player.fieldIn){
                 
                 let r=params.bee.gifted?4:2,f=function(f){f.goo=1;f.height=1}
@@ -4399,13 +4400,13 @@ let effects={
     gummyBarrage:{
         
         trialCooldown:15,trialRate:0.6,
-        statsToAddTo:['gummyBeeTokens'],
         u:128*7/2048,v:256/2048,
         tokenLife:8,
         
         func:function(params){
             
-            player.stats.gummyBeeTokens++
+            player.stats.gummyMorph+=3
+
             if(params.field===player.fieldIn){
                 
                 for(let i=0,l=MATH.random(2,5)|0;i<l;i++){
@@ -4895,8 +4896,8 @@ let effects={
         cooldown:document.getElementById('gummyStarPassive_cooldown'),
         amount:document.getElementById('gummyStarPassive_amount'),
         maxCooldown:60,
-        triggerVal:15,
-        triggerType:'gummyBeeTokens',
+        triggerVal:25,
+        triggerType:'gummyStar',
         currentVal:0,
         currentCooldown:0,
         startVal:0,
@@ -4911,7 +4912,7 @@ let effects={
         
         getMessage:(amount)=>{
             
-            return "Gummy Star\nEvery 15 gummy bee tokens summons a Gummy Star, lasting for 45s. It grows based on how much goo you collect, giving up to x2 goo and x2 white pollen, while always giving +15% instant white conversion and +15% instant goo conversion. After disappearing, it spreads 20(+the amount of digits in the star's size) honey tokens, with a total value of approximately 1,000(+7.5% of the star's size). Cooldown: 1m"
+            return "Gummy Star\nEvery gumdrop used or after 25 gumdrops has a 7% chance to summon a Gummy Star, lasting for 45s. It grows based on how much goo you collect, giving up to x2 goo and x2 white pollen, while always giving +15% instant white conversion and +15% instant goo conversion. After disappearing, it spreads 20(+the amount of digits in the star's size) honey tokens, with a total value of approximately 1,000(+7.5% of the star's size). Cooldown: 1m"
         }
     },
     
@@ -5513,8 +5514,8 @@ let effects={
         cooldown:document.getElementById('gummyMorphPassive_cooldown'),
         amount:document.getElementById('gummyMorphPassive_amount'),
         maxCooldown:25,
-        triggerVal:20,
-        triggerType:'gummyBeeTokens',
+        triggerVal:30,
+        triggerType:'gummyMorph',
         currentVal:0,
         currentCooldown:0,
         startVal:0,
@@ -5539,7 +5540,7 @@ let effects={
         
         getMessage:(amount)=>{
             
-            return "Gummy Morph\nEvery 10 gummy bee tokens covers the field in goo and grants x1.75 goo, 100% instant goo conversion, +30 walkspeed and +3 jump power for 10s. Cooldown: 25s"
+            return "Gummy Morph\nEvery 10 gummy bee tokens or 30 gumdrops used covers the field in goo and grants x1.75 goo, 100% instant goo conversion, +30 walkspeed and +3 jump power for 10s. Cooldown: 25s"
         }
     },
     
@@ -6402,9 +6403,15 @@ let items={
         
         amount:0,u:128/2048,v:128*7/2048,cooldown:4,autoUse:true,value:5,
         use:function(){
-            
+
             if(player.fieldIn){
                 
+                player.stats.gummyMorph++
+                player.stats.gummyStar++
+
+                if(Math.random()<0.07)
+                    player.stats.gummyStar+=25
+                    
                 items.gumdrops.amount--
                 
                 for(let i=0,l=MATH.random(2,5)|0;i<l;i++){
@@ -9538,7 +9545,7 @@ class Mark {
         this.surgeLimit=5
         this.rot=Math.random()*6.12
         
-        this.diameter=(type==='precise'?12:8)
+        this.diameter=(type==='precise'?13:9)
         this.sqSize=(this.diameter*0.5)*(this.diameter*0.5)
         
         this.type=type
@@ -9958,7 +9965,7 @@ class Target {
         this.x=x
         this.z=z
         this.type=type
-        this.pos=[fieldInfo[this.field].x+this.x,fieldInfo[this.field].y+0.51,fieldInfo[this.field].z+this.z]
+        this.pos=[fieldInfo[this.field].x+this.x,fieldInfo[this.field].y+1.01,fieldInfo[this.field].z+this.z]
         this.col=this.type===3&&bee.gifted?[0.9,0,0.9]:[1,0.7,0]
         
         this.trail=new TrailRenderer.Trail({length:2,size:0.025,color:[1,0,0,1]})
@@ -14261,6 +14268,8 @@ player=(function(out){
         scorchingStar:0,
         coconutShield:0,
         stingerUsed:0,
+        gummyMorph:0,
+        gummyStar:0,
     }
     
     for(let i in items){
@@ -16145,14 +16154,14 @@ let shops={
         
         items:[{
             name:'gummyMask',
-            desc:'The offical mask of a gummy soldier.<br><br>x2 goo<br>x1.75 capacity<br>x1.5 white pollen<br>x1.35 pollen<br>+25% instant goo conversion<br>x1.5 honey from tokens<br>x1.5 pollen from bees<br>x1.75 convert rate<br>+30% defense<br>x1.2 bee ability rate<br>+Passive: Gummy Morph<br>+Passive: Coin Scatter',
+            desc:'The offical mask of a gummy soldier.<br><br>x1.75 goo<br>x2 capacity<br>x1.75 white field capacity<br>x1.5 white pollen<br>x1.35 pollen<br>+25% instant goo conversion<br>x1.5 honey from tokens<br>x1.5 pollen from bees<br>x1.75 convert rate<br>+30% defense<br>x1.2 bee ability rate<br>+Passive: Gummy Morph<br>+Passive: Coin Scatter',
             slot:'mask',
             cost:['5000000000 honey','250 glue','100 enzymes','100 oil','100 glitter'],
             viewMatrix:[25,5,16,-Math.PI,-0.3],
         },{
             
             name:'diamondMask',
-            desc:'Proudly show off your extreme wealth to the world. Shine so brightly that others will complain.<br><br>x1.75 blue pollen<br>x3 capacity<br>x3 convert rate<br>x1.25 honey at hive<br>x2 bubble pollen<br>x1.75 blue bomb pollen<br>+30% defense<br>x1.2 bee ability rate<br>+Passive: Diamond Drain<br>+Passive: Bubble Bombs',
+            desc:'Proudly show off your extreme wealth to the world. Shine so brightly that others will complain.<br><br>x1.75 blue pollen<br>x3 capacity<br>x1.5 blue field capacity<br>x2 convert rate<br>x1.1 honey at hive<br>x1.25 bubble pollen<br>x1.25 blue bomb pollen<br>+30% defense<br>x1.2 bee ability rate<br>+Passive: Diamond Drain<br>+Passive: Bubble Bombs',
             slot:'mask',
             cost:['5000000000 honey','250 blueExtract','1 diamondEgg','100 glitter','150 oil'],
             viewMatrix:[20,5,16,-Math.PI,-0.3],
@@ -16160,14 +16169,14 @@ let shops={
             
             name:'demonMask',
             
-            desc:'Embrace hate to take on the form of a Demon Bee. Become both extremely unpleasant and powerful.<br><br>x1.75 red pollen<br>x2 capacity<br>+50% instant flame conversion<br>x2 flame pollen<br>x1.25 bee attack<br>+35% defense<br>+20% bee ability rate<br>+Passive: X Flame<br>+Passive: Ignite',
+            desc:'Embrace hate to take on the form of a Demon Bee. Become both extremely unpleasant and powerful.<br><br>x1.75 red pollen<br>x2 capacity<br>x1.75 red field capacity<br>+50% instant flame conversion<br>x2 flame pollen<br>x1.25 bee attack<br>+35% defense<br>+20% bee ability rate<br>+Passive: X Flame<br>+Passive: Ignite',
             slot:'mask',
             cost:['5000000000 honey'],
             viewMatrix:[15,5,16,-Math.PI,-0.3],
         },{
             
             name:'coconutCanister',
-            desc:'A back-mounted coconut that protects you during emergencies.<br><br>+1,500,000 capacity<br>x5 convert rate<br>+15% instant conversion<br>+10% instant white conversion<br>x1.25 pollen<br>x1.2 white pollen<br>+1 bee attack<br>+10% defense<br>x1.15 honey at hive<br>+Passive: Emergengy Shield<br>+Passive: Inspire Coconuts',
+            desc:'A back-mounted coconut that protects you during emergencies.<br><br>+2,000,000 capacity<br>x3 convert rate<br>+15% instant conversion<br>+10% instant white conversion<br>x1.25 pollen<br>x1.25 white pollen<br>+1 bee attack<br>+10% defense<br>x1.1 honey at hive<br>+Passive: Emergengy Shield<br>+Passive: Inspire Coconuts',
             slot:'backpack',
             cost:['25000000000 honey','150 tropicalDrink','250 redExtract','250 blueExtract'],
             viewMatrix:[10,5,16,-Math.PI,-0.3],

@@ -89,7 +89,7 @@ window.playerGear={
             
             applyStats:function(stats,player){
                 
-                stats.capacityMultiplier*=1.75
+                stats.capacityMultiplier*=2
                 stats.whiteFieldCapacity*=1.75
                 stats.goo*=1.75
                 stats.redBeeAbilityRate*=1.2
@@ -131,7 +131,7 @@ window.playerGear={
                 stats.capacityMultiplier*=3
                 stats.blueFieldCapacity*=1.5
                 stats.bluePollen*=1.75
-                stats.convertRate*=50
+                stats.convertRate*=100
                 stats.honeyAtHive*=1.1
                 stats.bubblePollen*=1.25
                 stats.blueBombPollen*=1.25
@@ -161,7 +161,7 @@ window.playerGear={
             
             applyStats:function(stats,player){
                 
-                stats.capacityMultiplier*=1.75
+                stats.capacityMultiplier*=2
                 stats.redFieldCapacity*=1.75
                 stats.redPollen*=1.75
                 stats.beeAttack*=1.25
@@ -169,7 +169,7 @@ window.playerGear={
                 stats.whiteBeeAttack+=1
                 stats.blueBeeAttack+=1
                 stats.instantFlameConversion+=0.5
-                stats.flamePollen*=1.75
+                stats.flamePollen*=2
                 stats.redBeeAbilityRate*=1.2
                 stats.blueBeeAbilityRate*=1.2
                 stats.whiteBeeAbilityRate*=1.2
@@ -274,11 +274,12 @@ window.playerGear={
             applyStats:function(stats,player){
                 
                 stats.capacity+=2000000
-                stats.convertRate*=25
+                stats.convertRate*=3
                 stats.instantRedConversion+=0.15
                 stats.instantBlueConversion+=0.15
                 stats.instantWhiteConversion+=0.25
-                stats.whitePollen*=1.5
+                stats.whitePollen*=1.25
+                stats.whitePollen*=1.25
                 stats.redPollen*=1.25
                 stats.bluePollen*=1.25
                 stats.whiteBeeAttack+=1
