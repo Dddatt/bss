@@ -2416,6 +2416,184 @@ window.textures_effects=function(tex_ctx){
     tex_ctx.lineWidth=2
     tex_ctx.stroke()
     tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='rgb(100,200,255)'
+    tex_ctx.fillRect(128*2,256+256*3.5,128,128)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.fillStyle='rgb(250,250,250)'
+    tex_ctx.translate(128*2+128*0.5,256+128*7.5)
+    tex_ctx.scale(1.7,1.7)
+    tex_ctx.translate(-38,-36)
+    a=new Path2D('M 54 54 C 48 64 23 58 23 52C 20 45 28 49 25 42C 23 40 27 32 29 33C 31 33 27 27 32 25C 45 21 25 23 47 25C 54 30 49 26 53 32C 48 39 57 34 52 42C 58 49 53 44 54 54')
+    tex_ctx.strokeStyle='black'
+    tex_ctx.lineWidth='3.5'
+    tex_ctx.stroke(a)
+    tex_ctx.fillStyle='#fbefb8'
+    tex_ctx.fill(a)
+    a=new Path2D('M 47 47 C 48 50 42 53 38 50M 32 49 C 26 52 43 53 37 50M 42 42 C 48 40 42 48 33 41M 39 35 C 41 40 34 39 33 34')
+    tex_ctx.strokeStyle='rgb(0,0,0,0.3)'
+    tex_ctx.lineWidth='2'
+    tex_ctx.stroke(a)
+    tex_ctx.fillStyle='rgb(0,0,0,0.3)'
+    e(40,29,6,3)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.translate(0,-3)
+    tex_ctx.lineWidth='6'
+    a=new Path2D('M 36 20 C 32 19 42 22 40 30')
+    tex_ctx.stroke(a)
+    tex_ctx.strokeStyle='rgb(255,255,255)'
+    tex_ctx.lineWidth='3'
+    a=new Path2D('M 36 20 C 32 19 42 22 40 30')
+    tex_ctx.stroke(a)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='rgb(100,200,255)'
+    tex_ctx.fillRect(128*1,256+256*3.5,128,128)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.fillStyle='rgb(250,250,250)'
+    tex_ctx.translate(128*1+128*0.5,256+128*7.5)
+    tex_ctx.lineWidth=5
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(0,-30)
+    tex_ctx.bezierCurveTo(-29,-32,-45,43,0,40)
+    tex_ctx.moveTo(0,-30)
+    tex_ctx.bezierCurveTo(29,-32,45,43,0,40)
+    tex_ctx.stroke()
+    tex_ctx.fill()
+    tex_ctx.fillStyle='rgb(0,0,0,0.15)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(20,-20)
+    tex_ctx.bezierCurveTo(28,15,-28,27,-23,30)
+    tex_ctx.bezierCurveTo(15,64,33,22,28,-3)
+    tex_ctx.fill()
+    tex_ctx.fillStyle='rgb(255, 255, 48)'
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.translate(1,0)
+    tex_ctx.beginPath()
+    for(let i=0,j=0;i<6.2831853;i+=6.2831853/10,j++){
+        
+        let r=j%2===0?9:18
+        if(j===0){
+            
+            tex_ctx.moveTo(Math.cos(i+6.2831853/20)*r,Math.sin(i+6.2831853/20)*r+10)
+        } else {
+            
+            tex_ctx.lineTo(Math.cos(i+6.2831853/20)*r,Math.sin(i+6.2831853/20)*r+10)
+        }
+    }
+    tex_ctx.fill()
+    tex_ctx.lineWidth=2
+    tex_ctx.stroke()
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='rgb(100,200,255)'
+    tex_ctx.fillRect(128*3,256+256*3.5,128,128)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.fillStyle='rgb(250,250,250)'
+    tex_ctx.translate(128*3+128*0.5,256+128*7.5)
+    tex_ctx.scale(1.65,1.65)
+    tex_ctx.translate(-38,-34)
+    tex_ctx.scale(0.9,0.9)
+    tex_ctx.translate(4,4)
+    a=new Path2D('M 56 54 L 49 58L 33 58L 25 54L 25 42L 28 35L 28 23L 38 15L 46 18L 52 24L 52 35L 56 47L 56 53')
+    tex_ctx.strokeStyle='black'
+    tex_ctx.lineWidth='3.5'
+    tex_ctx.stroke(a)
+    tex_ctx.fillStyle='#e26a3a'
+    tex_ctx.fill(a)
+    tex_ctx.translate(-4,-4)
+    tex_ctx.scale(1/0.9,1/0.9)
+    a=new Path2D('M 33 56 L 33 44M 46 48 L 46 33M 38 40 L 38 30')
+    tex_ctx.strokeStyle='rgb(0,0,0,0.2)'
+    tex_ctx.lineWidth='2'
+    tex_ctx.stroke(a)
+    tex_ctx.fillStyle='rgb(0,0,0,0.3)'
+    e(40,24,7,3.5)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.translate(0,-8)
+    tex_ctx.lineWidth='6'
+    a=new Path2D('M 36 20 C 32 19 42 22 40 30')
+    tex_ctx.stroke(a)
+    tex_ctx.strokeStyle='rgb(255,255,255)'
+    tex_ctx.lineWidth='3'
+    a=new Path2D('M 36 20 C 32 19 42 22 40 30')
+    tex_ctx.stroke(a)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='rgb(100,200,255)'
+    tex_ctx.fillRect(128*4,256+256*3.5,128,128)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.fillStyle='rgb(250,250,250)'
+    tex_ctx.translate(128*4+128*0.5,256+128*7.5)
+    tex_ctx.scale(1.65,1.65)
+    tex_ctx.translate(-35,-34)
+    tex_ctx.scale(0.9,0.9)
+    tex_ctx.translate(4,4)
+    a=new Path2D('M 54 54 C 48 64 23 58 23 52C 23 45 28 49 25 37C 23 31 28 28 27 26C 23 18 49 16 50 26C 48 36 54 31 53 40C 53 50 58 44 54 54')
+    tex_ctx.strokeStyle='black'
+    tex_ctx.lineWidth='3.5'
+    tex_ctx.stroke(a)
+    tex_ctx.fillStyle='#7cec88'
+    tex_ctx.fill(a)
+    tex_ctx.translate(-6,-2)
+    tex_ctx.scale(1/0.9,1/0.9)
+    tex_ctx.fillStyle='rgb(0,0,0,0.3)'
+    e(40,24,7,3.5)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.translate(0,-8)
+    tex_ctx.lineWidth='6'
+    a=new Path2D('M 36 20 C 32 19 42 22 40 30')
+    tex_ctx.stroke(a)
+    tex_ctx.strokeStyle='rgb(255,255,255)'
+    tex_ctx.lineWidth='3'
+    a=new Path2D('M 36 20 C 32 19 42 22 40 30')
+    tex_ctx.stroke(a)
+    tex_ctx.fillStyle='rgb(205, 242, 41)'
+    e(33,55,3,3)
+    e(42,48,3,3)
+    e(48,57,3,3)
+    e(33,40,2,2)
+    e(47,38,2,2)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='rgb(100,200,255)'
+    tex_ctx.fillRect(128*5,256+256*3.5,128,128)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.fillStyle='rgb(250,250,250)'
+    tex_ctx.translate(128*5+128*0.5,256+128*7.5)
+    tex_ctx.scale(1.55,1.55)
+    tex_ctx.translate(-35,-35)
+    a=new Path2D('M 54 54 C 31 64 23 58 24 52C 24 43 28 49 25 37C 23 31 28 28 27 26C 23 18 49 16 50 26C 48 36 54 31 51 40C 53 50 57 44 54 54')
+    tex_ctx.strokeStyle='black'
+    tex_ctx.lineWidth='3.5'
+    tex_ctx.stroke(a)
+    tex_ctx.fillStyle='rgb(255,255,120)'
+    tex_ctx.fill(a)
+    tex_ctx.fillStyle='rgb(0,0,0,0.3)'
+    e(38,24,7,3.5)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.translate(-2,-8)
+    tex_ctx.lineWidth='6'
+    a=new Path2D('M 36 20 C 32 19 42 22 40 30')
+    tex_ctx.stroke(a)
+    tex_ctx.strokeStyle='rgb(255,255,255)'
+    tex_ctx.lineWidth='3'
+    a=new Path2D('M 36 20 C 32 19 42 22 40 30')
+    tex_ctx.stroke(a)
+    tex_ctx.fillStyle='rgb(205, 242, 41)'
+    tex_ctx.translate(2,13)
+    a=new Path2D('M 33 54 C 26 51 30 44 32 46C 40 48 31 51 33 50')
+    tex_ctx.strokeStyle='rgb(0,0,0,0.3)'
+    tex_ctx.lineWidth='2'
+    tex_ctx.stroke(a)
+    tex_ctx.scale(1.5,1.5)
+    tex_ctx.translate(-26,41)
+    tex_ctx.rotate(-1.3)
+    a=new Path2D('M 33 54 C 26 51 30 44 32 46C 40 48 31 51 33 50')
+    tex_ctx.strokeStyle='rgb(0,0,0,0.3)'
+    tex_ctx.lineWidth='1.5'
+    tex_ctx.stroke(a)
+    tex_ctx.setTransform(1,0,0,1,0,0)
 }
 
 window.textures_bees=function(tex_ctx){

@@ -6264,6 +6264,19 @@ let howManyToFeed=document.getElementById('howManyToFeed'),howManyMessage=docume
 
 let items={
     
+    softWax:{
+        
+        canUseOnSlot:(slot)=>{
+            
+            return slot.beequip
+        },
+        amount:0,u:128*2/2048,v:128*9/2048,value:18,
+        use:function(){
+            
+            items.softWax.amount--
+        }
+    },
+
     paperPlanter:{
         
         amount:1,u:0,v:0,value:Infinity,
@@ -6605,7 +6618,7 @@ let items={
     
     tropicalDrink:{
         
-        amount:0,u:128*5/2048,v:128*3/2048,value:20,
+        amount:0,u:128*5/2048,v:128*3/2048,value:22,
         use:function(){
             
             items.tropicalDrink.amount--
@@ -6645,7 +6658,8 @@ let items={
             howManyToFeed.style.display='block'
             feedAmount.value=1
             howManyMessage.innerHTML='How many bitterberries will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
-            
+            document.getElementById('feedUntilGifted').style.display='none'
+
             howManyToFeed.onmousemove=function(){
                 
                 let a=feedAmount.value
@@ -6739,6 +6753,7 @@ let items={
             howManyToFeed.style.display='block'
             feedAmount.value=1
             howManyMessage.innerHTML='How many neonberries will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
+            document.getElementById('feedUntilGifted').style.display='none'
             
             howManyToFeed.onmousemove=function(){
                 
@@ -15029,7 +15044,7 @@ player=(function(out){
     out.generateBeequip=function(type){
         
         let p=beequips[type].potentials[(Math.random()*beequips[type].potentials.length)|0]
-        out.currentGear.beequips.push({type:type,bee:null,stats:beequips[type].generateStats(p),id:out.currentGear.beequips.length,potential:p})
+        out.currentGear.beequips.push({type:type,bee:null,stats:beequips[type].generateStats(p),id:out.currentGear.beequips.length,potential:p,addedStats:{player:'',bee:''}})
         
         out.updateBeequipPage()
     }
