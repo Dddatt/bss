@@ -6268,12 +6268,18 @@ let items={
         
         canUseOnSlot:(slot)=>{
             
-            return slot.beequip
+            return slot.beequip&&slot.beequip.waxes.length<5
         },
         amount:0,u:128*2/2048,v:128*9/2048,value:18,
         use:function(){
             
             items.softWax.amount--
+
+            player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.waxes.push('softWax')
+
+            player.updateBeequipPage()
+            player.updateHive()
+
         }
     },
 
@@ -7795,27 +7801,27 @@ let beequips={
             
             if(Math.random()<np){
                 
-                b+='*'+(MATH.random(1.15,1.3)*(np*0.15+1)).toFixed(2)+' gatherAmount,'
+                b+='*'+(MATH.random(1.15,1.3)*(np*0.15+1)).toFixed(2)+' gatherAmount(+0),'
             }
             
             if(Math.random()<np*0.65){
                 
-                b+='*1.05 abilityRate,'
+                b+='*1.05 abilityRate(+0),'
             }
             
-            b+='*'+(MATH.random(1.075,1.2)*(np*0.1+1)).toFixed(2)+' attack,'
-            b+='*'+MATH.random(0.8,0.95).toFixed(2)+' maxEnergy,'
-            b+='*'+(MATH.random(1.075,1.15)*(np*0.1+1)).toFixed(2)+' speed,'
+            b+='*'+(MATH.random(1.075,1.2)*(np*0.1+1)).toFixed(2)+' attack(+0),'
+            b+='*'+MATH.random(0.8,0.95).toFixed(2)+' maxEnergy(+0),'
+            b+='*'+(MATH.random(1.075,1.15)*(np*0.1+1)).toFixed(2)+' speed(+0),'
             
             if(Math.random()<np*0.5){
                 
-                p+='*'+(MATH.random(1.01,1.04)*(np*0.01+1)).toFixed(2)+' beeSpeed,'
+                p+='*'+(MATH.random(1.01,1.04)*(np*0.01+1)).toFixed(2)+' beeSpeed(+0),'
                 
             }
             
             if(Math.random()<np*0.5){
                 
-                p+='*'+(MATH.random(1.01,1.03)*(np*0.01+1)).toFixed(2)+' redPollen,'
+                p+='*'+(MATH.random(1.01,1.03)*(np*0.01+1)).toFixed(2)+' redPollen(+0),'
                 
             }
             
@@ -7846,14 +7852,14 @@ let beequips={
             
             let b='',p='',np=potential/5 
             
-            b+='*'+(MATH.random(1.1,1.2)*(np*0.1+1)).toFixed(2)+' abilityRate,'
+            b+='*'+(MATH.random(1.1,1.2)*(np*0.1+1)).toFixed(2)+' abilityRate(+0),'
             
-            b+='*'+MATH.random(1.1,np*0.25+1).toFixed(2)+' maxEnergy,'
-            b+='*'+(MATH.random(1.05,1.175)*(np*0.1+1)).toFixed(2)+' speed'
+            b+='*'+MATH.random(1.1,np*0.25+1).toFixed(2)+' maxEnergy(+0),'
+            b+='*'+(MATH.random(1.05,1.175)*(np*0.1+1)).toFixed(2)+' speed(+0)'
             
             if(Math.random()<np*0.35){
                 
-                p+='*'+(MATH.random(1.01,1.04)*(np*0.01+1)).toFixed(2)+' convertRate'
+                p+='*'+(MATH.random(1.01,1.04)*(np*0.01+1)).toFixed(2)+' convertRate(+0)'
                 
             }
             
@@ -7880,12 +7886,16 @@ let beequips={
             
             let b='',p='',np=potential/5 
             
-            b+='*'+MATH.random(1.15,1.35).toFixed(2)+' abilityRate,'
+            b+='*'+MATH.random(1.15,1.35).toFixed(2)+' abilityRate(+0),'
             
-            b+='*'+MATH.random(1.1,np*0.35+1).toFixed(2)+' maxEnergy,'
+            if(Math.random()<np*0.85){
+                
+                b+='*'+MATH.random(1.1,np*0.35+1).toFixed(2)+' maxEnergy(+0),'
+            }
+
             if(Math.random()<np*0.35){
                 
-                b+='+'+(MATH.random(5,potential*3+10)|0)+' convertAount'
+                b+='+'+(MATH.random(5,potential*3+10)|0)+' convertAount(+0)'
                 
             }
             
@@ -8049,12 +8059,15 @@ class Bee {
                 
                 if(str[0]==='*'){
                     
-                    this[str.substr(str.indexOf(' ')+1,str.length)]*=Number(str.substr(1,str.indexOf(' ')-1))
+                    this[str.substr(str.indexOf(' ')+1,str.indexOf('(')-1)]*=Number(str.substr(1,str.indexOf(' ')-1))+Number(str.substr(str.indexOf('(')+2,str.length).replace(')',''))
                     
+                    //str is a string in the format of smth like "*1.5 attack(+0)" and so it's supposed to log "attack"...rite?
+                    console.log(str.substr(str.indexOf(' ')+1,str.indexOf('(')-1))
+                    
+
                 } else {
                     
-                    this[str.substr(str.indexOf(' ')+1,str.length)]+=Number(str.substr(1,str.indexOf(' ')-1))
-                    
+                    this[str.substr(str.indexOf(' ')+1,str.indexOf('(')-1)]+=Number(str.substr(1,str.indexOf(' ')-1))+Number(str.substr(str.indexOf('(')+2,str.length).replace(')',''))
                 }
             }
             
@@ -14945,12 +14958,13 @@ player=(function(out){
                     let str=stats[i]
                     
                     if(str[0]==='*'){
+
+                        player.defaultStats[str.substr(str.indexOf(' ')+1,str.indexOf('(')-1)]*=Number(str.substr(1,str.indexOf(' ')-1))+Number(str.substr(str.indexOf('(')+2,str.length).replace(')',''))
                         
-                        player.defaultStats[str.substr(str.indexOf(' ')+1,str.length)]*=Number(str.substr(1,str.indexOf(' ')-1))
                         
                     } else {
                         
-                        player.defaultStats[str.substr(str.indexOf(' ')+1,str.length)]+=Number(str.substr(1,str.indexOf(' ')-1))
+                        player.defaultStats[str.substr(str.indexOf(' ')+1,str.indexOf('(')-1)]+=Number(str.substr(1,str.indexOf(' ')-1))+Number(str.substr(str.indexOf('(')+2,str.length).replace(')',''))
                         
                     }
                 }
@@ -15043,8 +15057,9 @@ player=(function(out){
     
     out.generateBeequip=function(type){
         
-        let p=beequips[type].potentials[(Math.random()*beequips[type].potentials.length)|0]
-        out.currentGear.beequips.push({type:type,bee:null,stats:beequips[type].generateStats(p),id:out.currentGear.beequips.length,potential:p,addedStats:{player:'',bee:''}})
+        let p=beequips[type].potentials[(Math.random()*beequips[type].potentials.length)|0],st=beequips[type].generateStats(p)
+
+        out.currentGear.beequips.push({type:type,bee:null,stats:st,id:out.currentGear.beequips.length,potential:p,waxes:[]})
         
         out.updateBeequipPage()
     }
@@ -15124,7 +15139,15 @@ player=(function(out){
                 }
             }
 
-            let waxesCode=[itemSVGCode.softWax.replaceAll('AMOUNTININVENTORY','').replaceAll('AMOUNTOFITEMREQUIREDTOCRAFT','').replace('translate(0px,7px)','translate(-9px,-1px)').replace('scale(0.77,0.77)','scale(0.6,0.6)'),'','','','']
+            let waxesCode=[]
+
+            for(let i=0;i<5;i++){
+
+                let w=out.currentGear.beequips[out.beequipLookingAt].waxes[i]
+
+                waxesCode.push(w?itemSVGCode[w].replaceAll('AMOUNTININVENTORY','').replaceAll('AMOUNTOFITEMREQUIREDTOCRAFT','').replace('translate(0px,7px)','translate(-9px,-1px)').replace('scale(0.77,0.77)','scale(0.6,0.6)'):'')
+            }
+
             
             out.beequipPageHTML+="<div onmousedown='window.selectBeequip()' style='position:fixed;left:5px;top:250px;background-color:rgb(240, 196, 0);border:2px solid black;border-radius:4px;text-align:center;width:90px;height:20px;cursor:pointer;'><svg style='margin:0px;width:100px;height:20px'><text x='30' y='16' style='color:black;font-family:cursive;font-size:17px'>Equip</text></svg></div><div onmousedown='window.deleteBeequip()' style='position:fixed;top:250px;background-color:rgb(240, 0, 0);border:2px solid black;border-radius:4px;left:105px;text-align:center;width:90px;height:20px;cursor:pointer;'><svg style='margin:0px;width:100px;height:20px'><text x='20' y='16' style='color:black;font-family:cursive;font-size:17px'>Delete</text></svg></div><svg style='position:fixed;border-radius:10px;background-color:rgb(240,240,240);width:75px;height:75px;margin-top:28px'>"+c+"<div onmousedown='window.exitBeequipLooking()' style='position:fixed;background-color:rgb(240,0,0);border:2px solid black;border-radius:4px;text-align:center;font-size:19px;font-family:trebuchet ms;width:20px;height:20px;cursor:pointer;'><svg style='margin:0px;width:20px;height:20px'><path stroke='black' stroke-width='2' d='M5 4L15 16M15 4L5 16'></path></svg></div><div style='position:fixed;background-color:rgb(240,240,240);border-radius:10px;text-align:center;font-size:19px;font-family:trebuchet ms;margin-left:28px;width:172px;padding-bottom:2px;'>"+MATH.doGrammar(out.currentGear.beequips[out.beequipLookingAt].type.replaceAll('candycane','candyCane'))+"</div><div style='position:fixed;background-color:rgb(240,240,240);margin-left:80px;margin-top:29px;border-radius:10px;font-size:13px;padding-top:0px;font-family:trebuchet ms;width:113px;padding-left:7px;padding-top:3px;padding-bottom:3px;'>Level: "+beequips[out.currentGear.beequips[out.beequipLookingAt].type].level+"</div><div style='position:fixed;background-color:rgb(240,240,240);margin-left:80px;margin-top:55px;border-radius:10px;padding-left:7px;padding-top:3px;padding-bottom:3px;font-size:13px;font-family:trebuchet ms;width:113px;'>Color: "+MATH.doGrammar(beequips[out.currentGear.beequips[out.beequipLookingAt].type].color)+"</div><div style='position:fixed;background-color:rgb(240,240,240);margin-left:80px;margin-top:81px;border-radius:10px;padding-left:7px;padding-top:3px;padding-bottom:3px;font-size:13px;font-family:trebuchet ms;width:113px;'>Potential: "+out.currentGear.beequips[out.beequipLookingAt].potential+"</div><svg style='postition:fixed;left:0px;top:107px;width:20px;height:20px'><path stroke='black' stroke-width='2' d='M5 4L15 16M15 4L5 16'></path></svg><div style='background-color:rgb(240,240,240);margin-left:2px;margin-top:112px;border-radius:9px;padding-left:7px;padding-top:3px;padding-bottom:3px;width:30px;height:30px;'>"+waxesCode[0]+"</div><div style='background-color:rgb(240,240,240);margin-left:42px;margin-top:-36px;border-radius:9px;padding-left:7px;padding-top:3px;padding-bottom:3px;width:30px;height:30px;'>"+waxesCode[1]+"</div><div style='background-color:rgb(240,240,240);margin-left:82px;margin-top:-36px;border-radius:9px;padding-left:7px;padding-top:3px;padding-bottom:3px;width:30px;height:30px;'>"+waxesCode[2]+"</div><div style='background-color:rgb(240,240,240);margin-left:122px;margin-top:-36px;border-radius:9px;padding-left:7px;padding-top:3px;padding-bottom:3px;width:30px;height:30px;'>"+waxesCode[3]+"</div><div style='background-color:rgb(240,240,240);margin-left:162px;margin-top:-36px;border-radius:9px;padding-left:7px;padding-top:3px;padding-bottom:3px;width:30px;height:30px;'>"+waxesCode[4]+"</div><div style='background-color:rgb(240,240,240);margin-left:0px;margin-top:5px;border-radius:10px;padding-left:7px;padding-top:3px;padding-bottom:3px;font-size:12px;font-family:trebuchet ms;width:193px;'>"+_d+beequips[out.currentGear.beequips[out.beequipLookingAt].type].reqStr+stats+(beequips[out.currentGear.beequips[out.beequipLookingAt].type].extraAbility?'<br><p style="font-size:15px">+Ability: '+MATH.doGrammar(beequips[out.currentGear.beequips[out.beequipLookingAt].type].extraAbility.split('_')[1])+'</p>':'')+"</div>"
             
