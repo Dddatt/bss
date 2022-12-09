@@ -8057,17 +8057,13 @@ class Bee {
                 
                 let str=stats[i]
                 
-                if(str[0]==='*'){
+                if(str[0]==='*'){   
                     
-                    this[str.substr(str.indexOf(' ')+1,str.indexOf('(')-1)]*=Number(str.substr(1,str.indexOf(' ')-1))+Number(str.substr(str.indexOf('(')+2,str.length).replace(')',''))
-                    
-                    //str is a string in the format of smth like "*1.5 attack(+0)" and so it's supposed to log "attack"...rite?
-                    console.log(str.substr(str.indexOf(' ')+1,str.indexOf('(')-1))
-                    
+                    this[str.substring(str.indexOf(' ')+1,str.indexOf('('))]*=Number(str.substr(1,str.indexOf(' ')-1))+Number(str.substr(str.indexOf('(')+2,str.length).replace(')',''))
 
                 } else {
                     
-                    this[str.substr(str.indexOf(' ')+1,str.indexOf('(')-1)]+=Number(str.substr(1,str.indexOf(' ')-1))+Number(str.substr(str.indexOf('(')+2,str.length).replace(')',''))
+                    this[str.substring(str.indexOf(' ')+1,str.indexOf('('))]+=Number(str.substr(1,str.indexOf(' ')-1))+Number(str.substr(str.indexOf('(')+2,str.length).replace(')',''))
                 }
             }
             
@@ -14959,12 +14955,11 @@ player=(function(out){
                     
                     if(str[0]==='*'){
 
-                        player.defaultStats[str.substr(str.indexOf(' ')+1,str.indexOf('(')-1)]*=Number(str.substr(1,str.indexOf(' ')-1))+Number(str.substr(str.indexOf('(')+2,str.length).replace(')',''))
-                        
+                        player.defaultStats[str.substring(str.indexOf(' ')+1,str.indexOf('('))]*=Number(str.substr(1,str.indexOf(' ')-1))+Number(str.substr(str.indexOf('(')+2,str.length).replace(')',''))
                         
                     } else {
                         
-                        player.defaultStats[str.substr(str.indexOf(' ')+1,str.indexOf('(')-1)]+=Number(str.substr(1,str.indexOf(' ')-1))+Number(str.substr(str.indexOf('(')+2,str.length).replace(')',''))
+                        player.defaultStats[str.substring(str.indexOf(' ')+1,str.indexOf('('))]+=Number(str.substr(1,str.indexOf(' ')-1))+Number(str.substr(str.indexOf('(')+2,str.length).replace(')',''))
                         
                     }
                 }
