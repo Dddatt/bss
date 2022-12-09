@@ -6277,6 +6277,37 @@ let items={
 
             player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.waxes.push('softWax')
 
+            let beeStats=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee.split(','),numStatsToAdd=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.potential>=3?2:1,statsToAdd=[],permBeeStats=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee.split(',')
+
+            for(let i in beeStats){
+
+                if(beeStats[i][1]==='0'){
+
+                    beeStats.splice(i,1)
+                }
+            }
+
+            for(let i=0;i<numStatsToAdd;i++){
+
+                let j=(Math.random()*beeStats.length)|0
+                statsToAdd.push(beeStats[j])
+                beeStats.splice(j,1)
+            }
+
+            for(let i in statsToAdd){
+
+                for(let j in permBeeStats){
+                    
+                    if(statsToAdd[i]===permBeeStats[j]){
+                        
+                        permBeeStats[j]=permBeeStats[j].substring(0,permBeeStats[j].indexOf('+')+1)+(Number(permBeeStats[j].substring(permBeeStats[j].indexOf('(')+2,permBeeStats[j].indexOf(')')))+1)+')'
+                    }
+                }
+            }
+
+            player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee=permBeeStats.join(',')
+            console.log(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee)
+
             player.updateBeequipPage()
             player.updateHive()
 
