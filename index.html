@@ -6300,7 +6300,9 @@ let items={
                     
                     if(statsToAdd[i]===permBeeStats[j]){
                         
-                        permBeeStats[j]=permBeeStats[j].substring(0,permBeeStats[j].indexOf('+')+1)+(Number(permBeeStats[j].substring(permBeeStats[j].indexOf('(')+2,permBeeStats[j].indexOf(')')))+1)+')'
+                        let improvement=permBeeStats[j][0]==='*'?MATH.random(0.05,0.1).toFixed(2):(MATH.random(1,5)|0)
+
+                        permBeeStats[j]=permBeeStats[j].substring(0,permBeeStats[j].indexOf('+')+1)+(Number(permBeeStats[j].substring(permBeeStats[j].indexOf('(')+2,permBeeStats[j].indexOf(')')))+improvement)+')'
                     }
                 }
             }
