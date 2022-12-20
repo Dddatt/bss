@@ -19552,6 +19552,7 @@ window.selectBeequip=function(){
     for(let i in player.currentGear.beequips){
         
         if(player.currentGear.beequips[i].id===player.beequipLookingAt){
+
             player.beequipDragging=player.currentGear.beequips[i]
         }
     }
@@ -19568,6 +19569,7 @@ window.unselectBeequip=function(){
 window.deleteBeequip=function(){
     
     if(player.currentGear.beequips[player.beequipLookingAt].bee){
+
         player.hive[player.currentGear.beequips[player.beequipLookingAt].bee[1]][player.currentGear.beequips[player.beequipLookingAt].bee[0]].beequip=null
         
     }
@@ -19576,7 +19578,7 @@ window.deleteBeequip=function(){
     
     for(let i in player.currentGear.beequips){
         
-        player.currentGear.beequips[i].id=i
+        player.currentGear.beequips[i].id=Number(i)
     }
     
     player.beequipDragging=false
