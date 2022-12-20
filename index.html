@@ -6273,6 +6273,8 @@ let items={
         amount:0,u:128*2/2048,v:128*9/2048,value:18,
         use:function(){
             
+            player.addMessage('The wax improved the beequip!')
+
             items.softWax.amount--
 
             player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.waxes.push('softWax')
@@ -6315,6 +6317,162 @@ let items={
             player.updateBeequipPage()
             player.updateHive()
 
+        }
+    },
+
+    hardWax:{
+        
+        canUseOnSlot:(slot)=>{
+            
+            return slot.beequip&&slot.beequip.waxes.length<5
+        },
+        amount:0,u:128*3/2048,v:128*9/2048,value:25,
+        use:function(){
+            
+            items.hardWax.amount--
+
+            if(Math.random()>0.6){
+
+                player.addMessage('The wax failed to improve the beequip!',COLORS.redArr)
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.waxes.push('hardWax')
+                player.updateBeequipPage()
+                player.updateHive()
+                return
+            }
+
+            player.addMessage('The wax improved the beequip!')
+
+            player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.waxes.push('hardWax')
+
+            let beeStats=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee.split(','),numStatsToAdd=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.potential>=3&&Math.random()<0.5?3:2,statsToAdd=[],permBeeStats=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee.split(',')
+
+            for(let i in beeStats){
+
+                if(beeStats[i][1]==='0'){
+
+                    beeStats.splice(i,1)
+                }
+            }
+
+            for(let i=0;i<numStatsToAdd;i++){
+
+                let j=(Math.random()*beeStats.length)|0
+                statsToAdd.push(beeStats[j])
+                beeStats.splice(j,1)
+            }
+
+            for(let i in statsToAdd){
+
+                for(let j in permBeeStats){
+                    
+                    if(statsToAdd[i]===permBeeStats[j]){
+                        
+                        let np=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.potential/5
+
+                        let improvement=Number(permBeeStats[j][0]==='*'?(MATH.random(0.075,0.125)*(np*0.15+1)).toFixed(2):((MATH.random(2,6)*(np*0.5+1))|0))
+                        
+                        permBeeStats[j]=permBeeStats[j].substring(0,permBeeStats[j].indexOf('(')+2)+(Number(permBeeStats[j].substring(permBeeStats[j].indexOf('(')+2,permBeeStats[j].indexOf(')')))+improvement).toFixed(2).replaceAll('.00','')+')'
+                    }
+                }
+            }
+
+            player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee=permBeeStats.join(',')
+
+            player.updateBeequipPage()
+            player.updateHive()
+        }
+    },
+
+    causticWax:{
+        
+        canUseOnSlot:(slot)=>{
+            
+            return slot.beequip&&slot.beequip.waxes.length<5
+        },
+        amount:0,u:128*4/2048,v:128*9/2048,value:25,
+        use:function(){
+            
+            items.causticWax.amount--
+
+            if(Math.random()<0.75){
+
+                player.addMessage('The wax destroyed the beequip!',COLORS.redArr)
+                player.beequipLookingAt=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.id
+                window.deleteBeequip()
+                return
+            }
+
+            player.addMessage('The wax improved the beequip!')
+
+            player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.waxes.push('causticWax')
+
+            let beeStats=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee.split(','),numStatsToAdd=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.potential>=4&&Math.random()<0.75?4:3,statsToAdd=[],permBeeStats=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee.split(',')
+
+            for(let i in beeStats){
+
+                if(beeStats[i][1]==='0'){
+
+                    beeStats.splice(i,1)
+                }
+            }
+
+            for(let i=0;i<numStatsToAdd;i++){
+
+                let j=(Math.random()*beeStats.length)|0
+                statsToAdd.push(beeStats[j])
+                beeStats.splice(j,1)
+            }
+
+            for(let i in statsToAdd){
+
+                for(let j in permBeeStats){
+                    
+                    if(statsToAdd[i]===permBeeStats[j]){
+                        
+                        let np=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.potential/5
+
+                        let improvement=Number(permBeeStats[j][0]==='*'?(MATH.random(0.1,0.175)*(np*0.15+1)).toFixed(2):((MATH.random(4,9)*(np*0.5+1))|0))
+                        
+                        permBeeStats[j]=permBeeStats[j].substring(0,permBeeStats[j].indexOf('(')+2)+(Number(permBeeStats[j].substring(permBeeStats[j].indexOf('(')+2,permBeeStats[j].indexOf(')')))+improvement).toFixed(2).replaceAll('.00','')+')'
+                    }
+                }
+            }
+
+            player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee=permBeeStats.join(',')
+
+            player.updateBeequipPage()
+            player.updateHive()
+        }
+    },
+
+    swirledWax:{
+        
+        canUseOnSlot:(slot)=>{
+            
+            return slot.beequip&&slot.beequip.waxes.length<5
+        },
+        amount:0,u:128*4/2048,v:128*9/2048,value:25,
+        use:function(){
+            
+            items.swirledWax.amount--
+
+            player.addMessage('The wax rerolled the beequip stats!')
+
+            player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.waxes.push('swirledWax')
+
+            let stats=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee.split(',')
+
+            for(let i in stats){
+
+                let newNum=Number(stats[i].substring(1,stats[i].indexOf(' ')))*(stats[i][0]==='*'?MATH.random(0.8,1.25):MATH.random(0.5,2))
+
+                stats[i]=stats[i][0]+(stats[i][0]==='+'?Math.round(newNum):newNum.toFixed(2).replace('.00',''))+stats[i].substring(stats[i].indexOf(' '),stats[i].length)
+            }
+
+            player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee=stats.join(',')
+
+            player.updateBeequipPage()
+            player.updateHive()
         }
     },
 

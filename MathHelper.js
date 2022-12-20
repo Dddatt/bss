@@ -245,18 +245,20 @@ window.MATH = (function (MATH) {
         if (s[s.length - 1] === 's') {
 
             return s
-
-        } else {
-
-            if (s[s.length - 1] === 'y') {
-
-                return s.substr(0, s.length - 1) + 'ies'
-
-            } else {
-
-                return s + 's'
-            }
         }
+
+        if (s[s.length - 1] === 'y') {
+
+            return s.substr(0, s.length - 1) + 'ies'
+        }
+
+        if(s[s.length-1]==='x'){
+
+            return s + 'es'
+        }
+
+        return s+'s'
+    
     }
 
     MATH.pointInTriangle = function (x, y, ax, ay, bx, by, cx, cy) {
