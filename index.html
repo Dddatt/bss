@@ -2538,37 +2538,12 @@ window.onresize=()=>{
     gl.uniform1f(glCache.trail_isNight,player.isNight)
 }
 
-function runForFullScreen(){
-    
-    if(FETCHED_CODE.webCode){
-        
-        let w=window.open()
-        w.document.open()
-        w.document.write(FETCHED_CODE.webCode.replace('var _M=Math','var _M=Math;window.thisProgramIsInFullScreen=true'))
-        w.document.close()
-        
-        FETCHED_CODE.webCode=''
-        
-    } else {
-        
-        window.setTimeout(runForFullScreen,250)
-    }
-}
-
-function fetchCodeFromProgram(codeProp,ID){
-    
-    $.getJSON("https://www.khanacademy.org/api/labs/scratchpads/"+ID+"?callback=?",function(data){
-        
-        FETCHED_CODE[codeProp]=data.revision.code
-        
-    })
-}
-
 document.getElementById('runFullScreen').addEventListener('click',function(){
-    
-    fetchCodeFromProgram('webCode',5078889163440128)
-    
-    runForFullScreen()
+
+    let w=window.open()
+    w.document.open()
+    w.document.write('<!doctype html><html>'+document.querySelector('html').innerHTML.replace('var _M=Math','var _M=Math;window.thisProgramIsInFullScreen=true'))
+    w.document.close()
 })
 
 let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,BEE_COLLECT=0,BEE_FLY=0,then,dt,frameCount=0,TIME=0,player,honeyMarkConvert=TIME,NIGHT_DARKNESS=0.7
