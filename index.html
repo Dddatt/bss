@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <!--
 
+sound is currently disabled to stop my computer from becoming a waffle cooker
+
+
 so erm the ka version is really behind but idk any new way to save some space ;-; except putting the main func outside
 
 
@@ -2385,6 +2388,9 @@ function resample(sourceAudioBuffer,desiredSampleRate,resolve){
 }
 
 function playSound(sound,vol) {
+
+    //SOUND IS DISABLED
+    return
 	
 	let src=window['music_'+sound]
 	
@@ -3504,6 +3510,11 @@ let beeInfo={
     baby:{
         
         u:128*8/2048,v:256*2/2048,meshPartId:0,gatherSpeed:5,gatherAmount:10,speed:10.5,convertSpeed:5,convertAmount:80,attack:0,energy:15,tokens:['babyLove'],rarity:'legendary',color:'white',description:"This little bee isn't very good at bee tasks yet, but it's guaranteed to bring you joy (and luck).",giftedHiveBonus:{oper:'+',stat:'lootLuck',num:0.25},favoriteTreat:'strawberry'
+    },
+
+    vicious:{
+        
+        u:128*9/2048,v:256*2/2048,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:17.5,convertSpeed:4,convertAmount:80,attack:8,energy:50,tokens:['blueBomb_'],attackTokens:['impale'],rarity:'event',color:'blue',description:"This cold-blooded bee takes great pleasure in inflicting pain.",giftedHiveBonus:{oper:'+',stat:'lootLuck',num:0.25}
     },
 }
 
@@ -5813,6 +5824,22 @@ let effects={
             
             return 'Tabby Love\nx'+player.tabbyLoveStacks+' Tabby Bee convert rate\nx'+player.tabbyLoveStacks+' Tabby Bee gather amount\nx'+player.tabbyLoveStacks+' pollen from "Scratch"'
         }
+    },
+
+    impale:{
+        
+        trialCooldown:35,trialRate:0.8,
+        statsToAddTo:['blueAbilityTokens','attackTokens'],
+        u:128*6/2048,v:128*7/2048,
+        tokenLife:24,
+        
+        func:function(params){
+            
+            for(let i=0;i<params.bee.level;i++){
+
+                window.setTimeout(function(){objects.mobs.push(new Spike(params.bee))},300*i)
+            }
+        },
     },
 
     comfortingNectar:{
@@ -9671,7 +9698,7 @@ class Bubble {
     }
     
     die(index){
-        
+
         objects.bubbles.splice(index,1)
     }
     
@@ -9689,6 +9716,11 @@ class Bubble {
     }
     
     pop(){
+
+        if(player.popStarActive){
+
+            player.popStarActive.popParticles.push(this.pos)
+        }
         
         if(player.popStarActive){
             
@@ -9708,17 +9740,14 @@ class Bubble {
             }
         }
         
-        if(player.fieldIn===this.field){
+        objects.explosions.push(new Explosion({col:this.col,pos:this.pos.slice(),life:0.2,size:4,speed:0.5,aftershock:0.05}))
+        let g=this.golden?1.5*player.bubblePollen:player.bubblePollen
+        
+        let p=collectPollen({x:this.x,z:this.z,pattern:[[0,0],[-1,-1],[-1,0],[-1,1],[1,-1],[1,0],[1,1],[0,1],[0,-1],[-2,0],[2,0],[0,2],[0,-2],[2,1],[2,-1],[-2,1],[-2,-1],[1,2],[-1,2],[1,-2],[-1,-2],[3,0],[-3,0],[0,-3],[0,3],[3,1],[3,-1],[1,3],[-1,3],[-1,-3],[1,-3],[-3,1],[-3,-1]],amount:{r:2,w:6,b:10},stackHeight:0.45+Math.random()*0.5,replenish:1,field:this.field,multiplier:g*player.bubbleBonus})
+        
+        if(this.golden&&p&&Math.random()<0.25){
             
-            objects.explosions.push(new Explosion({col:this.col,pos:this.pos.slice(),life:0.2,size:4,speed:0.5,aftershock:0.05}))
-            let g=this.golden?1.5*player.bubblePollen:player.bubblePollen
-            
-            let p=collectPollen({x:this.x,z:this.z,pattern:[[0,0],[-1,-1],[-1,0],[-1,1],[1,-1],[1,0],[1,1],[0,1],[0,-1],[-2,0],[2,0],[0,2],[0,-2],[2,1],[2,-1],[-2,1],[-2,-1],[1,2],[-1,2],[1,-2],[-1,-2],[3,0],[-3,0],[0,-3],[0,3],[3,1],[3,-1],[1,3],[-1,3],[-1,-3],[1,-3],[-3,1],[-3,-1]],amount:{r:2,w:6,b:10},stackHeight:0.45+Math.random()*0.5,replenish:1,field:this.field,multiplier:g*player.bubbleBonus})
-            
-            if(this.golden&&p&&Math.random()<0.25){
-                
-                objects.tokens.push(new LootToken(30,[this.pos[0],this.pos[1]+0.7,this.pos[2]],'honey',Math.ceil(p*0.5),true,'Gold Bubble'))
-            }
+            objects.tokens.push(new LootToken(30,[this.pos[0],this.pos[1]+0.7,this.pos[2]],'honey',Math.ceil(p*0.5),true,'Gold Bubble'))
         }
         
         this.life=0
@@ -10238,10 +10267,10 @@ class Target {
         this.x=x
         this.z=z
         this.type=type
-        this.pos=[fieldInfo[this.field].x+this.x,fieldInfo[this.field].y+0.51,fieldInfo[this.field].z+this.z]
+        this.pos=[fieldInfo[this.field].x+this.x,fieldInfo[this.field].y,fieldInfo[this.field].z+this.z]
         this.col=this.type===3&&bee.gifted?[0.9,0,0.9]:[1,0.7,0]
         
-        this.trail=new TrailRenderer.Trail({length:2,size:0.025,color:[1,0,0,1]})
+        this.trail=new TrailRenderer.Trail({length:2,size:0.04,color:[1,0,0,1]})
     }
     
     die(index){
@@ -10250,7 +10279,7 @@ class Target {
         
         objects.explosions.push(new ReverseExplosion({col:this.activated?[0,1,0]:[1,0,0],pos:this.pos,life:0.5,size:3,alpha:1,height:3}))
         
-        if(vec3.sqrDist(this.pos,[player.body.position.x,player.body.position.y,player.body.position.z])<=4){
+        if(vec3.sqrDist(this.pos,[player.body.position.x,player.body.position.y,player.body.position.z])<=4.5){
             
             let amountToConvert=Math.min((player.convertTotal*0.5)+(10*this.bee.convertAmount*player.convertRate*player[beeInfo[this.bee.type].color+'ConvertRate'])*(player.flameHeatStack*5),player.pollen)
             
@@ -10284,7 +10313,7 @@ class Target {
             this.activated=true
         }
         
-        meshes.explosions.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.col[0],this.col[1],this.col[2],0.5,1.8,0.001)
+        meshes.cylinder_explosions.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.col[0],this.col[1],this.col[2],0.5,1.75,0.75)
         
         return this.splice
     }
@@ -11142,6 +11171,7 @@ class MondoChick {
         this.timeLimit=10*60
         this.maxTimeLimit=this.timeLimit
         this.fallenEggShellEffect=0
+        this.runningAmount=0
     }
     
     die(index){
@@ -11203,10 +11233,15 @@ class MondoChick {
                 let d=[this.target[0]-this.pos[0],this.target[1]-this.pos[2]]
                 if(Math.abs(d[0])+Math.abs(d[1])<0.75){
                     
-                    this.target=[fieldInfo[this.field].x+MATH.random(0.2,0.8)*fieldInfo[this.field].width,fieldInfo[this.field].z+MATH.random(0.2,0.8)*fieldInfo[this.field].length]
+                    this.target=[fieldInfo[this.field].x+Math.random()*fieldInfo[this.field].width,fieldInfo[this.field].z+Math.random()*fieldInfo[this.field].length]
                     d=[this.target[0]-this.pos[0],this.target[1]-this.pos[2]]
-                    if(Math.random()<0.25) this.waitTimer=5
-                    
+                    this.runningAmount--
+
+                    if(this.runningAmount<=0){
+                        
+                        this.waitTimer=5
+                        this.runningAmount=MATH.random(4,8)|0
+                    }
                 }
                 
                 vec2.normalize(d,d)
@@ -11216,8 +11251,8 @@ class MondoChick {
                 
                 if(this.waitTimer<=0){
                     
-                    this.pos[0]+=d[0]*dt*6
-                    this.pos[2]+=d[1]*dt*6
+                    this.pos[0]+=d[0]*dt*7
+                    this.pos[2]+=d[1]*dt*7
                     this.running=true
                 }
                 
@@ -11279,8 +11314,9 @@ class PopStar {
         this.life=45
         this.startValue=player.stats.popStar
         this.value=0
-        player.popStarActive=true
         player.popStarSize=0
+        player.popStarActive=this
+        this.popParticles=[]
         
         player.addEffect('bubbleBloat',60/(60*60))
         player.addEffect('popStarAura')
@@ -11289,7 +11325,8 @@ class PopStar {
     die(index){
         
         player.popStarSize=0
-        player.popStarActive=false
+        player.popStarActive=undefined
+
         let dir=player.bodyDir.slice(),theta=TIME*2,st=Math.sin(theta)*(this.size+1),ct=Math.cos(theta)*(this.size+1)
         
         dir[0]=dir[0]*st-dir[2]*ct
@@ -11309,7 +11346,7 @@ class PopStar {
                 
             }
         }
-        
+
         objects.mobs.splice(index,1)
     }
     
@@ -11331,7 +11368,21 @@ class PopStar {
         dir[2]=player.bodyDir[0]*ct+dir[2]*st
         
         let p=[player.body.position.x+dir[0],player.body.position.y+this.size*2+Math.sin(TIME*3)*this.size-0.5,player.body.position.z+dir[2],-player.playerAngle+Math.PI]
-        
+
+        for(let i in this.popParticles){
+
+            let a=this.popParticles[i]
+
+            vec3.lerp(a,a,p,dt*7+0.075)
+
+            meshes.explosions.instanceData.push(a[0],a[1],a[2],1,1,1,1,0.5,1)
+
+            if(Math.abs(a[0]-p[0])+Math.abs(a[1]-p[1])+Math.abs(a[2]-p[2])<1.75){
+
+                this.popParticles.splice(i,1)
+            }
+        }
+
         gl.uniform4fv(glCache.mob_instanceInfo1,p)
         gl.uniform2f(glCache.mob_instanceInfo2,this.size,0.7)
         gl.drawElements(gl.TRIANGLES,meshes.popStar.indexAmount,gl.UNSIGNED_SHORT,0)
@@ -11571,7 +11622,7 @@ class StarSaw {
             if(b.health&&b.state==='attack'&&b.starSawHitTimer<=0&&vec3.sqrDist(p,b.pos)<=6){
                 
                 b.starSawHitTimer=0.75
-                b.damage(50*player.beeAttack)
+                b.damage(35*player.beeAttack*(player.redBeeAttack+player.whiteBeeAttack+player.blueBeeAttack))
             }
         }
         
@@ -12188,6 +12239,18 @@ class Coconut {
             for(let i=0;i<MATH.TWO_PI;i+=MATH.TWO_PI/5){
                 
                 objects.tokens.push(new LootToken(30,[this.pos[0]+Math.cos(i)*this.displaySize*0.6,fieldInfo[this.field].y+1,this.pos[2]+Math.sin(i)*this.displaySize*0.6],'honey',Math.ceil(hpt),true,'Coconut'))
+            }
+        }
+
+        let d=this.displaySize+1
+
+        d*=d
+
+        for(let i in objects.mobs){
+
+            if(objects.mobs[i].state==='attack'&&vec3.sqrDist(this.pos,objects.mobs[i].pos)<d){
+
+                objects.mobs[i].damage(1000*player.beeAttack*(player.redBeeAttack+player.whiteBeeAttack+player.blueBeeAttack))
             }
         }
         
@@ -13038,6 +13101,77 @@ class DarkScoopingTrail {
             this.waitTimer=0.5
             vec3.scale(this.lastVel,this.lastVel,-0.01)
         }
+    }
+}
+
+class Spike {
+    
+    constructor(bee){
+        
+        this.bee=bee
+        this.target=player.attacked.length>0?player.attacked[(Math.random()*player.attacked.length)|0]:false
+        this.life=1
+
+        if(this.target){
+
+            this.y=this.target.pos[1]+MATH.random(-4,-1)
+            this.pos=[this.target.pos[0]+MATH.random(-1,1),this.y-5,this.target.pos[2]+MATH.random(-1,1),0]
+        }
+    }
+    
+    die(index){
+        
+        objects.mobs.splice(index,1)
+    }
+    
+    update(){
+
+        if(!this.target) return true
+
+        this.life-=dt
+        
+        if(this.life>0.5){
+            
+            this.pos[1]+=(this.y-this.pos[1])*dt*22.5
+
+            if(!this.hitTarget&&this.life<0.75){
+
+                this.hitTarget=true
+
+                let d=this.target.health*0.05*((this.bee.attack-1)*0.01+1)
+
+                if(d>1000){
+
+                    d=(d-1000)*0.05+1000
+                }
+
+                if(!this.target.lastTimeImpaled||TIME-this.target.lastTimeImpaled>5){
+
+                    this.target.impaledSessionCount=0
+                }
+
+                d*=1-(Math.min(this.target.impaledSessionCount,20)*0.0375)
+
+                this.target.damage(d)
+
+                this.target.impaledSessionCount++
+                this.target.lastTimeImpaled=TIME
+            }
+            
+        } else {
+            
+            this.pos[1]+=(this.y-10-this.pos[1])*dt*10
+        }
+        
+        gl.bindBuffer(gl.ARRAY_BUFFER,meshes.spike.vertBuffer)
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.spike.indexBuffer)
+        gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
+        gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
+        gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
+        gl.uniform2f(glCache.mob_instanceInfo2,1,1)
+        gl.drawElements(gl.TRIANGLES,meshes.spike.indexAmount,gl.UNSIGNED_SHORT,0)
+        
+        return this.life<=0
     }
 }
 
@@ -19074,6 +19208,21 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
 
 meshes.plentyPlanter.indexAmount=index.length
 
+meshes.spike={}
+meshes.spike.vertBuffer=gl.createBuffer()
+meshes.spike.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+c(0,0,0,0,5*2,10,0.8,0.8,0.8,-90,0,0,0.35*2,true,true,true)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.spike.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.spike.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.spike.indexAmount=index.length
+
 
 player.createdMesh=window.mapMesh
 
@@ -19578,9 +19727,11 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(flowers.mesh.index),gl.DY
 for(let i=0;i<25;i++)
 player.addSlot(null)
 
-player.addSlot('ninja')
-player.addSlot('ninja')
-player.addSlot('ninja')
+player.addSlot('vicious')
+player.addSlot('vicious')
+player.addSlot('vicious')
+player.addSlot('vicious')
+player.addSlot('vicious')
 
 player.updateHive()
 player.updateGear()
@@ -20174,6 +20325,8 @@ function loop(now){
     gl.uniformMatrix4fv(glCache.mob_viewMatrix,gl.FALSE,player.viewMatrix)
     
     if(user.keys.o){
+
+        objects.mobs.push(new Spike())
 
         for(let i in objects.planters){
 
