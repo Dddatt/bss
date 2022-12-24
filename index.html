@@ -3514,7 +3514,7 @@ let beeInfo={
 
     vicious:{
         
-        u:128*9/2048,v:256*2/2048,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:17.5,convertSpeed:4,convertAmount:80,attack:8,energy:50,tokens:['blueBomb_'],attackTokens:['impale'],rarity:'event',color:'blue',description:"This cold-blooded bee takes great pleasure in inflicting pain.",giftedHiveBonus:{oper:'+',stat:'lootLuck',num:0.25}
+        u:128*9/2048,v:256*2/2048,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:70.5,convertSpeed:4,convertAmount:80,attack:8,energy:50,tokens:['blueBomb_'],attackTokens:['impale'],rarity:'event',color:'blue',description:"This cold-blooded bee takes great pleasure in inflicting pain.",giftedHiveBonus:{oper:'+',stat:'lootLuck',num:0.25}
     },
 }
 
@@ -10650,8 +10650,10 @@ class Beetle {
         let crit=Math.random()<player.criticalChance,superCrit=Math.random()<player.superCritChance,d=am*(crit?superCrit?player.superCritPower*player.criticalPower:player.criticalPower:1)
         
         this.health-=d|0
-        textRenderer.add((d|0)+'',[this.pos[0],this.pos[1]+Math.random()*2.75+1.5,this.pos[2]],[255,0,0],crit?superCrit?2:1:0,'',1.25)
-        
+
+        let l=d.toString().length
+
+        textRenderer.add((d|0)+'',[this.pos[0],this.pos[1]+Math.random()*2.75+1.5,this.pos[2]],[255,0,0],crit?superCrit?2:1:0,'',1.25)        
     }
     
     update(){
@@ -11184,7 +11186,7 @@ class MondoChick {
         let crit=Math.random()<player.criticalChance,superCrit=Math.random()<player.superCritChance,d=am*(crit?superCrit?player.superCritPower*player.criticalPower:player.criticalPower:1)
         
         this.health-=d|0
-        textRenderer.add((d|0)+'',[this.pos[0],this.pos[1]+Math.random()*2.75+1.5,this.pos[2]],[255,0,0],crit?superCrit?2:1:0,'',1.25)
+        textRenderer.add((d|0)+'',[this.pos[0],this.pos[1]+Math.random()*2.75+1.5,this.pos[2]],[255,0,0],crit?superCrit?2:1:0,'',[0,1.25,1.275,1.3,1.65,1.75][Math.min(d.toString().length),5])
         
     }
     
@@ -12271,12 +12273,11 @@ class Coconut {
             this.glow+=dt
             this.y+=this.vel*dt
             
-            meshes.explosions.instanceData.push(this.pos[0],this.pos[1],this.pos[2],0,1,0,this.glow,this.displaySize,0.001)
+            meshes.cylinder_explosions.instanceData.push(this.pos[0],this.pos[1],this.pos[2],0,1,0,this.glow,this.displaySize,0.001)
             meshes.explosions.instanceData.push(this.pos[0],this.y,this.pos[2],1,1,1,0.15,-this.displaySize-1,1)
             meshes.explosions.instanceData.push(this.pos[0],this.y,this.pos[2],0.3*player.isNight,0.1*player.isNight,0,1,this.displaySize,1)
             
             return this.y+this.displaySize<this.pos[1]||!player.fieldIn
-            
         }
     }
 }
