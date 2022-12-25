@@ -3514,7 +3514,7 @@ let beeInfo={
 
     vicious:{
         
-        u:128*9/2048,v:256*2/2048,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:70.5,convertSpeed:4,convertAmount:80,attack:8,energy:50,tokens:['blueBomb_'],attackTokens:['impale'],rarity:'event',color:'blue',description:"This cold-blooded bee takes great pleasure in inflicting pain.",giftedHiveBonus:{oper:'+',stat:'lootLuck',num:0.25}
+        u:128*9/2048,v:256*2/2048,meshPartId:15,gatherSpeed:4,gatherAmount:10,speed:17.5,convertSpeed:4,convertAmount:80,attack:8,energy:50,tokens:['blueBomb_'],attackTokens:['impale'],rarity:'event',color:'blue',description:"This cold-blooded bee takes great pleasure in inflicting pain.",giftedHiveBonus:{oper:'+',stat:'lootLuck',num:0.25}
     },
 }
 
@@ -13139,7 +13139,7 @@ class Spike {
 
                 this.hitTarget=true
 
-                let d=this.target.health*0.05*((this.bee.attack-1)*0.01+1)
+                let d=this.target.health*0.05+((this.bee.attack+player[beeInfo[this.bee.type].color+'BeeAttack'])*player.beeAttack)
 
                 if(d>1000){
 
@@ -18338,6 +18338,11 @@ _c(0,0.175,0.125,0.16,0.05,10,0.1,-0.13,14)
 _c(0,0.22,0.125,0.1,0.05,10,0.01,0.09,14)
 _c(0,0.3375,0.125,0.1,0.0675,10,0.1,-0.13,14)
 
+
+_c(0,0.35,0.175,0,0.25,10,0.1,-0.13,15,0,0,0,0.075)
+_c(0,0.275,-0.1,0,0.25,10,0.1,-0.13,15,-30,0,0,0.075)
+_c(0,0.2,-0.3,0,0.25,10,0.1,-0.13,15,-45,0,0,0.075)
+
 function fluff(x,y,z,r,s){
     
     let shade=MATH.random(0.7,0.9),v=[[x+s,y,z],[x-s,y,z],[x,y+s*0.8,z-s]],vl=verts.length/7
@@ -19728,10 +19733,6 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(flowers.mesh.index),gl.DY
 for(let i=0;i<25;i++)
 player.addSlot(null)
 
-player.addSlot('vicious')
-player.addSlot('vicious')
-player.addSlot('vicious')
-player.addSlot('vicious')
 player.addSlot('vicious')
 
 player.updateHive()
