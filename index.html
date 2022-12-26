@@ -11624,7 +11624,7 @@ class StarSaw {
             if(b.health&&b.state==='attack'&&b.starSawHitTimer<=0&&vec3.sqrDist(p,b.pos)<=6){
                 
                 b.starSawHitTimer=0.75
-                b.damage(35*player.beeAttack*(player.redBeeAttack+player.whiteBeeAttack+player.blueBeeAttack))
+                b.damage(player.attackTotal*0.3)
             }
         }
         
@@ -11633,20 +11633,16 @@ class StarSaw {
         if(this.collectTimer<=0&&player.fieldIn){
             
             this.collectTimer=0.1
-            
-            let amountToConvert=Math.min(Math.round(player.beeAttack*this.lastCollectedAmount*2.5*(player.redBeeAttack+player.blueBeeAttack+player.whiteBeeAttack)),player.pollen)
-            
-            if(amountToConvert){
-                
-                player.pollen-=amountToConvert
-                player.honey+=Math.ceil(amountToConvert*player.honeyPerPollen)
-            }
-            
+
             let x=Math.round(p[0]-fieldInfo[player.fieldIn].x),
-                z=Math.round(p[2]-fieldInfo[player.fieldIn].z)
+                z=Math.round(p[2]-fieldInfo[player.fieldIn].z),
+                a=Math.min(collectPollen({x:x,z:z,pattern:[[0,0],[-1,0],[1,0],[0,1],[0,-1]],amount:5+0.05*player.attackTotal,stackHeight:0.5,instantConversion:1}),player.pollen)
+
+            if(a){
                 
-            this.lastCollectedAmount=collectPollen({x:x,z:z,pattern:[[0,0],[-1,0],[1,0],[0,1],[0,-1]],amount:{r:10,w:12.5,b:10},stackHeight:0.5})
-            
+                player.pollen-=a
+                player.honey+=Math.ceil(a*player.honeyPerPollen)
+            }
         }
         
         return this.life<=0
@@ -12252,7 +12248,7 @@ class Coconut {
 
             if(objects.mobs[i].state==='attack'&&vec3.sqrDist(this.pos,objects.mobs[i].pos)<d){
 
-                objects.mobs[i].damage(1000*player.beeAttack*(player.redBeeAttack+player.whiteBeeAttack+player.blueBeeAttack))
+                objects.mobs[i].damage(2500)
             }
         }
         
@@ -13151,7 +13147,9 @@ class Spike {
                     this.target.impaledSessionCount=0
                 }
 
-                d*=1-(Math.min(this.target.impaledSessionCount,20)*0.0375)
+                d*=1-(Math.min(this.target.impaledSessionCount,20)*0.02)
+
+                d*=MATH.random(0.740740741,1.35)
 
                 this.target.damage(d)
 
@@ -15204,6 +15202,7 @@ player=(function(out){
         out.defaultStats.capacityMultiplier=1
         
         out.defaultStats.convertTotal=0
+        out.defaultStats.attackTotal=0
         
         let giftedTypes=[]
         
@@ -15212,10 +15211,15 @@ player=(function(out){
         out.ownsCrimsonBee=false
         out.ownsCobaltBee=false
         out.cloudBoostAmount=1.25
+        out.beeColorAmounts={r:0,b:0,w:0}
         
         for(let i in objects.bees){
+
+            out.beeColorAmounts[beeInfo[objects.bees[i].type].color[0]]++
             
-            out.defaultStats.convertTotal+=objects.bees[i].convertAmount*player[beeInfo[objects.bees[i].type].color+'ConvertRate']
+            out.defaultStats.convertTotal+=objects.bees[i].convertAmount
+
+            out.defaultStats.attackTotal+=objects.bees[i].attack
             
             if(objects.bees[i].gifted&&giftedTypes.indexOf(objects.bees[i].type)<0){
                 
@@ -15754,8 +15758,9 @@ player=(function(out){
         }
         
         if(currentPage===2&&TIME-player.statsStringLastUpdate>0.5){
+
             player.statsStringLastUpdate=TIME
-            player.statString='<br>FPS: '+(1/dt).toFixed(2)+'<br>Delta Time: '+dt.toFixed(4)+'<br><br>Convert Rate: '+Math.round(player.convertRate*100)+'%<br>Red Pollen: '+Math.round(player.redPollen*100)+'%<br>Blue Pollen: '+Math.round(player.bluePollen*100)+'%<br>White Pollen: '+Math.round(player.whitePollen*100)+'%<br>Walk Speed: '+player.walkSpeed.toFixed(1)+'<br>Jump Power: '+player.jumpPower.toFixed(1)+'<br>Instant Red Conversion: '+Math.round(player.instantRedConversion*100)+'%<br>Instant Blue Conversion: '+Math.round(player.instantBlueConversion*100)+'%<br>Instant White Conversion: '+Math.round(player.instantWhiteConversion*100)+'%<br>Instant Flame Conversion: '+Math.round(player.instantFlameConversion*100)+'%<br>Critical Chance: '+Math.round(player.criticalChance*100)+'%<br>Critical Power: '+Math.round(player.criticalPower*100)+'%<br>Super-Crit Chance: '+Math.round(player.superCritChance*100)+'%<br>Super-Crit Power: '+Math.round(player.superCritPower*100)+'%<br>Goo: '+Math.round(player.goo*100)+'%<br>Instant Goo Conversion: '+Math.round(player.instantGooConversion*100)+'%<br>Flame Pollen: '+Math.round(player.flamePollen*100)+'%<br>Bubble Pollen: '+Math.round(player.bubblePollen*100)+'%<br>Pollen From Tools: '+Math.round(player.pollenFromTools*100)+'%<br>Pollen From Bees: '+Math.round(player.pollenFromBees*100)+'%<br>White Bomb Pollen: '+Math.round(player.whiteBombPollen*100)+'%<br>Red Bomb Pollen: '+Math.round(player.redBombPollen*100)+'%<br>Blue Bomb Pollen: '+Math.round(player.blueBombPollen*100)+'%<br>White Bee Attack: '+player.whiteBeeAttack+'<br>Blue Bee Attack: '+player.blueBeeAttack+'<br>Red Bee Attack: '+player.redBeeAttack+'<br>Bee Attack Multiplier: '+Math.round(player.beeAttack*100)+'%<br>Honey From Tokens: '+Math.round(player.honeyFromTokens*100)+'%<br>Red Bee Ability Rate: '+Math.round(player.redBeeAbilityRate*100)+'%<br>Blue Bee Ability Rate: '+Math.round(player.blueBeeAbilityRate*100)+'%<br>White Bee Ability Rate: '+Math.round(player.whiteBeeAbilityRate*100)+'%<br>Bee Movespeed: '+Math.round(player.beeSpeed*100)+'%<br>Bee Energy: '+Math.round(player.beeEnergy*100)+'%<br>Honey At Hive: '+Math.round(player.honeyAtHive*100)+'%<br>Loot Luck: '+Math.round(player.lootLuck*100)+'%<br>Convert Total: '+Math.round(player.convertTotal)
+            player.statString='<br>FPS: '+(1/dt).toFixed(2)+'<br>Delta Time: '+dt.toFixed(4)+'<br><br>Convert Rate: '+Math.round(player.convertRate*100)+'%<br>Red Pollen: '+Math.round(player.redPollen*100)+'%<br>Blue Pollen: '+Math.round(player.bluePollen*100)+'%<br>White Pollen: '+Math.round(player.whitePollen*100)+'%<br>Walk Speed: '+player.walkSpeed.toFixed(1)+'<br>Jump Power: '+player.jumpPower.toFixed(1)+'<br>Instant Red Conversion: '+Math.round(player.instantRedConversion*100)+'%<br>Instant Blue Conversion: '+Math.round(player.instantBlueConversion*100)+'%<br>Instant White Conversion: '+Math.round(player.instantWhiteConversion*100)+'%<br>Instant Flame Conversion: '+Math.round(player.instantFlameConversion*100)+'%<br>Critical Chance: '+Math.round(player.criticalChance*100)+'%<br>Critical Power: '+Math.round(player.criticalPower*100)+'%<br>Super-Crit Chance: '+Math.round(player.superCritChance*100)+'%<br>Super-Crit Power: '+Math.round(player.superCritPower*100)+'%<br>Goo: '+Math.round(player.goo*100)+'%<br>Instant Goo Conversion: '+Math.round(player.instantGooConversion*100)+'%<br>Flame Pollen: '+Math.round(player.flamePollen*100)+'%<br>Bubble Pollen: '+Math.round(player.bubblePollen*100)+'%<br>Pollen From Tools: '+Math.round(player.pollenFromTools*100)+'%<br>Pollen From Bees: '+Math.round(player.pollenFromBees*100)+'%<br>White Bomb Pollen: '+Math.round(player.whiteBombPollen*100)+'%<br>Red Bomb Pollen: '+Math.round(player.redBombPollen*100)+'%<br>Blue Bomb Pollen: '+Math.round(player.blueBombPollen*100)+'%<br>White Bee Attack: '+player.whiteBeeAttack+'<br>Blue Bee Attack: '+player.blueBeeAttack+'<br>Red Bee Attack: '+player.redBeeAttack+'<br>Bee Attack Multiplier: '+Math.round(player.beeAttack*100)+'%<br>Honey From Tokens: '+Math.round(player.honeyFromTokens*100)+'%<br>Red Bee Ability Rate: '+Math.round(player.redBeeAbilityRate*100)+'%<br>Blue Bee Ability Rate: '+Math.round(player.blueBeeAbilityRate*100)+'%<br>White Bee Ability Rate: '+Math.round(player.whiteBeeAbilityRate*100)+'%<br>Bee Movespeed: '+Math.round(player.beeSpeed*100)+'%<br>Bee Energy: '+Math.round(player.beeEnergy*100)+'%<br>Honey At Hive: '+Math.round(player.honeyAtHive*100)+'%<br>Loot Luck: '+Math.round(player.lootLuck*100)+'%<br>Convert Total: '+Math.round(player.convertTotal)+'<br>Attack Total: '+Math.round(player.attackTotal)
             
             pages[2].innerHTML='<div style="color:'+(player.setting_enablePollenText?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenText">Pollen Text: '+(player.setting_enablePollenText?'On':'Off')+'</div>'+'<div style="color:'+(player.setting_enablePollenAbv?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenAbv">Abbreviate Pollen: '+(player.setting_enablePollenAbv?'On':'Off')+'</div>'+player.statString
             
@@ -19993,6 +19998,7 @@ function loop(now){
     }
     
     player.convertTotal*=player.convertRate
+    player.attackTotal=(player.attackTotal+(player.beeColorAmounts.r*player.redBeeAttack)+(player.beeColorAmounts.b*player.blueBeeAttack)+(player.beeColorAmounts.w*player.whiteBeeAttack))*player.beeAttack
     
     if(player.fieldIn){
         
