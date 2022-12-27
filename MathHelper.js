@@ -305,14 +305,14 @@ window.MATH = (function (MATH) {
         return pre + suf
     }
 
-    MATH._log = function (a, b) {
+    MATH._log=function (a,b) {
 
-        return Math.log(b) / Math.log(a)
+        return Math.log(b)/Math.log(a)
     }
 
-    MATH.simulateProbabilityTries = function (p) {
+    MATH.simulateProbabilityTries=function (p) {
 
-        return Math.ceil(MATH._log(1 - p, -Math.random() + 1))
+        return Math.ceil(MATH._log(1-p,-Math.random()+1))
     }
 
     MATH.selectFromArray=function(arr,count){
@@ -326,6 +326,11 @@ window.MATH = (function (MATH) {
         }
 
         return res
+    }
+
+    MATH.applyPercentage=function(x,m){
+    
+        return (x-1)*(1-m)+1
     }
 
     return MATH

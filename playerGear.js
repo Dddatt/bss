@@ -1,3 +1,8 @@
+let applyPercentage=function(x,m){
+    
+    return (x-1)*(1-m)+1
+}
+
 window.playerGear={
     
     bronzeStarAmulet:{
@@ -99,13 +104,14 @@ window.playerGear={
                 stats.whitePollen*=1.35
                 stats.redPollen*=1.35
                 stats.whitePollen*=1.5
-                stats.instantGooConversion+=0.25
                 stats.pollenFromBees*=1.5
+                stats.pollenFromTools*=1.5
                 stats.honeyFromTokens*=1.5
                 stats.convertRate*=1.75
                 stats.defense+=0.3
                 player.addEffect('gummyMorphPassive')
                 player.addEffect('coinScatterPassive')
+
             }
         },
         
@@ -168,7 +174,7 @@ window.playerGear={
                 stats.redBeeAttack+=2
                 stats.whiteBeeAttack+=1
                 stats.blueBeeAttack+=1
-                stats.instantFlameConversion+=0.5
+                stats.instantFlameConversion=applyPercentage(stats.instantFlameConversion,0.5)
                 stats.flamePollen*=2
                 stats.redBeeAbilityRate*=1.2
                 stats.blueBeeAbilityRate*=1.2
@@ -275,9 +281,9 @@ window.playerGear={
                 
                 stats.capacity+=2000000
                 stats.convertRate*=3
-                stats.instantRedConversion+=0.15
-                stats.instantBlueConversion+=0.15
-                stats.instantWhiteConversion+=0.25
+                stats.instantRedConversion=applyPercentage(stats.instantRedConversion,0.15)
+                stats.instantBlueConversion=applyPercentage(stats.instantBlueConversion,0.15)
+                stats.instantWhiteConversion=applyPercentage(stats.instantWhiteConversion,0.25)
                 stats.whitePollen*=1.25
                 stats.whitePollen*=1.25
                 stats.redPollen*=1.25
@@ -318,9 +324,11 @@ window.playerGear={
                 stats.goo*=1.25
                 stats.beeSpeed*=1.2
                 stats.honeyFromTokens*=1.25
-                stats.instantGooConversion+=0.15
-                stats.convertRate*=1.75
-                stats.capacityMultiplier*=1.25
+                stats.redPollen*=1.1
+                stats.bluePollen*=1.1
+                stats.whitePollen*=1.1
+                stats.beeAttack*=1.1
+                stats.convertRateAtHive*=2
             }
         },
         
@@ -341,7 +349,7 @@ window.playerGear={
                 stats.movementCollection+=8
                 stats.movespeed*=1.225
                 stats.jumpPower*=1.35
-                stats.beeSpeed*=1.2
+                stats.pollenFromBees*=1.25
             }
         },
     },
