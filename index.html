@@ -4584,6 +4584,499 @@ let effects={
             return 'Pepper Patch Boost\nx'+(amount+1)+' pollen in pepper patch'
         }
     },
+
+    dandelionFieldWinds:{
+        
+        u:0,v:0,
+        svg:document.getElementById('dandelionFieldWinds'),
+        cooldown:document.getElementById('dandelionFieldWinds_cooldown'),
+        amount:document.getElementById('dandelionFieldWinds_amount'),
+        maxCooldown:10*60,
+        maxAmount:15,
+        tokenLife:4,
+        
+        update:(amount,player)=>{
+            
+            if(player.fieldIn==='DandelionField'){
+
+                player.redPollen*=(amount-1)*0.05+1.35
+                player.whitePollen*=(amount-1)*0.05+1.35
+                player.bluePollen*=(amount-1)*0.05+1.35
+                player.instantRedConversion=MATH.applyPercentage(player.instantRedConversion,(amount-1)*0.03+0.25)
+                player.instantBlueConversion=MATH.applyPercentage(player.instantBlueConversion,(amount-1)*0.03+0.25)
+                player.instantWhiteConversion=MATH.applyPercentage(player.instantWhiteConversion,(amount-1)*0.03+0.25)
+            }
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Dandelion Field Winds\nx'+((amount-1)*0.05+1.35).toFixed(2)+' pollen in dandelion field'+'\n+'+((amount-1)*3+25)+'% instant conversion in dandelion field'
+        }
+    },
+
+    sunflowerFieldWinds:{
+        
+        u:0,v:0,
+        svg:document.getElementById('sunflowerFieldWinds'),
+        cooldown:document.getElementById('sunflowerFieldWinds_cooldown'),
+        amount:document.getElementById('sunflowerFieldWinds_amount'),
+        maxCooldown:10*60,
+        maxAmount:15,
+        tokenLife:4,
+        
+        update:(amount,player)=>{
+            
+            if(player.fieldIn==='SunflowerField'){
+
+                player.redPollen*=(amount-1)*0.05+1.35
+                player.whitePollen*=(amount-1)*0.05+1.35
+                player.bluePollen*=(amount-1)*0.05+1.35
+                player.instantRedConversion=MATH.applyPercentage(player.instantRedConversion,(amount-1)*0.03+0.25)
+                player.instantBlueConversion=MATH.applyPercentage(player.instantBlueConversion,(amount-1)*0.03+0.25)
+                player.instantWhiteConversion=MATH.applyPercentage(player.instantWhiteConversion,(amount-1)*0.03+0.25)
+            }
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Sunflower Field Winds\nx'+((amount-1)*0.05+1.35).toFixed(2)+' pollen in sunflower field'+'\n+'+((amount-1)*3+25)+'% instant conversion in sunflower field'
+        }
+    },
+
+    blueFlowerFieldWinds:{
+        
+        u:0,v:0,
+        svg:document.getElementById('blueFlowerFieldWinds'),
+        cooldown:document.getElementById('blueFlowerFieldWinds_cooldown'),
+        amount:document.getElementById('blueFlowerFieldWinds_amount'),
+        maxCooldown:10*60,
+        maxAmount:15,
+        tokenLife:4,
+        
+        update:(amount,player)=>{
+            
+            if(player.fieldIn==='BlueFlowerField'){
+
+                player.redPollen*=(amount-1)*0.05+1.35
+                player.whitePollen*=(amount-1)*0.05+1.35
+                player.bluePollen*=(amount-1)*0.05+1.35
+                player.instantRedConversion=MATH.applyPercentage(player.instantRedConversion,(amount-1)*0.03+0.25)
+                player.instantBlueConversion=MATH.applyPercentage(player.instantBlueConversion,(amount-1)*0.03+0.25)
+                player.instantWhiteConversion=MATH.applyPercentage(player.instantWhiteConversion,(amount-1)*0.03+0.25)
+            }
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Blue Flower Field Winds\nx'+((amount-1)*0.05+1.35).toFixed(2)+' pollen in blue flower field'+'\n+'+((amount-1)*3+25)+'% instant conversion in blue flower field'
+        }
+    },
+
+    mushroomFieldWinds:{
+        
+        u:0,v:0,
+        svg:document.getElementById('mushroomFieldWinds'),
+        cooldown:document.getElementById('mushroomFieldWinds_cooldown'),
+        amount:document.getElementById('mushroomFieldWinds_amount'),
+        maxCooldown:10*60,
+        maxAmount:15,
+        tokenLife:4,
+        
+        update:(amount,player)=>{
+            
+            if(player.fieldIn==='MushroomField'){
+
+                player.redPollen*=(amount-1)*0.05+1.35
+                player.whitePollen*=(amount-1)*0.05+1.35
+                player.bluePollen*=(amount-1)*0.05+1.35
+                player.instantRedConversion=MATH.applyPercentage(player.instantRedConversion,(amount-1)*0.03+0.25)
+                player.instantBlueConversion=MATH.applyPercentage(player.instantBlueConversion,(amount-1)*0.03+0.25)
+                player.instantWhiteConversion=MATH.applyPercentage(player.instantWhiteConversion,(amount-1)*0.03+0.25)
+            }
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Mushroom Field Winds\nx'+((amount-1)*0.05+1.35).toFixed(2)+' pollen in mushroom field'+'\n+'+((amount-1)*3+25)+'% instant conversion in mushroom field'
+        }
+    },
+
+    cloverFieldWinds:{
+        
+        u:0,v:0,
+        svg:document.getElementById('cloverFieldWinds'),
+        cooldown:document.getElementById('cloverFieldWinds_cooldown'),
+        amount:document.getElementById('cloverFieldWinds_amount'),
+        maxCooldown:10*60,
+        maxAmount:15,
+        tokenLife:4,
+        
+        update:(amount,player)=>{
+            
+            if(player.fieldIn==='CloverField'){
+
+                player.redPollen*=(amount-1)*0.05+1.35
+                player.whitePollen*=(amount-1)*0.05+1.35
+                player.bluePollen*=(amount-1)*0.05+1.35
+                player.instantRedConversion=MATH.applyPercentage(player.instantRedConversion,(amount-1)*0.03+0.25)
+                player.instantBlueConversion=MATH.applyPercentage(player.instantBlueConversion,(amount-1)*0.03+0.25)
+                player.instantWhiteConversion=MATH.applyPercentage(player.instantWhiteConversion,(amount-1)*0.03+0.25)
+            }
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Clover Field Winds\nx'+((amount-1)*0.05+1.35).toFixed(2)+' pollen in clover field'+'\n+'+((amount-1)*3+25)+'% instant conversion in clover field'
+        }
+    },
+
+    strawberryFieldWinds:{
+        
+        u:0,v:0,
+        svg:document.getElementById('strawberryFieldWinds'),
+        cooldown:document.getElementById('strawberryFieldWinds_cooldown'),
+        amount:document.getElementById('strawberryFieldWinds_amount'),
+        maxCooldown:10*60,
+        maxAmount:15,
+        tokenLife:4,
+        
+        update:(amount,player)=>{
+            
+            if(player.fieldIn==='StrawberryField'){
+
+                player.redPollen*=(amount-1)*0.05+1.35
+                player.whitePollen*=(amount-1)*0.05+1.35
+                player.bluePollen*=(amount-1)*0.05+1.35
+                player.instantRedConversion=MATH.applyPercentage(player.instantRedConversion,(amount-1)*0.03+0.25)
+                player.instantBlueConversion=MATH.applyPercentage(player.instantBlueConversion,(amount-1)*0.03+0.25)
+                player.instantWhiteConversion=MATH.applyPercentage(player.instantWhiteConversion,(amount-1)*0.03+0.25)
+            }
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Strawberry Field Winds\nx'+((amount-1)*0.05+1.35).toFixed(2)+' pollen in strawberry field'+'\n+'+((amount-1)*3+25)+'% instant conversion in strawberry field'
+        }
+    },
+
+    spiderFieldWinds:{
+        
+        u:0,v:0,
+        svg:document.getElementById('spiderFieldWinds'),
+        cooldown:document.getElementById('spiderFieldWinds_cooldown'),
+        amount:document.getElementById('spiderFieldWinds_amount'),
+        maxCooldown:10*60,
+        maxAmount:15,
+        tokenLife:4,
+        
+        update:(amount,player)=>{
+            
+            if(player.fieldIn==='SpiderField'){
+
+                player.redPollen*=(amount-1)*0.05+1.35
+                player.whitePollen*=(amount-1)*0.05+1.35
+                player.bluePollen*=(amount-1)*0.05+1.35
+                player.instantRedConversion=MATH.applyPercentage(player.instantRedConversion,(amount-1)*0.03+0.25)
+                player.instantBlueConversion=MATH.applyPercentage(player.instantBlueConversion,(amount-1)*0.03+0.25)
+                player.instantWhiteConversion=MATH.applyPercentage(player.instantWhiteConversion,(amount-1)*0.03+0.25)
+            }
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Spider Field Winds\nx'+((amount-1)*0.05+1.35).toFixed(2)+' pollen in spider field'+'\n+'+((amount-1)*3+25)+'% instant conversion in spider field'
+        }
+    },
+
+    bambooFieldWinds:{
+        
+        u:0,v:0,
+        svg:document.getElementById('bambooFieldWinds'),
+        cooldown:document.getElementById('bambooFieldWinds_cooldown'),
+        amount:document.getElementById('bambooFieldWinds_amount'),
+        maxCooldown:10*60,
+        maxAmount:15,
+        tokenLife:4,
+        
+        update:(amount,player)=>{
+            
+            if(player.fieldIn==='BambooField'){
+
+                player.redPollen*=(amount-1)*0.05+1.35
+                player.whitePollen*=(amount-1)*0.05+1.35
+                player.bluePollen*=(amount-1)*0.05+1.35
+                player.instantRedConversion=MATH.applyPercentage(player.instantRedConversion,(amount-1)*0.03+0.25)
+                player.instantBlueConversion=MATH.applyPercentage(player.instantBlueConversion,(amount-1)*0.03+0.25)
+                player.instantWhiteConversion=MATH.applyPercentage(player.instantWhiteConversion,(amount-1)*0.03+0.25)
+            }
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Bamboo Field Winds\nx'+((amount-1)*0.05+1.35).toFixed(2)+' pollen in bamboo field'+'\n+'+((amount-1)*3+25)+'% instant conversion in bamboo field'
+        }
+    },
+
+    pineapplePatchWinds:{
+        
+        u:0,v:0,
+        svg:document.getElementById('pineapplePatchWinds'),
+        cooldown:document.getElementById('pineapplePatchWinds_cooldown'),
+        amount:document.getElementById('pineapplePatchWinds_amount'),
+        maxCooldown:10*60,
+        maxAmount:15,
+        tokenLife:4,
+        
+        update:(amount,player)=>{
+            
+            if(player.fieldIn==='PineapplePatch'){
+
+                player.redPollen*=(amount-1)*0.05+1.35
+                player.whitePollen*=(amount-1)*0.05+1.35
+                player.bluePollen*=(amount-1)*0.05+1.35
+                player.instantRedConversion=MATH.applyPercentage(player.instantRedConversion,(amount-1)*0.03+0.25)
+                player.instantBlueConversion=MATH.applyPercentage(player.instantBlueConversion,(amount-1)*0.03+0.25)
+                player.instantWhiteConversion=MATH.applyPercentage(player.instantWhiteConversion,(amount-1)*0.03+0.25)
+            }
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Pineapple Patch Winds\nx'+((amount-1)*0.05+1.35).toFixed(2)+' pollen in pineapple patch'+'\n+'+((amount-1)*3+25)+'% instant conversion in pineapple patch'
+        }
+    },
+
+    stumpFieldWinds:{
+        
+        u:0,v:0,
+        svg:document.getElementById('stumpFieldWinds'),
+        cooldown:document.getElementById('stumpFieldWinds_cooldown'),
+        amount:document.getElementById('stumpFieldWinds_amount'),
+        maxCooldown:10*60,
+        maxAmount:15,
+        tokenLife:4,
+        
+        update:(amount,player)=>{
+            
+            if(player.fieldIn==='StumpField'){
+
+                player.redPollen*=(amount-1)*0.05+1.35
+                player.whitePollen*=(amount-1)*0.05+1.35
+                player.bluePollen*=(amount-1)*0.05+1.35
+                player.instantRedConversion=MATH.applyPercentage(player.instantRedConversion,(amount-1)*0.03+0.25)
+                player.instantBlueConversion=MATH.applyPercentage(player.instantBlueConversion,(amount-1)*0.03+0.25)
+                player.instantWhiteConversion=MATH.applyPercentage(player.instantWhiteConversion,(amount-1)*0.03+0.25)
+            }
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Stump Field Winds\nx'+((amount-1)*0.05+1.35).toFixed(2)+' pollen in stump field'+'\n+'+((amount-1)*3+25)+'% instant conversion in stump field'
+        }
+    },
+
+    cactusFieldWinds:{
+        
+        u:0,v:0,
+        svg:document.getElementById('cactusFieldWinds'),
+        cooldown:document.getElementById('cactusFieldWinds_cooldown'),
+        amount:document.getElementById('cactusFieldWinds_amount'),
+        maxCooldown:10*60,
+        maxAmount:15,
+        tokenLife:4,
+        
+        update:(amount,player)=>{
+            
+            if(player.fieldIn==='CactusField'){
+
+                player.redPollen*=(amount-1)*0.05+1.35
+                player.whitePollen*=(amount-1)*0.05+1.35
+                player.bluePollen*=(amount-1)*0.05+1.35
+                player.instantRedConversion=MATH.applyPercentage(player.instantRedConversion,(amount-1)*0.03+0.25)
+                player.instantBlueConversion=MATH.applyPercentage(player.instantBlueConversion,(amount-1)*0.03+0.25)
+                player.instantWhiteConversion=MATH.applyPercentage(player.instantWhiteConversion,(amount-1)*0.03+0.25)
+            }
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Cactus Field Winds\nx'+((amount-1)*0.05+1.35).toFixed(2)+' pollen in cactus field'+'\n+'+((amount-1)*3+25)+'% instant conversion in cactus field'
+        }
+    },
+
+    pumpkinPatchWinds:{
+        
+        u:0,v:0,
+        svg:document.getElementById('pumpkinPatchWinds'),
+        cooldown:document.getElementById('pumpkinPatchWinds_cooldown'),
+        amount:document.getElementById('pumpkinPatchWinds_amount'),
+        maxCooldown:10*60,
+        maxAmount:15,
+        tokenLife:4,
+        
+        update:(amount,player)=>{
+            
+            if(player.fieldIn==='PumpkinPatch'){
+
+                player.redPollen*=(amount-1)*0.05+1.35
+                player.whitePollen*=(amount-1)*0.05+1.35
+                player.bluePollen*=(amount-1)*0.05+1.35
+                player.instantRedConversion=MATH.applyPercentage(player.instantRedConversion,(amount-1)*0.03+0.25)
+                player.instantBlueConversion=MATH.applyPercentage(player.instantBlueConversion,(amount-1)*0.03+0.25)
+                player.instantWhiteConversion=MATH.applyPercentage(player.instantWhiteConversion,(amount-1)*0.03+0.25)
+            }
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Pumpkin Patch Winds\nx'+((amount-1)*0.05+1.35).toFixed(2)+' pollen in pumpkin patch'+'\n+'+((amount-1)*3+25)+'% instant conversion in pumpkin patch'
+        }
+    },
+
+    pineTreeForestWinds:{
+        
+        u:0,v:0,
+        svg:document.getElementById('pineTreeForestWinds'),
+        cooldown:document.getElementById('pineTreeForestWinds_cooldown'),
+        amount:document.getElementById('pineTreeForestWinds_amount'),
+        maxCooldown:10*60,
+        maxAmount:15,
+        tokenLife:4,
+        
+        update:(amount,player)=>{
+            
+            if(player.fieldIn==='PineTreeForest'){
+
+                player.redPollen*=(amount-1)*0.05+1.35
+                player.whitePollen*=(amount-1)*0.05+1.35
+                player.bluePollen*=(amount-1)*0.05+1.35
+                player.instantRedConversion=MATH.applyPercentage(player.instantRedConversion,(amount-1)*0.03+0.25)
+                player.instantBlueConversion=MATH.applyPercentage(player.instantBlueConversion,(amount-1)*0.03+0.25)
+                player.instantWhiteConversion=MATH.applyPercentage(player.instantWhiteConversion,(amount-1)*0.03+0.25)
+            }
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Pine Tree Forest Winds\nx'+((amount-1)*0.05+1.35).toFixed(2)+' pollen in pine tree forest'+'\n+'+((amount-1)*3+25)+'% instant conversion in pine tree forest'
+        }
+    },
+
+    roseFieldWinds:{
+        
+        u:0,v:0,
+        svg:document.getElementById('roseFieldWinds'),
+        cooldown:document.getElementById('roseFieldWinds_cooldown'),
+        amount:document.getElementById('roseFieldWinds_amount'),
+        maxCooldown:10*60,
+        maxAmount:15,
+        tokenLife:4,
+        
+        update:(amount,player)=>{
+            
+            if(player.fieldIn==='RoseField'){
+
+                player.redPollen*=(amount-1)*0.05+1.35
+                player.whitePollen*=(amount-1)*0.05+1.35
+                player.bluePollen*=(amount-1)*0.05+1.35
+                player.instantRedConversion=MATH.applyPercentage(player.instantRedConversion,(amount-1)*0.03+0.25)
+                player.instantBlueConversion=MATH.applyPercentage(player.instantBlueConversion,(amount-1)*0.03+0.25)
+                player.instantWhiteConversion=MATH.applyPercentage(player.instantWhiteConversion,(amount-1)*0.03+0.25)
+            }
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Rose Field Winds\nx'+((amount-1)*0.05+1.35).toFixed(2)+' pollen in rose field'+'\n+'+((amount-1)*3+25)+'% instant conversion in rose field'
+        }
+    },
+
+    mountainTopFieldWinds:{
+        
+        u:0,v:0,
+        svg:document.getElementById('mountainTopFieldWinds'),
+        cooldown:document.getElementById('mountainTopFieldWinds_cooldown'),
+        amount:document.getElementById('mountainTopFieldWinds_amount'),
+        maxCooldown:10*60,
+        maxAmount:15,
+        tokenLife:4,
+        
+        update:(amount,player)=>{
+            
+            if(player.fieldIn==='MountainTopField'){
+
+                player.redPollen*=(amount-1)*0.05+1.35
+                player.whitePollen*=(amount-1)*0.05+1.35
+                player.bluePollen*=(amount-1)*0.05+1.35
+                player.instantRedConversion=MATH.applyPercentage(player.instantRedConversion,(amount-1)*0.03+0.25)
+                player.instantBlueConversion=MATH.applyPercentage(player.instantBlueConversion,(amount-1)*0.03+0.25)
+                player.instantWhiteConversion=MATH.applyPercentage(player.instantWhiteConversion,(amount-1)*0.03+0.25)
+            }
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Mountain Top Field Winds\nx'+((amount-1)*0.05+1.35).toFixed(2)+' pollen in mountain top field'+'\n+'+((amount-1)*3+25)+'% instant conversion in mountain top field'
+        }
+    },
+
+    coconutFieldWinds:{
+        
+        u:0,v:0,
+        svg:document.getElementById('coconutFieldWinds'),
+        cooldown:document.getElementById('coconutFieldWinds_cooldown'),
+        amount:document.getElementById('coconutFieldWinds_amount'),
+        maxCooldown:10*60,
+        maxAmount:15,
+        tokenLife:4,
+        
+        update:(amount,player)=>{
+            
+            if(player.fieldIn==='CoconutField'){
+
+                player.redPollen*=(amount-1)*0.05+1.35
+                player.whitePollen*=(amount-1)*0.05+1.35
+                player.bluePollen*=(amount-1)*0.05+1.35
+                player.instantRedConversion=MATH.applyPercentage(player.instantRedConversion,(amount-1)*0.03+0.25)
+                player.instantBlueConversion=MATH.applyPercentage(player.instantBlueConversion,(amount-1)*0.03+0.25)
+                player.instantWhiteConversion=MATH.applyPercentage(player.instantWhiteConversion,(amount-1)*0.03+0.25)
+            }
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Coconut Field Winds\nx'+((amount-1)*0.05+1.35).toFixed(2)+' pollen in coconut field'+'\n+'+((amount-1)*3+25)+'% instant conversion in coconut field'
+        }
+    },
+
+    pepperPatchWinds:{
+        
+        u:0,v:0,
+        svg:document.getElementById('pepperPatchWinds'),
+        cooldown:document.getElementById('pepperPatchWinds_cooldown'),
+        amount:document.getElementById('pepperPatchWinds_amount'),
+        maxCooldown:10*60,
+        maxAmount:15,
+        tokenLife:4,
+        
+        update:(amount,player)=>{
+            
+            if(player.fieldIn==='PepperPatch'){
+
+                player.redPollen*=(amount-1)*0.05+1.35
+                player.whitePollen*=(amount-1)*0.05+1.35
+                player.bluePollen*=(amount-1)*0.05+1.35
+                player.instantRedConversion=MATH.applyPercentage(player.instantRedConversion,(amount-1)*0.03+0.25)
+                player.instantBlueConversion=MATH.applyPercentage(player.instantBlueConversion,(amount-1)*0.03+0.25)
+                player.instantWhiteConversion=MATH.applyPercentage(player.instantWhiteConversion,(amount-1)*0.03+0.25)
+            }
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Pepper Patch Winds\nx'+((amount-1)*0.05+1.35).toFixed(2)+' pollen in pepper patch'+'\n+'+((amount-1)*3+25)+'% instant conversion in pepper patch'
+        }
+    },
     
     haste:{
         
@@ -9017,6 +9510,9 @@ let items={
 
                 let f=player.fieldIn
                 player.addEffect(f[0].toLowerCase()+f.substring(1,f.length)+'Boost')
+                player.addEffect(f[0].toLowerCase()+f.substring(1,f.length)+'Winds')
+                player.addEffect(f[0].toLowerCase()+f.substring(1,f.length)+'Winds')
+                player.addEffect(f[0].toLowerCase()+f.substring(1,f.length)+'Winds')
                 items.glitter.amount--
 
             } else {
