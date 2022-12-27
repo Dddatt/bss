@@ -31,6 +31,7 @@ w, in coco: 549b, 746b,
         overflow:hidden;
         margin:0;
         font-family:cursive;
+        user-select:none;
     }
     
     input {
@@ -113,7 +114,7 @@ w, in coco: 549b, 746b,
         border-radius:10px;
     }
     
-    #inventoryButton:hover,#settingsButton:hover,#questButton:hover,#beequipButton:hover{
+    #inventoryButton:hover,#questButton:hover,#beesButton:hover,#settingsButton:hover,#beequipButton:hover{
         
         transition-duration:0.4s;
         background-color:rgba(0,0,0,0.2);
@@ -1268,6 +1269,12 @@ w, in coco: 549b, 746b,
         <rect fill='rgb(255,255,255)' x='5' y='5' width='20' height='20'></rect>
         
     </svg>
+
+    <svg id='beesButton' style='width:30;height:30;transition-duration:0.4s;'>
+        
+        <rect fill='rgb(255,255,255)' x='5' y='5' width='20' height='20' rx='5'></rect>
+        
+    </svg>
     
     <svg id='settingsButton' style='width:30;height:30;transition-duration:0.4s;'>
         
@@ -2215,6 +2222,8 @@ w, in coco: 549b, 746b,
 
 <div class='uiPage' style='position:absolute;margin:0px;z-index:-2;overflow-y:auto;overflow-x:hidden;width:200px;height:455px;background-color:rgba(195,195,195,0.9);margin-top:140px;display:none;padding:3px;font-size:13px;'></div>
 
+<div class='uiPage' style='position:absolute;margin:0px;z-index:-2;overflow-y:auto;overflow-x:hidden;width:200px;height:455px;background-color:rgba(195,195,195,0.9);margin-top:140px;display:none;padding:3px;font-size:13px;'></div>
+
 <div id='howManyToFeed' style='position:fixed;width:300px;height:160px;z-index:1;left:50%;top:50%;transform:translate(-50%,-50%);display:none'>
     
     <div id='howManyMessage' style='position:fixed;margin-left:0px;margin-top:0px;width:300px;height:160px;background-color:rgb(30,70,255);border-radius:10px;color:rgb(255,255,255);font-size:17px;text-align:center'></div>
@@ -2571,6 +2580,7 @@ let healthBar=document.getElementById('healthBar')
 let capacityBar=document.getElementById('capacityBar')
 let inventoryButton=document.getElementById('inventoryButton')
 let questButton=document.getElementById('questButton')
+let beesButton=document.getElementById('beesButton')
 let settingsButton=document.getElementById('settingsButton')
 let beequipButton=document.getElementById('beequipButton')
 let pages=document.getElementsByClassName('uiPage')
@@ -2715,13 +2725,34 @@ questButton.onclick=function(e){
     }
 }
 
-settingsButton.onclick=function(e){
+beesButton.onclick=function(e){
     
     if(currentPage!==2){
         
         if(currentPage!==null)
         pages[currentPage].style.display='none'
         currentPage=2
+        pages[currentPage].style.display='block'
+        player.itemDragging=false
+        player.beequipDragging=false
+        player.updateBeesPage()
+        
+    } else {
+        
+        pages[currentPage].style.display='none'
+        currentPage=null
+        player.itemDragging=false
+        player.beequipDragging=false
+    }
+}
+
+settingsButton.onclick=function(e){
+    
+    if(currentPage!==3){
+        
+        if(currentPage!==null)
+        pages[currentPage].style.display='none'
+        currentPage=3
         pages[currentPage].style.display='block'
         player.itemDragging=false
         player.beequipDragging=false
@@ -2737,11 +2768,11 @@ settingsButton.onclick=function(e){
 
 beequipButton.onclick=function(e){
     
-    if(currentPage!==3){
+    if(currentPage!==4){
         
         if(currentPage!==null)
         pages[currentPage].style.display='none'
-        currentPage=3
+        currentPage=4
         pages[currentPage].style.display='block'
         player.itemDragging=false
         player.beequipDragging=false
@@ -8361,7 +8392,7 @@ class Bee {
                     if(Math.random()<(this.attackMob.blocking?0.85:0)){
                         this.energy--
                         
-                        textRenderer.add('BLOCK',[this.attackMob.pos[0],this.attackMob.pos[1]+Math.random()*2.75+1.5,this.attackMob.pos[2]],[255,255,255],0,'',1.25,false)
+                        textRenderer.add('BLOCK',[this.attackMob.pos[0],this.attackMob.pos[1]+Math.random()*2.75+1.5,this.attackMob.pos[2]],[255,255,255],0,'',1.75,false)
                         
                     } else {
                     
@@ -8380,7 +8411,7 @@ class Bee {
                             
                             this.energy--
                             
-                            textRenderer.add('MISS',[this.attackMob.pos[0],this.attackMob.pos[1]+Math.random()*2.75+1.5,this.attackMob.pos[2]],[255,255,255],0,'',1.25,false)
+                            textRenderer.add('MISS',[this.attackMob.pos[0],this.attackMob.pos[1]+Math.random()*2.75+1.5,this.attackMob.pos[2]],[255,255,255],0,'',1.75,false)
                             
                         }
                     }
@@ -13147,7 +13178,7 @@ class Spike {
                     this.target.impaledSessionCount=0
                 }
 
-                d*=1-(Math.min(this.target.impaledSessionCount,20)*0.02)
+                d*=1-(Math.min(this.target.impaledSessionCount,20)*0.0375)
 
                 d*=MATH.random(0.740740741,1.35)
 
@@ -14563,7 +14594,7 @@ let textures=(function(out){
     beeCanvas.height=2048
     let beeCanvasCtx=beeCanvas.getContext('2d')
     beeCanvasCtx.putImageData(data,0,0)
-            
+    
     window.textures_decals(tex_ctx)
     out.decals=gl.createTexture()
     gl.bindTexture(gl.TEXTURE_2D,out.decals)
@@ -15459,6 +15490,37 @@ player=(function(out){
     out.generateBeequip('candycane')
     out.generateBeequip('boombox')
     out.generateBeequip('pencil')
+
+    out.updateBeesPage=function(){
+
+        pages[2].innerHTML=''
+
+        for(let i in beeInfo){
+
+            let div=document.createElement('div'),img=document.createElement('canvas'),text=document.createElement('div')
+            div.style.width='195px'
+            div.style.height='70px'
+            div.style.marginTop='3px'
+            div.style.borderRadius='5px'
+            div.style.backgroundColor=beeInfo[i].color==='red'?'rgb(255,0,0,0.5)':beeInfo[i].color==='blue'?'rgb(0,0,255,0.5)':'rgb(255,255,255,0.5)'
+
+            img.width=70
+            img.height=70
+            img.style.borderTopLeftRadius='5px'
+            img.style.borderBottomLeftRadius='5px'
+
+            let img_ctx=img.getContext('2d')
+
+            img_ctx.drawImage(beeCanvas,beeInfo[i].u*2048,beeInfo[i].v*2048,128,128,0,0,70,70)
+
+            text.innerHTML="<p style='margin-left:70px;margin-top:-70px;font-family:trebuchet ms;font-size:17px;text-align:center'>"+MATH.doGrammar(i)+" Bee</p>"+"<p style='margin-left:70px;margin-top:-14px;font-family:trebuchet ms;font-size:9px;text-align:center'>"+beeInfo[i].description+"</p>"
+
+            div.appendChild(img)
+            div.appendChild(text)
+
+            pages[2].appendChild(div)
+        }
+    }
     
     out.updateGear=function(){
         
@@ -15757,18 +15819,18 @@ player=(function(out){
             }
         }
         
-        if(currentPage===2&&TIME-player.statsStringLastUpdate>0.5){
+        if(currentPage===3&&TIME-player.statsStringLastUpdate>0.5){
 
             player.statsStringLastUpdate=TIME
             player.statString='<br>FPS: '+(1/dt).toFixed(2)+'<br>Delta Time: '+dt.toFixed(4)+'<br><br>Convert Rate: '+Math.round(player.convertRate*100)+'%<br>Red Pollen: '+Math.round(player.redPollen*100)+'%<br>Blue Pollen: '+Math.round(player.bluePollen*100)+'%<br>White Pollen: '+Math.round(player.whitePollen*100)+'%<br>Walk Speed: '+player.walkSpeed.toFixed(1)+'<br>Jump Power: '+player.jumpPower.toFixed(1)+'<br>Instant Red Conversion: '+Math.round(player.instantRedConversion*100)+'%<br>Instant Blue Conversion: '+Math.round(player.instantBlueConversion*100)+'%<br>Instant White Conversion: '+Math.round(player.instantWhiteConversion*100)+'%<br>Instant Flame Conversion: '+Math.round(player.instantFlameConversion*100)+'%<br>Critical Chance: '+Math.round(player.criticalChance*100)+'%<br>Critical Power: '+Math.round(player.criticalPower*100)+'%<br>Super-Crit Chance: '+Math.round(player.superCritChance*100)+'%<br>Super-Crit Power: '+Math.round(player.superCritPower*100)+'%<br>Goo: '+Math.round(player.goo*100)+'%<br>Instant Goo Conversion: '+Math.round(player.instantGooConversion*100)+'%<br>Flame Pollen: '+Math.round(player.flamePollen*100)+'%<br>Bubble Pollen: '+Math.round(player.bubblePollen*100)+'%<br>Pollen From Tools: '+Math.round(player.pollenFromTools*100)+'%<br>Pollen From Bees: '+Math.round(player.pollenFromBees*100)+'%<br>White Bomb Pollen: '+Math.round(player.whiteBombPollen*100)+'%<br>Red Bomb Pollen: '+Math.round(player.redBombPollen*100)+'%<br>Blue Bomb Pollen: '+Math.round(player.blueBombPollen*100)+'%<br>White Bee Attack: '+player.whiteBeeAttack+'<br>Blue Bee Attack: '+player.blueBeeAttack+'<br>Red Bee Attack: '+player.redBeeAttack+'<br>Bee Attack Multiplier: '+Math.round(player.beeAttack*100)+'%<br>Honey From Tokens: '+Math.round(player.honeyFromTokens*100)+'%<br>Red Bee Ability Rate: '+Math.round(player.redBeeAbilityRate*100)+'%<br>Blue Bee Ability Rate: '+Math.round(player.blueBeeAbilityRate*100)+'%<br>White Bee Ability Rate: '+Math.round(player.whiteBeeAbilityRate*100)+'%<br>Bee Movespeed: '+Math.round(player.beeSpeed*100)+'%<br>Bee Energy: '+Math.round(player.beeEnergy*100)+'%<br>Honey At Hive: '+Math.round(player.honeyAtHive*100)+'%<br>Loot Luck: '+Math.round(player.lootLuck*100)+'%<br>Convert Total: '+Math.round(player.convertTotal)+'<br>Attack Total: '+Math.round(player.attackTotal)
             
-            pages[2].innerHTML='<div style="color:'+(player.setting_enablePollenText?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenText">Pollen Text: '+(player.setting_enablePollenText?'On':'Off')+'</div>'+'<div style="color:'+(player.setting_enablePollenAbv?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenAbv">Abbreviate Pollen: '+(player.setting_enablePollenAbv?'On':'Off')+'</div>'+player.statString
+            pages[3].innerHTML='<div style="cursor:pointer;background-color:rgb(170,170,170);font-size:15px;border-radius:3px;color:'+(player.setting_enablePollenText?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenText">Pollen Text: '+(player.setting_enablePollenText?'On':'Off')+'</div>'+'<div style="cursor:pointer;margin-top:5px;background-color:rgb(170,170,170);font-size:15px;border-radius:3px;color:'+(player.setting_enablePollenAbv?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenAbv">Abbreviate Pollen: '+(player.setting_enablePollenAbv?'On':'Off')+'</div>'+player.statString
             
             document.getElementById('togglePollenText').addEventListener('click',function(){
                 
                 player.setting_enablePollenText=!player.setting_enablePollenText
                 
-                pages[2].innerHTML='<div style="color:'+(player.setting_enablePollenText?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenText">Pollen Text: '+(player.setting_enablePollenText?'On':'Off')+'</div>'+'<div style="color:'+(player.setting_enablePollenAbv?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenAbv">Abbreviate Pollen: '+(player.setting_enablePollenAbv?'On':'Off')+'</div>'+player.statString
+                pages[3].innerHTML='<div style="cursor:pointer;background-color:rgb(170,170,170);font-size:15px;border-radius:3px;color:'+(player.setting_enablePollenText?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenText">Pollen Text: '+(player.setting_enablePollenText?'On':'Off')+'</div>'+'<div style="cursor:pointer;margin-top:5px;background-color:rgb(170,170,170);font-size:15px;border-radius:3px;color:'+(player.setting_enablePollenAbv?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenAbv">Abbreviate Pollen: '+(player.setting_enablePollenAbv?'On':'Off')+'</div>'+player.statString
                 
             })
             
@@ -15776,14 +15838,14 @@ player=(function(out){
                 
                 player.setting_enablePollenAbv=!player.setting_enablePollenAbv
                 
-                pages[2].innerHTML='<div style="color:'+(player.setting_enablePollenText?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenText">Pollen Text: '+(player.setting_enablePollenText?'On':'Off')+'</div>'+'<div style="color:'+(player.setting_enablePollenAbv?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenAbv">Abbreviate Pollen: '+(player.setting_enablePollenAbv?'On':'Off')+'</div>'+player.statString
+                pages[3].innerHTML='<div style="cursor:pointer;background-color:rgb(170,170,170);font-size:15px;border-radius:3px;color:'+(player.setting_enablePollenText?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenText">Pollen Text: '+(player.setting_enablePollenText?'On':'Off')+'</div>'+'<div style="cursor:pointer;margin-top:5px;background-color:rgb(170,170,170);font-size:15px;border-radius:3px;color:'+(player.setting_enablePollenAbv?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenAbv">Abbreviate Pollen: '+(player.setting_enablePollenAbv?'On':'Off')+'</div>'+player.statString
                 
             })
         }
         
-        if(currentPage===3){
+        if(currentPage===4){
             
-            pages[3].innerHTML=player.beequipPageHTML
+            pages[4].innerHTML=player.beequipPageHTML
         }
         
         for(let i=out.messages.length;i--;){
