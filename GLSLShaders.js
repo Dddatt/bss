@@ -191,7 +191,7 @@ window.glsl_bee_geometry_vsh = `#version 300 es
     in vec3 vertPos;
     in vec4 vertUV;
     
-    in vec3 instance_pos;
+    in vec4 instance_pos;
     in vec4 instance_rotation;
     in vec3 instance_uv;
     
@@ -209,6 +209,8 @@ window.glsl_bee_geometry_vsh = `#version 300 es
             
         } else {
             
+            vec3 vp=vertPos*instance_pos.w;
+
             vec3 del=normalize(instance_rotation.xyz);
             
             float pitch=asin(-del.y)*0.5;
@@ -222,11 +224,11 @@ window.glsl_bee_geometry_vsh = `#version 300 es
             
             quaternion=vec4(quaternion.x*c.z+quaternion.y*s.z,quaternion.y*c.z-quaternion.x*s.z,quaternion.z*c.z+quaternion.w*s.z,(quaternion.w*c.z-quaternion.z*s.z)*2.0);
             
-            vec3 u=vec3(quaternion.y*vertPos.z-quaternion.z*vertPos.y,quaternion.z*vertPos.x-quaternion.x*vertPos.z,quaternion.x*vertPos.y-quaternion.y*vertPos.x);
+            vec3 u=vec3(quaternion.y*vp.z-quaternion.z*vp.y,quaternion.z*vp.x-quaternion.x*vp.z,quaternion.x*vp.y-quaternion.y*vp.x);
             
             vec3 uu=vec3(quaternion.y*u.z-quaternion.z*u.y,quaternion.z*u.x-quaternion.x*u.z,quaternion.x*u.y-quaternion.y*u.x);
             
-            gl_Position=viewMatrix*vec4(vertPos+u*quaternion.w+uu*2.0+instance_pos,1);
+            gl_Position=viewMatrix*vec4(vp+u*quaternion.w+uu*2.0+instance_pos.xyz,1);
             
         }
     }
