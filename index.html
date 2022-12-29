@@ -1801,6 +1801,18 @@ w, in coco: 549b, 746b,
         <rect id='blueBombSync_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0.6'></rect>
             
     </svg>
+
+    <svg id='corruption' style='width:30;height:30;display:none'>
+        
+        <rect width='30' height='30' fill='rgb(0,0,0)'></rect>
+        
+        <text x='15.5' y='25' style='font-size:39px;' text-anchor='middle' fill='rgb(255,0,200)'>☺</text>
+
+        <text id='corruption_amount' x='29' y='29' style='font-family:calibri;font-size:12px' text-anchor='end' fill='rgb(255,255,255)'></text>
+        
+        <rect id='corruption_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0.6'></rect>
+        
+    </svg>
     
 </div>
 
@@ -4137,7 +4149,27 @@ let beeInfo={
 
     vicious:{
         
-        u:128*9/2048,v:256*2/2048,meshPartId:15,gatherSpeed:4,gatherAmount:10,speed:17.5,convertSpeed:4,convertAmount:80,attack:8,energy:50,tokens:['blueBomb_'],attackTokens:['impale'],rarity:'event',color:'blue',description:"This cold-blooded bee takes great pleasure in inflicting pain.",giftedHiveBonus:{oper:'+',stat:'lootLuck',num:0.25}
+        u:128*9/2048,v:256*2/2048,meshPartId:15,gatherSpeed:4,gatherAmount:10,speed:17.5,convertSpeed:4,convertAmount:80,attack:8,energy:50,tokens:['blueBomb_'],attackTokens:['impale'],rarity:'event',color:'blue',description:"This cold-blooded bee takes great pleasure in inflicting pain.",giftedHiveBonus:{oper:'*',stat:'monsterRespawnTime',num:1.15}
+    },
+
+    bear:{
+        
+        u:128*10/2048,v:256*2/2048,meshPartId:16,gatherSpeed:2,gatherAmount:15,speed:14,convertSpeed:2,convertAmount:200,attack:5,energy:35,tokens:[],attackTokens:[],rarity:'event',color:'white',description:"A friendly bee who periodically transforms you into a bear!",giftedHiveBonus:{oper:'*',stat:'redPollen,bluePollen,whitePollen',num:1.1}
+    },
+
+    puppy:{
+        
+        u:128*11/2048,v:256*2/2048,meshPartId:17,gatherSpeed:4,gatherAmount:25,speed:16.1,convertSpeed:4,convertAmount:280,attack:2,energy:40,tokens:[],attackTokens:[],rarity:'event',color:'white',description:"A playful bee who only cares about two things, its tennis ball and you!",giftedHiveBonus:{oper:'*',stat:'bondFromTreats',num:1.2}
+    },
+
+    festive:{
+        
+        u:128*12/2048,v:256*2/2048,meshPartId:18,gatherSpeed:4,gatherAmount:40,speed:16.1,convertSpeed:1,convertAmount:150,attack:1,energy:20,tokens:['redBomb_','honeyMarkToken'],attackTokens:[],rarity:'event',color:'red',description:"A jolly bee who loves giving gifts! It's purely motivated by the joy of others.",giftedHiveBonus:{oper:'*',stat:'redPollen',num:1.15}
+    },
+
+    digital:{
+        
+        u:128*13/2048,v:256*2/2048,meshPartId:19,gatherSpeed:4,gatherAmount:10,speed:11.9,convertSpeed:4,convertAmount:80,attack:1,energy:20,tokens:[],attackTokens:[],rarity:'event',color:'white',description:"A virtual bee with malfunctioning AI. It corrupts the game itself.",giftedHiveBonus:{oper:'+',stat:'abilityDuplicationChance',num:0.01}
     },
 }
 
@@ -7518,6 +7550,27 @@ let effects={
         getMessage:(amount)=>{
             
             return 'Satisfying Nectar\nx'+(amount*0.9+1.1).toFixed(2)+' red bee convert rate\nx'+(amount*0.9+1.1).toFixed(2)+' white pollen\nx'+(amount*0.45+1.05).toFixed(2)+' honey at hive\nx'+(amount*0.04+1.01).toFixed(2)+' honey per pollen'
+        }
+    },
+
+    corruption:{
+        
+        u:0,v:0,
+        svg:document.getElementById('corruption'),
+        cooldown:document.getElementById('corruption_cooldown'),
+        amount:document.getElementById('corruption_amount'),
+        maxCooldown:0,
+        tokenLife:4,
+        maxAmount:100,
+        
+        update:(amount,player)=>{
+            
+            player.abilityDuplicationChance+=amount*0.005+1.05
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Corruption\n+'+(amount*0.005+1.05).toFixed(2)+'% ability duplication chance'
         }
     },
 }
@@ -14966,6 +15019,52 @@ class Spike {
     }
 }
 
+class GlitchEffect {
+    
+    constructor(field,life){
+        
+        this.life=life
+        this.field=field
+        this.blocks=[]
+
+        for(let i=0;i<MATH.random(6,10)|0;i++){
+
+            this.blocks.push({pos:[fieldInfo[this.field].x+((MATH.random(0.1,0.9)*fieldInfo[this.field].width)|0),fieldInfo[this.field].y+MATH.random(1,4),fieldInfo[this.field].z+((MATH.random(0.1,0.9)*fieldInfo[this.field].length)|0)],col:[Math.round(Math.random()),Math.round(Math.random()),Math.round(Math.random())],timer:0})
+        }
+    }
+    
+    die(index){
+        
+        objects.mobs.splice(index,1)
+    }
+    
+    update(){
+        
+        this.life-=dt
+        
+        for(let i in this.blocks){
+
+            let b=this.blocks[i]
+
+            b.timer-=dt
+
+            if(b.timer<=0){
+
+                b.timer=MATH.random(0,1)
+                b.timer*=b.timer
+                b._pos=[b.pos[0]+MATH.random(-2,2),b.pos[1]+MATH.random(-1,1),b.pos[2]+MATH.random(-2,2)]
+                b.alpha=MATH.random(0.2,0.5)
+                b.rad=MATH.random(0.5,5)
+                b.hei=MATH.random(0.1,1.25)/b.rad
+            }
+
+            meshes.cylinder_explosions.instanceData.push(...b._pos,...b.col,b.alpha,b.rad,b.hei)
+        }
+        
+        return this.life<=0
+    }
+}
+
 let lightDir=[1,5,1.5]
 
 let m=1/(lightDir[0]*lightDir[0]+lightDir[1]*lightDir[1]+lightDir[2]*lightDir[2])
@@ -18201,6 +18300,12 @@ player=(function(out){
         for(let i in fieldInfo){
 
             fieldInfo[i].degration-=dt*0.00027777777
+            fieldInfo[i].corruption-=dt*0.5
+
+            if(Math.random()<0.005){
+
+                objects.mobs.push(new GlitchEffect(i,5))
+            }
             
             updateFlower(i,MATH.random(0,fieldInfo[i].width)|0,MATH.random(0,fieldInfo[i].length)|0,function(f){
                 
@@ -18253,7 +18358,7 @@ player=(function(out){
                     player.fieldIn=i
                     player.flowerIn.x=x
                     player.flowerIn.z=z
-                    
+                    player.addEffect('corruption',false,false,fieldInfo[i].corruption|0)
                 }
             }
         }
@@ -21306,7 +21411,7 @@ function collectPollen(params){
 
     player.pollen=Math.min(player.pollen+Math.ceil(total.w+total.r+total.b-totalHoney),player.capacity)
 
-    totalHoney=Math.ceil((totalHoney+(totalGoo*0.1+3))*player.honeyPerPollen)
+    totalHoney=Math.ceil((totalHoney+(totalGoo*0.1))*player.honeyPerPollen)
     player.honey+=totalHoney
 
     if(totalHoney&&player.setting_enablePollenText){
@@ -21331,7 +21436,7 @@ function createField(name,x,y,z,w,l,c,_l,generalColorComp,nectarType){
     
     player.stats['pollenFrom'+name]=0
     
-    fieldInfo[name]={x:x,y:y,z:z,width:w,length:l,getColor:c,getLevel:_l,haze:{},generalColorComp:generalColorComp,nectarType:nectarType+'Nectar',degration:0}
+    fieldInfo[name]={x:x,y:y,z:z,width:w,length:l,getColor:c,getLevel:_l,haze:{},generalColorComp:generalColorComp,nectarType:nectarType+'Nectar',degration:0,corruption:100}
     
     flowers[name]=[]
     
@@ -21560,6 +21665,10 @@ for(let i=0;i<25;i++)
 player.addSlot(null)
 
 player.addSlot('vicious')
+player.addSlot('bear')
+player.addSlot('puppy')
+player.addSlot('festive')
+player.addSlot('digital')
 
 player.updateHive()
 player.updateGear()
