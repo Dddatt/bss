@@ -2594,6 +2594,30 @@ window.textures_effects=function(tex_ctx){
     tex_ctx.lineWidth='1.5'
     tex_ctx.stroke(a)
     tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='#050407'
+    tex_ctx.fillRect(128*6,256+256*3.5,128,128)
+    tex_ctx.fillStyle='#c5fffd'
+    tex_ctx.translate(128*6+128*0.5,256+128*7.5)
+    tex_ctx.scale(0.75,1)
+    tex_ctx.beginPath()
+    tex_ctx.scale(2.3,2.3)
+    tex_ctx.translate(2,-16)
+    tex_ctx.moveTo(0,0)
+    tex_ctx.lineTo(10,30)
+    tex_ctx.bezierCurveTo(10,37,-10,37,-10,30)
+    tex_ctx.scale(0.5,0.5)
+    tex_ctx.translate(37,-11)
+    tex_ctx.moveTo(0,0)
+    tex_ctx.lineTo(10,30)
+    tex_ctx.bezierCurveTo(10,37,-10,37,-10,30)
+    tex_ctx.scale(1.5,1.5)
+    tex_ctx.translate(-54,2)
+    tex_ctx.moveTo(0,0)
+    tex_ctx.lineTo(10,30)
+    tex_ctx.bezierCurveTo(10,37,-10,37,-10,30)
+    tex_ctx.fill()
+    tex_ctx.setTransform(1,0,0,1,0,0)
 }
 
 window.textures_bees=function(tex_ctx){
@@ -2621,8 +2645,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(237, 233, 9)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(33, 20, 1)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     
     tex_ctx.fillStyle='rgb(0,200,60)'
     tex_ctx.fillRect(128,0,128,128)
@@ -2647,8 +2671,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(0,0,0)'
     tex_ctx.fillRect(128,128,128,128)
     tex_ctx.fillStyle='rgb(0,200,60)'
-    tex_ctx.fillRect(128,128-1,128,128/3)
-    tex_ctx.fillRect(128,213,128,128/3+1)
+    tex_ctx.fillRect(128,128-1,128,128/3|0)
+    tex_ctx.fillRect(128,213,128,128/3|0+1)
     
     tex_ctx.fillStyle='rgb(10,10,10)'
     tex_ctx.fillRect(128*2,0,128,128)
@@ -2679,8 +2703,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(220,220,220)'
     tex_ctx.fillRect(128*2,128,128,128)
     tex_ctx.fillStyle='rgb(10,10,10)'
-    tex_ctx.fillRect(128*2,128-1,128,128/3)
-    tex_ctx.fillRect(128*2,213,128,128/3+1)
+    tex_ctx.fillRect(128*2,128-1,128,128/3|0)
+    tex_ctx.fillRect(128*2,213,128,128/3|0+1)
     
     tex_ctx.translate(128*3,0)
     tex_ctx.fillStyle='rgb(190,0,0)'
@@ -2750,8 +2774,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(235, 66, 9)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(190,0,0)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*4,0)
@@ -2774,8 +2798,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(15, 136, 212)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(70, 183, 240)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*5,0)
@@ -2798,8 +2822,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(215,215,0)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(220,220,220)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*6,0)
@@ -2827,8 +2851,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(20,20,20)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(220,220,220)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*7,0)
@@ -2872,8 +2896,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(140, 79, 42)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(176, 128, 74)'
-    tex_ctx.fillRect(0,128-1,128,(128/3))
-    tex_ctx.fillRect(0,213,128,(128/3)+1)
+    tex_ctx.fillRect(0,128-1,128,(128/3|0))
+    tex_ctx.fillRect(0,213,128,(128/3|0)+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*8,0)
@@ -2899,8 +2923,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(155,155,155)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(0,0,0)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*9,0)
@@ -2937,8 +2961,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(150,0,0)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(200,0,0)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(1280,0)
@@ -2963,8 +2987,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(120,120,120)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(220,220,220)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*11,0)
@@ -3008,8 +3032,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(29, 133, 72)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(27, 219, 145)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*12,0)
@@ -3063,8 +3087,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(242, 255, 0)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(23, 118, 235)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*13,0)
@@ -3086,8 +3110,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(30,255,100)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(255,50,255)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*14,0)
@@ -3156,9 +3180,9 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(245, 123, 95)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(255, 149, 125)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
     tex_ctx.fillStyle='rgb(214, 60, 26)'
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*0,256)
@@ -3192,8 +3216,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(255,255,255)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(255,0,0)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*1,256)
@@ -3235,8 +3259,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(255,255,255)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(0,0,255)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*2,256)
@@ -3283,8 +3307,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(255,255,255)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(255,255,0)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*3,256)
@@ -3313,8 +3337,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(59, 142, 209)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(17, 32, 43)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*4,256)
@@ -3341,8 +3365,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(243, 73, 45)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(17, 32, 43)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*5,256)
@@ -3389,8 +3413,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(59, 142, 209)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(59, 94, 157)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*6,256)
@@ -3416,8 +3440,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(243, 73, 45)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(241,241,241)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*7,256)
@@ -3452,8 +3476,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(240,240,240)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(160,160,160)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*8,256)
@@ -3572,8 +3596,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(59, 142, 209)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(17, 32, 43)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*10,256)
@@ -3628,8 +3652,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(243,73,45)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(17, 32, 43)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*11,256)
@@ -3671,8 +3695,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(17, 32, 43)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(50, 190, 71)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*12,256)
@@ -3702,8 +3726,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(17, 32, 43)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(240, 211, 24)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*13,256)
@@ -3766,8 +3790,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(99, 73, 39)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(252, 186, 3)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*14,256)
@@ -3804,8 +3828,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(255,255,255)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(117, 184, 235)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*15,256)
@@ -3840,8 +3864,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(243, 73, 45)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(27, 42, 53)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*0,256*2)
@@ -3888,8 +3912,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(255, 200, 18)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(150, 106, 85)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*1,256*2)
@@ -3926,8 +3950,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(229, 207, 56)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(229, 178, 56)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*2,256*2)
@@ -3947,7 +3971,7 @@ window.textures_bees=function(tex_ctx){
     ellipse(27,-13,12,7,-0.3)
     tex_ctx.translate(-128/2,-128/2)
     tex_ctx.fillStyle='rgb(27, 42, 53)'
-    tex_ctx.fillRect(0,128-1,128,128+2)
+    tex_ctx.fillRect(0,128,128,128)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*3,256*2)
@@ -3978,7 +4002,7 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.stroke()
     tex_ctx.translate(-128/2,-128/2)
     tex_ctx.fillStyle='rgb(159, 159, 159)'
-    tex_ctx.fillRect(0,128-1,128,128+2)
+    tex_ctx.fillRect(0,128,128,128)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*4,256*2)
@@ -4001,8 +4025,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(229, 207, 56)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(27, 42, 53)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*5,256*2)
@@ -4049,8 +4073,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(159, 159, 159)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(27, 42, 53)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*6,256*2)
@@ -4086,8 +4110,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(241, 241, 241)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(27, 42, 53)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*7,256*2)
@@ -4117,8 +4141,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(59, 142, 209)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(241, 241, 241)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*8,256*2)
@@ -4142,11 +4166,11 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='rgb(136, 220, 232)'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='rgb(27, 42, 53)'
-    tex_ctx.fillRect(0,128-1,128,128/3)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
     tex_ctx.fillStyle='rgb(241, 241, 241)'
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
-
+    
     tex_ctx.translate(128*9,256*2)
     tex_ctx.fillStyle='#0E141E'
     tex_ctx.fillRect(0,0,128,128)
@@ -4171,8 +4195,1941 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='#2F4E66'
     tex_ctx.fillRect(0,128,128,128)
     tex_ctx.fillStyle='#0E141E'
-    tex_ctx.fillRect(0,128-1,128,128/3)
-    tex_ctx.fillRect(0,213,128,128/3+1)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*10,256*2)
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.lineWidth=7
+    tex_ctx.fillStyle='#e6a363'
+    tex_ctx.fillRect(-128*0.5,-128*0.5,128,128)
+    tex_ctx.fillStyle='rgb(0,0,0,0.3)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-64,64)
+    tex_ctx.lineTo(-64,20)
+    tex_ctx.bezierCurveTo(-66,-49,-18,-56,-10,-1)
+    tex_ctx.lineTo(-10,64)
+    tex_ctx.moveTo(64,64)
+    tex_ctx.lineTo(64,20)
+    tex_ctx.bezierCurveTo(66,-49,18,-56,10,-1)
+    tex_ctx.lineTo(10,64)
+    tex_ctx.fill()
+    tex_ctx.fillStyle='#e6a363'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-12,-25)
+    tex_ctx.bezierCurveTo(-11,49,-30,40,-12,64)
+    tex_ctx.moveTo(12,-25)
+    tex_ctx.bezierCurveTo(11,49,30,40,12,64)
+    tex_ctx.fill()
+    tex_ctx.fillRect(-12,-11,24,75)
+    tex_ctx.fillStyle='rgb(45, 50, 53)'
+    ellipse(0,49,10,8)
+    tex_ctx.fillStyle='rgb(33, 35, 37)'
+    ellipse(0,52,5,3)
+    tex_ctx.fillStyle='rgb(20,20,20)'
+    ellipse(-19,-9,5,12)
+    ellipse(19,-9,5,12)
+    tex_ctx.fillStyle='#e6a363'
+    ellipse(16,-12,2,3)
+    ellipse(-22,-12,2,3)
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(140, 84, 43)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='#e6a363'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*11,256*2)
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.lineWidth=7
+    tex_ctx.fillStyle='#FFE089'
+    tex_ctx.fillRect(-128*0.5,-128*0.5,128,128)
+    tex_ctx.fillStyle='rgb(209, 167, 113)'
+    tex_ctx.strokeStyle='rgb(209, 167, 113)'
+    ellipse(-42,0-5,22,22)
+    ellipse(-33,-8-5,20,20)
+    ellipse(-27,-16-5,20,20)
+    ellipse(-35,-9-5,24,24)
+    tex_ctx.lineWidth=7
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(13,-40)
+    tex_ctx.bezierCurveTo(15,-42,29,-43,32,-35)
+    tex_ctx.stroke()
+    tex_ctx.fillStyle='rgb(50,50,50)'
+    tex_ctx.strokeStyle='rgb(50,50,50)'
+    ellipse(-19,-19,6,7)
+    ellipse(19,-19,6,7)
+    tex_ctx.lineWidth=4
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(0,25+3)
+    tex_ctx.bezierCurveTo(5,33,20,33,20,19+5)
+    tex_ctx.moveTo(0,25+3)
+    tex_ctx.bezierCurveTo(-5,33,-20,33,-20,19+5)
+    tex_ctx.stroke()
+    tex_ctx.lineWidth=5
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-5,3)
+    tex_ctx.bezierCurveTo(-3,7,3,7,5,3)
+    tex_ctx.closePath()
+    tex_ctx.stroke()
+    tex_ctx.fill()
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(140, 84, 43)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='#FFE089'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*12,256*2)
+    tex_ctx.fillStyle='#ad2222'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.translate(128/2,128/2+18)
+    tex_ctx.lineWidth=5
+    tex_ctx.fillStyle='rgb(255,255,255,0.3)'
+    tex_ctx.strokeStyle='rgb(250, 218, 218)'
+    tex_ctx.beginPath()
+    tex_ctx.translate(-25,-23)
+    tex_ctx.moveTo(-1,-3)
+    tex_ctx.bezierCurveTo(3,0,4,0,8,8)
+    tex_ctx.bezierCurveTo(-2,5,-1,5,-6,8)
+    tex_ctx.translate(50,0)
+    tex_ctx.moveTo(-1,-3)
+    tex_ctx.bezierCurveTo(3,0,4,0,8,8)
+    tex_ctx.bezierCurveTo(-2,5,-1,5,-6,8)
+    tex_ctx.stroke()
+    tex_ctx.translate(-25,23)
+    tex_ctx.lineWidth=5
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-10,15)
+    tex_ctx.bezierCurveTo(-7,23,2,23,10,15)
+    tex_ctx.stroke()
+    ellipse(-36,3,6,6)
+    ellipse(36,3,6,6)
+    tex_ctx.fillStyle='#ad2222'
+    ellipse(23,-21,5,4)
+    ellipse(-27,-21,5,4)
+    tex_ctx.translate(-128/2,-128/2-18)
+    tex_ctx.fillStyle='#227d3d'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='#ad2222'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*13,256*2)
+    tex_ctx.fillStyle='#12471a'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.lineWidth=5
+    tex_ctx.fillStyle='#baf893'
+    function rect(x,y,w,h){tex_ctx.fillRect(x-w*0.5,y-h*0.5,w,h)}
+    
+    for(let x=-2;x<2;x++){
+        
+        for(let y=-2;y<2;y++){
+            
+            if(!(x===-2&&y===-2||x===1&&y===1||x===-2&&y===1||x===1&&y===-2)){
+                
+                rect(x*7-25,y*7+-24,5,5)
+                rect(x*7+31,y*7+-24,5,5)
+            }
+        }
+    }
+    
+    for(let x=-7;x<7;x++){
+        
+        for(let y=-3;y<3;y++){
+            
+            if(!(y<3-Math.abs(x+0.5)&&y<0||y>3-Math.abs((x+0.5)*0.5)||y===2)&&y!==-3){
+                
+                rect(x*7+5,y*7+28,5,5)
+            }
+        }
+    }
+    
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='#BAB088'
+    tex_ctx.fillRect(0,127,128,128)
+    tex_ctx.fillStyle='#E7DAAA'
+    tex_ctx.fillRect(0,128-1,128,128/3|0|0)
+    tex_ctx.fillStyle='#717779'
+    tex_ctx.fillRect(0,213,128,128/3|0|0+1)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    //@
+    let pi2=Math.PI*2,side=pi2/10
+    
+    function star(c,x=0,y=0){
+        
+        let bx=64+x,by=128+64+y,ex=0
+        tex_ctx.fillStyle=c
+        tex_ctx.beginPath()
+        
+        for(let i=0,j=0;i<Math.PI*2;i+=side,j++){
+            
+            let srad=j%2===0?20:45
+            
+            if(j===0){
+                
+                tex_ctx.moveTo(Math.sin(i+ex)*srad+bx,Math.cos(i+ex)*srad+by)
+                
+            } else {
+                
+                tex_ctx.lineTo(Math.sin(i+ex)*srad+bx,Math.cos(i+ex)*srad+by)
+            }
+        }
+        
+        tex_ctx.fill()
+    }
+    
+    tex_ctx.translate(0,768)
+    tex_ctx.fillStyle='rgb(21, 27, 43)'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.strokeStyle='rgb(220,220,220)'
+    tex_ctx.lineWidth=9
+    tex_ctx.lineCap='round'
+    tex_ctx.lineJoin='round'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo((128/2)-(128/5),30)
+    tex_ctx.lineTo((128/2)-(128/5),50)
+    tex_ctx.moveTo((128/2)+(128/5),30)
+    tex_ctx.lineTo((128/2)+(128/5),50)
+    tex_ctx.closePath()
+    tex_ctx.moveTo(128/2,100)
+    tex_ctx.lineTo((128/2)-(128/5),80)
+    tex_ctx.moveTo(128/2,100)
+    tex_ctx.lineTo((128/2)+(128/5),80)
+    tex_ctx.stroke()
+    tex_ctx.fillStyle='rgb(150, 145, 49)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='rgb(21, 27, 43)'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(255,255,0)')
+    
+    tex_ctx.fillStyle='rgb(26, 255, 0)'
+    tex_ctx.fillRect(128,0,128,128)
+    tex_ctx.strokeStyle='rgb(255,255,255)'
+    tex_ctx.lineWidth=18
+    tex_ctx.beginPath()
+    tex_ctx.moveTo((128/2)-(128/5)+128,30)
+    tex_ctx.lineTo((128/2)-(128/5)+128,50)
+    tex_ctx.moveTo((128/2)+(128/5)+128,30)
+    tex_ctx.lineTo((128/2)+(128/5)+128,50)
+    tex_ctx.closePath()
+    tex_ctx.stroke()
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.lineWidth=9
+    tex_ctx.beginPath()
+    tex_ctx.moveTo((128/2)-(128/5)+124,45)
+    tex_ctx.lineTo((128/2)-(128/5)+124,53)
+    tex_ctx.moveTo((128/2)-(128/5)+173,45)
+    tex_ctx.lineTo((128/2)-(128/5)+173,53)
+    tex_ctx.closePath()
+    tex_ctx.stroke()
+    tex_ctx.fillStyle='rgb(22, 217, 0)'
+    tex_ctx.fillRect(128,128,128,128)
+    tex_ctx.fillStyle='rgb(26, 255, 0)'
+    tex_ctx.fillRect(128,128-1,128,128/3|0)
+    tex_ctx.fillRect(128,213,128,128/3|0+1)
+    star('rgb(29, 133, 0)',128)
+    
+    tex_ctx.fillStyle='rgb(41, 40, 34)'
+    tex_ctx.fillRect(128*2,0,128,128)
+    tex_ctx.strokeStyle='rgb(232, 232, 232)'
+    tex_ctx.lineWidth=4
+    tex_ctx.translate(0,-13)
+    tex_ctx.beginPath()
+    tex_ctx.moveTo((128/2)-(128/5)+123*2,86)
+    tex_ctx.lineTo((128/2)-(128/5)+125*2,53)
+    tex_ctx.moveTo((128/2)-(128/5)+125*2,53)
+    tex_ctx.lineTo((128/2)-(128/5)+128*2,62)
+    tex_ctx.moveTo((128/2)-(128/5)+159.5*2,59)
+    tex_ctx.lineTo((128/2)-(128/5)+161*2,27)
+    tex_ctx.moveTo((128/2)-(128/5)+161*2,27)
+    tex_ctx.lineTo((128/2)-(128/5)+164*2,39)
+    tex_ctx.moveTo((128/2)-(128/5)+128*2,94)
+    tex_ctx.bezierCurveTo((128/2)-(128/5)+135*2,114,(128/2)-(128/5)+157*2,109,(128/2)-(128/5)+155*2,74)
+    tex_ctx.stroke()
+    tex_ctx.beginPath()
+    tex_ctx.ellipse(279,89,8,6,-0.2,0,7)
+    tex_ctx.ellipse(352,59,8,6,-0.2,0,7)
+    tex_ctx.moveTo(0,0)
+    tex_ctx.ellipse(365,62,2,2,-0.2,0,7)
+    tex_ctx.closePath()
+    tex_ctx.translate(0,13)
+    tex_ctx.fillStyle='rgb(232, 232, 232)'
+    tex_ctx.fill()
+    tex_ctx.fillStyle='rgb(133, 133, 133)'
+    tex_ctx.fillRect(128*2,128,128,128)
+    tex_ctx.fillStyle='rgb(41, 40, 34)'
+    tex_ctx.fillRect(128*2,128-1,128,128/3|0)
+    tex_ctx.fillRect(128*2,213,128,128/3|0+1)
+    star('rgb(232, 232, 232)',128*2)
+    
+    tex_ctx.translate(128*3,0)
+    tex_ctx.fillStyle='#f64800'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.strokeStyle='rgb(235, 212, 35)'
+    tex_ctx.fillStyle='rgb(235, 212, 35)'
+    tex_ctx.lineWidth=3
+    tex_ctx.beginPath()
+    tex_ctx.translate(63,-5)
+    tex_ctx.moveTo(128/2-40+10,55-5)
+    tex_ctx.lineTo(128/2-40-5+10,40-5)
+    tex_ctx.moveTo(128/2-40-5-5+10,55-5)
+    tex_ctx.lineTo(128/2-40-5+10,40-5)
+    tex_ctx.moveTo(128/2-40-5-5,55-5)
+    tex_ctx.bezierCurveTo(128/2-40-5-5,71-5,128/2-40-5-5+20,71-5,128/2-40-5-5+20,55-5)
+    tex_ctx.arc(20,29,0,0,6)
+    tex_ctx.scale(-1,1)
+    tex_ctx.moveTo(128/2-40+10,55-5)
+    tex_ctx.lineTo(128/2-40-5+10,40-5)
+    tex_ctx.moveTo(128/2-40-5-5+10,55-5)
+    tex_ctx.lineTo(128/2-40-5+10,40-5)
+    tex_ctx.moveTo(128/2-40-5-5,55-5)
+    tex_ctx.bezierCurveTo(128/2-40-5-5,71-5,128/2-40-5-5+20,71-5,128/2-40-5-5+20,55-5)
+    tex_ctx.arc(20,29,0,0,6)
+    tex_ctx.closePath()
+    tex_ctx.stroke()
+    tex_ctx.fill()
+    tex_ctx.scale(-1,1)
+    tex_ctx.translate(-65,5)
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(128*0.5-35,90)
+    tex_ctx.lineTo(128*0.5-30,90+15)
+    tex_ctx.moveTo(128*0.5-30,90+15)
+    tex_ctx.lineTo(128*0.5-25,90)
+    tex_ctx.translate(10,0)
+    tex_ctx.moveTo(128*0.5-35,90)
+    tex_ctx.lineTo(128*0.5-30,90+15)
+    tex_ctx.moveTo(128*0.5-30,90+15)
+    tex_ctx.lineTo(128*0.5-25,90)
+    tex_ctx.translate(10,0)
+    tex_ctx.moveTo(128*0.5-35,90)
+    tex_ctx.lineTo(128*0.5-30,90+15)
+    tex_ctx.moveTo(128*0.5-30,90+15)
+    tex_ctx.lineTo(128*0.5-25,90)
+    tex_ctx.translate(10,0)
+    tex_ctx.moveTo(128*0.5-35,90)
+    tex_ctx.lineTo(128*0.5-30,90+15)
+    tex_ctx.moveTo(128*0.5-30,90+15)
+    tex_ctx.lineTo(128*0.5-25,90)
+    tex_ctx.translate(10,0)
+    tex_ctx.moveTo(128*0.5-35,90)
+    tex_ctx.lineTo(128*0.5-30,90+15)
+    tex_ctx.moveTo(128*0.5-30,90+15)
+    tex_ctx.lineTo(128*0.5-25,90)
+    tex_ctx.translate(10,0)
+    tex_ctx.moveTo(128*0.5-35,90)
+    tex_ctx.lineTo(128*0.5-30,90+15)
+    tex_ctx.moveTo(128*0.5-30,90+15)
+    tex_ctx.lineTo(128*0.5-25,90)
+    tex_ctx.translate(10,0)
+    tex_ctx.moveTo(128*0.5-35,90)
+    tex_ctx.lineTo(128*0.5-30,90+15)
+    tex_ctx.moveTo(128*0.5-30,90+15)
+    tex_ctx.lineTo(128*0.5-25,90)
+    tex_ctx.stroke()
+    tex_ctx.translate(-58,0)
+    tex_ctx.fillStyle='rgb(255, 153, 0)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='#f64800'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(255,255,0)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(0,768)
+    tex_ctx.translate(128*4,0)
+    tex_ctx.fillStyle='#65feec'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.strokeStyle='rgb(11, 183, 189)'
+    tex_ctx.lineWidth=10
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(128*0.5-35,59)
+    tex_ctx.bezierCurveTo(56,62,44,39,128*0.5-35,28)
+    tex_ctx.translate(55,0)
+    tex_ctx.moveTo(128*0.5-35,59)
+    tex_ctx.bezierCurveTo(56,62,44,39,128*0.5-35,28)
+    tex_ctx.translate(-55,0)
+    tex_ctx.moveTo(128*0.5+-10,104)
+    tex_ctx.bezierCurveTo(89,110,69,86,128*0.5+-5,86)
+    tex_ctx.bezierCurveTo(40,85,45,102,128*0.5+-11,104)
+    tex_ctx.fill()
+    tex_ctx.stroke()
+    tex_ctx.fillStyle='rgb(25, 189, 230)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='#65feec'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(18, 156, 161)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(0,768)
+    tex_ctx.translate(128*5,0)
+    tex_ctx.fillStyle='#fffeb1'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.strokeStyle='rgb(70, 71, 40)'
+    tex_ctx.lineWidth=3.5
+    tex_ctx.beginPath()
+    tex_ctx.translate(4,0)
+    tex_ctx.moveTo(36,30)
+    tex_ctx.bezierCurveTo(25,17,15,47,30,56)
+    tex_ctx.bezierCurveTo(50,55,36,32,33,45)
+    tex_ctx.translate(50,0)
+    tex_ctx.moveTo(36,30)
+    tex_ctx.bezierCurveTo(25,17,15,47,30,56)
+    tex_ctx.bezierCurveTo(50,55,36,32,33,45)
+    tex_ctx.translate(-54,0)
+    tex_ctx.fill()
+    tex_ctx.stroke()
+    tex_ctx.fillStyle='rgb(176, 171, 113)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='#fffeb1'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(97, 96, 87)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(0,768)
+    tex_ctx.translate(128*6,0)
+    tex_ctx.fillStyle='rgb(247, 247, 247)'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.strokeStyle='rgb(168, 168, 168)'
+    tex_ctx.fillStyle='rgb(168, 168, 168)'
+    tex_ctx.lineWidth=3
+    tex_ctx.beginPath()
+    tex_ctx.ellipse(128*0.5-30,40,15,13,0,0,7)
+    tex_ctx.rect(0,35,128,8)
+    tex_ctx.ellipse(128*0.5+30,40,15,13,0,0,7)
+    tex_ctx.fill()
+    tex_ctx.stroke()
+    tex_ctx.strokeStyle='rgb(247, 247, 247)'
+    tex_ctx.lineWidth=5
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(128*0.5-30,32)
+    tex_ctx.bezierCurveTo(128*0.5-36,35,128*0.5-35,32,128*0.5-40,40)
+    tex_ctx.translate(61,0)
+    tex_ctx.moveTo(128*0.5-30,32)
+    tex_ctx.bezierCurveTo(128*0.5-36,35,128*0.5-35,32,128*0.5-40,40)
+    tex_ctx.translate(-61,0)
+    tex_ctx.stroke()
+    tex_ctx.fillStyle='rgb(186, 186, 186)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='rgb(247, 247, 247)'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(97, 96, 87)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(0,768)
+    tex_ctx.translate(128*7,0)
+    tex_ctx.fillStyle='rgb(255, 250, 145)'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.strokeStyle='rgb(186, 145, 98)'
+    tex_ctx.lineWidth=3
+    tex_ctx.beginPath()
+    tex_ctx.translate(32,20)
+    
+    for(let i=-0.71,j=0,inc=Math.PI*2/34;i<Math.PI*2*0.18;i+=inc,j++){
+        
+        let ri=(j-1)%2===0?25:28,r=j%2===0?22:31
+        tex_ctx.moveTo(Math.sin(i-inc)*ri,Math.cos(i-inc)*ri)
+        tex_ctx.lineTo(Math.sin(i)*r,Math.cos(i)*r)
+    }
+    
+    tex_ctx.translate(60,0)
+    
+    for(let i=-0.71,j=0,inc=Math.PI*2/34;i<Math.PI*2*0.18;i+=inc,j++){
+        
+        let ri=(j-1)%2===0?25:28,r=j%2===0?22:31
+        tex_ctx.moveTo(Math.sin(i-inc)*ri,Math.cos(i-inc)*ri)
+        tex_ctx.lineTo(Math.sin(i)*r,Math.cos(i)*r)
+    }
+    
+    tex_ctx.stroke()
+    tex_ctx.translate(-32,60)
+    tex_ctx.beginPath()
+    
+    for(let i=-0.74,j=0,inc=Math.PI*2/39;i<Math.PI*2*0.17;i+=inc,j++){
+        
+        let ri=(j-1)%2===0?25:28,r=j%2===0?22:31
+        tex_ctx.moveTo(Math.sin(i-inc)*ri*1.5,Math.cos(i-inc)*ri)
+        tex_ctx.lineTo(Math.sin(i)*r*1.5,Math.cos(i)*r)
+    }
+    
+    tex_ctx.lineWidth=5
+    tex_ctx.stroke()
+    tex_ctx.translate(-32-28,-80)
+    tex_ctx.fillStyle='rgb(255, 250, 145)'
+    tex_ctx.fillRect(0,128-1,128,(128/3|0)*3+3)
+    star('rgb(89, 255, 233)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(0,768)
+    tex_ctx.translate(128*8,0)
+    tex_ctx.fillStyle='rgb(242, 142, 242)'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.strokeStyle='rgb(163, 91, 163)'
+    tex_ctx.lineWidth=4
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(2,20)
+    tex_ctx.bezierCurveTo(128/2,128/2-40,128/2,128/2-40,126,20)
+    tex_ctx.moveTo(128/2-25,45)
+    tex_ctx.lineTo(128/2-25,60)
+    tex_ctx.moveTo(128/2+25,45)
+    tex_ctx.lineTo(128/2+25,60)
+    tex_ctx.moveTo(128/2-30,100)
+    tex_ctx.bezierCurveTo(128/2,128/2+30,128/2,128/2+30,128/2+30,100)
+    tex_ctx.moveTo(128/2-23-10,95)
+    tex_ctx.lineTo(128/2-19-10,106)
+    tex_ctx.moveTo(128/2+23+10,95)
+    tex_ctx.lineTo(128/2+19+10,106)
+    tex_ctx.stroke()
+    tex_ctx.fillStyle='rgb(189, 113, 189)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='rgb(242, 142, 242)'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(114, 64, 135)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(0,768)
+    tex_ctx.translate(128*9,0)
+    tex_ctx.fillStyle='rgb(255, 0, 0)'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.strokeStyle='rgb(100,0,0)'
+    tex_ctx.fillStyle='rgb(100,0,0)'
+    tex_ctx.lineWidth=4
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-40,-41)
+    tex_ctx.lineTo(-35,4)
+    tex_ctx.lineTo(-26,20)
+    tex_ctx.lineTo(-23,-32)
+    tex_ctx.lineTo(-32,-23)
+    tex_ctx.scale(-1,1)
+    tex_ctx.moveTo(-40,-41)
+    tex_ctx.lineTo(-35,4)
+    tex_ctx.lineTo(-26,20)
+    tex_ctx.lineTo(-23,-32)
+    tex_ctx.lineTo(-32,-23)
+    tex_ctx.fill()
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(13,53)
+    tex_ctx.lineTo(29,34)
+    tex_ctx.lineTo(45,46)
+    tex_ctx.lineTo(56,-1)
+    tex_ctx.moveTo(-13,53)
+    tex_ctx.lineTo(-29,34)
+    tex_ctx.lineTo(-45,46)
+    tex_ctx.lineTo(-56,-1)
+    tex_ctx.stroke()
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(242, 71, 56)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='rgb(255, 0, 0)'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(23, 255, 35)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(1280,768)
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.fillStyle='rgb(199, 199, 199)'
+    tex_ctx.lineWidth=4
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-128/2,-128/2)
+    tex_ctx.bezierCurveTo(-28,-58,0,0,0,10)
+    tex_ctx.bezierCurveTo(0,0,-28+128/2,-58,128/2,-128/2)
+    tex_ctx.fill()
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-20,-18)
+    tex_ctx.lineTo(-13,-6)
+    tex_ctx.moveTo(20,-18)
+    tex_ctx.lineTo(13,-6)
+    tex_ctx.strokeStyle='rgb(199, 199, 199)'
+    tex_ctx.stroke()
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(246, 252, 141)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(255, 255, 25)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*11,768)
+    tex_ctx.fillStyle='#79d29b'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.strokeStyle='rgb(29, 145, 128)'
+    tex_ctx.lineWidth=7
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-30,-35)
+    tex_ctx.bezierCurveTo(-40,-20,-40,-15,-30,-20)
+    tex_ctx.bezierCurveTo(-20,-2,-20,-35,-30,-35)
+    tex_ctx.moveTo(-30,-35)
+    tex_ctx.lineTo(-34,-11)
+    tex_ctx.lineTo(-25,-30)
+    tex_ctx.lineTo(-37,-23)
+    tex_ctx.moveTo(30,-35)
+    tex_ctx.bezierCurveTo(40,-20,40,-15,30,-20)
+    tex_ctx.bezierCurveTo(20,-2,20,-35,30,-35)
+    tex_ctx.moveTo(30,-35)
+    tex_ctx.lineTo(34,-11)
+    tex_ctx.lineTo(25,-30)
+    tex_ctx.lineTo(37,-23)
+    for(let i=-0.74,j=0,inc=Math.PI*2/39;i<Math.PI*2*0.17;i+=inc,j++){
+        
+        let r=29+Math.sin(i*183)*3
+        tex_ctx.moveTo(Math.sin(i-inc)*r,Math.cos(i-inc)*r)
+        tex_ctx.lineTo(Math.sin(i)*r,Math.cos(i)*r)
+    }
+    tex_ctx.stroke()
+    tex_ctx.strokeStyle='rgb(27, 219, 145)'
+    tex_ctx.lineWidth=4
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-30,-30)
+    tex_ctx.bezierCurveTo(-30,-33,-34,-20,-31,-20)
+    tex_ctx.moveTo(30,-30)
+    tex_ctx.bezierCurveTo(30,-33,34,-20,31,-20)
+    tex_ctx.stroke()
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(80, 171, 117)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='#79d29b'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(16, 89, 77)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*12,768)
+    tex_ctx.fillStyle='rgb(108, 0, 255)'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.strokeStyle='rgb(178, 133, 242)'
+    tex_ctx.lineWidth=13
+    tex_ctx.scale(0.3,0.3)
+    tex_ctx.translate(-92,-62)
+    function ellipse(x,y,w,h,r=0){
+        tex_ctx.beginPath()
+        tex_ctx.ellipse(x,y,w,h,r,0,6)
+        tex_ctx.fill()
+    }
+    function bezier(a,b,c,d,e,f,g,h,fill,stroke){
+        tex_ctx.beginPath()
+        tex_ctx.moveTo(a,b)
+        tex_ctx.bezierCurveTo(c,d,e,f,g,h)
+        
+        if(fill)
+        tex_ctx.fill()
+        if(stroke)
+        tex_ctx.stroke()
+    }
+    function line(a,b,c,d){
+        tex_ctx.beginPath()
+        tex_ctx.moveTo(a,b)
+        tex_ctx.lineTo(c,d)
+        tex_ctx.stroke()
+    }
+    
+    tex_ctx.fillStyle='rgb(155, 105, 255)'
+    ellipse(186,172,18,18)
+    ellipse(413,135,18,18)
+    tex_ctx.fillStyle='rgb(178, 133, 242)'
+    ellipse(315,261,33,33)
+    bezier(159,238,181,223,187,216,233,227,false,true)
+    bezier(178,212,225,223,187,216,233,227,false,true)
+    tex_ctx.translate(0,25)
+    bezier(406,211,496,190,382,104,431,198,true,true)
+    tex_ctx.lineWidth=20
+    bezier(273,325,276,416,422,355,369,299,true,true)
+    bezier(250,311,289,343,378,301,373,295,false,true)
+    tex_ctx.beginPath()
+    tex_ctx.fill()
+    tex_ctx.fillStyle='rgb(108, 0, 255)'
+    ellipse(416,182,19*0.5,31*0.5)
+    tex_ctx.translate(92,38)
+    tex_ctx.scale(1/0.3,1/0.3)
+    tex_ctx.fillStyle='rgb(127, 102, 237)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='rgb(108, 0, 255)'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(193, 212, 21)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*13,768)
+    tex_ctx.fillStyle='rgb(32, 189, 160)'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.strokeStyle='rgb(242, 145, 255)'
+    tex_ctx.lineWidth=11
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-30,-30)
+    tex_ctx.bezierCurveTo(-28,-44,-12,-10,-32,-11)
+    tex_ctx.moveTo(16,-34)
+    tex_ctx.bezierCurveTo(39,-26,5,-17,25,-14)
+    tex_ctx.moveTo(-29,23)
+    tex_ctx.bezierCurveTo(-14,22,-19,37,0,32)
+    tex_ctx.bezierCurveTo(25,22,-8,25,28,22)
+    tex_ctx.stroke()
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(191, 94, 255)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='rgb(32, 189, 160)'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(242, 145, 255)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*14,768)
+    tex_ctx.fillStyle='rgb(84, 0, 14)'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.strokeStyle='rgb(227, 111, 111)'
+    tex_ctx.fillStyle='rgb(245, 147, 147)'
+    tex_ctx.lineWidth=6
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.fillRect(-128*0.5,-128*0.5,128*0.5,128)
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(30,-10)
+    tex_ctx.lineTo(30,-25)
+    tex_ctx.stroke()
+    tex_ctx.beginPath()
+    tex_ctx.ellipse(30,-24,10,5,0,-3.0,-12.7)
+    tex_ctx.stroke()
+    tex_ctx.strokeStyle='rgb(84, 0, 14)'
+    tex_ctx.fillStyle='rgb(84, 0, 14)'
+    tex_ctx.fillRect(-128*0.5,128*0.5,128,129)
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-30,-10)
+    tex_ctx.lineTo(-30,-25)
+    tex_ctx.stroke()
+    tex_ctx.beginPath()
+    tex_ctx.ellipse(-30,-24,10,5,0,-3.0,-12.7)
+    tex_ctx.stroke()
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(245, 147, 147)'
+    tex_ctx.translate(0,128)
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(128*0.5,0)
+    tex_ctx.lineTo(0,128*0.5)
+    tex_ctx.lineTo(128*0.5,128)
+    tex_ctx.lineTo(128,128*0.5)
+    tex_ctx.fill()
+    star('rgb(207, 72, 72)',0,-128)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*15,768)
+    tex_ctx.fillStyle='#ff3326'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.strokeStyle='rgb(0,255,0)'
+    tex_ctx.fillStyle='rgb(0,255,0)'
+    tex_ctx.lineWidth=6
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-45,-30)
+    tex_ctx.bezierCurveTo(-45,-40,-20,-40,-13,-23)
+    tex_ctx.moveTo(-19,40)
+    tex_ctx.bezierCurveTo(-34,7,32,8,32,40)
+    tex_ctx.scale(-1,1)
+    tex_ctx.moveTo(-45,-30)
+    tex_ctx.bezierCurveTo(-45,-40,-20,-40,-13,-23)
+    tex_ctx.stroke()
+    tex_ctx.scale(-1,1)
+    tex_ctx.beginPath()
+    tex_ctx.ellipse(-24,-11,7,10,0,0,7)
+    tex_ctx.ellipse(24,-11,7,10,0,0,7)
+    tex_ctx.fill()
+    tex_ctx.fillStyle='#ff3326'
+    tex_ctx.beginPath()
+    tex_ctx.ellipse(-28,-5,2,4,0,0,7)
+    tex_ctx.ellipse(21,-5,2,4,0,0,7)
+    tex_ctx.fill()
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='#ff3326'
+    tex_ctx.fillRect(0,128,128,128/3)
+    tex_ctx.fillRect(0,214,128,128/3|0+1)
+    tex_ctx.fillStyle='rgb(199, 0, 0)'
+    tex_ctx.fillRect(0,128+128/3|0,128,128/3|0+5)
+    star('rgb(97, 0, 0)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*0,256+768)
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.fillStyle='rgb(255, 0, 0)'
+    tex_ctx.lineWidth=6
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-64,64)
+    tex_ctx.lineTo(-64,-32)
+    tex_ctx.lineTo(-32,-64)
+    tex_ctx.bezierCurveTo(5,0,-5,0,32,-64)
+    tex_ctx.lineTo(64,-32)
+    tex_ctx.lineTo(64,64)
+    tex_ctx.bezierCurveTo(-25,0,25,0,-64,64)
+    tex_ctx.moveTo(-20,45-8)
+    tex_ctx.bezierCurveTo(-10,60-8,10,60-8,20,45-8)
+    tex_ctx.bezierCurveTo(10,55-8,-10,55-8,-20,45-8)
+    tex_ctx.fill()
+    tex_ctx.beginPath()
+    tex_ctx.ellipse(-25,0,4,3,0,0,7)
+    tex_ctx.rect(-33,0,10,1)
+    tex_ctx.moveTo(25,0)
+    tex_ctx.ellipse(25,0,4,3,0,0,7)
+    tex_ctx.rect(23,0,10,1)
+    tex_ctx.fillStyle=tex_ctx.strokeStyle='rgb(255, 255, 255)'
+    tex_ctx.fill()
+    tex_ctx.stroke()
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(255, 173, 173)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(255, 0, 0)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*1,256+768)
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.fillStyle='rgb(0,0, 255)'
+    tex_ctx.lineWidth=5
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-64,-64)
+    tex_ctx.lineTo(0,-25)
+    tex_ctx.lineTo(64,-64)
+    tex_ctx.lineTo(64,-64+20)
+    tex_ctx.lineTo(50,-64+30)
+    tex_ctx.lineTo(64,-64+40)
+    tex_ctx.lineTo(64,-64+60)
+    tex_ctx.lineTo(50,-64+70)
+    tex_ctx.lineTo(64,-64+90)
+    tex_ctx.lineTo(15,-64+90)
+    tex_ctx.bezierCurveTo(15,10,-15,10,-15,-64+90)
+    tex_ctx.lineTo(-64,-64+90)
+    tex_ctx.lineTo(-50,-64+70)
+    tex_ctx.lineTo(-64,-64+60)
+    tex_ctx.lineTo(-64,-64+40)
+    tex_ctx.lineTo(-50,-64+30)
+    tex_ctx.fill()
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-30,45)
+    tex_ctx.lineTo(-20,55)
+    tex_ctx.lineTo(20,55)
+    tex_ctx.lineTo(30,45)
+    tex_ctx.moveTo(-30+3,45-3)
+    tex_ctx.lineTo(-30-3,45+3)
+    tex_ctx.moveTo(30-3,45-3)
+    tex_ctx.lineTo(30+3,45+3)
+    tex_ctx.strokeStyle='rgb(0, 0, 255)'
+    tex_ctx.stroke()
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(161, 161, 255)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(0,0, 255)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*2,256+769)
+    tex_ctx.fillStyle='rgb(0,0,0)'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.lineWidth=6
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-45,-40)
+    tex_ctx.lineTo(-45,40)
+    tex_ctx.moveTo(-30,-40)
+    tex_ctx.lineTo(-30,40)
+    tex_ctx.moveTo(-15,-40)
+    tex_ctx.lineTo(-15,40)
+    tex_ctx.moveTo(0,-40)
+    tex_ctx.lineTo(0,40)
+    tex_ctx.moveTo(45,-40)
+    tex_ctx.lineTo(45,40)
+    tex_ctx.moveTo(30,-40)
+    tex_ctx.lineTo(30,40)
+    tex_ctx.moveTo(15,-40)
+    tex_ctx.lineTo(15,40)
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    tex_ctx.strokeStyle='rgb(255,255,255)'
+    tex_ctx.fill()
+    tex_ctx.stroke()
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-64,-64)
+    tex_ctx.lineTo(-64,-40)
+    tex_ctx.bezierCurveTo(-39,-15,39,-15,64,-40)
+    tex_ctx.lineTo(64,-64)
+    tex_ctx.moveTo(-64,64)
+    tex_ctx.lineTo(-64,10)
+    tex_ctx.bezierCurveTo(-39,25,39,25,64,10)
+    tex_ctx.lineTo(64,64)
+    tex_ctx.fill()
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-15,40)
+    tex_ctx.lineTo(0,55)
+    tex_ctx.lineTo(15,40)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.stroke()
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(200,200,80)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(117, 101, 0)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*3,256+768)
+    tex_ctx.fillStyle='rgb(0, 72, 255)'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.lineWidth=6
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.fillStyle='rgb(0, 219, 208)'
+    tex_ctx.strokeStyle='rgb(0, 219, 208)'
+    tex_ctx.beginPath()
+    tex_ctx.ellipse(-26,-29,6,8,9.2,7,15)
+    tex_ctx.ellipse(26,-29,7,9,-9.2,7,15)
+    tex_ctx.fill()
+    tex_ctx.beginPath()
+    tex_ctx.ellipse(0,-2,5,5,-9.2,7,15)
+    tex_ctx.fill()
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-26,23)
+    tex_ctx.bezierCurveTo(-10,38,24,31,29,21)
+    tex_ctx.moveTo(-25,13)
+    tex_ctx.bezierCurveTo(-23,21,-29,30,-36,28)
+    tex_ctx.moveTo(31,12)
+    tex_ctx.bezierCurveTo(28,21,34,30,40,28)
+    tex_ctx.stroke()
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(0, 155, 227)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='rgb(0, 72, 255)'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(0, 219, 208)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*4,256+768)
+    tex_ctx.fillStyle='rgb(87, 10, 0)'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.lineWidth=6
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.fillStyle='rgb(255, 153, 0)'
+    tex_ctx.strokeStyle='rgb(255, 153, 0)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-43+7,-20)
+    tex_ctx.bezierCurveTo(-35+7,-28,-22+7,-19,-25+7,-16)
+    tex_ctx.moveTo(43-7,-20)
+    tex_ctx.bezierCurveTo(35-7,-28,22-7,-19,25-7,-16)
+    tex_ctx.stroke()
+    tex_ctx.lineWidth=4
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-26,23)
+    tex_ctx.bezierCurveTo(-11,40,16,32,26,21)
+    tex_ctx.bezierCurveTo(13,58,-20,32,-26,23)
+    tex_ctx.fill()
+    tex_ctx.stroke()
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(176, 62, 0)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='rgb(87, 10, 0)'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(255, 153, 0)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*5,256+768)
+    tex_ctx.fillStyle='#2966ad'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.lineWidth=4
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.fillStyle='rgb(19, 0, 191)'
+    tex_ctx.strokeStyle='rgb(19, 0, 191)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-13,-25)
+    tex_ctx.bezierCurveTo(-16,-9,-41,-6,-39,-26)
+    tex_ctx.stroke()
+    tex_ctx.fill()
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-39,-26)
+    tex_ctx.bezierCurveTo(-24,-23,-13,-20,-8,-29)
+    tex_ctx.stroke()
+    tex_ctx.translate(51,0)
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-13,-25)
+    tex_ctx.bezierCurveTo(-16,-9,-41,-6,-39,-26)
+    tex_ctx.stroke()
+    tex_ctx.fill()
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-39,-26)
+    tex_ctx.bezierCurveTo(-24,-23,-13,-20,-8,-29)
+    tex_ctx.stroke()
+    tex_ctx.scale(1.45,1.45)
+    tex_ctx.translate(-12,35)
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-13,-25)
+    tex_ctx.bezierCurveTo(-16,-9,-41,-6,-39,-26)
+    tex_ctx.stroke()
+    tex_ctx.fill()
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-39,-26)
+    tex_ctx.bezierCurveTo(-24,-23,-13,-20,-8,-29)
+    tex_ctx.stroke()
+    tex_ctx.translate(12,-35)
+    tex_ctx.scale(1/1.45,1/1.45)
+    tex_ctx.translate(-51,0)
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(0, 74, 158)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='#2966ad'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(19, 0, 191)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*6,256+768)
+    tex_ctx.fillStyle='#f6bca6'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.lineWidth=6
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.fillStyle='rgb(107, 0, 0)'
+    tex_ctx.strokeStyle='rgb(107, 0, 0)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-16,29)
+    tex_ctx.bezierCurveTo(-5,42,0,37,10,35)
+    tex_ctx.stroke()
+    tex_ctx.lineWidth=4
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-49,-25)
+    tex_ctx.bezierCurveTo(-11,-13,23,-25,45,-36)
+    tex_ctx.bezierCurveTo(45,19,22,13,2,-11)
+    tex_ctx.bezierCurveTo(-10,22,-36,13,-49,-25)
+    tex_ctx.fill()
+    tex_ctx.stroke()
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(201, 84, 66)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='#f6bca6'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(107, 0, 0)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*7,256+768)
+    tex_ctx.fillStyle='#6badae'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.lineWidth=6
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.fillStyle='rgb(0,0,0)'
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-41,-35)
+    tex_ctx.bezierCurveTo(-41,-32,-22,-25,-18,-28)
+    tex_ctx.moveTo(41,-35)
+    tex_ctx.bezierCurveTo(41,-32,22,-25,18,-28)
+    tex_ctx.stroke()
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-15,40-8)
+    tex_ctx.bezierCurveTo(5,24-8,-5,24-8,15,40-8)
+    tex_ctx.stroke()
+    tex_ctx.beginPath()
+    tex_ctx.ellipse(-28,-14,7,9,0,0,7)
+    tex_ctx.ellipse(28,-14,7,9,0,0,7)
+    tex_ctx.fill()
+    tex_ctx.fillRect(-53.5,11.4,23,9)
+    tex_ctx.fillRect(53.5-23,11.4,23,9)
+    tex_ctx.fillStyle='#6badae'
+    tex_ctx.beginPath()
+    tex_ctx.ellipse(-32,-12,3,5,0,0,7)
+    tex_ctx.ellipse(24,-12,3,5,0,0,7)
+    tex_ctx.fill()
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(111, 206, 217)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='#6badae'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(204, 234, 255)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*8,256+768)
+    tex_ctx.fillStyle='rgb(242, 255, 255)'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.lineWidth=6
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.strokeStyle='rgb(100,100,150)'
+    tex_ctx.beginPath()
+    tex_ctx.translate(-65,-52)
+    tex_ctx.moveTo(35,15)
+    tex_ctx.bezierCurveTo(25,22,15,41,30,49)
+    tex_ctx.bezierCurveTo(52,54,43,18,33,37)
+    tex_ctx.translate(65*2,-9)
+    tex_ctx.scale(-1,1)
+    tex_ctx.moveTo(35,15)
+    tex_ctx.bezierCurveTo(25,22,15,41,30,49)
+    tex_ctx.bezierCurveTo(52,54,43,18,33,37)
+    tex_ctx.scale(-1,1)
+    tex_ctx.translate(-65,9+53)
+    tex_ctx.stroke()
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(7+4,11)
+    tex_ctx.bezierCurveTo(4,40,-10+4,35,-12+4,31)
+    tex_ctx.bezierCurveTo(-13+4,12,-1+4,22,7+4,11)
+    tex_ctx.stroke()
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(242, 255, 255)'
+    tex_ctx.fillRect(0,128-1,128,128.5)
+    star('rgb(255, 211, 196)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*9,256+768)
+    tex_ctx.fillStyle='#04058b'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.lineWidth=6
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.fillStyle='rgb(64, 235, 235)'
+    tex_ctx.strokeStyle='rgb(64, 235, 235)'
+    tex_ctx.translate(0,10)
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(64,0+5)
+    tex_ctx.lineTo(48,10+2.5)
+    tex_ctx.lineTo(60,20)
+    tex_ctx.lineTo(48,30-2.5)
+    tex_ctx.lineTo(64,40-5)
+    tex_ctx.fill()
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-64,0+5)
+    tex_ctx.lineTo(-48,10+2.5)
+    tex_ctx.lineTo(-60,20)
+    tex_ctx.lineTo(-48,30-2.5)
+    tex_ctx.lineTo(-64,40-5)
+    tex_ctx.fill()
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(43,-45)
+    tex_ctx.lineTo(14,-40)
+    tex_ctx.moveTo(-39,-44)
+    tex_ctx.lineTo(-11,-40)
+    tex_ctx.stroke()
+    tex_ctx.beginPath()
+    tex_ctx.ellipse(26,-30,10,13,0,0,7)
+    tex_ctx.ellipse(-20,-30,10,13,0,0,7)
+    tex_ctx.fill()
+    tex_ctx.fillStyle='#04058b'
+    tex_ctx.beginPath()
+    tex_ctx.ellipse(19,-28,6,8,0,0,7)
+    tex_ctx.ellipse(-26,-27,6,8,0,0,7)
+    tex_ctx.fill()
+    tex_ctx.translate(0,-10)
+    tex_ctx.fillStyle='rgb(64, 235, 235)'
+    tex_ctx.translate(-31,51)
+    tex_ctx.scale(-1.4,1.4)
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-13,-25)
+    tex_ctx.bezierCurveTo(-16,-9,-41,-6,-39,-26)
+    tex_ctx.stroke()
+    tex_ctx.fill()
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-39,-26)
+    tex_ctx.bezierCurveTo(-24,-23,-13,-20,-8,-29)
+    tex_ctx.stroke()
+    tex_ctx.scale(1/-1.4,1/1.4)
+    tex_ctx.translate(31,-51)
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(33, 154, 184)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='#04058b'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(64, 235, 235)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*10,256+768)
+    tex_ctx.fillStyle='#8d0e00'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.lineWidth=5
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.fillStyle='rgb(255, 64, 0)'
+    tex_ctx.strokeStyle='rgb(255, 64, 0)'
+    tex_ctx.translate(0,10)
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(64,0+5)
+    tex_ctx.lineTo(48,10+2.5)
+    tex_ctx.lineTo(60,20)
+    tex_ctx.lineTo(48,30-2.5)
+    tex_ctx.lineTo(64,40-5)
+    tex_ctx.fill()
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-64,0+5)
+    tex_ctx.lineTo(-48,10+2.5)
+    tex_ctx.lineTo(-60,20)
+    tex_ctx.lineTo(-48,30-2.5)
+    tex_ctx.lineTo(-64,40-5)
+    tex_ctx.fill()
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(43,-45)
+    tex_ctx.lineTo(14,-40)
+    tex_ctx.moveTo(-39,-44)
+    tex_ctx.lineTo(-11,-40)
+    tex_ctx.stroke()
+    tex_ctx.beginPath()
+    tex_ctx.ellipse(26,-30,10,13,0,0,7)
+    tex_ctx.ellipse(-20,-30,10,13,0,0,7)
+    tex_ctx.fill()
+    tex_ctx.strokeStyle='#8d0e00'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(39,-29)
+    tex_ctx.lineTo(0,-22)
+    tex_ctx.lineTo(-39,-29)
+    tex_ctx.stroke()
+    tex_ctx.translate(0,-10)
+    tex_ctx.strokeStyle='rgb(255, 64, 0)'
+    tex_ctx.translate(-31,51)
+    tex_ctx.scale(-1.4,1.4)
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-12,-21)
+    tex_ctx.bezierCurveTo(-12,-14,-31,-12,-36,-17)
+    tex_ctx.stroke()
+    tex_ctx.scale(1/-1.4,1/1.4)
+    tex_ctx.translate(31,-51)
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(196, 54, 6)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='#8d0e00'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(255, 64, 0)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*11,256+768)
+    tex_ctx.fillStyle='rgb(50, 190, 71)'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.lineWidth=6
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.fillStyle='rgb(17, 32, 43)'
+    tex_ctx.strokeStyle='rgb(17, 32, 43)'
+    tex_ctx.translate(0,10)
+    tex_ctx.beginPath()
+    tex_ctx.ellipse(22,-30,7,9,0,0,7)
+    tex_ctx.ellipse(-22,-30,7,9,0,0,7)
+    tex_ctx.fill()
+    tex_ctx.fillRect(-41,-44,30,10)
+    tex_ctx.fillRect(41-30,-44,30,10)
+    tex_ctx.fillStyle='rgb(50, 190, 71)'
+    tex_ctx.lineWidth=3
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-40,10)
+    tex_ctx.lineTo(-36,14)
+    tex_ctx.lineTo(-40,18)
+    tex_ctx.moveTo(40,10)
+    tex_ctx.lineTo(36,14)
+    tex_ctx.lineTo(40,18)
+    tex_ctx.stroke()
+    tex_ctx.beginPath()
+    tex_ctx.ellipse(18,-28,4,5,0,0,7)
+    tex_ctx.ellipse(-26,-28,4,5,0,0,7)
+    tex_ctx.fill()
+    tex_ctx.translate(0,-10)
+    tex_ctx.lineWidth=6
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-15,20)
+    tex_ctx.lineTo(0,30)
+    tex_ctx.lineTo(15,20)
+    tex_ctx.stroke()
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(30, 133, 28)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='rgb(50, 190, 71)'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(2, 79, 15)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*12,256+768)
+    tex_ctx.fillStyle='rgb(0,0,0)'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.lineWidth=6
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.fillStyle='rgb(255,255,0)'
+    tex_ctx.strokeStyle='rgb(255,255,0)'
+    tex_ctx.beginPath()
+    tex_ctx.ellipse(-26-6,-29,9,9,0,0,7)
+    tex_ctx.ellipse(26-5,-29,9,9,0,0,7)
+    tex_ctx.fill()
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-37,23)
+    tex_ctx.bezierCurveTo(-10,38,24,31,42,21)
+    tex_ctx.moveTo(-36,15)
+    tex_ctx.bezierCurveTo(-36,21,-35,28,-44,29)
+    tex_ctx.moveTo(44,12)
+    tex_ctx.bezierCurveTo(40,21,46,30,48,28)
+    tex_ctx.moveTo(-41,-34)
+    tex_ctx.bezierCurveTo(-22,-39,-14,-32,-13,-32)
+    tex_ctx.moveTo(-42+55,-34)
+    tex_ctx.bezierCurveTo(-22+55,-39,-14+55,-32,-13+55,-32)
+    tex_ctx.stroke()
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(125,125,0)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='rgb(0,0,0)'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(255,255,0)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*13,256+768)
+    tex_ctx.fillStyle='rgb(20,20,20)'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.lineWidth=4
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.fillStyle='rgb(150,150,150)'
+    tex_ctx.beginPath()
+    tex_ctx.translate(-25,0)
+    tex_ctx.moveTo(-8,-64)
+    tex_ctx.bezierCurveTo(0,-30,0,-30,8,-64)
+    tex_ctx.translate(25,0)
+    tex_ctx.moveTo(-8,-64)
+    tex_ctx.bezierCurveTo(0,-20,0,-20,8,-64)
+    tex_ctx.translate(25,0)
+    tex_ctx.moveTo(-8,-64)
+    tex_ctx.bezierCurveTo(0,-30,0,-30,8,-64)
+    tex_ctx.translate(-25,0)
+    tex_ctx.fill()
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    tex_ctx.strokeStyle='rgb(255,255,255)'
+    tex_ctx.beginPath()
+    tex_ctx.translate(-25,-10)
+    tex_ctx.scale(1.2,1.5)
+    tex_ctx.rotate(0.15)
+    tex_ctx.moveTo(-10,0)
+    tex_ctx.bezierCurveTo(-8,7,8,7,10,0)
+    tex_ctx.bezierCurveTo(8,-7,-8,-7,-10,0)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    tex_ctx.translate(128*13+128/2,256+768+128/2)
+    tex_ctx.translate(25,-10)
+    tex_ctx.scale(1.2,1.5)
+    tex_ctx.rotate(-0.15)
+    tex_ctx.moveTo(-10,0)
+    tex_ctx.bezierCurveTo(-8,7,8,7,10,0)
+    tex_ctx.bezierCurveTo(8,-7,-8,-7,-10,0)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    tex_ctx.translate(128*13+128/2,256+768+128/2)
+    tex_ctx.fill()
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-7,10)
+    tex_ctx.bezierCurveTo(-5,13,5,13,7,10)
+    tex_ctx.moveTo(0,13)
+    tex_ctx.lineTo(0,22)
+    tex_ctx.moveTo(-20,20)
+    tex_ctx.bezierCurveTo(-10,28,-5,28,0,20)
+    tex_ctx.moveTo(20,20)
+    tex_ctx.bezierCurveTo(10,28,5,28,0,20)
+    tex_ctx.moveTo(-31,14)
+    tex_ctx.lineTo(-62,0)
+    tex_ctx.moveTo(-31,22)
+    tex_ctx.lineTo(-62,27)
+    tex_ctx.moveTo(31,14)
+    tex_ctx.lineTo(62,0)
+    tex_ctx.moveTo(31,22)
+    tex_ctx.lineTo(62,27)
+    tex_ctx.stroke()
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(130,130,130)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='rgb(20,20,20)'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(255,255,255)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*14,256+768)
+    tex_ctx.fillStyle='#0e78fd'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.lineWidth=8
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    tex_ctx.strokeStyle='rgb(255,255,255)'
+    tex_ctx.beginPath()
+    tex_ctx.translate(0,17)
+    tex_ctx.moveTo(-20,0)
+    tex_ctx.lineTo(0,15)
+    tex_ctx.lineTo(20,0)
+    tex_ctx.translate(0,-14)
+    tex_ctx.stroke()
+    tex_ctx.beginPath()
+    tex_ctx.scale(0.4*0.9,0.6*0.9)
+    tex_ctx.translate(-75,-37)
+    tex_ctx.moveTo(0,40)
+    tex_ctx.bezierCurveTo(10,10,10,10,40,0)
+    tex_ctx.bezierCurveTo(10,-10,10,-10,0,-40)
+    tex_ctx.bezierCurveTo(-10,-10,-10,-10,-40,0)
+    tex_ctx.bezierCurveTo(-10,10,-10,10,0,40)
+    tex_ctx.translate(75*2,0)
+    tex_ctx.moveTo(0,40)
+    tex_ctx.bezierCurveTo(10,10,10,10,40,0)
+    tex_ctx.bezierCurveTo(10,-10,10,-10,0,-40)
+    tex_ctx.bezierCurveTo(-10,-10,-10,-10,-40,0)
+    tex_ctx.bezierCurveTo(-10,10,-10,10,0,40)
+    tex_ctx.fill()
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    tex_ctx.translate(128*14,256+768)
+    tex_ctx.fillStyle='rgb(161, 206, 255)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='#0e78fd'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(255,255,255)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*15,256+768)
+    tex_ctx.fillStyle='#563625'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.lineWidth=6
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.strokeStyle='rgb(255,0,0)'
+    tex_ctx.beginPath()
+    tex_ctx.translate(0,10)
+    tex_ctx.moveTo(-37,-47)
+    tex_ctx.bezierCurveTo(-26,-36,-12,-45,-20,-36)
+    tex_ctx.moveTo(37,-47)
+    tex_ctx.bezierCurveTo(26,-36,12,-45,20,-36)
+    tex_ctx.moveTo(-25,-37)
+    tex_ctx.ellipse(-21,-31,6,10,0,0,7)
+    tex_ctx.moveTo(25,-37)
+    tex_ctx.ellipse(21,-31,6,10,3.141592,0,7)
+    tex_ctx.translate(0,-3)
+    
+    for(let i=-1.2,j=0,inc=Math.PI*2/15;i<Math.PI-1.0;i+=inc,j++){
+        
+        let ri=(j-1)%2===0?15:30,r=j%2===0?15:30
+        
+        tex_ctx.moveTo(Math.sin(i-inc)*ri*1.25,Math.cos(i-inc)*ri+10)
+        tex_ctx.lineTo(Math.sin(i)*r*1.25,Math.cos(i)*r+10)
+    }
+    tex_ctx.stroke()
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    tex_ctx.translate(128*15,256+768)
+    tex_ctx.fillStyle='rgb(148, 59, 43)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='#563625'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(255,0,0)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*0,256*2+768)
+    tex_ctx.fillStyle='#e9e7aa'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.lineWidth=6
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-37,-10)
+    tex_ctx.bezierCurveTo(-35,-55,-4,-29,-15,-10)
+    tex_ctx.bezierCurveTo(-16,-5,-36,-5,-37,-10)
+    tex_ctx.fill()
+    tex_ctx.fillStyle='rgb(0,0,0)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-30,-7)
+    tex_ctx.bezierCurveTo(-32,-22,-15,-22,-15,-10)
+    tex_ctx.bezierCurveTo(-16,-5,-36,-5,-30,-7)
+    tex_ctx.fill()
+    tex_ctx.scale(-1,1)
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-37,-10)
+    tex_ctx.bezierCurveTo(-35,-55,-4,-29,-15,-10)
+    tex_ctx.bezierCurveTo(-16,-5,-36,-5,-37,-10)
+    tex_ctx.fill()
+    tex_ctx.fillStyle='rgb(0,0,0)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-30,-7)
+    tex_ctx.bezierCurveTo(-32,-22,-15,-22,-15,-10)
+    tex_ctx.bezierCurveTo(-16,-5,-36,-5,-30,-7)
+    tex_ctx.fill()
+    tex_ctx.fillRect(30.6,1.6,25,12)
+    tex_ctx.beginPath()
+    tex_ctx.ellipse(1,2,4,4,0,0,7)
+    tex_ctx.fill()
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-19,21)
+    tex_ctx.bezierCurveTo(-6,34,9,32,19,21)
+    tex_ctx.lineWidth=4
+    tex_ctx.stroke()
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(181, 155, 69)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='#e9e7aa'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(82, 77, 41)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*1,256*2+768)
+    tex_ctx.fillStyle='rgb(220,220,220)'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.lineWidth=5
+    tex_ctx.fillStyle='rgb(0,0,0)'
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.beginPath()
+    tex_ctx.ellipse(-26,-21,8,12,0,0,7)
+    tex_ctx.ellipse(26,-21,8,12,0,0,7)
+    tex_ctx.fill()
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-40,-38)
+    tex_ctx.lineTo(-21,-33)
+    tex_ctx.moveTo(40,-38)
+    tex_ctx.lineTo(21,-33)
+    tex_ctx.moveTo(0,3)
+    tex_ctx.lineTo(0,32)
+    tex_ctx.bezierCurveTo(0,40,-26,40,-26,32)
+    tex_ctx.moveTo(0,32)
+    tex_ctx.bezierCurveTo(0,40,26,40,26,32)
+    tex_ctx.stroke()
+    ellipse(0,3,8,5,0,0,7)
+    ellipse(24,10,3,3,0,0,7)
+    ellipse(32,21,3,3,0,0,7)
+    ellipse(16,21,3,3,0,0,7)
+    ellipse(0,3,8,5,0,0,7)
+    ellipse(-24,10,3,3,0,0,7)
+    ellipse(-32,21,3,3,0,0,7)
+    ellipse(-16,21,3,3,0,0,7)
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(170,170,170)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='rgb(220,220,220)'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(90,90,90)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*2,256*2+768)
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.lineWidth=5
+    tex_ctx.fillStyle='rgb(0, 200, 255)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-64,-50)
+    tex_ctx.bezierCurveTo(-34,-24,34,-24,64,-50)
+    tex_ctx.lineTo(64,-8)
+    tex_ctx.bezierCurveTo(44,20,-44,20,-64,-8)
+    tex_ctx.fill()
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    ellipse(-27,-13,12,7,0.3)
+    ellipse(27,-13,12,7,-0.3)
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    tex_ctx.fillRect(0,128,128,128)
+    star('rgb(0, 200, 255)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*3,256*2+768)
+    tex_ctx.fillStyle='#312f30'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.lineWidth=3
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    tex_ctx.strokeStyle='#f65535'
+    ellipse(-24,-23,5,5)
+    ellipse(24,-23,5,5)
+    tex_ctx.beginPath()
+    tex_ctx.translate(-41,0)
+    tex_ctx.moveTo(0,0)
+    tex_ctx.lineTo(-5,5)
+    tex_ctx.moveTo(0+7,0)
+    tex_ctx.lineTo(-5+7,5)
+    tex_ctx.moveTo(0+7+7,0)
+    tex_ctx.lineTo(-5+7+7,5)
+    tex_ctx.translate(70,0)
+    tex_ctx.moveTo(0,0)
+    tex_ctx.lineTo(-5,5)
+    tex_ctx.moveTo(0+7,0)
+    tex_ctx.lineTo(-5+7,5)
+    tex_ctx.moveTo(0+7+7,0)
+    tex_ctx.lineTo(-5+7+7,5)
+    tex_ctx.translate(-29,0)
+    tex_ctx.stroke()
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='#312f30'
+    tex_ctx.fillRect(0,128,128,128)
+    star('#f65535')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*4,256*2+768)
+    tex_ctx.fillStyle='rgb(240,240,240)'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.fillStyle='rgb(40,40,40)'
+    tex_ctx.fillRect(-10,-20,20,10)
+    tex_ctx.fillRect(-64,-40,35,50)
+    ellipse(-64+35,-15,25,25)
+    tex_ctx.fillRect(64-35,-40,35,50)
+    ellipse(64-35,-15,25,25)
+    tex_ctx.fillStyle='rgb(240,240,240)'
+    ellipse(-27,-15,8,12)
+    ellipse(27,-15,8,12)
+    tex_ctx.fillStyle='rgb(40,40,40)'
+    ellipse(21,-16,4,6)
+    ellipse(-32,-16,4,6)
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(138, 138, 138)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='rgb(240,240,240)'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(40,40,40)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*5,256*2+768)
+    tex_ctx.fillStyle='#9f7aa9'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.translate(128/2,128/2-8)
+    tex_ctx.lineWidth=6
+    tex_ctx.fillStyle='rgb(40,40,40)'
+    tex_ctx.strokeStyle='rgb(40,40,40)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-11,-33)
+    tex_ctx.bezierCurveTo(-19,-26,-18,-20,-38,-16)
+    tex_ctx.moveTo(6,-33)
+    tex_ctx.bezierCurveTo(9,-26,11,-20,30,-16)
+    tex_ctx.stroke()
+    tex_ctx.lineWidth=4
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-13,40)
+    tex_ctx.bezierCurveTo(-3,39,6,39,13,40)
+    tex_ctx.stroke()
+    tex_ctx.fillStyle='rgb(0,0,0,0.5)'
+    tex_ctx.strokeStyle='rgb(0,0,0,0.5)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-12,-4)
+    tex_ctx.bezierCurveTo(-10,28,-45,14,-37,-3)
+    tex_ctx.lineTo(-12,-4)
+    tex_ctx.moveTo(12,-4)
+    tex_ctx.bezierCurveTo(5,29,45,13,34,-3)
+    tex_ctx.lineTo(12,-4)
+    tex_ctx.fill()
+    tex_ctx.fillStyle='rgb(40,40,40)'
+    tex_ctx.strokeStyle='rgb(40,40,40)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-12,-4)
+    tex_ctx.bezierCurveTo(-22,13,-32,3,-37,-3)
+    tex_ctx.lineTo(-12,-4)
+    tex_ctx.moveTo(12,-4)
+    tex_ctx.bezierCurveTo(19,13,32,3,34,-3)
+    tex_ctx.lineTo(12,-4)
+    tex_ctx.fill()
+    tex_ctx.stroke()
+    tex_ctx.translate(-128/2,-128/2+8)
+    tex_ctx.fillStyle='rgb(118, 76, 130)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='#9f7aa9'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(40,40,40)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*6,256*2+768)
+    tex_ctx.fillStyle='#765235'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.translate(128/2,128/2-15)
+    tex_ctx.lineWidth=6
+    tex_ctx.fillStyle='rgb(241, 241, 241)'
+    tex_ctx.strokeStyle='rgb(241, 241, 241)'
+    ellipse(-20,-13,5,10)
+    ellipse(20,-13,5,10)
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-20,-5)
+    tex_ctx.bezierCurveTo(-25,-7,-29,-7,-34,-3)
+    tex_ctx.moveTo(-20,-5)
+    tex_ctx.bezierCurveTo(-25,1,-29,-7,-24,-3)
+    tex_ctx.moveTo(20,-5)
+    tex_ctx.bezierCurveTo(25,-7,29,-7,34,-3)
+    tex_ctx.moveTo(20,-5)
+    tex_ctx.bezierCurveTo(25,1,29,-7,24,-3)
+    tex_ctx.moveTo(-10,50)
+    tex_ctx.bezierCurveTo(-10,16,10,15,10,50)
+    tex_ctx.bezierCurveTo(2,49,3,46,-10,50)
+    tex_ctx.stroke()
+    tex_ctx.lineWidth=3
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-2,24)
+    tex_ctx.bezierCurveTo(-5,55,1,15,2,25)
+    tex_ctx.moveTo(5,29)
+    tex_ctx.bezierCurveTo(1,58,2,15,7,30)
+    tex_ctx.stroke()
+    tex_ctx.translate(-128/2,-128/2+15)
+    tex_ctx.fillStyle='rgb(191, 160, 128)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='#765235'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(255,255,255)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*7,256*2+768)
+    tex_ctx.fillStyle='#edfeda'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.translate(128/2,128/2-5)
+    tex_ctx.lineWidth=3.5
+    tex_ctx.fillStyle='rgb(59, 142, 209)'
+    tex_ctx.strokeStyle='#edfeda'
+    ellipse(-22,-20,9,12)
+    ellipse(22,-20,9,12)
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-32,-20)
+    tex_ctx.lineTo(0,-18)
+    tex_ctx.lineTo(32,-20)
+    tex_ctx.stroke()
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(0,-2)
+    tex_ctx.lineTo(0,13)
+    tex_ctx.lineTo(32,5)
+    tex_ctx.fill()
+    for(let i=0.18;i<Math.PI;i+=Math.PI/8){
+        
+        ellipse(Math.cos(i)*40,Math.sin(i)*30+15,6,6)
+    }
+    tex_ctx.translate(-128/2,-128/2+4)
+    tex_ctx.fillStyle='rgb(168, 217, 224)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='#edfeda'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(59, 142, 209)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*8,256*2+768)
+    tex_ctx.fillStyle='rgb(27, 42, 53)'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.translate(128/2,128/2-5)
+    tex_ctx.lineWidth=4
+    tex_ctx.fillStyle='rgb(245, 139, 222)'
+    ellipse(-30,6,8,6)
+    ellipse(30,6,8,6)
+    tex_ctx.fillStyle='rgb(230,230,230)'
+    ellipse(-20,-11,5,5)
+    ellipse(20,-11,5,5)
+    ellipse(0,4,3,3)
+    tex_ctx.strokeStyle='rgb(230,230,230)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-9,19)
+    tex_ctx.bezierCurveTo(0,24,0,23,9,20)
+    tex_ctx.stroke()
+    tex_ctx.translate(-128/2,-128/2+4)
+    tex_ctx.fillStyle='rgb(139, 91, 140)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='rgb(27, 42, 53)'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillStyle='rgb(241, 241, 241)'
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(239, 120, 255)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*9,256*2+768)
+    tex_ctx.fillStyle='#0E141E'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.translate(128/2,128/2+7)
+    tex_ctx.lineWidth=6
+    tex_ctx.fillStyle='#ebed7f'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-53,-50)
+    tex_ctx.bezierCurveTo(-47,-24,-28,1,-16,-5)
+    tex_ctx.bezierCurveTo(-30,-12,-38,-29,-53,-50)
+    tex_ctx.moveTo(56,-55)
+    tex_ctx.bezierCurveTo(45,-7,29,-4,16,-1)
+    tex_ctx.bezierCurveTo(30,-12,23,-5,56,-55)
+    tex_ctx.scale(0.75,1)
+    tex_ctx.moveTo(-22,23)
+    tex_ctx.bezierCurveTo(-16,34,5,48,31,22)
+    tex_ctx.bezierCurveTo(14,28,6,45,-16,23)
+    tex_ctx.fill()
+    ellipse(-24,23,9,3,0.1)
+    tex_ctx.scale(1/0.75,1)
+    tex_ctx.translate(-128/2,-128/2-8)
+    tex_ctx.fillStyle='#0f4d58'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='#0E141E'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('#196a6f')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*10,256*2+768)
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.lineWidth=7
+    tex_ctx.fillStyle='#d0b265'
+    tex_ctx.fillRect(-128*0.5,-128*0.5,128,128)
+    tex_ctx.fillStyle='rgb(0,0,0,0.3)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-64,64)
+    tex_ctx.lineTo(-64,20)
+    tex_ctx.bezierCurveTo(-66,-49,-18,-56,-10,-1)
+    tex_ctx.lineTo(-10,64)
+    tex_ctx.moveTo(64,64)
+    tex_ctx.lineTo(64,20)
+    tex_ctx.bezierCurveTo(66,-49,18,-56,10,-1)
+    tex_ctx.lineTo(10,64)
+    tex_ctx.fill()
+    tex_ctx.fillStyle='#d0b265'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-12,-25)
+    tex_ctx.bezierCurveTo(-11,49,-30,40,-12,64)
+    tex_ctx.moveTo(12,-25)
+    tex_ctx.bezierCurveTo(11,49,30,40,12,64)
+    tex_ctx.fill()
+    tex_ctx.fillRect(-12,-11,24,75)
+    tex_ctx.fillStyle='rgb(45, 50, 53)'
+    ellipse(0,49,10,8)
+    tex_ctx.fillStyle='rgb(33, 35, 37)'
+    ellipse(0,52,5,3)
+    tex_ctx.fillStyle='rgb(20,20,20)'
+    ellipse(-19,-9,5,12)
+    ellipse(19,-9,5,12)
+    tex_ctx.fillStyle='#d0b265'
+    ellipse(16,-12,2,3)
+    ellipse(-22,-12,2,3)
+    tex_ctx.translate(-128/2,-128/2-1)
+    tex_ctx.fillStyle='#a98a5c'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='#d0b265'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('#5f4424')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*11,256*2+768)
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.lineWidth=7
+    tex_ctx.fillStyle='#a1a4a1'
+    tex_ctx.fillRect(-128*0.5,-128*0.5,128,128)
+    tex_ctx.fillStyle='#717471'
+    tex_ctx.strokeStyle='#717471'
+    ellipse(-42,0-5,22,22)
+    ellipse(-33,-8-5,20,20)
+    ellipse(-27,-16-5,20,20)
+    ellipse(-35,-9-5,24,24)
+    tex_ctx.lineWidth=7
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(13,-40)
+    tex_ctx.bezierCurveTo(15,-42,29,-43,32,-35)
+    tex_ctx.stroke()
+    tex_ctx.fillStyle='rgb(50,50,50)'
+    tex_ctx.strokeStyle='rgb(50,50,50)'
+    ellipse(-19,-19,6,7)
+    ellipse(19,-19,6,7)
+    tex_ctx.lineWidth=4
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(0,25+3)
+    tex_ctx.bezierCurveTo(5,33,20,33,20,19+5)
+    tex_ctx.moveTo(0,25+3)
+    tex_ctx.bezierCurveTo(-5,33,-20,33,-20,19+5)
+    tex_ctx.stroke()
+    tex_ctx.lineWidth=5
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-5,3)
+    tex_ctx.bezierCurveTo(-3,7,3,7,5,3)
+    tex_ctx.closePath()
+    tex_ctx.stroke()
+    tex_ctx.fill()
+    tex_ctx.translate(-128/2,-128/2-1)
+    tex_ctx.fillStyle='rgb(61, 145, 93)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='#a1a4a1'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(0,255,100)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*12,256*2+768)
+    tex_ctx.fillStyle='#ad2222'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.translate(128/2,128/2+18)
+    tex_ctx.lineWidth=5
+    tex_ctx.fillStyle='rgb(255,255,255,0.3)'
+    tex_ctx.strokeStyle='rgb(250, 218, 218)'
+    tex_ctx.beginPath()
+    tex_ctx.translate(-25,-23)
+    tex_ctx.moveTo(-1,-3)
+    tex_ctx.bezierCurveTo(3,0,4,0,8,8)
+    tex_ctx.bezierCurveTo(-2,5,-1,5,-6,8)
+    tex_ctx.translate(50,0)
+    tex_ctx.moveTo(-1,-3)
+    tex_ctx.bezierCurveTo(3,0,4,0,8,8)
+    tex_ctx.bezierCurveTo(-2,5,-1,5,-6,8)
+    tex_ctx.stroke()
+    tex_ctx.translate(-25,23)
+    tex_ctx.lineWidth=5
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-10,15)
+    tex_ctx.bezierCurveTo(-7,23,2,23,10,15)
+    tex_ctx.stroke()
+    ellipse(-36,3,6,6)
+    ellipse(36,3,6,6)
+    tex_ctx.fillStyle='#ad2222'
+    ellipse(23,-21,5,4)
+    ellipse(-27,-21,5,4)
+    tex_ctx.translate(-128/2,-128/2-18)
+    tex_ctx.fillStyle='rgb(245, 144, 144)'
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='#ad2222'
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    star('rgb(252, 221, 221)')
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*13,256*2+768)
+    tex_ctx.fillStyle='rgb(0,0,255)'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.lineWidth=5
+    tex_ctx.fillStyle='rgb(0, 247, 255)'
+    function rect(x,y,w,h){tex_ctx.fillRect(x-w*0.5,y-h*0.5,w,h)}
+    
+    for(let x=-2;x<2;x++){
+        
+        for(let y=-2;y<2;y++){
+            
+            if(!(x===-2&&y===-2||x===1&&y===1||x===-2&&y===1||x===1&&y===-2)){
+                
+                rect(x*7-25,y*7+-24,5,5)
+                rect(x*7+31,y*7+-24,5,5)
+            }
+        }
+    }
+    
+    for(let x=-7;x<7;x++){
+        
+        for(let y=-3;y<3;y++){
+            
+            if(!(y<3-Math.abs(x+0.5)&&y<0||y>3-Math.abs((x+0.5)*0.5)||y===2)&&y!==-3){
+                
+                rect(x*7+5,y*7+28,5,5)
+            }
+        }
+    }
+    
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillStyle='rgb(100,100,100)'
+    tex_ctx.fillRect(0,127,128,128)
+    tex_ctx.fillStyle='rgb(200,200,200)'
+    tex_ctx.fillRect(0,128-1,128,128/3|0|0)
+    tex_ctx.fillStyle='rgb(0,0,0)'
+    tex_ctx.fillRect(0,213,128,128/3|0|0+1)
+    star('rgb(217, 28, 201)')
     tex_ctx.setTransform(1,0,0,1,0,0)
 }
 

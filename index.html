@@ -3066,7 +3066,7 @@ function playSound(sound,vol) {
 	})
 }
 
-let Math=_M
+let Math=_M,GIFTED_BEE_TEXTURE_OFFSET=768/2048
 
 let width=window.thisProgramIsInFullScreen?500:window.innerWidth+1,height=window.thisProgramIsInFullScreen?500:window.innerHeight+1,half_width=width*0.5,half_height=height*0.5,aspect=width/height,FETCHED_CODE={},beeCanvas
 
@@ -7389,7 +7389,7 @@ let effects={
         
         trialCooldown:35,trialRate:0.8,
         statsToAddTo:['blueAbilityTokens','attackTokens'],
-        u:128*6/2048,v:128*7/2048,
+        u:128*6/2048,v:128*9/2048,
         tokenLife:24,
         
         func:function(params){
@@ -8012,7 +8012,7 @@ let items={
             
             return slot.beequip&&slot.beequip.waxes.length<5
         },
-        amount:0,u:128*4/2048,v:128*9/2048,value:25,
+        amount:0,u:128*5/2048,v:128*9/2048,value:25,
         use:function(){
             
             items.swirledWax.amount--
@@ -9733,6 +9733,7 @@ class Bee {
     constructor(pos,type,lvl,gifted,x,y){
         
         this.meshScale=type==='baby'||type==='tadpole'?0.65:1
+        this.GIFTED_BEE_TEXTURE_OFFSET=beeInfo[type].v+(gifted?GIFTED_BEE_TEXTURE_OFFSET:0)
 
         this.hiveX=x
         this.hiveY=y
@@ -9909,7 +9910,7 @@ class Bee {
                     this.attackTimer=1.25+Math.random()*0.5*(this.type==='precise'?1.75:1)
                 }
                 
-                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
                 
             break
             
@@ -9982,7 +9983,7 @@ class Bee {
                     }
                 }
                 
-                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],TIME*5,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],TIME*5,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
                 
             break
             
@@ -10056,7 +10057,7 @@ class Bee {
                     this.moveOffset=[MATH.random(-4,4),0,MATH.random(-4,4)]
                 }
                 
-                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
                 
                 if(player.converting&&player.pollen){
                     
@@ -10094,7 +10095,7 @@ class Bee {
                     return
                 }
                 
-                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
                 
             break
 
@@ -10140,7 +10141,7 @@ class Bee {
                     this.state='moveToFlower'
                 }
                 
-                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.collectRot[0],this.collectRot[1],this.collectRot[2],BEE_COLLECT,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.collectRot[0],this.collectRot[1],this.collectRot[2],BEE_COLLECT,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
                 
             break
             
@@ -10175,7 +10176,7 @@ class Bee {
                     return
                 }
                 
-                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
                 
             break
             
@@ -10226,7 +10227,7 @@ class Bee {
                     this.state='moveToPlayer'
                 }
                 
-                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.collectRot[0],this.collectRot[1],this.collectRot[2],BEE_COLLECT,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.collectRot[0],this.collectRot[1],this.collectRot[2],BEE_COLLECT,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
                 
             break
             
@@ -10259,7 +10260,7 @@ class Bee {
                     this.pollen=amountToTake
                 }
                 
-                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
         
             break
             
@@ -10275,7 +10276,7 @@ class Bee {
                 
                 this.convertTimer-=dt
                 
-                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,0,1,0,TIME*5,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,0,1,0,TIME*5,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
                 if(this.convertTimer<=0){
                     
                     this.state='moveToHiveToConvert'
@@ -10329,7 +10330,7 @@ class Bee {
                     this.pollen=amountToTake
                 }
                 
-                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
         
             break
             
@@ -10345,7 +10346,7 @@ class Bee {
                 
                 this.convertTimer-=dt
                 
-                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,0,1,0,TIME*5,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,0,1,0,TIME*5,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
                 if(this.convertTimer<=0){
                     
                     this.state='moveToHiveToConvertBalloon'
@@ -10386,7 +10387,7 @@ class Bee {
                     this.sleepRotate=Math.random()*MATH.TWO_PI
                 }
                 
-                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
                 
             break
             
@@ -10407,7 +10408,7 @@ class Bee {
                     textRenderer.add('zzz',[this.pos[0]+MATH.random(-1,1),this.pos[1]+MATH.random(-1,1),this.pos[2]+Math.random()+0.25],[255,255,255],0,'',1.25)
                 }
                 
-                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,0,1,0,this.sleepRotate,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,0,1,0,this.sleepRotate,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
                 
             break
             
@@ -10441,7 +10442,7 @@ class Bee {
                     }
                 }
                 
-                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
                 
             break
             
@@ -10528,7 +10529,7 @@ class Bee {
                     objects.explosions.push(new Explosion({col:[1,0,0],pos:this.pos,life:0.75,size:1.75,speed:0.3,aftershock:0}))
                 }
                 
-                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.targetLookDir[0],this.targetLookDir[1],this.targetLookDir[2],BEE_FLY,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.targetLookDir[0],this.targetLookDir[1],this.targetLookDir[2],BEE_FLY,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
             
             break
             
@@ -10557,7 +10558,7 @@ class Bee {
                     this.state='moveToPlayer'
                 }
                 
-                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
                 
             break
         }
@@ -10595,6 +10596,7 @@ class TempBee {
     constructor(pos,type,lvl,lifespan,gifted){
         
         this.meshScale=type==='baby'||type==='tadpole'?0.65:1
+        this.GIFTED_BEE_TEXTURE_OFFSET=beeInfo[type].v+(gifted?GIFTED_BEE_TEXTURE_OFFSET:0)
 
         this.life=lifespan
         this.gifted=gifted
@@ -10708,7 +10710,7 @@ class TempBee {
                     this.attackTimer=1.25+Math.random()*0.5*(this.type==='precise'?1.75:1)
                 }
                 
-                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
                 
             break
             
@@ -10771,7 +10773,7 @@ class TempBee {
                     }
                 }
                 
-                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],TIME*5,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],TIME*5,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
                 
             break
             
@@ -10792,7 +10794,7 @@ class TempBee {
                     this.moveOffset=[MATH.random(-4,4),0,MATH.random(-4,4)]
                 }
                 
-                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
                 
                 if(player.converting&&player.pollen){
                     
@@ -10838,7 +10840,7 @@ class TempBee {
                     return
                 }
                 
-                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
                 
             break
             
@@ -10889,7 +10891,7 @@ class TempBee {
                     this.state='moveToFlower'
                 }
                 
-                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.collectRot[0],this.collectRot[1],this.collectRot[2],BEE_COLLECT,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.collectRot[0],this.collectRot[1],this.collectRot[2],BEE_COLLECT,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
                 
             break
             
@@ -10923,7 +10925,7 @@ class TempBee {
                     }
                 }
                 
-                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
                 
             break
             
@@ -11006,7 +11008,7 @@ class TempBee {
                     objects.explosions.push(new Explosion({col:[1,0,0],pos:this.pos,life:0.75,size:1.75,speed:0.3,aftershock:0}))
                 }
                 
-                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.targetLookDir[0],this.targetLookDir[1],this.targetLookDir[2],BEE_FLY,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.targetLookDir[0],this.targetLookDir[1],this.targetLookDir[2],BEE_FLY,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
             
             break
             
@@ -11035,7 +11037,7 @@ class TempBee {
                     this.state='moveToPlayer'
                 }
                 
-                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,beeInfo[this.type].v,beeInfo[this.type].meshPartId)
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
                 
             break
         }
@@ -21976,9 +21978,13 @@ function loop(now){
         
         let t=i
         
-        meshes.bees.instanceData.push(amountOfBeesInBeeLine*1.5-40,1,-1,i==='baby'||i==='tadpole'?0.65:1,0,0,1,0,beeInfo[t].u,beeInfo[t].v,beeInfo[t].meshPartId)
-        amountOfBeesInBeeLine++
-        textRenderer.addSingle(i,[amountOfBeesInBeeLine*1.5-41.5,1.5,-1],COLORS.whiteArr,-1,false,false)
+        meshes.bees.instanceData.push(amountOfBeesInBeeLine*0.75-40,1,-1,i==='baby'||i==='tadpole'?0.65:1,0,0,1,0,beeInfo[t].u,beeInfo[t].v,beeInfo[t].meshPartId)
+
+        meshes.bees.instanceData.push(amountOfBeesInBeeLine*0.75-40,1,1,i==='baby'||i==='tadpole'?0.65:1,0,0,1,0,beeInfo[t].u,beeInfo[t].v+GIFTED_BEE_TEXTURE_OFFSET,beeInfo[t].meshPartId)
+
+        amountOfBeesInBeeLine+=2
+
+        textRenderer.addSingle(i,[amountOfBeesInBeeLine*0.75-41.5,1.5,-1],COLORS.whiteArr,-1,false,false)
     }
     
     gl.bindTexture(gl.TEXTURE_2D,textures.bees)
@@ -21998,7 +22004,7 @@ function loop(now){
     gl.vertexAttribPointer(glCache.bee_instanceUV,3,gl.FLOAT,gl.FLASE,44,32)
     gl.vertexAttribDivisor(glCache.bee_instanceUV,1)
     
-    gl.drawElementsInstanced(gl.TRIANGLES,meshes.bee.indexAmount,gl.UNSIGNED_SHORT,0,objects.bees.length+objects.tempBees.length+amountOfBeesInBeeLine)
+    gl.drawElementsInstanced(gl.TRIANGLES,meshes.bee.indexAmount,gl.UNSIGNED_SHORT,0,meshes.bees.instanceData.length*MATH.INV_11)
     
     gl.vertexAttribDivisor(glCache.bee_instancePos,0)
     gl.vertexAttribDivisor(glCache.bee_instanceRotation,0)

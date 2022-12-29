@@ -11,6 +11,7 @@ window.MATH = (function (MATH) {
     MATH.INV_255 = 1 / 255
     MATH.INV_13 = 1 / 13
     MATH.INV_9 = 1 / 9
+    MATH.INV_11 = 1 / 11
     MATH.EIGHTth_PI = Math.PI / 8
     MATH.QUATER_PI = Math.PI * 0.25
     MATH.PI_SUB_QUATER = Math.PI - MATH.QUATER_PI
