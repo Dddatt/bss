@@ -1,4 +1,4 @@
-let applyPercentage=function(x,m){
+var applyPercentage=function(x,m){
     
     return (x-1)*(1-m)+1
 }
