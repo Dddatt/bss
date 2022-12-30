@@ -1,4 +1,4 @@
-var applyPercentage=function(x,m){
+window.applyPercentage=function(x,m){
     
     return (x-1)*(1-m)+1
 }
@@ -174,7 +174,7 @@ window.playerGear={
                 stats.redBeeAttack+=2
                 stats.whiteBeeAttack+=1
                 stats.blueBeeAttack+=1
-                stats.instantFlameConversion=applyPercentage(stats.instantFlameConversion,0.5)
+                stats.instantFlameConversion=window.applyPercentage(stats.instantFlameConversion,0.5)
                 stats.flamePollen*=2
                 stats.redBeeAbilityRate*=1.2
                 stats.blueBeeAbilityRate*=1.2
@@ -281,9 +281,9 @@ window.playerGear={
                 
                 stats.capacity+=2000000
                 stats.convertRate*=3
-                stats.instantRedConversion=applyPercentage(stats.instantRedConversion,0.15)
-                stats.instantBlueConversion=applyPercentage(stats.instantBlueConversion,0.15)
-                stats.instantWhiteConversion=applyPercentage(stats.instantWhiteConversion,0.25)
+                stats.instantRedConversion=window.applyPercentage(stats.instantRedConversion,0.15)
+                stats.instantBlueConversion=window.applyPercentage(stats.instantBlueConversion,0.15)
+                stats.instantWhiteConversion=window.applyPercentage(stats.instantWhiteConversion,0.25)
                 stats.whitePollen*=1.25
                 stats.whitePollen*=1.25
                 stats.redPollen*=1.25
