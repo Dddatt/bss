@@ -333,6 +333,13 @@ window.MATH = (function (MATH) {
     
         return (x-1)*(1-m)+1
     }
+    
+    let tmq=MATH.TWO_PI-MATH.QUATER_PI,qptmq=MATH.QUATER_PI+tmq
+
+    MATH.dupedTokenLoadingArcRotation=function(x){
+
+        return (1-x)*(1-x)*tmq-qptmq
+    }
 
     return MATH
 
