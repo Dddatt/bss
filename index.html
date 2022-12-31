@@ -3503,7 +3503,6 @@ let triggers={
             player.addSlot('windy')
             player.addSlot('tabby')
             player.addSlot('hasty')
-            player.addSlot('hasty')
             player.addSlot('fuzzy')
             player.addSlot('music')
             player.addSlot('music')
@@ -3539,6 +3538,7 @@ let triggers={
             player.addSlot('spicy')
             player.addSlot('spicy')
             player.addSlot('crimson')
+            player.addSlot('digital')
             player.updateHive()
         }
     },
@@ -3584,12 +3584,11 @@ let triggers={
             player.addSlot('hasty')
             player.addSlot('fuzzy')
             player.addSlot('ninja')
-            player.addSlot('music')
+            player.addSlot('vicious')
             player.addSlot('music')
             player.addSlot('music')
             player.addSlot('music')
             player.addSlot('gummy')
-            player.addSlot('buoyant')
             player.addSlot('buoyant')
             player.addSlot('buoyant')
             player.addSlot('buoyant')
@@ -3619,6 +3618,7 @@ let triggers={
             player.addSlot('tadpole')
             player.addSlot('photon')
             player.addSlot('cobalt')
+            player.addSlot('digital')
             player.updateHive()
             player.addEffect('balloonBlessing',false,50)
             player.addEffect('tideBlessing',1)
@@ -3652,7 +3652,6 @@ let triggers={
             player.addEffect('satisfyingNectar',1)
             player.hive=[[]]
             player.addSlot('basic')
-            player.addSlot('buoyant')
             player.addSlot('bomber')
             player.addSlot('looker')
             player.addSlot('rage')
@@ -3663,8 +3662,6 @@ let triggers={
             player.addSlot('commander')
             player.addSlot('shocked')
             player.addSlot('hasty')
-            player.addSlot('hasty')
-            player.addSlot('music')
             player.addSlot('music')
             player.addSlot('music')
             player.addSlot('music')
@@ -3676,6 +3673,7 @@ let triggers={
             player.addSlot('gummy')
             player.addSlot('photon')
             player.addSlot('tabby')
+            player.addSlot('carpenter')
             player.addSlot('carpenter')
             player.addSlot('carpenter')
             player.addSlot('carpenter')
@@ -3694,6 +3692,7 @@ let triggers={
             player.addSlot('vector')
             player.addSlot('vector')
             player.addSlot('vector')
+            player.addSlot('vector')
             player.addSlot('fuzzy')
             player.addSlot('fuzzy')
             player.addSlot('precise')
@@ -3701,6 +3700,7 @@ let triggers={
             player.addSlot('precise')
             player.addSlot('precise')
             player.addSlot('precise')
+            player.addSlot('digital')
             player.updateHive()
             
         }
@@ -4169,7 +4169,7 @@ let beeInfo={
 
     digital:{
         
-        u:128*13/2048,v:256*2/2048,meshPartId:19,gatherSpeed:4,gatherAmount:10,speed:11.9,convertSpeed:4,convertAmount:80,attack:1,energy:20,tokens:[],attackTokens:[],rarity:'event',color:'white',description:"A virtual bee with malfunctioning AI. It corrupts the game itself.",giftedHiveBonus:{oper:'+',stat:'abilityDuplicationChance',num:0.01}
+        u:128*13/2048,v:256*2/2048,meshPartId:19,gatherSpeed:4,gatherAmount:10,speed:11.9,convertSpeed:4,convertAmount:80,attack:1,energy:20,tokens:['glitch'],attackTokens:[],rarity:'event',color:'white',description:"A virtual bee with malfunctioning AI. It corrupts the game itself.",giftedHiveBonus:{oper:'+',stat:'abilityDuplicationChance',num:0.01}
     },
 }
 
@@ -5214,7 +5214,7 @@ let effects={
             
             for(let i in objects.tokens){
                 
-                if(objects.tokens[i].canBeLinked){
+                if(objects.tokens[i].canBeLinked&&!(objects.tokens[i] instanceof DupedToken)){
                     
                     objects.tokens[i].collect()
                 }
@@ -5224,7 +5224,7 @@ let effects={
             
             for(let i in objects.tokens){
                 
-                if(objects.tokens[i].canBeLinked){
+                if(objects.tokens[i].canBeLinked&&!(objects.tokens[i] instanceof DupedToken)){
                     
                     objects.tokens[i].collect()
                 }
@@ -5801,7 +5801,7 @@ let effects={
     
     markSurge:{
         
-        trialCooldown:25,trialRate:0.25,
+        trialCooldown:20,trialRate:0.25,
         u:256/2048,v:256/2048,
         tokenLife:4,
         
@@ -7565,13 +7565,61 @@ let effects={
         
         update:(amount,player)=>{
             
-            player.abilityDuplicationChance+=amount*0.005+1.05
+            player.abilityDuplicationChance+=amount*0.0015+0.05
         },
         
         getMessage:(amount)=>{
             
-            return 'Corruption\n+'+(amount*0.005+1.05).toFixed(2)+'% ability duplication chance'
+            return 'Corruption\n+'+((amount*0.15+5)|0)+'% ability duplication chance'
         }
+    },
+    
+    glitch:{
+        
+        trialCooldown:120,trialRate:0.5,
+        u:128*7/2048,v:128*9/2048,
+        tokenLife:8,
+        
+        func:function(params){
+            
+            if(player.fieldIn){
+                
+                fieldInfo[player.fieldIn].corruption=Math.min(fieldInfo[player.fieldIn].corruption+40+params.bee.level,100)
+                
+                objects.mobs.push(new GlitchEffect(player.fieldIn,5))
+            }
+        },
+    },
+    
+    smiley:{
+        
+        trialCooldown:0,trialRate:0,
+        u:128*2/2048,v:128*10/2048,
+        tokenLife:12,
+        
+        func:function(params){
+            
+            let tokensCollected=0
+            
+            for(let i in objects.tokens){
+                
+                if(objects.tokens[i] instanceof DupedToken){
+                    
+                    objects.tokens[i].collect()
+                    tokensCollected++
+                }
+            }
+            
+            if(player.fieldIn){
+                
+                fieldInfo[player.fieldIn].corruption=Math.min(fieldInfo[player.fieldIn].corruption+3,100)
+                
+                collectPollen({x:params.x,z:params.z,pattern:[[-4,0],[-4,1],[-4,2],[-3,3],[-2,4],[-1,4],[0,4],[1,4],[2,4],[3,3],[4,2],[4,1],[4,0],[4,-1],[4,-2],[3,-3],[2,-4],[1,-4],[0,-4],[-1,-4],[-2,-4],[-3,-3],[-4,-2],[-4,-1],[-1,-1],[1,-1],[2,1],[1,2],[0,2],[-1,2],[-2,1]],amount:params.bee.gatherAmount*0.5,stackOffset:0.4+Math.random()*0.5,multiplier:tokensCollected*0.5+1,instantConversion:0.5})
+                
+                objects.mobs.push(new GlitchEffect(player.fieldIn,3))
+                
+            }
+        },
     },
 }
 
@@ -10531,14 +10579,15 @@ class Bee {
                         
                         for(let i in objects.tokens){
                             
-                            if(objects.tokens[i].canBeLinked){
+                            if(objects.tokens[i].canBeLinked&&!(objects.tokens[i] instanceof DupedToken)){
+                                
                                 objects.tokens[i].collect()
                             }
                         }
                         
-                        objects.tokens.push(new Token(effects.precision.tokenLife,[this.targets[2].pos[0],this.targets[2].pos[1]+0.5,this.targets[2].pos[2]],'precision',{field:this.targets[2].field,x:this.targets[2].x,z:this.targets[2].z}))
-                        objects.tokens.push(new Token(effects.focus.tokenLife,[this.targets[2].pos[0]+1,this.targets[2].pos[1]+0.5,this.targets[2].pos[2]],'focus',{field:this.targets[2].field,x:this.targets[2].x+1,z:this.targets[2].z}))
-                        objects.tokens.push(new Token(effects.redBoost.tokenLife,[this.targets[2].pos[0]-1,this.targets[2].pos[1]+0.5,this.targets[2].pos[2]],'redBoost',{field:this.targets[2].field,x:this.targets[2].x-1,z:this.targets[2].z}))
+                        objects.tokens.push(new Token(effects.precision.tokenLife,[this.targets[2].pos[0],this.targets[2].pos[1]+0.5,this.targets[2].pos[2]],'precision',{field:this.targets[2].field,x:this.targets[2].x,z:this.targets[2].z,bee:this}))
+                        objects.tokens.push(new Token(effects.focus.tokenLife,[this.targets[2].pos[0]+1,this.targets[2].pos[1]+0.5,this.targets[2].pos[2]],'focus',{field:this.targets[2].field,x:this.targets[2].x+1,z:this.targets[2].z,bee:this}))
+                        objects.tokens.push(new Token(effects.redBoost.tokenLife,[this.targets[2].pos[0]-1,this.targets[2].pos[1]+0.5,this.targets[2].pos[2]],'redBoost',{field:this.targets[2].field,x:this.targets[2].x-1,z:this.targets[2].z,bee:this}))
                         
                     }
                     
@@ -10558,13 +10607,13 @@ class Bee {
                         if(_t.activated){
                             
                             if(i!==2)
-                                objects.tokens.push(new Token(effects.focus.tokenLife,[_t.pos[0],_t.pos[1]+0.5,_t.pos[2]],'focus',{field:_t.field,x:_t.x,z:_t.z}))
+                                objects.tokens.push(new Token(effects.focus.tokenLife,[_t.pos[0],_t.pos[1]+0.5,_t.pos[2]],'focus',{field:_t.field,x:_t.x,z:_t.z,bee:this}))
                             
                             collectPollen({x:_t.x,z:_t.z,pattern:[[-4,0],[-3,-2],[-3,-1],[-3,0],[-3,1],[-3,2],[-2,-3],[-2,-2],[-2,-1],[-2,0],[-2,1],[-2,2],[-2,3],[-1,-3],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[-1,3],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[0,1],[0,2],[0,3],[0,4],[1,-3],[1,-2],[1,-1],[1,0],[1,1],[1,2],[1,3],[2,-3],[2,-2],[2,-1],[2,0],[2,1],[2,2],[2,3],[3,-2],[3,-1],[3,0],[3,1],[3,2],[4,0]],amount:(this.attack+player[beeInfo[this.type].color+'BeeAttack'])*player.beeAttack*(this.level*0.1+1),yOffset:2+Math.random()*0.4,stackHeight:0.5+Math.random()*0.5,instantConversion:(player.flameHeatStack-1)*0.5,multiplier:player.flameHeatStack*4,field:_t.field})
                             
                         } else {
                             
-                            objects.tokens.push(new Token(effects.redBoost.tokenLife,[_t.pos[0],_t.pos[1]+0.5,_t.pos[2]],'redBoost',{field:_t.field,x:_t.x,z:_t.z}))
+                            objects.tokens.push(new Token(effects.redBoost.tokenLife,[_t.pos[0],_t.pos[1]+0.5,_t.pos[2]],'redBoost',{field:_t.field,x:_t.x,z:_t.z,bee:this}))
                         }
                     }
                     
@@ -11008,16 +11057,17 @@ class TempBee {
                     
                     if(t[0]&&t[1]&&t[2]){
                         
-                        for(let i in objects.tokens){
+                        for(let i in objects.tokens&&!(objects.tokens[i] instanceof DupedToken)){
                             
                             if(objects.tokens[i].canBeLinked){
+                                
                                 objects.tokens[i].collect()
                             }
                         }
                         
-                        objects.tokens.push(new Token(effects.precision.tokenLife,[this.targets[2].pos[0],this.targets[2].pos[1]+0.5,this.targets[2].pos[2]],'precision',{field:this.targets[2].field,x:this.targets[2].x,z:this.targets[2].z}))
-                        objects.tokens.push(new Token(effects.focus.tokenLife,[this.targets[2].pos[0]+1,this.targets[2].pos[1]+0.5,this.targets[2].pos[2]],'focus',{field:this.targets[2].field,x:this.targets[2].x+1,z:this.targets[2].z}))
-                        objects.tokens.push(new Token(effects.redBoost.tokenLife,[this.targets[2].pos[0]-1,this.targets[2].pos[1]+0.5,this.targets[2].pos[2]],'redBoost',{field:this.targets[2].field,x:this.targets[2].x-1,z:this.targets[2].z}))
+                        objects.tokens.push(new Token(effects.precision.tokenLife,[this.targets[2].pos[0],this.targets[2].pos[1]+0.5,this.targets[2].pos[2]],'precision',{field:this.targets[2].field,x:this.targets[2].x,z:this.targets[2].z,bee:this}))
+                        objects.tokens.push(new Token(effects.focus.tokenLife,[this.targets[2].pos[0]+1,this.targets[2].pos[1]+0.5,this.targets[2].pos[2]],'focus',{field:this.targets[2].field,x:this.targets[2].x+1,z:this.targets[2].z,bee:this}))
+                        objects.tokens.push(new Token(effects.redBoost.tokenLife,[this.targets[2].pos[0]-1,this.targets[2].pos[1]+0.5,this.targets[2].pos[2]],'redBoost',{field:this.targets[2].field,x:this.targets[2].x-1,z:this.targets[2].z,bee:this}))
                         
                     }
                     
@@ -11037,13 +11087,13 @@ class TempBee {
                         if(_t.activated){
                             
                             if(i!==2)
-                                objects.tokens.push(new Token(effects.focus.tokenLife,[_t.pos[0],_t.pos[1]+0.5,_t.pos[2]],'focus',{field:_t.field,x:_t.x,z:_t.z}))
+                                objects.tokens.push(new Token(effects.focus.tokenLife,[_t.pos[0],_t.pos[1]+0.5,_t.pos[2]],'focus',{field:_t.field,x:_t.x,z:_t.z,bee:this}))
                             
                             collectPollen({x:_t.x,z:_t.z,pattern:[[-4,0],[-3,-2],[-3,-1],[-3,0],[-3,1],[-3,2],[-2,-3],[-2,-2],[-2,-1],[-2,0],[-2,1],[-2,2],[-2,3],[-1,-3],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[-1,3],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[0,1],[0,2],[0,3],[0,4],[1,-3],[1,-2],[1,-1],[1,0],[1,1],[1,2],[1,3],[2,-3],[2,-2],[2,-1],[2,0],[2,1],[2,2],[2,3],[3,-2],[3,-1],[3,0],[3,1],[3,2],[4,0]],amount:(this.attack+player[beeInfo[this.type].color+'BeeAttack'])*player.beeAttack*0.75,yOffset:2+Math.random()*0.4,stackHeight:0.5+Math.random()*0.5,instantConversion:(player.flameHeatStack-1)*0.5,multiplier:player.flameHeatStack*5,field:_t.field})
                             
                         } else {
                             
-                            objects.tokens.push(new Token(effects.redBoost.tokenLife,[_t.pos[0],_t.pos[1]+0.5,_t.pos[2]],'redBoost',{field:_t.field,x:_t.x,z:_t.z}))
+                            objects.tokens.push(new Token(effects.redBoost.tokenLife,[_t.pos[0],_t.pos[1]+0.5,_t.pos[2]],'redBoost',{field:_t.field,x:_t.x,z:_t.z,bee:this}))
                         }
                     }
                     
@@ -11638,7 +11688,7 @@ class Frog {
                     
                     let b=objects.tokens[i]
                     
-                    if(!b.collected&&vec3.sqrDist(b.pos,this.pos)<(this.gifted?14:9)&&Math.random()<(this.gifted?0.25:0.4)){
+                    if(!b.collected&&vec3.sqrDist(b.pos,this.pos)<(this.gifted?14:9)&&Math.random()<(this.gifted?0.25:0.4)&&!(objects.tokens[i] instanceof DupedToken)){
                         
                         objects.explosions.push(new Explosion({col:[0.9,0,0.15],pos:b.pos.slice(),life:1.25,size:1.8,speed:0.2,aftershock:0.005}))
                         let bx=(b.pos[0]-fieldInfo[this.field].x)|0,bz=(b.pos[2]-fieldInfo[this.field].z)|0
@@ -11995,7 +12045,7 @@ class Triangulate {
         
         for(let i in objects.tokens){
             
-            if(MATH.pointInTriangle(Math.round(objects.tokens[i].pos[0]-fieldInfo[this.field].x),Math.round(objects.tokens[i].pos[2]-fieldInfo[this.field].z),px,pz,tx,tz,bx,bz)){
+            if(MATH.pointInTriangle(Math.round(objects.tokens[i].pos[0]-fieldInfo[this.field].x),Math.round(objects.tokens[i].pos[2]-fieldInfo[this.field].z),px,pz,tx,tz,bx,bz)&&!(objects.tokens[i] instanceof DupedToken)){
                 
                 objects.tokens[i].collect()
             }
@@ -12234,7 +12284,7 @@ class PetalShuriken {
             
             let b=objects.tokens[i]
             
-            if(vec3.sqrDist(this.pos,b.pos)<=3.5){
+            if(vec3.sqrDist(this.pos,b.pos)<=3.5&&!(objects.tokens[i] instanceof DupedToken)){
                 
                 b.collect()
             }
@@ -13456,7 +13506,7 @@ class StarSaw {
             
             let b=objects.tokens[i]
             
-            if(vec3.sqrDist(p,b.pos)<=4){
+            if(vec3.sqrDist(p,b.pos)<=4&&!(objects.tokens[i] instanceof DupedToken)){
                 
                 b.collect()
             }
@@ -13749,7 +13799,7 @@ class Wave {
             
             let b=objects.tokens[i]
             
-            if(b.from!=='Balloon'&&vec3.sqrDist(this.pos,b.pos)<=3.5*this.size){
+            if(b.from!=='Balloon'&&vec3.sqrDist(this.pos,b.pos)<=3.5*this.size&&!(objects.tokens[i] instanceof DupedToken)){
                 
                 b.collect()
             }
@@ -14006,7 +14056,7 @@ class GummyBall {
             
             let b=objects.tokens[i]
             
-            if(vec3.sqrDist(this.pos,b.pos)<=this.rad*this.rad*1.5){
+            if(vec3.sqrDist(this.pos,b.pos)<=this.rad*this.rad*1.5&&!(objects.tokens[i] instanceof DupedToken)){
                 
                 b.collect()
                 player.addEffect('gummyBallCombo',false,false,undefined,b.type==='honey'?3:1)
@@ -14355,7 +14405,7 @@ class Tornado {
             
             let b=objects.tokens[i]
             
-            if(vec3.sqrDist(this.pos,b.pos)<=16){
+            if(vec3.sqrDist(this.pos,b.pos)<=16&&!(objects.tokens[i] instanceof DupedToken)){
                 
                 b.collect()
             }
@@ -16641,7 +16691,8 @@ player=(function(out){
         markDuration:1,
         redBombSync:false,
         blueBombSync:false,
-        flameLife:1
+        flameLife:1,
+        abilityDuplicationChance:0
     }
     
     out.defaultStats={}
@@ -18300,12 +18351,7 @@ player=(function(out){
         for(let i in fieldInfo){
 
             fieldInfo[i].degration-=dt*0.00027777777
-            fieldInfo[i].corruption-=dt*0.5
-
-            if(Math.random()<0.005){
-
-                objects.mobs.push(new GlitchEffect(i,5))
-            }
+            fieldInfo[i].corruption-=dt*0.75
             
             updateFlower(i,MATH.random(0,fieldInfo[i].width)|0,MATH.random(0,fieldInfo[i].length)|0,function(f){
                 
@@ -18358,7 +18404,9 @@ player=(function(out){
                     player.fieldIn=i
                     player.flowerIn.x=x
                     player.flowerIn.z=z
-                    player.addEffect('corruption',false,false,fieldInfo[i].corruption|0)
+                    
+                    if(fieldInfo[i].corruption>0)
+                        player.addEffect('corruption',false,false,fieldInfo[i].corruption|0)
                 }
             }
         }
@@ -18693,7 +18741,9 @@ let textRenderer=(function(out){
         pencil:[128*6/1024,0],
         exclaim:[128*7/1024,0],
         lightrays:[128*0/1024,128/1024],
-        
+        circle:[128*1/1024,128/1024],
+        arc:[128*2/1024,128/1024],
+        smiley:[128*3/1024,128/1024]
     }
     
     out.instanceData=[]
@@ -19617,6 +19667,21 @@ class Token {
         this.rotation=Math.random()*MATH.TWO_PI
         this.func=effects[type].svg?false:effects[type].func
         this.canBeLinked=effects[type].canBeLinked===undefined||effects[type].canBeLinked
+        
+        if(Math.random()<player.abilityDuplicationChance&&!backupFunc){
+            
+            let p,fp=funcParams,x=(Math.random()*fieldInfo[fp.field].width)|0,z=(Math.random()*fieldInfo[fp.field].length)|0
+            
+            fp.x=x
+            fp.z=z
+            
+            p=[fieldInfo[fp.field].x+x,pos[1],fieldInfo[fp.field].z+z]
+            
+            objects.tokens.push(new DupedToken(life*((funcParams.bee.level-1)*0.1+2),p,type,fp))
+            
+            objects.mobs.push(new GlitchEffect(player.fieldIn,3))
+            
+        }
     }
     
     die(index){
@@ -19764,6 +19829,101 @@ class LootToken {
             meshes.tokens.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.rotation,this.u,this.v,this.life*0.3,1)
             
             if(Math.abs(this.pos[0]-player.body.position.x)+Math.abs(this.pos[1]-player.body.position.y)+Math.abs(this.pos[2]-player.body.position.z)<1.75){
+                
+                this.collect()
+            }
+        }
+        
+        return this.life<=0
+    }
+}
+
+class DupedToken {
+    
+    constructor(life,pos,type,funcParams){
+        
+        if(Math.random()<0.1){
+            
+            type='smiley'
+        }
+        
+        this.funcParams=funcParams
+        this.life=life*player.tokenLifespan*1.5
+        this.pos=pos
+        this.type=type
+        this.rotation=Math.random()*MATH.TWO_PI
+        this.func=effects[type].svg?false:effects[type].func
+        this.canBeLinked=effects[type].canBeLinked===undefined||effects[type].canBeLinked
+        
+        this.activationTimer=0
+        this.pos[1]+=3.5
+    }
+    
+    die(index){
+        
+        objects.tokens.splice(index,1)
+    }
+    
+    collect(){
+        
+        if(!this.collected){
+            
+            this.collected=true
+            this.life=0.75
+            player.stats.abilityTokens++
+            
+            if(effects[this.type].statsToAddTo){
+                
+                for(let i in effects[this.type].statsToAddTo){
+                    
+                    player.stats[effects[this.type].statsToAddTo[i]]++
+                }
+            }
+            
+            if(this.func){
+                
+                this.func(this.funcParams)
+                
+            } else {
+                
+                player.addEffect(this.type)
+            }
+            
+            if(effects[this.type].sound){
+                
+                effects[this.type].sound()
+            }
+        }
+    }
+    
+    update(){
+        
+        this.life-=dt
+        
+        if(this.collected){
+            
+            textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV.smiley,1,0,0.85,-3,-3,0)
+            
+        } else {
+            
+            textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV.circle,0.1,0.1,0.1,3,3,0)
+            
+            textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV.arc,1,1,1,-3,-3,MATH.dupedTokenLoadingArcRotation(this.activationTimer))
+            
+            this.rotation+=dt*2.6
+            
+            meshes.tokens.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.rotation,effects[this.type].u,effects[this.type].v,this.life*0.15,1.5)
+            
+            if(Math.abs(this.pos[0]-player.body.position.x)+Math.abs(this.pos[1]-3.5-player.body.position.y)+Math.abs(this.pos[2]-player.body.position.z)<3.5){
+                
+                this.activationTimer+=dt
+                
+            } else {
+                
+                this.activationTimer=Math.max(this.activationTimer-dt,0)
+            }
+            
+            if(this.activationTimer>=1){
                 
                 this.collect()
             }
@@ -21295,7 +21455,6 @@ function updateFlower(field,x,z,func,updateHeight,updateGoo,updatePollination){
         flowers.mesh.verts[i+20]=texSize+ty
         flowers.mesh.verts[i+27]=texOffset+tx
         flowers.mesh.verts[i+28]=texSize+ty
-        
     }
 }
 
@@ -21399,19 +21558,18 @@ function collectPollen(params){
         }
     }
     
-    totalHoney+=totalGoo*0.1
-    
     let instantConversion={r:params.instantConversion?(1-player.instantRedConversion)*params.instantConversion+1:player.instantRedConversion,b:params.instantConversion?(1-player.instantBlueConversion)*params.instantConversion+1:player.instantBlueConversion,w:params.instantConversion?(1-player.instantWhiteConversion)*params.instantConversion+1:player.instantWhiteConversion}
     
     instantConversion.r=crit.r===2?1:instantConversion.r
     instantConversion.w=crit.w===2?1:instantConversion.w
     instantConversion.b=crit.b===2?1:instantConversion.b
     
-    totalHoney+=(total.r)*instantConversion.r+(total.b)*instantConversion.b+(total.w)*instantConversion.w
+    totalHoney=(total.r)*instantConversion.r+(total.b)*instantConversion.b+(total.w)*instantConversion.w
 
     player.pollen=Math.min(player.pollen+Math.ceil(total.w+total.r+total.b-totalHoney),player.capacity)
 
     totalHoney=Math.ceil((totalHoney+(totalGoo*0.1))*player.honeyPerPollen)
+    
     player.honey+=totalHoney
 
     if(totalHoney&&player.setting_enablePollenText){
@@ -21436,7 +21594,7 @@ function createField(name,x,y,z,w,l,c,_l,generalColorComp,nectarType){
     
     player.stats['pollenFrom'+name]=0
     
-    fieldInfo[name]={x:x,y:y,z:z,width:w,length:l,getColor:c,getLevel:_l,haze:{},generalColorComp:generalColorComp,nectarType:nectarType+'Nectar',degration:0,corruption:100}
+    fieldInfo[name]={x:x,y:y,z:z,width:w,length:l,getColor:c,getLevel:_l,haze:{},generalColorComp:generalColorComp,nectarType:nectarType+'Nectar',degration:0,corruption:0}
     
     flowers[name]=[]
     
@@ -22251,7 +22409,7 @@ function loop(now){
     gl.vertexAttribPointer(glCache.token_instanceUV,4,gl.FLOAT,gl.FALSE,32,16)
     gl.vertexAttribDivisor(glCache.token_instanceUV,1)
     
-    gl.drawElementsInstanced(gl.TRIANGLES,meshes.token.indexAmount,gl.UNSIGNED_SHORT,0,objects.tokens.length+objects.marks.length)
+    gl.drawElementsInstanced(gl.TRIANGLES,meshes.token.indexAmount,gl.UNSIGNED_SHORT,0,meshes.tokens.instanceData.length*0.125)
     
     gl.vertexAttribDivisor(glCache.token_instancePos,0)
     gl.vertexAttribDivisor(glCache.token_instanceUV,0)
@@ -22421,5 +22579,6 @@ if(window.thisProgramIsInFullScreen){
 //<script>
 
 </script>
-    </body>
+    
+</body>
 </html>
