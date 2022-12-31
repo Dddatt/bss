@@ -7573,6 +7573,33 @@ let effects={
             return 'Corruption\n+'+(amount*0.005+1.05).toFixed(2)+'% ability duplication chance'
         }
     },
+    
+    smiley:{
+        
+        trialCooldown:0,trialRate:0,
+        u:128*2/2048,v:128*10/2048,
+        tokenLife:12,
+        
+        func:function(params){
+            
+            let tokensCollected=0
+            
+            for(let i in objects.tokens){
+                
+                if(objects.tokens[i] instanceof DupedToken){
+                    
+                    objects.tokens[i].collect()
+                    tokensCollected++
+                }
+            }
+            
+            if(player.fieldIn){
+                
+                collectPollen({x:params.x,z:params.z,pattern:[[-4,0],[-4,1],[-4,2],[-3,3],[-2,4],[-1,4],[0,4],[1,4],[2,4],[3,3],[4,2],[4,1],[4,0],[4,-1],[4,-2],[3,-3],[2,-4],[1,-4],[0,-4],[-1,-4],[-2,-4],[-3,-3],[-4,-2],[-4,-1],[-1,-1],[1,-1],[2,1],[1,2],[0,2],[-1,2],[-2,1]],amount:params.bee.gatherAmount*0.5,stackOffset:0.4+Math.random()*0.5,multiplier:tokensCollected*0.5+1,instantConversion:0.5})
+                
+            }
+        },
+    },
 }
 
 let LIST_OF_STATS_FOR_PLAYER=[]
@@ -19626,7 +19653,7 @@ class Token {
             
             p=[fieldInfo[fp.field].x+x,pos[1],fieldInfo[fp.field].z+z]
             
-            objects.tokens.push(new DupedToken(life*2,p,type,fp))
+            objects.tokens.push(new DupedToken(life*((funcParams.bee.level-1)*0.1+2),p,type,fp))
             
         }
     }
@@ -19788,6 +19815,11 @@ class LootToken {
 class DupedToken {
     
     constructor(life,pos,type,funcParams){
+        
+        if(Math.random()<0.2){
+            
+            type='smiley'
+        }
         
         this.funcParams=funcParams
         this.life=life*player.tokenLifespan*1.5
