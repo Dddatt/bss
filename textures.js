@@ -2055,7 +2055,16 @@ window.textures_effects=function(tex_ctx){
     tex_ctx.fillStyle='rgb(94, 235, 214)'
     tex_ctx.strokeStyle='rgb(0,0,0)'
     tex_ctx.beginPath()
-    tex_ctx.roundRect(-22,-8,45,45,9)
+    
+    if(tex_ctx.roundRect){
+        
+        tex_ctx.roundRect(-22,-8,45,45,9)
+        
+    } else {
+        
+        tex_ctx.rect(-22,-6,45,45,0)
+    }
+    
     tex_ctx.fill()
     tex_ctx.stroke()
     tex_ctx.font='29px Brush Script MT'
@@ -2093,7 +2102,16 @@ window.textures_effects=function(tex_ctx){
     tex_ctx.fillStyle='rgb(94, 235, 214)'
     tex_ctx.strokeStyle='rgb(0,0,0)'
     tex_ctx.beginPath()
-    tex_ctx.roundRect(-22,-8,45,45,9)
+    
+    if(tex_ctx.roundRect){
+        
+        tex_ctx.roundRect(-22,-8,45,45,9)
+        
+    } else {
+        
+        tex_ctx.rect(-22,-6,45,45,0)
+    }
+    
     tex_ctx.fill()
     tex_ctx.stroke()
     tex_ctx.font='29px Brush Script MT'
@@ -2617,6 +2635,38 @@ window.textures_effects=function(tex_ctx){
     tex_ctx.lineTo(10,30)
     tex_ctx.bezierCurveTo(10,37,-10,37,-10,30)
     tex_ctx.fill()
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='rgb(0,0,0)'
+    tex_ctx.fillRect(128*7,256+256*3.5,128,128)
+    tex_ctx.fillStyle='rgb(255, 0, 200)'
+    tex_ctx.translate(128*7+128*0.5,256+128*7.5)
+    tex_ctx.font='204px arial'
+    tex_ctx.fillText('☺',0.5,-5)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='rgb(0,0,0)'
+    tex_ctx.fillRect(128*0,256+256*4,128,128)
+    tex_ctx.fillStyle='rgb(255, 149, 0)'
+    tex_ctx.translate(128*0+128*0.5,256+128*8.5)
+    tex_ctx.font='204px arial'
+    tex_ctx.fillText('☺',0.5,-5)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='rgb(22, 2, 201)'
+    tex_ctx.fillRect(128*1,256+256*4,128,128)
+    tex_ctx.fillStyle='rgb(255, 0, 251)'
+    tex_ctx.translate(128*1+128*0.5,256+128*8.5)
+    tex_ctx.font='204px arial'
+    tex_ctx.fillText('☺',0.5,-5)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    tex_ctx.fillRect(128*2,256+256*4,128,128)
+    tex_ctx.fillStyle='rgb(0,0,0)'
+    tex_ctx.translate(128*2+128*0.5,256+128*8.5)
+    tex_ctx.font='204px arial'
+    tex_ctx.fillText('☺',0.5,-5)
     tex_ctx.setTransform(1,0,0,1,0,0)
 }
 
@@ -7126,8 +7176,9 @@ window.textures_decals=function(tex_ctx){
     tex_ctx.translate(128*3+128*0.5,128*1+128*0.5)
     tex_ctx.fillStyle='rgb(255,255,255)'
     tex_ctx.font='175px arial'
+    tex_ctx.textBaseline='middle'
     tex_ctx.textAlign='center'
-    tex_ctx.fillText('☺',2,43)
+    tex_ctx.fillText('☺',2,-5)
     tex_ctx.setTransform(1,0,0,1,0,0)
 }
 
