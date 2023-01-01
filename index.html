@@ -1848,6 +1848,9 @@ w, in coco: 549b, 746b,
     
     <header style='text-align:center;margin-bottom:0px;font-size:35px;'>Bee Swarm Simulator</header>
     <p style='text-align:center;margin-top:0px;'>Dat Approved!</p>
+
+    
+    <p style='text-align:left;margin-top:0px;color:white;position:fixed;left:235px;top:100px'>ok so new update stuff: vicious bee, rogue vicious bee, digital bee, more bees, map stuff, and updates to attacking calculations<br><br>Vicious bee is the dark blue spike demon bee that makes spikes that impales enemies. It's impale ability makes 1 spike per bee lvl, impaling a random enemy. Spikes deal 5% of the enemy's health plus the vicious bee's attack. Enemies that are impaled by multiple spikes take less dmg<br><br>Rogue Vicious bee is a wild untamed vicious bee that's suppoed to give stingers upon defeat. It hides in a form of a spike poking out of a flower, and attacks whenever disturbed. It has a spinny attack that randomly covers the field in spikes and a focused attack where it stares and targets the player. Proper loot drops and spawning is not implemented, but for now it's in the dandelion field.<br><br>Digital bee is the wack computer looking bee that corrupts things. I find it creepy that it's based of the You Are An Idiot virus or whatever and has the same creepy smiley face everywhere. It's Corrupt ability(purple smiley) corrupts the field by a bit(a bit less than halfway). A field can have 100 stacks of corruption, which increases the chance for an ability token to be duped. Stand under duped tokens for 1s to activate them. Duped tokens have a 10% to become a smiley token, which adds corruption and collects all duped tokens and pollen when activated. Digital bee's abilities become smiley tokens if they are duped. It's map corruption ability(smiley on blue background) corrupts a random field the player's not in by a good amount. It's mind hack ability(orange smiley) stuns several enemies for like 3-5 secs based on bee lvl, and hacked mobs take 25% more damage. Hacked mobs are indicated by a creepy red smiley face<br><br>The 3 new bees are just there cuz I wanted to finish all the bees and I'll implement their things later.<br><br>Fixed random things around the map like pineapples and 15 bee zone bypasses<br><br>coconuts now do like 2.5k dmg when it goes bonk on an enemy's head</p>
     
     <span style='display:block;margin-top:50px;'></span>
     <button id='runFullScreen' style='margin-left:10px;width:200px;height:50px;background-color:rgb(248, 255, 150);'>New Fullscreen Game</button>
@@ -3693,7 +3696,7 @@ let triggers={
             player.addSlot('vector')
             player.addSlot('vector')
             player.addSlot('vector')
-            player.addSlot('fuzzy')
+            player.addSlot('vector')
             player.addSlot('fuzzy')
             player.addSlot('precise')
             player.addSlot('precise')
@@ -7593,7 +7596,7 @@ let effects={
 
     mindHack:{
         
-        trialCooldown:25,trialRate:10.4,
+        trialCooldown:25,trialRate:0.4,
         u:128*0/2048,v:128*10/2048,
         tokenLife:8,
         
