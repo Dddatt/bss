@@ -2932,29 +2932,29 @@ w, in coco: 549b, 746b,
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js'></script>
 
-<script src="dialogue.js"></script>
-<script src="textures.js"></script>
-<script src="playerGear.js"></script>
-<script src="MathHelper.js"></script>
-<script src="GLSLShaders.js"></script>
-<script src="mapMesh.js"></script>
-<script src="music_popStar.js"></script>
-<script src="music_scorchingStar.js"></script>
-<script src="music_gummyStar.js"></script>
-<script src="music_frog.js"></script>
-<script src="music_inflateBalloons.js"></script>
-<script src="music_haste.js"></script>
-<script src="music_bombToken.js"></script>
-<script src="music_markToken.js"></script>
-<script src="music_melodyToken.js"></script>
-<script src="music_focusToken.js"></script>
-<script src="music_rageToken.js"></script>
-<script src="music_surpriseParty.js"></script>
-<script src="music_infernoToken.js"></script>
-<script src="music_flameFuelToken.js"></script>
-<script src="music_babyLove.js"></script>
-<script src="music_boostToken.js"></script>
-<script src="music_inspireToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/dialogue.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/textures.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/playerGear.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/MathHelper.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/GLSLShaders.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/mapMesh.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_popStar.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_scorchingStar.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_gummyStar.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_frog.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_inflateBalloons.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_haste.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_bombToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_markToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_melodyToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_focusToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_rageToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_surpriseParty.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_infernoToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_flameFuelToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_babyLove.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_boostToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_inspireToken.js"></script>
 
 <script type='application/javascript'>
 
@@ -4169,7 +4169,7 @@ let beeInfo={
 
     digital:{
         
-        u:128*13/2048,v:256*2/2048,meshPartId:19,gatherSpeed:4,gatherAmount:10,speed:11.9,convertSpeed:4,convertAmount:80,attack:1,energy:20,tokens:['glitch'],attackTokens:[],rarity:'event',color:'white',description:"A virtual bee with malfunctioning AI. It corrupts the game itself.",giftedHiveBonus:{oper:'+',stat:'abilityDuplicationChance',num:0.01}
+        u:128*13/2048,v:256*2/2048,meshPartId:19,gatherSpeed:4,gatherAmount:10,speed:11.9,convertSpeed:4,convertAmount:80,attack:1,energy:20,tokens:['glitch','mapCorruption'],attackTokens:[],rarity:'event',color:'white',description:"A virtual bee with malfunctioning AI. It corrupts the game itself.",giftedHiveBonus:{oper:'+',stat:'abilityDuplicationChance',num:0.01}
     },
 }
 
@@ -7565,18 +7565,18 @@ let effects={
         
         update:(amount,player)=>{
             
-            player.abilityDuplicationChance+=amount*0.0015+0.05
+            player.abilityDuplicationChance+=amount*0.001+0.05
         },
         
         getMessage:(amount)=>{
             
-            return 'Corruption\n+'+((amount*0.15+5)|0)+'% ability duplication chance'
+            return 'Corruption\n+'+((amount*0.1+5)|0)+'% ability duplication chance'
         }
     },
     
     glitch:{
         
-        trialCooldown:120,trialRate:0.5,
+        trialCooldown:120,trialRate:0.35,
         u:128*7/2048,v:128*9/2048,
         tokenLife:8,
         
@@ -7584,10 +7584,41 @@ let effects={
             
             if(player.fieldIn){
                 
-                fieldInfo[player.fieldIn].corruption=Math.min(fieldInfo[player.fieldIn].corruption+40+params.bee.level,100)
+                fieldInfo[player.fieldIn].corruption=Math.min(fieldInfo[player.fieldIn].corruption+20+params.bee.level,100)
                 
                 objects.mobs.push(new GlitchEffect(player.fieldIn,5))
             }
+        },
+    },
+    
+    mapCorruption:{
+        
+        trialCooldown:100,trialRate:0.25,
+        u:128*1/2048,v:128*10/2048,
+        tokenLife:8,
+        
+        func:function(params){
+            
+            let f=[]
+            
+            for(let i in fieldInfo){
+                
+                f.push(i)
+            }
+            
+            if(params.field){
+                
+                f.splice(f.indexOf(params.field),1)
+            }
+            
+            f=f[(Math.random()*f.length)|0]
+            
+            fieldInfo[f].corruption=Math.min(fieldInfo[f].corruption+30+params.bee.level*2,100)
+            
+            objects.mobs.push(new GlitchEffect(f,5))
+            
+            player.addMessage('Your Digital Bee corrupted the'+MATH.doGrammar(f)+'!',[255*0.5,0,200*0.5])
+            
         },
     },
     
@@ -13531,7 +13562,7 @@ class StarSaw {
 
             let x=Math.round(p[0]-fieldInfo[player.fieldIn].x),
                 z=Math.round(p[2]-fieldInfo[player.fieldIn].z),
-                a=Math.min(collectPollen({x:x,z:z,pattern:[[0,0],[-1,0],[1,0],[0,1],[0,-1]],amount:5+0.05*player.attackTotal,stackHeight:0.5,instantConversion:1}),player.pollen)
+                a=Math.min(collectPollen({x:x,z:z,pattern:[[0,0],[-1,0],[1,0],[0,1],[0,-1]],amount:5+0.05*player.attackTotal,stackHeight:0.5,instantConversion:1})*3,player.pollen)
 
             if(a){
                 
@@ -16542,7 +16573,15 @@ let playerMesh=new Mesh(false)
 let gear=window.playerGear
 
 player=(function(out){
-
+    
+    out.drives={
+        
+        red:0,
+        blue:0,
+        white:0,
+        glitched:0
+    }
+    
     out.showGeneratedAmulet=function(type,amulet){
 
         let prev_type=type
@@ -18351,7 +18390,7 @@ player=(function(out){
         for(let i in fieldInfo){
 
             fieldInfo[i].degration-=dt*0.00027777777
-            fieldInfo[i].corruption-=dt*0.75
+            fieldInfo[i].corruption=MATH.constrain(fieldInfo[i].corruption-dt*0.6,0,100)
             
             updateFlower(i,MATH.random(0,fieldInfo[i].width)|0,MATH.random(0,fieldInfo[i].length)|0,function(f){
                 
@@ -18405,8 +18444,8 @@ player=(function(out){
                     player.flowerIn.x=x
                     player.flowerIn.z=z
                     
-                    if(fieldInfo[i].corruption>0)
-                        player.addEffect('corruption',false,false,fieldInfo[i].corruption|0)
+                    if(fieldInfo[i].corruption|0)
+                    player.addEffect('corruption',false,false,fieldInfo[i].corruption|0)
                 }
             }
         }
@@ -19842,7 +19881,7 @@ class DupedToken {
     
     constructor(life,pos,type,funcParams){
         
-        if(Math.random()<0.1){
+        if(Math.random()<0.1||type==='glitch'||type==='mapCorruption'){
             
             type='smiley'
         }
@@ -22579,6 +22618,6 @@ if(window.thisProgramIsInFullScreen){
 //<script>
 
 </script>
-    
+
 </body>
 </html>
