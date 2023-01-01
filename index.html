@@ -4169,7 +4169,7 @@ let beeInfo={
 
     digital:{
         
-        u:128*13/2048,v:256*2/2048,meshPartId:19,gatherSpeed:4,gatherAmount:10,speed:11.9,convertSpeed:4,convertAmount:80,attack:1,energy:20,tokens:['glitch','mapCorruption'],attackTokens:[],rarity:'event',color:'white',description:"A virtual bee with malfunctioning AI. It corrupts the game itself.",giftedHiveBonus:{oper:'+',stat:'abilityDuplicationChance',num:0.01}
+        u:128*13/2048,v:256*2/2048,meshPartId:19,gatherSpeed:4,gatherAmount:10,speed:11.9,convertSpeed:4,convertAmount:80,attack:1,energy:20,tokens:['glitch','mapCorruption'],attackTokens:['mindHack'],rarity:'event',color:'white',description:"A virtual bee with malfunctioning AI. It corrupts the game itself.",giftedHiveBonus:{oper:'+',stat:'abilityDuplicationChance',num:0.01}
     },
 }
 
@@ -7587,6 +7587,31 @@ let effects={
                 fieldInfo[player.fieldIn].corruption=Math.min(fieldInfo[player.fieldIn].corruption+20+params.bee.level,100)
                 
                 objects.mobs.push(new GlitchEffect(player.fieldIn,5))
+            }
+        },
+    },
+
+    mindHack:{
+        
+        trialCooldown:25,trialRate:10.4,
+        u:128*0/2048,v:128*10/2048,
+        tokenLife:8,
+        
+        func:function(params){
+            
+            let m=[]
+
+            for(let i in player.attacked){
+
+                m.push(player.attacked[i])
+            }
+
+            for(let i=0;i<3+(params.bee.level*0.3333)&&m.length;i++){
+
+                let r=(Math.random()*m.length)|0
+
+                m[r].mindHacked=3+(params.bee.level*0.1)
+                m.splice(r,1)
             }
         },
     },
@@ -12349,6 +12374,7 @@ class Beetle {
         this.respawnTimer=0
         this.flameTimer=0
         this.damageTimer=0
+        this.mindHacked=0
     }
     
     die(index){
@@ -12360,6 +12386,9 @@ class Beetle {
         
         let crit=Math.random()<player.criticalChance,superCrit=Math.random()<player.superCritChance,d=am*(crit?superCrit?player.superCritPower*player.criticalPower:player.criticalPower:1)
         
+        if(this.mindHacked>0)
+            d*=1.25
+
         this.health-=d|0
 
         let l=d.toString().length
@@ -12420,6 +12449,7 @@ class Beetle {
                     return
                 }
                 
+                this.mindHacked-=dt
                 this.starSawHitTimer-=dt
                 this.flameTimer-=dt
                 
@@ -12438,87 +12468,94 @@ class Beetle {
                 
                 player.attacked.push(this)
                 
-                if(TIME-this.checkTimer>0.25){
-                    
-                    this.checkTimer=TIME+Math.random()*0.2
-                    let b=this.bounds,p=player.body.position
-                    
-                    if(!(p.x>b.minX&&p.x<b.maxX&&p.y>b.minY&&p.y<b.maxY&&p.z>b.minZ&&p.z<b.maxZ)){
+                if(this.mindHacked<=0){
+
+                    if(TIME-this.checkTimer>0.25){
                         
-                        this.state='moveToHide'
-                    }
-                }
-                
-                this.damageTimer-=dt
-                
-                if(this.damageTimer<=0&&this.aimTimer>0&&Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1])+Math.abs(player.body.position.z-this.pos[2])<1.5){
-                    
-                    player.damage(20)
-                    this.damageTimer=1.5
-                }
-                
-                let d=[player.body.position.x-this.pos[0],player.body.position.z-this.pos[2]]
-                
-                vec2.normalize(d,d)
-                
-                if(!this.aimPos){
-                    
-                    if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])>5){
+                        this.checkTimer=TIME+Math.random()*0.2
+                        let b=this.bounds,p=player.body.position
                         
-                        this.pos[0]+=d[0]*dt*4
-                        this.pos[2]+=d[1]*dt*4
-                        
-                    } else {
-                        
-                        this.aimPos=[player.body.position.x,player.body.position.y,player.body.position.z]
-                        this.landPos=this.pos.slice()
-                        this.lungeState=0
-                        this.aimTimer=1.5
+                        if(!(p.x>b.minX&&p.x<b.maxX&&p.y>b.minY&&p.y<b.maxY&&p.z>b.minZ&&p.z<b.maxZ)){
+                            
+                            this.state='moveToHide'
+                        }
                     }
                     
-                } else {
+                    this.damageTimer-=dt
                     
-                    this.aimTimer-=dt
-                    
-                    if(this.aimTimer<=0){
+                    if(this.damageTimer<=0&&this.aimTimer>0&&Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1])+Math.abs(player.body.position.z-this.pos[2])<1.5){
                         
-                        if(!this.lungeState){
-                            
-                            d=[this.aimPos[0]-this.pos[0],this.aimPos[2]-this.pos[2]]
+                        player.damage(20)
+                        this.damageTimer=1.5
+                    }
                     
-                            vec2.normalize(d,d)
+                    let d=[player.body.position.x-this.pos[0],player.body.position.z-this.pos[2]]
+                    
+                    vec2.normalize(d,d)
+                    
+                    if(!this.aimPos){
+                        
+                        if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])>5){
                             
-                            this.pos[0]+=d[0]*dt*15
-                            this.pos[2]+=d[1]*dt*15
-                            
-                            if(Math.abs(this.aimPos[0]-this.pos[0])+Math.abs(this.aimPos[2]-this.pos[2])<1.5){
-                                
-                                this.lungeState=1
-                                
-                                if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])<1.75){
-                                    player.damage(20)
-                                }
-                            }
+                            this.pos[0]+=d[0]*dt*4
+                            this.pos[2]+=d[1]*dt*4
                             
                         } else {
                             
-                            d=[this.landPos[0]-this.pos[0],this.landPos[2]-this.pos[2]]
-                    
-                            vec2.normalize(d,d)
+                            this.aimPos=[player.body.position.x,player.body.position.y,player.body.position.z]
+                            this.landPos=this.pos.slice()
+                            this.lungeState=0
+                            this.aimTimer=1.5
+                        }
+                        
+                    } else {
+                        
+                        this.aimTimer-=dt
+                        
+                        if(this.aimTimer<=0){
                             
-                            this.pos[0]+=d[0]*dt*15
-                            this.pos[2]+=d[1]*dt*15
-                            
-                            if(Math.abs(this.landPos[0]-this.pos[0])+Math.abs(this.landPos[2]-this.pos[2])<0.75){
+                            if(!this.lungeState){
                                 
-                                this.aimPos=undefined
-                                this.aimTimer=1.5
+                                d=[this.aimPos[0]-this.pos[0],this.aimPos[2]-this.pos[2]]
+                        
+                                vec2.normalize(d,d)
+                                
+                                this.pos[0]+=d[0]*dt*15
+                                this.pos[2]+=d[1]*dt*15
+                                
+                                if(Math.abs(this.aimPos[0]-this.pos[0])+Math.abs(this.aimPos[2]-this.pos[2])<1.5){
+                                    
+                                    this.lungeState=1
+                                    
+                                    if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])<1.75){
+                                        player.damage(20)
+                                    }
+                                }
+                                
+                            } else {
+                                
+                                d=[this.landPos[0]-this.pos[0],this.landPos[2]-this.pos[2]]
+                        
+                                vec2.normalize(d,d)
+                                
+                                this.pos[0]+=d[0]*dt*15
+                                this.pos[2]+=d[1]*dt*15
+                                
+                                if(Math.abs(this.landPos[0]-this.pos[0])+Math.abs(this.landPos[2]-this.pos[2])<0.75){
+                                    
+                                    this.aimPos=undefined
+                                    this.aimTimer=1.5
+                                }
                             }
                         }
                     }
+                    
+                    this.pos[3]=Math.atan2(d[1],d[0])+MATH.HALF_PI
+
+                } else {
+
+                    textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV.smiley,0.75,0,0,-2,-2,0)
                 }
-                
-                this.pos[3]=Math.atan2(d[1],d[0])+MATH.HALF_PI
                 
                 gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
                 gl.uniform2f(glCache.mob_instanceInfo2,1,1)
@@ -12615,6 +12652,7 @@ class Ladybug {
         this.respawnTimer=0
         this.flameTimer=0
         this.damageTimer=0
+        this.mindHacked=0
     }
     
     die(index){
@@ -12626,6 +12664,9 @@ class Ladybug {
         
         let crit=Math.random()<player.criticalChance,superCrit=Math.random()<player.superCritChance,d=am*(crit?superCrit?player.superCritPower*player.criticalPower:player.criticalPower:1)
         
+        if(this.mindHacked>0)
+            d*=1.25
+
         this.health-=d|0
         textRenderer.add((d|0)+'',[this.pos[0],this.pos[1]+Math.random()*2.75+1.5,this.pos[2]],[255,0,0],crit?superCrit?2:1:0,'',1.25)
         
@@ -12684,6 +12725,7 @@ class Ladybug {
                     return
                 }
                 
+                this.mindHacked-=dt
                 this.starSawHitTimer-=dt
                 this.flameTimer-=dt
                 
@@ -12702,87 +12744,94 @@ class Ladybug {
                 
                 player.attacked.push(this)
                 
-                if(TIME-this.checkTimer>0.25){
-                    
-                    this.checkTimer=TIME+Math.random()*0.2
-                    let b=this.bounds,p=player.body.position
-                    
-                    if(!(p.x>b.minX&&p.x<b.maxX&&p.y>b.minY&&p.y<b.maxY&&p.z>b.minZ&&p.z<b.maxZ)){
+                if(this.mindHacked<=0){
+
+                    if(TIME-this.checkTimer>0.25){
                         
-                        this.state='moveToHide'
-                    }
-                }
-                
-                this.damageTimer-=dt
-                
-                if(this.damageTimer<=0&&this.aimTimer>0&&Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1])+Math.abs(player.body.position.z-this.pos[2])<1.5){
-                    
-                    player.damage(15)
-                    this.damageTimer=1.5
-                }
-                
-                let d=[player.body.position.x-this.pos[0],player.body.position.z-this.pos[2]]
-                
-                vec2.normalize(d,d)
-                
-                if(!this.aimPos){
-                    
-                    if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])>5){
+                        this.checkTimer=TIME+Math.random()*0.2
+                        let b=this.bounds,p=player.body.position
                         
-                        this.pos[0]+=d[0]*dt*4
-                        this.pos[2]+=d[1]*dt*4
-                        
-                    } else {
-                        
-                        this.aimPos=[player.body.position.x,player.body.position.y,player.body.position.z]
-                        this.landPos=this.pos.slice()
-                        this.lungeState=0
-                        this.aimTimer=1.5
+                        if(!(p.x>b.minX&&p.x<b.maxX&&p.y>b.minY&&p.y<b.maxY&&p.z>b.minZ&&p.z<b.maxZ)){
+                            
+                            this.state='moveToHide'
+                        }
                     }
                     
-                } else {
+                    this.damageTimer-=dt
                     
-                    this.aimTimer-=dt
-                    
-                    if(this.aimTimer<=0){
+                    if(this.damageTimer<=0&&this.aimTimer>0&&Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1])+Math.abs(player.body.position.z-this.pos[2])<1.5){
                         
-                        if(!this.lungeState){
-                            
-                            d=[this.aimPos[0]-this.pos[0],this.aimPos[2]-this.pos[2]]
+                        player.damage(15)
+                        this.damageTimer=1.5
+                    }
                     
-                            vec2.normalize(d,d)
+                    let d=[player.body.position.x-this.pos[0],player.body.position.z-this.pos[2]]
+                    
+                    vec2.normalize(d,d)
+                    
+                    if(!this.aimPos){
+                        
+                        if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])>5){
                             
-                            this.pos[0]+=d[0]*dt*15
-                            this.pos[2]+=d[1]*dt*15
-                            
-                            if(Math.abs(this.aimPos[0]-this.pos[0])+Math.abs(this.aimPos[2]-this.pos[2])<1.5){
-                                
-                                this.lungeState=1
-                                
-                                if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])<1.75){
-                                    player.damage(15)
-                                }
-                            }
+                            this.pos[0]+=d[0]*dt*4
+                            this.pos[2]+=d[1]*dt*4
                             
                         } else {
                             
-                            d=[this.landPos[0]-this.pos[0],this.landPos[2]-this.pos[2]]
-                    
-                            vec2.normalize(d,d)
+                            this.aimPos=[player.body.position.x,player.body.position.y,player.body.position.z]
+                            this.landPos=this.pos.slice()
+                            this.lungeState=0
+                            this.aimTimer=1.5
+                        }
+                        
+                    } else {
+                        
+                        this.aimTimer-=dt
+                        
+                        if(this.aimTimer<=0){
                             
-                            this.pos[0]+=d[0]*dt*15
-                            this.pos[2]+=d[1]*dt*15
-                            
-                            if(Math.abs(this.landPos[0]-this.pos[0])+Math.abs(this.landPos[2]-this.pos[2])<0.75){
+                            if(!this.lungeState){
                                 
-                                this.aimPos=undefined
-                                this.aimTimer=1.5
+                                d=[this.aimPos[0]-this.pos[0],this.aimPos[2]-this.pos[2]]
+                        
+                                vec2.normalize(d,d)
+                                
+                                this.pos[0]+=d[0]*dt*15
+                                this.pos[2]+=d[1]*dt*15
+                                
+                                if(Math.abs(this.aimPos[0]-this.pos[0])+Math.abs(this.aimPos[2]-this.pos[2])<1.5){
+                                    
+                                    this.lungeState=1
+                                    
+                                    if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])<1.75){
+                                        player.damage(15)
+                                    }
+                                }
+                                
+                            } else {
+                                
+                                d=[this.landPos[0]-this.pos[0],this.landPos[2]-this.pos[2]]
+                        
+                                vec2.normalize(d,d)
+                                
+                                this.pos[0]+=d[0]*dt*15
+                                this.pos[2]+=d[1]*dt*15
+                                
+                                if(Math.abs(this.landPos[0]-this.pos[0])+Math.abs(this.landPos[2]-this.pos[2])<0.75){
+                                    
+                                    this.aimPos=undefined
+                                    this.aimTimer=1.5
+                                }
                             }
                         }
                     }
+                    
+                    this.pos[3]=Math.atan2(d[1],d[0])+MATH.HALF_PI
+
+                } else {
+
+                    textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV.smiley,0.75,0,0,-2,-2,0)
                 }
-                
-                this.pos[3]=Math.atan2(d[1],d[0])+MATH.HALF_PI
                 
                 gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
                 gl.uniform2f(glCache.mob_instanceInfo2,1,1)
@@ -12884,6 +12933,7 @@ class MondoChick {
         this.maxTimeLimit=this.timeLimit
         this.fallenEggShellEffect=0
         this.runningAmount=0
+        this.mindHacked=0
     }
     
     die(index){
@@ -12895,6 +12945,9 @@ class MondoChick {
         
         let crit=Math.random()<player.criticalChance,superCrit=Math.random()<player.superCritChance,d=am*(crit?superCrit?player.superCritPower*player.criticalPower:player.criticalPower:1)
         
+        if(this.mindHacked>0)
+            d*=1.25
+
         this.health-=d|0
         textRenderer.add((d|0)+'',[this.pos[0],this.pos[1]+Math.random()*2.75+1.5,this.pos[2]],[255,0,0],crit?superCrit?2:1:0,'',[0,1.25,1.275,1.3,1.65,1.75][Math.min(d.toString().length),5])
         
@@ -12920,6 +12973,7 @@ class MondoChick {
                     return
                 }
                 
+                this.mindHacked-=dt
                 this.timeLimit-=dt
                 this.starSawHitTimer-=dt
                 this.flameTimer-=dt
@@ -12942,38 +12996,47 @@ class MondoChick {
                     player.attacked.push(this)
                 }
                 
-                let d=[this.target[0]-this.pos[0],this.target[1]-this.pos[2]]
-                if(Math.abs(d[0])+Math.abs(d[1])<0.75){
-                    
-                    this.target=[fieldInfo[this.field].x+Math.random()*fieldInfo[this.field].width,fieldInfo[this.field].z+Math.random()*fieldInfo[this.field].length]
-                    d=[this.target[0]-this.pos[0],this.target[1]-this.pos[2]]
-                    this.runningAmount--
+                if(this.mindHacked<=0){
 
-                    if(this.runningAmount<=0){
+                    let d=[this.target[0]-this.pos[0],this.target[1]-this.pos[2]]
+                    if(Math.abs(d[0])+Math.abs(d[1])<0.75){
                         
-                        this.waitTimer=5
-                        this.runningAmount=MATH.random(4,8)|0
+                        this.target=[fieldInfo[this.field].x+Math.random()*fieldInfo[this.field].width,fieldInfo[this.field].z+Math.random()*fieldInfo[this.field].length]
+                        d=[this.target[0]-this.pos[0],this.target[1]-this.pos[2]]
+                        this.runningAmount--
+
+                        if(this.runningAmount<=0){
+                            
+                            this.waitTimer=5
+                            this.runningAmount=MATH.random(4,8)|0
+                        }
                     }
-                }
-                
-                vec2.normalize(d,d)
-                
-                this.running=false
-                this.waitTimer-=dt
-                
-                if(this.waitTimer<=0){
                     
-                    this.pos[0]+=d[0]*dt*7
-                    this.pos[2]+=d[1]*dt*7
-                    this.running=true
-                }
-                
-                this.damageTimer-=dt
-                
-                if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])<this.bodySize&&this.damageTimer<=0){
+                    vec2.normalize(d,d)
                     
-                    player.damage(35)
-                    this.damageTimer=1
+                    this.running=false
+                    this.waitTimer-=dt
+                    
+                    if(this.waitTimer<=0){
+                        
+                        this.pos[0]+=d[0]*dt*7
+                        this.pos[2]+=d[1]*dt*7
+                        this.running=true
+                    }
+                    
+                    this.damageTimer-=dt
+                    
+                    if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])<this.bodySize&&this.damageTimer<=0){
+                        
+                        player.damage(35)
+                        this.damageTimer=1
+                    }
+
+                    this.pos[3]=Math.atan2(d[1],d[0])+MATH.HALF_PI+Math.sin(TIME*30)*0.2
+
+                } else {
+
+                    textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV.smiley,0.75,0,0,-2,-2,0)
                 }
                 
                 this.pos[1]+=1
@@ -13000,8 +13063,6 @@ class MondoChick {
                 }
                 
                 this.fallenEggShellEffect-=dt*15
-                
-                this.pos[3]=Math.atan2(d[1],d[0])+MATH.HALF_PI+Math.sin(TIME*30)*0.2
                 
                 gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
                 gl.uniform2f(glCache.mob_instanceInfo2,1,1)
@@ -13041,6 +13102,8 @@ class RogueViciousBee {
         this.addSpikeAttackTimer=0
         this.nextAttackTimer=0
         this.attackAlternate=0
+
+        this.mindHacked=0
     }
     
     die(index){
@@ -13052,6 +13115,9 @@ class RogueViciousBee {
         
         let crit=Math.random()<player.criticalChance,superCrit=Math.random()<player.superCritChance,d=am*(crit?superCrit?player.superCritPower*player.criticalPower:player.criticalPower:1)
         
+        if(this.mindHacked>0)
+            d*=1.25
+
         this.health-=d|0
         textRenderer.add((d|0)+'',[this.pos[0],this.pos[1]+Math.random()*2.75+1.5,this.pos[2]],[255,0,0],crit?superCrit?2:1:0,'',[0,1.25,1.275,1.3,1.65,1.75][Math.min(d.toString().length),5])
     }
@@ -13097,6 +13163,7 @@ class RogueViciousBee {
                     return
                 }
                 
+                this.mindHacked-=dt
                 this.timeLimit-=dt
                 this.starSawHitTimer-=dt
                 this.flameTimer-=dt
@@ -13119,100 +13186,109 @@ class RogueViciousBee {
                     player.attacked.push(this)
                 }
                 
-                let d=[this.target[0]-this.pos[0],this.target[1]-this.pos[2]]
+                if(this.mindHacked<=0){
 
-                if(Math.abs(d[0])+Math.abs(d[1])<0.75&&this.attackState===undefined){
+                    let d=[this.target[0]-this.pos[0],this.target[1]-this.pos[2]]
 
-                    this.attackState=(this.attackAlternate++)%2
-                    this.nextAttackTimer=7.5
+                    if(Math.abs(d[0])+Math.abs(d[1])<0.75&&this.attackState===undefined){
 
-                } else if(this.attackState===undefined){
-                    
-                    vec2.normalize(d,d)
-                    
-                    this.pos[0]+=d[0]*dt*6
-                    this.pos[2]+=d[1]*dt*6
+                        this.attackState=(this.attackAlternate++)%2
+                        this.nextAttackTimer=7.5
 
-                    meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1.5,d[0],0,d[1],BEE_FLY,beeInfo.vicious.u,beeInfo.vicious.v,beeInfo.vicious.meshPartId)
-                }
-
-                if(this.nextAttackTimer<=0){
-
-                    this.target=[fieldInfo[this.field].x+((Math.random()*fieldInfo[this.field].width)|0),fieldInfo[this.field].z+((Math.random()*fieldInfo[this.field].length)|0)]
-                    this.attackState=undefined
-                    this.nextAttackTimer=Infinity
-                }
-
-                if(this.attackState===0){
-
-                    this.nextAttackTimer-=dt
-                    this.addSpikeAttackTimer-=dt
-
-                    meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1.5,Math.sin(TIME*8),0,Math.cos(TIME*8),BEE_FLY,beeInfo.vicious.u,beeInfo.vicious.v,beeInfo.vicious.meshPartId)
-
-                    if(this.addSpikeAttackTimer<=0){
-
-                        this.spikes.push({pos:[fieldInfo[this.field].x+((Math.random()*fieldInfo[this.field].width)|0),fieldInfo[this.field].y+0.51-10,fieldInfo[this.field].z+((Math.random()*fieldInfo[this.field].length)|0),0],life:2.5,glow:0,y:fieldInfo[this.field].y+0.51})
-
-                        this.addSpikeAttackTimer=0.15
-                    }
-
-                } else if(this.attackState===1){
-                    
-                    this.nextAttackTimer-=dt
-                    this.addSpikeAttackTimer-=dt
-
-                    meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1.5,player.body.position.x-this.pos[0],player.body.position.y-this.pos[1],player.body.position.z-this.pos[2],BEE_FLY,beeInfo.vicious.u,beeInfo.vicious.v,beeInfo.vicious.meshPartId)
-
-                    if(this.addSpikeAttackTimer<=0){
-
-                        this.spikes.push({pos:[fieldInfo[this.field].x+player.flowerIn.x,fieldInfo[this.field].y+0.51-10,fieldInfo[this.field].z+player.flowerIn.z,0],life:2.5,glow:0,y:fieldInfo[this.field].y+0.51})
-
-                        this.addSpikeAttackTimer=0.5
-                    }
-                }
-
-                gl.bindBuffer(gl.ARRAY_BUFFER,meshes.spike.vertBuffer)
-                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.spike.indexBuffer)
-                gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
-                gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
-                gl.uniform2f(glCache.mob_instanceInfo2,0.5,1)
-                
-                for(let i=this.spikes.length;i--;){
-
-                    let s=this.spikes[i]
-
-                    this.spikes[i].life-=dt
-                    this.spikes[i].glow+=dt
-
-                    if(s.life<1&&s.life>0.5){
+                    } else if(this.attackState===undefined){
                         
-                        s.pos[1]+=(s.y+2-s.pos[1])*dt*22
-
-                        meshes.cylinder_explosions.instanceData.push(s.pos[0],s.y,s.pos[2],1,0,0,s.glow,1.5,0.001)
-
-                    } else if(s.life<0.5){
+                        vec2.normalize(d,d)
                         
-                        s.pos[1]+=(s.y-10-s.pos[1])*dt*10
+                        this.pos[0]+=d[0]*dt*6
+                        this.pos[2]+=d[1]*dt*6
 
-                    } else {
-
-                        meshes.cylinder_explosions.instanceData.push(s.pos[0],s.y,s.pos[2],1,0,0,s.glow,1.5,0.001)
+                        meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1.5,d[0],0,d[1],BEE_FLY,beeInfo.vicious.u,beeInfo.vicious.v,beeInfo.vicious.meshPartId)
                     }
 
-                    if(Math.abs(player.body.position.x-s.pos[0])+Math.abs(player.body.position.z-s.pos[2])+Math.abs(s.pos[1]-player.body.position.y)<1.5&&!s.damaged){
+                    if(this.nextAttackTimer<=0){
 
-                        s.damaged=true
-                        player.damage(40)
+                        this.target=[fieldInfo[this.field].x+((Math.random()*fieldInfo[this.field].width)|0),fieldInfo[this.field].z+((Math.random()*fieldInfo[this.field].length)|0)]
+                        this.attackState=undefined
+                        this.nextAttackTimer=Infinity
                     }
 
-                    gl.uniform4fv(glCache.mob_instanceInfo1,s.pos)
-                    gl.drawElements(gl.TRIANGLES,meshes.spike.indexAmount,gl.UNSIGNED_SHORT,0)
+                    if(this.attackState===0){
 
-                    if(s.life<=0){
+                        this.nextAttackTimer-=dt
+                        this.addSpikeAttackTimer-=dt
 
-                        this.spikes.splice(i,1)
+                        meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1.5,Math.sin(TIME*8),0,Math.cos(TIME*8),BEE_FLY,beeInfo.vicious.u,beeInfo.vicious.v,beeInfo.vicious.meshPartId)
+
+                        if(this.addSpikeAttackTimer<=0){
+
+                            this.spikes.push({pos:[fieldInfo[this.field].x+((Math.random()*fieldInfo[this.field].width)|0),fieldInfo[this.field].y+0.51-10,fieldInfo[this.field].z+((Math.random()*fieldInfo[this.field].length)|0),0],life:2.5,glow:0,y:fieldInfo[this.field].y+0.51})
+
+                            this.addSpikeAttackTimer=0.15
+                        }
+
+                    } else if(this.attackState===1){
+                        
+                        this.nextAttackTimer-=dt
+                        this.addSpikeAttackTimer-=dt
+
+                        meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1.5,player.body.position.x-this.pos[0],player.body.position.y-this.pos[1],player.body.position.z-this.pos[2],BEE_FLY,beeInfo.vicious.u,beeInfo.vicious.v,beeInfo.vicious.meshPartId)
+
+                        if(this.addSpikeAttackTimer<=0){
+
+                            this.spikes.push({pos:[fieldInfo[this.field].x+player.flowerIn.x,fieldInfo[this.field].y+0.51-10,fieldInfo[this.field].z+player.flowerIn.z,0],life:2.5,glow:0,y:fieldInfo[this.field].y+0.51})
+
+                            this.addSpikeAttackTimer=0.5
+                        }
                     }
+
+                    gl.bindBuffer(gl.ARRAY_BUFFER,meshes.spike.vertBuffer)
+                    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.spike.indexBuffer)
+                    gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
+                    gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
+                    gl.uniform2f(glCache.mob_instanceInfo2,0.5,1)
+                    
+                    for(let i=this.spikes.length;i--;){
+
+                        let s=this.spikes[i]
+
+                        this.spikes[i].life-=dt
+                        this.spikes[i].glow+=dt
+
+                        if(s.life<1&&s.life>0.5){
+                            
+                            s.pos[1]+=(s.y+2-s.pos[1])*dt*22
+
+                            meshes.cylinder_explosions.instanceData.push(s.pos[0],s.y,s.pos[2],1,0,0,s.glow,1.5,0.001)
+
+                        } else if(s.life<0.5){
+                            
+                            s.pos[1]+=(s.y-10-s.pos[1])*dt*10
+
+                        } else {
+
+                            meshes.cylinder_explosions.instanceData.push(s.pos[0],s.y,s.pos[2],1,0,0,s.glow,1.5,0.001)
+                        }
+
+                        if(Math.abs(player.body.position.x-s.pos[0])+Math.abs(player.body.position.z-s.pos[2])+Math.abs(s.pos[1]-player.body.position.y)<1.5&&!s.damaged){
+
+                            s.damaged=true
+                            player.damage(40)
+                        }
+
+                        gl.uniform4fv(glCache.mob_instanceInfo1,s.pos)
+                        gl.drawElements(gl.TRIANGLES,meshes.spike.indexAmount,gl.UNSIGNED_SHORT,0)
+
+                        if(s.life<=0){
+
+                            this.spikes.splice(i,1)
+                        }
+                    }
+
+                } else {
+
+                    meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1.5,Math.random()-0.5,Math.random()-0.5,Math.random()-0.5,BEE_FLY,beeInfo.vicious.u,beeInfo.vicious.v,beeInfo.vicious.meshPartId)
+
+                    textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV.smiley,0.75,0,0,-2,-2,0)
                 }
                 
                 this.pos[1]+=1.25
