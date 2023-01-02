@@ -2935,29 +2935,29 @@ w, in coco: 549b, 746b,
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js'></script>
 
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/dialogue.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/textures.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/playerGear.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/MathHelper.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/GLSLShaders.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/mapMesh.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_popStar.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_scorchingStar.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_gummyStar.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_frog.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_inflateBalloons.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_haste.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_bombToken.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_markToken.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_melodyToken.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_focusToken.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_rageToken.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_surpriseParty.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_infernoToken.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_flameFuelToken.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_babyLove.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_boostToken.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@1.7.8/music_inspireToken.js"></script>
+<script src="dialogue.js"></script>
+<script src="textures.js"></script>
+<script src="playerGear.js"></script>
+<script src="MathHelper.js"></script>
+<script src="GLSLShaders.js"></script>
+<script src="mapMesh.js"></script>
+<script src="music_popStar.js"></script>
+<script src="music_scorchingStar.js"></script>
+<script src="music_gummyStar.js"></script>
+<script src="music_frog.js"></script>
+<script src="music_inflateBalloons.js"></script>
+<script src="music_haste.js"></script>
+<script src="music_bombToken.js"></script>
+<script src="music_markToken.js"></script>
+<script src="music_melodyToken.js"></script>
+<script src="music_focusToken.js"></script>
+<script src="music_rageToken.js"></script>
+<script src="music_surpriseParty.js"></script>
+<script src="music_infernoToken.js"></script>
+<script src="music_flameFuelToken.js"></script>
+<script src="music_babyLove.js"></script>
+<script src="music_boostToken.js"></script>
+<script src="music_inspireToken.js"></script>
 
 <script type='application/javascript'>
 
@@ -20424,20 +20424,20 @@ verts.push(
     v[5][0],v[5][1],v[5][2],0,h,0.85,0,
     v[6][0],v[6][1],v[6][2],w,h,0.85,0,
     
-    v[0][0],v[0][1],v[0][2],e,w+w-e-e,0.9,0,
-    v[3][0],v[3][1],v[3][2],e,w+w-e-e,0.9,0,
-    v[4][0],v[4][1],v[4][2],e,w+w-e-e,0.9,0,
-    v[7][0],v[7][1],v[7][2],e,w+w-e-e,0.9,0,
+    v[0][0],v[0][1],v[0][2],e,w+w-e,0.9,0,
+    v[3][0],v[3][1],v[3][2],e,w+w-e,0.9,0,
+    v[4][0],v[4][1],v[4][2],e,w+w-e,0.9,0,
+    v[7][0],v[7][1],v[7][2],e,w+w-e,0.9,0,
     
-    v[2][0],v[2][1],v[2][2],0,0+w-e-e,0.75,0,
-    v[3][0],v[3][1],v[3][2],0,h+w-e-e,0.75,0,
-    v[6][0],v[6][1],v[6][2],w,0+w-e-e,0.75,0,
-    v[7][0],v[7][1],v[7][2],w,h+w-e-e,0.75,0,
+    v[2][0],v[2][1],v[2][2],0,0+w,0.75,0,
+    v[3][0],v[3][1],v[3][2],0,h+w,0.75,0,
+    v[6][0],v[6][1],v[6][2],w,0+w,0.75,0,
+    v[7][0],v[7][1],v[7][2],w,h+w,0.75,0,
     
-    v[0][0],v[0][1],v[0][2],0,h+w-e-e,0.8,0,
-    v[1][0],v[1][1],v[1][2],0,0+w-e-e,0.8,0,
-    v[4][0],v[4][1],v[4][2],w,h+w-e-e,0.8,0,
-    v[5][0],v[5][1],v[5][2],w,0+w-e-e,0.8,0,
+    v[0][0],v[0][1],v[0][2],0,h+w,0.8,0,
+    v[1][0],v[1][1],v[1][2],0,0+w,0.8,0,
+    v[4][0],v[4][1],v[4][2],w,h+w,0.8,0,
+    v[5][0],v[5][1],v[5][2],w,0+w,0.8,0,
     
     v[4][0],v[4][1],v[4][2],0,l+w,0.95,0,
     v[5][0],v[5][1],v[5][2],0,0+w,0.95,0,
@@ -20548,10 +20548,29 @@ _c(0,0.175,0.125,0.16,0.05,10,0.1,-0.13,14)
 _c(0,0.22,0.125,0.1,0.05,10,0.01,0.09,14)
 _c(0,0.3375,0.125,0.1,0.0675,10,0.1,-0.13,14)
 
-
 _c(0,0.35,0.175,0,0.25,10,0.1,-0.13,15,0,0,0,0.075)
 _c(0,0.275,-0.1,0,0.25,10,0.1,-0.13,15,-30,0,0,0.075)
 _c(0,0.2,-0.3,0,0.25,10,0.1,-0.13,15,-45,0,0,0.075)
+
+_c(0.2,0.2,0.3-0.05+0.01,0.1,0.05,10,0.01,0.01,16,-90,0,0,0.1,0.85)
+_c(-0.2,0.2,0.3-0.05+0.01,0.1,0.05,10,0.01,0.01,16,-90,0,0,0.1,0.85)
+
+_c(0.275,0.04,0.15,0.2,0.02,10,0.01,0.09,17,0,0,-60,0.2,0.9)
+_c(-0.275,0.04,0.15,0.2,0.02,10,0.01,0.09,17,0,0,60,0.2,0.9)
+
+_b(0,0.175,-0.4*0.5-0.025,0.375+0.1,0.2,0.4*0.5+0.05,0.03,0.09,18)
+_b(0,0.175,0.4*0.5+0.025,0.375+0.1,0.2,0.4*0.5+0.05,0.03,0.09,18)
+_b(0,0.175,0,0.375+0.1,0.2,0.4*0.5,0.01,0.01,18)
+_c(0,0.2+0.1+0.02,0,0.13,0.04,4,0.001,0.001,18,0,45,0,0.05)
+_c(0,0.2+0.1+0.04,0,0.05,0.04,4,0.001,0.001,18,0,0,0,0.13)
+
+_b(0.2+0.025,0,0.21,0.05,0.45,0.25,0.01,0.09,19,0,0,0,1.25)
+_b(-0.2-0.025,0,0.21,0.05,0.45,0.25,0.01,0.09,19,0,0,0,1.25)
+_b(0,0.2+0.025,0.21,0.45,0.05,0.25,0.01,0.09,19,0,0,0,1.25)
+_b(0,-0.2-0.025+0.01,0.21,0.45,0.05,0.25,0.01,0.09,19,0,0,0,1.25)
+_c(0,0.2+0.05,0.2,0.075,0.02,10,0.01,0.12,19,0,0,0)
+_c(0,0.2+0.1,0.2,0.02,0.1,10,0.01,0.12,19,0,0,0)
+_b(0,0.2+0.1+0.1,0.2,0.1,0.1,0.1,0.01,0.08,19,0,0,0,100)
 
 function fluff(x,y,z,r,s){
     
@@ -20572,8 +20591,10 @@ function fluff(x,y,z,r,s){
     index.push(vl,vl+1,vl+2,vl+2,vl+1,vl)
 }
 
-function _b(x,y,z,w,h,l,uvcolx,uvcoly,id,rx=0,ry=0,rz=0){
+function _b(x,y,z,w,h,l,uvcolx,uvcoly,id,rx=0,ry=0,rz=0,shade){
     
+    shade=shade??1
+
     let v=[
         
         [-0.5*w,0.5*h,-0.5*l],
@@ -20599,35 +20620,35 @@ function _b(x,y,z,w,h,l,uvcolx,uvcoly,id,rx=0,ry=0,rz=0){
     
     verts.push(
         
-        v[0][0],v[0][1],v[0][2],uvcolx,uvcoly,1,id,
-        v[1][0],v[1][1],v[1][2],uvcolx,uvcoly,1,id,
-        v[2][0],v[2][1],v[2][2],uvcolx,uvcoly,1,id,
-        v[3][0],v[3][1],v[3][2],uvcolx,uvcoly,1,id,
+        v[0][0],v[0][1],v[0][2],uvcolx,uvcoly,1*shade,id,
+        v[1][0],v[1][1],v[1][2],uvcolx,uvcoly,1*shade,id,
+        v[2][0],v[2][1],v[2][2],uvcolx,uvcoly,1*shade,id,
+        v[3][0],v[3][1],v[3][2],uvcolx,uvcoly,1*shade,id,
         
-        v[1][0],v[1][1],v[1][2],uvcolx,uvcoly,0.85,id,
-        v[2][0],v[2][1],v[2][2],uvcolx,uvcoly,0.85,id,
-        v[5][0],v[5][1],v[5][2],uvcolx,uvcoly,0.85,id,
-        v[6][0],v[6][1],v[6][2],uvcolx,uvcoly,0.85,id,
+        v[1][0],v[1][1],v[1][2],uvcolx,uvcoly,0.85*shade,id,
+        v[2][0],v[2][1],v[2][2],uvcolx,uvcoly,0.85*shade,id,
+        v[5][0],v[5][1],v[5][2],uvcolx,uvcoly,0.85*shade,id,
+        v[6][0],v[6][1],v[6][2],uvcolx,uvcoly,0.85*shade,id,
         
-        v[0][0],v[0][1],v[0][2],uvcolx,uvcoly,0.9,id,
-        v[3][0],v[3][1],v[3][2],uvcolx,uvcoly,0.9,id,
-        v[4][0],v[4][1],v[4][2],uvcolx,uvcoly,0.9,id,
-        v[7][0],v[7][1],v[7][2],uvcolx,uvcoly,0.9,id,
+        v[0][0],v[0][1],v[0][2],uvcolx,uvcoly,0.9*shade,id,
+        v[3][0],v[3][1],v[3][2],uvcolx,uvcoly,0.9*shade,id,
+        v[4][0],v[4][1],v[4][2],uvcolx,uvcoly,0.9*shade,id,
+        v[7][0],v[7][1],v[7][2],uvcolx,uvcoly,0.9*shade,id,
         
-        v[2][0],v[2][1],v[2][2],uvcolx,uvcoly,0.75,id,
-        v[3][0],v[3][1],v[3][2],uvcolx,uvcoly,0.75,id,
-        v[6][0],v[6][1],v[6][2],uvcolx,uvcoly,0.75,id,
-        v[7][0],v[7][1],v[7][2],uvcolx,uvcoly,0.75,id,
+        v[2][0],v[2][1],v[2][2],uvcolx,uvcoly,0.75*shade,id,
+        v[3][0],v[3][1],v[3][2],uvcolx,uvcoly,0.75*shade,id,
+        v[6][0],v[6][1],v[6][2],uvcolx,uvcoly,0.75*shade,id,
+        v[7][0],v[7][1],v[7][2],uvcolx,uvcoly,0.75*shade,id,
         
-        v[0][0],v[0][1],v[0][2],uvcolx,uvcoly,0.8,id,
-        v[1][0],v[1][1],v[1][2],uvcolx,uvcoly,0.8,id,
-        v[4][0],v[4][1],v[4][2],uvcolx,uvcoly,0.8,id,
-        v[5][0],v[5][1],v[5][2],uvcolx,uvcoly,0.8,id,
+        v[0][0],v[0][1],v[0][2],uvcolx,uvcoly,0.8*shade,id,
+        v[1][0],v[1][1],v[1][2],uvcolx,uvcoly,0.8*shade,id,
+        v[4][0],v[4][1],v[4][2],uvcolx,uvcoly,0.8*shade,id,
+        v[5][0],v[5][1],v[5][2],uvcolx,uvcoly,0.8*shade,id,
         
-        v[4][0],v[4][1],v[4][2],uvcolx,uvcoly,0.95,id,
-        v[5][0],v[5][1],v[5][2],uvcolx,uvcoly,0.95,id,
-        v[6][0],v[6][1],v[6][2],uvcolx,uvcoly,0.95,id,
-        v[7][0],v[7][1],v[7][2],uvcolx,uvcoly,0.95,id
+        v[4][0],v[4][1],v[4][2],uvcolx,uvcoly,0.95*shade,id,
+        v[5][0],v[5][1],v[5][2],uvcolx,uvcoly,0.95*shade,id,
+        v[6][0],v[6][1],v[6][2],uvcolx,uvcoly,0.95*shade,id,
+        v[7][0],v[7][1],v[7][2],uvcolx,uvcoly,0.95*shade,id
     )
     
     let ind=[0,1,2,
@@ -20653,7 +20674,7 @@ function _b(x,y,z,w,h,l,uvcolx,uvcoly,id,rx=0,ry=0,rz=0){
 
 }
 
-function _c(x,y,z,r,h,s,uvcolx,uvcoly,id,rx=0,ry=0,rz=0,r2){
+function _c(x,y,z,r,h,s,uvcolx,uvcoly,id,rx=0,ry=0,rz=0,r2,shade){
     
     let si=verts.length,vl=si/7
     r2=r2??r
@@ -20662,8 +20683,8 @@ function _c(x,y,z,r,h,s,uvcolx,uvcoly,id,rx=0,ry=0,rz=0,r2){
         
         let s=Math.sin(i),c=Math.cos(i)
         
-        verts.push(s*r,h,c*r,uvcolx,uvcoly,c*0.2+0.8,id,
-                    s*r2,-h,c*r2,uvcolx,uvcoly,c*0.25+0.75,id)
+        verts.push(s*r,h,c*r,uvcolx,uvcoly,shade?shade:c*0.2+0.8,id,
+                    s*r2,-h,c*r2,uvcolx,uvcoly,shade?shade:c*0.25+0.75,id)
         
     }
     
@@ -22545,8 +22566,6 @@ function loop(now){
     gl.uniformMatrix4fv(glCache.mob_viewMatrix,gl.FALSE,player.viewMatrix)
     
     if(user.keys.o){
-
-        objects.mobs.push(new Spike())
 
         for(let i in objects.planters){
 

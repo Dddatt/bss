@@ -4364,6 +4364,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.translate(-128/2,-128/2-18)
     tex_ctx.fillStyle='#227d3d'
     tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillStyle='#cd4242'
+    tex_ctx.fillRect(0,0,5,5)
     tex_ctx.fillStyle='#ad2222'
     tex_ctx.fillRect(0,128-1,128,128/3|0)
     tex_ctx.fillRect(0,213,128,128/3|0+1)
@@ -4403,7 +4405,7 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.translate(-128/2,-128/2)
     tex_ctx.fillStyle='#BAB088'
     tex_ctx.fillRect(0,127,128,128)
-    tex_ctx.fillStyle='#E7DAAA'
+    tex_ctx.fillStyle='rgb(0,255,0)'
     tex_ctx.fillRect(0,128-1,128,128/3|0|0)
     tex_ctx.fillStyle='#717779'
     tex_ctx.fillRect(0,213,128,128/3|0|0+1)
@@ -6138,6 +6140,8 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillStyle='#ad2222'
     tex_ctx.fillRect(0,128-1,128,128/3|0)
     tex_ctx.fillRect(0,213,128,128/3|0+1)
+    tex_ctx.fillStyle='rgb(255,235,50)'
+    tex_ctx.fillRect(0,0,5,5)
     star('rgb(252, 221, 221)')
     tex_ctx.setTransform(1,0,0,1,0,0)
     
@@ -6175,7 +6179,7 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.translate(-128/2,-128/2)
     tex_ctx.fillStyle='rgb(100,100,100)'
     tex_ctx.fillRect(0,127,128,128)
-    tex_ctx.fillStyle='rgb(200,200,200)'
+    tex_ctx.fillStyle='rgb(255,0,255)'
     tex_ctx.fillRect(0,128-1,128,128/3|0|0)
     tex_ctx.fillStyle='rgb(0,0,0)'
     tex_ctx.fillRect(0,213,128,128/3|0|0+1)
