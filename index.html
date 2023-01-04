@@ -8053,7 +8053,6 @@ let items={
             }
 
             player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee=permBeeStats.join(',')
-            console.log(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee)
 
             player.updateBeequipPage()
             player.updateHive()
@@ -10123,6 +10122,7 @@ class Bee {
                             
                             let h=(this.attack+player[beeInfo[this.type].color+'BeeAttack'])*player.beeAttack*(this.type==='precise'?this.gifted?2.25:1.5:1)
                             
+                            console.log(this.attackMob)
                             this.attackMob.damage(h)
                             
                             if(this.type==='precise'){
@@ -12550,7 +12550,7 @@ class Beetle {
                                     
                                     this.lungeState=1
                                     
-                                    if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])<1.75){
+                                    if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1])+Math.abs(player.body.position.z-this.pos[2])<1.75){
                                         player.damage(20)
                                     }
                                 }
@@ -13049,7 +13049,7 @@ class MondoChick {
                     
                     this.damageTimer-=dt
                     
-                    if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])<this.bodySize&&this.damageTimer<=0){
+                    if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1])+Math.abs(player.body.position.z-this.pos[2])<this.bodySize&&this.damageTimer<=0){
                         
                         player.damage(35)
                         this.damageTimer=1
@@ -13335,20 +13335,49 @@ class RogueViciousBee {
 
 class Ant {
     
-    constructor(round,x,z){
+    constructor(round,x,z,type){
+
+        this.type=type
+        this.displayName=MATH.doGrammar(type)
+        this.mesh=type
+        this.meshScale=0.75
+        this.level=((round*MATH.random(0.4,0.6)*0.5)|0)+1
+        this.health=((this.level*MATH.random(125,250))|0)+15
+        this.movespeed=2.25
+        this.attack=10
+
+        switch(type){
+
+            case 'ant':break
+            case 'fireAnt':break
+            case 'armyAnt':
+                this.health=(this.health*1.5)|0
+                this.attack*=2
+            break
+            case 'flyingAnt':
+                this.health=(this.health*0.65)|0
+                this.movespeed*=2
+                this.attack*=1.25
+            break
+            case 'giantAnt':
+                this.health=(this.health*3)|0
+                this.movespeed*=0.75
+                this.attack*=2
+                this.meshScale=1.5
+                this.mesh='ant'
+            break
+        }
 
         this.state='spawning'
         this.field='AntField'
         this.starSawHitTimer=0
-        this.level=((round*MATH.random(0.3,0.7)*0.5)|0)+1
-        this.health=((this.level*MATH.random(125,250))|0)+15
         this.maxHealth=this.health
         this.spawnPos=[-21,7,-61]
-        this.pos=[fieldInfo[this.field].x+((x*fieldInfo[this.field].width)|0),fieldInfo[this.field].y+1,fieldInfo[this.field].z+((z*fieldInfo[this.field].length)|0)]
+        this.pos=[fieldInfo[this.field].x+((x*fieldInfo[this.field].width)|0),fieldInfo[this.field].y+this.meshScale,fieldInfo[this.field].z+((z*fieldInfo[this.field].length)|0)]
         this.flameTimer=0
         this.waitTimer=0
         this.damageTimer=0
-        this.bodySize=1.5
+        this.bodySize=1
 
         this.mindHacked=0
 
@@ -13365,6 +13394,8 @@ class Ant {
             minZ:fieldInfo[this.field].z+1,
             maxZ:fieldInfo[this.field].z+fieldInfo[this.field].length-1,
         }
+
+        this.fireTrailTimer=0
     }
     
     die(index){
@@ -13401,13 +13432,13 @@ class Ant {
                     this.state='attack'
                 }
 
-                gl.bindBuffer(gl.ARRAY_BUFFER,meshes.ant.vertBuffer)
-                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.ant.indexBuffer)
+                gl.bindBuffer(gl.ARRAY_BUFFER,meshes[this.mesh].vertBuffer)
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes[this.mesh].indexBuffer)
                 gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
                 gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
-                gl.uniform2f(glCache.mob_instanceInfo2,1,1)
+                gl.uniform2f(glCache.mob_instanceInfo2,this.meshScale,1)
                 gl.uniform4fv(glCache.mob_instanceInfo1,[this.spawnPos[0],this.spawnPos[1],this.spawnPos[2],0])
-                gl.drawElements(gl.TRIANGLES,meshes.ant.indexAmount,gl.UNSIGNED_SHORT,0)
+                gl.drawElements(gl.TRIANGLES,meshes[this.mesh].indexAmount,gl.UNSIGNED_SHORT,0)
 
             break
             
@@ -13439,9 +13470,27 @@ class Ant {
                 player.attacked.push(this)
             
                 if(this.mindHacked<=0){
+
+                    if(this.type==='fireAnt'){
+
+                        this.fireTrailTimer-=dt
+
+                        if(this.fireTrailTimer<=0){
+
+                            objects.mobs.push(new FireTrail(this.pos.slice()))
+                            this.fireTrailTimer=0.75
+                        }
+                    }
                     
-                    this.pos[0]+=this.dir[0]*dt*3
-                    this.pos[2]+=this.dir[1]*dt*3
+                    if(this.type==='armyAnt'||this.type==='flyingAnt'||this.type==='giantAnt'){
+
+                        this.dir=[player.body.position.x-this.pos[0],player.body.position.z-this.pos[2]]
+
+                        vec2.normalize(this.dir,this.dir)
+                    }
+
+                    this.pos[0]+=this.dir[0]*dt*this.movespeed
+                    this.pos[2]+=this.dir[1]*dt*this.movespeed
 
                     this.pos[3]=Math.atan2(this.dir[1],this.dir[0])+MATH.HALF_PI
 
@@ -13471,9 +13520,9 @@ class Ant {
 
                     this.damageTimer-=dt
                     
-                    if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])<this.bodySize&&this.damageTimer<=0){
+                    if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1])+Math.abs(player.body.position.z-this.pos[2])<this.bodySize*1.5&&this.damageTimer<=0){
                         
-                        player.damage(15)
+                        player.damage(this.attack)
                         this.damageTimer=0.75
                     }
 
@@ -13483,7 +13532,7 @@ class Ant {
                 }
                 
                 this.pos[1]+=1.25
-                textRenderer.addCTX('Ant (Level '+this.level+')',[this.pos[0],this.pos[1]+0.5,this.pos[2]],COLORS.whiteArr,100)
+                textRenderer.addCTX(this.displayName+' (Level '+this.level+')',[this.pos[0],this.pos[1]+0.5,this.pos[2]],COLORS.whiteArr,100)
                 
                 textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV['rect'],0.6,0,0,2.5,0.4,0)
                 textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.health/this.maxHealth)*0.5)/(this.health/this.maxHealth),0,...textRenderer.decalUV['rect'],0.2,0.85,0.2,this.health*2.5/this.maxHealth,0.4,0)
@@ -13492,19 +13541,56 @@ class Ant {
 
                 this.pos[1]-=1.25
 
-                gl.bindBuffer(gl.ARRAY_BUFFER,meshes.ant.vertBuffer)
-                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.ant.indexBuffer)
+                gl.bindBuffer(gl.ARRAY_BUFFER,meshes[this.mesh].vertBuffer)
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes[this.mesh].indexBuffer)
                 gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
                 gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
-                gl.uniform2f(glCache.mob_instanceInfo2,1,1)
                 gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
-                gl.drawElements(gl.TRIANGLES,meshes.ant.indexAmount,gl.UNSIGNED_SHORT,0)
+                gl.uniform2f(glCache.mob_instanceInfo2,this.meshScale,1)
+                gl.drawElements(gl.TRIANGLES,meshes[this.mesh].indexAmount,gl.UNSIGNED_SHORT,0)
                 
             break
             
         }
         
         return !player.antChallenge
+    }
+}
+
+class FireTrail {
+
+    constructor(pos){
+
+        this.life=7.5
+        this.pos=pos
+        this.damageTimer=0
+        this.particleTimer=0
+    }
+
+    die(index){
+
+        objects.mobs.splice(index,1)
+    }
+
+    update(){
+
+        this.life-=dt
+        this.damageTimer-=dt
+        this.particleTimer-=dt
+
+        if(this.particleTimer<=0){
+
+            this.particleTimer=0.75
+            ParticleRenderer.add({x:this.pos[0]+MATH.random(-0.5,0.5),y:this.pos[1],z:this.pos[2]+MATH.random(-0.5,0.5),vx:0,vy:0,vz:0,grav:0,size:200,col:[0.9,0,0],life:2,rotVel:MATH.random(-0.3,0.3),alpha:2})
+        }
+
+        if(this.damageTimer<=0&&Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1])+Math.abs(player.body.position.z-this.pos[2])<0.75){
+
+            this.damageTimer=1
+            player.damage(8)
+        }
+
+        return this.life<=0
     }
 }
 
@@ -16856,6 +16942,12 @@ player=(function(out){
         glitched:0
     }
 
+    out.endAntChallenge=function(){
+
+        out.addMessage('The Ant Challenge is over! Your score is '+out.antChallenge.score+'!')
+        out.antChallenge=false
+    }
+
     out.updateAntChallenge=function(){
 
         if(!out.antChallenge) return
@@ -16869,7 +16961,7 @@ player=(function(out){
             player.body.position.y=6
             player.body.position.z=-44.5
             player.yaw=0
-            out.antChallenge=false
+            out.endAntChallenge()
             return
         }
 
@@ -16915,11 +17007,11 @@ player=(function(out){
                     [0.9,0.1],
                     [0.1,0.9],
                 ],
-            ],p=_p[(Math.random()*_p.length)|0]
+            ],p=_p[(Math.random()*_p.length)|0],t=['ant','ant','ant','ant','ant','armyAnt','armyAnt','armyAnt','fireAnt','fireAnt','flyingAnt','flyingAnt','flyingAnt','giantAnt']
 
             for(let i in p){
 
-                objects.mobs.push(new Ant(out.antChallenge.round,...p[i]))
+                objects.mobs.push(new Ant(out.antChallenge.round,...p[i],t[(Math.random()*t.length)|0]))
             }
 
             if(Math.random()<0.25){
@@ -16930,7 +17022,7 @@ player=(function(out){
 
                     for(let i in p){
 
-                        objects.mobs.push(new Ant(out.antChallenge.round,...p[i]))
+                        objects.mobs.push(new Ant(out.antChallenge.round,...p[i],t[(Math.random()*t.length)|0]))
                     }
 
                 },750)                
@@ -17136,7 +17228,6 @@ player=(function(out){
             
         } else if(typeof NPCs[out.currentNPC].dialogue[NPCs[out.currentNPC].dialogueIndex]==='function'){
             
-            console.log(NPCs[out.currentNPC].dialogue[NPCs[out.currentNPC].dialogueIndex])
             NPCs[out.currentNPC].dialogue[NPCs[out.currentNPC].dialogueIndex]()
             NPCs[out.currentNPC].dialogueIndex++
             out.currentNPC=null
@@ -17315,7 +17406,7 @@ player=(function(out){
         out.body.position.x=10
         out.body.position.y=0
         out.body.position.z=0
-        out.antChallenge=false
+        out.endAntChallenge()
     }
     
     out.attacked=[]
@@ -21233,6 +21324,73 @@ gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.ant.indexBuffer)
 gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
 
 meshes.ant.indexAmount=index.length
+
+meshes.armyAnt={}
+meshes.armyAnt.vertBuffer=gl.createBuffer()
+meshes.armyAnt.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0,0,1,1,1.25,0.05,0.05,0.05)
+b(-0.3,0.65,-0.8,0.1,0.1,1,0,0,0,30,45,0)
+b(0.3,0.65,-0.8,0.1,0.1,1,0,0,0,30,-45,0)
+b(0.65,-0.5,0.4,0.7,0.1,0.1,0,0,0,0.00001,0,-30)
+b(0.65,-0.5,-0.4,0.7,0.1,0.1,0,0,0,0.00001,0,-30)
+b(-0.65,-0.5,0.4,0.7,0.1,0.1,0,0,0,0.00001,0,30)
+b(-0.65,-0.5,-0.4,0.7,0.1,0.1,0,0,0,0.00001,0,30)
+c(0,0,-0.7,0.2,0.1,10,0,0.7,0,0.001,0,0)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.armyAnt.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.armyAnt.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.armyAnt.indexAmount=index.length
+
+meshes.flyingAnt={}
+meshes.flyingAnt.vertBuffer=gl.createBuffer()
+meshes.flyingAnt.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0,0,1,1,1.25,0.05,0.05,0.05)
+b(-0.3,0.65,-0.8,0.1,0.1,1,0,0,0,30,45,0)
+b(0.3,0.65,-0.8,0.1,0.1,1,0,0,0,30,-45,0)
+b(0.65,-0.5,0.4,0.7,0.1,0.1,0,0,0,0.00001,0,-30)
+b(0.65,-0.5,-0.4,0.7,0.1,0.1,0,0,0,0.00001,0,-30)
+b(-0.65,-0.5,0.4,0.7,0.1,0.1,0,0,0,0.00001,0,30)
+b(-0.65,-0.5,-0.4,0.7,0.1,0.1,0,0,0,0.00001,0,30)
+
+b(-0.2,-0.5,0.25,0.25,0.05,0.4,0,0,0,0.00001,30,0)
+b(0.2,-0.5,0.25,0.25,0.05,0.4,0,0,0,0.00001,-30,0)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.flyingAnt.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.flyingAnt.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.flyingAnt.indexAmount=index.length
+
+meshes.fireAnt={}
+meshes.fireAnt.vertBuffer=gl.createBuffer()
+meshes.fireAnt.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0,0,1,1,1.25,1,0.05,0.05)
+b(-0.3,0.65,-0.8,0.1,0.1,1,0.8,0,0,30,45,0)
+b(0.3,0.65,-0.8,0.1,0.1,1,0.8,0,0,30,-45,0)
+b(0.65,-0.5,0.4,0.7,0.1,0.1,0.8,0,0,0.00001,0,-30)
+b(0.65,-0.5,-0.4,0.7,0.1,0.1,0.8,0,0,0.00001,0,-30)
+b(-0.65,-0.5,0.4,0.7,0.1,0.1,0.8,0,0,0.00001,0,30)
+b(-0.65,-0.5,-0.4,0.7,0.1,0.1,0.8,0,0,0.00001,0,30)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.fireAnt.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.fireAnt.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.fireAnt.indexAmount=index.length
 
 meshes.petalShuriken={}
 meshes.petalShuriken.vertBuffer=gl.createBuffer()
