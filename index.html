@@ -3419,25 +3419,17 @@ let triggers={
     
     enter_ant_challenge:{
 
-    minX:-21-2.5,maxX:-21+2.5,minY:5-3,maxY:5+5,minZ:-44-2.5,maxZ:-44+2.5,isMachine:true,message:'Enter Ant Challenge<br>(1 Ant Pass)',func:function(player){
+        minX:-21-2.5,maxX:-21+2.5,minY:5-3,maxY:5+5,minZ:-44-2.5,maxZ:-44+2.5,isMachine:true,message:'Enter Ant Challenge<br>(1 Ant Pass)',func:function(player){
             
             player.body.position.x=-21
             player.body.position.y=6
             player.body.position.z=-50
             player.yaw=0
-            player.antChallenge={timer:5*60,score:0,pollenReq:1000,pollenBeforeReq:player.stats.pollenFromAntField,spawnDelay:0,round:0}
+            player.antChallenge={timer:5*60,score:0,pollenReq:1000,pollenBeforeReq:player.stats.pollenFromAntField,spawnDelay:0,round:0,lawnMowerTimer:25}
         }
     },
 
-    blue_portal:{blue_portal:{
-
-        minX:-73-2,maxX:-73+2,minY:-3,maxY:3,minZ:31-2,maxZ:31+2,isMachine:true,message:'Use Blue Teleporter',func:function(player){
-
-            player.body.position.x=34.5
-            player.body.position.y=9.5
-            player.body.position.z=-23.2
-        }
-    },
+    blue_portal:{
 
         minX:-73-2,maxX:-73+2,minY:-3,maxY:3,minZ:31-2,maxZ:31+2,isMachine:true,message:'Use Blue Teleporter',func:function(player){
 
@@ -13343,8 +13335,9 @@ class Ant {
         this.meshScale=0.75
         this.level=((round*MATH.random(0.4,0.6)*0.5)|0)+1
         this.health=((this.level*MATH.random(125,250))|0)+15
-        this.movespeed=2.25
+        this.movespeed=2
         this.attack=10
+        this.bodySize=0.75
 
         switch(type){
 
@@ -13356,15 +13349,16 @@ class Ant {
             break
             case 'flyingAnt':
                 this.health=(this.health*0.65)|0
-                this.movespeed*=2
+                this.movespeed*=1.5
                 this.attack*=1.25
             break
             case 'giantAnt':
-                this.health=(this.health*3)|0
+                this.health=(this.health*2)|0
                 this.movespeed*=0.75
                 this.attack*=2
                 this.meshScale=1.5
                 this.mesh='ant'
+                this.bodySize=1
             break
         }
 
@@ -13377,7 +13371,6 @@ class Ant {
         this.flameTimer=0
         this.waitTimer=0
         this.damageTimer=0
-        this.bodySize=1
 
         this.mindHacked=0
 
@@ -13591,6 +13584,64 @@ class FireTrail {
         }
 
         return this.life<=0
+    }
+}
+
+class LawnMower {
+
+    constructor(round){
+
+        this.dir=Math.random()<0.5?-1:1
+
+        this.pos=[-21+this.dir*13,7,-55+(Math.random()<0.3333?-2.5:Math.random()<0.5?1.5:5.5),this.dir*MATH.HALF_PI]
+
+        this.warning=2
+        this.speed=Math.min(12.5+round*0.25,27.5)
+    }
+
+    die(index){
+
+        objects.mobs.splice(index,1)
+    }
+
+    update(){
+
+        if(this.warning>0){
+
+            this.warning-=dt
+
+            if(((this.warning*this.speed*0.35)|0)%2){
+
+                gl.bindBuffer(gl.ARRAY_BUFFER,meshes.lawnMowerWarning.vertBuffer)
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.lawnMowerWarning.indexBuffer)
+                gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
+                gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
+                gl.uniform2f(glCache.mob_instanceInfo2,1,1)
+                gl.uniform4fv(glCache.mob_instanceInfo1,[-21+this.dir*9.4,7.5,this.pos[2],0])
+                gl.drawElements(gl.TRIANGLES,meshes.lawnMowerWarning.indexAmount,gl.UNSIGNED_SHORT,0)
+
+            }
+
+        } else {
+
+            if(!this.damaged&&Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])<1.667){
+
+                this.damaged=true
+                player.damage(20)
+            }
+
+            this.pos[0]-=this.dir*dt*this.speed
+
+            gl.bindBuffer(gl.ARRAY_BUFFER,meshes.lawnMower.vertBuffer)
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.lawnMower.indexBuffer)
+            gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
+            gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
+            gl.uniform2f(glCache.mob_instanceInfo2,1,1)
+            gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
+            gl.drawElements(gl.TRIANGLES,meshes.lawnMower.indexAmount,gl.UNSIGNED_SHORT,0)
+        }
+
+        return this.pos[0]>-21+14||this.pos[0]<-21-14
     }
 }
 
@@ -16954,6 +17005,7 @@ player=(function(out){
 
         out.antChallenge.timer-=dt
         out.antChallenge.spawnDelay-=dt
+        out.antChallenge.lawnMowerTimer-=dt
 
         if(out.antChallenge.timer<=0){
 
@@ -16963,6 +17015,12 @@ player=(function(out){
             player.yaw=0
             out.endAntChallenge()
             return
+        }
+
+        if(out.antChallenge.lawnMowerTimer<=0){
+
+            objects.mobs.push(new LawnMower(out.antChallenge.round))
+            out.antChallenge.lawnMowerTimer=Math.max(-0.33333*out.antChallenge.round+15,2)
         }
 
         if(out.stats.pollenFromAntField-out.antChallenge.pollenBeforeReq>=out.antChallenge.pollenReq&&out.antChallenge.spawnDelay<=0){
@@ -18109,7 +18167,7 @@ player=(function(out){
         
         capacityBar.setAttribute('width',p*196)
         capacityBar.style.fill='rgb('+p*255*1.5+','+(1-p)*255*1.5+',0)'
-        out.health=Math.min(out.health+dt*1.5,100)
+        out.health=Math.min(out.health+dt*2.5,100)
         
         if(out.health<=0){
             
@@ -21409,6 +21467,36 @@ gl.bindBuffer(gl.ARRAY_BUFFER,meshes.petalShuriken.vertBuffer)
 gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.petalShuriken.indexBuffer)
 gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.lawnMower={}
+meshes.lawnMower.vertBuffer=gl.createBuffer()
+meshes.lawnMower.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0,0,4,2,3,0.9,0,0)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.lawnMower.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.lawnMower.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.lawnMower.indexAmount=index.length
+
+meshes.lawnMowerWarning={}
+meshes.lawnMowerWarning.vertBuffer=gl.createBuffer()
+meshes.lawnMowerWarning.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0,0,0.51,5.01,(10/3)+0.01,100,0,0)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.lawnMowerWarning.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.lawnMowerWarning.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.lawnMowerWarning.indexAmount=index.length
 
 meshes.petalShuriken.indexAmount=index.length
 
