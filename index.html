@@ -10050,7 +10050,7 @@ class Bee {
             this.state='moveToSleep'
         }
         
-        if(player.attacked.length>0&&(this.state!=='sleep'&&this.state!=='moveToSleep'&&this.state!=='attack'&&this.state!=='moveToAttack')){
+        if(player.attacked.length>0&&(this.state!=='sleep'&&this.state!=='moveToSleep'&&this.state!=='attack'&&this.state!=='moveToAttack')&&this.state!=='moveToTriangulate'&&this.state!=='moveToTargetPractice'&&this.state!=='shootTargetPractice'){
             
             this.attackMob=player.attacked[(Math.random()*player.attacked.length)|0]
             this.state='moveToAttack'
