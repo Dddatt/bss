@@ -17134,7 +17134,61 @@ player=(function(out){
 
         document.getElementById('amuletUI').style.display='block'
         document.getElementById('amuletType').innerHTML=MATH.doGrammar(type)
-        document.getElementById('oldAmuletStats').innerHTML=player.currentGear[prev_type]?player.currentGear[prev_type].split(',').map(x=>x.split(' ')[0]+' '+MATH.doGrammar(x.split(' ')[1])).map(x=>x[0]==='+'?'+'+((Number(x.substr(1,x.indexOf(' ')))*100)|0)+'%'+x.substr(x.indexOf(' '),x.length):x).join('<br>').replaceAll('*','x').replace(' Multiplier','').replaceAll(' Passive','').replaceAll('P ','Passive: '):'<p style="font-size:25px;padding-left:10px;margin-top:2px">None</p>'
+
+        let uncleaned=player.currentGear[prev_type]?player.currentGear[prev_type].split(','):[],cleaned=[]
+
+        for(let i in uncleaned){
+
+            if(!uncleaned[i]) continue
+
+            let a=uncleaned[i],a_num=a.substring(0,a.indexOf(' ')),a_stat=a.substring(a.indexOf(' ')+1,a.length),a_color=a_stat.toLowerCase().indexOf('red')>-1?'red':0
+
+            a_color=a_color||(a_stat.toLowerCase().indexOf('white')>-1?'white':0)
+            a_color=a_color||(a_stat.toLowerCase().indexOf('blue')>-1?'blue':0)
+
+            let isShared,got3Instances=[a_color]
+
+            for(let j in uncleaned){
+
+                let b=uncleaned[j],b_num=b.substring(0,b.indexOf(' ')),b_stat=b.substring(b.indexOf(' ')+1,b.length)
+
+                if(a!==b&&a_num===b_num){
+
+                    let b_color=b_stat.toLowerCase().indexOf('red')>-1?'red':0
+                    b_color=b_color||(b_stat.toLowerCase().indexOf('white')>-1?'white':0)
+                    b_color=b_color||(b_stat.toLowerCase().indexOf('blue')>-1?'blue':0)
+
+                    if(a_color!==b_color&&a_stat.replaceAll('White','').replaceAll('Red','').replaceAll('Blue','').replaceAll('red','').replaceAll('blue','').replaceAll('white','')===b_stat.replaceAll('White','').replaceAll('Red','').replaceAll('Blue','').replaceAll('red','').replaceAll('blue','').replaceAll('white','')){
+                        
+                        got3Instances.push(b_color)
+                        isShared=true
+                    }
+                }
+            }
+
+            if(isShared&&got3Instances.length===3&&got3Instances.indexOf('red')>-1&&got3Instances.indexOf('blue')>-1&&got3Instances.indexOf('white')>-1){
+
+                cleaned.push(a.replaceAll('White','').replaceAll('Red','').replaceAll('Blue','').replaceAll('red','').replaceAll('blue','').replaceAll('white',''))
+
+            } else {
+
+                cleaned.push(a)
+            }
+        }
+        
+        uncleaned=cleaned.slice()
+        cleaned=[]
+
+        for(let i in uncleaned){
+
+            if(cleaned.indexOf(uncleaned[i])<0){
+
+                cleaned.push(uncleaned[i])
+            }
+        }
+
+        document.getElementById('oldAmuletStats').innerHTML=player.currentGear[prev_type]?cleaned.map(x=>x.split(' ')[0]+' '+MATH.doGrammar(x.split(' ')[1])).map(x=>x[0]==='+'?'+'+((Number(x.substr(1,x.indexOf(' ')))*100)|0)+'%'+x.substr(x.indexOf(' '),x.length):x).join('<br>').replaceAll('*','x').replace(' Multiplier','').replaceAll(' Passive','').replaceAll('P ','Passive: '):'<p style="font-size:25px;padding-left:10px;margin-top:2px">None</p>'
+
         document.getElementById('newAmuletStats').innerHTML=amulet.map(x=>x.split(' ')[0]+' '+MATH.doGrammar(x.split(' ')[1].replace('INSTANT_CONVERSION','instantConversion').replace('POLLEN','pollen'))).map(x=>x[0]==='+'?'+'+((Number(x.substr(1,x.indexOf(' ')))*100)|0)+'%'+x.substr(x.indexOf(' '),x.length):x).join('<br>').replaceAll('*','x').replace(' Multiplier','').replaceAll(' Passive','').replaceAll('P ','Passive: ')
 
         document.getElementById('keepAmulet').onclick=function(){
