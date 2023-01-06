@@ -17106,10 +17106,10 @@ player=(function(out){
     out.showGeneratedAmulet=function(type,amulet){
 
         let prev_type=type.indexOf('Star')>-1?'Star':0
-        prev_type=prev_type||type.indexOf('Ant')>-1?'Ant':0
-        prev_type=prev_type||type.indexOf('Stickbug')>-1?'Stickbug':0
-        prev_type=prev_type||type.indexOf('Shell')>-1?'Shell':0
-        prev_type=prev_type||type.indexOf('Cog')>-1?'Cog':0
+        prev_type=prev_type||(type.indexOf('Ant')>-1?'Ant':0)
+        prev_type=prev_type||(type.indexOf('Stickbug')>-1?'Stickbug':0)
+        prev_type=prev_type||(type.indexOf('Shell')>-1?'Shell':0)
+        prev_type=prev_type||(type.indexOf('Cog')>-1?'Cog':0)
 
         if(prev_type){
 
