@@ -17226,20 +17226,9 @@ player=(function(out){
 
     out.sunSwitchTimer=60
     out.skyColor=[0.4,0.6,1]
-    out.updateMapLightTimer=0
     out.isNight=0.999
     
-    out.turnNight=function(){
-        
-        out.targetLight=NIGHT_DARKNESS
-    }
-    
-    out.turnDay=function(){
-        
-        out.targetLight=1
-    }
-    
-    out.turnDay()
+    out.targetLight=1
     
     out.radioactiveParticleTimer=0
     out.setting_enablePollenText=true
@@ -18618,15 +18607,17 @@ player=(function(out){
         if(out.sunSwitchTimer<=0){
             
             if(out.isNight<0.9){
-                
-                out.turnDay()
+
+                out.targetLight=1
                 out.sunSwitchTimer=4*60
                 
             } else {
                 
-                out.turnNight()
+                out.targetLight=NIGHT_DARKNESS
                 out.sunSwitchTimer=1.5*60
             }
+
+            UPDATE_MAP_MESH()
         }
         
         if(out.isNight!==out.targetLight){
@@ -18649,22 +18640,7 @@ player=(function(out){
             gl.uniform1f(glCache.mob_isNight,out.isNight)
             gl.useProgram(trailRendererProgram)
             gl.uniform1f(glCache.trail_isNight,out.isNight)
-            
-            out.updateMapLightTimer-=dt
-            
-            if(out.updateMapLightTimer<=0){
-                
-                UPDATE_MAP_MESH()
-                out.updateMapLightTimer=1
-                out.keepMapUpToDate=true
-            }
-            
-        } else if(out.keepMapUpToDate){
-            
-            out.keepMapUpToDate=false
-            UPDATE_MAP_MESH()
         }
-        
     }
     
     out.addMessage=function(m,color=[30,70,255]){
