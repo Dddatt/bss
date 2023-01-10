@@ -2187,8 +2187,8 @@ w, in coco: 549b, 746b,
         <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
         <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
         <text x='134' y='19' style='font-family:trebuchet ms;font-size:17px;' fill='rgb(0,0,0)' text-anchor='middle'>Ant Pass</text>
-        <text x='132' y='39' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>Used to activate and</text>
-        <text x='132' y='52' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>purchase special things!</text>
+        <text x='132' y='39' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>Grants you 1 addmission</text>
+        <text x='132' y='52' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>to the Ant Challenge!</text>
         <text id='antPass_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
         
         <g transform='translate(35,35)'>
@@ -3455,13 +3455,19 @@ let triggers={
     
     enter_ant_challenge:{
 
-        minX:-21-2.5,maxX:-21+2.5,minY:5-3,maxY:5+5,minZ:-44-2.5,maxZ:-44+2.5,isMachine:true,message:'Enter Ant Challenge<br>(1 Ant Pass)',func:function(player){
+        minX:-21-2.5,maxX:-21+2.5,minY:5-3,maxY:5+5,minZ:-44-2.5,maxZ:-44+2.5,isMachine:true,message:'Enter Ant Challenge<br>(1 Ant Pass)',requirements:function(player){
+            
+            if(items.antPass.amount<1) return 'You need 1 ant pass to enter the Ant Challenge'
+        
+        },func:function(player){
             
             player.body.position.x=-21
             player.body.position.y=6
             player.body.position.z=-50
             player.yaw=0
             player.antChallenge={timer:5*60,score:0,pollenReq:1000,pollenBeforeReq:player.stats.pollenFromAntField,spawnDelay:0,round:0,lawnMowerTimer:25}
+            items.antPass.amount--
+            player.updateInventory()
         }
     },
 
@@ -3813,12 +3819,15 @@ let triggers={
         isMachine:true,requirements:function(player){
             
             if(player.pollen<1) return 'You must have pollen to use the instant converter'
+            if(items.ticket.amount<1) return 'You need 1 ticket to use the instant converter'
         
         },minX:-39-4,maxX:-39+4,minY:30,maxY:37,minZ:88-4,maxZ:88+4,message:'Use Instant Converter<br>(1 Ticket)',func:function(player){
             
             textRenderer.add(player.pollen,[player.body.position.x,player.body.position.y+1,player.body.position.z],COLORS.honey,1,'⇆')
             player.honey+=Math.ceil(player.pollen*player.honeyPerPollen)
             player.pollen=0
+            items.ticket.amount--
+            player.updateInventory()
             
         }
     },
@@ -3828,12 +3837,15 @@ let triggers={
         isMachine:true,requirements:function(player){
             
             if(player.pollen<1) return 'You must have pollen to use the instant converter'
+            if(items.ticket.amount<1) return 'You need 1 ticket to use the instant converter'
         
         },minX:-69-3,maxX:-69+3,minY:11,maxY:17,minZ:62.5-2.5,maxZ:62.5+2.5,message:'Use Instant Converter<br>(1 Ticket)',func:function(player){
             
             textRenderer.add(player.pollen,[player.body.position.x,player.body.position.y+1,player.body.position.z],COLORS.honey,1,'⇆')
             player.honey+=Math.ceil(player.pollen*player.honeyPerPollen)
             player.pollen=0
+            items.ticket.amount--
+            player.updateInventory()
             
         }
     },
@@ -8032,6 +8044,18 @@ let tools={
 let howManyToFeed=document.getElementById('howManyToFeed'),howManyMessage=document.getElementById('howManyMessage'),feedAmount=document.getElementById('feedAmount')
 
 let items={
+
+    ticket:{
+        
+        amount:0,u:128*3/2048,v:128*10/2048,value:15,
+        use:function(){}
+    },
+
+    antPass:{
+        
+        amount:0,u:128*4/2048,v:128*10/2048,value:80,
+        use:function(){}
+    },
     
     softWax:{
         
