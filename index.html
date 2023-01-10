@@ -13003,7 +13003,7 @@ class MondoChick {
         this.waitTimer=0
         this.target=[this.pos[0],this.pos[2]]
         this.damageTimer=0
-        this.bodySize=2.25
+        this.bodySize=2.5
         this.timeLimit=10*60
         this.maxTimeLimit=this.timeLimit
         this.fallenEggShellEffect=0
@@ -13101,7 +13101,7 @@ class MondoChick {
                     
                     this.damageTimer-=dt
                     
-                    if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1])+Math.abs(player.body.position.z-this.pos[2])<this.bodySize&&this.damageTimer<=0){
+                    if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1]-2.5)+Math.abs(player.body.position.z-this.pos[2])<this.bodySize&&this.damageTimer<=0){
                         
                         player.damage(35)
                         this.damageTimer=1
