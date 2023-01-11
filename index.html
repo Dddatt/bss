@@ -3204,7 +3204,7 @@ document.getElementById('runFullScreen').addEventListener('click',function(){
     w.document.close()
 })
 
-let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,BEE_COLLECT=0,BEE_FLY=0,then,dt,frameCount=0,TIME=0,player,honeyMarkConvert=TIME,NIGHT_DARKNESS=0.7
+let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,BEE_COLLECT=0,BEE_FLY=0,then,dt,frameCount=0,TIME=0,player,honeyMarkConvert=TIME,NIGHT_DARKNESS=0.6
 
 gl.enable(gl.BLEND)
 gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)
@@ -17055,6 +17055,8 @@ player=(function(out){
 
     out.endAntChallenge=function(){
 
+        if(!out.antChallenge) return
+        
         out.addMessage('The Ant Challenge is over! Your score is '+out.antChallenge.score+'!')
         out.antChallenge=false
     }
@@ -18136,7 +18138,7 @@ player=(function(out){
         
         out.computeStats()
         
-        playerMesh.setMeshFromFunction(function(box,a,cylinder,sphere,b,c,star){
+        playerMesh.setMeshFromFunction(function(box,a,cylinder,sphere,applyFinalRotation,c,star){
             
             box(0,0,0,0.5,1,0.5,false,[1.45,1.45,1])
             
@@ -18147,11 +18149,11 @@ player=(function(out){
                     if(i==='glider'||i==='parachute'){
                         
                         if(player.isGliding)
-                            gear[i][out.currentGear[i]].mesh(box,cylinder,sphere,star)
+                            gear[i][out.currentGear[i]].mesh(box,cylinder,sphere,star,applyFinalRotation)
                             
                     } else {
                         
-                        gear[i][out.currentGear[i]].mesh(box,cylinder,sphere,star)
+                        gear[i][out.currentGear[i]].mesh(box,cylinder,sphere,star,applyFinalRotation)
                     }
                     
                 } else if(i!=='beequips'){
@@ -22161,7 +22163,7 @@ function UPDATE_MAP_MESH(){
     
     mesh.setMeshFromFunction(function(box,a,cylinder,sphere,d,e,star){
         
-        let f=Object.constructor('box','a','cylinder','sphere','d','e','star',player.createdMesh.replaceAll('WALL','['+(0.3*MATH.map(player.isNight,NIGHT_DARKNESS,1,0,1)+','+(0.7*MATH.map(player.isNight,NIGHT_DARKNESS,1,0,1))+','+(1.2*MATH.map(player.isNight,NIGHT_DARKNESS,1,0,1))+']')))
+        let f=Object.constructor('box','a','cylinder','sphere','d','e','star',player.createdMesh.replaceAll('WALL','['+(0.3*(player.targetLight<0.9?0:1)+','+(0.7*(player.targetLight<0.9?0:1))+','+(1.2*(player.targetLight<0.9?0:1))+']')))
         
         f(box,a,cylinder,sphere,d,e,star)
     })

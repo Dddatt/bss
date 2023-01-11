@@ -51,9 +51,13 @@ window.playerGear={
         
         glider:{
             
-            mesh:function(box){
+            mesh:function(box,cylinder,sphere,star,applyFinalRotation){
                 
-                 box(0,2,0,1,0.2,1.5,[-40,0,0],[1.4,1.4,0])
+                box(0,2,0,1,0.2,1.501,false,[1.4,1.4,0])
+                box(-0.9,1.85,0,1,0.2,1.5,[0,0,20],[0.15,0.15,0.15])
+                box(0.9,1.85,0,1,0.2,1.5,[0,0,-20],[0.15,0.15,0.15])
+                box(-1.675,1.3,0,1,0.2,1.501,[0,0,50],[1.4,1.4,0])
+                box(1.675,1.3,0,1,0.2,1.501,[0,0,-50],[1.4,1.4,0])
             },
             
             applyStats:function(stats,player){
