@@ -299,9 +299,9 @@ window.playerGear={
             
             mesh:function(box,cylinder,sphere){
                 
-                cylinder(0,-0.15,-0.6,0.4,0.5,15,1.3,1.3,1.3,90,0,0)
-                cylinder(0,0.1,-0.6,0.2,0.5,15,0.7,1,1.3,90,0,0)
-                cylinder(0,0.3,-0.6,0.333,0.2,15,1.3,1.3,1.3,90,0,0)
+                cylinder(0,-0.15,-0.6,0.4,0.5,11,1.3,1.3,1.3,90,0,0)
+                cylinder(0,0.1,-0.6,0.2,0.5,11,0.7,1,1.3,90,0,0)
+                cylinder(0,0.3,-0.6,0.333,0.2,11,1.3,1.3,1.3,90,0,0)
             },
             
             applyStats:function(stats,player){
@@ -315,8 +315,8 @@ window.playerGear={
             
             mesh:function(box,cylinder,sphere){
                 
-                cylinder(0,-0.1,-0.7,0.45,0.85,15,0.9*1.4,0.7*1.4,0.4*1.4,90,0,0)
-                cylinder(0,-0.1,-0.7,0.451,0.2,15,0,0.45,0,90,0,0)
+                cylinder(0,-0.1,-0.7,0.45,0.85,11,0.9*1.4,0.7*1.4,0.4*1.4,90,0,0)
+                cylinder(0,-0.1,-0.7,0.451,0.2,11,0,0.45,0,90,0,0)
                 sphere(0,-0.1+0.85*0.5,-0.7,0.4*2,2,0,0.4,0)
                 cylinder(0,0.6,-0.7,0.1,0.5,5,0,0.5,0,90,0,0)
             },
@@ -325,6 +325,142 @@ window.playerGear={
                 
                 stats.capacity+=25000
                 stats.convertRate*=1.4
+            }
+        },
+
+        compressor:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                cylinder(0.2,-0.1,-0.5,0.2,0.9,10,1.25,1.25,1.25,90,0,0)
+                cylinder(-0.2,-0.1,-0.5,0.2,0.9,10,1.25,1.25,1.25,90,0,0)
+                sphere(0.2,-0.1+0.9*0.5,-0.5,0.2*2,2,1.25,1.25,1.25)
+                sphere(-0.2,-0.1+0.9*0.5,-0.5,0.2*2,2,1.25,1.25,1.25)
+                box(0,0,-0.5,0.95,0.3,0.4,false,[0.4,0.4,0.4])
+                box(0.35,-0.4,-0.6,0.25,0.5,0.2,[10,-30,0],[0.9,0.9,0.9])
+                box(-0.35,-0.4,-0.6,0.25,0.5,0.2,[10,30,0],[0.9,0.9,0.9])
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.capacity+=50000
+                stats.convertRate*=1.55
+            }
+        },
+
+        eliteBarrel:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                cylinder(0,0.4*0.5,-0.6,0.4,0.4,15,0.9*0.5,0.6*0.5,0.3*0.5,90,0,0,0.3)
+                cylinder(0,-0.4*0.5,-0.6,0.3,0.4,15,0.9*0.5,0.6*0.5,0.3*0.5,90,0,0,0.4)
+                cylinder(0,0,-0.6,0.401,0.1,15,0.1,0.1,0.1,90,0,0)
+                cylinder(0,0.2+0.2,-0.6,0.29,0.1,15,0.1,0.1,0.1,90,0,0)
+                cylinder(0,-0.2-0.2,-0.6,0.29,0.1,15,0.1,0.1,0.1,90,0,0)
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.capacity+=125000
+                stats.convertRate*=1.7
+            }
+        },
+
+        portOHive:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                cylinder(0,0,-0.7,0.5,0.15,10,1.5,1.4,1,90,0,0)
+                cylinder(0,0.2,-0.675,0.43,0.10,15,1.5,1.4,1,90,0,0)
+                cylinder(0,0.35,-0.6,0.25,0.15,10,1.5,1.4,1,90,0,0)
+                cylinder(0,-0.2,-0.675,0.43,0.10,15,1.5,1.4,1,90,0,0)
+                cylinder(0,-0.35,-0.6,0.25,0.10,15,1.5,1.4,1,90,0,0)
+                sphere(0,0,-0.65,0.9,1,1.5,1.4,1)
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.capacity+=250000
+                stats.convertRate*=2
+                stats.instantRedConversion=window.applyPercentage(stats.instantRedConversion,0.05)
+                stats.instantBlueConversion=window.applyPercentage(stats.instantBlueConversion,0.05)
+                stats.instantWhiteConversion=window.applyPercentage(stats.instantWhiteConversion,0.05)
+            }
+        },
+
+        redPortOHive:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                cylinder(0,0,-0.7,0.5,0.15,10,1.4,0,0,90,0,0)
+                cylinder(0,0.2,-0.675,0.43,0.10,15,1.4,0,0,90,0,0)
+                cylinder(0,0.35,-0.6,0.25,0.15,10,1.4,0,0,90,0,0)
+                cylinder(0,-0.2,-0.675,0.43,0.10,15,1.4,0,0,90,0,0)
+                cylinder(0,-0.35,-0.6,0.25,0.10,15,1.4,0,0,90,0,0)
+                sphere(0,0,-0.65,0.9,1,1.4,0,0)
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.capacity+=350000
+                stats.convertRate*=2.5
+                stats.instantRedConversion=window.applyPercentage(stats.instantRedConversion,0.1)
+                stats.redPollen*=1.1
+                stats.redBeeAttack+=1
+            }
+        },
+
+        bluePortOHive:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                cylinder(0,0,-0.7,0.5,0.15,10,0,0,1.4,90,0,0)
+                cylinder(0,0.2,-0.675,0.43,0.10,15,0,0,1.4,90,0,0)
+                cylinder(0,0.35,-0.6,0.25,0.15,10,0,0,1.4,90,0,0)
+                cylinder(0,-0.2,-0.675,0.43,0.10,15,0,0,1.4,90,0,0)
+                cylinder(0,-0.35,-0.6,0.25,0.10,15,0,0,1.4,90,0,0)
+                sphere(0,0,-0.65,0.9,1,0,0,1.4)
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.capacity+=350000
+                stats.convertRate*=2.5
+                stats.instantBlueConversion=window.applyPercentage(stats.instantBlueConversion,0.1)
+                stats.bluePollen*=1.1
+                stats.blueBeeAttack+=1
+            }
+        },
+
+        PorcelainPortOHive:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                cylinder(0,0,-0.7,0.5,0.15,10,1.3,1.3,1.3,90,0,0)
+                cylinder(0,0.2,-0.675,0.43,0.10,15,1.3,1.3,1.3,90,0,0)
+                cylinder(0,0.35,-0.6,0.25,0.15,10,1.3,1.3,1.3,90,0,0)
+                cylinder(0,-0.2,-0.675,0.43,0.10,15,1.3,1.3,1.3,90,0,0)
+                cylinder(0,-0.35,-0.6,0.25,0.10,15,1.3,1.3,1.3,90,0,0)
+                sphere(0,0,-0.65,0.9,1,1.3,1.3,1.3)
+                box(0.4,0.1,-0.6,0.1,0.2,0.6,[0,25,20],[0,0,1.45])
+                box(0.4,-0.1,-0.6,0.1,0.2,0.4,[0,25,-10],[0,0,1.45])
+                box(-0.4,0.1,-0.6,0.1,0.2,0.6,[0,-25,20],[1.45,0,0])
+                box(-0.4,-0.1,-0.6,0.1,0.2,0.4,[0,-25,-10],[1.45,0,0])
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.capacity+=750000
+                stats.convertRate*=3.5
+                stats.instantRedConversion=window.applyPercentage(stats.instantRedConversion,0.1)
+                stats.instantBlueConversion=window.applyPercentage(stats.instantBlueConversion,0.1)
+                stats.instantWhiteConversion=window.applyPercentage(stats.instantWhiteConversion,0.1)
+                stats.whitePollen*=1.5
+                stats.bluePollen*=1.1
+                stats.redPollen*=1.1
+                stats.redBeeAttack+=1
+                stats.blueBeeAttack+=1
+                stats.whiteBeeAttack+=1
             }
         },
         
@@ -344,7 +480,7 @@ window.playerGear={
             applyStats:function(stats,player){
                 
                 stats.capacity+=2000000
-                stats.convertRate*=3
+                stats.convertRate*=5
                 stats.instantRedConversion=window.applyPercentage(stats.instantRedConversion,0.15)
                 stats.instantBlueConversion=window.applyPercentage(stats.instantBlueConversion,0.15)
                 stats.instantWhiteConversion=window.applyPercentage(stats.instantWhiteConversion,0.25)
