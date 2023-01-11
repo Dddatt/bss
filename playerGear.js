@@ -263,6 +263,70 @@ window.playerGear={
                 stats.capacity+=200
             }
         },
+
+        jar:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                cylinder(0,0,-0.6,0.4,0.75,15,0.9*1.3,0.7*1.3,0.3*1.3,90,0,0)
+                cylinder(0,0.15,-0.6,0.38,0.75,15,0.6,0.6,0.6,90,0,0)
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.capacity+=750
+            }
+        },
+
+        backpack:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                box(0,0,-0.4,0.55,0.7,0.35,false,[0.2,0.8,0.2])
+                box(0.13,0.1,-0.41,0.2,0.2,0.35,false,[0,0.5,0])
+                box(-0.13,0.1,-0.41,0.2,0.2,0.35,false,[0,0.5,0])
+                box(0,-0.15,-0.41,0.48,0.2,0.35,false,[1.3,1,0])
+                cylinder(0,0.7*0.5,-0.4,0.35*0.5,0.55,15,0.2,0.8,0.2,90,0,90)
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.capacity+=3500
+            }
+        },
+
+        canister:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                cylinder(0,-0.15,-0.6,0.4,0.5,15,1.3,1.3,1.3,90,0,0)
+                cylinder(0,0.1,-0.6,0.2,0.5,15,0.7,1,1.3,90,0,0)
+                cylinder(0,0.3,-0.6,0.333,0.2,15,1.3,1.3,1.3,90,0,0)
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.capacity+=10000
+                stats.convertRate*=1.3
+            }
+        },
+
+        megaJug:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                cylinder(0,-0.1,-0.7,0.45,0.85,15,0.9*1.4,0.7*1.4,0.4*1.4,90,0,0)
+                cylinder(0,-0.1,-0.7,0.451,0.2,15,0,0.45,0,90,0,0)
+                sphere(0,-0.1+0.85*0.5,-0.7,0.4*2,2,0,0.4,0)
+                cylinder(0,0.6,-0.7,0.1,0.5,5,0,0.5,0,90,0,0)
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.capacity+=25000
+                stats.convertRate*=1.4
+            }
+        },
         
         coconutCanister:{
             
