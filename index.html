@@ -1979,6 +1979,275 @@ w, in coco: 549b, 746b,
         <g transform='translate(0,-2) scale(0.9,0.9)'>
         <path stroke='black' stroke-width='2' fill='url(#stingerShade)' d='M30 20L50 50C 73 53 13 71 30 54z'></path><path stroke='black' stroke-width='1' fill='rgb(0,0,0,0)' d='M 48 51 C 42 56 39 55 33 56'></path></g>
     </svg>
+
+    <svg id='fieldDice' style='width:200;height:70;cursor:pointer;border-radius:5px'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='130' y='18' style='font-family:trebuchet ms;font-size:17px;' fill='rgb(0,0,0)' text-anchor='middle'>Field Dice</text>
+        <text x='133' y='36' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>Boosts a random field,</text>
+        <text x='133' y='50' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>granting +100% pollen</text>
+        <text x='133' y='64' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>for 15 minutes.</text>
+        <text id='fieldDice_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='translate(0,-4) scale(1,1)'>
+        
+        <path fill='rgb(255,255,255)' stroke='black' stroke-width='3' d='M35 20L20 30L20 50L35 60L50 50L50 30z'></path>
+        
+        <path fill='rgb(250,250,250)' d='M35 20L20 30L35 40L50 30z'></path>
+        <path fill='rgb(225,225,225)' d='M20 30L20 50L35 60L35 40z'></path>
+        <path fill='rgb(205,205,205)' d='M50 30L50 50L35 60L35 40z'></path>
+        
+        </g>
+        
+        <g transform='scale(1,0.9) translate(37,14) rotate(45) scale(0.65,0.65)'>
+        
+        <path d='M 15 22L 15 28' fill='rgb(0,0,0,0)' stroke='#57b5b1' stroke-width='5'></path>
+        
+        <path d='M 15 22L 15 27' fill='rgb(0,0,0,0)' stroke='rgb(171, 118, 19)' stroke-width='3'></path>
+        
+        <path d='M 15 7L 11 12L 13 12L 8 18L 12 18L 7 23L15 23' fill='rgb(0,160,0)' stroke='#57b5b1' stroke-width='1'></path>
+        <path d='M 15 7L 11 12L 13 12L 8 18L 12 18L 7 23L15 23' fill='rgb(0,160,0)' stroke='#57b5b1' stroke-width='1' transform='translate(-15,0) scale(-1,1) translate(-44.75,0)'></path></g>
+    
+        <g transform='scale(0.9,1.2) translate(26,26) rotate(25) scale(0.5,0.5)'>
+        <path d='M 13 24C 2 12 2 4 15 5M15 5C 29 5 22 18 12 24' fill='rgb(255,40,60)' stroke='#57b5b1' stroke-width='2'></path>
+        
+        <g transform='rotate(62) scale(0.7,1) translate(1,-14)'>
+        <path d='M 6.8 4C 13 8 16 5 19 1M 15 -2C 13 8 13 5 14 10' fill='rgb(0,0,0,0)' stroke='#57b5b1' stroke-width='4'></path>
+        <path d='M 8 5C 13 8 16 5 18 2M 15 -1C 13 8 13 5 14 9' fill='rgb(0,0,0,0)' stroke='rgb(0,170,0)' stroke-width='2'></path>
+        </g>
+        
+        <circle cx='10' cy='12' r='1' fill='rgb(255,255,40)'></circle><circle cx='18' cy='10' r='1' fill='rgb(255,255,40)'></circle><circle cx='13' cy='19' r='1' fill='rgb(255,255,40)'></circle><circle cx='15' cy='14' r='1' fill='rgb(255,255,40)'></circle>
+        </g>
+        
+        <g transform='translate(38,32) rotate(9) scale(0.5,0.7) scale(0.75,0.75)'>
+        <path d='M-2 0C -10 -18 10 -18 2 0M-2 0C -10 18 10 18 2 0' fill='rgb(0,80,255)' stroke='#57b5b1' stroke-width='2' transform='translate(15,15)'></path>
+        <path d='M-2 0C -10 -18 10 -18 2 0M-2 0C -10 18 10 18 2 0' fill='rgb(0,80,255)' stroke='#57b5b1' stroke-width='2' transform='translate(15,15) rotate(60)'></path>
+        <path d='M-2 0C -10 -18 10 -18 2 0M-2 0C -10 18 10 18 2 0' fill='rgb(0,80,255)' stroke='#57b5b1' stroke-width='2' transform='translate(15,15) rotate(120)'></path>
+        <circle cx='15' cy='15' r='5' fill='rgb(255,255,0)'></circle>
+        </g>
+        
+    </svg>
+    
+    <svg id='smoothDice' style='width:200;height:70;cursor:pointer;border-radius:5px'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='130' y='18' style='font-family:trebuchet ms;font-size:17px;' fill='rgb(0,0,0)' text-anchor='middle'>Smooth Dice</text>
+        <text x='133' y='36' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>Boosts 2 random fields,</text>
+        <text x='133' y='50' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>granting +200% pollen</text>
+        <text x='133' y='64' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>for 15 minutes.</text>
+        <text id='smoothDice_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='translate(12,-1) rotate(-5) scale(0.9,0.9)'>
+            <g transform='translate(0,-4) scale(1,1)'>
+            
+            <path fill='rgb(250,250,250)' stroke='black' stroke-width='3' d='M35 20L20 30L20 50L35 60L50 50L50 30z'></path>
+            
+            <path fill='rgb(245, 245, 117)' d='M35 20L20 30L35 40L50 30z'></path>
+            <path fill='rgb(219, 219, 103)' d='M20 30L20 50L35 60L35 40z'></path>
+            <path fill='rgb(189, 189, 85)' d='M50 30L50 50L35 60L35 40z'></path>
+            
+            </g>
+            
+            <g transform='scale(1,0.9) translate(37,14) rotate(45) scale(0.65,0.65)'>
+            
+            <path d='M 15 22L 15 28' fill='rgb(0,0,0,0)' stroke='#57b5b1' stroke-width='5'></path>
+            
+            <path d='M 15 22L 15 27' fill='rgb(0,0,0,0)' stroke='rgb(171, 118, 19)' stroke-width='3'></path>
+            
+            <path d='M 15 7L 11 12L 13 12L 8 18L 12 18L 7 23L15 23' fill='rgb(0,160,0)' stroke='#57b5b1' stroke-width='1'></path>
+            <path d='M 15 7L 11 12L 13 12L 8 18L 12 18L 7 23L15 23' fill='rgb(0,160,0)' stroke='#57b5b1' stroke-width='1' transform='translate(-15,0) scale(-1,1) translate(-44.75,0)'></path></g>
+        
+            <g transform='scale(0.9,1.2) translate(26,26) rotate(25) scale(0.5,0.5)'>
+            <path d='M 13 24C 2 12 2 4 15 5M15 5C 29 5 22 18 12 24' fill='rgb(255,40,60)' stroke='#57b5b1' stroke-width='2'></path>
+            
+            <g transform='rotate(62) scale(0.7,1) translate(1,-14)'>
+            <path d='M 6.8 4C 13 8 16 5 19 1M 15 -2C 13 8 13 5 14 10' fill='rgb(0,0,0,0)' stroke='#57b5b1' stroke-width='4'></path>
+            <path d='M 8 5C 13 8 16 5 18 2M 15 -1C 13 8 13 5 14 9' fill='rgb(0,0,0,0)' stroke='rgb(0,170,0)' stroke-width='2'></path>
+            </g>
+            
+            <circle cx='10' cy='12' r='1' fill='rgb(255,255,40)'></circle><circle cx='18' cy='10' r='1' fill='rgb(255,255,40)'></circle><circle cx='13' cy='19' r='1' fill='rgb(255,255,40)'></circle><circle cx='15' cy='14' r='1' fill='rgb(255,255,40)'></circle>
+            </g>
+            
+            <g transform='translate(38,32) rotate(9) scale(0.5,0.7) scale(0.75,0.75)'>
+            <path d='M-2 0C -10 -18 10 -18 2 0M-2 0C -10 18 10 18 2 0' fill='rgb(0,80,255)' stroke='#57b5b1' stroke-width='2' transform='translate(15,15)'></path>
+            <path d='M-2 0C -10 -18 10 -18 2 0M-2 0C -10 18 10 18 2 0' fill='rgb(0,80,255)' stroke='#57b5b1' stroke-width='2' transform='translate(15,15) rotate(60)'></path>
+            <path d='M-2 0C -10 -18 10 -18 2 0M-2 0C -10 18 10 18 2 0' fill='rgb(0,80,255)' stroke='#57b5b1' stroke-width='2' transform='translate(15,15) rotate(120)'></path>
+            <circle cx='15' cy='15' r='5' fill='rgb(255,255,0)'></circle>
+            </g>
+        </g>
+        
+        <g transform='translate(-3,8) rotate(5) scale(0.9,0.9)'>
+            <g transform='translate(0,-4) scale(1,1)'>
+            
+            <path fill='rgb(250,250,250)' stroke='black' stroke-width='3' d='M35 20L20 30L20 50L35 60L50 50L50 30z'></path>
+            
+            <path fill='rgb(161, 206, 255)' d='M35 20L20 30L35 40L50 30z'></path>
+            <path fill='rgb(139, 190, 245)' d='M20 30L20 50L35 60L35 40z'></path>
+            <path fill='rgb(123, 155, 189)' d='M50 30L50 50L35 60L35 40z'></path>
+            
+            </g>
+            
+            <g transform='scale(1,0.9) translate(37,14) rotate(45) scale(0.65,0.65)'>
+            
+            <path d='M 15 22L 15 28' fill='rgb(0,0,0,0)' stroke='#57b5b1' stroke-width='5'></path>
+            
+            <path d='M 15 22L 15 27' fill='rgb(0,0,0,0)' stroke='rgb(171, 118, 19)' stroke-width='3'></path>
+            
+            <path d='M 15 7L 11 12L 13 12L 8 18L 12 18L 7 23L15 23' fill='rgb(0,160,0)' stroke='#57b5b1' stroke-width='1'></path>
+            <path d='M 15 7L 11 12L 13 12L 8 18L 12 18L 7 23L15 23' fill='rgb(0,160,0)' stroke='#57b5b1' stroke-width='1' transform='translate(-15,0) scale(-1,1) translate(-44.75,0)'></path></g>
+        
+            <g transform='scale(0.9,1.2) translate(26,26) rotate(25) scale(0.5,0.5)'>
+            <path d='M 13 24C 2 12 2 4 15 5M15 5C 29 5 22 18 12 24' fill='rgb(255,40,60)' stroke='#57b5b1' stroke-width='2'></path>
+            
+            <g transform='rotate(62) scale(0.7,1) translate(1,-14)'>
+            <path d='M 6.8 4C 13 8 16 5 19 1M 15 -2C 13 8 13 5 14 10' fill='rgb(0,0,0,0)' stroke='#57b5b1' stroke-width='4'></path>
+            <path d='M 8 5C 13 8 16 5 18 2M 15 -1C 13 8 13 5 14 9' fill='rgb(0,0,0,0)' stroke='rgb(0,170,0)' stroke-width='2'></path>
+            </g>
+            
+            <circle cx='10' cy='12' r='1' fill='rgb(255,255,40)'></circle><circle cx='18' cy='10' r='1' fill='rgb(255,255,40)'></circle><circle cx='13' cy='19' r='1' fill='rgb(255,255,40)'></circle><circle cx='15' cy='14' r='1' fill='rgb(255,255,40)'></circle>
+            </g>
+            
+            <g transform='translate(38,32) rotate(9) scale(0.5,0.7) scale(0.75,0.75)'>
+            <path d='M-2 0C -10 -18 10 -18 2 0M-2 0C -10 18 10 18 2 0' fill='rgb(0,80,255)' stroke='#57b5b1' stroke-width='2' transform='translate(15,15)'></path>
+            <path d='M-2 0C -10 -18 10 -18 2 0M-2 0C -10 18 10 18 2 0' fill='rgb(0,80,255)' stroke='#57b5b1' stroke-width='2' transform='translate(15,15) rotate(60)'></path>
+            <path d='M-2 0C -10 -18 10 -18 2 0M-2 0C -10 18 10 18 2 0' fill='rgb(0,80,255)' stroke='#57b5b1' stroke-width='2' transform='translate(15,15) rotate(120)'></path>
+            <circle cx='15' cy='15' r='5' fill='rgb(255,255,0)'></circle>
+            </g>
+        </g>
+        
+    </svg>
+    
+    <svg id='loadedDice' style='width:200;height:70;cursor:pointer;border-radius:5px'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='130' y='18' style='font-family:trebuchet ms;font-size:17px;' fill='rgb(0,0,0)' text-anchor='middle'>Loaded Dice</text>
+        <text x='133' y='36' style='font-family:trebuchet ms;font-size:10.5px;' fill='rgb(0,0,0)' text-anchor='middle'>Boosts 3 fields with x4</text>
+        <text x='133' y='50' style='font-family:trebuchet ms;font-size:10.5px;' fill='rgb(0,0,0)' text-anchor='middle'>pollen for 15 mins. Baised</text>
+        <text x='133' y='64' style='font-family:trebuchet ms;font-size:10.5px;' fill='rgb(0,0,0)' text-anchor='middle'>to the field you're in.</text>
+        <text id='loadedDice_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='translate(14,-3) rotate(-7) scale(0.8,0.8)'>
+            <g transform='translate(0,-4) scale(1,1)'>
+            
+            <path fill='rgb(250,250,250)' stroke='black' stroke-width='3' d='M35 20L20 30L20 50L35 60L50 50L50 30z'></path>
+            
+            <path fill='rgb(250,250,250)' d='M35 20L20 30L35 40L50 30z'></path>
+            <path fill='rgb(225,225,225)' d='M20 30L20 50L35 60L35 40z'></path>
+            <path fill='rgb(200,200,200)' d='M50 30L50 50L35 60L35 40z'></path>
+            
+            </g>
+            
+            <g transform='scale(1,0.9) translate(37,14) rotate(45) scale(0.65,0.65)'>
+            
+            <path d='M 15 22L 15 28' fill='rgb(0,0,0,0)' stroke='#57b5b1' stroke-width='5'></path>
+            
+            <path d='M 15 22L 15 27' fill='rgb(0,0,0,0)' stroke='rgb(171, 118, 19)' stroke-width='3'></path>
+            
+            <path d='M 15 7L 11 12L 13 12L 8 18L 12 18L 7 23L15 23' fill='rgb(0,160,0)' stroke='#57b5b1' stroke-width='1'></path>
+            <path d='M 15 7L 11 12L 13 12L 8 18L 12 18L 7 23L15 23' fill='rgb(0,160,0)' stroke='#57b5b1' stroke-width='1' transform='translate(-15,0) scale(-1,1) translate(-44.75,0)'></path></g>
+        
+            <g transform='scale(0.9,1.2) translate(26,26) rotate(25) scale(0.5,0.5)'>
+            <path d='M 13 24C 2 12 2 4 15 5M15 5C 29 5 22 18 12 24' fill='rgb(255,40,60)' stroke='#57b5b1' stroke-width='2'></path>
+            
+            <g transform='rotate(62) scale(0.7,1) translate(1,-14)'>
+            <path d='M 6.8 4C 13 8 16 5 19 1M 15 -2C 13 8 13 5 14 10' fill='rgb(0,0,0,0)' stroke='#57b5b1' stroke-width='4'></path>
+            <path d='M 8 5C 13 8 16 5 18 2M 15 -1C 13 8 13 5 14 9' fill='rgb(0,0,0,0)' stroke='rgb(0,170,0)' stroke-width='2'></path>
+            </g>
+            
+            <circle cx='10' cy='12' r='1' fill='rgb(255,255,40)'></circle><circle cx='18' cy='10' r='1' fill='rgb(255,255,40)'></circle><circle cx='13' cy='19' r='1' fill='rgb(255,255,40)'></circle><circle cx='15' cy='14' r='1' fill='rgb(255,255,40)'></circle>
+            </g>
+            
+            <g transform='translate(38,32) rotate(9) scale(0.5,0.7) scale(0.75,0.75)'>
+            <path d='M-2 0C -10 -18 10 -18 2 0M-2 0C -10 18 10 18 2 0' fill='rgb(0,80,255)' stroke='#57b5b1' stroke-width='2' transform='translate(15,15)'></path>
+            <path d='M-2 0C -10 -18 10 -18 2 0M-2 0C -10 18 10 18 2 0' fill='rgb(0,80,255)' stroke='#57b5b1' stroke-width='2' transform='translate(15,15) rotate(60)'></path>
+            <path d='M-2 0C -10 -18 10 -18 2 0M-2 0C -10 18 10 18 2 0' fill='rgb(0,80,255)' stroke='#57b5b1' stroke-width='2' transform='translate(15,15) rotate(120)'></path>
+            <circle cx='15' cy='15' r='5' fill='rgb(255,255,0)'></circle>
+            </g>
+        </g>
+        
+        <g transform='translate(-2,-3) rotate(7) scale(0.8,0.8)'>
+            <g transform='translate(0,-4) scale(1,1)'>
+            
+            <path fill='rgb(250,250,250)' stroke='black' stroke-width='3' d='M35 20L20 30L20 50L35 60L50 50L50 30z'></path>
+            
+            <path fill='rgb(150,150,150)' d='M35 20L20 30L35 40L50 30z'></path>
+            <path fill='rgb(125,125,125)' d='M20 30L20 50L35 60L35 40z'></path>
+            <path fill='rgb(80,80,80)' d='M50 30L50 50L35 60L35 40z'></path>
+            
+            </g>
+            
+            <g transform='scale(1,0.9) translate(37,14) rotate(45) scale(0.65,0.65)'>
+            
+            <path d='M 15 22L 15 28' fill='rgb(0,0,0,0)' stroke='#57b5b1' stroke-width='5'></path>
+            
+            <path d='M 15 22L 15 27' fill='rgb(0,0,0,0)' stroke='rgb(171, 118, 19)' stroke-width='3'></path>
+            
+            <path d='M 15 7L 11 12L 13 12L 8 18L 12 18L 7 23L15 23' fill='rgb(0,160,0)' stroke='#57b5b1' stroke-width='1'></path>
+            <path d='M 15 7L 11 12L 13 12L 8 18L 12 18L 7 23L15 23' fill='rgb(0,160,0)' stroke='#57b5b1' stroke-width='1' transform='translate(-15,0) scale(-1,1) translate(-44.75,0)'></path></g>
+        
+            <g transform='scale(0.9,1.2) translate(26,26) rotate(25) scale(0.5,0.5)'>
+            <path d='M 13 24C 2 12 2 4 15 5M15 5C 29 5 22 18 12 24' fill='rgb(255,40,60)' stroke='#57b5b1' stroke-width='2'></path>
+            
+            <g transform='rotate(62) scale(0.7,1) translate(1,-14)'>
+            <path d='M 6.8 4C 13 8 16 5 19 1M 15 -2C 13 8 13 5 14 10' fill='rgb(0,0,0,0)' stroke='#57b5b1' stroke-width='4'></path>
+            <path d='M 8 5C 13 8 16 5 18 2M 15 -1C 13 8 13 5 14 9' fill='rgb(0,0,0,0)' stroke='rgb(0,170,0)' stroke-width='2'></path>
+            </g>
+            
+            <circle cx='10' cy='12' r='1' fill='rgb(255,255,40)'></circle><circle cx='18' cy='10' r='1' fill='rgb(255,255,40)'></circle><circle cx='13' cy='19' r='1' fill='rgb(255,255,40)'></circle><circle cx='15' cy='14' r='1' fill='rgb(255,255,40)'></circle>
+            </g>
+            
+            <g transform='translate(38,32) rotate(9) scale(0.5,0.7) scale(0.75,0.75)'>
+            <path d='M-2 0C -10 -18 10 -18 2 0M-2 0C -10 18 10 18 2 0' fill='rgb(0,80,255)' stroke='#57b5b1' stroke-width='2' transform='translate(15,15)'></path>
+            <path d='M-2 0C -10 -18 10 -18 2 0M-2 0C -10 18 10 18 2 0' fill='rgb(0,80,255)' stroke='#57b5b1' stroke-width='2' transform='translate(15,15) rotate(60)'></path>
+            <path d='M-2 0C -10 -18 10 -18 2 0M-2 0C -10 18 10 18 2 0' fill='rgb(0,80,255)' stroke='#57b5b1' stroke-width='2' transform='translate(15,15) rotate(120)'></path>
+            <circle cx='15' cy='15' r='5' fill='rgb(255,255,0)'></circle>
+            </g>
+        </g>
+        
+        <g transform='translate(4,17) rotate(-17) scale(0.875,0.875)'>
+            <g transform='translate(0,-4)'>
+            
+            <path fill='rgb(50,50,50)' stroke='black' stroke-width='3' d='M35 20L20 30L20 50L35 60L50 50L50 30z'></path>
+            
+            <path fill='rgb(50,50,50)' d='M35 20L20 30L35 40L50 30z'></path>
+            <path fill='rgb(30,30,30)' d='M20 30L20 50L35 60L35 40z'></path>
+            <path fill='rgb(3,3,3)' d='M50 30L50 50L35 60L35 40z'></path>
+            
+            </g>
+            
+            <g transform='scale(1,0.9) translate(37,14) rotate(45) scale(0.65,0.65)'>
+            
+            <path d='M 15 22L 15 28' fill='rgb(0,0,0,0)' stroke='#57b5b1' stroke-width='5'></path>
+            
+            <path d='M 15 22L 15 27' fill='rgb(0,0,0,0)' stroke='rgb(171, 118, 19)' stroke-width='3'></path>
+            
+            <path d='M 15 7L 11 12L 13 12L 8 18L 12 18L 7 23L15 23' fill='rgb(0,160,0)' stroke='#57b5b1' stroke-width='1'></path>
+            <path d='M 15 7L 11 12L 13 12L 8 18L 12 18L 7 23L15 23' fill='rgb(0,160,0)' stroke='#57b5b1' stroke-width='1' transform='translate(-15,0) scale(-1,1) translate(-44.75,0)'></path></g>
+        
+            <g transform='scale(0.9,1.2) translate(26,26) rotate(25) scale(0.5,0.5)'>
+            <path d='M 13 24C 2 12 2 4 15 5M15 5C 29 5 22 18 12 24' fill='rgb(255,40,60)' stroke='#57b5b1' stroke-width='2'></path>
+            
+            <g transform='rotate(62) scale(0.7,1) translate(1,-14)'>
+            <path d='M 6.8 4C 13 8 16 5 19 1M 15 -2C 13 8 13 5 14 10' fill='rgb(0,0,0,0)' stroke='#57b5b1' stroke-width='4'></path>
+            <path d='M 8 5C 13 8 16 5 18 2M 15 -1C 13 8 13 5 14 9' fill='rgb(0,0,0,0)' stroke='rgb(0,170,0)' stroke-width='2'></path>
+            </g>
+            
+            <circle cx='10' cy='12' r='1' fill='rgb(255,255,40)'></circle><circle cx='18' cy='10' r='1' fill='rgb(255,255,40)'></circle><circle cx='13' cy='19' r='1' fill='rgb(255,255,40)'></circle><circle cx='15' cy='14' r='1' fill='rgb(255,255,40)'></circle>
+            </g>
+            
+            <g transform='translate(38,32) rotate(9) scale(0.5,0.7) scale(0.75,0.75)'>
+            <path d='M-2 0C -10 -18 10 -18 2 0M-2 0C -10 18 10 18 2 0' fill='rgb(0,80,255)' stroke='#57b5b1' stroke-width='2' transform='translate(15,15)'></path>
+            <path d='M-2 0C -10 -18 10 -18 2 0M-2 0C -10 18 10 18 2 0' fill='rgb(0,80,255)' stroke='#57b5b1' stroke-width='2' transform='translate(15,15) rotate(60)'></path>
+            <path d='M-2 0C -10 -18 10 -18 2 0M-2 0C -10 18 10 18 2 0' fill='rgb(0,80,255)' stroke='#57b5b1' stroke-width='2' transform='translate(15,15) rotate(120)'></path>
+            <circle cx='15' cy='15' r='5' fill='rgb(255,255,0)'></circle>
+            </g>
+        </g>
+        
+        
+    </svg>
     
     <svg id='glitter' style='width:200;height:70;cursor:pointer;border-radius:5px'>
         
@@ -8399,6 +8668,102 @@ let items={
         
         amount:0,u:128*4/2048,v:128*10/2048,value:80,
         use:function(){}
+    },
+
+    fieldDice:{
+        
+        amount:0,u:128*5/2048,v:128*10/2048,value:20,
+        use:function(){
+
+            items.fieldDice.amount--
+
+            let f=[]
+
+            for(let i in fieldInfo){
+
+                if(i!=='AntField'){
+
+                    f.push(i)
+                }
+            }
+
+            for(let i=0;i<1;i++){
+
+                let r=(Math.random()*f.length)|0
+
+                player.addEffect(f[r][0].toLowerCase()+f[r].substring(1,f[r].length)+'Boost',false,false,undefined,1)
+            }
+        }
+    },
+
+    smoothDice:{
+        
+        amount:0,u:128*6/2048,v:128*10/2048,value:45,
+        use:function(){
+
+            items.smoothDice.amount--
+
+            let f=[]
+
+            for(let i in fieldInfo){
+
+                if(i!=='AntField'){
+
+                    f.push(i)
+                }
+            }
+
+            for(let i=0;i<2;i++){
+
+                let r=(Math.random()*f.length)|0
+
+                player.addEffect(f[r][0].toLowerCase()+f[r].substring(1,f[r].length)+'Boost',false,false,undefined,2)
+            }
+        }
+    },
+
+    loadedDice:{
+        
+        amount:0,u:128*7/2048,v:128*10/2048,value:75,
+        use:function(){
+
+            items.loadedDice.amount--
+
+            let f=[]
+
+            for(let i in fieldInfo){
+
+                if(i!=='AntField'){
+
+                    f.push(i)
+
+                    if(i===player.fieldIn){
+
+                        f.push(i)
+                        f.push(i)
+                        f.push(i)
+                        f.push(i)
+                        f.push(i)
+                        f.push(i)
+                    }
+                }
+            }
+
+            for(let i=0;i<3;i++){
+
+                let r=(Math.random()*f.length)|0
+
+                player.addEffect(f[r][0].toLowerCase()+f[r].substring(1,f[r].length)+'Boost',false,false,undefined,3)
+
+                for(let j in f){
+
+                    if(f[j]===f[r]){
+
+                        f.splice(j,1)
+                    }
+                }
+            }
+        }
     },
     
     softWax:{
