@@ -15,6 +15,7 @@ window.MATH = (function (MATH) {
     MATH.EIGHTth_PI = Math.PI / 8
     MATH.QUATER_PI = Math.PI * 0.25
     MATH.PI_SUB_QUATER = Math.PI - MATH.QUATER_PI
+    MATH.IDENTITY_MATRIX=new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1])
 
     MATH.random = (a, b) => Math.random() * (b - a) + a
     MATH.constrain = (x, a, b) => x < a ? a : x > b ? b : x

@@ -78,7 +78,7 @@ window.glsl_dynamic_geometry_fsh = `#version 300 es
     void main(){
         
         vec3 normal=normalize(pixNormal);
-        float shade=dot(normal,LIGHT_DIR)*0.4+0.6;
+        float shade=dot(normal,LIGHT_DIR)*0.5+0.55;
         fragColor=vec4(pixColor*shade*isNight,1.0);
     }
 `

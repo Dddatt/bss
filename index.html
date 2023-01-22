@@ -3787,7 +3787,7 @@ let triggers={
     
     cool_shop:{
         
-        minX:0,maxX:0,minY:-3,maxY:4,minZ:0,maxZ:0
+        minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:10-1,maxZ:10+1
     },
     
     become_red_hive:{
@@ -3795,6 +3795,7 @@ let triggers={
         isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:4-1,maxZ:4+1,message:'become red hive',func:function(player){
             player.currentGear={
                 
+                tool:'darkScythe',
                 boots:'gummyBoots',
                 belt:'petalBelt',
                 backpack:'coconutCanister',
@@ -3807,7 +3808,6 @@ let triggers={
             }
             
             player.updateGear()
-            player.updateTool('darkScythe')
             player.addEffect('superSmoothieBuff')
             player.addEffect('comfortingNectar',1)
             player.addEffect('refreshingNectar',1)
@@ -3875,6 +3875,7 @@ let triggers={
             
             player.currentGear={
                 
+                tool:'tidePopper',
                 boots:'gummyBoots',
                 belt:'petalBelt',
                 backpack:'coconutCanister',
@@ -3887,7 +3888,6 @@ let triggers={
             }
             
             player.updateGear()
-            player.updateTool('tidePopper')
             player.addEffect('superSmoothieBuff')
             player.addEffect('comfortingNectar',1)
             player.addEffect('refreshingNectar',1)
@@ -3957,6 +3957,7 @@ let triggers={
         isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:8-1,maxZ:8+1,message:'become white hive',func:function(player){
             player.currentGear={
                 
+                tool:'gummyBaller',
                 boots:'gummyBoots',
                 belt:'petalBelt',
                 backpack:'coconutCanister',
@@ -3969,7 +3970,6 @@ let triggers={
             }
             
             player.updateGear()
-            player.updateTool('gummyBaller')
             player.addEffect('superSmoothieBuff')
             player.addEffect('comfortingNectar',1)
             player.addEffect('refreshingNectar',1)
@@ -8065,595 +8065,6 @@ for(let i in effects){
 
 let toolParticle=0
 
-let tools={
-    
-    shovel:{
-        
-        collectPattern:[[0,0],[0,-1]],
-        collectAmount:5,
-        cooldown:1,
-        mesh:function(box){
-            
-            box(-0.3,0,0.6,0.1,0.1,0.8,false,[0.5,0.2,0])
-            box(-0.3,0,1.2,0.3,0.1,0.4,false,[0.2,0.2,0.2])
-        }
-    },
-
-    rake:{
-        
-        collectPattern:[[0,0],[0,-1],[0,-2]],
-        collectAmount:8,
-        cooldown:1,
-        mesh:function(box){
-            
-            box(-0.3,0,0.6,0.1,0.1,0.8,false,[0.9,0.9,0.9])
-            box(-0.3+0.1,0,0.6+0.6,0.1,0.1,0.5,[0,20,0],[0.4,0.4,0.4])
-            box(-0.3+0.2,0,0.6+0.5,0.1,0.1,0.5,[0,40,0],[0.4,0.4,0.4])
-            box(-0.3-0.1,0,0.6+0.6,0.1,0.1,0.5,[0,-20,0],[0.4,0.4,0.4])
-            box(-0.3-0.2,0,0.6+0.5,0.1,0.1,0.5,[0,-40,0],[0.4,0.4,0.4])
-            box(-0.3,0,0.6+0.65,0.1,0.1,0.4,false,[0.4,0.4,0.4])
-        }
-    },
-
-    clippers:{
-        
-        collectPattern:[[0,0]],
-        collectAmount:9,
-        cooldown:0.6,
-        mesh:function(box){
-            
-            box(-0.2-0.15,-0.15,0.4,0.25,0.25,0.1,[0,0,-30],[1.3,1.3,0])
-            box(-0.2+0.15,-0.15,0.4,0.25,0.25,0.1,[0,0,30],[1.3,1.3,0])
-            box(-0.2+0.15-Math.sin(30*MATH.TO_RAD)*0.41,-0.15+Math.cos(30*MATH.TO_RAD)*0.41,0.4,0.1,0.6,0.1,[0,0,30],[1.3,1.3,1.3])
-            box(-0.2-0.15+Math.sin(30*MATH.TO_RAD)*0.41,-0.15+Math.cos(30*MATH.TO_RAD)*0.41,0.4,0.1,0.6,0.1,[0,0,-30],[1.3,1.3,1.3])
-        }
-    },
-
-    magnet:{
-        
-        collectPattern:[[0,0],[0,-1],[0,1],[-1,0],[1,0],[1,1],[1,-1],[-1,1],[-1,-1]],
-        collectAmount:2,
-        cooldown:0.8,
-        mesh:function(box){
-            
-            box(-0.3,-0.25,0.5,0.2,0.6,0.2,false,[0.8,0.8,0.8])
-            box(-0.3,0.15,0.5,0.6,0.2,0.2,false,[1,0,0])
-            box(-0.3-0.3,0.3,0.5,0.2,0.5,0.2,false,[1,0,0])
-            box(-0.3+0.3,0.3,0.5,0.2,0.5,0.2,false,[1,0,0])
-            box(-0.3-0.3,0.5,0.5,0.19,0.5,0.19,false,[1,1,1])
-            box(-0.3+0.3,0.5,0.5,0.19,0.5,0.19,false,[1,1,1])
-        }
-    },
-
-    vacuum:{
-        
-        collectPattern:[[0,0],[0,-1],[0,1],[-1,0],[1,0],[1,1],[1,-1],[-1,1],[-1,-1],[0,-2],,[2,0],[0,2],[-2,0]],
-        collectAmount:2,
-        cooldown:0.8,
-        mesh:function(box){
-            
-            box(-0.3,0,0.65,0.1,0.8,0.1,[-20,0,0],[0.8,0.8,0.8])
-            box(-0.3,-0.1,0.5,0.3,0.6,0.25,[-20,0,0],[1,0.7,0.4])
-            box(-0.3,-0.3,0.7,0.4,0.3,0.3,false,[0.2,0.2,0.2])
-            box(-0.3-0.1,-0.3,0.7,0.075,0.075,0.31,false,[1.4,1.4,0])
-            box(-0.3+0.1,-0.3,0.7,0.075,0.075,0.31,false,[1.4,1.4,0])
-        }
-    },
-
-    superScooper:{
-        
-        collectPattern:[[0,0],[0,-1],[0,-2],[0,-3],[0,-4]],
-        collectAmount:4,
-        cooldown:0.5,
-        mesh:function(box){
-            
-            box(-0.3,0,0.4,0.175,0.175,0.2,false,[1.5,1.5,0])
-            box(-0.3,0,0.6,0.175,0.175,0.2,false,[0,0,1.5])
-            box(-0.3,0,0.8,0.175,0.175,0.2,false,[1.5,1.5,0])
-            box(-0.3,0,1,0.175,0.175,0.2,false,[0,0,1.5])
-            box(-0.3,0,1.2,0.15,0.15,0.2,false,[0.6,0.4,0.1])
-            box(-0.3+0.3*0.5,0,1.55,0.3,0.175,0.65,false,[1.5,1.5,0])
-            box(-0.3-0.3*0.5,0,1.55,0.3,0.175,0.65,false,[0,0,1.5])
-        }
-    },
-
-    pulsar:{
-        
-        collectPattern:[[0,0],[0,-1],[0,1],[-1,0],[1,0],[1,1],[1,-1],[-1,1],[-1,-1],[0,-2],[2,0],[0,2],[-2,0],[-2,-1],[-2,1],[2,-1],[2,1],[-1,-2],[-1,2],[1,-2],[1,2],[0,-3],[0,3],[-3,0],[3,0],[-2,2],[2,2],[-2,-2],[2,-2]],
-        collectAmount:2,
-        cooldown:1,
-        mesh:function(box,unusedcuznotrelevant,cylinder,sphere){
-            
-            box(-0.3,0.2,0.4,0.125,1.1,0.125,false,[1.5,1.5,0])
-            box(-0.3,-0.2,0.4,0.175,0.3,0.175,false,[0,1.5,0])
-            cylinder(-0.3,0.2+1.1*0.5+0.25,0.4,0.25,0.0005,10,0,0,0,0,0,0,0.25)
-            cylinder(-0.3,0.2+1.1*0.5+0.25,0.4,0.25,0.0005,10,0,0,0,0.001,90,0,0.25)
-            cylinder(-0.3,0.2+1.1*0.5+0.25,0.4,0.25,0.0005,10,0,0,0,90,0,0,0.25)
-
-        },particles:function(){
-            
-            toolParticle-=dt
-            
-            if(toolParticle>0){return}
-            
-            toolParticle=0.3
-            
-            let x=-player.bodyDir[2],z=player.bodyDir[0]
-            
-            x+=player.bodyDir[0]
-            z+=player.bodyDir[2]
-            
-            x*=0.3
-            z*=0.4
-            
-            ParticleRenderer.add({x:player.body.position.x+x,y:player.body.position.y+0.2+1.1*0.5+0.25,z:player.body.position.z+z,vx:MATH.random(-0.3,0.3),vy:(Math.random()-0.5)*0.5,vz:MATH.random(-0.3,0.3),grav:1.5,size:MATH.random(30,70),col:[0,1,0],life:1,rotVel:MATH.random(-3,3),alpha:2})
-        }
-    },
-
-    electroMagnet:{
-        
-        collectPattern:[[0,0],[0,-1],[0,1],[-1,0],[1,0],[1,1],[1,-1],[-1,1],[-1,-1]],
-        collectAmount:6,
-        cooldown:0.5,
-        mesh:function(box){
-            
-            box(-0.3,-0.15,0.5,0.2,0.8,0.2,false,[0.8,0.8,0.8])
-            box(-0.3,0.15+0.2,0.5,0.6,0.2,0.2,false,[1.4,1.4,0])
-            box(-0.3-0.3,0.3+0.2,0.5,0.2,0.5,0.2,false,[1.4,1.4,0])
-            box(-0.3+0.3,0.3+0.2,0.5,0.2,0.5,0.2,false,[1.4,1.4,0])
-            box(-0.3-0.3,0.5+0.2,0.5,0.19,0.5,0.19,false,[1,1,1])
-            box(-0.3+0.3,0.5+0.2,0.5,0.19,0.5,0.19,false,[1,1,1])
-            box(-0.3,0.15+0.2,0.5,0.2,0.2,0.6,false,[1.4,1.4,0])
-            box(-0.3,0.3+0.2,0.5-0.3,0.2,0.5,0.2,false,[1.4,1.4,0])
-            box(-0.3,0.3+0.2,0.5+0.3,0.2,0.5,0.2,false,[1.4,1.4,0])
-            box(-0.3,0.5+0.2,0.5-0.3,0.19,0.5,0.19,false,[1,1,1])
-            box(-0.3,0.5+0.2,0.5+0.3,0.19,0.5,0.19,false,[1,1,1])
-        }
-    },
-    
-    scissors:{
-        
-        collectPattern:[[0,0]],
-        collectAmount:60,
-        cooldown:0.5,
-        mesh:function(box){
-            
-            box(-0.2-0.15,-0.15,0.4,0.25,0.25,0.1,[0,0,-30],[0.9,0,0])
-            box(-0.2+0.15,-0.15,0.4,0.25,0.25,0.1,[0,0,30],[0,0,0.9])
-            box(-0.2+0.15-Math.sin(30*MATH.TO_RAD)*0.41,-0.15+Math.cos(30*MATH.TO_RAD)*0.41,0.4,0.1,0.6,0.1,[0,0,30],[1.3,1.3,1.3])
-            box(-0.2-0.15+Math.sin(30*MATH.TO_RAD)*0.41,-0.15+Math.cos(30*MATH.TO_RAD)*0.41,0.4,0.1,0.6,0.1,[0,0,-30],[1.3,1.3,1.3])
-        }
-    },
-
-    honeyDipper:{
-        
-        collectPattern:[[-4,0],[-3,-2],[-3,-1],[-3,0],[-3,1],[-3,2],[-2,-3],[-2,-2],[-2,-1],[-2,0],[-2,1],[-2,2],[-2,3],[-1,-3],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[-1,3],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[0,1],[0,2],[0,3],[0,4],[1,-3],[1,-2],[1,-1],[1,0],[1,1],[1,2],[1,3],[2,-3],[2,-2],[2,-1],[2,0],[2,1],[2,2],[2,3],[3,-2],[3,-1],[3,0],[3,1],[3,2],[4,0]],
-        collectAmount:2,
-        cooldown:0.9,
-        mesh:function(box,unusedcuznotrelevant,cylinder,sphere){
-            
-            box(-0.3,0.3,0.4,0.125,1.3,0.125,false,[1,0.7,0.4])
-            box(-0.3,-0.1,0.4,0.175,0.5,0.175,false,[0.7,0.5,0.2])
-            cylinder(-0.3,0.25+1.2*0.5+0.5,0.4,0.2,0.075,10,1*1.4,0.7*1.4,0.4*1.4,90,0,0)
-            cylinder(-0.3,0.25+1.2*0.5+0.5+0.2,0.4,0.125,0.075,10,1*1.4,0.7*1.4,0.4*1.4,90,0,0)
-            cylinder(-0.3,0.25+1.2*0.5+0.5-0.2,0.4,0.125,0.075,10,1*1.4,0.7*1.4,0.4*1.4,90,0,0)
-            cylinder(-0.3,0.25+1.2*0.5+0.501,0.4,0.3,-0.8,10,0.9,0.5,0.2,90,0,0)
-
-        }
-    },
-
-    bubbleWand:{
-        
-        collectPattern:[[0,3],[1,3],[-1,3],[0,-3],[1,-3],[-1,-3],[3,0],[3,1],[3,-1],[-3,0],[-3,1],[-3,-1],[2,2],[2,-2],[-2,-2],[-2,2]],
-        collectAmount:{w:6,r:6,b:6*2},
-        cooldown:0.8,
-        mesh:function(box,unusedcuznotrelevant,cylinder,sphere){
-            
-            box(-0.3,0.4,0.4,0.125,1.5,0.125,false,[0,0.4,1.4])
-            box(-0.3,-0.1,0.4,0.175,0.5,0.175,false,[1.2,1.2,0])
-            cylinder(-0.3,0.45+1.2*0.5+0.5,0.4,0.5,0.075,15,0,0.4,1.5,0,0,0)
-            cylinder(-0.3,0.45+1.2*0.5+0.5,0.4,0.4,0.0755,15,0,0.9,1.2,0,0,0)
-        },particles:function(){
-            
-            toolParticle-=dt
-            
-            if(toolParticle>0){return}
-            
-            toolParticle=0.4
-            
-            let x=-player.bodyDir[2],z=player.bodyDir[0]
-            
-            x+=player.bodyDir[0]
-            z+=player.bodyDir[2]
-            
-            x*=0.3
-            z*=0.4
-            
-            ParticleRenderer.add({x:player.body.position.x+x+MATH.random(-0.4,0.4),y:player.body.position.y+0.45+1.2*0.5+0.5+MATH.random(-0.4,0.4),z:player.body.position.z+z+MATH.random(-0.4,0.4),vx:MATH.random(-0.6,0.6),vy:(Math.random()-0.5)*0.5,vz:MATH.random(-0.6,0.6),grav:1.5,size:MATH.random(100,150),col:[0,0.6,0.9],life:1,rotVel:MATH.random(-3,3),alpha:0.8})
-        },ability:function(){
-            
-            if(player.toolUses%10===0&&player.fieldIn){
-                
-                objects.bubbles.push(new Bubble(player.fieldIn,(Math.random()*fieldInfo[player.fieldIn].width)|0,(Math.random()*fieldInfo[player.fieldIn].length)|0))
-            }
-        },
-    },
-
-    scythe:{
-        
-        collectPattern:[[0,0],[0,-1],[0,-2],[0,-3],[0,-4],[0,-5],[0,-6]],
-        collectAmount:{w:8,r:8*2,b:8},
-        cooldown:0.47,
-        mesh:function(box){
-            
-            box(-0.3,0.4,0.4,0.125,1.5,0.125,false,[1.4,1.4,0])
-            box(-0.3,-0.1,0.4,0.175,0.5,0.175,false,[1.4,0,0])
-            box(-0.3,1,0.8,0.15,0.35,0.7,false,[1.3,1.3,1.3])
-            box(-0.3,0.95,1.3,0.15,0.3,0.5,[20,0,0],[1.3,1.3,1.3])
-            box(-0.3,0.8,1.55,0.15,0.2,0.3,[45,0,0],[1.3,1.3,1.3])
-            box(-0.3,1+0.2,0.8,0.2,0.35,0.7,false,[1.3,0,0])
-            box(-0.3,0.95+0.2,1.3,0.2,0.3,0.5,[20,0,0],[1.3,0,0])
-            box(-0.3,0.775+0.2,1.55,0.2,0.3,0.5,[45,0,0],[1.3,0,0])
-        },
-        particles:function(){
-            
-            toolParticle-=dt
-            
-            if(toolParticle>0){return}
-            
-            toolParticle=0.4
-            
-            let x=player.bodyDir[0],y=1.5,z=player.bodyDir[2]*0
-            
-            x+=-player.bodyDir[2]*1.2
-            z+=player.bodyDir[0]*1.2
-            
-            let r=Math.random()*1.5
-            
-            x+=player.bodyDir[0]*r
-            y-=r*0.25
-            z+=player.bodyDir[2]*r
-            
-            ParticleRenderer.add({x:player.body.position.x+x,y:player.body.position.y+y,z:player.body.position.z+z,vx:MATH.random(-0.8,0.8),vy:0.75,vz:MATH.random(-0.8,0.8),grav:1.5,size:MATH.random(70,120),col:[1,MATH.random(0.3,0.6),0],life:1,rotVel:MATH.random(-3,3),alpha:4.5})
-        },ability:function(){
-            
-            if(player.toolUses%10===0){
-                
-                if(player.fieldIn){
-
-                    objects.flames.push(new Flame(player.fieldIn,player.flowerIn.x,player.flowerIn.z))
-
-                } else {
-
-                    objects.flames.push(new Flame(player.body.position.x,player.body.position.y,player.body.position.z,true))
-                }
-            }
-        },
-    },
-
-    goldenRake:{
-        
-        collectPattern:[[-3,0],[-3,-1],[-3,-2],[-3,-3],[3,0],[3,-1],[3,-2],[3,-3],[-1,0],[-1,-1],[-1,-2],[-1,-3],[1,0],[1,-1],[1,-2],[1,-3]],
-        collectAmount:7,
-        cooldown:0.75,
-        mesh:function(box,unusedcuznotrelevant,cylinder,sphere){
-            
-            box(-0.3,0,0.6,0.1,0.1,0.8,false,[1.3,1.3,0.4])
-            box(-0.3+0.1,0,0.6+0.6,0.1,0.1,0.5,[0,20,0],[1.3,1.3,0.4])
-            box(-0.3+0.2,0,0.6+0.5,0.1,0.1,0.5,[0,40,0],[1.3,1.3,0.4])
-            box(-0.3-0.1,0,0.6+0.6,0.1,0.1,0.5,[0,-20,0],[1.3,1.3,0.4])
-            box(-0.3-0.2,0,0.6+0.5,0.1,0.1,0.5,[0,-40,0],[1.3,1.3,0.4])
-            box(-0.3,0,0.6+0.65,0.1,0.1,0.4,false,[1.3,1.3,0.4])
-        },
-        ability:function(){
-            
-            if(player.toolUses%5===0&&player.fieldIn){
-                
-                objects.mobs.push(new Scratch(null,player.flowerIn.x,player.flowerIn.z,true))
-            }
-        }
-    },
-
-    sparkStaff:{
-        
-        collectPattern:[[2,1],[-2,1],[0,-2]],
-        collectAmount:30,
-        cooldown:0.5,
-        mesh:function(box,unusedcuznotrelevant,cylinder,sphere){
-            
-            box(-0.3,0.3,0.4,0.1,1.25,0.1,false,[1,0,1])
-        },ability:function(){
-            
-            if(!player.fieldIn){
-
-                tools.sparkStaff.collectPattern=[[2,1],[-2,1],[0,-2]]
-                return
-            }
-
-            let a=[[-5,0],[-4,-3],[-4,-2],[-4,-1],[-4,0],[-4,1],[-4,2],[-4,3],[-3,-4],[-3,-3],[-3,-2],[-3,-1],[-3,0],[-3,1],[-3,2],[-3,3],[-3,4],[-2,-4],[-2,-3],[-2,-2],[-2,-1],[-2,0],[-2,1],[-2,2],[-2,3],[-2,4],[-1,-4],[-1,-3],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[-1,3],[-1,4],[0,-5],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[0,1],[0,2],[0,3],[0,4],[0,5],[1,-4],[1,-3],[1,-2],[1,-1],[1,0],[1,1],[1,2],[1,3],[1,4],[2,-4],[2,-3],[2,-2],[2,-1],[2,0],[2,1],[2,2],[2,3],[2,4],[3,-4],[3,-3],[3,-2],[3,-1],[3,0],[3,1],[3,2],[3,3],[3,4],[4,-3],[4,-2],[4,-1],[4,0],[4,1],[4,2],[4,3],[5,0]],f=fieldInfo[player.fieldIn]
-
-            let currentIndex=a.length,randomIndex
-
-            while(currentIndex){
-
-                randomIndex=(Math.random()*currentIndex)|0
-                currentIndex--
-
-                [a[currentIndex],a[randomIndex]]=[a[randomIndex],a[currentIndex]]
-            }
-
-            tools.sparkStaff.collectPattern=[a[0],a[1],a[2]]
-        },
-    },
-
-    porcelainDipper:{
-        
-        collectPattern:[[-4,0],[-3,-2],[-3,-1],[-3,0],[-3,1],[-3,2],[-2,-3],[-2,-2],[-2,-1],[-2,0],[-2,1],[-2,2],[-2,3],[-1,-3],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[-1,3],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[0,1],[0,2],[0,3],[0,4],[1,-3],[1,-2],[1,-1],[1,0],[1,1],[1,2],[1,3],[2,-3],[2,-2],[2,-1],[2,0],[2,1],[2,2],[2,3],[3,-2],[3,-1],[3,0],[3,1],[3,2],[4,0]],
-        collectAmount:{w:3*1.5,r:3,b:3},
-        cooldown:0.7,
-        mesh:function(box,unusedcuznotrelevant,cylinder,sphere){
-            
-            box(-0.3,0.4,0.4,0.125,1.5,0.125,false,[1.4,1.4,1.4])
-            box(-0.3,-0.1,0.4,0.175,0.5,0.175,false,[1.2,1.2,0])
-            cylinder(-0.3,0.45+1.2*0.5+0.5,0.4,0.2,0.075,10,1.5,1.5,1.5,90,0,0)
-            cylinder(-0.3,0.45+1.2*0.5+0.5+0.2,0.4,0.125,0.075,10,1.5,1.5,1.5,90,0,0)
-            cylinder(-0.3,0.45+1.2*0.5+0.5-0.2,0.4,0.125,0.075,10,1.5,1.5,1.5,90,0,0)
-            cylinder(-0.3,0.45+1.2*0.5+0.501,0.4,0.3,-0.8,10,1.4,1.4,1.4,90,0,0)
-            box(-0.5,1,0.4,0.175,0.5,0.12,[0,0,70],[0,0,1.4])
-            box(-0.5,0.825,0.4,0.175,0.4,0.12,[0,0,-70],[0,0,1.4])
-            box(-0.5+0.4,1,0.4,0.175,0.5,0.12,[0,0,-70],[1.4,0,0])
-            box(-0.5+0.4,0.825,0.4,0.175,0.4,0.12,[0,0,70],[1.4,0,0])
-        },particles:function(){
-            
-            toolParticle-=dt
-            
-            if(toolParticle>0){return}
-            
-            toolParticle=0.5
-            
-            let x=-player.bodyDir[2],z=player.bodyDir[0],r=0.325
-            
-            x+=player.bodyDir[0]
-            z+=player.bodyDir[2]
-            
-            x*=r
-            z*=r
-            
-            ParticleRenderer.add({x:player.body.position.x+x+MATH.random(-0.4,0.4),y:player.body.position.y+1.75+MATH.random(-0.4,0.4),z:player.body.position.z+z+MATH.random(-0.4,0.4),vx:MATH.random(-0.8,0.8),vy:Math.random()*0.5+0.4,vz:MATH.random(-0.8,0.8),grav:-1.25*Math.random()-0.25,size:MATH.random(20,60),col:[0.95,0.95,0.95],life:1,rotVel:MATH.random(-3,3),alpha:0.5})
-        }
-    },
-    
-    petalWand:{
-        
-        collectPattern:[[0,0],[0,-1],[0,-2],[0,-3],[0,-4],[0,-5],[0,-6],[-1,-3],[-1,-4],[-1,-5],[1,-3],[1,-4],[1,-5],[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[-1,3],[-1,4],[-1,5],[1,3],[1,4],[1,5],[1,0],[2,0],[3,0],[4,0],[5,0],[6,0],[3,1],[4,1],[5,1],[3,-1],[4,-1],[5,-1],[-1,0],[-2,0],[-3,0],[-4,0],[-5,0],[-6,0],[-3,1],[-4,1],[-5,1],[-3,-1],[-4,-1],[-5,-1]],
-        collectAmount:10,
-        cooldown:0.7,
-        mesh:function(box){
-            
-            box(-0.3-0.1,0.6,0.3+0.1,0.15,1.5,0.15,false,[0,0.7,0])
-            box(-0.3-0.1,1.45,0.3+0.1,0.3,0.3,0.3,[45,0,45],[1.5,1.2,0])
-            for(let i=0;i<MATH.TWO_PI;i+=MATH.TWO_PI/3){
-                
-                box(-0.3+Math.sin(i)*0.5-0.1,1.35,0.3+0.1+Math.cos(i)*0.5,0.7,0.1,0.7,[Math.sin(i)*-30,0,Math.cos(i)*-30],[1.2,1.2,1.2])
-                
-            }
-            
-            for(let i=MATH.QUATER_PI;i<MATH.TWO_PI+MATH.QUATER_PI;i+=MATH.TWO_PI/3){
-                
-                box(-0.3+Math.sin(i)*0.5-0.1,1.35,0.3+0.1+Math.cos(i)*0.5,0.7,0.1,0.7,[Math.sin(i)*30,0,Math.cos(i)*30],[1.2,1.2,1.2])
-                
-            }
-            
-            for(let i=0;i<MATH.TWO_PI;i+=MATH.TWO_PI/3){
-                
-                box(-0.3-0.1+Math.sin(i)*0.5,1.2,0.3+0.1+Math.cos(i)*0.5,0.7,0.1,0.7,[60,i*MATH.TO_DEG,0],[1.2,1.2,1.2])
-                box(-0.3-0.1+Math.sin(i)*0.25,1.2,0.3+0.1+Math.cos(i)*0.25,0.7,0.1,0.7,[-60,i*MATH.TO_DEG,0],[1.2,1.2,1.2])
-                
-            }
-        },
-        ability:function(){
-            
-            if(player.toolUses%3===0){
-                
-                objects.mobs.push(new PetalShuriken([player.body.position.x,player.body.position.y+0.25,player.body.position.z],player.bodyDir.slice()))
-            }
-        },
-        particles:function(){
-            
-            toolParticle-=dt
-            
-            if(toolParticle>0){return}
-            
-            toolParticle=0.3
-            
-            let x=-player.bodyDir[2],z=player.bodyDir[0],r=0.325
-            
-            x+=player.bodyDir[0]
-            z+=player.bodyDir[2]
-            
-            x*=r
-            z*=r
-            
-            ParticleRenderer.add({x:player.body.position.x+x,y:player.body.position.y+1.65,z:player.body.position.z+z,vx:MATH.random(-0.9,0.9),vy:Math.random()*0.5+0.2,vz:MATH.random(-0.9,0.9),grav:-1.5,size:MATH.random(20,50),col:[0.9,0.7,0.3],life:0.7,rotVel:MATH.random(-3,3),alpha:0.35})
-        }
-    },
-    
-    darkScythe:{
-        
-        collectPattern:[[0,-3],[0,-4],[1,-5],[1,-4],[1,-3],[2,-5],[2,-4],[2,-3],[3,-3],[3,-5],[4,-1],[-1,-3],[-1,-4],[-2,-3],[-3,-3],[0,-5],[-1,-5],[-2,-4],[-4,-2],[3,-4],[4,-4],[2,-2],[3,-2],[-2,-2],[-3,-2],[-4,-1]],
-        collectAmount:13,
-        cooldown:0.575,
-        mesh:function(box){
-            
-            box(-0.55,0.75,0.55,0.15,2.2,0.15,[0,0,0],[0.1,0,0],[0,0,30])
-            box(-0.55,1.6,1.1,0.15,0.6,1.2,[0,0,0],[0.1,0,0],[0,0,30])
-            box(-0.55,1.5,2,0.15,0.5,1,[20,0,0],[0.1,0,0],[0,0,30])
-            box(-0.55,1.2,2.6,0.15,0.35,1,[40,0,0],[0.1,0,0],[0,0,30])
-            
-            box(-0.55,1.3,1.1,0.175,0.6*0.3,1.2,[0,0,0],[1.2,0,0.4],[0,0,30])
-            box(-0.55,1.2,2,0.175,0.5*0.3,1,[20,0,0],[1.2,0,0.4],[0,0,30])
-            box(-0.55,0.9,2.6,0.175,0.3*0.5,0.5,[40,0,0],[1.2,0,0.4],[0,0,30])
-            
-            box(-0.55,1.95,0.1,0.15,0.15,1.3,[20,0,0],[0.1,0,0],[0,0,30])
-            box(-0.55,1.25,0.1,0.15,0.15,0.9,[-20,0,0],[0.1,0,0],[0,0,30])
-            
-        },
-        ability:function(arr){
-            
-            // if(!player.fieldIn){return}
-            
-            objects.mobs.push(new DarkScoopingTrail())
-            
-            if(player.fieldIn&&!player.attacked.length){
-                
-                let x=Math.round(player.body.position.x-fieldInfo[player.fieldIn].x),z=Math.round(player.body.position.z-fieldInfo[player.fieldIn].z),a=[]
-                
-                for(let i in arr){
-                    
-                    let _x=arr[i][0]+x,_z=arr[i][1]+z
-                    
-                    if(_x>=0&&_x<fieldInfo[player.fieldIn].width&&_x>=0&&_z<fieldInfo[player.fieldIn].length){
-                        
-                        a.push([_x,_z])
-                    }
-                }
-                
-                for(let i in objects.flames){
-                    
-                    let f=objects.flames[i]
-                    
-                    if(MATH.indexOfArrays(a,[f.x,f.z])>-1){
-                        
-                        f.turnDark()
-                    }
-                }
-                
-            } else {
-                
-                for(let i in objects.flames){
-                    
-                    let f=objects.flames[i]
-                    
-                    if(f.isStatic&&vec3.sqrDist(f.pos,[player.body.position.x+player.bodyDir[0]*2,player.body.position.y,player.body.position.z+player.bodyDir[2]*2])<7){
-                        
-                        f.turnDark()
-                    }
-                }
-            }
-        },
-        particles:function(){
-            
-            toolParticle-=dt
-            
-            if(toolParticle>0){return}
-            
-            toolParticle=0.05
-            
-            let x=player.bodyDir[0],y=1.5,z=player.bodyDir[2]*0
-            
-            x+=-player.bodyDir[2]*1.2
-            z+=player.bodyDir[0]*1.2
-            
-            let r=Math.random()*2.5
-            
-            x+=player.bodyDir[0]*r
-            y-=r*0.25
-            z+=player.bodyDir[2]*r
-            
-            ParticleRenderer.add({x:player.body.position.x+x,y:player.body.position.y+y,z:player.body.position.z+z,vx:-player.bodyDir[2]*2,vy:1.75,vz:player.bodyDir[0]*2,grav:0,size:MATH.random(70,120),col:[1,0,Math.random()],life:1,rotVel:MATH.random(-3,3),alpha:4.5})
-        }
-    },
-    
-    tidePopper:{
-        
-        collectPattern:[[0,0],[-1,0],[1,0],[-2,0],[2,0],[-1,-1],[0,-1],[1,-1],[-1,-2],[0,-2],[1,-2],[-1,-3],[0,-3],[1,-3],[-1,-4],[0,-4],[1,-4],[-1,-5],[0,-5],[1,-5],[0,-6],[0,-7],[0,-8]],
-        collectAmount:13,
-        cooldown:1,
-        mesh:function(box,unusedcuznotrelevant,cylinder,sphere,finalRotation){
-            
-            cylinder(-0.4,2.2,0.4,0.25,0.05,15,1,3,7,90,0,0,0.25)
-            cylinder(-0.4,1.6,0.4,0.3,0.05,15,1,3,7,90,0,0,0.3)
-            cylinder(-0.4,1.1,0.4,0.4,0.05,15,1,3,7,90,0,0,0.4)
-            cylinder(-0.4,1.7,0.4,0.3,2.25,10,0.3,1,2,90,0,0,0)
-            box(-0.4,0.5,0.4,0.15,1.4,0.15,false,[0.1,0.8,1.8])
-            sphere(-0.4-0.8,0.85,0.4,0.25,1,100,100,100)
-            sphere(-0.4+0.8,0.85,0.4,0.25,1,100,100,100)
-            sphere(-0.4,0.85,0.4-0.8,0.25,1,100,100,100)
-            sphere(-0.4,0.85,0.4+0.8,0.25,1,100,100,100)
-            finalRotation(20,-20,0)
-            
-        },
-        ability:function(){
-            
-            if(player.toolUses%3===0){
-                
-                objects.mobs.push(new Wave([player.body.position.x,player.body.position.y+0.25,player.body.position.z],player.bodyDir.slice()))
-            }
-        },
-        particles:function(){
-            
-            toolParticle-=dt
-            
-            if(toolParticle>0){return}
-            
-            toolParticle=0.1
-            
-            let x=-player.bodyDir[2],z=player.bodyDir[0],r=MATH.random(0.2,0.9)
-            
-            x+=player.bodyDir[0]
-            z+=player.bodyDir[2]
-            
-            x*=r
-            z*=r
-            
-            ParticleRenderer.add({x:player.body.position.x+x,y:player.body.position.y+MATH.random(0.1,2.5),z:player.body.position.z+z,vx:x,vy:1.6,vz:z,grav:0,size:MATH.random(20,50),col:[0.1,0.7,1],life:0.7,rotVel:MATH.random(-3,3),alpha:0.5})
-            
-            
-        }
-    },
-    
-    gummyBaller:{
-        
-        collectPattern:[[-3,-3],[-2,-5],[-2,-4],[-2,-3],[-2,-2],[-2,-1],[-1,-5],[-1,-4],[-1,-3],[-1,-2],[-1,-1],[0,-6],[0,-5],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[1,-5],[1,-4],[1,-3],[1,-2],[1,-1],[2,-5],[2,-4],[2,-3],[2,-2],[2,-1],[3,-3]],
-        collectAmount:16,
-        cooldown:1,
-        mesh:function(box,unusedcuznotrelevant,cylinder,sphere,finalRotation){
-            
-            cylinder(-0.4,-0.1,0.4,0.15,0.35,15,0.26,2.7,1.1,90,0,0,0.15)
-            cylinder(-0.4,0.8,0.4,0.1,1.75,15,1.5,0.15,1.5,90,0,0,0.1)
-            sphere(-0.4,1.6,0.4,0.5,1,0.26,2.7,1.1)
-            cylinder(-0.4,1.75,0.4,0.45,0.25,15,1.5,0.15,1.5,90,0,0,0.6)
-            sphere(-0.4-0.3,1.85,0.4,0.25,1,0.26,2.7,1.1)
-            sphere(-0.4+0.3,1.85,0.4,0.25,1,0.26,2.7,1.1)
-            sphere(-0.4,1.85,0.4-0.3,0.25,1,1.5*1.75,0.65*1.75,1.5*1.75)
-            sphere(-0.4,1.85,0.4+0.3,0.25,1,1.5*1.75,0.65*1.75,1.5*1.75)
-            
-        },
-        ability:function(){
-            
-        },
-        particles:function(){
-            
-            let x=(-player.bodyDir[2]+player.bodyDir[0])*0.4,z=(player.bodyDir[0]+player.bodyDir[2])*0.4
-            
-            player.lagPos[0]+=(player.body.position.x-player.lagPos[0])*dt*12.5
-            player.lagPos[1]+=(player.body.position.y-player.lagPos[1])*dt*12.5
-            player.lagPos[2]+=(player.body.position.z-player.lagPos[2])*dt*12.5
-            
-            meshes.explosions.instanceData.push(player.lagPos[0]+x,player.lagPos[1]+2+player.gummyBallSize*0.3,player.lagPos[2]+z,0.9*player.isNight,0.18*player.isNight,0.9*player.isNight,1,player.gummyBallSize*0.5,1)
-            
-            toolParticle-=dt
-            
-            if(toolParticle>0){return}
-            
-            toolParticle=0.4/player.gummyBallSize
-            
-            ParticleRenderer.add({x:player.lagPos[0]+x,y:player.lagPos[1]+2+player.gummyBallSize*0.3,z:player.lagPos[2]+z,vx:MATH.random(-player.gummyBallSize,player.gummyBallSize),vy:MATH.random(-player.gummyBallSize,player.gummyBallSize),vz:MATH.random(-player.gummyBallSize,player.gummyBallSize),grav:0,size:MATH.random(20,50)*player.gummyBallSize,col:[0.1,0.8,1],life:0.75,rotVel:MATH.random(-3,3),alpha:player.gummyBallSize-0.5})
-            
-        }
-    },
-}
-
 let howManyToFeed=document.getElementById('howManyToFeed'),howManyMessage=document.getElementById('howManyMessage'),feedAmount=document.getElementById('feedAmount')
 
 let items={
@@ -11448,7 +10859,7 @@ class Bee {
                             if(i!==2)
                                 objects.tokens.push(new Token(effects.focus.tokenLife,[_t.pos[0],_t.pos[1]+0.5,_t.pos[2]],'focus',{field:_t.field,x:_t.x,z:_t.z,bee:this}))
                             
-                            collectPollen({x:_t.x,z:_t.z,pattern:[[-4,0],[-3,-2],[-3,-1],[-3,0],[-3,1],[-3,2],[-2,-3],[-2,-2],[-2,-1],[-2,0],[-2,1],[-2,2],[-2,3],[-1,-3],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[-1,3],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[0,1],[0,2],[0,3],[0,4],[1,-3],[1,-2],[1,-1],[1,0],[1,1],[1,2],[1,3],[2,-3],[2,-2],[2,-1],[2,0],[2,1],[2,2],[2,3],[3,-2],[3,-1],[3,0],[3,1],[3,2],[4,0]],amount:(this.attack+player[beeInfo[this.type].color+'BeeAttack'])*player.beeAttack*(this.level*0.1+1),yOffset:2+Math.random()*0.4,stackHeight:0.5+Math.random()*0.5,instantConversion:(player.flameHeatStack-1)*0.5,multiplier:player.flameHeatStack*4,field:_t.field})
+                            collectPollen({x:_t.x,z:_t.z,pattern:[[-4,0],[-3,-2],[-3,-1],[-3,0],[-3,1],[-3,2],[-2,-3],[-2,-2],[-2,-1],[-2,0],[-2,1],[-2,2],[-2,3],[-1,-3],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[-1,3],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[0,1],[0,2],[0,3],[0,4],[1,-3],[1,-2],[1,-1],[1,0],[1,1],[1,2],[1,3],[2,-3],[2,-2],[2,-1],[2,0],[2,1],[2,2],[2,3],[3,-2],[3,-1],[3,0],[3,1],[3,2],[4,0]],amount:(this.attack+player[beeInfo[this.type].color+'BeeAttack'])*player.beeAttack*(this.level*0.1+1)*0.5,yOffset:2+Math.random()*0.4,stackHeight:0.5+Math.random()*0.5,instantConversion:(player.flameHeatStack-1)*0.5,multiplier:player.flameHeatStack*3,field:_t.field})
                             
                         } else {
                             
@@ -12101,10 +11512,10 @@ class Flame {
             this.oilPos=[player.body.position.x,player.body.position.y+0.3,player.body.position.z]
             this.oilTrail=new TrailRenderer.Trail({length:10,size:0.75,triangle:true,color:[0.1,0,0,1]})
             
-            player.pollen-=Math.min(Math.ceil(player.convertTotal*0.15),player.pollen)
-            player.honey+=Math.ceil(Math.min(Math.ceil(player.convertTotal*0.15),player.pollen)*player.honeyPerPollen)
+            player.pollen-=Math.min(Math.ceil(player.convertTotal*0.01),player.pollen)
+            player.honey+=Math.ceil(Math.min(Math.ceil(player.convertTotal*0.01),player.pollen)*player.honeyPerPollen)
             if(player.setting_enablePollenText)
-                textRenderer.add(Math.ceil(Math.min(Math.ceil(player.convertTotal*0.15),player.pollen)*player.honeyPerPollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
+                textRenderer.add(Math.ceil(Math.min(Math.ceil(player.convertTotal*0.01),player.pollen)*player.honeyPerPollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
         }
     }
     
@@ -12127,10 +11538,10 @@ class Flame {
             if(player.flameFuel){
                 
                 this.life*=1.5
-                player.pollen-=Math.min(Math.ceil(player.convertTotal*0.15),player.pollen)
-                player.honey+=Math.ceil(Math.min(Math.ceil(player.convertTotal*0.15),player.pollen)*player.honeyPerPollen)
+                player.pollen-=Math.min(Math.ceil(player.convertTotal*0.01),player.pollen)
+                player.honey+=Math.ceil(Math.min(Math.ceil(player.convertTotal*0.01),player.pollen)*player.honeyPerPollen)
                 if(player.setting_enablePollenText)
-                    textRenderer.add(Math.ceil(Math.min(Math.ceil(player.convertTotal*0.15),player.pollen)*player.honeyPerPollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
+                    textRenderer.add(Math.ceil(Math.min(Math.ceil(player.convertTotal*0.01),player.pollen)*player.honeyPerPollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
                 this.getRidOfOilTrailTimer=2
                 this.oilT=0
                 this.oilPos=[player.body.position.x,player.body.position.y+0.3,player.body.position.z]
@@ -12172,7 +11583,7 @@ class Flame {
             
             if(!this.isStatic&&player.fieldIn===this.field){
                 
-                collectPollen({x:this.x,z:this.z,pattern:this.dark?[[0,0],[1,1],[1,-1],[-1,1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1],[2,0],[-2,0],[0,-2],[0,2]]:[[0,0],[1,1],[1,-1],[-1,1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]],amount:{r:10,w:5,b:1},stackHeight:0.7,multiplier:player.flamePollen*player.flameBonus,instantConversion:player.instantFlameConversion,field:this.field})
+                collectPollen({x:this.x,z:this.z,pattern:this.dark?[[0,0],[1,1],[1,-1],[-1,1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1],[2,0],[-2,0],[0,-2],[0,2]]:[[0,0],[1,1],[1,-1],[-1,1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]],amount:{r:10,w:4,b:1},stackHeight:0.7,multiplier:player.flamePollen*player.flameBonus,instantConversion:player.instantFlameConversion,field:this.field})
             }
         }
         
@@ -12559,9 +11970,6 @@ class Frog {
     }
 }
 
-
-
-//for identification of balloons cuz the indexes cant be used
 let globalBalloonID=0
 
 class Balloon {
@@ -12800,7 +12208,7 @@ class Target {
         
         if(vec3.sqrDist(this.pos,[player.body.position.x,player.body.position.y,player.body.position.z])<=4.5){
             
-            let amountToConvert=Math.min((player.convertTotal*0.5)+(10*this.bee.convertAmount*player.convertRate*player[beeInfo[this.bee.type].color+'ConvertRate'])*(player.flameHeatStack*5),player.pollen)
+            let amountToConvert=Math.min((player.convertTotal*0.5)+(10*this.bee.convertAmount*player.convertRate*player[beeInfo[this.bee.type].color+'ConvertRate'])*(player.flameHeatStack*10),player.pollen)
             
             player.pollen-=amountToConvert
             
@@ -16650,7 +16058,8 @@ class Mesh {
         this.isStatic=isStatic
         this.setMesh(verts||[],index||[])
         this.meshGlobalID=globalMeshID++
-        // globalMeshID++
+        this.matrix=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
+        this.ogMatrix=this.matrix.slice()
     }
     
     setMesh(verts,index){
@@ -17298,7 +16707,7 @@ class Mesh {
                 ]
                 
                 for(let i=0,_l=v.length;i<_l;i++){
-                    
+
                     vec3.transformMat4(v[i],v[i],model)
                     vec3.transformQuat(v[i],v[i],rotation2)
                     
@@ -17306,6 +16715,8 @@ class Mesh {
                         
                         vec3.transformQuat(normals[i],normals[i],rotation)
                     }
+
+                    vec3.transformMat4(v[i],v[i],DIS.matrix)
                 }
                 
                 let vl=verts.length/9,n=normals
@@ -17435,6 +16846,8 @@ class Mesh {
                         _verts[i+1]+=y
                         _verts[i+2]+=z
                     }
+
+                    [_verts[i],_verts[i+1],_verts[i+2]]=vec3.transformMat4([],[_verts[i],_verts[i+1],_verts[i+2]],DIS.matrix)
                 }
                 
                 verts.push(..._verts)
@@ -17452,6 +16865,11 @@ class Mesh {
                 for(let i in _m.index){
                     
                     _index.push(_m.index[i]+verts.length/9)
+                }
+
+                for(let i=0;i<_verts.length;i+=9){
+                    
+                    [_verts[i],_verts[i+1],_verts[i+2]]=vec3.transformMat4([],[_verts[i],_verts[i+1],_verts[i+2]],DIS.matrix)
                 }
                 
                 verts.push(..._verts)
@@ -17502,6 +16920,7 @@ class Mesh {
                     
                     vec3.transformQuat(pos[i],pos[i],rotQuat)
                     vec3.add(pos[i],pos[i],[x,y,z])
+                    vec3.transformMat4(pos[i],pos[i],DIS.matrix)
                 }
                 
                 for(let i in vs){
@@ -17539,6 +16958,8 @@ class Mesh {
             
             applyFinalRotation=function(x,y,z){
                 
+                if(!mat4.exactEquals(DIS.matrix,DIS.ogMatrix)) return
+
                 let q=quat.fromEuler([],x,y,z)
                 
                 for(let i=0;i<verts.length;i+=9){
@@ -17758,7 +17179,593 @@ let dialogueBox=document.getElementById('dialogueBox'),
 
 let playerMesh=new Mesh(false)
 
+let shopGearMesh=new Mesh(false)
+
 let gear=window.playerGear
+
+gear.tool={
+    
+    shovel:{
+        
+        collectPattern:[[0,0],[0,-1]],
+        collectAmount:5,
+        cooldown:1,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,0,0.6,0.1,0.1,0.8,false,[0.5,0.2,0])
+            box(-0.3,0,1.2,0.3,0.1,0.4,false,[0.2,0.2,0.2])
+        }
+    },
+
+    rake:{
+        
+        collectPattern:[[0,0],[0,-1],[0,-2]],
+        collectAmount:8,
+        cooldown:1,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,0,0.6,0.1,0.1,0.8,false,[0.9,0.9,0.9])
+            box(-0.3+0.1,0,0.6+0.6,0.1,0.1,0.5,[0,20,0],[0.4,0.4,0.4])
+            box(-0.3+0.2,0,0.6+0.5,0.1,0.1,0.5,[0,40,0],[0.4,0.4,0.4])
+            box(-0.3-0.1,0,0.6+0.6,0.1,0.1,0.5,[0,-20,0],[0.4,0.4,0.4])
+            box(-0.3-0.2,0,0.6+0.5,0.1,0.1,0.5,[0,-40,0],[0.4,0.4,0.4])
+            box(-0.3,0,0.6+0.65,0.1,0.1,0.4,false,[0.4,0.4,0.4])
+        }
+    },
+
+    clippers:{
+        
+        collectPattern:[[0,0]],
+        collectAmount:9,
+        cooldown:0.6,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.2-0.15,-0.15,0.4,0.25,0.25,0.1,[0,0,-30],[1.3,1.3,0])
+            box(-0.2+0.15,-0.15,0.4,0.25,0.25,0.1,[0,0,30],[1.3,1.3,0])
+            box(-0.2+0.15-Math.sin(30*MATH.TO_RAD)*0.41,-0.15+Math.cos(30*MATH.TO_RAD)*0.41,0.4,0.1,0.6,0.1,[0,0,30],[1.3,1.3,1.3])
+            box(-0.2-0.15+Math.sin(30*MATH.TO_RAD)*0.41,-0.15+Math.cos(30*MATH.TO_RAD)*0.41,0.4,0.1,0.6,0.1,[0,0,-30],[1.3,1.3,1.3])
+        }
+    },
+
+    magnet:{
+        
+        collectPattern:[[0,0],[0,-1],[0,1],[-1,0],[1,0],[1,1],[1,-1],[-1,1],[-1,-1]],
+        collectAmount:2,
+        cooldown:0.8,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,-0.25,0.5,0.2,0.6,0.2,false,[0.8,0.8,0.8])
+            box(-0.3,0.15,0.5,0.6,0.2,0.2,false,[1,0,0])
+            box(-0.3-0.3,0.3,0.5,0.2,0.5,0.2,false,[1,0,0])
+            box(-0.3+0.3,0.3,0.5,0.2,0.5,0.2,false,[1,0,0])
+            box(-0.3-0.3,0.5,0.5,0.19,0.5,0.19,false,[1,1,1])
+            box(-0.3+0.3,0.5,0.5,0.19,0.5,0.19,false,[1,1,1])
+        }
+    },
+
+    vacuum:{
+        
+        collectPattern:[[0,0],[0,-1],[0,1],[-1,0],[1,0],[1,1],[1,-1],[-1,1],[-1,-1],[0,-2],,[2,0],[0,2],[-2,0]],
+        collectAmount:2,
+        cooldown:0.8,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,0,0.65,0.1,0.8,0.1,[-20,0,0],[0.8,0.8,0.8])
+            box(-0.3,-0.1,0.5,0.3,0.6,0.25,[-20,0,0],[1,0.7,0.4])
+            box(-0.3,-0.3,0.7,0.4,0.3,0.3,false,[0.2,0.2,0.2])
+            box(-0.3-0.1,-0.3,0.7,0.075,0.075,0.31,false,[1.4,1.4,0])
+            box(-0.3+0.1,-0.3,0.7,0.075,0.075,0.31,false,[1.4,1.4,0])
+        }
+    },
+
+    superScooper:{
+        
+        collectPattern:[[0,0],[0,-1],[0,-2],[0,-3],[0,-4]],
+        collectAmount:4,
+        cooldown:0.5,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,0,0.4,0.175,0.175,0.2,false,[1.5,1.5,0])
+            box(-0.3,0,0.6,0.175,0.175,0.2,false,[0,0,1.5])
+            box(-0.3,0,0.8,0.175,0.175,0.2,false,[1.5,1.5,0])
+            box(-0.3,0,1,0.175,0.175,0.2,false,[0,0,1.5])
+            box(-0.3,0,1.2,0.15,0.15,0.2,false,[0.6,0.4,0.1])
+            box(-0.3+0.3*0.5,0,1.55,0.3,0.175,0.65,false,[1.5,1.5,0])
+            box(-0.3-0.3*0.5,0,1.55,0.3,0.175,0.65,false,[0,0,1.5])
+        }
+    },
+
+    pulsar:{
+        
+        collectPattern:[[0,0],[0,-1],[0,1],[-1,0],[1,0],[1,1],[1,-1],[-1,1],[-1,-1],[0,-2],[2,0],[0,2],[-2,0],[-2,-1],[-2,1],[2,-1],[2,1],[-1,-2],[-1,2],[1,-2],[1,2],[0,-3],[0,3],[-3,0],[3,0],[-2,2],[2,2],[-2,-2],[2,-2]],
+        collectAmount:2,
+        cooldown:1,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,0.2,0.4,0.125,1.1,0.125,false,[1.5,1.5,0])
+            box(-0.3,-0.2,0.4,0.175,0.3,0.175,false,[0,1.5,0])
+            cylinder(-0.3,0.2+1.1*0.5+0.25,0.4,0.25,0.0005,10,0,0,0,0,0,0,0.25)
+            cylinder(-0.3,0.2+1.1*0.5+0.25,0.4,0.25,0.0005,10,0,0,0,0.001,90,0,0.25)
+            cylinder(-0.3,0.2+1.1*0.5+0.25,0.4,0.25,0.0005,10,0,0,0,90,0,0,0.25)
+
+        },particles:function(){
+            
+            toolParticle-=dt
+            
+            if(toolParticle>0){return}
+            
+            toolParticle=0.3
+            
+            let x=-player.bodyDir[2],z=player.bodyDir[0]
+            
+            x+=player.bodyDir[0]
+            z+=player.bodyDir[2]
+            
+            x*=0.3
+            z*=0.4
+            
+            ParticleRenderer.add({x:player.body.position.x+x,y:player.body.position.y+0.2+1.1*0.5+0.25,z:player.body.position.z+z,vx:MATH.random(-0.3,0.3),vy:(Math.random()-0.5)*0.5,vz:MATH.random(-0.3,0.3),grav:1.5,size:MATH.random(30,70),col:[0,1,0],life:1,rotVel:MATH.random(-3,3),alpha:2})
+        }
+    },
+
+    electroMagnet:{
+        
+        collectPattern:[[0,0],[0,-1],[0,1],[-1,0],[1,0],[1,1],[1,-1],[-1,1],[-1,-1]],
+        collectAmount:6,
+        cooldown:0.5,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,-0.15,0.5,0.2,0.8,0.2,false,[0.8,0.8,0.8])
+            box(-0.3,0.15+0.2,0.5,0.6,0.2,0.2,false,[1.4,1.4,0])
+            box(-0.3-0.3,0.3+0.2,0.5,0.2,0.5,0.2,false,[1.4,1.4,0])
+            box(-0.3+0.3,0.3+0.2,0.5,0.2,0.5,0.2,false,[1.4,1.4,0])
+            box(-0.3-0.3,0.5+0.2,0.5,0.19,0.5,0.19,false,[1,1,1])
+            box(-0.3+0.3,0.5+0.2,0.5,0.19,0.5,0.19,false,[1,1,1])
+            box(-0.3,0.15+0.2,0.5,0.2,0.2,0.6,false,[1.4,1.4,0])
+            box(-0.3,0.3+0.2,0.5-0.3,0.2,0.5,0.2,false,[1.4,1.4,0])
+            box(-0.3,0.3+0.2,0.5+0.3,0.2,0.5,0.2,false,[1.4,1.4,0])
+            box(-0.3,0.5+0.2,0.5-0.3,0.19,0.5,0.19,false,[1,1,1])
+            box(-0.3,0.5+0.2,0.5+0.3,0.19,0.5,0.19,false,[1,1,1])
+        }
+    },
+    
+    scissors:{
+        
+        collectPattern:[[0,0]],
+        collectAmount:60,
+        cooldown:0.5,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.2-0.15,-0.15,0.4,0.25,0.25,0.1,[0,0,-30],[0.9,0,0])
+            box(-0.2+0.15,-0.15,0.4,0.25,0.25,0.1,[0,0,30],[0,0,0.9])
+            box(-0.2+0.15-Math.sin(30*MATH.TO_RAD)*0.41,-0.15+Math.cos(30*MATH.TO_RAD)*0.41,0.4,0.1,0.6,0.1,[0,0,30],[1.3,1.3,1.3])
+            box(-0.2-0.15+Math.sin(30*MATH.TO_RAD)*0.41,-0.15+Math.cos(30*MATH.TO_RAD)*0.41,0.4,0.1,0.6,0.1,[0,0,-30],[1.3,1.3,1.3])
+        }
+    },
+
+    honeyDipper:{
+        
+        collectPattern:[[-4,0],[-3,-2],[-3,-1],[-3,0],[-3,1],[-3,2],[-2,-3],[-2,-2],[-2,-1],[-2,0],[-2,1],[-2,2],[-2,3],[-1,-3],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[-1,3],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[0,1],[0,2],[0,3],[0,4],[1,-3],[1,-2],[1,-1],[1,0],[1,1],[1,2],[1,3],[2,-3],[2,-2],[2,-1],[2,0],[2,1],[2,2],[2,3],[3,-2],[3,-1],[3,0],[3,1],[3,2],[4,0]],
+        collectAmount:2,
+        cooldown:0.9,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,0.3,0.4,0.125,1.3,0.125,false,[1,0.7,0.4])
+            box(-0.3,-0.1,0.4,0.175,0.5,0.175,false,[0.7,0.5,0.2])
+            cylinder(-0.3,0.25+1.2*0.5+0.5,0.4,0.2,0.075,10,1*1.4,0.7*1.4,0.4*1.4,90,0,0)
+            cylinder(-0.3,0.25+1.2*0.5+0.5+0.2,0.4,0.125,0.075,10,1*1.4,0.7*1.4,0.4*1.4,90,0,0)
+            cylinder(-0.3,0.25+1.2*0.5+0.5-0.2,0.4,0.125,0.075,10,1*1.4,0.7*1.4,0.4*1.4,90,0,0)
+            cylinder(-0.3,0.25+1.2*0.5+0.501,0.4,0.3,-0.8,10,0.9,0.5,0.2,90,0,0)
+
+        }
+    },
+
+    bubbleWand:{
+        
+        collectPattern:[[0,3],[1,3],[-1,3],[0,-3],[1,-3],[-1,-3],[3,0],[3,1],[3,-1],[-3,0],[-3,1],[-3,-1],[2,2],[2,-2],[-2,-2],[-2,2]],
+        collectAmount:{w:6,r:6,b:6*2},
+        cooldown:0.8,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,0.4,0.4,0.125,1.5,0.125,false,[0,0.4,1.4])
+            box(-0.3,-0.1,0.4,0.175,0.5,0.175,false,[1.2,1.2,0])
+            cylinder(-0.3,0.45+1.2*0.5+0.5,0.4,0.5,0.075,15,0,0.4,1.5,0,0,0)
+            cylinder(-0.3,0.45+1.2*0.5+0.5,0.4,0.4,0.0755,15,0,0.9,1.2,0,0,0)
+        },particles:function(){
+            
+            toolParticle-=dt
+            
+            if(toolParticle>0){return}
+            
+            toolParticle=0.4
+            
+            let x=-player.bodyDir[2],z=player.bodyDir[0]
+            
+            x+=player.bodyDir[0]
+            z+=player.bodyDir[2]
+            
+            x*=0.3
+            z*=0.4
+            
+            ParticleRenderer.add({x:player.body.position.x+x+MATH.random(-0.4,0.4),y:player.body.position.y+0.45+1.2*0.5+0.5+MATH.random(-0.4,0.4),z:player.body.position.z+z+MATH.random(-0.4,0.4),vx:MATH.random(-0.6,0.6),vy:(Math.random()-0.5)*0.5,vz:MATH.random(-0.6,0.6),grav:1.5,size:MATH.random(100,150),col:[0,0.6,0.9],life:1,rotVel:MATH.random(-3,3),alpha:0.8})
+        },ability:function(){
+            
+            if(player.toolUses%10===0&&player.fieldIn){
+                
+                objects.bubbles.push(new Bubble(player.fieldIn,(Math.random()*fieldInfo[player.fieldIn].width)|0,(Math.random()*fieldInfo[player.fieldIn].length)|0))
+            }
+        },
+    },
+
+    scythe:{
+        
+        collectPattern:[[0,0],[0,-1],[0,-2],[0,-3],[0,-4],[0,-5],[0,-6]],
+        collectAmount:{w:8,r:8*2,b:8},
+        cooldown:0.47,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,0.4,0.4,0.125,1.5,0.125,false,[1.4,1.4,0])
+            box(-0.3,-0.1,0.4,0.175,0.5,0.175,false,[1.4,0,0])
+            box(-0.3,1,0.8,0.15,0.35,0.7,false,[1.3,1.3,1.3])
+            box(-0.3,0.95,1.3,0.15,0.3,0.5,[20,0,0],[1.3,1.3,1.3])
+            box(-0.3,0.8,1.55,0.15,0.2,0.3,[45,0,0],[1.3,1.3,1.3])
+            box(-0.3,1+0.2,0.8,0.2,0.35,0.7,false,[1.3,0,0])
+            box(-0.3,0.95+0.2,1.3,0.2,0.3,0.5,[20,0,0],[1.3,0,0])
+            box(-0.3,0.775+0.15,1.65,0.2,0.3,0.5,[45,0,0],[1.3,0,0])
+        },
+        particles:function(){
+            
+            toolParticle-=dt
+            
+            if(toolParticle>0){return}
+            
+            toolParticle=0.4
+            
+            let x=player.bodyDir[0],y=1.5,z=player.bodyDir[2]*0
+            
+            x+=-player.bodyDir[2]*1.2
+            z+=player.bodyDir[0]*1.2
+            
+            let r=Math.random()*1.5
+            
+            x+=player.bodyDir[0]*r
+            y-=r*0.25
+            z+=player.bodyDir[2]*r
+            
+            ParticleRenderer.add({x:player.body.position.x+x,y:player.body.position.y+y,z:player.body.position.z+z,vx:MATH.random(-0.8,0.8),vy:0.75,vz:MATH.random(-0.8,0.8),grav:1.5,size:MATH.random(70,120),col:[1,MATH.random(0.3,0.6),0],life:1,rotVel:MATH.random(-3,3),alpha:4.5})
+        },ability:function(){
+            
+            if(player.toolUses%10===0){
+                
+                if(player.fieldIn){
+
+                    objects.flames.push(new Flame(player.fieldIn,player.flowerIn.x,player.flowerIn.z))
+
+                } else {
+
+                    objects.flames.push(new Flame(player.body.position.x,player.body.position.y,player.body.position.z,true))
+                }
+            }
+        },
+    },
+
+    goldenRake:{
+        
+        collectPattern:[[-3,0],[-3,-1],[-3,-2],[-3,-3],[3,0],[3,-1],[3,-2],[3,-3],[-1,0],[-1,-1],[-1,-2],[-1,-3],[1,0],[1,-1],[1,-2],[1,-3]],
+        collectAmount:7,
+        cooldown:0.75,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,0,0.6,0.1,0.1,0.8,false,[1.3,1.3,0.4])
+            box(-0.3+0.1,0,0.6+0.6,0.1,0.1,0.5,[0,20,0],[1.3,1.3,0.4])
+            box(-0.3+0.2,0,0.6+0.5,0.1,0.1,0.5,[0,40,0],[1.3,1.3,0.4])
+            box(-0.3-0.1,0,0.6+0.6,0.1,0.1,0.5,[0,-20,0],[1.3,1.3,0.4])
+            box(-0.3-0.2,0,0.6+0.5,0.1,0.1,0.5,[0,-40,0],[1.3,1.3,0.4])
+            box(-0.3,0,0.6+0.65,0.1,0.1,0.4,false,[1.3,1.3,0.4])
+        },
+        ability:function(){
+            
+            if(player.toolUses%5===0&&player.fieldIn){
+                
+                objects.mobs.push(new Scratch(null,player.flowerIn.x,player.flowerIn.z,true))
+            }
+        }
+    },
+
+    sparkStaff:{
+        
+        collectPattern:[[2,1],[-2,1],[0,-2]],
+        collectAmount:30,
+        cooldown:0.5,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,0.3,0.4,0.1,1.25,0.1,false,[1,0,1])
+        },ability:function(){
+            
+            if(!player.fieldIn){
+
+                tools.sparkStaff.collectPattern=[[2,1],[-2,1],[0,-2]]
+                return
+            }
+
+            let a=[[-5,0],[-4,-3],[-4,-2],[-4,-1],[-4,0],[-4,1],[-4,2],[-4,3],[-3,-4],[-3,-3],[-3,-2],[-3,-1],[-3,0],[-3,1],[-3,2],[-3,3],[-3,4],[-2,-4],[-2,-3],[-2,-2],[-2,-1],[-2,0],[-2,1],[-2,2],[-2,3],[-2,4],[-1,-4],[-1,-3],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[-1,3],[-1,4],[0,-5],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[0,1],[0,2],[0,3],[0,4],[0,5],[1,-4],[1,-3],[1,-2],[1,-1],[1,0],[1,1],[1,2],[1,3],[1,4],[2,-4],[2,-3],[2,-2],[2,-1],[2,0],[2,1],[2,2],[2,3],[2,4],[3,-4],[3,-3],[3,-2],[3,-1],[3,0],[3,1],[3,2],[3,3],[3,4],[4,-3],[4,-2],[4,-1],[4,0],[4,1],[4,2],[4,3],[5,0]],f=fieldInfo[player.fieldIn]
+
+            let currentIndex=a.length,randomIndex
+
+            while(currentIndex){
+
+                randomIndex=(Math.random()*currentIndex)|0
+                currentIndex--
+
+                [a[currentIndex],a[randomIndex]]=[a[randomIndex],a[currentIndex]]
+            }
+
+            tools.sparkStaff.collectPattern=[a[0],a[1],a[2]]
+        },
+    },
+
+    porcelainDipper:{
+        
+        collectPattern:[[-4,0],[-3,-2],[-3,-1],[-3,0],[-3,1],[-3,2],[-2,-3],[-2,-2],[-2,-1],[-2,0],[-2,1],[-2,2],[-2,3],[-1,-3],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[-1,3],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[0,1],[0,2],[0,3],[0,4],[1,-3],[1,-2],[1,-1],[1,0],[1,1],[1,2],[1,3],[2,-3],[2,-2],[2,-1],[2,0],[2,1],[2,2],[2,3],[3,-2],[3,-1],[3,0],[3,1],[3,2],[4,0]],
+        collectAmount:{w:3*1.5,r:3,b:3},
+        cooldown:0.7,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,0.4,0.4,0.125,1.5,0.125,false,[1.4,1.4,1.4])
+            box(-0.3,-0.1,0.4,0.175,0.5,0.175,false,[1.2,1.2,0])
+            cylinder(-0.3,0.45+1.2*0.5+0.5,0.4,0.2,0.075,10,1.5,1.5,1.5,90,0,0)
+            cylinder(-0.3,0.45+1.2*0.5+0.5+0.2,0.4,0.125,0.075,10,1.5,1.5,1.5,90,0,0)
+            cylinder(-0.3,0.45+1.2*0.5+0.5-0.2,0.4,0.125,0.075,10,1.5,1.5,1.5,90,0,0)
+            cylinder(-0.3,0.45+1.2*0.5+0.501,0.4,0.3,-0.8,10,1.4,1.4,1.4,90,0,0)
+            box(-0.5,1,0.4,0.175,0.5,0.12,[0,0,70],[0,0,1.4])
+            box(-0.5,0.825,0.4,0.175,0.4,0.12,[0,0,-70],[0,0,1.4])
+            box(-0.5+0.4,1,0.4,0.175,0.5,0.12,[0,0,-70],[1.4,0,0])
+            box(-0.5+0.4,0.825,0.4,0.175,0.4,0.12,[0,0,70],[1.4,0,0])
+        },particles:function(){
+            
+            toolParticle-=dt
+            
+            if(toolParticle>0){return}
+            
+            toolParticle=0.5
+            
+            let x=-player.bodyDir[2],z=player.bodyDir[0],r=0.325
+            
+            x+=player.bodyDir[0]
+            z+=player.bodyDir[2]
+            
+            x*=r
+            z*=r
+            
+            ParticleRenderer.add({x:player.body.position.x+x+MATH.random(-0.4,0.4),y:player.body.position.y+1.75+MATH.random(-0.4,0.4),z:player.body.position.z+z+MATH.random(-0.4,0.4),vx:MATH.random(-0.8,0.8),vy:Math.random()*0.5+0.4,vz:MATH.random(-0.8,0.8),grav:-1.25*Math.random()-0.25,size:MATH.random(20,60),col:[0.95,0.95,0.95],life:1,rotVel:MATH.random(-3,3),alpha:0.5})
+        }
+    },
+    
+    petalWand:{
+        
+        collectPattern:[[0,0],[0,-1],[0,-2],[0,-3],[0,-4],[0,-5],[0,-6],[-1,-3],[-1,-4],[-1,-5],[1,-3],[1,-4],[1,-5],[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[-1,3],[-1,4],[-1,5],[1,3],[1,4],[1,5],[1,0],[2,0],[3,0],[4,0],[5,0],[6,0],[3,1],[4,1],[5,1],[3,-1],[4,-1],[5,-1],[-1,0],[-2,0],[-3,0],[-4,0],[-5,0],[-6,0],[-3,1],[-4,1],[-5,1],[-3,-1],[-4,-1],[-5,-1]],
+        collectAmount:10,
+        cooldown:0.7,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3-0.1,0.6,0.3+0.1,0.15,1.5,0.15,false,[0,0.7,0])
+            box(-0.3-0.1,1.45,0.3+0.1,0.3,0.3,0.3,[45,0,45],[1.5,1.2,0])
+            for(let i=0;i<MATH.TWO_PI;i+=MATH.TWO_PI/3){
+                
+                box(-0.3+Math.sin(i)*0.5-0.1,1.35,0.3+0.1+Math.cos(i)*0.5,0.7,0.1,0.7,[Math.sin(i)*-30,0,Math.cos(i)*-30],[1.2,1.2,1.2])
+                
+            }
+            
+            for(let i=MATH.QUATER_PI;i<MATH.TWO_PI+MATH.QUATER_PI;i+=MATH.TWO_PI/3){
+                
+                box(-0.3+Math.sin(i)*0.5-0.1,1.35,0.3+0.1+Math.cos(i)*0.5,0.7,0.1,0.7,[Math.sin(i)*30,0,Math.cos(i)*30],[1.2,1.2,1.2])
+                
+            }
+            
+            for(let i=0;i<MATH.TWO_PI;i+=MATH.TWO_PI/3){
+                
+                box(-0.3-0.1+Math.sin(i)*0.5,1.2,0.3+0.1+Math.cos(i)*0.5,0.7,0.1,0.7,[60,i*MATH.TO_DEG,0],[1.2,1.2,1.2])
+                box(-0.3-0.1+Math.sin(i)*0.25,1.2,0.3+0.1+Math.cos(i)*0.25,0.7,0.1,0.7,[-60,i*MATH.TO_DEG,0],[1.2,1.2,1.2])
+                
+            }
+        },
+        ability:function(){
+            
+            if(player.toolUses%3===0){
+                
+                objects.mobs.push(new PetalShuriken([player.body.position.x,player.body.position.y+0.25,player.body.position.z],player.bodyDir.slice()))
+            }
+        },
+        particles:function(){
+            
+            toolParticle-=dt
+            
+            if(toolParticle>0){return}
+            
+            toolParticle=0.3
+            
+            let x=-player.bodyDir[2],z=player.bodyDir[0],r=0.325
+            
+            x+=player.bodyDir[0]
+            z+=player.bodyDir[2]
+            
+            x*=r
+            z*=r
+            
+            ParticleRenderer.add({x:player.body.position.x+x,y:player.body.position.y+1.65,z:player.body.position.z+z,vx:MATH.random(-0.9,0.9),vy:Math.random()*0.5+0.2,vz:MATH.random(-0.9,0.9),grav:-1.5,size:MATH.random(20,50),col:[0.9,0.7,0.3],life:0.7,rotVel:MATH.random(-3,3),alpha:0.35})
+        }
+    },
+    
+    darkScythe:{
+        
+        collectPattern:[[0,-3],[0,-4],[1,-5],[1,-4],[1,-3],[2,-5],[2,-4],[2,-3],[3,-3],[3,-5],[4,-1],[-1,-3],[-1,-4],[-2,-3],[-3,-3],[0,-5],[-1,-5],[-2,-4],[-4,-2],[3,-4],[4,-4],[2,-2],[3,-2],[-2,-2],[-3,-2],[-4,-1]],
+        collectAmount:13,
+        cooldown:0.575,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.55,0.75,0.55,0.15,2.2,0.15,[0,0,0],[0.1,0,0],[0,0,30])
+            box(-0.55,1.6,1.1,0.15,0.6,1.2,[0,0,0],[0.1,0,0],[0,0,30])
+            box(-0.55,1.5,2,0.15,0.5,1,[20,0,0],[0.1,0,0],[0,0,30])
+            box(-0.55,1.2,2.6,0.15,0.35,1,[40,0,0],[0.1,0,0],[0,0,30])
+            
+            box(-0.55,1.3,1.1,0.175,0.6*0.3,1.2,[0,0,0],[1.2,0,0.4],[0,0,30])
+            box(-0.55,1.2,2,0.175,0.5*0.3,1,[20,0,0],[1.2,0,0.4],[0,0,30])
+            box(-0.55,0.9,2.6,0.175,0.3*0.5,0.5,[40,0,0],[1.2,0,0.4],[0,0,30])
+            
+            box(-0.55,1.95,0.1,0.15,0.15,1.3,[20,0,0],[0.1,0,0],[0,0,30])
+            box(-0.55,1.25,0.1,0.15,0.15,0.9,[-20,0,0],[0.1,0,0],[0,0,30])
+            
+        },
+        ability:function(arr){
+            
+            objects.mobs.push(new DarkScoopingTrail())
+            
+            if(player.fieldIn&&!player.attacked.length){
+                
+                let x=Math.round(player.body.position.x-fieldInfo[player.fieldIn].x),z=Math.round(player.body.position.z-fieldInfo[player.fieldIn].z),a=[]
+                
+                for(let i in arr){
+                    
+                    let _x=arr[i][0]+x,_z=arr[i][1]+z
+                    
+                    if(_x>=0&&_x<fieldInfo[player.fieldIn].width&&_x>=0&&_z<fieldInfo[player.fieldIn].length){
+                        
+                        a.push([_x,_z])
+                    }
+                }
+                
+                for(let i in objects.flames){
+                    
+                    let f=objects.flames[i]
+                    
+                    if(MATH.indexOfArrays(a,[f.x,f.z])>-1){
+                        
+                        f.turnDark()
+                    }
+                }
+                
+            } else {
+                
+                for(let i in objects.flames){
+                    
+                    let f=objects.flames[i]
+                    
+                    if(f.isStatic&&vec3.sqrDist(f.pos,[player.body.position.x+player.bodyDir[0]*2,player.body.position.y,player.body.position.z+player.bodyDir[2]*2])<7){
+                        
+                        f.turnDark()
+                    }
+                }
+            }
+        },
+        particles:function(){
+            
+            toolParticle-=dt
+            
+            if(toolParticle>0){return}
+            
+            toolParticle=0.05
+            
+            let x=player.bodyDir[0],y=1.5,z=player.bodyDir[2]*0
+            
+            x+=-player.bodyDir[2]*1.2
+            z+=player.bodyDir[0]*1.2
+            
+            let r=Math.random()*2.5
+            
+            x+=player.bodyDir[0]*r
+            y-=r*0.25
+            z+=player.bodyDir[2]*r
+            
+            ParticleRenderer.add({x:player.body.position.x+x,y:player.body.position.y+y,z:player.body.position.z+z,vx:-player.bodyDir[2]*2,vy:1.75,vz:player.bodyDir[0]*2,grav:0,size:MATH.random(70,120),col:[1,0,Math.random()],life:1,rotVel:MATH.random(-3,3),alpha:4.5})
+        }
+    },
+    
+    tidePopper:{
+        
+        collectPattern:[[0,0],[-1,0],[1,0],[-2,0],[2,0],[-1,-1],[0,-1],[1,-1],[-1,-2],[0,-2],[1,-2],[-1,-3],[0,-3],[1,-3],[-1,-4],[0,-4],[1,-4],[-1,-5],[0,-5],[1,-5],[0,-6],[0,-7],[0,-8]],
+        collectAmount:13,
+        cooldown:1,
+        mesh:function(box,cylinder,sphere,star,finalRotation){
+            
+            cylinder(-0.4,2.2,0.4,0.25,0.05,15,1,3,7,90,0,0,0.25)
+            cylinder(-0.4,1.6,0.4,0.3,0.05,15,1,3,7,90,0,0,0.3)
+            cylinder(-0.4,1.1,0.4,0.4,0.05,15,1,3,7,90,0,0,0.4)
+            cylinder(-0.4,1.7,0.4,0.3,2.25,10,0.3,1,2,90,0,0,0)
+            box(-0.4,0.5,0.4,0.15,1.4,0.15,false,[0.1,0.8,1.8])
+            sphere(-0.4-0.8,0.85,0.4,0.25,1,100,100,100)
+            sphere(-0.4+0.8,0.85,0.4,0.25,1,100,100,100)
+            sphere(-0.4,0.85,0.4-0.8,0.25,1,100,100,100)
+            sphere(-0.4,0.85,0.4+0.8,0.25,1,100,100,100)
+            finalRotation(20,-20,0)
+            
+        },
+        ability:function(){
+            
+            if(player.toolUses%3===0){
+                
+                objects.mobs.push(new Wave([player.body.position.x,player.body.position.y+0.25,player.body.position.z],player.bodyDir.slice()))
+            }
+        },
+        particles:function(){
+            
+            toolParticle-=dt
+            
+            if(toolParticle>0){return}
+            
+            toolParticle=0.1
+            
+            let x=-player.bodyDir[2],z=player.bodyDir[0],r=MATH.random(0.2,0.9)
+            
+            x+=player.bodyDir[0]
+            z+=player.bodyDir[2]
+            
+            x*=r
+            z*=r
+            
+            ParticleRenderer.add({x:player.body.position.x+x,y:player.body.position.y+MATH.random(0.1,2.5),z:player.body.position.z+z,vx:x,vy:1.6,vz:z,grav:0,size:MATH.random(20,50),col:[0.1,0.7,1],life:0.7,rotVel:MATH.random(-3,3),alpha:0.5})
+            
+            
+        }
+    },
+    
+    gummyBaller:{
+        
+        collectPattern:[[-3,-3],[-2,-5],[-2,-4],[-2,-3],[-2,-2],[-2,-1],[-1,-5],[-1,-4],[-1,-3],[-1,-2],[-1,-1],[0,-6],[0,-5],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[1,-5],[1,-4],[1,-3],[1,-2],[1,-1],[2,-5],[2,-4],[2,-3],[2,-2],[2,-1],[3,-3]],
+        collectAmount:16,
+        cooldown:1,
+        mesh:function(box,cylinder,sphere,star){
+            
+            cylinder(-0.4,-0.1,0.4,0.15,0.35,15,0.26,2.7,1.1,90,0,0,0.15)
+            cylinder(-0.4,0.8,0.4,0.1,1.75,15,1.5,0.15,1.5,90,0,0,0.1)
+            sphere(-0.4,1.6,0.4,0.5,1,0.26,2.7,1.1)
+            cylinder(-0.4,1.75,0.4,0.45,0.25,15,1.5,0.15,1.5,90,0,0,0.6)
+            sphere(-0.4-0.3,1.85,0.4,0.25,1,0.26,2.7,1.1)
+            sphere(-0.4+0.3,1.85,0.4,0.25,1,0.26,2.7,1.1)
+            sphere(-0.4,1.85,0.4-0.3,0.25,1,1.5*1.75,0.65*1.75,1.5*1.75)
+            sphere(-0.4,1.85,0.4+0.3,0.25,1,1.5*1.75,0.65*1.75,1.5*1.75)
+            
+        },
+        particles:function(){
+            
+            let x=(-player.bodyDir[2]+player.bodyDir[0])*0.4,z=(player.bodyDir[0]+player.bodyDir[2])*0.4
+            
+            player.lagPos[0]+=(player.body.position.x-player.lagPos[0])*dt*12.5
+            player.lagPos[1]+=(player.body.position.y-player.lagPos[1])*dt*12.5
+            player.lagPos[2]+=(player.body.position.z-player.lagPos[2])*dt*12.5
+            
+            meshes.explosions.instanceData.push(player.lagPos[0]+x,player.lagPos[1]+2+player.gummyBallSize*0.3,player.lagPos[2]+z,0.9*player.isNight,0.18*player.isNight,0.9*player.isNight,1,player.gummyBallSize*0.5,1)
+            
+            toolParticle-=dt
+            
+            if(toolParticle>0){return}
+            
+            toolParticle=0.4/player.gummyBallSize
+            
+            ParticleRenderer.add({x:player.lagPos[0]+x,y:player.lagPos[1]+2+player.gummyBallSize*0.3,z:player.lagPos[2]+z,vx:MATH.random(-player.gummyBallSize,player.gummyBallSize),vy:MATH.random(-player.gummyBallSize,player.gummyBallSize),vz:MATH.random(-player.gummyBallSize,player.gummyBallSize),grav:0,size:MATH.random(20,50)*player.gummyBallSize,col:[0.1,0.8,1],life:0.75,rotVel:MATH.random(-3,3),alpha:player.gummyBallSize-0.5})
+            
+        }
+    },
+}
 
 player=(function(out){
     
@@ -18210,11 +18217,11 @@ player=(function(out){
         out.viewMatrixCopy=out.viewMatrix.slice()
         out.easeAmount=0
         itemName.innerHTML=MATH.doGrammar(shops[out.currentShop].items[shops[out.currentShop].currentIndex].name)
-        itemDesc.innerHTML=shops[out.currentShop].items[shops[out.currentShop].currentIndex].desc
+        itemDesc.innerHTML=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].desc
         
         itemCostSVG.innerHTML=''
         
-        let cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost
+        let cost=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].cost
         
         for(let i in cost){
             
@@ -18229,11 +18236,11 @@ player=(function(out){
             out.viewMatrixToChange=shops[out.currentShop].items[shops[out.currentShop].currentIndex].viewMatrix
             out.easeAmount=0
             itemName.innerHTML=MATH.doGrammar(shops[out.currentShop].items[shops[out.currentShop].currentIndex].name)
-            itemDesc.innerHTML=shops[out.currentShop].items[shops[out.currentShop].currentIndex].desc
+            itemDesc.innerHTML=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].desc
             
             itemCostSVG.innerHTML=''
             
-            let cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost
+            let cost=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].cost
             
             for(let i in cost){
                 
@@ -18249,11 +18256,11 @@ player=(function(out){
             out.viewMatrixToChange=shops[out.currentShop].items[shops[out.currentShop].currentIndex].viewMatrix
             out.easeAmount=0
             itemName.innerHTML=MATH.doGrammar(shops[out.currentShop].items[shops[out.currentShop].currentIndex].name)
-            itemDesc.innerHTML=shops[out.currentShop].items[shops[out.currentShop].currentIndex].desc
+            itemDesc.innerHTML=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].desc
             
             itemCostSVG.innerHTML=''
         
-            let cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost
+            let cost=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].cost
             
             for(let i in cost){
                 
@@ -18279,7 +18286,7 @@ player=(function(out){
                 return
             }
             
-            let cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost
+            let cost=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].cost
             
             for(let i in cost){
                 
@@ -18425,16 +18432,7 @@ player=(function(out){
     out.toolMatrix=new Float32Array(16)
     out.toolMesh=new Mesh(false)
     out.toolUses=0
-    
-    out.updateTool=function(newTool){
-        
-        out.tool=newTool
-        out.toolCooldown=0
-        out.toolMesh.setMeshFromFunction(tools[newTool].mesh)
-        out.toolMesh.setBuffers()
-    }
-    
-    out.updateTool('goldenRake')
+    out.toolCooldown=0
     
     out.sprinklers=[new Sprinkler()]
     out.sprinklerMesh=new Mesh(true)
@@ -18668,6 +18666,8 @@ player=(function(out){
         
         for(let i in out.currentGear){
             
+            if(i==='tool') continue
+            
             if(i.indexOf('Amulet')>-1){
                 
                 let stats=out.currentGear[i]
@@ -18707,9 +18707,10 @@ player=(function(out){
     
     out.currentGear={
         
+        tool:'shovel',
         boots:'none',
         belt:'none',
-        backpack:'PorcelainPortOHive',
+        backpack:'pouch',
         mask:'none',
         leftGuard:'none',
         rightGuard:'none',
@@ -18854,6 +18855,13 @@ player=(function(out){
     out.updateGear=function(){
         
         out.computeStats()
+
+        out.toolMesh.setMeshFromFunction(function(box,a,cylinder,sphere,applyFinalRotation,c,star){
+            
+            gear.tool[out.currentGear.tool].mesh(box,cylinder,sphere,star,applyFinalRotation)
+        })
+
+        out.toolMesh.setBuffers()
         
         playerMesh.setMeshFromFunction(function(box,a,cylinder,sphere,applyFinalRotation,c,star){
             
@@ -18861,6 +18869,8 @@ player=(function(out){
             
             for(let i in out.currentGear){
                 
+                if(i==='tool') continue
+
                 if(i.indexOf('Amulet')<0&&i!=='beequips'){
                     
                     if(i==='glider'||i==='parachute'){
@@ -19247,7 +19257,7 @@ player=(function(out){
                 actionWarning.style.display='block'
                 actionName.innerHTML='Leave Shop'
                 
-                let cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost,canBuy=true
+                let cost=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].cost,canBuy=true
                 
                 for(let j in cost){
                     
@@ -19826,8 +19836,7 @@ player=(function(out){
         
         out.toolCooldown-=dt
         
-        if(tools[out.tool].particles){
-                tools[out.tool].particles()}
+        if(gear.tool[out.currentGear.tool].particles) gear.tool[out.currentGear.tool].particles()
         
         if((user.keys.j||user.mousePressed)&&out.toolCooldown<=0){
             out.toolUses++
@@ -19838,11 +19847,11 @@ player=(function(out){
                 
                 let p=[],a=out.playerAngle
                 
-                if(tools[out.tool].computeDirection===undefined){
+                if(gear.tool[out.currentGear.tool].computeDirection===undefined){
                     
-                    for(let i in tools[out.tool].collectPattern){
+                    for(let i in gear.tool[out.currentGear.tool].collectPattern){
                         
-                        p.push(tools[out.tool].collectPattern[i].slice())
+                        p.push(gear.tool[out.currentGear.tool].collectPattern[i].slice())
                     }
                     
                     if(Math.abs(a)>MATH.PI_SUB_QUATER){
@@ -19872,19 +19881,18 @@ player=(function(out){
                     
                 } else {
                     
-                    p=tools[out.tool].collectPattern
+                    p=gear.tool[out.currentGear.tool].collectPattern
                 }
                 
                 arr=p.slice()
                 
-                collectPollen({x:player.flowerIn.x,z:player.flowerIn.z,pattern:p,amount:tools[out.tool].collectAmount,yOffset:1.5,stackHeight:0.75,isGummyBaller:out.tool==='gummyBaller',multiplier:player.pollenFromTools})
+                collectPollen({x:player.flowerIn.x,z:player.flowerIn.z,pattern:p,amount:gear.tool[out.currentGear.tool].collectAmount,yOffset:1.5,stackHeight:0.75,isGummyBaller:out.currentGear.tool==='gummyBaller',multiplier:player.pollenFromTools})
                 
             }
             
-            if(tools[out.tool].ability)
-                tools[out.tool].ability(arr)
+            if(gear.tool[out.currentGear.tool].ability) gear.tool[out.currentGear.tool].ability(arr)
             
-            out.toolCooldown=tools[out.tool].cooldown/player.collectorSpeed
+            out.toolCooldown=gear.tool[out.currentGear.tool].cooldown/player.collectorSpeed
             out.toolRot=0
         }
         
@@ -19957,39 +19965,57 @@ let shops={
     
     cool:{
         
-        items:[{
-            name:'gummyMask',
-            desc:'The offical mask of a gummy soldier.<br><br>x1.75 goo<br>x2 capacity<br>x1.75 white field capacity<br>x1.5 white pollen<br>x1.35 pollen<br>x1.5 honey from tokens<br>x1.5 pollen from bees<br>x1.5 pollen from tools<br>x1.75 convert rate<br>+30% defense<br>x1.2 bee ability rate<br>+Passive: Gummy Morph<br>+Passive: Coin Scatter',
-            slot:'mask',
-            cost:['5000000000 honey','250 glue','100 enzymes','100 oil','100 glitter'],
-            viewMatrix:[25,5,16,-Math.PI,-0.3],
-        },{
+        // items:[{
+
+        //     name:'gummyMask',
+        //     slot:'mask',
+        //     viewMatrix:[25,1,10,-Math.PI,-0.4],
+        // },{
             
-            name:'diamondMask',
-            desc:'Proudly show off your extreme wealth to the world. Shine so brightly that others will complain.<br><br>x1.75 blue pollen<br>x3 capacity<br>x1.5 blue field capacity<br>x2 convert rate<br>x1.1 honey at hive<br>x1.25 bubble pollen<br>x1.25 blue bomb pollen<br>+30% defense<br>x1.2 bee ability rate<br>+Passive: Diamond Drain<br>+Passive: Bubble Bombs',
-            slot:'mask',
-            cost:['5000000000 honey','250 blueExtract','1 diamondEgg','100 glitter','150 oil'],
-            viewMatrix:[20,5,16,-Math.PI,-0.3],
-        },{
+        //     name:'diamondMask',
+        //     slot:'mask',
+        //     viewMatrix:[20,1,10,-Math.PI,-0.4],
+        // },{
             
-            name:'demonMask',
+        //     name:'demonMask',
+        //     slot:'mask',
+        //     viewMatrix:[15,1,10,-Math.PI,-0.4],
+        // },{
             
-            desc:'Embrace hate to take on the form of a Demon Bee. Become both extremely unpleasant and powerful.<br><br>x1.75 red pollen<br>x2 capacity<br>x1.75 red field capacity<br>+50% instant flame conversion<br>x2 flame pollen<br>x1.25 bee attack<br>+35% defense<br>+20% bee ability rate<br>+Passive: X Flame<br>+Passive: Ignite',
-            slot:'mask',
-            cost:['5000000000 honey'],
-            viewMatrix:[15,5,16,-Math.PI,-0.3],
-        },{
-            
-            name:'coconutCanister',
-            desc:'A back-mounted coconut that protects you during emergencies.<br><br>+2,000,000 capacity<br>x3 convert rate<br>+15% instant conversion<br>+10% instant white conversion<br>x1.25 pollen<br>x1.25 white pollen<br>+1 bee attack<br>+10% defense<br>x1.1 honey at hive<br>+Passive: Emergengy Shield<br>+Passive: Inspire Coconuts',
-            slot:'backpack',
-            cost:['25000000000 honey','150 tropicalDrink','250 redExtract','250 blueExtract'],
-            viewMatrix:[10,5,16,-Math.PI,-0.3],
-        }],
+        //     name:'coconutCanister',
+        //     slot:'backpack',
+        //     viewMatrix:[10,1,10,-Math.PI,-0.4],
+        // }],
         
+        items:[],
         currentIndex:0,message:'Explore Cool Shop'
     },
 }
+
+shopGearMesh.setMeshFromFunction(function(box,a,cylinder,sphere,applyFinalRotation,c,star){
+
+    let num=0
+
+    for(let i in gear){
+
+        if(i.indexOf('Amulet')>-1||i==='glider') continue
+
+        for(let j in gear[i]){
+
+            if(j==='none') continue
+
+            shops.cool.items.push({name:j,slot:i,viewMatrix:[25-(num%10)*4,1,10+((num/10)|0)*6,-Math.PI,-0.4]})
+            mat4.fromRotationTranslation(shopGearMesh.matrix,quat.fromEuler([],0,i==='backpack'?0:180,0),[25-(num%10)*4,-0.5,13+((num/10)|0)*6])
+            
+            gear[i][j].mesh(box,cylinder,sphere,star,applyFinalRotation)
+
+            num++
+
+        }
+    }
+})
+
+shopGearMesh.setBuffers()
 
 for(let i in shops){
     
@@ -19997,7 +20023,6 @@ for(let i in shops){
         
         shops[i].items[j].viewMatrix=computeSceneViewMatrix(...shops[i].items[j].viewMatrix)
     }
-    
 }
 
 let user=(function(out){
@@ -23128,13 +23153,13 @@ function collectPollen(params){
         }
     }
     
-    let instantConversion={r:params.instantConversion?(1-player.instantRedConversion)*params.instantConversion+1:player.instantRedConversion,b:params.instantConversion?(1-player.instantBlueConversion)*params.instantConversion+1:player.instantBlueConversion,w:params.instantConversion?(1-player.instantWhiteConversion)*params.instantConversion+1:player.instantWhiteConversion}
+    let instantConversion={r:params.instantConversion?(player.instantRedConversion-1)*params.instantConversion+1:player.instantRedConversion,b:params.instantConversion?(player.instantBlueConversion-1)*params.instantConversion+1:player.instantBlueConversion,w:params.instantConversion?(player.instantWhiteConversion-1)*params.instantConversion+1:player.instantWhiteConversion}
     
     instantConversion.r=crit.r===2?1:instantConversion.r
     instantConversion.w=crit.w===2?1:instantConversion.w
     instantConversion.b=crit.b===2?1:instantConversion.b
     
-    totalHoney=(total.r)*instantConversion.r+(total.b)*instantConversion.b+(total.w)*instantConversion.w
+    totalHoney=(total.r*instantConversion.r)+(total.b*instantConversion.b)+(total.w*instantConversion.w)
 
     player.pollen=Math.min(player.pollen+Math.ceil(total.w+total.r+total.b-totalHoney),player.capacity)
 
@@ -23405,10 +23430,13 @@ let ct=0
 for(let i in items){
     
     if(i.indexOf('Planter')>-1) continue
-    ct++
-    objects.tokens.push(new LootToken(10000,[-8+ct,-1,-6],i,1000000))
+
+    objects.tokens.push(new LootToken(10000,[(ct%6)*1.5,-1,(-3+((ct/6)|0))*1.5],i,1000000))
     
+    ct++
 }
+
+objects.tokens.push(new LootToken(10000,[0,1,0],'honey',100000000000))
 
 player.pointerLocked=false
 
@@ -23725,10 +23753,13 @@ function loop(now){
     world.step(dt)
     player.updateCamera()
     
+    gl.useProgram(dynamicGeometryProgram)
+    gl.uniformMatrix4fv(glCache.dynamic_viewMatrix,gl.FALSE,player.viewMatrix)
+    
+    gl.uniformMatrix4fv(glCache.dynamic_modelMatrix,gl.FALSE,MATH.IDENTITY_MATRIX)
+    shopGearMesh.render()
+    
     if(player.zoom>0.2){
-        
-        gl.useProgram(dynamicGeometryProgram)
-        gl.uniformMatrix4fv(glCache.dynamic_viewMatrix,gl.FALSE,player.viewMatrix)
         
         gl.uniformMatrix4fv(glCache.dynamic_modelMatrix,gl.FALSE,player.modelMatrix)
         playerMesh.render()
@@ -23916,13 +23947,13 @@ function loop(now){
         
         let t=i
         
-        meshes.bees.instanceData.push(amountOfBeesInBeeLine*0.75-40,1,-1,i==='baby'||i==='tadpole'?0.65:1,0,0,1,0,beeInfo[t].u,beeInfo[t].v,beeInfo[t].meshPartId)
+        meshes.bees.instanceData.push((amountOfBeesInBeeLine%14)+13,1.5,-5+((amountOfBeesInBeeLine/14)|0)*1.5,i==='baby'||i==='tadpole'?0.65:1,0,0,1,0,beeInfo[t].u,beeInfo[t].v,beeInfo[t].meshPartId)
 
-        meshes.bees.instanceData.push(amountOfBeesInBeeLine*0.75-40,1,1,i==='baby'||i==='tadpole'?0.65:1,0,0,1,0,beeInfo[t].u,beeInfo[t].v+GIFTED_BEE_TEXTURE_OFFSET,beeInfo[t].meshPartId)
+        meshes.bees.instanceData.push((amountOfBeesInBeeLine%14)+13,0,-5+((amountOfBeesInBeeLine/14)|0)*1.5,i==='baby'||i==='tadpole'?0.65:1,0,0,1,0,beeInfo[t].u,beeInfo[t].v+GIFTED_BEE_TEXTURE_OFFSET,beeInfo[t].meshPartId)
+
+        textRenderer.addSingle(i,[(amountOfBeesInBeeLine%14)+13,2,-5+((amountOfBeesInBeeLine/14)|0)*1.5],COLORS.whiteArr,-1,false,false)
 
         amountOfBeesInBeeLine+=2
-
-        textRenderer.addSingle(i,[amountOfBeesInBeeLine*0.75-41.5,1.5,-1],COLORS.whiteArr,-1,false,false)
     }
     
     gl.bindTexture(gl.TEXTURE_2D,textures.bees)
