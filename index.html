@@ -9740,7 +9740,7 @@ let items={
                 
                 if(objects.bees[i].gifted){
                     
-                    alreadyGot.push(object.bees[i].type)
+                    alreadyGot.push(objects.bees[i].type)
                 }
             }
             
@@ -16220,9 +16220,9 @@ class Mesh {
                 )
             }
             
-            addHiveSlot=function(x,y,z,w,h,type){
+            addHiveSlot=function(x,y,z,w,h,type,gifted){
                 
-                let t=128/2048,_x=beeInfo[type||'basic'].u,_y=beeInfo[type||'basic'].v,isNull=type===null?1:0,[r,g,b]=COLORS.honey_normalized
+                let t=128/2048,_x=beeInfo[type||'basic'].u,_y=beeInfo[type||'basic'].v+(gifted?768/2048:0),isNull=type===null?1:0,[r,g,b]=COLORS.honey_normalized
                 
                 r*=0.5
                 g*=0.5
@@ -17510,23 +17510,24 @@ gear.tool={
             
             if(!player.fieldIn){
 
-                tools.sparkStaff.collectPattern=[[2,1],[-2,1],[0,-2]]
+                gear.tool.sparkStaff.collectPattern=[[2,1],[-2,1],[0,-2]]
                 return
             }
 
+            gear.tool.sparkStaff.collectPattern=[]
+
             let a=[[-5,0],[-4,-3],[-4,-2],[-4,-1],[-4,0],[-4,1],[-4,2],[-4,3],[-3,-4],[-3,-3],[-3,-2],[-3,-1],[-3,0],[-3,1],[-3,2],[-3,3],[-3,4],[-2,-4],[-2,-3],[-2,-2],[-2,-1],[-2,0],[-2,1],[-2,2],[-2,3],[-2,4],[-1,-4],[-1,-3],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[-1,3],[-1,4],[0,-5],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[0,1],[0,2],[0,3],[0,4],[0,5],[1,-4],[1,-3],[1,-2],[1,-1],[1,0],[1,1],[1,2],[1,3],[1,4],[2,-4],[2,-3],[2,-2],[2,-1],[2,0],[2,1],[2,2],[2,3],[2,4],[3,-4],[3,-3],[3,-2],[3,-1],[3,0],[3,1],[3,2],[3,3],[3,4],[4,-3],[4,-2],[4,-1],[4,0],[4,1],[4,2],[4,3],[5,0]],f=fieldInfo[player.fieldIn]
 
-            let currentIndex=a.length,randomIndex
+            for(let i=0;i<3;i++){
 
-            while(currentIndex){
+                let r=(Math.random()*a.length)|0,f=a[r]
 
-                randomIndex=(Math.random()*currentIndex)|0
-                currentIndex--
+                gear.tool.sparkStaff.collectPattern.push(f)
 
-                [a[currentIndex],a[randomIndex]]=[a[randomIndex],a[currentIndex]]
+                a.splice(r,1)
             }
 
-            tools.sparkStaff.collectPattern=[a[0],a[1],a[2]]
+
         },
         desc:'A wand powered by static electricity.<br><br>Collects 30 pollen from 3 random flowers every 0.5s.<br><br>Unlike in the real game, this tool is good :D',
         cost:['60000000 honey']
@@ -17567,7 +17568,7 @@ gear.tool={
             
             ParticleRenderer.add({x:player.body.position.x+x+MATH.random(-0.4,0.4),y:player.body.position.y+1.75+MATH.random(-0.4,0.4),z:player.body.position.z+z+MATH.random(-0.4,0.4),vx:MATH.random(-0.8,0.8),vy:Math.random()*0.5+0.4,vz:MATH.random(-0.8,0.8),grav:-1.25*Math.random()-0.25,size:MATH.random(20,60),col:[0.95,0.95,0.95],life:1,rotVel:MATH.random(-3,3),alpha:0.5})
         },
-        desc:'A dipper drizzled with brittle liquid porcelain.<br><br>Collects 3 pollen from 49 flowers every 0.7s.Collects x1.5 more white pollen.<br><br>Every 10th swing summons a pillar of light that collects massive pollen.',
+        desc:'A dipper drizzled with brittle liquid porcelain.<br><br>Collects 3 pollen from 49 flowers every 0.7s. Collects x1.5 more white pollen.<br><br>Every 10th swing summons a pillar of light that collects massive pollen.',
         cost:['150000000 honey']
     },
     
@@ -18957,7 +18958,7 @@ player=(function(out){
                 
                 for(let x=0;x<out.hive[y].length;x++){
                     
-                    hiveSlot(out.hivePos[0]+x*0.8,out.hivePos[1]+y*0.8-2.25,out.hivePos[2],0.35,0.35,out.hive[y][x].type)
+                    hiveSlot(out.hivePos[0]+x*0.8,out.hivePos[1]+y*0.8-2.25,out.hivePos[2],0.35,0.35,out.hive[y][x].type,out.hive[y][x].gifted)
                     
                     if(out.hive[y][x].type!==null){
                         
@@ -23475,7 +23476,7 @@ for(let i in items){
     ct++
 }
 
-objects.tokens.push(new LootToken(10000,[0,1,0],'honey',100000000000))
+objects.tokens.push(new LootToken(10000,[0,1,0],'honey',10000000000000))
 
 player.pointerLocked=false
 
