@@ -3469,6 +3469,193 @@ window.textures_effects=function(tex_ctx){
     tex_ctx.stroke()
     tex_ctx.fill()
     tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='rgb(100,200,255)'
+    tex_ctx.fillRect(128*3,256+256*4.5,128,128)
+    tex_ctx.translate(128*3+128*0.5+-1,256+128*9.5+4)
+    tex_ctx.scale(1.6,1.6)
+    tex_ctx.rotate(-0.1)
+    tex_ctx.translate(18,6)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.fillStyle='rgb(205, 212, 72)'
+    tex_ctx.lineWidth=3
+    a=new Path2D('M-15 -15 C -20 4 4 8 5 0C 9 -3 -8 -24 -15 -15')
+    tex_ctx.stroke(a)
+    tex_ctx.fill(a)
+    tex_ctx.strokeStyle='rgb(255,255,255,0.7)'
+    a=new Path2D('M-11 -7 C -15 -14 -5 -16 -8 -11M-5 0 C 1 1 4 0 0 -6')
+    tex_ctx.stroke(a)
+    tex_ctx.rotate(4.7)
+    tex_ctx.translate(16,-17)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.fillStyle='rgb(255, 54, 54)'
+    a=new Path2D('M-15 -15 C -20 4 4 8 5 0C 9 -3 -8 -24 -15 -15')
+    tex_ctx.stroke(a)
+    tex_ctx.fill(a)
+    tex_ctx.strokeStyle='rgb(255,255,255,0.7)'
+    a=new Path2D('M-11 -7 C -15 -14 -5 -16 -8 -11M-5 0 C 1 1 4 0 0 -6')
+    tex_ctx.stroke(a)
+    tex_ctx.rotate(1.4)
+    tex_ctx.translate(5,23)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.fillStyle='rgb(56, 139, 255)'
+    a=new Path2D('M-15 -15 C -20 4 4 8 5 0C 9 -3 -8 -24 -15 -15')
+    tex_ctx.stroke(a)
+    tex_ctx.fill(a)
+    tex_ctx.strokeStyle='rgb(255,255,255,0.7)'
+    a=new Path2D('M-11 -7 C -15 -14 -5 -16 -8 -11M-5 0 C 1 1 4 0 0 -6')
+    tex_ctx.stroke(a)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='rgb(234,102,102)'
+    tex_ctx.fillRect(128*4,256+256*4.5,128,128)
+    tex_ctx.translate(128*4+128*0.5+-1,256+128*9.5+4)
+    tex_ctx.scale(2.3,2.3)
+    tex_ctx.translate(7,5)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.fillStyle='rgb(230, 32, 32)'
+    a=new Path2D('M-15 -15 C -20 4 4 8 5 0C 9 -3 -8 -24 -15 -15')
+    tex_ctx.stroke(a)
+    tex_ctx.fill(a)
+    tex_ctx.strokeStyle='rgb(255,255,255,0.3)'
+    a=new Path2D('M-13 -7 C -15 -14 -9 -16 -8 -12M-5 0 C 1 1 4 0 0 -6')
+    tex_ctx.stroke(a)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='rgb(234,102,102)'
+    tex_ctx.fillRect(128*4,256+256*4.5,128,128)
+    tex_ctx.translate(128*4+128*0.5+-1,256+128*9.5+4)
+    tex_ctx.scale(2.3,2.3)
+    tex_ctx.translate(7,5)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.fillStyle='rgb(230, 32, 32)'
+    a=new Path2D('M-15 -15 C -20 4 4 8 5 0C 9 -3 -8 -24 -15 -15')
+    tex_ctx.stroke(a)
+    tex_ctx.fill(a)
+    tex_ctx.strokeStyle='rgb(255,255,255,0.3)'
+    a=new Path2D('M-13 -7 C -15 -14 -9 -16 -8 -12M-5 0 C 1 1 4 0 0 -6')
+    tex_ctx.stroke(a)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='rgb(222,222,222)'
+    tex_ctx.fillRect(128*5,256+256*4.5,128,128)
+    tex_ctx.translate(128*5+128*0.5+-1,256+128*9.5+4)
+    tex_ctx.scale(2.3,2.3)
+    tex_ctx.translate(7,5)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.fillStyle='rgb(190,190,190)'
+    a=new Path2D('M-15 -15 C -20 4 4 8 5 0C 9 -3 -8 -24 -15 -15')
+    tex_ctx.stroke(a)
+    tex_ctx.fill(a)
+    tex_ctx.strokeStyle='rgb(255,255,255,0.3)'
+    a=new Path2D('M-13 -7 C -15 -14 -9 -16 -8 -12M-5 0 C 1 1 4 0 0 -6')
+    tex_ctx.stroke(a)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='rgb(222,222,222)'
+    tex_ctx.fillRect(128*5,256+256*4.5,128,128)
+    tex_ctx.translate(128*5+128*0.5+-1,256+128*9.5+4)
+    tex_ctx.scale(2.3,2.3)
+    tex_ctx.translate(7,5)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.fillStyle='rgb(190,190,190)'
+    a=new Path2D('M-15 -15 C -20 4 4 8 5 0C 9 -3 -8 -24 -15 -15')
+    tex_ctx.stroke(a)
+    tex_ctx.fill(a)
+    tex_ctx.strokeStyle='rgb(255,255,255,0.3)'
+    a=new Path2D('M-13 -7 C -15 -14 -9 -16 -8 -12M-5 0 C 1 1 4 0 0 -6')
+    tex_ctx.stroke(a)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='rgb(103, 174, 245)'
+    tex_ctx.fillRect(128*6,256+256*4.5,128,128)
+    tex_ctx.translate(128*6+128*0.5+-1,256+128*9.5+4)
+    tex_ctx.scale(2.3,2.3)
+    tex_ctx.translate(7,5)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.fillStyle='rgb(49, 82, 247)'
+    a=new Path2D('M-15 -15 C -20 4 4 8 5 0C 9 -3 -8 -24 -15 -15')
+    tex_ctx.stroke(a)
+    tex_ctx.fill(a)
+    tex_ctx.strokeStyle='rgb(255,255,255,0.3)'
+    a=new Path2D('M-13 -7 C -15 -14 -9 -16 -8 -12M-5 0 C 1 1 4 0 0 -6')
+    tex_ctx.stroke(a)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='rgb(255, 178, 238)'
+    tex_ctx.fillRect(128*7,256+256*4.5,128,128)
+    tex_ctx.translate(128*7+128*0.5+-1,256+128*9.5+4)
+    tex_ctx.scale(2.3,2.3)
+    tex_ctx.translate(7,5)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.fillStyle='rgb(227, 88, 195)'
+    a=new Path2D('M-15 -15 C -20 4 4 8 5 0C 9 -3 -8 -24 -15 -15')
+    tex_ctx.stroke(a)
+    tex_ctx.fill(a)
+    tex_ctx.strokeStyle='rgb(255,255,255,0.3)'
+    a=new Path2D('M-13 -7 C -15 -14 -9 -16 -8 -12M-5 0 C 1 1 4 0 0 -6')
+    tex_ctx.stroke(a)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='rgb(222, 144, 60)'
+    tex_ctx.fillRect(128*0,256+256*5,128,128)
+    tex_ctx.translate(128*0+128*0.5+-1,256+128*10.5+4)
+    tex_ctx.scale(2.3,2.3)
+    tex_ctx.translate(7,5)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.fillStyle='rgb(140, 83, 23)'
+    a=new Path2D('M-15 -15 C -20 4 4 8 5 0C 9 -3 -8 -24 -15 -15')
+    tex_ctx.stroke(a)
+    tex_ctx.fill(a)
+    tex_ctx.strokeStyle='rgb(255,255,255,0.3)'
+    a=new Path2D('M-13 -7 C -15 -14 -9 -16 -8 -12M-5 0 C 1 1 4 0 0 -6')
+    tex_ctx.stroke(a)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='rgb(118, 207, 93)'
+    tex_ctx.fillRect(128*1,256+256*5,128,128)
+    tex_ctx.translate(128*1+128*0.5+-1,256+128*10.5+4)
+    tex_ctx.scale(2.3,2.3)
+    tex_ctx.translate(7,5)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.fillStyle='rgb(48, 145, 19)'
+    a=new Path2D('M-15 -15 C -20 4 4 8 5 0C 9 -3 -8 -24 -15 -15')
+    tex_ctx.stroke(a)
+    tex_ctx.fill(a)
+    tex_ctx.strokeStyle='rgb(255,255,255,0.3)'
+    a=new Path2D('M-13 -7 C -15 -14 -9 -16 -8 -12M-5 0 C 1 1 4 0 0 -6')
+    tex_ctx.stroke(a)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='rgb(148, 148, 148)'
+    tex_ctx.fillRect(128*2,256+256*5,128,128)
+    tex_ctx.translate(128*2+128*0.5+-1,256+128*10.5+4)
+    tex_ctx.scale(2.3,2.3)
+    tex_ctx.translate(7,5)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.fillStyle='rgb(50,50,50)'
+    a=new Path2D('M-15 -15 C -20 4 4 8 5 0C 9 -3 -8 -24 -15 -15')
+    tex_ctx.stroke(a)
+    tex_ctx.fill(a)
+    tex_ctx.strokeStyle='rgb(255,255,255,0.3)'
+    a=new Path2D('M-13 -7 C -15 -14 -9 -16 -8 -12M-5 0 C 1 1 4 0 0 -6')
+    tex_ctx.stroke(a)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='rgb(245, 222, 108)'
+    tex_ctx.fillRect(128*3,256+256*5,128,128)
+    tex_ctx.translate(128*3+128*0.5+-1,256+128*10.5+4)
+    tex_ctx.scale(2.3,2.3)
+    tex_ctx.translate(7,5)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.fillStyle='rgb(255, 230, 0)'
+    a=new Path2D('M-15 -15 C -20 4 4 8 5 0C 9 -3 -8 -24 -15 -15')
+    tex_ctx.stroke(a)
+    tex_ctx.fill(a)
+    tex_ctx.strokeStyle='rgb(255,255,255,0.6)'
+    a=new Path2D('M-13 -7 C -15 -14 -9 -16 -8 -12M-5 0 C 1 1 4 0 0 -6')
+    tex_ctx.stroke(a)
+    tex_ctx.setTransform(1,0,0,1,0,0)
 }
 
 window.textures_bees=function(tex_ctx){
