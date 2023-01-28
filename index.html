@@ -4,14 +4,7 @@
 sound is currently disabled to stop my computer from becoming a waffle cooker
 
 
-so erm the ka version is really behind but idk any new way to save some space ;-; except putting the main func outside
-
-
-ugh still unbalanced 
-
-r, in pep: 277b, 300b
-b, in pine: 315b - 576b if u rush convert all the balloons or not O_O
-w, in coco: 549b, 746b, 
+the deadline is March 23rd cuz i NEED to release it on the og game's birthday it's perfect
 
 
 -->
@@ -2211,7 +2204,8 @@ w, in coco: 549b, 746b,
         <text x='133' y='64' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>for 15 minutes.</text>
         <text id='fieldDice_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
         
-        <g transform='translate(0,-4) scale(1,1)'>
+        <g transform='translate(0,-3)'>
+        <g transform='translate(0,-4)'>
         
         <path fill='rgb(255,255,255)' stroke='black' stroke-width='3' d='M35 20L20 30L20 50L35 60L50 50L50 30z'></path>
         
@@ -2247,6 +2241,7 @@ w, in coco: 549b, 746b,
         <path d='M-2 0C -10 -18 10 -18 2 0M-2 0C -10 18 10 18 2 0' fill='rgb(0,80,255)' stroke='#57b5b1' stroke-width='2' transform='translate(15,15) rotate(120)'></path>
         <circle cx='15' cy='15' r='5' fill='rgb(255,255,0)'></circle>
         </g>
+        </g>
         
     </svg>
     
@@ -2260,7 +2255,8 @@ w, in coco: 549b, 746b,
         <text x='133' y='64' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>for 15 minutes.</text>
         <text id='smoothDice_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
         
-        <g transform='translate(12,-1) rotate(-5) scale(0.9,0.9)'>
+        <g transform='translate(14,0) rotate(-5) scale(0.85,0.85)'>
+            
             <g transform='translate(0,-4) scale(1,1)'>
             
             <path fill='rgb(250,250,250)' stroke='black' stroke-width='3' d='M35 20L20 30L20 50L35 60L50 50L50 30z'></path>
@@ -2299,7 +2295,7 @@ w, in coco: 549b, 746b,
             </g>
         </g>
         
-        <g transform='translate(-3,8) rotate(5) scale(0.9,0.9)'>
+        <g transform='translate(-1,6) rotate(5) scale(0.85,0.85)'>
             <g transform='translate(0,-4) scale(1,1)'>
             
             <path fill='rgb(250,250,250)' stroke='black' stroke-width='3' d='M35 20L20 30L20 50L35 60L50 50L50 30z'></path>
@@ -8506,14 +8502,30 @@ let items={
         amount:0,u:128*3/2048,v:128*11/2048,value:20,
         use:function(){
 
-            player.addEffect('redJellyBean')
-            player.addEffect('whiteJellyBean')
-            player.addEffect('blueJellyBean')
-            player.addEffect('greenJellyBean')
-            player.addEffect('pinkJellyBean')
-            player.addEffect('brownJellyBean')
-            player.addEffect('blackJellyBean')
-            player.addEffect('yellowJellyBean')
+            for(let i=0;i<12;i++){
+
+                window.setTimeout(function(){
+                    
+                    if(player.fieldIn){
+                        
+                        let vel=player.bodyDir.slice()
+                        vel[1]=MATH.random(5,9)
+                        vec3.rotateY(vel,vel,MATH.ORIGIN,MATH.random(-0.7,0.7))
+                        vel[0]*=MATH.random(3,9)
+                        vel[2]*=MATH.random(3,9)
+
+                        let arr=[]
+
+                        arr.push('redJellyBean','blueJellyBean','whiteJellyBean')
+                        arr.push('redJellyBean','blueJellyBean','whiteJellyBean')
+                        arr.push('redJellyBean','blueJellyBean','whiteJellyBean')
+                        arr.push('pinkJellyBean','brownJellyBean','blackJellyBean','yellowJellyBean','greenJellyBean')
+
+                        objects.mobs.push(new JellyBean(player.fieldIn,vel,arr[(Math.random()*arr.length)|0]))
+                    }
+                
+                },250*i)
+            }
         }
     },
 
@@ -16296,6 +16308,52 @@ class GlitchEffect {
     }
 }
 
+class JellyBean {
+    
+    constructor(field,vel,type){
+        
+        this.field=field
+        this.vel=vel
+        this.type=type
+        this.y=fieldInfo[this.field].y
+        this.pos=[player.body.position.x,this.y+0.5,player.body.position.z]
+
+        switch(this.type.replace('JellyBean','')){
+
+            case 'red':this.col=[0.85,0,0];break
+            case 'white':this.col=[0.9,0.9,0.9];break
+            case 'blue':this.col=[0,0.5,0.9];break
+            case 'pink':this.col=[0.9,0.45,0.9];break
+            case 'brown':this.col=[0.3,0.2,0.1];break
+            case 'green':this.col=[0,0.5,0];break
+            case 'black':this.col=[0.075,0.075,0.075];break
+            case 'yellow':this.col=[0.95,0.9,0.1];break
+        }
+    }
+    
+    die(index){
+
+        if(this.pos[0]>fieldInfo[this.field].x&&this.pos[0]<fieldInfo[this.field].x+fieldInfo[this.field].width-1&&this.pos[2]>fieldInfo[this.field].z&&this.pos[2]<fieldInfo[this.field].z+fieldInfo[this.field].length-1){
+
+            objects.tokens.push(new Token(effects[this.type].tokenLife,[this.pos[0],this.pos[1]+1.1,this.pos[2]],this.type))
+        }
+        
+        
+        objects.mobs.splice(index,1)
+    }
+    
+    update(){
+        
+        this.vel[1]-=dt*16
+
+        vec3.scaleAndAdd(this.pos,this.pos,this.vel,dt)
+
+        meshes.explosions.instanceData.push(...this.pos,...this.col,1,0.35,1)
+
+        return this.pos[1]<=this.y
+    }
+}
+
 let lightDir=[1,5,1.5]
 
 let m=1/(lightDir[0]*lightDir[0]+lightDir[1]*lightDir[1]+lightDir[2]*lightDir[2])
@@ -21691,7 +21749,7 @@ class Token {
         this.func=effects[type].svg?false:effects[type].func
         this.canBeLinked=effects[type].canBeLinked===undefined||effects[type].canBeLinked
         
-        if(Math.random()<player.abilityDuplicationChance&&!backupFunc&&player.fieldIn){
+        if(Math.random()<player.abilityDuplicationChance&&!backupFunc&&player.fieldIn&&funcParams){
             
             let p,fp=funcParams,x=(Math.random()*fieldInfo[fp.field].width)|0,z=(Math.random()*fieldInfo[fp.field].length)|0
             
@@ -22752,7 +22810,7 @@ c(0,0.85+1-0.15,0,0.2,0.2,10,0.9,0.9,0.9,-90,0,0,0.7,true,true,true)
 
 for(let i=0;i<verts.length;i+=6){
     
-    let _t=vec3.rotateX([],[verts[i],verts[i+1],verts[i+2]],[0,0,0],0.3)
+    let _t=vec3.rotateX([],[verts[i],verts[i+1],verts[i+2]],MATH.ORIGIN,0.3)
     
     verts[i]=_t[0]
     verts[i+1]=_t[1]
@@ -23033,7 +23091,7 @@ star(0.75,1.3,0.15,0.25,1,1,1,0.2,0.8)
 
 for(let i=0;i<verts.length;i+=6){
     
-    let a=vec3.rotateX([],[verts[i],verts[i+1],verts[i+2]],[0,0,0],MATH.HALF_PI)
+    let a=vec3.rotateX([],[verts[i],verts[i+1],verts[i+2]],MATH.ORIGIN,MATH.HALF_PI)
     
     verts[i]=a[0]
     verts[i+1]=a[1]
@@ -23057,7 +23115,7 @@ star(0.75,1.3,0.075,0.2,3.5,1.75,0)
 
 for(let i=0;i<verts.length;i+=6){
     
-    let a=vec3.rotateX([],[verts[i],verts[i+1],verts[i+2]],[0,0,0],MATH.HALF_PI*0.75)
+    let a=vec3.rotateX([],[verts[i],verts[i+1],verts[i+2]],MATH.ORIGIN,MATH.HALF_PI*0.75)
     
     verts[i]=a[0]
     verts[i+1]=a[1]
@@ -23081,7 +23139,7 @@ star(0.75,1.3,0.15,0.15,100,100,2)
 
 for(let i=0;i<verts.length;i+=6){
     
-    let a=vec3.rotateX([],[verts[i],verts[i+1],verts[i+2]],[0,0,0],-MATH.HALF_PI)
+    let a=vec3.rotateX([],[verts[i],verts[i+1],verts[i+2]],MATH.ORIGIN,-MATH.HALF_PI)
     
     verts[i]=a[0]
     verts[i+1]=a[1]
@@ -24776,7 +24834,7 @@ if(window.thisProgramIsInFullScreen){
 
 //<script>
 
-// console.log=0
+console.log=0
 
 </script>
 

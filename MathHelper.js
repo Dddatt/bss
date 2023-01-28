@@ -1,5 +1,6 @@
 window.MATH = (function (MATH) {
 
+    MATH.ORIGIN=[0,0,0]
     MATH.Z = [0, 0, 1]
     MATH.TO_DEG = 180 / Math.PI
     MATH.TO_RAD = Math.PI / 180
