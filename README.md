@@ -1,3 +1,21 @@
+# my to-do list for everything left to do by March 23rd
+
+- Turpentine
+- Cloud Vials
+- Blender
+- Atomic Treats
+- Star Treats
+- Sprit Petals
+- Night Bell(planned to be rewarded by Dapper Bear)
+- Magic Beans and sprouts feature
+- Robo Challenge(mobs, system, and items)(ughh so much)
+- All mobs(bosses and minor ones)
+- Remaining guards, and sprinkler items
+- 30 bee zone
+- Shops
+- Dialogue
+
+
 <div align="center">
 
 # bee swarm ka ripoff edition
