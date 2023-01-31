@@ -3656,6 +3656,131 @@ window.textures_effects=function(tex_ctx){
     a=new Path2D('M-13 -7 C -15 -14 -9 -16 -8 -12M-5 0 C 1 1 4 0 0 -6')
     tex_ctx.stroke(a)
     tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='rgb(100,200,255)'
+    tex_ctx.fillRect(128*4,256+256*5,128,128)
+    tex_ctx.translate(128*4+128*0.5+-1,256+128*10.5+4)
+    tex_ctx.scale(-2.1,1.75)
+    tex_ctx.translate(5,8)
+    tex_ctx.lineWidth=3
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.fillStyle='rgb(40, 212, 71)'
+    a=new Path2D('M-16 -11 C -15 -24 -18 -26 -14 -28C -5 -34 -1 -29 3 -21L -4 -24L 2 -19C -5 -15 -11 -19 -12 -21L -11 -10')
+    tex_ctx.stroke(a)
+    tex_ctx.fill(a)
+    tex_ctx.translate(-1,5)
+    a=new Path2D('M-15 -15 C -20 4 4 8 5 0C 8 -3 -1 -24 -15 -15')
+    tex_ctx.stroke(a)
+    tex_ctx.fill(a)
+    tex_ctx.strokeStyle='rgb(255,255,255,0.6)'
+    tex_ctx.fillStyle='rgb(255,255,255,0.6)'
+    e(8,-11,2*0.75,2.5*0.75)
+    e(-8,0,2*0.75,2.5*0.75)
+    e(-17,-23,2*0.75,2.5*0.75)
+    e(-3,-32,2*0.75,2.5*0.75)
+    a=new Path2D('M-11 -7 C -15 -14 -5 -16 -8 -11M-5 0 C 1 1 4 0 0 -6')
+    tex_ctx.stroke(a)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='rgb(100,200,255)'
+    tex_ctx.fillRect(128*5,256+256*5,128,128)
+    tex_ctx.translate(128*5+128*0.5,256+128*10.5)
+    tex_ctx.scale(1.6,1.6)
+    tex_ctx.rotate(-0.1)
+    tex_ctx.lineWidth=1.75
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.fillStyle='rgb(0,0,0,0.25)'
+    a=new Path2D('M-10 -15L10 -15C10 -1 15 -14 15 15C15 25 -15 25 -15 15C-15 -15 -10 -1 -10 -15')
+    tex_ctx.stroke(a)
+    tex_ctx.fill(a)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.fillStyle='rgb(181, 120, 60)'
+    tex_ctx.fillRect(-11,-20,22,6)
+    tex_ctx.strokeRect(-11,-20,22,6)
+    tex_ctx.translate(-3,8)
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    e(0,0,5,5)
+    tex_ctx.fillStyle='rgb(0,0,0,0.2)'
+    e(0.5,1,4,4)
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    e(-1,-1,3.5,3.5)
+    tex_ctx.translate(7,-1)
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    e(0,0,5,5)
+    tex_ctx.fillStyle='rgb(0,0,0,0.2)'
+    e(0.5,1,4,4)
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    e(-1,-1,3.5,3.5)
+    tex_ctx.translate(-7,-4)
+    tex_ctx.scale(0.9,0.9)
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    e(0,0,5,5)
+    tex_ctx.fillStyle='rgb(0,0,0,0.2)'
+    e(0.5,1,4,4)
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    e(-1,-1,3.5,3.5)
+    tex_ctx.translate(6,8)
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    e(0,0,5,5)
+    tex_ctx.fillStyle='rgb(0,0,0,0.2)'
+    e(0.5,1,4,4)
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    e(-1,-1,3.5,3.5)
+    tex_ctx.translate(-1,-9)
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    e(0,0,5,5)
+    tex_ctx.fillStyle='rgb(0,0,0,0.2)'
+    e(0.5,1,4,4)
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    e(-1,-1,3.5,3.5)
+    tex_ctx.translate(-2,-3)
+    tex_ctx.lineWidth=2
+    tex_ctx.strokeStyle='rgb(40, 74, 128)'
+    a=new Path2D('M-12 -6C-12 -5 12 -5 12 -6M6 -6C 16 2 1 0 11 7')
+    tex_ctx.stroke(a)
+    
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='rgb(100,200,255)'
+    tex_ctx.fillRect(128*6,256+256*5,128,128)
+    tex_ctx.translate(128*6+128*0.5,256+128*10.5)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.lineWidth=6
+    tex_ctx.fillStyle='rgb(255, 255, 160)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-35,-25)
+    tex_ctx.lineTo(25,-25)
+    tex_ctx.lineTo(35,-15)
+    tex_ctx.lineTo(35,15)
+    tex_ctx.lineTo(25,25)
+    tex_ctx.lineTo(-35,25)
+    tex_ctx.lineTo(-35,-25)
+    tex_ctx.stroke()
+    tex_ctx.fill()
+    tex_ctx.strokeStyle='rgb(130,160,130)'
+    tex_ctx.fillStyle='rgb(130,160,130)'
+    tex_ctx.lineWidth=7
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-32,-22)
+    tex_ctx.lineTo(-32,22)
+    tex_ctx.moveTo(23,-22)
+    tex_ctx.lineTo(32,-13)
+    tex_ctx.lineTo(32,13)
+    tex_ctx.lineTo(23,22)
+    tex_ctx.stroke()
+    tex_ctx.scale(1.2,1.2)
+    e(0,0,8,8)
+    tex_ctx.fillRect(-3,-11,6,22)
+    tex_ctx.rotate(Math.PI*0.25)
+    tex_ctx.fillRect(-3,-11,6,22)
+    tex_ctx.rotate(Math.PI*0.25)
+    tex_ctx.fillRect(-3,-11,6,22)
+    tex_ctx.rotate(Math.PI*0.25)
+    tex_ctx.fillRect(-3,-11,6,22)
+    tex_ctx.rotate(Math.PI*0.25)
+    tex_ctx.fillStyle='rgb(255, 255, 160)'
+    e(0,0,4,4)
+    tex_ctx.setTransform(1,0,0,1,0,0)
 }
 
 window.textures_bees=function(tex_ctx){
