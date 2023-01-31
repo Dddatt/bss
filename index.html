@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <!--
 
-sound is currently disabled to stop my computer from becoming a waffle cooker
-
-
 the deadline is March 23rd cuz i NEED to release it on the og game's birthday it's perfect
+
+sound is currently disabled to stop my computer from becoming a waffle cooker
 
 
 -->
@@ -496,6 +495,107 @@ the deadline is March 23rd cuz i NEED to release it on the og game's birthday it
         
         <text id='satisfyingNectar_amount' x='28' y='28' style='font-family:calibri;font-size:11px;' text-anchor='end'></text>
         
+    </svg>
+    
+    <svg id='redDriveBuff' style='width:30;height:30;display:none'>
+        
+        <rect width='30' height='30' fill='rgb(148, 148, 148,0)'></rect>
+
+        <text id='redDriveBuff_amount' x='29' y='29' style='font-family:calibri;font-size:12px' text-anchor='end' fill='rgb(0,0,0)'></text>
+        
+        <rect id='redDriveBuff_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0'></rect>
+        
+        <g transform='translate(15,13) scale(0.5,0.5)'>
+        <path fill='rgb(100,100,100)' stroke='black' stroke-width='2' d='M -20 0L0 -15L20 0L0 15z'></path>
+        <path fill='rgb(85,85,85)' stroke='black' stroke-width='2' d='M0 25L-20 10L-20 0L0 15z'></path>
+        <path fill='rgb(70,70,70)' stroke='black' stroke-width='2' d='M0 25L20 10L20 0L0 15z'></path>
+        
+        <circle cx='0' cy='0' r='8' stroke='rgb(155,0,0)' stroke-width='8' fill='rgb(0,0,0,0)' transform='scale(1,0.75)'></circle>
+        <circle cx='0' cy='-5' r='8' stroke='rgb(255,0,0)' stroke-width='8' fill='rgb(0,0,0,0)' transform='scale(1,0.75)'></circle>
+        
+        <rect x='-19' y='8' width='4' height='8' fill='rgb(255,220,50,0.9)' rx='2'></rect>
+        <rect x='-13' y='11' width='4' height='8' fill='rgb(255,220,50,0.9)' rx='2'></rect>
+        <rect x='-7' y='14' width='4' height='8' fill='rgb(255,220,50,0.9)' rx='2'></rect>
+        
+        </g>
+    </svg>
+    
+    <svg id='whiteDriveBuff' style='width:30;height:30;display:none'>
+        
+        <rect width='30' height='30' fill='rgb(148, 148, 148,0)'></rect>
+
+        <text id='whiteDriveBuff_amount' x='29' y='29' style='font-family:calibri;font-size:12px' text-anchor='end' fill='rgb(0,0,0)'></text>
+        
+        <rect id='whiteDriveBuff_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0'></rect>
+        
+        <g transform='translate(15,13) scale(0.5,0.5)'>
+        <path fill='rgb(100,100,100)' stroke='black' stroke-width='2' d='M -20 0L0 -15L20 0L0 15z'></path>
+        <path fill='rgb(85,85,85)' stroke='black' stroke-width='2' d='M0 25L-20 10L-20 0L0 15z'></path>
+        <path fill='rgb(70,70,70)' stroke='black' stroke-width='2' d='M0 25L20 10L20 0L0 15z'></path>
+        
+        <circle cx='0' cy='0' r='8' stroke='rgb(175,175,175)' stroke-width='8' fill='rgb(0,0,0,0)' transform='scale(1,0.75)'></circle>
+        <circle cx='0' cy='-5' r='8' stroke='rgb(255,255,255)' stroke-width='8' fill='rgb(0,0,0,0)' transform='scale(1,0.75)'></circle>
+        
+        <rect x='-19' y='8' width='4' height='8' fill='rgb(255,220,50,0.9)' rx='2'></rect>
+        <rect x='-13' y='11' width='4' height='8' fill='rgb(255,220,50,0.9)' rx='2'></rect>
+        <rect x='-7' y='14' width='4' height='8' fill='rgb(255,220,50,0.9)' rx='2'></rect>
+        
+        </g>
+    </svg>
+    
+    <svg id='blueDriveBuff' style='width:30;height:30;display:none'>
+        
+        <rect width='30' height='30' fill='rgb(148, 148, 148,0)'></rect>
+
+        <text id='blueDriveBuff_amount' x='29' y='29' style='font-family:calibri;font-size:12px' text-anchor='end' fill='rgb(0,0,0)'></text>
+        
+        <rect id='blueDriveBuff_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0'></rect>
+        
+        <g transform='translate(15,13) scale(0.5,0.5)'>
+        <path fill='rgb(100,100,100)' stroke='black' stroke-width='2' d='M -20 0L0 -15L20 0L0 15z'></path>
+        <path fill='rgb(85,85,85)' stroke='black' stroke-width='2' d='M0 25L-20 10L-20 0L0 15z'></path>
+        <path fill='rgb(70,70,70)' stroke='black' stroke-width='2' d='M0 25L20 10L20 0L0 15z'></path>
+        
+        <circle cx='0' cy='0' r='8' stroke='rgb(0,0,155)' stroke-width='8' fill='rgb(0,0,0,0)' transform='scale(1,0.75)'></circle>
+        <circle cx='0' cy='-5' r='8' stroke='rgb(0,0,255)' stroke-width='8' fill='rgb(0,0,0,0)' transform='scale(1,0.75)'></circle>
+        
+        <rect x='-19' y='8' width='4' height='8' fill='rgb(255,220,50,0.9)' rx='2'></rect>
+        <rect x='-13' y='11' width='4' height='8' fill='rgb(255,220,50,0.9)' rx='2'></rect>
+        <rect x='-7' y='14' width='4' height='8' fill='rgb(255,220,50,0.9)' rx='2'></rect>
+        </g>
+    </svg>
+    
+    <svg id='glitchedDriveBuff' style='width:30;height:30;display:none'>
+        
+        <rect width='30' height='30' fill='rgb(148, 148, 148,0)'></rect>
+
+        <text id='glitchedDriveBuff_amount' x='29' y='29' style='font-family:calibri;font-size:12px' text-anchor='end' fill='rgb(0,0,0)'></text>
+        
+        <rect id='glitchedDriveBuff_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0'></rect>
+        
+        <g transform='translate(15,13) scale(0.5,0.5)'>
+        <path fill='rgb(100,100,100)' stroke='black' stroke-width='2' d='M -20 0L0 -15L20 0L0 15z'></path>
+        <path fill='rgb(85,85,85)' stroke='black' stroke-width='2' d='M0 25L-20 10L-20 0L0 15z'></path>
+        <path fill='rgb(70,70,70)' stroke='black' stroke-width='2' d='M0 25L20 10L20 0L0 15z'></path>
+        
+        <g transform='translate(-3,2) scale(0.9,0.9)'>
+        <circle cx='0' cy='0' r='8' stroke='rgb(195,195,0,0.5)' stroke-width='8' fill='rgb(0,0,0,0)' transform='scale(1,0.75)'></circle>
+        <circle cx='0' cy='-5' r='8' stroke='rgb(255,255,0,0.5)' stroke-width='8' fill='rgb(0,0,0,0)' transform='scale(1,0.5)'></circle>
+        </g>
+        <g transform='translate(3,2) scale(0.9,0.9)'>
+        <circle cx='0' cy='0' r='8' stroke='rgb(189, 100, 180,0.6)' stroke-width='8' fill='rgb(0,0,0,0)' transform='scale(1,0.75)'></circle>
+        <circle cx='0' cy='-5' r='8' stroke='rgb(247, 131, 235,0.6)' stroke-width='8' fill='rgb(0,0,0,0)' transform='scale(1,0.75)'></circle>
+        </g>
+        <g transform='translate(0,-2) scale(0.9,0.9)'>
+        <circle cx='0' cy='0' r='8' stroke='rgb(0, 190, 190,0.4)' stroke-width='8' fill='rgb(0,0,0,0)' transform='scale(1,0.75)'></circle>
+        <circle cx='0' cy='-5' r='8' stroke='rgb(247, 255, 255,0.4)' stroke-width='8' fill='rgb(0,0,0,0)' transform='scale(1,0.75)'></circle>
+        </g>
+        
+        <rect x='-19' y='8' width='4' height='8' fill='rgb(255,220,50,0.9)' rx='2'></rect>
+        <rect x='-13' y='11' width='4' height='8' fill='rgb(255,220,50,0.9)' rx='2'></rect>
+        <rect x='-7' y='14' width='4' height='8' fill='rgb(255,220,50,0.9)' rx='2'></rect>
+        
+        </g>
     </svg>
 
     <svg id='dandelionFieldBoost' style='width:30;height:30;display:none'>
@@ -1987,7 +2087,7 @@ the deadline is March 23rd cuz i NEED to release it on the og game's birthday it
     <p style='text-align:center;margin-top:0px;'>Dat Approved!</p>
 
     
-    <p style='text-align:left;margin-top:0px;color:white;position:fixed;left:235px;top:100px'>i added like lots of new backpacks</p>
+    <p style='text-align:left;margin-top:0px;color:white;position:fixed;left:235px;top:100px'>the items are explained in their descriptions but most don't drop as tokens so they don't need a token texture so i just slapped on the haste texture as default<br><br>the robo challenge is the next thing im adding but its so complicated</p>
     
     <span style='display:block;margin-top:50px;'></span>
     <button id='runFullScreen' style='margin-left:10px;width:200px;height:50px;background-color:rgb(248, 255, 150);'>New Fullscreen Game</button>
@@ -2706,6 +2806,71 @@ the deadline is March 23rd cuz i NEED to release it on the og game's birthday it
         <path d='M36 32C 30 30 30 35 35 35C 37 35 37 39 32 38' stroke='rgb(255,255,255)' stroke-width='2' fill='rgb(0,0,0,0)' transform='translate(0,3)'></path>
         
     </svg>
+    
+    <svg id='magicBean' style='width:200;height:70;cursor:pointer;border-radius:5px'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='132' y='18' style='font-family:trebuchet ms;font-size:16.5px;' fill='rgb(0,0,0)' text-anchor='middle'>Magic Bean</text>
+        <text x='133' y='39' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>Plants a random</text>
+        <text x='133' y='53' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>sprout in the field</text>
+        <text x='133' y='67' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>you're in.</text>
+        <text id='magicBean_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='translate(29,46) scale(-1.2,1.1) rotate(-8)'>
+        
+        <path stroke='black' stroke-width='1.5' fill='rgb(40, 212, 71)' d='M-16 -11 C -15 -24 -18 -26 -14 -28C -5 -34 -1 -29 3 -21L -4 -24L 2 -19C -5 -15 -11 -19 -12 -21L -11 -10' transform='translate(4,-1) scale(1.2,1)'></path>     
+        <path stroke='black' stroke-width='1.5' fill='rgb(40, 212, 71)' d='M-15 -15 C -20 4 4 8 5 0C 8 -3 -1 -24 -15 -15'></path>
+        <path stroke='rgb(255,255,255,0.8)' stroke-width='2.5' fill='rgb(0,0,0,0)' d='M-11 -7 C -15 -14 -5 -16 -8 -11M-5 0 C 1 1 4 0 0 -6'></path>
+        <circle cx='-7' cy='-3' r='1.8' fill='rgb(255,255,255,0.5)'></circle>
+        <circle cx='-2' cy='0' r='1.5' fill='rgb(0,0,0,0.2)'></circle>
+        <circle cx='-10' cy='-8' r='1.5' fill='rgb(0,0,0,0.2)'></circle>
+        <circle cx='-8' cy='-27' r='1.5' fill='rgb(255,255,255,0.8)'></circle>
+        <circle cx='-3' cy='-21' r='1.5' fill='rgb(255,255,255,0.8)'></circle>
+        <circle cx='-13' cy='-21' r='1.5' fill='rgb(255,255,255,0.8)'></circle>
+        
+        </g>
+        
+    </svg>
+    
+    <svg id='cloudVial' style='width:200;height:70;cursor:pointer;border-radius:5px'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='132' y='18' style='font-family:trebuchet ms;font-size:16.5px;' fill='rgb(0,0,0)' text-anchor='middle'>Cloud Vial</text>
+        <text x='133' y='39' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>Summons a cloud</text>
+        <text x='133' y='53' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>on the field you're in,</text>
+        <text x='133' y='67' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>lasting for 3 mins.</text>
+        <text id='cloudVial_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='translate(36,33) rotate(-7)'>
+        <path stroke='black' stroke-width='1.5' fill='rgb(0,0,0,0.25)' d='M-10 -15L10 -15C10 -1 15 -14 15 15C15 25 -15 25 -15 15C-15 -15 -10 -1 -10 -15'></path>
+        <rect stroke='black' stroke-width='1.5' fill='rgb(181, 120, 60)' x='-11' y='-20' width='22' height='6' rx='2'></rect>
+        
+        <g transform='translate(3,6) scale(1.1,1.1)'>
+        <circle fill='rgb(255,255,255)' cx='0' cy='0' r='5'></circle>
+        <circle fill='rgb(0,0,0,0.2)' cx='0.3' cy='1.1' r='4'></circle>
+        <circle fill='rgb(255,255,255)' cx='-0.4' cy='-1.0' r='3'></circle></g>
+        <g transform='translate(-4,9) scale(1.2,1.2)'>
+        <circle fill='rgb(255,255,255)' cx='0' cy='0' r='5'></circle>
+        <circle fill='rgb(0,0,0,0.2)' cx='0.3' cy='1.1' r='4'></circle>
+        <circle fill='rgb(255,255,255)' cx='-0.4' cy='-1.0' r='3'></circle></g>
+        <g transform='translate(4,11) scale(1.1,1.1)'>
+        <circle fill='rgb(255,255,255)' cx='0' cy='0' r='5'></circle>
+        <circle fill='rgb(0,0,0,0.2)' cx='0.3' cy='1.1' r='4'></circle>
+        <circle fill='rgb(255,255,255)' cx='-0.4' cy='-1.0' r='3'></circle></g>
+        <g transform='translate(0,1) scale(1,1)'>
+        <circle fill='rgb(255,255,255)' cx='0' cy='0' r='5'></circle>
+        <circle fill='rgb(0,0,0,0.2)' cx='0.3' cy='1.1' r='4'></circle>
+        <circle fill='rgb(255,255,255)' cx='-0.4' cy='-1.0' r='3'></circle></g>
+        <g transform='translate(-4,4) scale(1,1)'>
+        <circle fill='rgb(255,255,255)' cx='0' cy='0' r='5'></circle>
+        <circle fill='rgb(0,0,0,0.2)' cx='0.3' cy='1.1' r='4'></circle>
+        <circle fill='rgb(255,255,255)' cx='-0.4' cy='-1.0' r='3'></circle></g>
+        
+        <path stroke='rgb(58, 127, 207)' stroke-width='2.5' fill='rgb(0,0,0,0)' d='M-12 -6C-12 -5 12 -5 12 -6M6 -6C 16 2 1 0 11 7'></path>
+        </g>
+    </svg>
 
     <svg id='antPass' style='width:200;height:70;cursor:pointer;border-radius:5px;'>
         
@@ -2723,6 +2888,54 @@ the deadline is March 23rd cuz i NEED to release it on the og game's birthday it
         <path stroke='rgb(50,50,50)' fill='rgb(0,0,0,0)' stroke-width='2' d='M -3 -5L-7 -10M 3 -5L7 -10'></path>
         <circle cx='-4' cy='0' r='2' fill='rgb(255,40,40)'></circle>
         <circle cx='4' cy='0' r='2' fill='rgb(255,40,40)'></circle>
+        
+        </g>
+    </svg>
+    
+    <svg id='roboPass' style='width:200;height:70;cursor:pointer;border-radius:5px;'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='134' y='19' style='font-family:trebuchet ms;font-size:17px;' fill='rgb(0,0,0)' text-anchor='middle'>Robo Pass</text>
+        <text x='132' y='39' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>Grants you 1 addmission</text>
+        <text x='132' y='52' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>to the Robo Challenge!</text>
+        <text id='roboPass_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='translate(35,35)'>
+        <path fill='rgb(255, 255, 160)' stroke='black' stroke-width='2' d='M -20 -15L 15 -15L 20 -10L 20 10L 15 15L-20 15L-20 -15'></path>
+        <path fill='rgb(0,0,0,0)' stroke='rgb(130,160,130)' stroke-width='4' d='M -17 -14L -17 14M 13 -14L 18 -8L 18 8L 13 14'></path>
+        <circle cx='0' cy='0' r='6' fill='rgb(100,150,100)'></circle>
+        <circle cx='0' cy='0' r='3' fill='rgb(255, 255, 160)'></circle>
+        
+        <rect x='-2.5' y='-9' fill='rgb(100,150,100)' width='5' height='4' transform='rotate(0)'></rect>
+        <rect x='-2.5' y='-9' fill='rgb(100,150,100)' width='5' height='4' transform='rotate(45)'></rect>
+        <rect x='-2.5' y='-9' fill='rgb(100,150,100)' width='5' height='4' transform='rotate(90)'></rect>
+        <rect x='-2.5' y='-9' fill='rgb(100,150,100)' width='5' height='4' transform='rotate(135)'></rect>
+        <rect x='-2.5' y='-9' fill='rgb(100,150,100)' width='5' height='4' transform='rotate(180)'></rect>
+        <rect x='-2.5' y='-9' fill='rgb(100,150,100)' width='5' height='4' transform='rotate(220)'></rect>
+        <rect x='-2.5' y='-9' fill='rgb(100,150,100)' width='5' height='4' transform='rotate(265)'></rect>
+        <rect x='-2.5' y='-9' fill='rgb(100,150,100)' width='5' height='4' transform='rotate(310)'></rect>
+        
+        </g>
+    </svg>
+    
+    <svg id='cog' style='width:200;height:70;cursor:pointer;border-radius:5px'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='132' y='18' style='font-family:trebuchet ms;font-size:16.5px;' fill='rgb(0,0,0)' text-anchor='middle'>Cog</text>
+        <text x='133' y='37' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>Used in the Robo</text>
+        <text x='133' y='50' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>Challenge. Removed</text>
+        <text x='134' y='63' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>when the challenge ends.</text>
+        <text id='cog_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='translate(35,35) scale(1.2,1.2)'>
+        
+        <rect x='-4' y='-14' width='8' height='28' fill='rgb(20,195,0)' stroke='black' stroke-width='1.5'></rect>
+        <rect x='-4' y='-14' width='8' height='28' fill='rgb(20,195,0)' stroke='black' stroke-width='1.5' transform='rotate(60)'></rect>
+        <rect x='-4' y='-14' width='8' height='28' fill='rgb(20,195,0)' stroke='black' stroke-width='1.5' transform='rotate(120)'></rect>
+        <circle cx='0' cy='0' r='6' fill='rgb(0,0,0,0)' stroke-width='5' stroke='rgb(20,195,0)' ></circle>
+        <circle cx='0' cy='0' r='5' fill='rgb(50,50,50)'></circle>
         
         </g>
     </svg>
@@ -2864,6 +3077,329 @@ the deadline is March 23rd cuz i NEED to release it on the og game's birthday it
         
         <path fill='rgb(138, 78, 18)' stroke='black' stroke-width='2' d='M 37 13C 39 12 43 7 42 5C 50 12 48 7 41 15' transform='translate(6,1)'></path>
         
+        </g>
+        
+    </svg>
+    
+    <svg id='redDrive' style='width:200;height:70;cursor:pointer;border-radius:5px;'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='134' y='19' style='font-family:trebuchet ms;font-size:17px;' fill='rgb(0,0,0)' text-anchor='middle'>Red Drive</text>
+        <text x='135' y='38' style='font-family:trebuchet ms;font-size:10.2px;' fill='rgb(0,0,0)' text-anchor='middle'>Grants red pollen, capacity,</text>
+        <text x='134' y='52' style='font-family:trebuchet ms;font-size:10.5px;' fill='rgb(0,0,0)' text-anchor='middle'> and bee attack buffs in</text>
+        <text x='132' y='65' style='font-family:trebuchet ms;font-size:10.5px;' fill='rgb(0,0,0)' text-anchor='middle'>1 Robo Challenge round.</text>
+        <text id='redDrive_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='translate(35,29)'>
+        <path fill='rgb(100,100,100)' stroke='black' stroke-width='2' d='M -20 0L0 -15L20 0L0 15z'></path>
+        <path fill='rgb(85,85,85)' stroke='black' stroke-width='2' d='M0 25L-20 10L-20 0L0 15z'></path>
+        <path fill='rgb(70,70,70)' stroke='black' stroke-width='2' d='M0 25L20 10L20 0L0 15z'></path>
+        
+        <circle cx='0' cy='0' r='8' stroke='rgb(155,0,0)' stroke-width='8' fill='rgb(0,0,0,0)' transform='scale(1,0.75)'></circle>
+        <circle cx='0' cy='-5' r='8' stroke='rgb(255,0,0)' stroke-width='8' fill='rgb(0,0,0,0)' transform='scale(1,0.75)'></circle>
+        
+        <rect x='-19' y='8' width='4' height='8' fill='rgb(255,220,50,0.9)' rx='2'></rect>
+        <rect x='-13' y='11' width='4' height='8' fill='rgb(255,220,50,0.9)' rx='2'></rect>
+        <rect x='-7' y='14' width='4' height='8' fill='rgb(255,220,50,0.9)' rx='2'></rect>
+        
+        </g>
+    </svg>
+    
+    <svg id='whiteDrive' style='width:200;height:70;cursor:pointer;border-radius:5px;'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='134' y='19' style='font-family:trebuchet ms;font-size:17px;' fill='rgb(0,0,0)' text-anchor='middle'>White Drive</text>
+        <text x='135' y='38' style='font-family:trebuchet ms;font-size:9.5px;' fill='rgb(0,0,0)' text-anchor='middle'>Grants white pollen, capacity,</text>
+        <text x='134' y='52' style='font-family:trebuchet ms;font-size:10.5px;' fill='rgb(0,0,0)' text-anchor='middle'> and bee attack buffs in</text>
+        <text x='132' y='65' style='font-family:trebuchet ms;font-size:10.5px;' fill='rgb(0,0,0)' text-anchor='middle'>1 Robo Challenge round.</text>
+        <text id='whiteDrive_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='translate(35,29)'>
+        <path fill='rgb(100,100,100)' stroke='black' stroke-width='2' d='M -20 0L0 -15L20 0L0 15z'></path>
+        <path fill='rgb(85,85,85)' stroke='black' stroke-width='2' d='M0 25L-20 10L-20 0L0 15z'></path>
+        <path fill='rgb(70,70,70)' stroke='black' stroke-width='2' d='M0 25L20 10L20 0L0 15z'></path>
+        
+        <circle cx='0' cy='0' r='8' stroke='rgb(175,175,175)' stroke-width='8' fill='rgb(0,0,0,0)' transform='scale(1,0.75)'></circle>
+        <circle cx='0' cy='-5' r='8' stroke='rgb(255,255,255)' stroke-width='8' fill='rgb(0,0,0,0)' transform='scale(1,0.75)'></circle>
+        
+        <rect x='-19' y='8' width='4' height='8' fill='rgb(255,220,50,0.9)' rx='2'></rect>
+        <rect x='-13' y='11' width='4' height='8' fill='rgb(255,220,50,0.9)' rx='2'></rect>
+        <rect x='-7' y='14' width='4' height='8' fill='rgb(255,220,50,0.9)' rx='2'></rect>
+        
+        </g>
+    </svg>
+    
+    <svg id='blueDrive' style='width:200;height:70;cursor:pointer;border-radius:5px;'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='134' y='19' style='font-family:trebuchet ms;font-size:17px;' fill='rgb(0,0,0)' text-anchor='middle'>Blue Drive</text>
+        <text x='135' y='38' style='font-family:trebuchet ms;font-size:10px;' fill='rgb(0,0,0)' text-anchor='middle'>Grants blue pollen, capacity,</text>
+        <text x='134' y='52' style='font-family:trebuchet ms;font-size:10.5px;' fill='rgb(0,0,0)' text-anchor='middle'> and bee attack buffs in</text>
+        <text x='132' y='65' style='font-family:trebuchet ms;font-size:10.5px;' fill='rgb(0,0,0)' text-anchor='middle'>1 Robo Challenge round.</text>
+        <text id='blueDrive_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='translate(35,29)'>
+        <path fill='rgb(100,100,100)' stroke='black' stroke-width='2' d='M -20 0L0 -15L20 0L0 15z'></path>
+        <path fill='rgb(85,85,85)' stroke='black' stroke-width='2' d='M0 25L-20 10L-20 0L0 15z'></path>
+        <path fill='rgb(70,70,70)' stroke='black' stroke-width='2' d='M0 25L20 10L20 0L0 15z'></path>
+        
+        <circle cx='0' cy='0' r='8' stroke='rgb(0,0,155)' stroke-width='8' fill='rgb(0,0,0,0)' transform='scale(1,0.75)'></circle>
+        <circle cx='0' cy='-5' r='8' stroke='rgb(0,0,255)' stroke-width='8' fill='rgb(0,0,0,0)' transform='scale(1,0.75)'></circle>
+        
+        <rect x='-19' y='8' width='4' height='8' fill='rgb(255,220,50,0.9)' rx='2'></rect>
+        <rect x='-13' y='11' width='4' height='8' fill='rgb(255,220,50,0.9)' rx='2'></rect>
+        <rect x='-7' y='14' width='4' height='8' fill='rgb(255,220,50,0.9)' rx='2'></rect>
+        
+        </g>
+    </svg>
+    
+    <svg id='glitchedDrive' style='width:200;height:70;cursor:pointer;border-radius:5px;'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='134' y='19' style='font-family:trebuchet ms;font-size:17px;' fill='rgb(0,0,0)' text-anchor='middle'>Glitched Drive</text>
+        <text x='135' y='38' style='font-family:trebuchet ms;font-size:10.5px;' fill='rgb(0,0,0)' text-anchor='middle'>Grants pollen, capacity,</text>
+        <text x='134' y='52' style='font-family:trebuchet ms;font-size:10.5px;' fill='rgb(0,0,0)' text-anchor='middle'> and bee attack buffs in</text>
+        <text x='132' y='65' style='font-family:trebuchet ms;font-size:10.5px;' fill='rgb(0,0,0)' text-anchor='middle'>1 Robo Challenge round.</text>
+        <text id='glitchedDrive_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='translate(35,29)'>
+        <path fill='rgb(100,100,100)' stroke='black' stroke-width='2' d='M -20 0L0 -15L20 0L0 15z'></path>
+        <path fill='rgb(85,85,85)' stroke='black' stroke-width='2' d='M0 25L-20 10L-20 0L0 15z'></path>
+        <path fill='rgb(70,70,70)' stroke='black' stroke-width='2' d='M0 25L20 10L20 0L0 15z'></path>
+        
+        <g transform='translate(-3,2) scale(0.9,0.9)'>
+        <circle cx='0' cy='0' r='8' stroke='rgb(195,195,0,0.5)' stroke-width='8' fill='rgb(0,0,0,0)' transform='scale(1,0.75)'></circle>
+        <circle cx='0' cy='-5' r='8' stroke='rgb(255,255,0,0.5)' stroke-width='8' fill='rgb(0,0,0,0)' transform='scale(1,0.5)'></circle>
+        </g>
+        <g transform='translate(3,2) scale(0.9,0.9)'>
+        <circle cx='0' cy='0' r='8' stroke='rgb(189, 100, 180,0.6)' stroke-width='8' fill='rgb(0,0,0,0)' transform='scale(1,0.75)'></circle>
+        <circle cx='0' cy='-5' r='8' stroke='rgb(247, 131, 235,0.6)' stroke-width='8' fill='rgb(0,0,0,0)' transform='scale(1,0.75)'></circle>
+        </g>
+        <g transform='translate(0,-2) scale(0.9,0.9)'>
+        <circle cx='0' cy='0' r='8' stroke='rgb(0, 190, 190,0.4)' stroke-width='8' fill='rgb(0,0,0,0)' transform='scale(1,0.75)'></circle>
+        <circle cx='0' cy='-5' r='8' stroke='rgb(247, 255, 255,0.4)' stroke-width='8' fill='rgb(0,0,0,0)' transform='scale(1,0.75)'></circle>
+        </g>
+        
+        <rect x='-19' y='8' width='4' height='8' fill='rgb(255,220,50,0.9)' rx='2'></rect>
+        <rect x='-13' y='11' width='4' height='8' fill='rgb(255,220,50,0.9)' rx='2'></rect>
+        <rect x='-7' y='14' width='4' height='8' fill='rgb(255,220,50,0.9)' rx='2'></rect>
+        
+        </g>
+    </svg>
+    
+    <svg id='comfortingVial' style='width:200;height:70;cursor:pointer;border-radius:5px'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='132' y='18' style='font-family:trebuchet ms;font-size:16.5px;' fill='rgb(0,0,0)' text-anchor='middle'>Comforting Vial</text>
+        <text x='133' y='41' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>Grants 1 hour of</text>
+        <text x='133' y='55' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>Comforting Nectar.</text>
+        <text id='comfortingVial_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='translate(36,31) scale(0.85,0.85) rotate(-31)'>
+        <path stroke='black' stroke-width='2' fill='rgb(0,0,0,0.25)' d='M-6 -15L5 -15C 5 9 13 -1 15 11C 16 15 13 20 13 20C10 30 -10 30 -13 20C -13 20 -16 15 -15 11C -13 -1 -5 9 -5 -15'></path>
+        <rect stroke='black' stroke-width='2' fill='rgb(181, 120, 60)' x='-7' y='-22' width='14' height='9' rx='4'></rect>
+        
+        <path fill='rgb(133, 206, 255)' d='M 7 2C 34 34 -34 34 -7 2'></path>
+        <circle cx='0' cy='3' r='6' transform='scale(1,0.55)' fill='rgb(104, 169, 212)'></circle>
+        
+        <path stroke='black' stroke-width='2.5' fill='rgb(133, 206, 255)' d='M 15 9 C -6 36 37 34 15 9' transform='scale(0.5,0.7) translate(-22,-38) rotate(48)'></path>
+        <path stroke='black' stroke-width='2.5' fill='rgb(133, 206, 255)' d='M 15 9 C -6 36 37 34 15 9' transform='scale(0.5,0.6) translate(-43,-16) rotate(39)'></path>
+        
+        <path fill='rgb(30,30,30)' d='M 22 26C -2 39 0 -1 19 8C 13 5 5 25 22 24' transform='translate(-5,6) scale(0.8,0.75) scale(0.65,0.65)'></path>
+        </g>
+    </svg>
+    
+    <svg id='invigoratingVial' style='width:200;height:70;cursor:pointer;border-radius:5px'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='132' y='18' style='font-family:trebuchet ms;font-size:16.5px;' fill='rgb(0,0,0)' text-anchor='middle'>Invigorating Vial</text>
+        <text x='133' y='41' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>Grants 1 hour of</text>
+        <text x='133' y='55' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>Invigorating Nectar.</text>
+        <text id='invigoratingVial_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='translate(36,31) scale(0.85,0.85) rotate(-31)'>
+        <path stroke='black' stroke-width='2' fill='rgb(0,0,0,0.25)' d='M-6 -15L5 -15C 5 9 13 -1 15 11C 16 15 13 20 13 20C10 30 -10 30 -13 20C -13 20 -16 15 -15 11C -13 -1 -5 9 -5 -15'></path>
+        <rect stroke='black' stroke-width='2' fill='rgb(181, 120, 60)' x='-7' y='-22' width='14' height='9' rx='4'></rect>
+        
+        <path fill='rgb(250, 97, 97)' d='M 7 2C 34 34 -34 34 -7 2'></path>
+        <circle cx='0' cy='3' r='6' transform='scale(1,0.55)' fill='rgb(201, 78, 78)'></circle>
+        
+        <path stroke='black' stroke-width='2.5' fill='rgb(250, 97, 97)' d='M 15 9 C -6 36 37 34 15 9' transform='scale(0.5,0.7) translate(-22,-38) rotate(48)'></path>
+        <path stroke='black' stroke-width='2.5' fill='rgb(250, 97, 97)' d='M 15 9 C -6 36 37 34 15 9' transform='scale(0.5,0.6) translate(-43,-16) rotate(39)'></path>
+        
+        <path fill='rgb(30,30,30)' d='M15 25 C 1 26 5 10 8 8L 12 16L15 0L18 16L 22 8C 27 12 28 27 15 25' transform='translate(-8,7) scale(0.8,0.75) scale(0.75,0.75)'></path>
+        <path stroke='rgb(250, 97, 97)' stroke-width='3' d='M15 19 L15 30' transform='translate(-8,7) scale(0.8,0.75) scale(0.75,0.75)'></path>
+        
+        </g>
+    </svg>
+    
+    <svg id='motivatingVial' style='width:200;height:70;cursor:pointer;border-radius:5px'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='132' y='18' style='font-family:trebuchet ms;font-size:16.5px;' fill='rgb(0,0,0)' text-anchor='middle'>Motivating Vial</text>
+        <text x='133' y='41' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>Grants 1 hour of</text>
+        <text x='133' y='55' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>Motivating Nectar.</text>
+        <text id='motivatingVial_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='translate(36,31) scale(0.85,0.85) rotate(-31)'>
+        <path stroke='black' stroke-width='2' fill='rgb(0,0,0,0.25)' d='M-6 -15L5 -15C 5 9 13 -1 15 11C 16 15 13 20 13 20C10 30 -10 30 -13 20C -13 20 -16 15 -15 11C -13 -1 -5 9 -5 -15'></path>
+        <rect stroke='black' stroke-width='2' fill='rgb(181, 120, 60)' x='-7' y='-22' width='14' height='9' rx='4'></rect>
+        
+        <path fill='rgb(169, 86, 252)' d='M 7 2C 34 34 -34 34 -7 2'></path>
+        <circle cx='0' cy='3' r='6' transform='scale(1,0.55)' fill='rgb(131, 67, 196)'></circle>
+        
+        <path stroke='black' stroke-width='2.5' fill='rgb(169, 86, 252)' d='M 15 9 C -6 36 37 34 15 9' transform='scale(0.5,0.7) translate(-22,-38) rotate(48)'></path>
+        <path stroke='black' stroke-width='2.5' fill='rgb(169, 86, 252)' d='M 15 9 C -6 36 37 34 15 9' transform='scale(0.5,0.6) translate(-43,-16) rotate(39)'></path>
+        
+        <g transform='translate(-11,2) scale(0.75,0.75)'>
+        <path fill='rgb(30,30,30)' d='M 10 20 C 0 1 30 0 20 20'></path>
+        <rect fill='rgb(30,30,30)' x='10' y='22' width='10' height='4' rx='2'></rect>
+        <path stroke='rgb(169, 86, 252)' fill='rgb(0,0,0,0)' stroke-width='2' d='M 11 15 L 13 12L 15 15L 17 12L19 15'></path>
+        </g>
+        
+        </g>
+    </svg>
+
+    <svg id='refreshingVial' style='width:200;height:70;cursor:pointer;border-radius:5px'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='132' y='18' style='font-family:trebuchet ms;font-size:16.5px;' fill='rgb(0,0,0)' text-anchor='middle'>Refreshing Vial</text>
+        <text x='133' y='41' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>Grants 1 hour of</text>
+        <text x='133' y='55' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>Refreshing Nectar.</text>
+        <text id='refreshingVial_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='translate(36,31) scale(0.85,0.85) rotate(-31)'>
+        <path stroke='black' stroke-width='2' fill='rgb(0,0,0,0.25)' d='M-6 -15L5 -15C 5 9 13 -1 15 11C 16 15 13 20 13 20C10 30 -10 30 -13 20C -13 20 -16 15 -15 11C -13 -1 -5 9 -5 -15'></path>
+        <rect stroke='black' stroke-width='2' fill='rgb(181, 120, 60)' x='-7' y='-22' width='14' height='9' rx='4'></rect>
+        
+        <path fill='rgb(87, 232, 76)' d='M 7 2C 34 34 -34 34 -7 2'></path>
+        <circle cx='0' cy='3' r='6' transform='scale(1,0.55)' fill='rgb(71, 179, 61)'></circle>
+        
+        <path stroke='black' stroke-width='2.5' fill='rgb(87, 232, 76)' d='M 15 9 C -6 36 37 34 15 9' transform='scale(0.5,0.7) translate(-22,-38) rotate(48)'></path>
+        <path stroke='black' stroke-width='2.5' fill='rgb(87, 232, 76)' d='M 15 9 C -6 36 37 34 15 9' transform='scale(0.5,0.6) translate(-43,-16) rotate(39)'></path>
+        
+        <g transform='scale(0.65,0.65) translate(-14,7)'>
+        <path fill='rgb(30,30,30)' d='M 15 9 C -6 36 37 34 15 9' transform='scale(1.25,1.25) translate(-3,-5)'></path>
+        <path fill='rgb(87, 232, 76)' d='M 15 9 C -6 36 37 34 15 9' transform='scale(0.3,0.3) translate(36,60)'></path>
+        <path fill='rgb(87, 232, 76)' d='M 15 9 C -6 36 37 34 15 9' transform='scale(0.3,-0.3) translate(36,-72)'></path>
+        </g>
+        
+        </g>
+    </svg>
+    
+    <svg id='satisfyingVial' style='width:200;height:70;cursor:pointer;border-radius:5px'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='132' y='18' style='font-family:trebuchet ms;font-size:16.5px;' fill='rgb(0,0,0)' text-anchor='middle'>Satisfying Vial</text>
+        <text x='133' y='41' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>Grants 1 hour of</text>
+        <text x='133' y='55' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>Satisfying Nectar.</text>
+        <text id='satisfyingVial_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='translate(36,31) scale(0.85,0.85) rotate(-31)'>
+        <path stroke='black' stroke-width='2' fill='rgb(0,0,0,0.25)' d='M-6 -15L5 -15C 5 9 13 -1 15 11C 16 15 13 20 13 20C10 30 -10 30 -13 20C -13 20 -16 15 -15 11C -13 -1 -5 9 -5 -15'></path>
+        <rect stroke='black' stroke-width='2' fill='rgb(181, 120, 60)' x='-7' y='-22' width='14' height='9' rx='4'></rect>
+        
+        <path fill='rgb(255, 135, 185)' d='M 7 2C 34 34 -34 34 -7 2'></path>
+        <circle cx='0' cy='3' r='6' transform='scale(1,0.55)' fill='rgb(199, 105, 144)'></circle>
+        
+        <path stroke='black' stroke-width='2.5' fill='rgb(255, 135, 185)' d='M 15 9 C -6 36 37 34 15 9' transform='scale(0.5,0.7) translate(-22,-38) rotate(48)'></path>
+        <path stroke='black' stroke-width='2.5' fill='rgb(255, 135, 185)' d='M 15 9 C -6 36 37 34 15 9' transform='scale(0.5,0.6) translate(-43,-16) rotate(39)'></path>
+        
+        <g transform='scale(0.65,0.65) translate(-14,7)'>
+        <circle cx='15' cy='15' r='10' fill='rgb(30,30,30)'></circle>
+        <path stroke='rgb(255, 135, 185)' stroke-width='3' fill='rgb(0,0,0,0)' d='M 19 4 C 4 25 26 3 11 27'></path>
+        </g>
+        
+        </g>
+    </svg>
+    
+    <svg id='softWax' style='width:200;height:70;cursor:pointer;border-radius:5px;'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='134' y='19' style='font-family:trebuchet ms;font-size:17px;' fill='rgb(0,0,0)' text-anchor='middle'>Soft Wax</text>
+        <text x='132' y='35' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>A squishy hunk of</text>
+        <text x='135' y='50' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>beeswax. Slightly</text>
+        <text x='136' y='64' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>improves a beequip.</text>
+        <text id='softWax_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='translate(-4,-2)'>
+        <path fill='#fbefb8' stroke='black' stroke-width='1.5' d='M 54 54 C 48 64 23 58 23 52C 20 45 28 49 25 42C 23 40 27 32 29 33C 31 33 27 27 32 25C 45 21 25 23 47 25C 54 30 49 26 53 32C 48 39 57 34 52 42C 58 49 53 44 54 54'></path>
+        <path fill='rgb(0,0,0,0)' stroke='rgb(0,0,0,0.3)' stroke-width='2' d='M 47 47 C 48 50 42 53 38 50M 32 49 C 26 52 43 53 37 50M 42 42 C 48 40 42 48 33 41M 39 35 C 41 40 34 39 33 34'></path>
+        <circle fill='rgb(0,0,0,0.3)' cx='41' cy='59' r='6.5' transform='scale(1,0.5)'></circle>
+        <path fill='rgb(0,0,0,0)' stroke='rgb(0,0,0)' stroke-width='6' d='M 36 20 C 32 19 42 22 40 30' transform='translate(1,0)'></path>
+        <path fill='rgb(0,0,0,0)' stroke='rgb(255, 255, 255)' stroke-width='3' d='M 36 20 C 32 19 42 22 40 30' transform='translate(1,0)'></path>
+        </g>
+        
+    </svg>
+    
+    <svg id='hardWax' style='width:200;height:70;cursor:pointer;border-radius:5px;'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='134' y='19' style='font-family:trebuchet ms;font-size:17px;' fill='rgb(0,0,0)' text-anchor='middle'>Hard Wax</text>
+        <text x='136' y='35' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>A firm hunk of beeswax.</text>
+        <text x='135' y='50' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>Has a 60% chance to</text>
+        <text x='136' y='64' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>improve a beequip.</text>
+        <text id='hardWax_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='translate(-4,-2)'>
+        <path fill='#e26a3a' stroke='black' stroke-width='1.5' d='M 56 54 L 49 58L 33 58L 25 54L 25 42L 28 35L 28 23L 38 15L 46 18L 52 24L 52 35L 56 47L 56 55' transform='scale(0.9,0.9) translate(4,4)'></path>
+        <path fill='rgb(0,0,0,0)' stroke='rgb(0,0,0,0.2)' stroke-width='3' d='M 33 57 L 33 44M 46 48 L 46 33M 38 40 L 38 30'></path>
+        <path fill='rgb(0,0,0,0)' stroke='rgb(0,0,0)' stroke-width='6' d='M 36 20 C 32 19 42 22 40 30' transform='translate(0,-5)'></path>
+        <circle fill='rgb(0,0,0,0.3)' cx='40' cy='42' r='6' transform='scale(1,0.6)'></circle>
+        <path fill='rgb(0,0,0,0)' stroke='rgb(255, 255, 255)' stroke-width='3' d='M 36 20 C 32 19 42 22 40 30' transform='translate(0,-5)'></path>
+        </g>
+        
+    </svg>
+    
+    <svg id='causticWax' style='width:200;height:70;cursor:pointer;border-radius:5px;'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='134' y='19' style='font-family:trebuchet ms;font-size:17px;' fill='rgb(0,0,0)' text-anchor='middle'>Caustic Wax</text>
+        <text x='136' y='35' style='font-family:trebuchet ms;font-size:10.5px;' fill='rgb(0,0,0)' text-anchor='middle'>A glowing hunk of wax. Has</text>
+        <text x='135' y='50' style='font-family:trebuchet ms;font-size:10.5px;' fill='rgb(0,0,0)' text-anchor='middle'>a 25% chance to improve, </text>
+        <text x='136' y='64' style='font-family:trebuchet ms;font-size:10.5px;' fill='rgb(0,0,0)' text-anchor='middle'>or else destroy a beequip.</text>
+        <text id='causticWax_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='translate(-4,-2)'>
+        <path fill='#7cec88' stroke='black' stroke-width='1.5' d='M 54 54 C 48 64 23 58 23 52C 23 45 28 49 25 37C 23 31 28 28 27 26C 23 18 49 16 50 26C 48 36 54 31 53 40C 53 50 58 44 54 54'></path>
+        <circle fill='rgb(205, 242, 41)' cx='31' cy='50' r='3'></circle><circle fill='rgb(205, 242, 41)' cx='40' cy='42' r='2'></circle><circle fill='rgb(205, 242, 41)' cx='30' cy='36' r='2'></circle><circle fill='rgb(205, 242, 41)' cx='46' cy='32' r='2'></circle><circle fill='rgb(205, 242, 41)' cx='46' cy='53' r='2'></circle>
+        <circle fill='rgb(0,0,0,0.3)' cx='39' cy='51' r='7' transform='scale(1,0.5)'></circle>
+        <path fill='rgb(0,0,0,0)' stroke='rgb(0,0,0)' stroke-width='6' d='M 36 20 C 32 19 42 22 40 30' transform='translate(0,-4)'></path>
+        <path fill='rgb(0,0,0,0)' stroke='rgb(255, 255, 255)' stroke-width='3' d='M 36 20 C 32 19 42 22 40 30' transform='translate(0,-4)'></path>
+        </g>
+        
+    </svg>
+    
+    <svg id='swirledWax' style='width:200;height:70;cursor:pointer;border-radius:5px;'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='134' y='19' style='font-family:trebuchet ms;font-size:17px;' fill='rgb(0,0,0)' text-anchor='middle'>Swirled Wax</text>
+        <text x='136' y='35' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>A spiraled hunk of wax.</text>
+        <text x='135' y='49' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>Can be used to reroll the</text>
+        <text x='136' y='64' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>stats of a beequip.</text>
+        <text id='swirledWax_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='translate(-4,-2)'>
+        <path fill='rgb(255,255,120)' stroke='black' stroke-width='1.5' d='M 54 54 C 31 64 23 58 24 52C 24 43 28 49 25 37C 23 31 28 28 27 26C 23 18 49 16 50 26C 48 36 54 31 51 40C 53 50 57 44 54 54'></path>
+        
+        <circle fill='rgb(0,0,0,0.3)' cx='39' cy='51' r='7' transform='scale(1,0.5)'></circle>
+        <path fill='rgb(0,0,0,0)' stroke='rgb(0,0,0)' stroke-width='6' d='M 36 20 C 32 19 42 22 40 30' transform='translate(-1,-4)'></path>
+        <path fill='rgb(0,0,0,0)' stroke='rgb(255, 255, 255)' stroke-width='3' d='M 36 20 C 32 19 42 22 40 30' transform='translate(-1,-4)'></path>
+        <path fill='rgb(0,0,0,0)' stroke='rgb(0,0,0,0.3)' stroke-width='2' d='M 33 54 C 26 51 30 44 32 46C 40 48 31 51 33 50'></path>
+        <path fill='rgb(0,0,0,0)' stroke='rgb(0,0,0,0.3)' stroke-width='2' d='M 31 54 C 26 51 27 44 35 46C 40 48 31 51 33 50' transform=' translate(0,109) scale(1.4,1.4) rotate(-114)'></path>
         </g>
         
     </svg>
@@ -3300,87 +3836,6 @@ the deadline is March 23rd cuz i NEED to release it on the og game's birthday it
         
     </svg>
 
-    <svg id='softWax' style='width:200;height:70;cursor:pointer;border-radius:5px;'>
-        
-        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
-        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
-        <text x='134' y='19' style='font-family:trebuchet ms;font-size:17px;' fill='rgb(0,0,0)' text-anchor='middle'>Soft Wax</text>
-        <text x='132' y='35' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>A squishy hunk of</text>
-        <text x='135' y='50' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>beeswax. Slightly</text>
-        <text x='136' y='64' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>improves a beequip.</text>
-        <text id='softWax_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
-        
-        <g transform='translate(-4,-2)'>
-        <path fill='#fbefb8' stroke='black' stroke-width='1.5' d='M 54 54 C 48 64 23 58 23 52C 20 45 28 49 25 42C 23 40 27 32 29 33C 31 33 27 27 32 25C 45 21 25 23 47 25C 54 30 49 26 53 32C 48 39 57 34 52 42C 58 49 53 44 54 54'></path>
-        <path fill='rgb(0,0,0,0)' stroke='rgb(0,0,0,0.3)' stroke-width='2' d='M 47 47 C 48 50 42 53 38 50M 32 49 C 26 52 43 53 37 50M 42 42 C 48 40 42 48 33 41M 39 35 C 41 40 34 39 33 34'></path>
-        <circle fill='rgb(0,0,0,0.3)' cx='41' cy='59' r='6.5' transform='scale(1,0.5)'></circle>
-        <path fill='rgb(0,0,0,0)' stroke='rgb(0,0,0)' stroke-width='6' d='M 36 20 C 32 19 42 22 40 30' transform='translate(1,0)'></path>
-        <path fill='rgb(0,0,0,0)' stroke='rgb(255, 255, 255)' stroke-width='3' d='M 36 20 C 32 19 42 22 40 30' transform='translate(1,0)'></path>
-        </g>
-        
-    </svg>
-    
-    <svg id='hardWax' style='width:200;height:70;cursor:pointer;border-radius:5px;'>
-        
-        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
-        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
-        <text x='134' y='19' style='font-family:trebuchet ms;font-size:17px;' fill='rgb(0,0,0)' text-anchor='middle'>Hard Wax</text>
-        <text x='136' y='35' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>A firm hunk of beeswax.</text>
-        <text x='135' y='50' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>Has a 60% chance to</text>
-        <text x='136' y='64' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>improve a beequip.</text>
-        <text id='hardWax_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
-        
-        <g transform='translate(-4,-2)'>
-        <path fill='#e26a3a' stroke='black' stroke-width='1.5' d='M 56 54 L 49 58L 33 58L 25 54L 25 42L 28 35L 28 23L 38 15L 46 18L 52 24L 52 35L 56 47L 56 55' transform='scale(0.9,0.9) translate(4,4)'></path>
-        <path fill='rgb(0,0,0,0)' stroke='rgb(0,0,0,0.2)' stroke-width='3' d='M 33 57 L 33 44M 46 48 L 46 33M 38 40 L 38 30'></path>
-        <path fill='rgb(0,0,0,0)' stroke='rgb(0,0,0)' stroke-width='6' d='M 36 20 C 32 19 42 22 40 30' transform='translate(0,-5)'></path>
-        <circle fill='rgb(0,0,0,0.3)' cx='40' cy='42' r='6' transform='scale(1,0.6)'></circle>
-        <path fill='rgb(0,0,0,0)' stroke='rgb(255, 255, 255)' stroke-width='3' d='M 36 20 C 32 19 42 22 40 30' transform='translate(0,-5)'></path>
-        </g>
-        
-    </svg>
-    
-    <svg id='causticWax' style='width:200;height:70;cursor:pointer;border-radius:5px;'>
-        
-        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
-        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
-        <text x='134' y='19' style='font-family:trebuchet ms;font-size:17px;' fill='rgb(0,0,0)' text-anchor='middle'>Caustic Wax</text>
-        <text x='136' y='35' style='font-family:trebuchet ms;font-size:10.5px;' fill='rgb(0,0,0)' text-anchor='middle'>A glowing hunk of wax. Has</text>
-        <text x='135' y='50' style='font-family:trebuchet ms;font-size:10.5px;' fill='rgb(0,0,0)' text-anchor='middle'>a 25% chance to improve, </text>
-        <text x='136' y='64' style='font-family:trebuchet ms;font-size:10.5px;' fill='rgb(0,0,0)' text-anchor='middle'>or else destroy a beequip.</text>
-        <text id='causticWax_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
-        
-        <g transform='translate(-4,-2)'>
-        <path fill='#7cec88' stroke='black' stroke-width='1.5' d='M 54 54 C 48 64 23 58 23 52C 23 45 28 49 25 37C 23 31 28 28 27 26C 23 18 49 16 50 26C 48 36 54 31 53 40C 53 50 58 44 54 54'></path>
-        <circle fill='rgb(205, 242, 41)' cx='31' cy='50' r='3'></circle><circle fill='rgb(205, 242, 41)' cx='40' cy='42' r='2'></circle><circle fill='rgb(205, 242, 41)' cx='30' cy='36' r='2'></circle><circle fill='rgb(205, 242, 41)' cx='46' cy='32' r='2'></circle><circle fill='rgb(205, 242, 41)' cx='46' cy='53' r='2'></circle>
-        <circle fill='rgb(0,0,0,0.3)' cx='39' cy='51' r='7' transform='scale(1,0.5)'></circle>
-        <path fill='rgb(0,0,0,0)' stroke='rgb(0,0,0)' stroke-width='6' d='M 36 20 C 32 19 42 22 40 30' transform='translate(0,-4)'></path>
-        <path fill='rgb(0,0,0,0)' stroke='rgb(255, 255, 255)' stroke-width='3' d='M 36 20 C 32 19 42 22 40 30' transform='translate(0,-4)'></path>
-        </g>
-        
-    </svg>
-    
-    <svg id='swirledWax' style='width:200;height:70;cursor:pointer;border-radius:5px;'>
-        
-        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
-        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
-        <text x='134' y='19' style='font-family:trebuchet ms;font-size:17px;' fill='rgb(0,0,0)' text-anchor='middle'>Swirled Wax</text>
-        <text x='136' y='35' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>A spiraled hunk of wax.</text>
-        <text x='135' y='49' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>Can be used to reroll the</text>
-        <text x='136' y='64' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>stats of a beequip.</text>
-        <text id='swirledWax_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
-        
-        <g transform='translate(-4,-2)'>
-        <path fill='rgb(255,255,120)' stroke='black' stroke-width='1.5' d='M 54 54 C 31 64 23 58 24 52C 24 43 28 49 25 37C 23 31 28 28 27 26C 23 18 49 16 50 26C 48 36 54 31 51 40C 53 50 57 44 54 54'></path>
-        
-        <circle fill='rgb(0,0,0,0.3)' cx='39' cy='51' r='7' transform='scale(1,0.5)'></circle>
-        <path fill='rgb(0,0,0,0)' stroke='rgb(0,0,0)' stroke-width='6' d='M 36 20 C 32 19 42 22 40 30' transform='translate(-1,-4)'></path>
-        <path fill='rgb(0,0,0,0)' stroke='rgb(255, 255, 255)' stroke-width='3' d='M 36 20 C 32 19 42 22 40 30' transform='translate(-1,-4)'></path>
-        <path fill='rgb(0,0,0,0)' stroke='rgb(0,0,0,0.3)' stroke-width='2' d='M 33 54 C 26 51 30 44 32 46C 40 48 31 51 33 50'></path>
-        <path fill='rgb(0,0,0,0)' stroke='rgb(0,0,0,0.3)' stroke-width='2' d='M 31 54 C 26 51 27 44 35 46C 40 48 31 51 33 50' transform=' translate(0,109) scale(1.4,1.4) rotate(-114)'></path>
-        </g>
-        
-    </svg>
 
 </div>
 
@@ -3496,29 +3951,30 @@ the deadline is March 23rd cuz i NEED to release it on the og game's birthday it
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js'></script>
 
-<script src="dialogue.js"></script>
-<script src="textures.js"></script>
-<script src="playerGear.js"></script>
-<script src="MathHelper.js"></script>
-<script src="GLSLShaders.js"></script>
-<script src="mapMesh.js"></script>
-<script src="music_popStar.js"></script>
-<script src="music_scorchingStar.js"></script>
-<script src="music_gummyStar.js"></script>
-<script src="music_frog.js"></script>
-<script src="music_inflateBalloons.js"></script>
-<script src="music_haste.js"></script>
-<script src="music_bombToken.js"></script>
-<script src="music_markToken.js"></script>
-<script src="music_melodyToken.js"></script>
-<script src="music_focusToken.js"></script>
-<script src="music_rageToken.js"></script>
-<script src="music_surpriseParty.js"></script>
-<script src="music_infernoToken.js"></script>
-<script src="music_flameFuelToken.js"></script>
-<script src="music_babyLove.js"></script>
-<script src="music_boostToken.js"></script>
-<script src="music_inspireToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/dialogue.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/textures.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/playerGear.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/MathHelper.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/GLSLShaders.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/mapMesh.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_popStar.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_scorchingStar.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_gummyStar.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_frog.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_inflateBalloons.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_haste.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_bombToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_markToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_melodyToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_focusToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_rageToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_surpriseParty.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_infernoToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_flameFuelToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_babyLove.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_boostToken.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_inspireToken.js"></script>
+
 
 <script type='application/javascript'>
 
@@ -8437,6 +8893,102 @@ let effects={
             return 'Yellow Jelly Bean\n+'+(5*amount+10)+'% instant conversion'
         }
     },
+    
+    redDriveBuff:{
+        
+        u:0,v:0,
+        svg:document.getElementById('redDriveBuff'),
+        cooldown:document.getElementById('redDriveBuff_cooldown'),
+        amount:document.getElementById('redDriveBuff_amount'),
+        maxCooldown:3*60,
+        tokenLife:4,
+        maxAmount:1,
+        
+        update:(amount,player)=>{
+            
+            player.redPollen*=1.25
+            player.redFieldCapacity*=1.25
+            player.redBeeAttack++
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Red Drive\nx1.25 red pollen\nx1.25 red field capacity\n+1 red bee attack'
+        }
+    },
+    
+    blueDriveBuff:{
+        
+        u:0,v:0,
+        svg:document.getElementById('blueDriveBuff'),
+        cooldown:document.getElementById('blueDriveBuff_cooldown'),
+        amount:document.getElementById('blueDriveBuff_amount'),
+        maxCooldown:3*60,
+        tokenLife:4,
+        maxAmount:1,
+        
+        update:(amount,player)=>{
+            
+            player.bluePollen*=1.25
+            player.blueFieldCapacity*=1.25
+            player.blueBeeAttack++
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Blue Drive\nx1.25 blue pollen\nx1.25 blue field capacity\n+1 blue bee attack'
+        }
+    },
+    
+    whiteDriveBuff:{
+        
+        u:0,v:0,
+        svg:document.getElementById('whiteDriveBuff'),
+        cooldown:document.getElementById('whiteDriveBuff_cooldown'),
+        amount:document.getElementById('whiteDriveBuff_amount'),
+        maxCooldown:3*60,
+        tokenLife:4,
+        maxAmount:1,
+        
+        update:(amount,player)=>{
+            
+            player.whitePollen*=1.25
+            player.whiteFieldCapacity*=1.25
+            player.whiteBeeAttack++
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'White Drive\nx1.25 white pollen\nx1.25 white field capacity\n+1 white bee attack'
+        }
+    },
+    
+    glitchedDriveBuff:{
+        
+        u:0,v:0,
+        svg:document.getElementById('glitchedDriveBuff'),
+        cooldown:document.getElementById('glitchedDriveBuff_cooldown'),
+        amount:document.getElementById('glitchedDriveBuff_amount'),
+        maxCooldown:3*60,
+        tokenLife:4,
+        maxAmount:1,
+        
+        update:(amount,player)=>{
+            
+            player.redPollen*=1.25
+            player.bluePollen*=1.25
+            player.whitePollen*=1.25
+            player.capacity*=1.25
+            player.whiteBeeAttack++
+            player.blueBeeAttack++
+            player.redBeeAttack++
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Glitched Drive\nx1.25 pollen\nx1.25 capacity\n+1 bee attack'
+        }
+    },
 }
 
 let LIST_OF_STATS_FOR_PLAYER=[]
@@ -8501,7 +9053,15 @@ let items={
         
         amount:0,u:128*3/2048,v:128*11/2048,value:20,
         use:function(){
-
+            
+            if(!player.fieldIn){
+                
+                player.addMessage('You must be in a field to use Jelly Beans!',COLORS.redArr)
+                return
+            }
+            
+            items.jellyBeans.amount--
+            
             for(let i=0;i<12;i++){
 
                 window.setTimeout(function(){
@@ -8537,10 +9097,127 @@ let items={
 
     antPass:{
         
-        amount:0,u:128*4/2048,v:128*10/2048,value:80,
+        amount:0,u:128*4/2048,v:128*10/2048,value:30,
         use:function(){}
     },
-
+    
+    cloudVial:{
+        
+        amount:0,u:128*5/2048,v:128*12/2048,value:25,
+        use:function(){
+            
+            if(!player.fieldIn){
+                
+                player.addMessage('You must be in a field to use Cloud Vials!',COLORS.redArr)
+                return
+            }
+            
+            items.cloudVial.amount--
+            
+            objects.mobs.push(new Cloud(player.fieldIn,player.flowerIn.x,player.flowerIn.z,3*60))
+        }
+    },
+    
+    comfortingVial:{
+        
+        amount:0,u:128*0/2048,v:128*0/2048,value:35,
+        use:function(){
+            
+            items.comfortingVial.amount--
+            player.addEffect('comfortingNectar',(60*60)/(60*60*6))
+        }
+    },
+    
+    invigoratingVial:{
+        
+        amount:0,u:128*0/2048,v:128*0/2048,value:35,
+        use:function(){
+            
+            items.invigoratingVial.amount--
+            player.addEffect('invigoratingNectar',(60*60)/(60*60*6))
+        }
+    },
+    
+    motivatingVial:{
+        
+        amount:0,u:128*0/2048,v:128*0/2048,value:35,
+        use:function(){
+            
+            items.motivatingVial.amount--
+            player.addEffect('motivatingNectar',(60*60)/(60*60*6))
+        }
+    },
+    
+    refreshingVial:{
+        
+        amount:0,u:128*0/2048,v:128*0/2048,value:35,
+        use:function(){
+            
+            items.refreshingVial.amount--
+            player.addEffect('refreshingNectar',(60*60)/(60*60*6))
+        }
+    },
+    
+    satisfyingVial:{
+        
+        amount:0,u:128*0/2048,v:128*0/2048,value:35,
+        use:function(){
+            
+            items.satisfyingVial.amount--
+            player.addEffect('satisfyingNectar',(60*60)/(60*60*6))
+        }
+    },
+    
+    redDrive:{
+        
+        amount:0,u:128*0/2048,v:128*0/2048,value:35,
+        use:function(){
+            
+            items.redDrive.amount--
+            player.addEffect('redDriveBuff')
+            player.drives.red++
+        }
+    },
+    
+    blueDrive:{
+        
+        amount:0,u:128*0/2048,v:128*0/2048,value:35,
+        use:function(){
+            
+            items.blueDrive.amount--
+            player.addEffect('blueDriveBuff')
+            player.drives.blue++
+        }
+    },
+    
+    whiteDrive:{
+        
+        amount:0,u:128*0/2048,v:128*0/2048,value:35,
+        use:function(){
+            
+            items.whiteDrive.amount--
+            player.addEffect('whiteDriveBuff')
+            player.drives.white++
+        }
+    },
+    
+    glitchedDrive:{
+        
+        amount:0,u:128*0/2048,v:128*0/2048,value:35,
+        use:function(){
+            
+            items.glitchedDrive.amount--
+            player.addEffect('glitchedDriveBuff')
+            player.drives.glitched++
+        }
+    },
+    
+    roboPass:{
+        
+        amount:0,u:128*6/2048,v:128*12/2048,value:50,
+        use:function(){}
+    },
+    
     fieldDice:{
         
         amount:0,u:128*5/2048,v:128*10/2048,value:12,
@@ -10868,7 +11545,7 @@ class Bee {
                     
                     if(fieldInfo[player.fieldIn].planter){
 
-                        let chance=0.1,p=fieldInfo[player.fieldIn].planter
+                        let chance=0.05,p=fieldInfo[player.fieldIn].planter
 
                         if(p.type==='redClay'){
 
@@ -15779,7 +16456,7 @@ class Planter {
 
         for(let i in items){
 
-            if(i.toLowerCase().indexOf('egg')>-1)
+            if(i.toLowerCase().indexOf('egg')>-1||i.toLowerCase().indexOf('pass')>-1||i.toLowerCase().indexOf('drive')>-1)
                 continue
             
             dropTable.push(i)
@@ -24837,6 +25514,8 @@ if(window.thisProgramIsInFullScreen){
 console.log=0
 
 </script>
+
+<!--<script>-->
 
 </body>
 </html>
