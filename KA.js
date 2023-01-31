@@ -205,7 +205,7 @@ document.getElementById('runFullScreen').addEventListener('click',function(){
     w.document.close()
 })
 
-let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,BEE_COLLECT=0,BEE_FLY=0,then,dt,frameCount=0,TIME=0,player,honeyMarkConvert=TIME,NIGHT_DARKNESS=0.7
+let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,BEE_COLLECT=0,BEE_FLY=0,then,dt,frameCount=0,TIME=0,player,honeyMarkConvert=TIME,NIGHT_DARKNESS=0.6
 
 gl.enable(gl.BLEND)
 gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)
@@ -519,7 +519,7 @@ let triggers={
     
     cool_shop:{
         
-        minX:0,maxX:0,minY:-3,maxY:4,minZ:0,maxZ:0
+        minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:10-1,maxZ:10+1
     },
     
     become_red_hive:{
@@ -527,6 +527,7 @@ let triggers={
         isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:4-1,maxZ:4+1,message:'become red hive',func:function(player){
             player.currentGear={
                 
+                tool:'darkScythe',
                 boots:'gummyBoots',
                 belt:'petalBelt',
                 backpack:'coconutCanister',
@@ -539,7 +540,6 @@ let triggers={
             }
             
             player.updateGear()
-            player.updateTool('darkScythe')
             player.addEffect('superSmoothieBuff')
             player.addEffect('comfortingNectar',1)
             player.addEffect('refreshingNectar',1)
@@ -607,6 +607,7 @@ let triggers={
             
             player.currentGear={
                 
+                tool:'tidePopper',
                 boots:'gummyBoots',
                 belt:'petalBelt',
                 backpack:'coconutCanister',
@@ -619,7 +620,6 @@ let triggers={
             }
             
             player.updateGear()
-            player.updateTool('tidePopper')
             player.addEffect('superSmoothieBuff')
             player.addEffect('comfortingNectar',1)
             player.addEffect('refreshingNectar',1)
@@ -689,6 +689,7 @@ let triggers={
         isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:8-1,maxZ:8+1,message:'become white hive',func:function(player){
             player.currentGear={
                 
+                tool:'gummyBaller',
                 boots:'gummyBoots',
                 belt:'petalBelt',
                 backpack:'coconutCanister',
@@ -701,7 +702,6 @@ let triggers={
             }
             
             player.updateGear()
-            player.updateTool('gummyBaller')
             player.addEffect('superSmoothieBuff')
             player.addEffect('comfortingNectar',1)
             player.addEffect('refreshingNectar',1)
@@ -1233,7 +1233,7 @@ let beeInfo={
 
     digital:{
         
-        u:128*13/2048,v:256*2/2048,meshPartId:19,gatherSpeed:4,gatherAmount:10,speed:11.9,convertSpeed:4,convertAmount:80,attack:1,energy:20,tokens:['glitch','mapCorruption'],attackTokens:['mindHack'],rarity:'event',color:'white',description:"A virtual bee with malfunctioning AI. It corrupts the game itself.",giftedHiveBonus:{oper:'+',stat:'abilityDuplicationChance',num:0.01}
+        u:128*13/2048,v:256*2/2048,meshPartId:19,gatherSpeed:4,gatherAmount:10,speed:11.9,convertSpeed:4,convertAmount:80,attack:1,energy:20,tokens:['glitch','mapCorruption*'],attackTokens:['mindHack'],rarity:'event',color:'white',description:"A virtual bee with malfunctioning AI. It corrupts the game itself.",giftedHiveBonus:{oper:'+',stat:'abilityDuplicationChance',num:0.01}
     },
 }
 
@@ -4734,12 +4734,184 @@ let effects={
                 
                 fieldInfo[player.fieldIn].corruption=Math.min(fieldInfo[player.fieldIn].corruption+3,100)
                 
-                collectPollen({x:params.x,z:params.z,pattern:[[-4,0],[-4,1],[-4,2],[-3,3],[-2,4],[-1,4],[0,4],[1,4],[2,4],[3,3],[4,2],[4,1],[4,0],[4,-1],[4,-2],[3,-3],[2,-4],[1,-4],[0,-4],[-1,-4],[-2,-4],[-3,-3],[-4,-2],[-4,-1],[-1,-1],[1,-1],[2,1],[1,2],[0,2],[-1,2],[-2,1]],amount:params.bee.gatherAmount*0.5,stackOffset:0.4+Math.random()*0.5,multiplier:tokensCollected*0.5+1,instantConversion:0.5})
+                collectPollen({x:params.x,z:params.z,pattern:[[-4,0],[-4,1],[-4,2],[-3,3],[-2,4],[-1,4],[0,4],[1,4],[2,4],[3,3],[4,2],[4,1],[4,0],[4,-1],[4,-2],[3,-3],[2,-4],[1,-4],[0,-4],[-1,-4],[-2,-4],[-3,-3],[-4,-2],[-4,-1],[-1,-1],[1,-1],[2,1],[1,2],[0,2],[-1,2],[-2,1]],amount:params.bee.gatherAmount*3,stackOffset:0.4+Math.random()*0.5,multiplier:tokensCollected*0.25+1,instantConversion:0.5})
                 
                 objects.mobs.push(new GlitchEffect(player.fieldIn,3))
                 
             }
         },
+    },
+
+    redJellyBean:{
+        
+        u:128*4/2048,v:128*11/2048,
+        svg:document.getElementById('redJellyBean'),
+        cooldown:document.getElementById('redJellyBean_cooldown'),
+        amount:document.getElementById('redJellyBean_amount'),
+        maxCooldown:60,
+        maxAmount:3,
+        tokenLife:16,
+        
+        update:(amount,player)=>{
+            
+            player.redPollen*=0.083333*amount+1.25
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Red Jelly Bean\nx'+(0.083333*amount+1.25).toFixed(1)+' red pollen'
+        }
+    },
+    
+    whiteJellyBean:{
+        
+        u:128*5/2048,v:128*11/2048,
+        svg:document.getElementById('whiteJellyBean'),
+        cooldown:document.getElementById('whiteJellyBean_cooldown'),
+        amount:document.getElementById('whiteJellyBean_amount'),
+        maxCooldown:60,
+        maxAmount:3,
+        tokenLife:16,
+        
+        update:(amount,player)=>{
+            
+            player.whitePollen*=0.083333*amount+1.25
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'White Jelly Bean\nx'+(0.083333*amount+1.25).toFixed(1)+' white pollen'
+        }
+    },
+
+    blueJellyBean:{
+        
+        u:128*6/2048,v:128*11/2048,
+        svg:document.getElementById('blueJellyBean'),
+        cooldown:document.getElementById('blueJellyBean_cooldown'),
+        amount:document.getElementById('blueJellyBean_amount'),
+        maxCooldown:60,
+        maxAmount:3,
+        tokenLife:16,
+        
+        update:(amount,player)=>{
+            
+            player.bluePollen*=0.083333*amount+1.25
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Blue Jelly Bean\nx'+(0.083333*amount+1.25).toFixed(1)+' blue pollen'
+        }
+    },
+    
+    pinkJellyBean:{
+        
+        u:128*7/2048,v:128*11/2048,
+        svg:document.getElementById('pinkJellyBean'),
+        cooldown:document.getElementById('pinkJellyBean_cooldown'),
+        amount:document.getElementById('pinkJellyBean_amount'),
+        maxCooldown:60,
+        maxAmount:3,
+        tokenLife:16,
+        
+        update:(amount,player)=>{
+            
+            player.pollenFromBees*=0.083333*amount+1.25
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Pink Jelly Bean\nx'+(0.083333*amount+1.25).toFixed(1)+' pollen from bees'
+        }
+    },
+
+    brownJellyBean:{
+        
+        u:128*0/2048,v:128*12/2048,
+        svg:document.getElementById('brownJellyBean'),
+        cooldown:document.getElementById('brownJellyBean_cooldown'),
+        amount:document.getElementById('brownJellyBean_amount'),
+        maxCooldown:60,
+        maxAmount:3,
+        tokenLife:16,
+        
+        update:(amount,player)=>{
+            
+            player.pollenFromTools*=0.083333*amount+1.25
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Brown Jelly Bean\nx'+(0.083333*amount+1.25).toFixed(1)+' pollen from tools'
+        }
+    },
+
+    greenJellyBean:{
+        
+        u:128*1/2048,v:128*12/2048,
+        svg:document.getElementById('greenJellyBean'),
+        cooldown:document.getElementById('greenJellyBean_cooldown'),
+        amount:document.getElementById('greenJellyBean_amount'),
+        maxCooldown:60,
+        maxAmount:3,
+        tokenLife:16,
+        
+        update:(amount,player)=>{
+            
+            player.criticalChance+=0.01*amount+0.03
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Green Jelly Bean\n+'+(amount+3)+'% critical chance'
+        }
+    },
+
+    blackJellyBean:{
+        
+        u:128*2/2048,v:128*12/2048,
+        svg:document.getElementById('blackJellyBean'),
+        cooldown:document.getElementById('blackJellyBean_cooldown'),
+        amount:document.getElementById('blackJellyBean_amount'),
+        maxCooldown:60,
+        maxAmount:3,
+        tokenLife:16,
+        
+        update:(amount,player)=>{
+            
+            player.whiteBombPollen*=0.083333*amount+1.25
+            player.redBombPollen*=0.083333*amount+1.25
+            player.blueBombPollen*=0.083333*amount+1.25
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Black Jelly Bean\nx'+(0.083333*amount+1.25).toFixed(1)+' bomb pollen'
+        }
+    },
+
+    yellowJellyBean:{
+        
+        u:128*3/2048,v:128*12/2048,
+        svg:document.getElementById('yellowJellyBean'),
+        cooldown:document.getElementById('yellowJellyBean_cooldown'),
+        amount:document.getElementById('yellowJellyBean_amount'),
+        maxCooldown:60,
+        maxAmount:3,
+        tokenLife:16,
+        
+        update:(amount,player)=>{
+            
+            player.instantWhiteConversion=MATH.applyPercentage(player.instantWhiteConversion,0.05*amount+0.1)
+            player.instantRedConversion=MATH.applyPercentage(player.instantRedConversion,0.05*amount+0.1)
+            player.instantBlueConversion=MATH.applyPercentage(player.instantBlueConversion,0.05*amount+0.1)
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Yellow Jelly Bean\n+'+(5*amount+10)+'% instant conversion'
+        }
     },
 }
 
@@ -4797,254 +4969,41 @@ for(let i in effects){
 
 let toolParticle=0
 
-let tools={
-    
-    shovel:{
-        
-        collectPattern:[[0,0],[0,-1]],
-        collectAmount:2,
-        cooldown:0.8,
-        mesh:function(box){
-            
-            box(-0.3,0,0.6,0.1,0.1,0.8,false,[0.5,0.2,0])
-            box(-0.3,0,1.2,0.3,0.1,0.4,false,[0.2,0.2,0.2])
-        }
-    },
-    
-    petalWand:{
-        
-        collectPattern:[[0,0],[0,-1],[0,-2],[0,-3],[0,-4],[0,-5],[0,-6],[-1,-3],[-1,-4],[-1,-5],[1,-3],[1,-4],[1,-5],[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[-1,3],[-1,4],[-1,5],[1,3],[1,4],[1,5],[1,0],[2,0],[3,0],[4,0],[5,0],[6,0],[3,1],[4,1],[5,1],[3,-1],[4,-1],[5,-1],[-1,0],[-2,0],[-3,0],[-4,0],[-5,0],[-6,0],[-3,1],[-4,1],[-5,1],[-3,-1],[-4,-1],[-5,-1]],
-        collectAmount:5,
-        cooldown:0.7,
-        mesh:function(box){
-            
-            box(-0.3-0.1,0.6,0.3+0.1,0.15,1.5,0.15,false,[0,0.7,0])
-            box(-0.3-0.1,1.45,0.3+0.1,0.3,0.3,0.3,[45,0,45],[1.5,1.2,0])
-            for(let i=0;i<MATH.TWO_PI;i+=MATH.TWO_PI/3){
-                
-                box(-0.3+Math.sin(i)*0.5-0.1,1.35,0.3+0.1+Math.cos(i)*0.5,0.7,0.1,0.7,[Math.sin(i)*-30,0,Math.cos(i)*-30],[1.2,1.2,1.2])
-                
-            }
-            
-            for(let i=MATH.QUATER_PI;i<MATH.TWO_PI+MATH.QUATER_PI;i+=MATH.TWO_PI/3){
-                
-                box(-0.3+Math.sin(i)*0.5-0.1,1.35,0.3+0.1+Math.cos(i)*0.5,0.7,0.1,0.7,[Math.sin(i)*30,0,Math.cos(i)*30],[1.2,1.2,1.2])
-                
-            }
-            
-            for(let i=0;i<MATH.TWO_PI;i+=MATH.TWO_PI/3){
-                
-                box(-0.3-0.1+Math.sin(i)*0.5,1.2,0.3+0.1+Math.cos(i)*0.5,0.7,0.1,0.7,[60,i*MATH.TO_DEG,0],[1.2,1.2,1.2])
-                box(-0.3-0.1+Math.sin(i)*0.25,1.2,0.3+0.1+Math.cos(i)*0.25,0.7,0.1,0.7,[-60,i*MATH.TO_DEG,0],[1.2,1.2,1.2])
-                
-            }
-        },
-        ability:function(){
-            
-            if(player.toolUses%3===0){
-                
-                objects.mobs.push(new PetalShuriken([player.body.position.x,player.body.position.y+0.25,player.body.position.z],player.bodyDir.slice()))
-            }
-        },
-        particles:function(){
-            
-            toolParticle-=dt
-            
-            if(toolParticle>0){return}
-            
-            toolParticle=0.3
-            
-            let x=-player.bodyDir[2],z=player.bodyDir[0],r=0.325
-            
-            x+=player.bodyDir[0]
-            z+=player.bodyDir[2]
-            
-            x*=r
-            z*=r
-            
-            ParticleRenderer.add({x:player.body.position.x+x,y:player.body.position.y+1.65,z:player.body.position.z+z,vx:MATH.random(-0.9,0.9),vy:Math.random()*0.5+0.2,vz:MATH.random(-0.9,0.9),grav:-1.5,size:MATH.random(20,50),col:[0.9,0.7,0.3],life:0.7,rotVel:MATH.random(-3,3),alpha:0.35})
-        }
-    },
-    
-    darkScythe:{
-        
-        collectPattern:[[0,-3],[0,-4],[1,-5],[1,-4],[1,-3],[2,-5],[2,-4],[2,-3],[3,-3],[3,-5],[4,-1],[-1,-3],[-1,-4],[-2,-3],[-3,-3],[0,-5],[-1,-5],[-2,-4],[-4,-2],[3,-4],[4,-4],[2,-2],[3,-2],[-2,-2],[-3,-2],[-4,-1]],
-        collectAmount:13,
-        cooldown:0.575,
-        mesh:function(box){
-            
-            box(-0.55,0.75,0.55,0.15,2.2,0.15,[0,0,0],[0.1,0,0],[0,0,30])
-            box(-0.55,1.6,1.1,0.15,0.6,1.2,[0,0,0],[0.1,0,0],[0,0,30])
-            box(-0.55,1.5,2,0.15,0.5,1,[20,0,0],[0.1,0,0],[0,0,30])
-            box(-0.55,1.2,2.6,0.15,0.35,1,[40,0,0],[0.1,0,0],[0,0,30])
-            
-            box(-0.55,1.3,1.1,0.175,0.6*0.3,1.2,[0,0,0],[1.2,0,0.4],[0,0,30])
-            box(-0.55,1.2,2,0.175,0.5*0.3,1,[20,0,0],[1.2,0,0.4],[0,0,30])
-            box(-0.55,0.9,2.6,0.175,0.3*0.5,0.5,[40,0,0],[1.2,0,0.4],[0,0,30])
-            
-            box(-0.55,1.95,0.1,0.15,0.15,1.3,[20,0,0],[0.1,0,0],[0,0,30])
-            box(-0.55,1.25,0.1,0.15,0.15,0.9,[-20,0,0],[0.1,0,0],[0,0,30])
-            
-        },
-        ability:function(arr){
-            
-            // if(!player.fieldIn){return}
-            
-            objects.mobs.push(new DarkScoopingTrail())
-            
-            if(player.fieldIn&&!player.attacked.length){
-                
-                let x=Math.round(player.body.position.x-fieldInfo[player.fieldIn].x),z=Math.round(player.body.position.z-fieldInfo[player.fieldIn].z),a=[]
-                
-                for(let i in arr){
-                    
-                    let _x=arr[i][0]+x,_z=arr[i][1]+z
-                    
-                    if(_x>=0&&_x<fieldInfo[player.fieldIn].width&&_x>=0&&_z<fieldInfo[player.fieldIn].length){
-                        
-                        a.push([_x,_z])
-                    }
-                }
-                
-                for(let i in objects.flames){
-                    
-                    let f=objects.flames[i]
-                    
-                    if(MATH.indexOfArrays(a,[f.x,f.z])>-1){
-                        
-                        f.turnDark()
-                    }
-                }
-                
-            } else {
-                
-                for(let i in objects.flames){
-                    
-                    let f=objects.flames[i]
-                    
-                    if(f.isStatic&&vec3.sqrDist(f.pos,[player.body.position.x+player.bodyDir[0]*2,player.body.position.y,player.body.position.z+player.bodyDir[2]*2])<7){
-                        
-                        f.turnDark()
-                    }
-                }
-            }
-        },
-        particles:function(){
-            
-            toolParticle-=dt
-            
-            if(toolParticle>0){return}
-            
-            toolParticle=0.05
-            
-            let x=player.bodyDir[0],y=1.5,z=player.bodyDir[2]*0
-            
-            x+=-player.bodyDir[2]*1.2
-            z+=player.bodyDir[0]*1.2
-            
-            let r=Math.random()*2.5
-            
-            x+=player.bodyDir[0]*r
-            y-=r*0.25
-            z+=player.bodyDir[2]*r
-            
-            ParticleRenderer.add({x:player.body.position.x+x,y:player.body.position.y+y,z:player.body.position.z+z,vx:-player.bodyDir[2]*2,vy:1.75,vz:player.bodyDir[0]*2,grav:0,size:MATH.random(70,120),col:[1,0,Math.random()],life:1,rotVel:MATH.random(-3,3),alpha:4.5})
-        }
-    },
-    
-    tidePopper:{
-        
-        collectPattern:[[0,0],[-1,0],[1,0],[-2,0],[2,0],[-1,-1],[0,-1],[1,-1],[-1,-2],[0,-2],[1,-2],[-1,-3],[0,-3],[1,-3],[-1,-4],[0,-4],[1,-4],[-1,-5],[0,-5],[1,-5],[0,-6],[0,-7],[0,-8]],
-        collectAmount:13,
-        cooldown:1,
-        mesh:function(box,unusedcuznotrelevant,cylinder,sphere,finalRotation){
-            
-            cylinder(-0.4,2.2,0.4,0.25,0.05,15,1,3,7,90,0,0,0.25)
-            cylinder(-0.4,1.6,0.4,0.3,0.05,15,1,3,7,90,0,0,0.3)
-            cylinder(-0.4,1.1,0.4,0.4,0.05,15,1,3,7,90,0,0,0.4)
-            cylinder(-0.4,1.7,0.4,0.3,2.25,10,0.3,1,2,90,0,0,0)
-            box(-0.4,0.5,0.4,0.15,1.4,0.15,false,[0.1,0.8,1.8])
-            sphere(-0.4-0.8,0.85,0.4,0.25,1,100,100,100)
-            sphere(-0.4+0.8,0.85,0.4,0.25,1,100,100,100)
-            sphere(-0.4,0.85,0.4-0.8,0.25,1,100,100,100)
-            sphere(-0.4,0.85,0.4+0.8,0.25,1,100,100,100)
-            finalRotation(20,-20,0)
-            
-        },
-        ability:function(){
-            
-            if(player.toolUses%3===0){
-                
-                objects.mobs.push(new Wave([player.body.position.x,player.body.position.y+0.25,player.body.position.z],player.bodyDir.slice()))
-            }
-        },
-        particles:function(){
-            
-            toolParticle-=dt
-            
-            if(toolParticle>0){return}
-            
-            toolParticle=0.1
-            
-            let x=-player.bodyDir[2],z=player.bodyDir[0],r=MATH.random(0.2,0.9)
-            
-            x+=player.bodyDir[0]
-            z+=player.bodyDir[2]
-            
-            x*=r
-            z*=r
-            
-            ParticleRenderer.add({x:player.body.position.x+x,y:player.body.position.y+MATH.random(0.1,2.5),z:player.body.position.z+z,vx:x,vy:1.6,vz:z,grav:0,size:MATH.random(20,50),col:[0.1,0.7,1],life:0.7,rotVel:MATH.random(-3,3),alpha:0.5})
-            
-            
-        }
-    },
-    
-    gummyBaller:{
-        
-        collectPattern:[[-3,-3],[-2,-5],[-2,-4],[-2,-3],[-2,-2],[-2,-1],[-1,-5],[-1,-4],[-1,-3],[-1,-2],[-1,-1],[0,-6],[0,-5],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[1,-5],[1,-4],[1,-3],[1,-2],[1,-1],[2,-5],[2,-4],[2,-3],[2,-2],[2,-1],[3,-3]],
-        collectAmount:16,
-        cooldown:1,
-        mesh:function(box,unusedcuznotrelevant,cylinder,sphere,finalRotation){
-            
-            cylinder(-0.4,-0.1,0.4,0.15,0.35,15,0.26,2.7,1.1,90,0,0,0.15)
-            cylinder(-0.4,0.8,0.4,0.1,1.75,15,1.5,0.15,1.5,90,0,0,0.1)
-            sphere(-0.4,1.6,0.4,0.5,1,0.26,2.7,1.1)
-            cylinder(-0.4,1.75,0.4,0.45,0.25,15,1.5,0.15,1.5,90,0,0,0.6)
-            sphere(-0.4-0.3,1.85,0.4,0.25,1,0.26,2.7,1.1)
-            sphere(-0.4+0.3,1.85,0.4,0.25,1,0.26,2.7,1.1)
-            sphere(-0.4,1.85,0.4-0.3,0.25,1,1.5*1.75,0.65*1.75,1.5*1.75)
-            sphere(-0.4,1.85,0.4+0.3,0.25,1,1.5*1.75,0.65*1.75,1.5*1.75)
-            
-        },
-        ability:function(){
-            
-        },
-        particles:function(){
-            
-            let x=(-player.bodyDir[2]+player.bodyDir[0])*0.4,z=(player.bodyDir[0]+player.bodyDir[2])*0.4
-            
-            player.lagPos[0]+=(player.body.position.x-player.lagPos[0])*dt*12.5
-            player.lagPos[1]+=(player.body.position.y-player.lagPos[1])*dt*12.5
-            player.lagPos[2]+=(player.body.position.z-player.lagPos[2])*dt*12.5
-            
-            meshes.explosions.instanceData.push(player.lagPos[0]+x,player.lagPos[1]+2+player.gummyBallSize*0.3,player.lagPos[2]+z,0.9*player.isNight,0.18*player.isNight,0.9*player.isNight,1,player.gummyBallSize*0.5,1)
-            
-            toolParticle-=dt
-            
-            if(toolParticle>0){return}
-            
-            toolParticle=0.4/player.gummyBallSize
-            
-            ParticleRenderer.add({x:player.lagPos[0]+x,y:player.lagPos[1]+2+player.gummyBallSize*0.3,z:player.lagPos[2]+z,vx:MATH.random(-player.gummyBallSize,player.gummyBallSize),vy:MATH.random(-player.gummyBallSize,player.gummyBallSize),vz:MATH.random(-player.gummyBallSize,player.gummyBallSize),grav:0,size:MATH.random(20,50)*player.gummyBallSize,col:[0.1,0.8,1],life:0.75,rotVel:MATH.random(-3,3),alpha:player.gummyBallSize-0.5})
-            
-        }
-    },
-}
-
 let howManyToFeed=document.getElementById('howManyToFeed'),howManyMessage=document.getElementById('howManyMessage'),feedAmount=document.getElementById('feedAmount')
 
 let items={
+
+    jellyBeans:{
+        
+        amount:0,u:128*3/2048,v:128*11/2048,value:20,
+        use:function(){
+
+            for(let i=0;i<12;i++){
+
+                window.setTimeout(function(){
+                    
+                    if(player.fieldIn){
+                        
+                        let vel=player.bodyDir.slice()
+                        vel[1]=MATH.random(5,9)
+                        vec3.rotateY(vel,vel,MATH.ORIGIN,MATH.random(-0.7,0.7))
+                        vel[0]*=MATH.random(3,9)
+                        vel[2]*=MATH.random(3,9)
+
+                        let arr=[]
+
+                        arr.push('redJellyBean','blueJellyBean','whiteJellyBean')
+                        arr.push('redJellyBean','blueJellyBean','whiteJellyBean')
+                        arr.push('redJellyBean','blueJellyBean','whiteJellyBean')
+                        arr.push('pinkJellyBean','brownJellyBean','blackJellyBean','yellowJellyBean','greenJellyBean')
+
+                        objects.mobs.push(new JellyBean(player.fieldIn,vel,arr[(Math.random()*arr.length)|0]))
+                    }
+                
+                },250*i)
+            }
+        }
+    },
 
     ticket:{
         
@@ -5057,6 +5016,166 @@ let items={
         amount:0,u:128*4/2048,v:128*10/2048,value:80,
         use:function(){}
     },
+
+    fieldDice:{
+        
+        amount:0,u:128*5/2048,v:128*10/2048,value:12,
+        use:function(){
+
+            items.fieldDice.amount--
+
+            let f=[]
+
+            for(let i in fieldInfo){
+
+                if(i!=='AntField'){
+
+                    f.push(i)
+                }
+            }
+
+            for(let i=0;i<1;i++){
+
+                let r=(Math.random()*f.length)|0
+
+                player.addEffect(f[r][0].toLowerCase()+f[r].substring(1,f[r].length)+'Boost',false,false,undefined,1)
+            }
+        }
+    },
+
+    smoothDice:{
+        
+        amount:0,u:128*6/2048,v:128*10/2048,value:30,
+        use:function(){
+
+            items.smoothDice.amount--
+
+            let f=[]
+
+            for(let i in fieldInfo){
+
+                if(i!=='AntField'){
+
+                    f.push(i)
+                }
+            }
+
+            for(let i=0;i<2;i++){
+
+                let r=(Math.random()*f.length)|0
+
+                player.addEffect(f[r][0].toLowerCase()+f[r].substring(1,f[r].length)+'Boost',false,false,undefined,2)
+            }
+        }
+    },
+
+    loadedDice:{
+        
+        amount:0,u:128*7/2048,v:128*10/2048,value:50,
+        use:function(){
+
+            items.loadedDice.amount--
+
+            let f=[]
+
+            for(let i in fieldInfo){
+
+                if(i!=='AntField'){
+
+                    f.push(i)
+
+                    if(i===player.fieldIn){
+
+                        f.push(i)
+                        f.push(i)
+                        f.push(i)
+                        f.push(i)
+                        f.push(i)
+                        f.push(i)
+                    }
+                }
+            }
+
+            for(let i=0;i<3;i++){
+
+                let r=(Math.random()*f.length)|0
+
+                player.addEffect(f[r][0].toLowerCase()+f[r].substring(1,f[r].length)+'Boost',false,false,undefined,3)
+
+                for(let j in f){
+
+                    if(f[j]===f[r]){
+
+                        f.splice(j,1)
+                    }
+                }
+            }
+        }
+    },
+
+    microConverter:{
+        
+        amount:0,u:128*0/2048,v:128*11/2048,value:16,cooldown:2,
+        use:function(){
+
+            if(player.pollen<1){
+
+                player.addMessage('You must have pollen to use a micro-converter!',COLORS.redArr)
+                return
+            }
+
+            items.microConverter.amount--
+
+            textRenderer.add((player.pollen*player.honeyPerPollen)|0,[player.body.position.x,player.body.position.y+2,player.body.position.z],COLORS.honey,1,'⇆')
+            player.honey+=(player.pollen*player.honeyPerPollen)|0
+            player.pollen=0
+        }
+    },
+
+    honeysuckle:{
+        
+        amount:0,u:128*1/2048,v:128*11/2048,value:13,cooldown:15,
+        use:function(){
+
+            player.addMessage('im too lazy to make a whole system for the',COLORS.redArr)
+            player.addMessage('honeysuckle so ig ill make it a weak micro converter',COLORS.redArr)
+
+            items.honeysuckle.amount--
+
+        }
+    },
+
+    whirligig:{
+        
+        amount:0,u:128*2/2048,v:128*11/2048,value:30,cooldown:15,
+        use:function(){
+
+            if(player.antChallenge){
+
+                player.addMessage('Cannot use whirligigs in the ant challenge!',COLORS.redArr)
+                return
+            }
+
+            items.whirligig.amount--
+
+            player.hivePos[0]+=1.5
+            player.hivePos[2]+=2
+
+            player.body.position.x=player.hivePos[0]
+            player.body.position.y=player.hivePos[1]
+            player.body.position.z=player.hivePos[2]
+
+            for(let i in objects.bees){
+
+                objects.bees[i].pos=player.hivePos.slice()
+                objects.bees[i].state='moveToPlayer'
+            }
+
+            player.hivePos[0]-=1.5
+            player.hivePos[2]-=2
+
+        }
+    },
     
     softWax:{
         
@@ -5064,7 +5183,7 @@ let items={
             
             return slot.beequip&&slot.beequip.waxes.length<5
         },
-        amount:0,u:128*2/2048,v:128*9/2048,value:18,
+        amount:0,u:128*2/2048,v:128*9/2048,value:16,
         use:function(){
             
             player.addMessage('The wax improved the beequip!')
@@ -5119,7 +5238,7 @@ let items={
             
             return slot.beequip&&slot.beequip.waxes.length<5
         },
-        amount:0,u:128*3/2048,v:128*9/2048,value:25,
+        amount:0,u:128*3/2048,v:128*9/2048,value:26,
         use:function(){
             
             items.hardWax.amount--
@@ -5182,7 +5301,7 @@ let items={
             
             return slot.beequip&&slot.beequip.waxes.length<5
         },
-        amount:0,u:128*4/2048,v:128*9/2048,value:25,
+        amount:0,u:128*4/2048,v:128*9/2048,value:55,
         use:function(){
             
             items.causticWax.amount--
@@ -5244,7 +5363,7 @@ let items={
             
             return slot.beequip&&slot.beequip.waxes.length<5
         },
-        amount:0,u:128*5/2048,v:128*9/2048,value:25,
+        amount:0,u:128*5/2048,v:128*9/2048,value:42,
         use:function(){
             
             items.swirledWax.amount--
@@ -6621,7 +6740,7 @@ let items={
                 
                 if(objects.bees[i].gifted){
                     
-                    alreadyGot.push(object.bees[i].type)
+                    alreadyGot.push(objects.bees[i].type)
                 }
             }
             
@@ -6758,10 +6877,10 @@ let items={
 for(let i in items){
     
     items[i].maxCooldown=items[i].cooldown||0
-    items[i].cooldown=0
+    items[i].cooldown=-Infinity
     
     if(i!=='honey'){
-        
+
         items[i].svg=document.getElementById(i)
         items[i].amountText=document.getElementById(i+'_amount')
         items[i].svg.onmousedown=function(e){
@@ -7175,7 +7294,6 @@ class Bee {
                             
                             let h=(this.attack+player[beeInfo[this.type].color+'BeeAttack'])*player.beeAttack*(this.type==='precise'?this.gifted?2.25:1.5:1)
                             
-                            console.log(this.attackMob)
                             this.attackMob.damage(h)
                             
                             if(this.type==='precise'){
@@ -7741,7 +7859,7 @@ class Bee {
                             if(i!==2)
                                 objects.tokens.push(new Token(effects.focus.tokenLife,[_t.pos[0],_t.pos[1]+0.5,_t.pos[2]],'focus',{field:_t.field,x:_t.x,z:_t.z,bee:this}))
                             
-                            collectPollen({x:_t.x,z:_t.z,pattern:[[-4,0],[-3,-2],[-3,-1],[-3,0],[-3,1],[-3,2],[-2,-3],[-2,-2],[-2,-1],[-2,0],[-2,1],[-2,2],[-2,3],[-1,-3],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[-1,3],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[0,1],[0,2],[0,3],[0,4],[1,-3],[1,-2],[1,-1],[1,0],[1,1],[1,2],[1,3],[2,-3],[2,-2],[2,-1],[2,0],[2,1],[2,2],[2,3],[3,-2],[3,-1],[3,0],[3,1],[3,2],[4,0]],amount:(this.attack+player[beeInfo[this.type].color+'BeeAttack'])*player.beeAttack*(this.level*0.1+1),yOffset:2+Math.random()*0.4,stackHeight:0.5+Math.random()*0.5,instantConversion:(player.flameHeatStack-1)*0.5,multiplier:player.flameHeatStack*4,field:_t.field})
+                            collectPollen({x:_t.x,z:_t.z,pattern:[[-4,0],[-3,-2],[-3,-1],[-3,0],[-3,1],[-3,2],[-2,-3],[-2,-2],[-2,-1],[-2,0],[-2,1],[-2,2],[-2,3],[-1,-3],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[-1,3],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[0,1],[0,2],[0,3],[0,4],[1,-3],[1,-2],[1,-1],[1,0],[1,1],[1,2],[1,3],[2,-3],[2,-2],[2,-1],[2,0],[2,1],[2,2],[2,3],[3,-2],[3,-1],[3,0],[3,1],[3,2],[4,0]],amount:(this.attack+player[beeInfo[this.type].color+'BeeAttack'])*player.beeAttack*(this.level*0.1+1)*0.5,yOffset:2+Math.random()*0.4,stackHeight:0.5+Math.random()*0.5,instantConversion:(player.flameHeatStack-1)*0.5,multiplier:player.flameHeatStack*3,field:_t.field})
                             
                         } else {
                             
@@ -8394,10 +8512,10 @@ class Flame {
             this.oilPos=[player.body.position.x,player.body.position.y+0.3,player.body.position.z]
             this.oilTrail=new TrailRenderer.Trail({length:10,size:0.75,triangle:true,color:[0.1,0,0,1]})
             
-            player.pollen-=Math.min(Math.ceil(player.convertTotal*0.15),player.pollen)
-            player.honey+=Math.ceil(Math.min(Math.ceil(player.convertTotal*0.15),player.pollen)*player.honeyPerPollen)
+            player.pollen-=Math.min(Math.ceil(player.convertTotal*0.01),player.pollen)
+            player.honey+=Math.ceil(Math.min(Math.ceil(player.convertTotal*0.01),player.pollen)*player.honeyPerPollen)
             if(player.setting_enablePollenText)
-                textRenderer.add(Math.ceil(Math.min(Math.ceil(player.convertTotal*0.15),player.pollen)*player.honeyPerPollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
+                textRenderer.add(Math.ceil(Math.min(Math.ceil(player.convertTotal*0.01),player.pollen)*player.honeyPerPollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
         }
     }
     
@@ -8420,10 +8538,10 @@ class Flame {
             if(player.flameFuel){
                 
                 this.life*=1.5
-                player.pollen-=Math.min(Math.ceil(player.convertTotal*0.15),player.pollen)
-                player.honey+=Math.ceil(Math.min(Math.ceil(player.convertTotal*0.15),player.pollen)*player.honeyPerPollen)
+                player.pollen-=Math.min(Math.ceil(player.convertTotal*0.01),player.pollen)
+                player.honey+=Math.ceil(Math.min(Math.ceil(player.convertTotal*0.01),player.pollen)*player.honeyPerPollen)
                 if(player.setting_enablePollenText)
-                    textRenderer.add(Math.ceil(Math.min(Math.ceil(player.convertTotal*0.15),player.pollen)*player.honeyPerPollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
+                    textRenderer.add(Math.ceil(Math.min(Math.ceil(player.convertTotal*0.01),player.pollen)*player.honeyPerPollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
                 this.getRidOfOilTrailTimer=2
                 this.oilT=0
                 this.oilPos=[player.body.position.x,player.body.position.y+0.3,player.body.position.z]
@@ -8465,7 +8583,7 @@ class Flame {
             
             if(!this.isStatic&&player.fieldIn===this.field){
                 
-                collectPollen({x:this.x,z:this.z,pattern:this.dark?[[0,0],[1,1],[1,-1],[-1,1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1],[2,0],[-2,0],[0,-2],[0,2]]:[[0,0],[1,1],[1,-1],[-1,1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]],amount:{r:10,w:5,b:1},stackHeight:0.7,multiplier:player.flamePollen*player.flameBonus,instantConversion:player.instantFlameConversion,field:this.field})
+                collectPollen({x:this.x,z:this.z,pattern:this.dark?[[0,0],[1,1],[1,-1],[-1,1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1],[2,0],[-2,0],[0,-2],[0,2]]:[[0,0],[1,1],[1,-1],[-1,1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]],amount:{r:10,w:4,b:1},stackHeight:0.7,multiplier:player.flamePollen*player.flameBonus,instantConversion:player.instantFlameConversion,field:this.field})
             }
         }
         
@@ -8852,9 +8970,6 @@ class Frog {
     }
 }
 
-
-
-//for identification of balloons cuz the indexes cant be used
 let globalBalloonID=0
 
 class Balloon {
@@ -9093,7 +9208,7 @@ class Target {
         
         if(vec3.sqrDist(this.pos,[player.body.position.x,player.body.position.y,player.body.position.z])<=4.5){
             
-            let amountToConvert=Math.min((player.convertTotal*0.5)+(10*this.bee.convertAmount*player.convertRate*player[beeInfo[this.bee.type].color+'ConvertRate'])*(player.flameHeatStack*5),player.pollen)
+            let amountToConvert=Math.min((player.convertTotal*0.5)+(10*this.bee.convertAmount*player.convertRate*player[beeInfo[this.bee.type].color+'ConvertRate'])*(player.flameHeatStack*10),player.pollen)
             
             player.pollen-=amountToConvert
             
@@ -12147,10 +12262,28 @@ class Planter {
             dropRates[i]=1/items[i].value
         }
 
+        dropTable.splice(dropTable.indexOf('smoothDice'),1)
+        dropTable.splice(dropTable.indexOf('loadedDice'),1)
+
         if(this.field!=='CoconutField'){
                 
             dropTable.splice(dropTable.indexOf('coconut'),1)
             dropTable.splice(dropTable.indexOf('tropicalDrink'),1)
+        }
+
+        if(this.field==='PineTreeForest'){
+
+            dropRates.whirligig*=45
+
+        } else {
+
+            dropRates.whirligig*=0.25
+        }
+
+        if(this.field==='BlueFlowerField'||this.field==='RoseField'||this.field==='SunflowerField'){
+
+            dropRates.honeysuckle*=10
+
         }
 
         if(this.field==='SpiderField'||this.field==='CactusField'){
@@ -12179,6 +12312,7 @@ class Planter {
             dropRates.neonberry*=25
             dropRates.royalJelly*=1.5
             dropRates.stinger*=2
+            dropRates.causticWax*=4
         }
 
         if(this.type==='redClay'){
@@ -12190,6 +12324,10 @@ class Planter {
             dropRates.pineapple*=0.5
             dropRates.sunflowerSeed*=0.5
             dropRates.treat*=0.5
+            dropRates.softWax*=2.75
+            dropRates.hardWax*=2.15
+            dropRates.swirledWax*=1.75
+            dropRates.causticWax*=1.75
         }
 
         if(this.type==='blueClay'){
@@ -12201,12 +12339,15 @@ class Planter {
             dropRates.pineapple*=0.5
             dropRates.sunflowerSeed*=0.5
             dropRates.treat*=0.5
+            dropRates.microConverter*=7
+            dropRates.honeysuckle*=7
+            dropTable.splice(dropTable.indexOf('softWax'),1)
         }
 
         if(this.type==='candy'){
 
-            dropRates.gumdrops*=50
-            dropRates.glue*=50
+            dropRates.gumdrops*=40
+            dropRates.glue*=30
             dropRates.treat=0
             dropTable.splice(dropTable.indexOf('purplePotion'),1)
             dropTable.splice(dropTable.indexOf('superSmoothie'),1)
@@ -12235,6 +12376,11 @@ class Planter {
 
             dropRates.sunflowerSeed*=2
             dropRates.oil*=1.5
+            dropRates.fieldDice*=2
+            dropRates.smoothDice*=1.5
+            dropRates.loadedDice*=1.25
+            dropTable.push('smoothDice')
+            dropTable.push('loadedDice')
         }
 
         if(this.type==='petal'){
@@ -12247,11 +12393,17 @@ class Planter {
             dropRates.tropicalDrink*=2
             dropRates.coconut*=1.5
             dropRates.bitterberry*=3
+            dropRates.fieldDice*=2
+            dropRates.smoothDice*=1.75
+            dropRates.loadedDice*=1.5
+            dropRates.whirligig*=3
             dropTable.push('bitterberry')
             dropTable.splice(dropTable.indexOf('strawberry'),1)
             dropTable.splice(dropTable.indexOf('blueberry'),1)
             dropTable.splice(dropTable.indexOf('redExtract'),1)
             dropTable.splice(dropTable.indexOf('blueExtract'),1)
+            dropTable.push('smoothDice')
+            dropTable.push('loadedDice')
         }
 
         if(this.type==='plenty'){
@@ -12271,6 +12423,11 @@ class Planter {
             dropRates.superSmoothie*=3
             dropRates.purplePotion*=3
             dropRates.coconut*=1.5
+            dropRates.softWax*=1.75
+            dropRates.hardWax*=1.8
+            dropRates.swirledWax*=1.85
+            dropRates.causticWax*=1.95
+            dropRates.whirligig*=2
             dropTable.push('bitterberry')
             dropTable.push('neonberry')
             dropTable.splice(dropTable.indexOf('treat'),1)
@@ -12399,16 +12556,16 @@ class Planter {
 
 class Scratch {
     
-    constructor(bee,x,z){
+    constructor(bee,x,z,goldenRake){
         
+        this.mesh=goldenRake?'goldenRakeScratch':'scratch'
         this.bee=bee
         this.life=1
         this.field=player.fieldIn
         this.x=x
         this.z=z
-        this.pos=[fieldInfo[this.field].x+this.x,fieldInfo[this.field].y+0.5+2,fieldInfo[this.field].z+this.z+1,0]
-        this.targetZ=this.pos[2]-3
-        
+        this.pos=[fieldInfo[this.field].x+this.x,fieldInfo[this.field].y+1,fieldInfo[this.field].z+this.z,0]
+        this.targetZ=this.pos[2]+(this.mesh==='scratch'?-4:-7)
     }
     
     die(index){
@@ -12423,19 +12580,28 @@ class Scratch {
         if(this.life<0.8)
             this.pos[2]+=(this.targetZ-this.pos[2])*dt*12.5
         
-        if(this.life<=0.75&&!this.collectedPollen){
+        if(this.life<=0.35&&!this.collectedPollen){
             
-            collectPollen({x:this.x,z:this.z,field:this.field,pattern:[[-2,0],[-2,1],[-2,-1],[-2,-2],[0,0],[0,1],[0,-1],[0,-2],[2,0],[2,1],[2,-1],[2,-2]],amount:10+this.bee.level*1.5})
+            if(this.mesh==='scratch'){
+
+                collectPollen({x:this.x,z:this.z,field:this.field,pattern:[[-2,0],[-2,1],[-2,-1],[-2,-2],[0,0],[0,1],[0,-1],[0,-2],[2,0],[2,1],[2,-1],[2,-2]],amount:40+this.bee.level*1.5})
+
+            } else {
+
+                collectPollen({x:this.x,z:this.z,field:this.field,pattern:[[-3,-1],[-3,-2],[-3,-3],[-3,-4],[-3,-5],[-3,-6],[-3,-7],[3,-1],[3,-2],[3,-3],[3,-4],[3,-5],[3,-6],[3,-7],[-1,-1],[-1,-2],[-1,-3],[-1,-4],[-1,-5],[-1,-6],[-1,-7],[1,-1],[1,-2],[1,-3],[1,-4],[1,-5],[1,-6],[1,-7]],amount:7})
+            }
+
+            this.collectedPollen=true
         }
         
-        gl.bindBuffer(gl.ARRAY_BUFFER,meshes.scratch.vertBuffer)
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.scratch.indexBuffer)
+        gl.bindBuffer(gl.ARRAY_BUFFER,meshes[this.mesh].vertBuffer)
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes[this.mesh].indexBuffer)
         gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
         gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
         
         gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
         gl.uniform2f(glCache.mob_instanceInfo2,0.65,1)
-        gl.drawElements(gl.TRIANGLES,meshes.scratch.indexAmount,gl.UNSIGNED_SHORT,0)
+        gl.drawElements(gl.TRIANGLES,meshes[this.mesh].indexAmount,gl.UNSIGNED_SHORT,0)
         
         return this.life<=0
     }
@@ -12615,6 +12781,52 @@ class GlitchEffect {
         }
         
         return this.life<=0
+    }
+}
+
+class JellyBean {
+    
+    constructor(field,vel,type){
+        
+        this.field=field
+        this.vel=vel
+        this.type=type
+        this.y=fieldInfo[this.field].y
+        this.pos=[player.body.position.x,this.y+0.5,player.body.position.z]
+
+        switch(this.type.replace('JellyBean','')){
+
+            case 'red':this.col=[0.85,0,0];break
+            case 'white':this.col=[0.9,0.9,0.9];break
+            case 'blue':this.col=[0,0.5,0.9];break
+            case 'pink':this.col=[0.9,0.45,0.9];break
+            case 'brown':this.col=[0.3,0.2,0.1];break
+            case 'green':this.col=[0,0.5,0];break
+            case 'black':this.col=[0.075,0.075,0.075];break
+            case 'yellow':this.col=[0.95,0.9,0.1];break
+        }
+    }
+    
+    die(index){
+
+        if(this.pos[0]>fieldInfo[this.field].x&&this.pos[0]<fieldInfo[this.field].x+fieldInfo[this.field].width-1&&this.pos[2]>fieldInfo[this.field].z&&this.pos[2]<fieldInfo[this.field].z+fieldInfo[this.field].length-1){
+
+            objects.tokens.push(new Token(effects[this.type].tokenLife,[this.pos[0],this.pos[1]+1.1,this.pos[2]],this.type))
+        }
+        
+        
+        objects.mobs.splice(index,1)
+    }
+    
+    update(){
+        
+        this.vel[1]-=dt*16
+
+        vec3.scaleAndAdd(this.pos,this.pos,this.vel,dt)
+
+        meshes.explosions.instanceData.push(...this.pos,...this.col,1,0.35,1)
+
+        return this.pos[1]<=this.y
     }
 }
 
@@ -12934,7 +13146,8 @@ class Mesh {
         this.isStatic=isStatic
         this.setMesh(verts||[],index||[])
         this.meshGlobalID=globalMeshID++
-        // globalMeshID++
+        this.matrix=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
+        this.ogMatrix=this.matrix.slice()
     }
     
     setMesh(verts,index){
@@ -13095,9 +13308,9 @@ class Mesh {
                 )
             }
             
-            addHiveSlot=function(x,y,z,w,h,type){
+            addHiveSlot=function(x,y,z,w,h,type,gifted){
                 
-                let t=128/2048,_x=beeInfo[type||'basic'].u,_y=beeInfo[type||'basic'].v,isNull=type===null?1:0,[r,g,b]=COLORS.honey_normalized
+                let t=128/2048,_x=beeInfo[type||'basic'].u,_y=beeInfo[type||'basic'].v+(gifted?768/2048:0),isNull=type===null?1:0,[r,g,b]=COLORS.honey_normalized
                 
                 r*=0.5
                 g*=0.5
@@ -13582,7 +13795,7 @@ class Mesh {
                 ]
                 
                 for(let i=0,_l=v.length;i<_l;i++){
-                    
+
                     vec3.transformMat4(v[i],v[i],model)
                     vec3.transformQuat(v[i],v[i],rotation2)
                     
@@ -13590,6 +13803,8 @@ class Mesh {
                         
                         vec3.transformQuat(normals[i],normals[i],rotation)
                     }
+
+                    vec3.transformMat4(v[i],v[i],DIS.matrix)
                 }
                 
                 let vl=verts.length/9,n=normals
@@ -13671,7 +13886,7 @@ class Mesh {
                         Math.cos(t1)*rad,Math.sin(t1)*rad,hei*0.5,r,g,b,0,0,1,
                         Math.cos(t2)*rad,Math.sin(t2)*rad,hei*0.5,r,g,b,0,0,1)
                 }
-                for(let l=_verts.length/9,i=_v;i<l;i++){
+                for(let l=_verts.length/9,i=_v;i<l-1;i++){
                     
                     _index.push(_v,i,i+2)
                 }
@@ -13719,6 +13934,8 @@ class Mesh {
                         _verts[i+1]+=y
                         _verts[i+2]+=z
                     }
+
+                    [_verts[i],_verts[i+1],_verts[i+2]]=vec3.transformMat4([],[_verts[i],_verts[i+1],_verts[i+2]],DIS.matrix)
                 }
                 
                 verts.push(..._verts)
@@ -13736,6 +13953,11 @@ class Mesh {
                 for(let i in _m.index){
                     
                     _index.push(_m.index[i]+verts.length/9)
+                }
+
+                for(let i=0;i<_verts.length;i+=9){
+                    
+                    [_verts[i],_verts[i+1],_verts[i+2]]=vec3.transformMat4([],[_verts[i],_verts[i+1],_verts[i+2]],DIS.matrix)
                 }
                 
                 verts.push(..._verts)
@@ -13786,6 +14008,7 @@ class Mesh {
                     
                     vec3.transformQuat(pos[i],pos[i],rotQuat)
                     vec3.add(pos[i],pos[i],[x,y,z])
+                    vec3.transformMat4(pos[i],pos[i],DIS.matrix)
                 }
                 
                 for(let i in vs){
@@ -13823,6 +14046,8 @@ class Mesh {
             
             applyFinalRotation=function(x,y,z){
                 
+                if(!mat4.exactEquals(DIS.matrix,DIS.ogMatrix)) return
+
                 let q=quat.fromEuler([],x,y,z)
                 
                 for(let i=0;i<verts.length;i+=9){
@@ -14042,7 +14267,633 @@ let dialogueBox=document.getElementById('dialogueBox'),
 
 let playerMesh=new Mesh(false)
 
+let shopGearMesh=new Mesh(false)
+
 let gear=window.playerGear
+
+gear.tool={
+    
+    shovel:{
+        
+        collectPattern:[[0,0],[0,-1]],
+        collectAmount:5,
+        cooldown:1,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,0,0.6,0.1,0.1,0.8,false,[0.5,0.2,0])
+            box(-0.3,0,1.2,0.3,0.1,0.4,false,[0.2,0.2,0.2])
+        },
+        desc:'A trusty shovel.<br><br>Collects 5 pollen from 2 flowers every 1s.',
+        cost:['0 honey']
+    },
+
+    rake:{
+        
+        collectPattern:[[0,0],[0,-1],[0,-2]],
+        collectAmount:2,
+        cooldown:0.7,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,0,0.6,0.1,0.1,0.8,false,[0.9,0.9,0.9])
+            box(-0.3+0.1,0,0.6+0.6,0.1,0.1,0.5,[0,20,0],[0.4,0.4,0.4])
+            box(-0.3+0.2,0,0.6+0.5,0.1,0.1,0.5,[0,40,0],[0.4,0.4,0.4])
+            box(-0.3-0.1,0,0.6+0.6,0.1,0.1,0.5,[0,-20,0],[0.4,0.4,0.4])
+            box(-0.3-0.2,0,0.6+0.5,0.1,0.1,0.5,[0,-40,0],[0.4,0.4,0.4])
+            box(-0.3,0,0.6+0.65,0.1,0.1,0.4,false,[0.4,0.4,0.4])
+        },
+        desc:'A small gardening rake.<br><br>Collects 2 pollen from 3 flowers every 0.7s.',
+        cost:['800 honey']
+    },
+
+    clippers:{
+        
+        collectPattern:[[0,0]],
+        collectAmount:9,
+        cooldown:0.6,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.2-0.15,-0.15,0.4,0.25,0.25,0.1,[0,0,-30],[1.3,1.3,0])
+            box(-0.2+0.15,-0.15,0.4,0.25,0.25,0.1,[0,0,30],[1.3,1.3,0])
+            box(-0.2+0.15-Math.sin(30*MATH.TO_RAD)*0.41,-0.15+Math.cos(30*MATH.TO_RAD)*0.41,0.4,0.1,0.6,0.1,[0,0,30],[1.3,1.3,1.3])
+            box(-0.2-0.15+Math.sin(30*MATH.TO_RAD)*0.41,-0.15+Math.cos(30*MATH.TO_RAD)*0.41,0.4,0.1,0.6,0.1,[0,0,-30],[1.3,1.3,1.3])
+        },
+        desc:'A little pair of yellow clippers.<br><br>Collects 9 pollen from 1 flowers every 0.6s.',
+        cost:['2200 honey']
+    },
+
+    magnet:{
+        
+        collectPattern:[[0,0],[0,-1],[0,1],[-1,0],[1,0],[1,1],[1,-1],[-1,1],[-1,-1]],
+        collectAmount:2,
+        cooldown:0.8,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,-0.25,0.5,0.2,0.6,0.2,false,[0.8,0.8,0.8])
+            box(-0.3,0.15,0.5,0.6,0.2,0.2,false,[1,0,0])
+            box(-0.3-0.3,0.3,0.5,0.2,0.5,0.2,false,[1,0,0])
+            box(-0.3+0.3,0.3,0.5,0.2,0.5,0.2,false,[1,0,0])
+            box(-0.3-0.3,0.5,0.5,0.19,0.5,0.19,false,[1,1,1])
+            box(-0.3+0.3,0.5,0.5,0.19,0.5,0.19,false,[1,1,1])
+        },
+        desc:'A big magnet that somehow picks up pollen particles.<br><br>Collects 2 pollen from 9 flowers every 0.8s.',
+        cost:['5500 honey']
+    },
+
+    vacuum:{
+        
+        collectPattern:[[0,0],[0,-1],[0,1],[-1,0],[1,0],[1,1],[1,-1],[-1,1],[-1,-1],[0,-2],[2,0],[0,2],[-2,0]],
+        collectAmount:2,
+        cooldown:0.8,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,0,0.65,0.1,0.8,0.1,[-20,0,0],[0.8,0.8,0.8])
+            box(-0.3,-0.1,0.5,0.3,0.6,0.25,[-20,0,0],[1,0.7,0.4])
+            box(-0.3,-0.3,0.7,0.4,0.3,0.3,false,[0.2,0.2,0.2])
+            box(-0.3-0.1,-0.3,0.7,0.075,0.075,0.31,false,[1.4,1.4,0])
+            box(-0.3+0.1,-0.3,0.7,0.075,0.075,0.31,false,[1.4,1.4,0])
+        },
+        desc:'A handy house-hold vacuum cleaner.<br><br>Collects 2 pollen from 13 flowers every 0.8s.',
+        cost:['14000 honey']
+    },
+
+    superScooper:{
+        
+        collectPattern:[[0,0],[0,-1],[0,-2],[0,-3],[0,-4]],
+        collectAmount:4,
+        cooldown:0.5,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,0,0.4,0.175,0.175,0.2,false,[1.5,1.5,0])
+            box(-0.3,0,0.6,0.175,0.175,0.2,false,[0,0,1.5])
+            box(-0.3,0,0.8,0.175,0.175,0.2,false,[1.5,1.5,0])
+            box(-0.3,0,1,0.175,0.175,0.2,false,[0,0,1.5])
+            box(-0.3,0,1.2,0.15,0.15,0.2,false,[0.6,0.4,0.1])
+            box(-0.3+0.3*0.5,0,1.55,0.3,0.175,0.65,false,[1.5,1.5,0])
+            box(-0.3-0.3*0.5,0,1.55,0.3,0.175,0.65,false,[0,0,1.5])
+        },
+        desc:'A massive toy scooper useful for pollen collection.<br><br>Collects 4 pollen from 5 flowers every 0.5s.',
+        cost:['40000 honey']
+    },
+
+    pulsar:{
+        
+        collectPattern:[[0,0],[0,-1],[0,1],[-1,0],[1,0],[1,1],[1,-1],[-1,1],[-1,-1],[0,-2],[2,0],[0,2],[-2,0],[-2,-1],[-2,1],[2,-1],[2,1],[-1,-2],[-1,2],[1,-2],[1,2],[0,-3],[0,3],[-3,0],[3,0],[-2,2],[2,2],[-2,-2],[2,-2]],
+        collectAmount:2,
+        cooldown:1,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,0.2,0.4,0.125,1.1,0.125,false,[1.5,1.5,0])
+            box(-0.3,-0.2,0.4,0.175,0.3,0.175,false,[0,1.5,0])
+            cylinder(-0.3,0.2+1.1*0.5+0.25,0.4,0.25,0.0005,10,0,0,0,0,0,0,0.25)
+            cylinder(-0.3,0.2+1.1*0.5+0.25,0.4,0.25,0.0005,10,0,0,0,0.001,90,0,0.25)
+            cylinder(-0.3,0.2+1.1*0.5+0.25,0.4,0.25,0.0005,10,0,0,0,90,0,0,0.25)
+
+        },particles:function(){
+            
+            toolParticle-=dt
+            
+            if(toolParticle>0){return}
+            
+            toolParticle=0.3
+            
+            let x=-player.bodyDir[2],z=player.bodyDir[0]
+            
+            x+=player.bodyDir[0]
+            z+=player.bodyDir[2]
+            
+            x*=0.3
+            z*=0.4
+            
+            ParticleRenderer.add({x:player.body.position.x+x,y:player.body.position.y+0.2+1.1*0.5+0.25,z:player.body.position.z+z,vx:MATH.random(-0.3,0.3),vy:(Math.random()-0.5)*0.5,vz:MATH.random(-0.3,0.3),grav:1.5,size:MATH.random(30,70),col:[0,1,0],life:1,rotVel:MATH.random(-3,3),alpha:2})
+        },
+        desc:'A strange magical tool that sucks up more pollen.<br><br>Collects 2 pollen from 29 flowers every 1s.',
+        cost:['125000 honey']
+    },
+
+    electroMagnet:{
+        
+        collectPattern:[[0,0],[0,-1],[0,1],[-1,0],[1,0],[1,1],[1,-1],[-1,1],[-1,-1]],
+        collectAmount:6,
+        cooldown:0.5,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,-0.15,0.5,0.2,0.8,0.2,false,[0.8,0.8,0.8])
+            box(-0.3,0.15+0.2,0.5,0.6,0.2,0.2,false,[1.4,1.4,0])
+            box(-0.3-0.3,0.3+0.2,0.5,0.2,0.5,0.2,false,[1.4,1.4,0])
+            box(-0.3+0.3,0.3+0.2,0.5,0.2,0.5,0.2,false,[1.4,1.4,0])
+            box(-0.3-0.3,0.5+0.2,0.5,0.19,0.5,0.19,false,[1,1,1])
+            box(-0.3+0.3,0.5+0.2,0.5,0.19,0.5,0.19,false,[1,1,1])
+            box(-0.3,0.15+0.2,0.5,0.2,0.2,0.6,false,[1.4,1.4,0])
+            box(-0.3,0.3+0.2,0.5-0.3,0.2,0.5,0.2,false,[1.4,1.4,0])
+            box(-0.3,0.3+0.2,0.5+0.3,0.2,0.5,0.2,false,[1.4,1.4,0])
+            box(-0.3,0.5+0.2,0.5-0.3,0.19,0.5,0.19,false,[1,1,1])
+            box(-0.3,0.5+0.2,0.5+0.3,0.19,0.5,0.19,false,[1,1,1])
+        },
+        desc:'A upgraded magnet charged with electricity.<br><br>Collects 6 pollen from 9 flowers every 0.5s.',
+        cost:['300000 honey']
+    },
+    
+    scissors:{
+        
+        collectPattern:[[0,0]],
+        collectAmount:50,
+        cooldown:0.5,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.2-0.15,-0.15,0.4,0.25,0.25,0.1,[0,0,-30],[0.9,0,0])
+            box(-0.2+0.15,-0.15,0.4,0.25,0.25,0.1,[0,0,30],[0,0,0.9])
+            box(-0.2+0.15-Math.sin(30*MATH.TO_RAD)*0.41,-0.15+Math.cos(30*MATH.TO_RAD)*0.41,0.4,0.1,0.6,0.1,[0,0,30],[1.3,1.3,1.3])
+            box(-0.2-0.15+Math.sin(30*MATH.TO_RAD)*0.41,-0.15+Math.cos(30*MATH.TO_RAD)*0.41,0.4,0.1,0.6,0.1,[0,0,-30],[1.3,1.3,1.3])
+        },
+        desc:'A pair of school scissors.<br><br>Collects 50 pollen from 1 flowers every 0.5s.',
+        cost:['850000 honey']
+    },
+
+    honeyDipper:{
+        
+        collectPattern:[[-4,0],[-3,-2],[-3,-1],[-3,0],[-3,1],[-3,2],[-2,-3],[-2,-2],[-2,-1],[-2,0],[-2,1],[-2,2],[-2,3],[-1,-3],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[-1,3],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[0,1],[0,2],[0,3],[0,4],[1,-3],[1,-2],[1,-1],[1,0],[1,1],[1,2],[1,3],[2,-3],[2,-2],[2,-1],[2,0],[2,1],[2,2],[2,3],[3,-2],[3,-1],[3,0],[3,1],[3,2],[4,0]],
+        collectAmount:2,
+        cooldown:0.8,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,0.3,0.4,0.125,1.3,0.125,false,[1,0.7,0.4])
+            box(-0.3,-0.1,0.4,0.175,0.5,0.175,false,[0.7,0.5,0.2])
+            cylinder(-0.3,0.25+1.2*0.5+0.5,0.4,0.2,0.075,10,1*1.4,0.7*1.4,0.4*1.4,90,0,0)
+            cylinder(-0.3,0.25+1.2*0.5+0.5+0.2,0.4,0.125,0.075,10,1*1.4,0.7*1.4,0.4*1.4,90,0,0)
+            cylinder(-0.3,0.25+1.2*0.5+0.5-0.2,0.4,0.125,0.075,10,1*1.4,0.7*1.4,0.4*1.4,90,0,0)
+            cylinder(-0.3,0.25+1.2*0.5+0.501,0.4,0.3,-0.8,10,0.9,0.5,0.2,90,0,0)
+
+        },
+        desc:'A giant honey dipper.<br><br>Collects 2 pollen from 49 flowers every 0.8s.',
+        cost:['1500000 honey']
+    },
+
+    bubbleWand:{
+        
+        collectPattern:[[0,3],[1,3],[-1,3],[0,-3],[1,-3],[-1,-3],[3,0],[3,1],[3,-1],[-3,0],[-3,1],[-3,-1],[2,2],[2,-2],[-2,-2],[-2,2]],
+        collectAmount:{w:6,r:6,b:6*2},
+        cooldown:0.8,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,0.4,0.4,0.125,1.5,0.125,false,[0,0.4,1.4])
+            box(-0.3,-0.1,0.4,0.175,0.5,0.175,false,[1.2,1.2,0])
+            cylinder(-0.3,0.45+1.2*0.5+0.5,0.4,0.5,0.075,15,0,0.4,1.5,0,0,0)
+            cylinder(-0.3,0.45+1.2*0.5+0.5,0.4,0.4,0.0755,15,0,0.9,1.2,0,0,0)
+        },particles:function(){
+            
+            toolParticle-=dt
+            
+            if(toolParticle>0){return}
+            
+            toolParticle=0.4
+            
+            let x=-player.bodyDir[2],z=player.bodyDir[0]
+            
+            x+=player.bodyDir[0]
+            z+=player.bodyDir[2]
+            
+            x*=0.3
+            z*=0.4
+            
+            ParticleRenderer.add({x:player.body.position.x+x+MATH.random(-0.4,0.4),y:player.body.position.y+0.45+1.2*0.5+0.5+MATH.random(-0.4,0.4),z:player.body.position.z+z+MATH.random(-0.4,0.4),vx:MATH.random(-0.6,0.6),vy:(Math.random()-0.5)*0.5,vz:MATH.random(-0.6,0.6),grav:1.5,size:MATH.random(100,150),col:[0,0.6,0.9],life:1,rotVel:MATH.random(-3,3),alpha:0.8})
+        },ability:function(){
+            
+            if(player.toolUses%10===0&&player.fieldIn){
+                
+                objects.bubbles.push(new Bubble(player.fieldIn,(Math.random()*fieldInfo[player.fieldIn].width)|0,(Math.random()*fieldInfo[player.fieldIn].length)|0))
+            }
+        },
+        desc:'A bubble wand dipped in liquidy soap.<br><br>Collects 6 pollen from 16 flowers every 0.8s. Collects x2 more blue pollen.<br><br>Every 10th swing creates a bubble on the field.',
+        cost:['3500000 honey']
+    },
+
+    scythe:{
+        
+        collectPattern:[[0,0],[0,-1],[0,-2],[0,-3],[0,-4],[0,-5],[0,-6]],
+        collectAmount:{w:8,r:8*2,b:8},
+        cooldown:0.47,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,0.4,0.4,0.125,1.5,0.125,false,[1.4,1.4,0])
+            box(-0.3,-0.1,0.4,0.175,0.5,0.175,false,[1.4,0,0])
+            box(-0.3,1,0.8,0.15,0.35,0.7,false,[1.3,1.3,1.3])
+            box(-0.3,0.95,1.3,0.15,0.3,0.5,[20,0,0],[1.3,1.3,1.3])
+            box(-0.3,0.8,1.55,0.15,0.2,0.3,[45,0,0],[1.3,1.3,1.3])
+            box(-0.3,1+0.2,0.8,0.2,0.35,0.7,false,[1.3,0,0])
+            box(-0.3,0.95+0.2,1.3,0.2,0.3,0.5,[20,0,0],[1.3,0,0])
+            box(-0.3,0.775+0.15,1.65,0.2,0.3,0.5,[45,0,0],[1.3,0,0])
+        },
+        particles:function(){
+            
+            toolParticle-=dt
+            
+            if(toolParticle>0){return}
+            
+            toolParticle=0.4
+            
+            let x=player.bodyDir[0],y=1.5,z=player.bodyDir[2]*0
+            
+            x+=-player.bodyDir[2]*1.2
+            z+=player.bodyDir[0]*1.2
+            
+            let r=Math.random()*1.5
+            
+            x+=player.bodyDir[0]*r
+            y-=r*0.25
+            z+=player.bodyDir[2]*r
+            
+            ParticleRenderer.add({x:player.body.position.x+x,y:player.body.position.y+y,z:player.body.position.z+z,vx:MATH.random(-0.8,0.8),vy:0.75,vz:MATH.random(-0.8,0.8),grav:1.5,size:MATH.random(70,120),col:[1,MATH.random(0.3,0.6),0],life:1,rotVel:MATH.random(-3,3),alpha:4.5})
+        },ability:function(){
+            
+            if(player.toolUses%10===0){
+                
+                if(player.fieldIn){
+
+                    objects.flames.push(new Flame(player.fieldIn,player.flowerIn.x,player.flowerIn.z))
+
+                } else {
+
+                    objects.flames.push(new Flame(player.body.position.x,player.body.position.y,player.body.position.z,true))
+                }
+            }
+        },
+        desc:'A red scythe forged and heated in fire.<br><br>Collects 8 pollen from 6 flowers every 0.47s. Collects x2 more red pollen.<br><br>Every 10th swing summons a flame nearby.',
+        cost:['3500000 honey']
+    },
+
+    goldenRake:{
+        
+        collectPattern:[[-3,0],[-3,-1],[-3,-2],[-3,-3],[3,0],[3,-1],[3,-2],[3,-3],[-1,0],[-1,-1],[-1,-2],[-1,-3],[1,0],[1,-1],[1,-2],[1,-3]],
+        collectAmount:7,
+        cooldown:0.75,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,0,0.6,0.1,0.1,0.8,false,[1.3,1.3,0.4])
+            box(-0.3+0.1,0,0.6+0.6,0.1,0.1,0.5,[0,20,0],[1.3,1.3,0.4])
+            box(-0.3+0.2,0,0.6+0.5,0.1,0.1,0.5,[0,40,0],[1.3,1.3,0.4])
+            box(-0.3-0.1,0,0.6+0.6,0.1,0.1,0.5,[0,-20,0],[1.3,1.3,0.4])
+            box(-0.3-0.2,0,0.6+0.5,0.1,0.1,0.5,[0,-40,0],[1.3,1.3,0.4])
+            box(-0.3,0,0.6+0.65,0.1,0.1,0.4,false,[1.3,1.3,0.4])
+        },
+        ability:function(){
+            
+            if(player.toolUses%5===0&&player.fieldIn){
+                
+                objects.mobs.push(new Scratch(null,player.flowerIn.x,player.flowerIn.z,true))
+            }
+        },
+        desc:'A shiny golden rake with improved pollen collection.<br><br>Collects 7 pollen from 16 flowers every 0.75s.<br><br>Every 5th swing is supercharged and collects more flowers from longer lines.',
+        cost:['20000000 honey']
+    },
+
+    sparkStaff:{
+        
+        collectPattern:[[2,1],[-2,1],[0,-2]],
+        collectAmount:30,
+        cooldown:0.5,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,0.3,0.4,0.1,1.25,0.1,false,[1,0,1])
+        },ability:function(){
+            
+            if(!player.fieldIn){
+
+                gear.tool.sparkStaff.collectPattern=[[2,1],[-2,1],[0,-2]]
+                return
+            }
+
+            gear.tool.sparkStaff.collectPattern=[]
+
+            let a=[[-5,0],[-4,-3],[-4,-2],[-4,-1],[-4,0],[-4,1],[-4,2],[-4,3],[-3,-4],[-3,-3],[-3,-2],[-3,-1],[-3,0],[-3,1],[-3,2],[-3,3],[-3,4],[-2,-4],[-2,-3],[-2,-2],[-2,-1],[-2,0],[-2,1],[-2,2],[-2,3],[-2,4],[-1,-4],[-1,-3],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[-1,3],[-1,4],[0,-5],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[0,1],[0,2],[0,3],[0,4],[0,5],[1,-4],[1,-3],[1,-2],[1,-1],[1,0],[1,1],[1,2],[1,3],[1,4],[2,-4],[2,-3],[2,-2],[2,-1],[2,0],[2,1],[2,2],[2,3],[2,4],[3,-4],[3,-3],[3,-2],[3,-1],[3,0],[3,1],[3,2],[3,3],[3,4],[4,-3],[4,-2],[4,-1],[4,0],[4,1],[4,2],[4,3],[5,0]],f=fieldInfo[player.fieldIn]
+
+            for(let i=0;i<3;i++){
+
+                let r=(Math.random()*a.length)|0,f=a[r]
+
+                gear.tool.sparkStaff.collectPattern.push(f)
+
+                a.splice(r,1)
+            }
+
+
+        },
+        desc:'A wand powered by static electricity.<br><br>Collects 30 pollen from 3 random flowers every 0.5s.<br><br>Unlike in the real game, this tool is good :D',
+        cost:['60000000 honey']
+    },
+
+    porcelainDipper:{
+        
+        collectPattern:[[-4,0],[-3,-2],[-3,-1],[-3,0],[-3,1],[-3,2],[-2,-3],[-2,-2],[-2,-1],[-2,0],[-2,1],[-2,2],[-2,3],[-1,-3],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[-1,3],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[0,1],[0,2],[0,3],[0,4],[1,-3],[1,-2],[1,-1],[1,0],[1,1],[1,2],[1,3],[2,-3],[2,-2],[2,-1],[2,0],[2,1],[2,2],[2,3],[3,-2],[3,-1],[3,0],[3,1],[3,2],[4,0]],
+        collectAmount:{w:3*1.5,r:3,b:3},
+        cooldown:0.7,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3,0.4,0.4,0.125,1.5,0.125,false,[1.4,1.4,1.4])
+            box(-0.3,-0.1,0.4,0.175,0.5,0.175,false,[1.2,1.2,0])
+            cylinder(-0.3,0.45+1.2*0.5+0.5,0.4,0.2,0.075,10,1.5,1.5,1.5,90,0,0)
+            cylinder(-0.3,0.45+1.2*0.5+0.5+0.2,0.4,0.125,0.075,10,1.5,1.5,1.5,90,0,0)
+            cylinder(-0.3,0.45+1.2*0.5+0.5-0.2,0.4,0.125,0.075,10,1.5,1.5,1.5,90,0,0)
+            cylinder(-0.3,0.45+1.2*0.5+0.501,0.4,0.3,-0.8,10,1.4,1.4,1.4,90,0,0)
+            box(-0.5,1,0.4,0.175,0.5,0.12,[0,0,70],[0,0,1.4])
+            box(-0.5,0.825,0.4,0.175,0.4,0.12,[0,0,-70],[0,0,1.4])
+            box(-0.5+0.4,1,0.4,0.175,0.5,0.12,[0,0,-70],[1.4,0,0])
+            box(-0.5+0.4,0.825,0.4,0.175,0.4,0.12,[0,0,70],[1.4,0,0])
+        },particles:function(){
+            
+            toolParticle-=dt
+            
+            if(toolParticle>0){return}
+            
+            toolParticle=0.5
+            
+            let x=-player.bodyDir[2],z=player.bodyDir[0],r=0.325
+            
+            x+=player.bodyDir[0]
+            z+=player.bodyDir[2]
+            
+            x*=r
+            z*=r
+            
+            ParticleRenderer.add({x:player.body.position.x+x+MATH.random(-0.4,0.4),y:player.body.position.y+1.75+MATH.random(-0.4,0.4),z:player.body.position.z+z+MATH.random(-0.4,0.4),vx:MATH.random(-0.8,0.8),vy:Math.random()*0.5+0.4,vz:MATH.random(-0.8,0.8),grav:-1.25*Math.random()-0.25,size:MATH.random(20,60),col:[0.95,0.95,0.95],life:1,rotVel:MATH.random(-3,3),alpha:0.5})
+        },
+        desc:'A dipper drizzled with brittle liquid porcelain.<br><br>Collects 3 pollen from 49 flowers every 0.7s. Collects x1.5 more white pollen.<br><br>Every 10th swing summons a pillar of light that collects massive pollen.',
+        cost:['150000000 honey']
+    },
+    
+    petalWand:{
+        
+        collectPattern:[[0,0],[0,-1],[0,-2],[0,-3],[0,-4],[0,-5],[0,-6],[-1,-3],[-1,-4],[-1,-5],[1,-3],[1,-4],[1,-5],[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[-1,3],[-1,4],[-1,5],[1,3],[1,4],[1,5],[1,0],[2,0],[3,0],[4,0],[5,0],[6,0],[3,1],[4,1],[5,1],[3,-1],[4,-1],[5,-1],[-1,0],[-2,0],[-3,0],[-4,0],[-5,0],[-6,0],[-3,1],[-4,1],[-5,1],[-3,-1],[-4,-1],[-5,-1]],
+        collectAmount:10,
+        cooldown:0.7,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.3-0.1,0.6,0.3+0.1,0.15,1.5,0.15,false,[0,0.7,0])
+            box(-0.3-0.1,1.45,0.3+0.1,0.3,0.3,0.3,[45,0,45],[1.5,1.2,0])
+            for(let i=0;i<MATH.TWO_PI;i+=MATH.TWO_PI/3){
+                
+                box(-0.3+Math.sin(i)*0.5-0.1,1.35,0.3+0.1+Math.cos(i)*0.5,0.7,0.1,0.7,[Math.sin(i)*-30,0,Math.cos(i)*-30],[1.2,1.2,1.2])
+                
+            }
+            
+            for(let i=MATH.QUATER_PI;i<MATH.TWO_PI+MATH.QUATER_PI;i+=MATH.TWO_PI/3){
+                
+                box(-0.3+Math.sin(i)*0.5-0.1,1.35,0.3+0.1+Math.cos(i)*0.5,0.7,0.1,0.7,[Math.sin(i)*30,0,Math.cos(i)*30],[1.2,1.2,1.2])
+                
+            }
+            
+            for(let i=0;i<MATH.TWO_PI;i+=MATH.TWO_PI/3){
+                
+                box(-0.3-0.1+Math.sin(i)*0.5,1.2,0.3+0.1+Math.cos(i)*0.5,0.7,0.1,0.7,[60,i*MATH.TO_DEG,0],[1.2,1.2,1.2])
+                box(-0.3-0.1+Math.sin(i)*0.25,1.2,0.3+0.1+Math.cos(i)*0.25,0.7,0.1,0.7,[-60,i*MATH.TO_DEG,0],[1.2,1.2,1.2])
+                
+            }
+        },
+        ability:function(){
+            
+            if(player.toolUses%3===0){
+                
+                objects.mobs.push(new PetalShuriken([player.body.position.x,player.body.position.y+0.25,player.body.position.z],player.bodyDir.slice()))
+            }
+        },
+        particles:function(){
+            
+            toolParticle-=dt
+            
+            if(toolParticle>0){return}
+            
+            toolParticle=0.3
+            
+            let x=-player.bodyDir[2],z=player.bodyDir[0],r=0.325
+            
+            x+=player.bodyDir[0]
+            z+=player.bodyDir[2]
+            
+            x*=r
+            z*=r
+            
+            ParticleRenderer.add({x:player.body.position.x+x,y:player.body.position.y+1.65,z:player.body.position.z+z,vx:MATH.random(-0.9,0.9),vy:Math.random()*0.5+0.2,vz:MATH.random(-0.9,0.9),grav:-1.5,size:MATH.random(20,50),col:[0.9,0.7,0.3],life:0.7,rotVel:MATH.random(-3,3),alpha:0.35})
+        },
+        desc:'A luxurious flower with enchanted petals.<br><br>Collects 10 pollen from 49 flowers every 0.7s.<br><br>Every 3rd swing summons a flying petal shuriken that collects tokens and causes bees to convert pollen.',
+        cost:['1500000000 honey','5 starJelly','25 enzymes','25 glitter']
+    },
+    
+    darkScythe:{
+        
+        collectPattern:[[0,-3],[0,-4],[1,-5],[1,-4],[1,-3],[2,-5],[2,-4],[2,-3],[3,-3],[3,-5],[4,-1],[-1,-3],[-1,-4],[-2,-3],[-3,-3],[0,-5],[-1,-5],[-2,-4],[-4,-2],[3,-4],[4,-4],[2,-2],[3,-2],[-2,-2],[-3,-2],[-4,-1]],
+        collectAmount:13,
+        cooldown:0.575,
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(-0.55,0.75,0.55,0.15,2.2,0.15,[0,0,0],[0.1,0,0],[0,0,30])
+            box(-0.55,1.6,1.1,0.15,0.6,1.2,[0,0,0],[0.1,0,0],[0,0,30])
+            box(-0.55,1.5,2,0.15,0.5,1,[20,0,0],[0.1,0,0],[0,0,30])
+            box(-0.55,1.2,2.6,0.15,0.35,1,[40,0,0],[0.1,0,0],[0,0,30])
+            
+            box(-0.55,1.3,1.1,0.175,0.6*0.3,1.2,[0,0,0],[1.2,0,0.4],[0,0,30])
+            box(-0.55,1.2,2,0.175,0.5*0.3,1,[20,0,0],[1.2,0,0.4],[0,0,30])
+            box(-0.55,0.9,2.6,0.175,0.3*0.5,0.5,[40,0,0],[1.2,0,0.4],[0,0,30])
+            
+            box(-0.55,1.95,0.1,0.15,0.15,1.3,[20,0,0],[0.1,0,0],[0,0,30])
+            box(-0.55,1.25,0.1,0.15,0.15,0.9,[-20,0,0],[0.1,0,0],[0,0,30])
+            
+        },
+        ability:function(arr){
+            
+            objects.mobs.push(new DarkScoopingTrail())
+            
+            if(player.fieldIn&&!player.attacked.length){
+                
+                let x=Math.round(player.body.position.x-fieldInfo[player.fieldIn].x),z=Math.round(player.body.position.z-fieldInfo[player.fieldIn].z),a=[]
+                
+                for(let i in arr){
+                    
+                    let _x=arr[i][0]+x,_z=arr[i][1]+z
+                    
+                    if(_x>=0&&_x<fieldInfo[player.fieldIn].width&&_x>=0&&_z<fieldInfo[player.fieldIn].length){
+                        
+                        a.push([_x,_z])
+                    }
+                }
+                
+                for(let i in objects.flames){
+                    
+                    let f=objects.flames[i]
+                    
+                    if(MATH.indexOfArrays(a,[f.x,f.z])>-1){
+                        
+                        f.turnDark()
+                    }
+                }
+                
+            } else {
+                
+                for(let i in objects.flames){
+                    
+                    let f=objects.flames[i]
+                    
+                    if(f.isStatic&&vec3.sqrDist(f.pos,[player.body.position.x+player.bodyDir[0]*2,player.body.position.y,player.body.position.z+player.bodyDir[2]*2])<7){
+                        
+                        f.turnDark()
+                    }
+                }
+            }
+        },
+        particles:function(){
+            
+            toolParticle-=dt
+            
+            if(toolParticle>0){return}
+            
+            toolParticle=0.05
+            
+            let x=player.bodyDir[0],y=1.5,z=player.bodyDir[2]*0
+            
+            x+=-player.bodyDir[2]*1.2
+            z+=player.bodyDir[0]*1.2
+            
+            let r=Math.random()*2.5
+            
+            x+=player.bodyDir[0]*r
+            y-=r*0.25
+            z+=player.bodyDir[2]*r
+            
+            ParticleRenderer.add({x:player.body.position.x+x,y:player.body.position.y+y,z:player.body.position.z+z,vx:-player.bodyDir[2]*2,vy:1.75,vz:player.bodyDir[0]*2,grav:0,size:MATH.random(70,120),col:[1,0,Math.random()],life:1,rotVel:MATH.random(-3,3),alpha:4.5})
+        },
+        desc:'Swipe through flames to unlock their Dark potential. Ensue dark chaos in fields and refuel burning flames. Tend a violent field of violet fire to enhance your Super-Crit power and Instant Red Conversion.',
+        cost:['2500000000000 honey','1500 redExtract','200 stinger','50 hardWax','25 superSmoothie']
+    },
+    
+    tidePopper:{
+        
+        collectPattern:[[0,0],[-1,0],[1,0],[-2,0],[2,0],[-1,-1],[0,-1],[1,-1],[-1,-2],[0,-2],[1,-2],[-1,-3],[0,-3],[1,-3],[-1,-4],[0,-4],[1,-4],[-1,-5],[0,-5],[1,-5],[0,-6],[0,-7],[0,-8]],
+        collectAmount:13,
+        cooldown:1,
+        mesh:function(box,cylinder,sphere,star,finalRotation){
+            
+            cylinder(-0.4,2.2,0.4,0.25,0.05,15,1,3,7,90,0,0,0.25)
+            cylinder(-0.4,1.6,0.4,0.3,0.05,15,1,3,7,90,0,0,0.3)
+            cylinder(-0.4,1.1,0.4,0.4,0.05,15,1,3,7,90,0,0,0.4)
+            cylinder(-0.4,1.7,0.4,0.3,2.25,10,0.3,1,2,90,0,0,0)
+            box(-0.4,0.5,0.4,0.15,1.4,0.15,false,[0.1,0.8,1.8])
+            sphere(-0.4-0.8,0.85,0.4,0.25,1,100,100,100)
+            sphere(-0.4+0.8,0.85,0.4,0.25,1,100,100,100)
+            sphere(-0.4,0.85,0.4-0.8,0.25,1,100,100,100)
+            sphere(-0.4,0.85,0.4+0.8,0.25,1,100,100,100)
+            finalRotation(20,-20,0)
+            
+        },
+        ability:function(){
+            
+            if(player.toolUses%3===0){
+                
+                objects.mobs.push(new Wave([player.body.position.x,player.body.position.y+0.25,player.body.position.z],player.bodyDir.slice()))
+            }
+        },
+        particles:function(){
+            
+            toolParticle-=dt
+            
+            if(toolParticle>0){return}
+            
+            toolParticle=0.1
+            
+            let x=-player.bodyDir[2],z=player.bodyDir[0],r=MATH.random(0.2,0.9)
+            
+            x+=player.bodyDir[0]
+            z+=player.bodyDir[2]
+            
+            x*=r
+            z*=r
+            
+            ParticleRenderer.add({x:player.body.position.x+x,y:player.body.position.y+MATH.random(0.1,2.5),z:player.body.position.z+z,vx:x,vy:1.6,vz:z,grav:0,size:MATH.random(20,50),col:[0.1,0.7,1],life:0.7,rotVel:MATH.random(-3,3),alpha:0.5})
+            
+            
+        },
+        desc:'Pierce through flowers and bubbles with torriental waves, washing away tokens and converting pollen from bees. Swings faster and ramps up the more you pop, then unleashes tidal waves in a surging flood at 500 bubbles. Splash Balloons with tall waves to earn Tide Blessing. Re-energize tidal surges with the destruction of bubbles.',
+        cost:['2500000000000 honey','1500 blueExtract','200 stinger','25 swirledWax','25 superSmoothie']
+    },
+    
+    gummyBaller:{
+        
+        collectPattern:[[-3,-3],[-2,-5],[-2,-4],[-2,-3],[-2,-2],[-2,-1],[-1,-5],[-1,-4],[-1,-3],[-1,-2],[-1,-1],[0,-6],[0,-5],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[1,-5],[1,-4],[1,-3],[1,-2],[1,-1],[2,-5],[2,-4],[2,-3],[2,-2],[2,-1],[3,-3]],
+        collectAmount:16,
+        cooldown:1,
+        mesh:function(box,cylinder,sphere,star){
+            
+            cylinder(-0.4,-0.1,0.4,0.15,0.35,15,0.26,2.7,1.1,90,0,0,0.15)
+            cylinder(-0.4,0.8,0.4,0.1,1.75,15,1.5,0.15,1.5,90,0,0,0.1)
+            sphere(-0.4,1.6,0.4,0.5,1,0.26,2.7,1.1)
+            cylinder(-0.4,1.75,0.4,0.45,0.25,15,1.5,0.15,1.5,90,0,0,0.6)
+            sphere(-0.4-0.3,1.85,0.4,0.25,1,0.26,2.7,1.1)
+            sphere(-0.4+0.3,1.85,0.4,0.25,1,0.26,2.7,1.1)
+            sphere(-0.4,1.85,0.4-0.3,0.25,1,1.5*1.75,0.65*1.75,1.5*1.75)
+            sphere(-0.4,1.85,0.4+0.3,0.25,1,1.5*1.75,0.65*1.75,1.5*1.75)
+            
+        },
+        particles:function(){
+            
+            let x=(-player.bodyDir[2]+player.bodyDir[0])*0.4,z=(player.bodyDir[0]+player.bodyDir[2])*0.4
+            
+            player.lagPos[0]+=(player.body.position.x-player.lagPos[0])*dt*12.5
+            player.lagPos[1]+=(player.body.position.y-player.lagPos[1])*dt*12.5
+            player.lagPos[2]+=(player.body.position.z-player.lagPos[2])*dt*12.5
+            
+            meshes.explosions.instanceData.push(player.lagPos[0]+x,player.lagPos[1]+2+player.gummyBallSize*0.3,player.lagPos[2]+z,0.9*player.isNight,0.18*player.isNight,0.9*player.isNight,1,player.gummyBallSize*0.5,1)
+            
+            toolParticle-=dt
+            
+            if(toolParticle>0){return}
+            
+            toolParticle=0.4/player.gummyBallSize
+            
+            ParticleRenderer.add({x:player.lagPos[0]+x,y:player.lagPos[1]+2+player.gummyBallSize*0.3,z:player.lagPos[2]+z,vx:MATH.random(-player.gummyBallSize,player.gummyBallSize),vy:MATH.random(-player.gummyBallSize,player.gummyBallSize),vz:MATH.random(-player.gummyBallSize,player.gummyBallSize),grav:0,size:MATH.random(20,50)*player.gummyBallSize,col:[0.1,0.8,1],life:0.75,rotVel:MATH.random(-3,3),alpha:player.gummyBallSize-0.5})
+            
+        },
+        desc:'Absorb goo to conjure a delectable arsenal of gummy wrecking balls. Cover the field in goo and collect pollen with a giant gummyball. Release your gummyball early by jumping. Ricochet off Marks and Honey Tokens to build up your gummyball combo for massive gooey gains.',
+        cost:['10000000000000 honey','1500 glue','2500 gumdrops','50 causticWax','25 superSmoothie']
+    },
+}
+
 
 player=(function(out){
     
@@ -14056,6 +14907,8 @@ player=(function(out){
 
     out.endAntChallenge=function(){
 
+        if(!out.antChallenge) return
+        
         out.addMessage('The Ant Challenge is over! Your score is '+out.antChallenge.score+'!')
         out.antChallenge=false
     }
@@ -14492,11 +15345,11 @@ player=(function(out){
         out.viewMatrixCopy=out.viewMatrix.slice()
         out.easeAmount=0
         itemName.innerHTML=MATH.doGrammar(shops[out.currentShop].items[shops[out.currentShop].currentIndex].name)
-        itemDesc.innerHTML=shops[out.currentShop].items[shops[out.currentShop].currentIndex].desc
+        itemDesc.innerHTML=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].desc
         
         itemCostSVG.innerHTML=''
         
-        let cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost
+        let cost=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].cost
         
         for(let i in cost){
             
@@ -14511,11 +15364,11 @@ player=(function(out){
             out.viewMatrixToChange=shops[out.currentShop].items[shops[out.currentShop].currentIndex].viewMatrix
             out.easeAmount=0
             itemName.innerHTML=MATH.doGrammar(shops[out.currentShop].items[shops[out.currentShop].currentIndex].name)
-            itemDesc.innerHTML=shops[out.currentShop].items[shops[out.currentShop].currentIndex].desc
+            itemDesc.innerHTML=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].desc
             
             itemCostSVG.innerHTML=''
             
-            let cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost
+            let cost=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].cost
             
             for(let i in cost){
                 
@@ -14531,11 +15384,11 @@ player=(function(out){
             out.viewMatrixToChange=shops[out.currentShop].items[shops[out.currentShop].currentIndex].viewMatrix
             out.easeAmount=0
             itemName.innerHTML=MATH.doGrammar(shops[out.currentShop].items[shops[out.currentShop].currentIndex].name)
-            itemDesc.innerHTML=shops[out.currentShop].items[shops[out.currentShop].currentIndex].desc
+            itemDesc.innerHTML=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].desc
             
             itemCostSVG.innerHTML=''
         
-            let cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost
+            let cost=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].cost
             
             for(let i in cost){
                 
@@ -14561,7 +15414,7 @@ player=(function(out){
                 return
             }
             
-            let cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost
+            let cost=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].cost
             
             for(let i in cost){
                 
@@ -14707,16 +15560,7 @@ player=(function(out){
     out.toolMatrix=new Float32Array(16)
     out.toolMesh=new Mesh(false)
     out.toolUses=0
-    
-    out.updateTool=function(newTool){
-        
-        out.tool=newTool
-        out.toolCooldown=0
-        out.toolMesh.setMeshFromFunction(tools[newTool].mesh)
-        out.toolMesh.setBuffers()
-    }
-    
-    out.updateTool('shovel')
+    out.toolCooldown=0
     
     out.sprinklers=[new Sprinkler()]
     out.sprinklerMesh=new Mesh(true)
@@ -14950,6 +15794,8 @@ player=(function(out){
         
         for(let i in out.currentGear){
             
+            if(i==='tool') continue
+            
             if(i.indexOf('Amulet')>-1){
                 
                 let stats=out.currentGear[i]
@@ -14989,6 +15835,7 @@ player=(function(out){
     
     out.currentGear={
         
+        tool:'shovel',
         boots:'none',
         belt:'none',
         backpack:'pouch',
@@ -15136,23 +15983,32 @@ player=(function(out){
     out.updateGear=function(){
         
         out.computeStats()
+
+        out.toolMesh.setMeshFromFunction(function(box,a,cylinder,sphere,applyFinalRotation,c,star){
+            
+            gear.tool[out.currentGear.tool].mesh(box,cylinder,sphere,star,applyFinalRotation)
+        })
+
+        out.toolMesh.setBuffers()
         
-        playerMesh.setMeshFromFunction(function(box,a,cylinder,sphere,b,c,star){
+        playerMesh.setMeshFromFunction(function(box,a,cylinder,sphere,applyFinalRotation,c,star){
             
             box(0,0,0,0.5,1,0.5,false,[1.45,1.45,1])
             
             for(let i in out.currentGear){
                 
+                if(i==='tool') continue
+
                 if(i.indexOf('Amulet')<0&&i!=='beequips'){
                     
                     if(i==='glider'||i==='parachute'){
                         
                         if(player.isGliding)
-                            gear[i][out.currentGear[i]].mesh(box,cylinder,sphere,star)
+                            gear[i][out.currentGear[i]].mesh(box,cylinder,sphere,star,applyFinalRotation)
                             
                     } else {
                         
-                        gear[i][out.currentGear[i]].mesh(box,cylinder,sphere,star)
+                        gear[i][out.currentGear[i]].mesh(box,cylinder,sphere,star,applyFinalRotation)
                     }
                     
                 } else if(i!=='beequips'){
@@ -15190,7 +16046,7 @@ player=(function(out){
                 
                 for(let x=0;x<out.hive[y].length;x++){
                     
-                    hiveSlot(out.hivePos[0]+x*0.8,out.hivePos[1]+y*0.8-2.25,out.hivePos[2],0.35,0.35,out.hive[y][x].type)
+                    hiveSlot(out.hivePos[0]+x*0.8,out.hivePos[1]+y*0.8-2.25,out.hivePos[2],0.35,0.35,out.hive[y][x].type,out.hive[y][x].gifted)
                     
                     if(out.hive[y][x].type!==null){
                         
@@ -15236,7 +16092,7 @@ player=(function(out){
     out.sensitivity=0.005
     out.yaw=0
     out.pitch=0
-    out.friction=15
+    out.friction=20
     out.grounded=false
     out.cameraDir=[]
     out.zoom=11
@@ -15529,7 +16385,7 @@ player=(function(out){
                 actionWarning.style.display='block'
                 actionName.innerHTML='Leave Shop'
                 
-                let cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost,canBuy=true
+                let cost=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].cost,canBuy=true
                 
                 for(let j in cost){
                     
@@ -15853,7 +16709,7 @@ player=(function(out){
         out.cosPitch=Math.cos(out.pitch)
         out.sinPitch=Math.sin(out.pitch)
         
-        let s=dt*out.walkSpeed*(out.grounded?1:0.75),cdir=out.cosYaw,sdir=out.sinYaw
+        let s=dt*out.walkSpeed,cdir=out.cosYaw,sdir=out.sinYaw
         
         if(!out.currentNPC&&!out.currentShop&&!out.removeAirFrictionUntilGrounded&&!out.isGliding){
             
@@ -15896,7 +16752,7 @@ player=(function(out){
             
             out.body.velocity.x+=dx*s
             out.body.velocity.z+=dz*s
-            
+
         } else if(out.isGliding){
             
             cdir*=0.7
@@ -15949,17 +16805,15 @@ player=(function(out){
                 out.body.velocity.y=out.jumpPower
             }
             
-            out.body.velocity.x-=out.body.velocity.x*dt*out.friction
-            out.body.velocity.z-=out.body.velocity.z*dt*out.friction   
-            
+            out.body.velocity.x/=dt*out.friction+1
+            out.body.velocity.z/=dt*out.friction+1
             
         } else if(!out.removeAirFrictionUntilGrounded){
             
             out.body.position.y+=0.001
-            
-            out.body.velocity.x-=out.body.velocity.x*dt*out.friction*0.75
-            out.body.velocity.z-=out.body.velocity.z*dt*out.friction*0.75 
-            
+
+            out.body.velocity.x/=dt*out.friction+1
+            out.body.velocity.z/=dt*out.friction+1
         }
         
         if((out.body.velocity.y<5||out.removeAirFrictionUntilGrounded)&&user.clickedKeys[' ']){
@@ -16108,8 +16962,7 @@ player=(function(out){
         
         out.toolCooldown-=dt
         
-        if(tools[out.tool].particles){
-                tools[out.tool].particles()}
+        if(gear.tool[out.currentGear.tool].particles) gear.tool[out.currentGear.tool].particles()
         
         if((user.keys.j||user.mousePressed)&&out.toolCooldown<=0){
             out.toolUses++
@@ -16120,11 +16973,11 @@ player=(function(out){
                 
                 let p=[],a=out.playerAngle
                 
-                if(tools[out.tool].computeDirection===undefined){
+                if(gear.tool[out.currentGear.tool].computeDirection===undefined){
                     
-                    for(let i in tools[out.tool].collectPattern){
+                    for(let i in gear.tool[out.currentGear.tool].collectPattern){
                         
-                        p.push(tools[out.tool].collectPattern[i].slice())
+                        p.push(gear.tool[out.currentGear.tool].collectPattern[i].slice())
                     }
                     
                     if(Math.abs(a)>MATH.PI_SUB_QUATER){
@@ -16154,19 +17007,18 @@ player=(function(out){
                     
                 } else {
                     
-                    p=tools[out.tool].collectPattern
+                    p=gear.tool[out.currentGear.tool].collectPattern
                 }
                 
                 arr=p.slice()
                 
-                collectPollen({x:player.flowerIn.x,z:player.flowerIn.z,pattern:p,amount:tools[out.tool].collectAmount,yOffset:1.5,stackHeight:0.75,isGummyBaller:out.tool==='gummyBaller',multiplier:player.pollenFromTools})
+                collectPollen({x:player.flowerIn.x,z:player.flowerIn.z,pattern:p,amount:gear.tool[out.currentGear.tool].collectAmount,yOffset:1.5,stackHeight:0.75,isGummyBaller:out.currentGear.tool==='gummyBaller',multiplier:player.pollenFromTools})
                 
             }
             
-            if(tools[out.tool].ability)
-                tools[out.tool].ability(arr)
+            if(gear.tool[out.currentGear.tool].ability) gear.tool[out.currentGear.tool].ability(arr)
             
-            out.toolCooldown=tools[out.tool].cooldown/player.collectorSpeed
+            out.toolCooldown=gear.tool[out.currentGear.tool].cooldown/player.collectorSpeed
             out.toolRot=0
         }
         
@@ -16175,7 +17027,7 @@ player=(function(out){
             out.sprinklers[i].update()
         }
         
-        for(let i in objects.flames){
+        for(let i=objects.flames.length;i--;){
             
             if(objects.flames[i].update()){
                 
@@ -16239,39 +17091,57 @@ let shops={
     
     cool:{
         
-        items:[{
-            name:'gummyMask',
-            desc:'The offical mask of a gummy soldier.<br><br>x1.75 goo<br>x2 capacity<br>x1.75 white field capacity<br>x1.5 white pollen<br>x1.35 pollen<br>x1.5 honey from tokens<br>x1.5 pollen from bees<br>x1.5 pollen from tools<br>x1.75 convert rate<br>+30% defense<br>x1.2 bee ability rate<br>+Passive: Gummy Morph<br>+Passive: Coin Scatter',
-            slot:'mask',
-            cost:['5000000000 honey','250 glue','100 enzymes','100 oil','100 glitter'],
-            viewMatrix:[25,5,16,-Math.PI,-0.3],
-        },{
+        // items:[{
+
+        //     name:'gummyMask',
+        //     slot:'mask',
+        //     viewMatrix:[25,1,10,-Math.PI,-0.4],
+        // },{
             
-            name:'diamondMask',
-            desc:'Proudly show off your extreme wealth to the world. Shine so brightly that others will complain.<br><br>x1.75 blue pollen<br>x3 capacity<br>x1.5 blue field capacity<br>x2 convert rate<br>x1.1 honey at hive<br>x1.25 bubble pollen<br>x1.25 blue bomb pollen<br>+30% defense<br>x1.2 bee ability rate<br>+Passive: Diamond Drain<br>+Passive: Bubble Bombs',
-            slot:'mask',
-            cost:['5000000000 honey','250 blueExtract','1 diamondEgg','100 glitter','150 oil'],
-            viewMatrix:[20,5,16,-Math.PI,-0.3],
-        },{
+        //     name:'diamondMask',
+        //     slot:'mask',
+        //     viewMatrix:[20,1,10,-Math.PI,-0.4],
+        // },{
             
-            name:'demonMask',
+        //     name:'demonMask',
+        //     slot:'mask',
+        //     viewMatrix:[15,1,10,-Math.PI,-0.4],
+        // },{
             
-            desc:'Embrace hate to take on the form of a Demon Bee. Become both extremely unpleasant and powerful.<br><br>x1.75 red pollen<br>x2 capacity<br>x1.75 red field capacity<br>+50% instant flame conversion<br>x2 flame pollen<br>x1.25 bee attack<br>+35% defense<br>+20% bee ability rate<br>+Passive: X Flame<br>+Passive: Ignite',
-            slot:'mask',
-            cost:['5000000000 honey'],
-            viewMatrix:[15,5,16,-Math.PI,-0.3],
-        },{
-            
-            name:'coconutCanister',
-            desc:'A back-mounted coconut that protects you during emergencies.<br><br>+2,000,000 capacity<br>x3 convert rate<br>+15% instant conversion<br>+10% instant white conversion<br>x1.25 pollen<br>x1.25 white pollen<br>+1 bee attack<br>+10% defense<br>x1.1 honey at hive<br>+Passive: Emergengy Shield<br>+Passive: Inspire Coconuts',
-            slot:'backpack',
-            cost:['25000000000 honey','150 tropicalDrink','250 redExtract','250 blueExtract'],
-            viewMatrix:[10,5,16,-Math.PI,-0.3],
-        }],
+        //     name:'coconutCanister',
+        //     slot:'backpack',
+        //     viewMatrix:[10,1,10,-Math.PI,-0.4],
+        // }],
         
+        items:[],
         currentIndex:0,message:'Explore Cool Shop'
     },
 }
+
+shopGearMesh.setMeshFromFunction(function(box,a,cylinder,sphere,applyFinalRotation,c,star){
+
+    let num=0
+
+    for(let i in gear){
+
+        if(i.indexOf('Amulet')>-1||i==='glider') continue
+
+        for(let j in gear[i]){
+
+            if(j==='none') continue
+
+            shops.cool.items.push({name:j,slot:i,viewMatrix:[25-(num%10)*4,1,10+((num/10)|0)*6,-Math.PI,-0.4]})
+            mat4.fromRotationTranslation(shopGearMesh.matrix,quat.fromEuler([],0,i==='backpack'?0:180,0),[25-(num%10)*4,-0.5,13+((num/10)|0)*6])
+            
+            gear[i][j].mesh(box,cylinder,sphere,star,applyFinalRotation)
+
+            num++
+
+        }
+    }
+})
+
+shopGearMesh.setBuffers()
 
 for(let i in shops){
     
@@ -16279,7 +17149,6 @@ for(let i in shops){
         
         shops[i].items[j].viewMatrix=computeSceneViewMatrix(...shops[i].items[j].viewMatrix)
     }
-    
 }
 
 let user=(function(out){
@@ -17356,7 +18225,7 @@ class Token {
         this.func=effects[type].svg?false:effects[type].func
         this.canBeLinked=effects[type].canBeLinked===undefined||effects[type].canBeLinked
         
-        if(Math.random()<player.abilityDuplicationChance&&!backupFunc&&player.fieldIn){
+        if(Math.random()<player.abilityDuplicationChance&&!backupFunc&&player.fieldIn&&funcParams){
             
             let p,fp=funcParams,x=(Math.random()*fieldInfo[fp.field].width)|0,z=(Math.random()*fieldInfo[fp.field].length)|0
             
@@ -18417,7 +19286,7 @@ c(0,0.85+1-0.15,0,0.2,0.2,10,0.9,0.9,0.9,-90,0,0,0.7,true,true,true)
 
 for(let i=0;i<verts.length;i+=6){
     
-    let _t=vec3.rotateX([],[verts[i],verts[i+1],verts[i+2]],[0,0,0],0.3)
+    let _t=vec3.rotateX([],[verts[i],verts[i+1],verts[i+2]],MATH.ORIGIN,0.3)
     
     verts[i]=_t[0]
     verts[i+1]=_t[1]
@@ -18698,7 +19567,7 @@ star(0.75,1.3,0.15,0.25,1,1,1,0.2,0.8)
 
 for(let i=0;i<verts.length;i+=6){
     
-    let a=vec3.rotateX([],[verts[i],verts[i+1],verts[i+2]],[0,0,0],MATH.HALF_PI)
+    let a=vec3.rotateX([],[verts[i],verts[i+1],verts[i+2]],MATH.ORIGIN,MATH.HALF_PI)
     
     verts[i]=a[0]
     verts[i+1]=a[1]
@@ -18722,7 +19591,7 @@ star(0.75,1.3,0.075,0.2,3.5,1.75,0)
 
 for(let i=0;i<verts.length;i+=6){
     
-    let a=vec3.rotateX([],[verts[i],verts[i+1],verts[i+2]],[0,0,0],MATH.HALF_PI*0.75)
+    let a=vec3.rotateX([],[verts[i],verts[i+1],verts[i+2]],MATH.ORIGIN,MATH.HALF_PI*0.75)
     
     verts[i]=a[0]
     verts[i+1]=a[1]
@@ -18746,7 +19615,7 @@ star(0.75,1.3,0.15,0.15,100,100,2)
 
 for(let i=0;i<verts.length;i+=6){
     
-    let a=vec3.rotateX([],[verts[i],verts[i+1],verts[i+2]],[0,0,0],-MATH.HALF_PI)
+    let a=vec3.rotateX([],[verts[i],verts[i+1],verts[i+2]],MATH.ORIGIN,-MATH.HALF_PI)
     
     verts[i]=a[0]
     verts[i+1]=a[1]
@@ -18872,12 +19741,12 @@ meshes.scratch.indexBuffer=gl.createBuffer()
 verts=[]
 index=[]
 
-b(2,1,-0.5,0.75,0.5,3,0.7,0.7,0.7,0,0,0)
-b(2,0.5,1,0.75,1.75,0.75,0.7,0.7,0.7,0,0,0)
-b(0,1,-0.5,0.75,0.5,3,0.7,0.7,0.7,0,0,0)
-b(0,0.5,1,0.75,1.75,0.75,0.7,0.7,0.7,0,0,0)
 b(-2,1,-0.5,0.75,0.75,3,0.7,0.7,0.7,0,0,0)
 b(-2,0.5,1,0.75,1.75,0.75,0.7,0.7,0.7,0,0,0)
+b(2,1,-0.5,0.75,0.75,3,0.7,0.7,0.7,0,0,0)
+b(2,0.5,1,0.75,1.75,0.75,0.7,0.7,0.7,0,0,0)
+b(0,1,-0.5,0.75,0.75,3,0.7,0.7,0.7,0,0,0)
+b(0,0.5,1,0.75,1.75,0.75,0.7,0.7,0.7,0,0,0)
 
 gl.bindBuffer(gl.ARRAY_BUFFER,meshes.scratch.vertBuffer)
 gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
@@ -18885,6 +19754,26 @@ gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.scratch.indexBuffer)
 gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
 
 meshes.scratch.indexAmount=index.length
+
+meshes.goldenRakeScratch={}
+meshes.goldenRakeScratch.vertBuffer=gl.createBuffer()
+meshes.goldenRakeScratch.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(-2,1,-1.5,0.75,0.75,5,1,1,0.35,0,0,0)
+b(-2,0.5,1,0.75,1.75,0.75,1.1,1.1,0.35,0,0,0)
+b(2,1,-1.5,0.75,0.75,5,1.1,1.1,0.35,0,0,0)
+b(2,0.5,1,0.75,1.75,0.75,1.1,1.1,0.35,0,0,0)
+b(0,1,-1.5,0.75,0.75,5,1.1,1.1,0.35,0,0,0)
+b(0,0.5,1,0.75,1.75,0.75,1.1,1.1,0.35,0,0,0)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.goldenRakeScratch.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.goldenRakeScratch.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.goldenRakeScratch.indexAmount=index.length
 
 meshes.paperPlanter={}
 meshes.paperPlanter.vertBuffer=gl.createBuffer()
@@ -19162,7 +20051,7 @@ function UPDATE_MAP_MESH(){
     
     mesh.setMeshFromFunction(function(box,a,cylinder,sphere,d,e,star){
         
-        let f=Object.constructor('box','a','cylinder','sphere','d','e','star',player.createdMesh.replaceAll('WALL','['+(0.3*MATH.map(player.isNight,NIGHT_DARKNESS,1,0,1)+','+(0.7*MATH.map(player.isNight,NIGHT_DARKNESS,1,0,1))+','+(1.2*MATH.map(player.isNight,NIGHT_DARKNESS,1,0,1))+']')))
+        let f=Object.constructor('box','a','cylinder','sphere','d','e','star',player.createdMesh.replaceAll('WALL','['+(0.3*(player.targetLight<0.9?0:1)+','+(0.7*(player.targetLight<0.9?0:1))+','+(1.2*(player.targetLight<0.9?0:1))+']')))
         
         f(box,a,cylinder,sphere,d,e,star)
     })
@@ -19390,13 +20279,13 @@ function collectPollen(params){
         }
     }
     
-    let instantConversion={r:params.instantConversion?(1-player.instantRedConversion)*params.instantConversion+1:player.instantRedConversion,b:params.instantConversion?(1-player.instantBlueConversion)*params.instantConversion+1:player.instantBlueConversion,w:params.instantConversion?(1-player.instantWhiteConversion)*params.instantConversion+1:player.instantWhiteConversion}
+    let instantConversion={r:params.instantConversion?(player.instantRedConversion-1)*params.instantConversion+1:player.instantRedConversion,b:params.instantConversion?(player.instantBlueConversion-1)*params.instantConversion+1:player.instantBlueConversion,w:params.instantConversion?(player.instantWhiteConversion-1)*params.instantConversion+1:player.instantWhiteConversion}
     
     instantConversion.r=crit.r===2?1:instantConversion.r
     instantConversion.w=crit.w===2?1:instantConversion.w
     instantConversion.b=crit.b===2?1:instantConversion.b
     
-    totalHoney=(total.r)*instantConversion.r+(total.b)*instantConversion.b+(total.w)*instantConversion.w
+    totalHoney=(total.r*instantConversion.r)+(total.b*instantConversion.b)+(total.w*instantConversion.w)
 
     player.pollen=Math.min(player.pollen+Math.ceil(total.w+total.r+total.b-totalHoney),player.capacity)
 
@@ -19667,10 +20556,13 @@ let ct=0
 for(let i in items){
     
     if(i.indexOf('Planter')>-1) continue
-    ct++
-    objects.tokens.push(new LootToken(10000,[-8+ct,-1,-6],i,1000000))
+
+    objects.tokens.push(new LootToken(10000,[(ct%6)*1.5,-1,(-3+((ct/6)|0))*1.5],i,1000000))
     
+    ct++
 }
+
+objects.tokens.push(new LootToken(10000,[0,1,0],'honey',10000000000000))
 
 player.pointerLocked=false
 
@@ -19813,7 +20705,8 @@ function loop(now){
         ctx.textBaseline='middle'
     }
     
-    dt=MATH.constrain((now-then)*0.001,0.0001,0.1)
+    dt=MATH.constrain((now-then)*0.001,0.01,0.1)
+
     TIME+=dt
     frameCount++
     BEE_COLLECT=Math.sin(TIME*15)*0.25
@@ -19987,10 +20880,13 @@ function loop(now){
     world.step(dt)
     player.updateCamera()
     
+    gl.useProgram(dynamicGeometryProgram)
+    gl.uniformMatrix4fv(glCache.dynamic_viewMatrix,gl.FALSE,player.viewMatrix)
+    
+    gl.uniformMatrix4fv(glCache.dynamic_modelMatrix,gl.FALSE,MATH.IDENTITY_MATRIX)
+    shopGearMesh.render()
+    
     if(player.zoom>0.2){
-        
-        gl.useProgram(dynamicGeometryProgram)
-        gl.uniformMatrix4fv(glCache.dynamic_viewMatrix,gl.FALSE,player.viewMatrix)
         
         gl.uniformMatrix4fv(glCache.dynamic_modelMatrix,gl.FALSE,player.modelMatrix)
         playerMesh.render()
@@ -20178,13 +21074,13 @@ function loop(now){
         
         let t=i
         
-        meshes.bees.instanceData.push(amountOfBeesInBeeLine*0.75-40,1,-1,i==='baby'||i==='tadpole'?0.65:1,0,0,1,0,beeInfo[t].u,beeInfo[t].v,beeInfo[t].meshPartId)
+        meshes.bees.instanceData.push((amountOfBeesInBeeLine%14)+13,1.5,-5+((amountOfBeesInBeeLine/14)|0)*1.5,i==='baby'||i==='tadpole'?0.65:1,0,0,1,0,beeInfo[t].u,beeInfo[t].v,beeInfo[t].meshPartId)
 
-        meshes.bees.instanceData.push(amountOfBeesInBeeLine*0.75-40,1,1,i==='baby'||i==='tadpole'?0.65:1,0,0,1,0,beeInfo[t].u,beeInfo[t].v+GIFTED_BEE_TEXTURE_OFFSET,beeInfo[t].meshPartId)
+        meshes.bees.instanceData.push((amountOfBeesInBeeLine%14)+13,0,-5+((amountOfBeesInBeeLine/14)|0)*1.5,i==='baby'||i==='tadpole'?0.65:1,0,0,1,0,beeInfo[t].u,beeInfo[t].v+GIFTED_BEE_TEXTURE_OFFSET,beeInfo[t].meshPartId)
+
+        textRenderer.addSingle(i,[(amountOfBeesInBeeLine%14)+13,2,-5+((amountOfBeesInBeeLine/14)|0)*1.5],COLORS.whiteArr,-1,false,false)
 
         amountOfBeesInBeeLine+=2
-
-        textRenderer.addSingle(i,[amountOfBeesInBeeLine*0.75-41.5,1.5,-1],COLORS.whiteArr,-1,false,false)
     }
     
     gl.bindTexture(gl.TEXTURE_2D,textures.bees)
@@ -20265,6 +21161,11 @@ function loop(now){
             objects.planters[i].growth+=dt*500
         }
     }
+
+    if(user.clickedKeys.l){
+
+        UPDATE_MAP_MESH()
+    }
     
     player.attacked=[]
     
@@ -20288,19 +21189,19 @@ function loop(now){
     
     gl.uniformMatrix4fv(glCache.explosion_viewMatrix,gl.FALSE,player.viewMatrix)
     
-    for(let i=objects.explosions.length;i--;){
-        
-        if(objects.explosions[i].update()){
-            
-            objects.explosions[i].die(i)
-        }
-    }
-    
     for(let i=objects.bubbles.length;i--;){
         
         if(objects.bubbles[i].update()){
             
             objects.bubbles[i].die(i)
+        }
+    }
+
+    for(let i=objects.explosions.length;i--;){
+        
+        if(objects.explosions[i].update()){
+            
+            objects.explosions[i].die(i)
         }
     }
     
@@ -20406,3 +21307,7 @@ if(window.thisProgramIsInFullScreen){
     noFullScreen()
 }
 }
+
+//<script>
+
+console.log=0
