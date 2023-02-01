@@ -9111,7 +9111,23 @@ let items={
                 player.addMessage('You must be in a field to use Cloud Vials!',COLORS.redArr)
                 return
             }
+
+            let count=0
+
+            for(let i in objects.mobs){
+
+                if(objects.mobs[i] instanceof Cloud&&objects.mobs[i].field===player.fieldIn){
+
+                    count++
+                }
+            }
             
+            if(count>6){
+
+                player.addMessage('There are too many clouds in this field!',COLORS.redArr)
+                return
+            }
+
             items.cloudVial.amount--
             
             objects.mobs.push(new Cloud(player.fieldIn,player.flowerIn.x,player.flowerIn.z,3*60))
@@ -9129,9 +9145,24 @@ let items={
                 return
             }
             
+            for(let i in objects.mobs){
+
+                if(objects.mobs[i] instanceof Sprout&&objects.mobs[i].field===player.fieldIn){
+
+                    player.addMessage('There is already a sprout in this field!',COLORS.redArr)
+                    return
+                }
+            }
+
             items.magicBean.amount--
             
-            objects.mobs.push(new Sprout(player.fieldIn,'supreme'))
+            let type=['basic','rare','epic','legendary','supreme','gummy']
+
+            type=type[(Math.random()*type.length)|0]
+
+            player.addMessage('You planted a '+MATH.doGrammar(type)+' Sprout!',{basic:undefined,rare:[130,130,130],epic:[210,170,0],legendary:[0,190,220],supreme:[30,220,90],gummy:[230,70,230]}[type])
+
+            objects.mobs.push(new Sprout(player.fieldIn,type))
         }
     },
     
@@ -17071,10 +17102,15 @@ class Sprout {
     
     constructor(field,type){
         
-        this.pollenBefore=player.stats['pollenFrom'+field]+20
+        this.amount={basic:50000,rare:150000,epic:500000,legendary:1500000,supreme:3000000,gummy:750000}[type]
+
+        this.invAmount=1/this.amount
+        this.growth=1
+
+        this.pollenBefore=player.stats['pollenFrom'+field]+this.amount
         this.type=type
         this.field=field
-        this.pos=[fieldInfo[this.field].x+fieldInfo[this.field].width*0.5,fieldInfo[this.field].y,fieldInfo[this.field].z+fieldInfo[this.field].length*0.5,0]
+        this.pos=[fieldInfo[this.field].x+fieldInfo[this.field].width*0.5,fieldInfo[this.field].y+0.5,fieldInfo[this.field].z+fieldInfo[this.field].length*0.5,0]
     }
     
     die(index){
@@ -17275,30 +17311,36 @@ class Sprout {
 
             window.setTimeout(function(){
 
-                objects.tokens.push(new LootToken(10,[fieldInfo[DIS.field].x+((fieldInfo[DIS.field].width*Math.random())|0),fieldInfo[DIS.field].y+1,fieldInfo[DIS.field].z+((fieldInfo[DIS.field].length*Math.random())|0),0],it,1,true,'Sprout'))
+                objects.tokens.push(new LootToken(10,[fieldInfo[DIS.field].x+((fieldInfo[DIS.field].width*Math.random())|0),fieldInfo[DIS.field].y+1,fieldInfo[DIS.field].z+((fieldInfo[DIS.field].length*Math.random())|0),0],it,1,false,'Sprout'))
 
             },200*i)
             
         }
         
+        objects.explosions.push(new Explosion({col:[1,1,0.6],pos:this.pos,life:1,size:10,speed:0.1,aftershock:0.05,maxAlpha:1,primitive:'cylinder_explosions',height:500}))
+
         objects.mobs.splice(index,1)
     }
     
     update(){
 
-        textRenderer.addSingle(MATH.addCommas((this.pollenBefore-player.stats['pollenFrom'+this.field])+''),[this.pos[0],this.pos[1]+4,this.pos[2]],COLORS.whiteArr,-3.5,false)
-        
-        meshes.cylinder_explosions.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1,1,0.5,0.3,3.5,500)
+        let pollen=Math.max(this.pollenBefore-player.stats['pollenFrom'+this.field],0)
 
-        gl.bindBuffer(gl.ARRAY_BUFFER,meshes.paperPlanter.vertBuffer)
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.paperPlanter.indexBuffer)
+        this.growth+=((pollen*this.invAmount)-this.growth)*dt*15
+
+        textRenderer.addSingle(MATH.addCommas(pollen+''),[this.pos[0],this.pos[1]+4,this.pos[2]],COLORS.whiteArr,-3.5,false)
+        
+        meshes.cylinder_explosions.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1,1,0.6,0.15,5,500)
+
+        gl.bindBuffer(gl.ARRAY_BUFFER,meshes[this.type+'Sprout'].vertBuffer)
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes[this.type+'Sprout'].indexBuffer)
         gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
         gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
         gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
-        gl.uniform2f(glCache.mob_instanceInfo2,1,1)
-        gl.drawElements(gl.TRIANGLES,meshes.paperPlanter.indexAmount,gl.UNSIGNED_SHORT,0)
+        gl.uniform2f(glCache.mob_instanceInfo2,0.6+(1-this.growth)*1.6,1)
+        gl.drawElements(gl.TRIANGLES,meshes[this.type+'Sprout'].indexAmount,gl.UNSIGNED_SHORT,0)
         
-        return this.pollenBefore-player.stats['pollenFrom'+this.field]<=0
+        return pollen<=0
     }
 }
 
@@ -24514,6 +24556,114 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
 
 meshes.spike.indexAmount=index.length
 
+meshes.basicSprout={}
+meshes.basicSprout.vertBuffer=gl.createBuffer()
+meshes.basicSprout.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0+0.5,0,0.5,2,0.5,0.1,0.5,0.1)
+b(-0.1,1+1,0,0.4,1,0.4,0.1,0.5,0.1,0.01,32,8)
+b(-0.5,1.5+1,1,1.5,0.2,1.5,0.1,0.5,0.1,0.01,32,-15)
+b(0,1.5+1,-1.25,1.75,0.2,1.75,0.1,0.5,0.1,0.01,35,5)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.basicSprout.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.basicSprout.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.basicSprout.indexAmount=index.length
+
+meshes.rareSprout={}
+meshes.rareSprout.vertBuffer=gl.createBuffer()
+meshes.rareSprout.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0+0.5,0,0.5,2,0.5,0.6,0.6,0.6)
+b(-0.1,1+1,0,0.4,1,0.4,0.6,0.6,0.6,0.01,32,8)
+b(-0.5,1.5+1,1,1.5,0.2,1.5,0.6,0.6,0.6,0.01,32,-15)
+b(0,1.5+1,-1.25,1.75,0.2,1.75,0.6,0.6,0.6,0.01,35,5)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.rareSprout.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.rareSprout.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.rareSprout.indexAmount=index.length
+
+meshes.epicSprout={}
+meshes.epicSprout.vertBuffer=gl.createBuffer()
+meshes.epicSprout.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0+0.5,0,0.5,2,0.5,1*0.9,0.85*0.9,0)
+b(-0.1,1+1,0,0.4,1,0.4,1*0.9,0.85*0.9,0,0.01,32,8)
+b(-0.5,1.5+1,1,1.5,0.2,1.5,1*0.9,0.85*0.9,0,0.01,32,-15)
+b(0,1.5+1,-1.25,1.75,0.2,1.75,1*0.9,0.85*0.9,0,0.01,35,5)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.epicSprout.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.epicSprout.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.epicSprout.indexAmount=index.length
+
+meshes.legendarySprout={}
+meshes.legendarySprout.vertBuffer=gl.createBuffer()
+meshes.legendarySprout.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0+0.5,0,0.5,2,0.5,0,0.7,0.9)
+b(-0.1,1+1,0,0.4,1,0.4,0,0.7,0.9,0.01,32,8)
+b(-0.5,1.5+1,1,1.5,0.2,1.5,0,0.7,0.9,0.01,32,-15)
+b(0,1.5+1,-1.25,1.75,0.2,1.75,0,0.7,0.9,0.01,35,5)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.legendarySprout.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.legendarySprout.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.legendarySprout.indexAmount=index.length
+
+meshes.supremeSprout={}
+meshes.supremeSprout.vertBuffer=gl.createBuffer()
+meshes.supremeSprout.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0+0.5,0,0.5,2,0.5,0,10,0)
+b(-0.1,1+1,0,0.4,1,0.4,0,10,0,0.01,32,8)
+b(-0.5,1.5+1,1,1.5,0.2,1.5,0,10,0,0.01,32,-15)
+b(0,1.5+1,-1.25,1.75,0.2,1.75,0,10,0,0.01,35,5)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.supremeSprout.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.supremeSprout.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.supremeSprout.indexAmount=index.length
+
+meshes.gummySprout={}
+meshes.gummySprout.vertBuffer=gl.createBuffer()
+meshes.gummySprout.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0+0.5,0,0.5,2,0.5,1,0.4,1)
+b(-0.1,1+1,0,0.4,1,0.4,1,0.4,1,0.01,32,8)
+b(-0.5,1.5+1,1,1.5,0.2,1.5,1,0.4,1,0.01,32,-15)
+b(0,1.5+1,-1.25,1.75,0.2,1.75,1,0.4,1,0.01,35,5)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.gummySprout.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.gummySprout.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.gummySprout.indexAmount=index.length
+
 
 player.createdMesh=window.mapMesh
 
@@ -25651,6 +25801,15 @@ function loop(now){
             objects.mobs[i].die(i)
         }
     }
+
+    this.type='basic'
+    gl.bindBuffer(gl.ARRAY_BUFFER,meshes[this.type+'Sprout'].vertBuffer)
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes[this.type+'Sprout'].indexBuffer)
+        gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
+        gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
+        gl.uniform4fv(glCache.mob_instanceInfo1,[9,0,0,0])
+        gl.uniform2f(glCache.mob_instanceInfo2,1,1)
+        gl.drawElements(gl.TRIANGLES,meshes[this.type+'Sprout'].indexAmount,gl.UNSIGNED_SHORT,0)
 
     for(let i=objects.planters.length;i--;){
         
