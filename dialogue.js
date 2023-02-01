@@ -73,7 +73,7 @@ window.dialogue_polarBear=function(player,items){
             }
         }
 
-    ,"That's all the ingredients I need! Ok, let me whip something up...","...(chop)...(chop)... ...(sizzle)...","A dash of honey... ...(stir)...","All done! Enjoy!","Well, I'm always ready to eat. I'll be waiting when you're ready for more cooking!",addReward(['100000 honey'])}
+    ,"That's all the ingredients I need! Ok, let me whip something up...","...(chop)...(chop)... ...(sizzle)...","A dash of honey... ...(stir)...","All done! Enjoy!","Well, I'm always ready to eat. I'll be waiting when you're ready for more cooking!",function(){addReward([['honey',100000]])}
     
     ]
 }
@@ -109,63 +109,63 @@ window.dialogue_brownBear=function(player,items){
 
     let diff=window.brownBearQuestDifficulty++
     
-    let rew=[(750+diff*2500)+' honey']
+    let rew=[['honey',750+diff*2500]]
     
     if(!diff%2){
         
-        rew.push('1 royalJelly')
+        rew.push(['royalJelly',1])
     }
     
     if(diff){
         
         if(!diff%3){
             
-            rew.push('3 treat')
+            rew.push(['treat',3])
         }
         
         if(!diff%4){
             
-            rew.push('1 ticket')
+            rew.push(['ticket',1])
         }
         
         if(!diff%6){
             
-            rew.push('1 gumdrop')
+            rew.push(['gumdrop',2])
         }
         
         if(!diff%7){
             
-            rew.push('1 enzymes')
+            rew.push(['enzymes',1])
         }
         
         if(!diff%8){
             
-            rew.push('1 oil')
+            rew.push(['oil',1])
         }
         
         if(diff===15){
             
-            rew.push('1 silverEgg')
+            rew.push(['silverEgg',1])
         }
         
         if(diff===30){
             
-            rew.push('1 goldEgg')
+            rew.push(['goldEgg',1])
         }
         
         if(diff===50){
             
-            rew.push('1 diamondEgg')
+            rew.push(['diamondEgg',1])
         }
         
         if(!diff%75){
             
-            rew.push('1 mythicEgg')
+            rew.push(['mythicEgg',1])
         }
         
         if(!diff%100){
             
-            rew.push('1 starEgg')
+            rew.push(['starEgg',1])
         }
     }
     
@@ -205,7 +205,7 @@ window.dialogue_brownBear=function(player,items){
             
         }
 
-    ,"Great! Here are some rewards!","Come back to me every 5 minutes for a new quest!",addReward(rew)}
+    ,"Great! Here are some rewards!","Come back to me every 5 minutes for a new quest!",function(){addReward(rew)}
     
     ]
 

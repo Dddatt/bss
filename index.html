@@ -3951,29 +3951,29 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js'></script>
 
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/dialogue.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/textures.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/playerGear.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/MathHelper.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/GLSLShaders.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/mapMesh.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_popStar.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_scorchingStar.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_gummyStar.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_frog.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_inflateBalloons.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_haste.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_bombToken.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_markToken.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_melodyToken.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_focusToken.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_rageToken.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_surpriseParty.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_infernoToken.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_flameFuelToken.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_babyLove.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_boostToken.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/Dddatt/bss@v1.9.0/music_inspireToken.js"></script>
+<script src="dialogue.js"></script>
+<script src="textures.js"></script>
+<script src="playerGear.js"></script>
+<script src="MathHelper.js"></script>
+<script src="GLSLShaders.js"></script>
+<script src="mapMesh.js"></script>
+<script src="music_popStar.js"></script>
+<script src="music_scorchingStar.js"></script>
+<script src="music_gummyStar.js"></script>
+<script src="music_frog.js"></script>
+<script src="music_inflateBalloons.js"></script>
+<script src="music_haste.js"></script>
+<script src="music_bombToken.js"></script>
+<script src="music_markToken.js"></script>
+<script src="music_melodyToken.js"></script>
+<script src="music_focusToken.js"></script>
+<script src="music_rageToken.js"></script>
+<script src="music_surpriseParty.js"></script>
+<script src="music_infernoToken.js"></script>
+<script src="music_flameFuelToken.js"></script>
+<script src="music_babyLove.js"></script>
+<script src="music_boostToken.js"></script>
+<script src="music_inspireToken.js"></script>
 
 
 <script type='application/javascript'>
@@ -25103,14 +25103,11 @@ function loop(now){
     gl.uniformMatrix4fv(glCache.dynamic_modelMatrix,gl.FALSE,MATH.IDENTITY_MATRIX)
     shopGearMesh.render()
     
-    if(player.zoom>0.2){
-        
-        gl.uniformMatrix4fv(glCache.dynamic_modelMatrix,gl.FALSE,player.modelMatrix)
-        playerMesh.render()
-        
-        gl.uniformMatrix4fv(glCache.dynamic_modelMatrix,gl.FALSE,player.toolMatrix)
-        player.toolMesh.render()
-    }
+    gl.uniformMatrix4fv(glCache.dynamic_modelMatrix,gl.FALSE,player.modelMatrix)
+    playerMesh.render()
+    
+    gl.uniformMatrix4fv(glCache.dynamic_modelMatrix,gl.FALSE,player.toolMatrix)
+    player.toolMesh.render()
     
     gl.bindTexture(gl.TEXTURE_2D,textures.flowers)
     gl.useProgram(flowerGeometryProgram)
