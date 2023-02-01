@@ -32,11 +32,32 @@ window.dialogue_blackBear=function(player,items){
   
 }
 
-window.polarBearQuestDifficulty=0
-
 window.dialogue_polarBear=function(player,items){
-
-    let diff=window.polarBearQuestDifficulty++
+    
+    let addCommas=(s)=>{for(let i=s.length-3;i>0;i-=3){s=s.substring(0,i)+','+s.substr(i,s.length)}return s},doGrammar=(s)=>{let str=s.slice(),_s='';for(let i in str){if(str[i].toUpperCase()===str[i]){_s=_s+' '+str[i]}else{_s=_s+str[i]}}return _s[0].toUpperCase()+_s.substring(1,_s.length)},addReward=(arr)=>{
+        
+        for(let i in player.quests){
+            
+            if(player.quests[i].NPC==='polarBear') player.quests.splice(i,1)
+            
+        }
+        
+        for(let i in arr){
+            
+            if(arr[i][0]==='honey'){
+                
+                player.honey+=arr[i][1]
+                
+            } else {
+                
+                items[arr[i][0]].amount+=arr[i][1]
+            }
+            
+            player.addMessage('+'+addCommas(arr[i][1]+'')+' '+doGrammar(arr[i][0])+' (from Polar Bear)')
+        }
+        
+        player.updateInventory()
+    }
 
     return ["Hey there! You hungry? If you collect the ingredients, I'll cook us up something good.","So good it'll permanently increase the maximum energy of your bees by 5%! I'll even throw in some honey for dessert!","Check the Quest menu to see our next recipe.",
 
@@ -46,12 +67,146 @@ window.dialogue_polarBear=function(player,items){
 
                 case 0:
 
-                        player.addQuest('Spiky Stew',[['pollenFromCactusField',100000+diff*2700],['whitePollen',75000+diff*2000]],'polarBear');
+                        player.addQuest('Spiky Stew',[['pollenFromCactusField',100000],['whitePollen',75000]],'polarBear');
+                        
                 break;
             }
         }
 
-    ,"That's all the ingredients I need! Ok, let me whip something up...","...(chop)...(chop)... ...(sizzle)...","A dash of honey... ...(stir)...","All done! Enjoy!","Well, I'm always ready to eat. I'll be waiting when you're ready for more cooking!",function(){for(let i in player.quests){if(player.quests[i].NPC==='polarBear'){player.quests.splice(i,1)}}player.honey+=100;player.addMessage('+100 Honey (from Polar Bear)');}
+    ,"That's all the ingredients I need! Ok, let me whip something up...","...(chop)...(chop)... ...(sizzle)...","A dash of honey... ...(stir)...","All done! Enjoy!","Well, I'm always ready to eat. I'll be waiting when you're ready for more cooking!",addReward(['100000 honey'])}
+    
+    ]
+}
+
+window.brownBearQuestDifficulty=0
+
+window.dialogue_brownBear=function(player,items){
+    
+    let addCommas=(s)=>{for(let i=s.length-3;i>0;i-=3){s=s.substring(0,i)+','+s.substr(i,s.length)}return s},doGrammar=(s)=>{let str=s.slice(),_s='';for(let i in str){if(str[i].toUpperCase()===str[i]){_s=_s+' '+str[i]}else{_s=_s+str[i]}}return _s[0].toUpperCase()+_s.substring(1,_s.length)},addReward=(arr)=>{
+        
+        for(let i in player.quests){
+            
+            if(player.quests[i].NPC==='brownBear') player.quests.splice(i,1)
+            
+        }
+        
+        for(let i in arr){
+            
+            if(arr[i][0]==='honey'){
+                
+                player.honey+=arr[i][1]
+                
+            } else {
+                
+                items[arr[i][0]].amount+=arr[i][1]
+            }
+            
+            player.addMessage('+'+addCommas(arr[i][1]+'')+' '+doGrammar(arr[i][0])+' (from Brown Bear)')
+        }
+        
+        player.updateInventory()
+    }
+
+    let diff=window.brownBearQuestDifficulty++
+    
+    let rew=[(750+diff*2500)+' honey']
+    
+    if(!diff%2){
+        
+        rew.push('1 royalJelly')
+    }
+    
+    if(diff){
+        
+        if(!diff%3){
+            
+            rew.push('3 treat')
+        }
+        
+        if(!diff%4){
+            
+            rew.push('1 ticket')
+        }
+        
+        if(!diff%6){
+            
+            rew.push('1 gumdrop')
+        }
+        
+        if(!diff%7){
+            
+            rew.push('1 enzymes')
+        }
+        
+        if(!diff%8){
+            
+            rew.push('1 oil')
+        }
+        
+        if(diff===15){
+            
+            rew.push('1 silverEgg')
+        }
+        
+        if(diff===30){
+            
+            rew.push('1 goldEgg')
+        }
+        
+        if(diff===50){
+            
+            rew.push('1 diamondEgg')
+        }
+        
+        if(!diff%75){
+            
+            rew.push('1 mythicEgg')
+        }
+        
+        if(!diff%100){
+            
+            rew.push('1 starEgg')
+        }
+    }
+    
+    return ["Welcome! Ready for one of my repeatable quests?","I'll give honey and rewards for every quest, but special prizes at certain milestones!","Check your quest menu to see what you need.",
+
+        function(){
+            
+            let name='',req=[]
+            
+            let types=['pollenFromSunflowerField','pollenFromDandelionField','pollenFromMushroomField','pollenFromBlueFlowerField','pollenFromCloverField','pollenFromSpiderField','pollenFromStrawberryField','pollenFromBambooField','pollenFromPineapplePatch','pollenFromStumpField','pollenFromCactusField','pollenFromPumpkinPatch','pollenFromPineTreeForest','pollenFromRoseField','pollenFromMountainTopField','pollenFromPepperPatch','pollenFromCoconutField']
+            
+            if(Math.random()<0.35){
+                
+                let n=['redPollen','bluePollen','whitePollen'][(Math.random()*3)|0]
+                req.push([n,500+diff*2000])
+                
+                name+=n.replace('Pollen','')+'-'
+                
+            }
+            
+            for(let i=0,r=Math.round(Math.random())+2;i<r;i++){
+                
+                let n=types[(Math.random()*types.length)|0]
+                
+                types.splice(types.indexOf(n))
+                
+                req.push([n,500+diff*(i===2?1600:1500)])
+                
+                n=n.replace('pollenFrom','').replace('Field','').replace('Patch','').replace('Field','').replace('Forest','').toLowerCase()
+                
+                n={sunflower:'Sunf',dandelion:'Dand',mushroom:'Mush',blueflower:'Bluf',spider:'spi',strawberry:'Straw',bamboo:'Bamb',pineapple:'Pineap',stump:'Stump',cactus:'Cac',pumpkin:'Pump',pinetree:'Pine',rose:'Rose',mountaintop:'Moun',pepper:'Pep',coconut:'Coco'}[n]
+                
+                name+=n+'-'
+            }
+            
+            player.addQuest(name[name.length-1]==='-'?name.substring(0,name.length-1):name,req,'brownBear')
+            
+        }
+
+    ,"Great! Here are some rewards!","Come back to me every 5 minutes for a new quest!",addReward(rew)}
+    
     ]
 
 }
