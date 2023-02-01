@@ -9117,6 +9117,23 @@ let items={
             objects.mobs.push(new Cloud(player.fieldIn,player.flowerIn.x,player.flowerIn.z,3*60))
         }
     },
+
+    magicBean:{
+        
+        amount:0,u:128*4/2048,v:128*12/2048,value:25,
+        use:function(){
+            
+            if(!player.fieldIn){
+                
+                player.addMessage('You must be in a field to use Magic Beans!',COLORS.redArr)
+                return
+            }
+            
+            items.magicBean.amount--
+            
+            objects.mobs.push(new Sprout(player.fieldIn,'basic'))
+        }
+    },
     
     comfortingVial:{
         
@@ -16470,7 +16487,7 @@ class Planter {
 
         for(let i in items){
 
-            if(i.toLowerCase().indexOf('egg')>-1||i.toLowerCase().indexOf('pass')>-1||i.toLowerCase().indexOf('drive')>-1)
+            if(i.toLowerCase().indexOf('egg')>-1||i.toLowerCase().indexOf('pass')>-1||i.toLowerCase().indexOf('drive')>-1||i.toLowerCase().indexOf('vial')>-1)
                 continue
             
             dropTable.push(i)
@@ -17042,6 +17059,210 @@ class JellyBean {
         meshes.explosions.instanceData.push(...this.pos,...this.col,1,0.35,1)
 
         return this.pos[1]<=this.y
+    }
+}
+
+class Sprout {
+    
+    constructor(field,type){
+        
+        this.pollenBefore=player.stats['pollenFrom'+field]+20
+        this.type=type
+        this.field=field
+        this.pos=[fieldInfo[this.field].x+fieldInfo[this.field].width*0.5,fieldInfo[this.field].y,fieldInfo[this.field].z+fieldInfo[this.field].length*0.5,0]
+    }
+    
+    die(index){
+
+        let amountOfTokens=30,dropTable=[],dropRates={}
+
+        for(let i in items){
+
+            if(i.toLowerCase().indexOf('egg')>-1||i.toLowerCase().indexOf('pass')>-1||i.toLowerCase().indexOf('drive')>-1||i.toLowerCase().indexOf('dice')>-1||i.toLowerCase().indexOf('wax')>-1||i.toLowerCase().indexOf('vial')>-1)
+                continue
+            
+            dropTable.push(i)
+            dropRates[i]=1/items[i].value
+        }
+
+        if(this.field!=='CoconutField'){
+                
+            dropTable.splice(dropTable.indexOf('coconut'),1)
+            dropTable.splice(dropTable.indexOf('tropicalDrink'),1)
+        }
+
+        dropTable.splice(dropTable.indexOf('stinger'),1)
+
+        if(this.field==='StumpField'){
+                
+            dropTable.splice(dropTable.indexOf('strawberry'),1)
+            dropTable.splice(dropTable.indexOf('redExtract'),1)
+        }
+
+        dropTable.splice(dropTable.indexOf('bitterberry'),1)
+        dropTable.splice(dropTable.indexOf('neonberry'),1)
+        dropTable.splice(dropTable.indexOf('whirligig'),1)
+        dropTable.splice(dropTable.indexOf('honeysuckle'),1)
+        dropTable.splice(dropTable.indexOf('microConverter'),1)
+        dropTable.splice(dropTable.indexOf('jellyBeans'),1)
+        dropTable.splice(dropTable.indexOf('purplePotion'),1)
+        dropTable.splice(dropTable.indexOf('superSmoothie'),1)
+
+        dropRates.strawberry*=fieldInfo[this.field].generalColorComp.r*3.5
+        dropRates.redExtract*=fieldInfo[this.field].generalColorComp.r*2
+        dropRates.pineapple*=fieldInfo[this.field].generalColorComp.w+0.2
+        dropRates.enzymes*=fieldInfo[this.field].generalColorComp.b*0.5+0.5
+        dropRates.sunflowerSeed*=fieldInfo[this.field].generalColorComp.w+0.2
+        dropRates.oil*=fieldInfo[this.field].generalColorComp.r*0.5+0.5
+        dropRates.treat*=fieldInfo[this.field].generalColorComp.w<0.5?0.3:2.5
+        dropRates.blueberry*=fieldInfo[this.field].generalColorComp.b*3.5
+        dropRates.blueExtract*=fieldInfo[this.field].generalColorComp.b*2
+
+        dropRates.royalJelly*=6
+
+        if(this.field==='PineapplePatch'){
+
+            dropRates.pineapple*=10
+            dropRates.enzymes*=17
+            dropRates.treats*=0.15
+        }
+
+        if(this.field==='SunflowerField'){
+
+            dropRates.sunflowerSeed*=10
+            dropRates.oil*=17
+            dropRates.treats*=0.15
+        }
+
+        if(this.field==='CoconutField'){
+
+            dropRates.coconut*=15
+            dropRates.tropicalDrink*=15
+            dropRates.treats*=2
+        }
+
+        if(this.type==='basic'){
+
+            dropTable.splice(dropTable.indexOf('redExtract'),1)
+            dropTable.splice(dropTable.indexOf('blueExtract'),1)
+            dropTable.splice(dropTable.indexOf('oil'),1)
+            dropTable.splice(dropTable.indexOf('enzymes'),1)
+            dropTable.splice(dropTable.indexOf('glitter'),1)
+            dropTable.splice(dropTable.indexOf('magicBean'),1)
+            dropTable.splice(dropTable.indexOf('tropicalDrink'),1)
+        }
+
+        if(this.type==='rare'){
+
+            dropRates.redExtract*=2
+            dropRates.blueExtract*=2 
+            dropRates.oil*=2 
+            dropRates.enzymes*=2 
+            dropRates.magicBean*=1.5       
+            dropRates.treats*=0.6 
+        }
+
+        if(this.type==='epic'){
+
+            dropRates.redExtract*=3
+            dropRates.blueExtract*=3 
+            dropRates.oil*=3 
+            dropRates.enzymes*=3 
+            dropRates.magicBean*=2 
+            dropRates.tropicalDrink*=1.5 
+            dropRates.glitter*=1.5    
+            dropRates.treats*=0.35    
+        }
+
+        if(this.type==='legendary'){
+
+            dropRates.redExtract*=4
+            dropRates.blueExtract*=4 
+            dropRates.oil*=4 
+            dropRates.enzymes*=4 
+            dropRates.magicBean*=2.5 
+            dropRates.tropicalDrink*=2  
+            dropRates.glitter*=1.75   
+            dropRates.treats*=0.25     
+        }
+
+        if(this.type==='supreme'){
+
+            dropRates.redExtract*=5
+            dropRates.blueExtract*=5 
+            dropRates.oil*=5
+            dropRates.enzymes*=5 
+            dropRates.magicBean*=3
+            dropRates.tropicalDrink*=2.5  
+            dropRates.glitter*=2
+            dropRates.treats*=0.15 
+        }
+
+        if(this.type==='gummy'){
+
+            dropTable=['gumdrops','glue']
+
+        } else {
+
+            dropTable.splice(dropTable.indexOf('gumdrops'),1)
+            dropTable.splice(dropTable.indexOf('glue'),1)
+        }
+
+        let totalChance=0
+
+        for(let i in dropTable){
+
+            totalChance+=dropRates[dropTable[i]]
+        }
+
+        for(let i in dropRates){
+
+            dropRates[i]/=totalChance
+        }
+        
+        for(let i=0;i<amountOfTokens;i++){
+
+            let c=0,it,r=Math.random()
+
+            for(let j in dropTable){
+
+                if(r<=dropRates[dropTable[j]]+c){
+
+                    it=dropTable[j]
+                    break
+                }
+
+                c+=dropRates[dropTable[j]]
+            }
+
+            let DIS=this
+
+            window.setTimeout(function(){
+
+                objects.tokens.push(new LootToken(45,[fieldInfo[DIS.field].x+((fieldInfo[DIS.field].width*Math.random())|0),fieldInfo[DIS.field].y+1,fieldInfo[DIS.field].z+((fieldInfo[DIS.field].length*Math.random())|0),0],it,MATH.random(1,(6/items[it].value)+1)|0,true,'Sprout'))
+
+            },250*i)
+            
+        }
+        
+        objects.mobs.splice(index,1)
+    }
+    
+    update(){
+
+        textRenderer.addSingle(MATH.addCommas((this.pollenBefore-player.stats['pollenFrom'+this.field])+''),[this.pos[0],this.pos[1]+4,this.pos[2]],COLORS.whiteArr,-3.5,false)
+        
+        meshes.cylinder_explosions.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1,1,0.5,0.3,3.5,500)
+
+        gl.bindBuffer(gl.ARRAY_BUFFER,meshes.paperPlanter.vertBuffer)
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.paperPlanter.indexBuffer)
+        gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
+        gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
+        gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
+        gl.uniform2f(glCache.mob_instanceInfo2,1,1)
+        gl.drawElements(gl.TRIANGLES,meshes.paperPlanter.indexAmount,gl.UNSIGNED_SHORT,0)
+        
+        return this.pollenBefore-player.stats['pollenFrom'+this.field]<=0
     }
 }
 
