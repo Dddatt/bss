@@ -9131,7 +9131,7 @@ let items={
             
             items.magicBean.amount--
             
-            objects.mobs.push(new Sprout(player.fieldIn,'basic'))
+            objects.mobs.push(new Sprout(player.fieldIn,'supreme'))
         }
     },
     
@@ -16686,6 +16686,11 @@ class Planter {
             dropRates.treats*=0.15
         }
 
+        if(this.field==='PepperPatch'){
+
+            dropRates.sunflowerSeed*=10
+        }
+
         if(this.field==='SunflowerField'){
 
             dropRates.sunflowerSeed*=10
@@ -17074,7 +17079,7 @@ class Sprout {
     
     die(index){
 
-        let amountOfTokens=30,dropTable=[],dropRates={}
+        let amountOfTokens={basic:60,rare:75,epic:95,legendary:120,supreme:150,gummy:90}[this.type],dropTable=[],dropRates={}
 
         for(let i in items){
 
@@ -17114,31 +17119,37 @@ class Sprout {
         dropRates.enzymes*=fieldInfo[this.field].generalColorComp.b*0.5+0.5
         dropRates.sunflowerSeed*=fieldInfo[this.field].generalColorComp.w+0.2
         dropRates.oil*=fieldInfo[this.field].generalColorComp.r*0.5+0.5
-        dropRates.treat*=fieldInfo[this.field].generalColorComp.w<0.5?0.3:2.5
+        dropRates.treat*=fieldInfo[this.field].generalColorComp.w<0.5?0.3:1
         dropRates.blueberry*=fieldInfo[this.field].generalColorComp.b*3.5
         dropRates.blueExtract*=fieldInfo[this.field].generalColorComp.b*2
 
-        dropRates.royalJelly*=6
+        dropRates.royalJelly*=4
+        dropRates.ticket*=0.75
 
         if(this.field==='PineapplePatch'){
 
-            dropRates.pineapple*=10
-            dropRates.enzymes*=17
+            dropRates.pineapple*=6
+            dropRates.enzymes*=8
             dropRates.treats*=0.15
+        }
+
+        if(this.field==='PepperPatch'){
+
+            dropRates.sunflowerSeed*=6
         }
 
         if(this.field==='SunflowerField'){
 
-            dropRates.sunflowerSeed*=10
-            dropRates.oil*=17
+            dropRates.sunflowerSeed*=6
+            dropRates.oil*=8
             dropRates.treats*=0.15
         }
 
         if(this.field==='CoconutField'){
 
-            dropRates.coconut*=15
-            dropRates.tropicalDrink*=15
-            dropRates.treats*=2
+            dropRates.coconut*=7
+            dropRates.tropicalDrink*=7
+            dropRates.treats*=1.5
         }
 
         if(this.type==='basic'){
@@ -17154,53 +17165,78 @@ class Sprout {
 
         if(this.type==='rare'){
 
-            dropRates.redExtract*=2
-            dropRates.blueExtract*=2 
+            dropRates.royalJelly*=1.5
+            dropRates.redExtract*=3
+            dropRates.blueExtract*=3
             dropRates.oil*=2 
             dropRates.enzymes*=2 
             dropRates.magicBean*=1.5       
-            dropRates.treats*=0.6 
+            dropRates.treats*=0.65
+
+            dropRates.pineapple*=0.85
+            dropRates.blueberry*=0.85
+            dropRates.strawberry*=0.85
+            dropRates.sunflowerSeed*=0.85
         }
 
         if(this.type==='epic'){
 
-            dropRates.redExtract*=3
-            dropRates.blueExtract*=3 
-            dropRates.oil*=3 
-            dropRates.enzymes*=3 
-            dropRates.magicBean*=2 
+            dropRates.royalJelly*=2
+            dropRates.redExtract*=4.5
+            dropRates.blueExtract*=4.5
+            dropRates.oil*=3.5
+            dropRates.enzymes*=3.5 
+            dropRates.magicBean*=2.5 
             dropRates.tropicalDrink*=1.5 
             dropRates.glitter*=1.5    
-            dropRates.treats*=0.35    
+            dropRates.treats*=0.35  
+
+            dropRates.pineapple*=0.65
+            dropRates.blueberry*=0.65
+            dropRates.strawberry*=0.65
+            dropRates.sunflowerSeed*=0.65
         }
 
         if(this.type==='legendary'){
 
-            dropRates.redExtract*=4
-            dropRates.blueExtract*=4 
-            dropRates.oil*=4 
+            dropRates.royalJelly*=2.5
+            dropRates.redExtract*=6
+            dropRates.blueExtract*=6
+            dropRates.oil*=4
             dropRates.enzymes*=4 
             dropRates.magicBean*=2.5 
             dropRates.tropicalDrink*=2  
             dropRates.glitter*=1.75   
             dropRates.treats*=0.25     
+              
+            dropRates.pineapple*=0.4
+            dropRates.blueberry*=0.4
+            dropRates.strawberry*=0.4
+            dropRates.sunflowerSeed*=0.4
         }
 
         if(this.type==='supreme'){
 
-            dropRates.redExtract*=5
-            dropRates.blueExtract*=5 
+            dropRates.royalJelly*=3
+            dropRates.redExtract*=6
+            dropRates.blueExtract*=6 
             dropRates.oil*=5
             dropRates.enzymes*=5 
             dropRates.magicBean*=3
             dropRates.tropicalDrink*=2.5  
             dropRates.glitter*=2
             dropRates.treats*=0.15 
+
+            dropRates.pineapple*=0.25
+            dropRates.blueberry*=0.25
+            dropRates.strawberry*=0.25
+            dropRates.sunflowerSeed*=0.25
         }
 
         if(this.type==='gummy'){
 
             dropTable=['gumdrops','glue']
+            dropRates.gumdrops*=3
 
         } else {
 
@@ -17239,9 +17275,9 @@ class Sprout {
 
             window.setTimeout(function(){
 
-                objects.tokens.push(new LootToken(45,[fieldInfo[DIS.field].x+((fieldInfo[DIS.field].width*Math.random())|0),fieldInfo[DIS.field].y+1,fieldInfo[DIS.field].z+((fieldInfo[DIS.field].length*Math.random())|0),0],it,MATH.random(1,(6/items[it].value)+1)|0,true,'Sprout'))
+                objects.tokens.push(new LootToken(10,[fieldInfo[DIS.field].x+((fieldInfo[DIS.field].width*Math.random())|0),fieldInfo[DIS.field].y+1,fieldInfo[DIS.field].z+((fieldInfo[DIS.field].length*Math.random())|0),0],it,1,true,'Sprout'))
 
-            },250*i)
+            },200*i)
             
         }
         
