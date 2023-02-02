@@ -494,7 +494,7 @@ window.playerGear={
                 stats.whiteBeeAttack+=1
             },
             desc:'A Port-O-Hive dipped in shiny blue paint. Works best for blue bees and blue pollen.<br>+450,000 capacity<br>x2.5 convert rate<br>+10% instant blue conversion<br>x1.1 blue pollen<br>+1 blue bee attack',
-            cost:['12500000 honey'],
+            cost:['250000000 honey'],
         },
         
         coconutCanister:{
