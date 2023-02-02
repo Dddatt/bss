@@ -3738,7 +3738,6 @@ window.textures_effects=function(tex_ctx){
     tex_ctx.strokeStyle='rgb(40, 74, 128)'
     a=new Path2D('M-12 -6C-12 -5 12 -5 12 -6M6 -6C 16 2 1 0 11 7')
     tex_ctx.stroke(a)
-    
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.fillStyle='rgb(100,200,255)'
@@ -3780,6 +3779,47 @@ window.textures_effects=function(tex_ctx){
     tex_ctx.rotate(Math.PI*0.25)
     tex_ctx.fillStyle='rgb(255, 255, 160)'
     e(0,0,4,4)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='rgb(90, 255, 255)'
+    tex_ctx.fillRect(128*7,256+256*5,128,128)
+    tex_ctx.translate(128*7+128*0.5,256+128*10.5)
+    tex_ctx.translate(-33,-26)
+    tex_ctx.rotate(-0.4)
+    tex_ctx.scale(2.25,2.25)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.lineWidth=2.5
+    tex_ctx.fillStyle='rgb(255, 255, 160)'
+    a=new Path2D('M 22 26C -7 39 -4 -3 19 8C 13 5 5 25 22 26')
+    tex_ctx.stroke(a)
+    tex_ctx.fill(a)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.fillStyle='rgb(100,200,255)'
+    tex_ctx.fillRect(128*0,256+256*5.5,128,128)
+    tex_ctx.translate(128*0+128*0.5,256+128*11.5)
+    tex_ctx.scale(1.6,1.6)
+    tex_ctx.lineWidth=4
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.fillStyle='rgb(186, 128, 41)'
+    tex_ctx.scale(0.9,1)
+    a=new Path2D('M-10 -15L10 -15C 21 -9 19 -4 15 15C15 25 -15 25 -15 15C-19 -4 -21 -9 -10 -15')
+    tex_ctx.stroke(a)
+    tex_ctx.fill(a)
+    tex_ctx.scale(1/0.9,1)
+    tex_ctx.lineWidth=2
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.fillStyle='rgb(138, 138, 138)'
+    tex_ctx.fillRect(-11,-24,22,8)
+    tex_ctx.strokeRect(-11,-24,22,8)
+    tex_ctx.lineWidth=5
+    tex_ctx.strokeStyle='rgb(200,0,0)'
+    a=new Path2D('M -15 0 C -10 3 10 3 15 0')
+    tex_ctx.stroke(a)
+    tex_ctx.lineWidth=3
+    tex_ctx.strokeStyle='rgb(255,180,0)'
+    a=new Path2D('M -5 -3 C -10 3 8 -8 5 -2M 0 -3 C 0 5 3 -2 -1 9')
+    tex_ctx.stroke(a)
     tex_ctx.setTransform(1,0,0,1,0,0)
 }
 

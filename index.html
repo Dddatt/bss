@@ -3080,6 +3080,23 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         </g>
         
     </svg>
+
+    <svg id='moonCharm' style='width:200;height:70;cursor:pointer;border-radius:5px'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='130' y='18' style='font-family:trebuchet ms;font-size:17px;' fill='rgb(0,0,0)' text-anchor='middle'>Moon Charm</text>
+        <text x='134' y='37' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>Raises the bond of a</text>
+        <text x='134' y='51' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'> bee by 250. Also used </text>
+        <text x='134' y='64' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>to make special items.</text>
+        <text id='moonCharm_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='scale(1.2,1.2) translate(14,16) rotate(-24)'>
+        <path stroke='black' stroke-width='1.5' fill='rgb(237, 255, 102)' d='M 22 26C -7 39 -4 -3 19 8C 13 5 5 25 22 26' ></path>
+        
+        </g>
+        
+    </svg>
     
     <svg id='redDrive' style='width:200;height:70;cursor:pointer;border-radius:5px;'>
         
@@ -3402,6 +3419,24 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         <path fill='rgb(0,0,0,0)' stroke='rgb(0,0,0,0.3)' stroke-width='2' d='M 31 54 C 26 51 27 44 35 46C 40 48 31 51 33 50' transform=' translate(0,109) scale(1.4,1.4) rotate(-114)'></path>
         </g>
         
+    </svg>
+
+    <svg id='turpentine' style='width:200;height:70;cursor:pointer;border-radius:5px'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='132' y='18' style='font-family:trebuchet ms;font-size:16.5px;' fill='rgb(0,0,0)' text-anchor='middle'>Turpentine</text>
+        <text x='133' y='38' style='font-family:trebuchet ms;font-size:11.5px;' fill='rgb(0,0,0)' text-anchor='middle'>A strong solvent that</text>
+        <text x='133' y='52' style='font-family:trebuchet ms;font-size:11.5px;' fill='rgb(0,0,0)' text-anchor='middle'>can remove all waxes</text>
+        <text x='133' y='65' style='font-family:trebuchet ms;font-size:11.5px;' fill='rgb(0,0,0)' text-anchor='middle'>from a bee's beequip.</text>
+        <text id='turpentine_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='translate(36,33) scale(0.85,0.85)'>
+        <path stroke='black' stroke-width='1.5' fill='rgb(186, 128, 41)' d='M-10 -15L10 -15C 21 -9 19 -4 15 15C15 25 -15 25 -15 15C-19 -4 -21 -9 -10 -15' transform='scale(0.9,1)'></path>
+        <rect stroke='black' stroke-width='1.5' fill='rgb(133, 133, 133)' x='-11' y='-23' width='22' height='8' rx='2'></rect>
+        <path stroke='rgb(200,0,0)' stroke-width='6' fill='rgb(0,0,0,0)' d='M -16 0 C -10 3 10 3 16 0'></path>
+        <path stroke='rgb(255,180,0)' stroke-width='3' fill='rgb(0,0,0,0)' d='M -5 -3 C -10 3 8 -8 5 -2M 0 -3 C 0 5 3 -2 -1 9'></path>
+        </g>
     </svg>
     
     <svg id='basicEgg' style='width:200;height:70;cursor:pointer;border-radius:5px'>
@@ -9156,11 +9191,11 @@ let items={
 
             items.magicBean.amount--
             
-            let type=['basic','rare','epic','legendary','supreme','gummy']
+            let type=['basic','rare','epic','legendary','supreme','gummy','moon']
 
             type=type[(Math.random()*type.length)|0]
 
-            player.addMessage('You planted a '+MATH.doGrammar(type)+' Sprout!',{basic:undefined,rare:[130,130,130],epic:[210,170,0],legendary:[0,190,220],supreme:[30,220,90],gummy:[230,70,230]}[type])
+            player.addMessage('You planted a '+MATH.doGrammar(type)+' Sprout!',{basic:undefined,rare:[130,130,130],epic:[210,170,0],legendary:[0,190,220],supreme:[30,220,90],gummy:[230,70,230],moon:[140,200,230]}[type])
 
             objects.mobs.push(new Sprout(player.fieldIn,type))
         }
@@ -9628,6 +9663,35 @@ let items={
                 let newNum=Number(stats[i].substring(1,stats[i].indexOf(' ')))*(stats[i][0]==='*'?MATH.random(0.8,1.25):MATH.random(0.5,2))
 
                 stats[i]=stats[i][0]+(stats[i][0]==='+'?Math.round(newNum):newNum.toFixed(2).replace('.00',''))+stats[i].substring(stats[i].indexOf(' '),stats[i].length)
+            }
+
+            player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee=stats.join(',')
+
+            player.updateBeequipPage()
+            player.updateHive()
+        }
+    },
+
+    turpentine:{
+        
+        canUseOnSlot:(slot)=>{
+            
+            return slot.beequip&&slot.beequip.waxes.length>0
+        },
+        amount:0,u:128*0/2048,v:128*13/2048,value:60,
+        use:function(){
+            
+            items.turpentine.amount--
+
+            player.addMessage('The turpentine removed all waxes on the beequip!')
+
+            player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.waxes=[]
+
+            let stats=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee.split(',')
+
+            for(let i in stats){
+
+                stats[i]=stats[i].substr(0,stats[i].indexOf('('))+'(+0)'                
             }
 
             player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee=stats.join(',')
@@ -10172,18 +10236,86 @@ let items={
         }
     },
     
+    moonCharm:{
+        
+        canUseOnSlot:(slot)=>{
+            
+            return slot.type!==null
+        },
+        amount:0,u:128*7/2048,v:128*12/2048,value:10,
+        use:function(){
+            
+            howManyToFeed.style.display='block'
+            feedAmount.value=1
+            howManyMessage.innerHTML='How many moon charms will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
+            document.getElementById('feedUntilGifted').style.display='none'
+
+            howManyToFeed.onmousemove=function(){
+                
+                let a=feedAmount.value
+                feedAmount.value=MATH.constrain(a,1,items.moonCharm.amount)
+            }
+            
+            document.getElementById('cancelFeeding').onclick=function(){
+                howManyToFeed.style.display='none'
+            }
+            
+            document.getElementById('feedThisAmount').onclick=function(){
+                howManyToFeed.style.display='none'
+                
+                let amount=feedAmount.value
+                items.moonCharm.amount-=amount
+                player.updateInventory()
+                
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond+=amount*10
+                
+                let l,r=[0,10,50,250,1000,5000,20000,80000,350000,800000,2000000,4000000,8000000,15000000,30000000,150000000,600000000,2500000000,10000000000,25000000000]
+                
+                for(let i in r){
+                    
+                    if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond>=r[i]){
+                        
+                        l=i
+                    }
+                }
+                
+                if(l<20){
+                    
+                    l++
+                }
+                
+                let leveled
+                
+                if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level!==l){
+                    
+                    leveled=true
+                }
+                
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level=l
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.computeLevel(l)
+                textRenderer.add(amount*10+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.2)
+                
+                player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
+                player.addMessage('by '+MATH.addCommas(amount*10)+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
+                player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
+                
+            }
+        }
+    },
+
     treat:{
         
         canUseOnSlot:(slot)=>{
             
             return slot.type!==null
         },
-        amount:1000,u:0,v:128*4/2048,value:1,
+        amount:0,u:0,v:128*4/2048,value:1,
         use:function(){
             
             howManyToFeed.style.display='block'
             feedAmount.value=1
             howManyMessage.innerHTML='How many treats will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
+            document.getElementById('feedUntilGifted').style.display='none'
             
             howManyToFeed.onmousemove=function(){
                 
@@ -16527,6 +16659,8 @@ class Planter {
 
         dropTable.splice(dropTable.indexOf('smoothDice'),1)
         dropTable.splice(dropTable.indexOf('loadedDice'),1)
+        dropTable.splice(dropTable.indexOf('moonCharm'),1)
+        dropTable.splice(dropTable.indexOf('turpentine'),1)
 
         if(this.field!=='CoconutField'){
                 
@@ -16667,6 +16801,7 @@ class Planter {
             dropTable.splice(dropTable.indexOf('blueExtract'),1)
             dropTable.push('smoothDice')
             dropTable.push('loadedDice')
+            dropTable.push('turpentine')
         }
 
         if(this.type==='plenty'){
@@ -16693,6 +16828,7 @@ class Planter {
             dropRates.whirligig*=2
             dropTable.push('bitterberry')
             dropTable.push('neonberry')
+            dropTable.push('turpentine')
             dropTable.splice(dropTable.indexOf('treat'),1)
             dropTable.splice(dropTable.indexOf('strawberry'),1)
             dropTable.splice(dropTable.indexOf('blueberry'),1)
@@ -17102,7 +17238,7 @@ class Sprout {
     
     constructor(field,type){
         
-        this.amount={basic:50000,rare:150000,epic:500000,legendary:1500000,supreme:3000000,gummy:750000}[type]
+        this.amount={basic:50000,rare:150000,epic:500000,legendary:1500000,supreme:3000000,gummy:750000,moon:100000}[type]
 
         this.invAmount=1/this.amount
         this.growth=1
@@ -17115,7 +17251,7 @@ class Sprout {
     
     die(index){
 
-        let amountOfTokens={basic:60,rare:75,epic:95,legendary:120,supreme:150,gummy:90}[this.type],dropTable=[],dropRates={}
+        let amountOfTokens={basic:60,rare:75,epic:95,legendary:120,supreme:150,gummy:90,moon:70}[this.type],dropTable=[],dropRates={}
 
         for(let i in items){
 
@@ -17278,6 +17414,17 @@ class Sprout {
 
             dropTable.splice(dropTable.indexOf('gumdrops'),1)
             dropTable.splice(dropTable.indexOf('glue'),1)
+        }
+
+        if(this.type==='moon'){
+
+            dropTable=['treat','moonCharm']
+            dropRates.moonCharm=4
+            dropRates.treat=1
+
+        } else {
+
+            dropTable.splice(dropTable.indexOf('moonCharm'),1)
         }
 
         let totalChance=0
@@ -21685,7 +21832,7 @@ let user=(function(out){
                 
                 if(player.beequipDragging){
                     
-                    if(player.currentGear.beequips[player.beequipLookingAt].bee){
+                    if(player.currentGear.beequips[player.beequipLookingAt].bee&&player.hive[player.currentGear.beequips[player.beequipLookingAt].bee[1]][player.currentGear.beequips[player.beequipLookingAt].bee[0]].beequip===player.beequipDragging){
                         
                         player.hive[player.currentGear.beequips[player.beequipLookingAt].bee[1]][player.currentGear.beequips[player.beequipLookingAt].bee[0]].beequip=null
                         
@@ -24664,6 +24811,24 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
 
 meshes.gummySprout.indexAmount=index.length
 
+meshes.moonSprout={}
+meshes.moonSprout.vertBuffer=gl.createBuffer()
+meshes.moonSprout.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0+0.5,0,0.5,2,0.5,0.7,0.9,100)
+b(-0.1,1+1,0,0.4,1,0.4,0.7,0.9,100,0.01,32,8)
+b(-0.5,1.5+1,1,1.5,0.2,1.5,0.7,0.9,100,0.01,32,-15)
+b(0,1.5+1,-1.25,1.75,0.2,1.75,0.7,0.9,100,0.01,35,5)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.moonSprout.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.moonSprout.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.moonSprout.indexAmount=index.length
+
 
 player.createdMesh=window.mapMesh
 
@@ -25944,7 +26109,7 @@ if(window.thisProgramIsInFullScreen){
 
 //<script>
 
-console.log=0
+// console.log=0
 
 </script>
 
