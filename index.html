@@ -147,7 +147,7 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         background-color:rgb(0,170,0);
     }
     
-    #feedAmount{
+    #feedAmount,#blenderCraftAmount{
         
         margin-top:50px;
         margin-left:75px;
@@ -201,7 +201,29 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         background-color:rgb(200,0,0);
     }
     
+    #leftBlenderButton,#rightBlenderButton{
+        
+        background-color:rgb(30,90,255);
+    }
+    
+    #blenderCraft{
+        
+        background-color:rgb(0,170,0);
+        transition-duration:0s;
+    }
+    
+    #blenderCraft:hover{
+        
+        background-color:rgb(0,100,0);
+    }
+    
+    #leftBlenderButton:hover,#rightBlenderButton:hover{
+        
+        background-color:rgb(19, 54, 150);
+    }
+    
 </style>
+
 
 <div id='abilityUI' style='margin:5px;padding:0px;margin-top:35px;position:fixed'>
     
@@ -3947,9 +3969,9 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
     
 </div>
 
-<div id='blenderMenu' style='position:fixed;width:400px;height:300px;z-index:1;left:50%;top:50%;transform:translate(-50%,-50%);background-color:rgb(22, 54, 196);border-radius:4px;color:rgb(255,255,255);font-size:17px;text-align:center;display:none'>
+<div id='blenderMenu' style='position:fixed;width:400px;height:300px;z-index:1;left:50%;top:50%;transform:translate(-50%,-50%);background-color:rgb(22, 54, 196);border-radius:4px;color:rgb(255,255,255);font-size:17px;text-align:center;'>
     
-    <button id='blenderX' style='border-radius:3px;margin-left:-365px;margin-top:3px;width:30px;height:30px;font-family:comic sans ms;padding-bottom:5px'>X</button>
+    <button id='blenderX' style='border-radius:3px;margin-left:-365px;margin-top:3px;width:30px;height:30px;font-family:comic sans ms;padding-bottom:5px;'>X</button>
     
     <p id='blenderTitle' style='margin-top:-27px;font-size:18px'></p>
     
@@ -3959,15 +3981,19 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
     
     <div id='blenderReq' style='position:fixed;left:50%;top:69%;transform:translate(-50%,-50%);width:400px;height:75px;'></div>
     
-    <p id='blenderIndex' style='position:fixed;left:50%;top:84%;transform:translate(-50%,-50%);border-radius:5px;font-size:23px;width:500px'>1 / 20</p>
+    <p id='blenderIndex' style='position:fixed;left:23%;top:84%;transform:translate(-50%,-50%);border-radius:5px;font-size:20px;width:500px'>1 / 20</p>
     
-    <svg id='leftBlenderButton' style='position:fixed;width:50px;height:50px;left:7%;top:90.5%;transform:translate(-50%,-50%);background-color:rgb(30,90,255);border-radius:5px;cursor:pointer'>
+    <button id='blenderCraft' style='border-radius:3px;position:fixed;left:54%;top:91%;transform:translate(-50%,-50%);width:70px;height:30px;font-family:comic sans ms;padding-bottom:5px;color:white;font-size:17px;border:0px'>Craft:</button>
+    
+    <input style='background-color:rgb(19, 49, 133);width:60px;left:46%;top:69.5%' id='blenderCraftAmount' value='0' type='number' min='0'>
+    
+    <svg id='leftBlenderButton' style='position:fixed;width:50px;height:50px;left:7%;top:90.5%;transform:translate(-50%,-50%);border-radius:5px;cursor:pointer;'>
         
         <path stroke='white' d='M30 15L17 25 L 30 35' stroke-width='3' fill='rgb(0,0,0,0)'></path>
         
     </svg>
     
-    <svg id='rightBlenderButton' style='position:fixed;width:50px;height:50px;left:93%;top:90.5%;transform:translate(-50%,-50%);background-color:rgb(30,90,255);border-radius:5px;cursor:pointer'>
+    <svg id='rightBlenderButton' style='position:fixed;width:50px;height:50px;left:93%;top:90.5%;transform:translate(-50%,-50%);border-radius:5px;cursor:pointer'>
         
         <path stroke='white' d='M30 15L17 25 L 30 35' stroke-width='3' fill='rgb(0,0,0,0)' transform=' translate(50,0) scale(-1,1)'></path>
         
@@ -10165,7 +10191,7 @@ let items={
             howManyMessage.innerHTML='How many bitterberries will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
             document.getElementById('feedUntilGifted').style.display='none'
 
-            howManyToFeed.onmousemove=function(){
+            howManyToFeed.onmousemove=feedAmount.onchange=function(){
                 
                 let a=feedAmount.value
                 feedAmount.value=MATH.constrain(a,1,items.bitterberry.amount)
@@ -10260,7 +10286,7 @@ let items={
             howManyMessage.innerHTML='How many neonberries will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
             document.getElementById('feedUntilGifted').style.display='none'
 
-            howManyToFeed.onmousemove=function(){
+            howManyToFeed.onmousemove=feedAmount.onchange=function(){
                 
                 let a=feedAmount.value
                 feedAmount.value=MATH.constrain(a,1,items.neonberry.amount)
@@ -10331,7 +10357,7 @@ let items={
             howManyMessage.innerHTML='How many moon charms will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
             document.getElementById('feedUntilGifted').style.display='none'
 
-            howManyToFeed.onmousemove=function(){
+            howManyToFeed.onmousemove=feedAmount.onchange=function(){
                 
                 let a=feedAmount.value
                 feedAmount.value=MATH.constrain(a,1,items.moonCharm.amount)
@@ -10398,7 +10424,7 @@ let items={
             howManyMessage.innerHTML='How many treats will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
             document.getElementById('feedUntilGifted').style.display='none'
             
-            howManyToFeed.onmousemove=function(){
+            howManyToFeed.onmousemove=feedAmount.onchange=function(){
                 
                 let a=feedAmount.value
                 feedAmount.value=MATH.constrain(a,1,items.treat.amount)
@@ -10466,7 +10492,7 @@ let items={
             
             document.getElementById('feedUntilGifted').style.display=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='blueberry'&&!player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted?'block':'none'
             
-            howManyToFeed.onmousemove=function(){
+            howManyToFeed.onmousemove=feedAmount.onchange=function(){
                 
                 let a=feedAmount.value
                 feedAmount.value=MATH.constrain(a,1,items.blueberry.amount)
@@ -10563,7 +10589,7 @@ let items={
             
             document.getElementById('feedUntilGifted').style.display=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='strawberry'&&!player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted?'block':'none'
             
-            howManyToFeed.onmousemove=function(){
+            howManyToFeed.onmousemove=feedAmount.onchange=function(){
                 
                 let a=feedAmount.value
                 feedAmount.value=MATH.constrain(a,1,items.strawberry.amount)
@@ -10660,7 +10686,7 @@ let items={
             
             document.getElementById('feedUntilGifted').style.display=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='pineapple'&&!player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted?'block':'none'
             
-            howManyToFeed.onmousemove=function(){
+            howManyToFeed.onmousemove=feedAmount.onchange=function(){
                 
                 let a=feedAmount.value
                 feedAmount.value=MATH.constrain(a,1,items.pineapple.amount)
@@ -10757,7 +10783,7 @@ let items={
             
             document.getElementById('feedUntilGifted').style.display=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='sunflowerSeed'&&!player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted?'block':'none'
             
-            howManyToFeed.onmousemove=function(){
+            howManyToFeed.onmousemove=feedAmount.onchange=function(){
                 
                 let a=feedAmount.value
                 feedAmount.value=MATH.constrain(a,1,items.sunflowerSeed.amount)
@@ -21340,8 +21366,24 @@ player=(function(out){
             let r=blenderRecipes[player.blenderIndex].req[i]
 
             document.getElementById('blenderReq').innerHTML+="<div style='position:fixed;left:75%;top:20px;transform:translate(-50%,-50%) translate("+((i-blenderRecipes[player.blenderIndex].req.length*0.5+0.5)*90)+"px,0px) scale(1.75,1.75)'>"+itemSVGCode[r[0]].replaceAll('AMOUNTININVENTORY','').replaceAll('AMOUNTOFITEMREQUIREDTOCRAFT','').replace('translate(0px,7px)','translate(-2px,2px)').replace('scale(0.77,0.77)','scale(0.5,0.5)')+'<p style="position:fixed;font-size:8px;left:20px;top:20px">x'+r[1]+'</p></div>'
-
         }
+
+        let f=function(){
+            
+            let maximumCanCraft=Infinity
+
+            for(let i in blenderRecipes[player.blenderIndex].req){
+
+                let r=blenderRecipes[player.blenderIndex].req[i]
+                maximumCanCraft=Math.min(maximumCanCraft,(items[r[0]].amount/r[1])|0)
+            }
+
+            document.getElementById('blenderCraftAmount').value=MATH.constrain(document.getElementById('blenderCraftAmount').value,0,maximumCanCraft)
+        }
+
+        document.getElementById('blenderMenu').onmousemove=document.getElementById('blenderCraftAmount').onchange=f
+
+        f()
     }
     
     out.addMessage=function(m,color=[30,70,255]){
