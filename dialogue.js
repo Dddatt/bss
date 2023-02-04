@@ -210,3 +210,10 @@ window.dialogue_brownBear=function(player,items){
     ]
 
 }
+
+window.dialogue_roboBear=function(player,items,NPCs){
+
+    return ["Beep boop. I'm Robo Bear!","Talk to me whenever you want to start or learn about the Robo Challenge!",'What do you want to do?',[['Robo Challenge Instructions',function(){NPCs.roboBear.dialogue.push('','*robo challenge instructions go here*');NPCs.roboBear.dialogueIndex++}],['Start Robo Challenge(1 Robo Pass)',function(){if(items.roboPass.amount){NPCs.roboBear.dialogue.push('','ok *runs function to start robo challenge here idk*');}else{NPCs.roboBear.dialogue.push('','need robo pass cuz ur broke');}NPCs.roboBear.dialogueIndex++}]]
+    
+    ]
+}

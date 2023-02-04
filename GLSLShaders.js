@@ -141,15 +141,18 @@ window.glsl_flower_geometry_vsh = `#version 300 es
     in float vertGoo;
     
     out vec4 pixUV;
+    out float pixFog;
     out float goo;
     
     uniform mat4 viewMatrix;
     
     void main(){
         
+        vec4 pos=viewMatrix*vec4(vertPos,1);
         pixUV=vertUV;
         goo=vertGoo;
-        gl_Position=viewMatrix*vec4(vertPos,1);
+        pixFog=smoothstep(20.0,120.0,pos.z)*0.7;
+        gl_Position=pos;
     }
 `
 
@@ -158,6 +161,7 @@ window.glsl_flower_geometry_fsh = `#version 300 es
     precision lowp float;
     
     in vec4 pixUV;
+    in float pixFog;
     in float goo;
     
     out vec4 fragColor;
@@ -176,11 +180,11 @@ window.glsl_flower_geometry_fsh = `#version 300 es
         
         if(goo<0.0){
             
-            fragColor=vec4(mix(c,vec3(0.1,1,0.5),-goo)*isNight,1.0);
+            fragColor=vec4(mix(mix(c,vec3(0.1,1,0.5),-goo),vec3(1,1,0.7),pixFog)*isNight,1.0);
             
         } else {
             
-            fragColor=vec4(mix(c,vec3(1,0.2,1),goo)*isNight,1.0);
+            fragColor=vec4(mix(mix(c,vec3(0.1,1,0.5),goo),vec3(1,1,0.7),pixFog)*isNight,1.0);
         }
     }
 `

@@ -8470,4 +8470,49 @@ window.textures_bear=function(tex_ctx){
     e(-22,-16,2,3)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
+    tex_ctx.translate(128*3+128*0.5,256*0+128*0.5)
+    tex_ctx.scale(0.9,0.9)
+    tex_ctx.lineWidth=7
+    tex_ctx.fillStyle='rgb(52, 135, 63)'
+    tex_ctx.fillRect(-128*0.5,-128*0.5,128,128)
+    tex_ctx.fillStyle='rgb(45, 99, 52)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-64,64)
+    tex_ctx.lineTo(-64,20)
+    tex_ctx.bezierCurveTo(-66,-49,-18,-56,-10,-1)
+    tex_ctx.lineTo(-10,64)
+    tex_ctx.moveTo(64,64)
+    tex_ctx.lineTo(64,20)
+    tex_ctx.bezierCurveTo(66,-49,18,-56,10,-1)
+    tex_ctx.lineTo(10,64)
+    tex_ctx.fill()
+    g=tex_ctx.createLinearGradient(0,0,0,64)
+    g.addColorStop(0,'rgb(52, 135, 63)')
+    g.addColorStop(0.6,'rgb(70, 181, 83)')
+    tex_ctx.fillStyle=g
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-11,-25)
+    tex_ctx.bezierCurveTo(-11,49,-30,40,-11,64)
+    tex_ctx.moveTo(11,-25)
+    tex_ctx.bezierCurveTo(11,49,30,40,11,64)
+    tex_ctx.fill()
+    tex_ctx.fillRect(-12,-11,24,75)
+    tex_ctx.fillStyle='rgb(56, 117, 55)'
+    e(0,49,10,8)
+    tex_ctx.fillStyle='rgb(24, 71, 23)'
+    e(0,52,5,3)
+    tex_ctx.fillStyle='rgb(120, 247, 108)'
+    e(-19,-13,5,9)
+    e(19,-13,5,9)
+    tex_ctx.fillStyle='rgb(45, 99, 52)'
+    e(16,-16,2,3)
+    e(-22,-16,2,3)
+    tex_ctx.scale(1/0.9,1/0.9)
+    tex_ctx.fillStyle='rgb(100,100,100)'
+    tex_ctx.fillRect(-64,-64,11,128)
+    tex_ctx.fillRect(64-11,-64,11,128)
+    tex_ctx.fillRect(-64,-64,128,11)
+    tex_ctx.fillRect(-64,64-11,128,11)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
 }

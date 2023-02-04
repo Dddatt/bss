@@ -636,6 +636,25 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         </g>
     </svg>
 
+    <svg id='antChallenge' style='width:30;height:30;display:none'>
+        
+        <rect width='30' height='30' fill='rgb(148, 148, 148,0)'></rect>
+
+        <text id='antChallenge_amount' x='29' y='29' style='font-family:calibri;font-size:12px' text-anchor='end' fill='rgb(0,0,0)'></text>
+        
+        <rect id='antChallenge_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0'></rect>
+        
+        <g transform='translate(15,15) scale(0.6,0.6)'>
+        <path fill='rgb(255, 255, 160)' stroke='black' stroke-width='2' d='M -20 -15L 15 -15L 20 -10L 20 10L 15 15L-20 15L-20 -15'></path>
+        <path fill='rgb(0,0,0,0)' stroke='rgb(0,170,0)' stroke-width='4' d='M -17 -14L -17 14M 13 -14L 18 -8L 18 8L 13 14M -8 -4L7 -4L4 -8L-4 -8L-8 -2'></path>
+        <path fill='rgb(50,50,50)' d='M -8 -4L8 -4L8 8L-8 8'></path>
+        <path stroke='rgb(50,50,50)' fill='rgb(0,0,0,0)' stroke-width='2' d='M -3 -5L-7 -10M 3 -5L7 -10'></path>
+        <circle cx='-4' cy='0' r='2' fill='rgb(255,40,40)'></circle>
+        <circle cx='4' cy='0' r='2' fill='rgb(255,40,40)'></circle>
+        
+        </g>
+    </svg>
+
     <svg id='dandelionFieldBoost' style='width:30;height:30;display:none'>
         
         <rect width='30' height='30' fill='rgb(217, 194, 60)'></rect>
@@ -4294,7 +4313,7 @@ document.getElementById('runFullScreen').addEventListener('click',function(){
     w.document.close()
 })
 
-let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,BEE_COLLECT=0,BEE_FLY=0,then,dt,frameCount=0,TIME=0,player,honeyMarkConvert=TIME,NIGHT_DARKNESS=0.6
+let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,BEE_COLLECT=0,BEE_FLY=0,then,dt,frameCount=0,TIME=0,player,honeyMarkConvert=TIME,NIGHT_DARKNESS=0.6,NPCs
 
 gl.enable(gl.BLEND)
 gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)
@@ -4602,11 +4621,17 @@ let triggers={
         },func:function(player){
             
             player.body.position.x=-21
-            player.body.position.y=6
+            player.body.position.y=7
             player.body.position.z=-50
             player.yaw=0
             player.antChallenge={timer:5*60,score:0,pollenReq:1000,pollenBeforeReq:player.stats.pollenFromAntField,spawnDelay:0,round:0,lawnMowerTimer:25}
             items.antPass.amount--
+
+            textRenderer.add((player.pollen*player.honeyPerPollen)|0,[player.body.position.x,player.body.position.y+1.5,player.body.position.z],COLORS.honey,1,'⇆')
+            player.honey+=(player.pollen*player.honeyPerPollen)|0
+            player.pollen=0
+            player.addEffect('antChallenge')
+
             player.updateInventory()
         }
     },
@@ -4654,6 +4679,11 @@ let triggers={
     polarBear_NPC:{
         
         minX:-1.5-2,maxX:-1.5+2,minY:20,maxY:26,minZ:66-2,maxZ:66+2
+    },
+
+    roboBear_NPC:{
+
+        minX:54-3,maxX:54+0.5,minY:0,maxY:10,minZ:40-2,maxZ:40+2
     },
     
     cool_shop:{
@@ -9163,6 +9193,29 @@ let effects={
         getMessage:(amount)=>{
             
             return 'Glitched Drive\nx1.25 pollen\nx1.25 capacity\n+1 bee attack'
+        }
+    },
+
+    antChallenge:{
+        
+        u:0,v:0,
+        svg:document.getElementById('antChallenge'),
+        cooldown:document.getElementById('antChallenge_cooldown'),
+        amount:document.getElementById('antChallenge_amount'),
+        maxCooldown:5*60,
+        tokenLife:4,
+        maxAmount:1,
+        
+        update:(amount,player)=>{
+            
+            player.instantRedConversion=1
+            player.instantWhiteConversion=1
+            player.instantBlueConversion=1
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Ant Challenge\n+100% instant conversion'
         }
     },
 }
@@ -20118,7 +20171,7 @@ player=(function(out){
             
             if(NPCs[i].repeatable){
                 
-                NPCs[i].dialogue.push(...window['dialogue_'+i](out,items))
+                NPCs[i].dialogue.push(...window['dialogue_'+i](out,items,NPCs))
 
             } else {
 
@@ -22031,17 +22084,17 @@ function computeSceneViewMatrix(x,y,z,yaw,pitch){
     return m
 }
 
-let NPCs={
+NPCs={
     
     //choice in dialouge
-    //[['2 + 3',function(){NPCs.blackBear.dialogue.push('','5! :D');NPCs.blackBear.dialogueIndex++}],['9 + 10',function(){NPCs.blackBear.dialogue.push('','21! :D');NPCs.blackBear.dialogueIndex++}]]
-    
+    // ['ask me a math question',[['2 + 3',function(){NPCs.blackBear.dialogue.push('','5! :D');NPCs.blackBear.dialogueIndex++}],['9 + 10',function(){NPCs.blackBear.dialogue.push('','21! :D');NPCs.blackBear.dialogueIndex++}]]]
+
     blackBear:{
         
         viewMatrix:[24,2,0.5,MATH.HALF_PI,-0.25],
         exclaimPos:[29,0.5,0.5],
         dialogueIndex:0,
-        dialogue:window.dialogue_blackBear(player,items),
+        dialogue:window.dialogue_blackBear(player,items,NPCs),
         mesh:new Mesh(),
         meshParams:{x:0.5,y:0,z:-31.5,r:1,s:1.2,texture:{face:{u:0,v:0},torso:{texture:false,u:0,v:0.5}}}
     },
@@ -22055,6 +22108,17 @@ let NPCs={
         dialogue:[],
         mesh:new Mesh(),
         meshParams:{x:1.5,y:22,z:-68,r:2,s:1.2,texture:{face:{u:1,v:0},torso:{texture:false,u:1,v:0}}}
+    },
+
+    roboBear:{
+        
+        repeatable:true,
+        viewMatrix:[24,2,0.5,MATH.HALF_PI,-0.25],
+        exclaimPos:[29,0.5,0.5],
+        dialogueIndex:0,
+        dialogue:[],
+        mesh:new Mesh(),
+        meshParams:{x:40,y:5,z:-55,r:1,s:1.2,texture:{face:{u:3,v:0},torso:{texture:false,u:3.1,v:0.5}}}
     },
 }
 
@@ -24369,7 +24433,7 @@ b(0.65,-0.5,0.4,0.7,0.1,0.1,0,0,0,0.00001,0,-30)
 b(0.65,-0.5,-0.4,0.7,0.1,0.1,0,0,0,0.00001,0,-30)
 b(-0.65,-0.5,0.4,0.7,0.1,0.1,0,0,0,0.00001,0,30)
 b(-0.65,-0.5,-0.4,0.7,0.1,0.1,0,0,0,0.00001,0,30)
-c(0,0,-0.7,0.2,0.1,10,0,0.7,0,0.001,0,0)
+c(0,0.6,-0.25,0.45,0.3,10,0,0.7,0,-90,0,0)
 
 gl.bindBuffer(gl.ARRAY_BUFFER,meshes.armyAnt.vertBuffer)
 gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
@@ -24392,8 +24456,8 @@ b(0.65,-0.5,-0.4,0.7,0.1,0.1,0,0,0,0.00001,0,-30)
 b(-0.65,-0.5,0.4,0.7,0.1,0.1,0,0,0,0.00001,0,30)
 b(-0.65,-0.5,-0.4,0.7,0.1,0.1,0,0,0,0.00001,0,30)
 
-b(-0.2,-0.5,0.25,0.25,0.05,0.4,0,0,0,0.00001,30,0)
-b(0.2,-0.5,0.25,0.25,0.05,0.4,0,0,0,0.00001,-30,0)
+b(-0.2,0.5,0.35,0.95,0.05,1.25,0.5,0.6,0.8,0.00001,-40,0)
+b(0.2,0.5,0.35,0.95,0.05,1.25,0.5,0.6,0.8,0.00001,40,0)
 
 gl.bindBuffer(gl.ARRAY_BUFFER,meshes.flyingAnt.vertBuffer)
 gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
@@ -26093,13 +26157,13 @@ function loop(now){
         
         if(!NPCs[i].computedMesh){
             
-            minDist=0
+            minDist=-1
             minNPC=i
             NPCs[i].computedMesh=true
             break
         }
         
-        let d=Math.abs(player.body.position.x-(triggers[i+'_NPC'].minX+triggers[i+'_NPC'].maxX)*0.5)+Math.abs(player.body.position.y-(triggers[i+'_NPC'].minY+triggers[i+'_NPC'].maxY)*0.5)+Math.abs(player.body.position.z-(triggers[i+'_NPC'].minZ+triggers[i+'_NPC'].maxZ)*0.5)
+        let d=Math.abs(player.body.position.x-triggers[i+'_NPC'].minX)+Math.abs(player.body.position.y-triggers[i+'_NPC'].minY)+Math.abs(player.body.position.z-triggers[i+'_NPC'].minZ)
         
         if(minDist>d){
             
@@ -26108,18 +26172,16 @@ function loop(now){
         }
         
         NPCs[i].mesh.render()
-        
     }
     
     if(minDist<75){
         
-        if(minDist<45&&!NPCs[minNPC].activeQuest){
+        if(minDist<50&&!NPCs[minNPC].activeQuest){
             
             textRenderer.addDecalRaw(...NPCs[minNPC].exclaimPos,0,0,...textRenderer.decalUV['exclaim'],1,1,1,5,4,Math.PI)
-            
         }
         
-        if(frameCount%2===0){
+        if(frameCount%2||minDist<0){
             
             NPCs[minNPC].mesh.setMeshFromFunction(function(box,a,cylinder,sphere,d,e,star,limbBox,limbCylinder){
                 
@@ -26407,7 +26469,7 @@ if(window.thisProgramIsInFullScreen){
 
 //<script>
 
-console.log=0
+// console.log=0
 
 </script>
 
