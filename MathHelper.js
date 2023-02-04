@@ -240,7 +240,7 @@ window.MATH = (function (MATH) {
 
     MATH.doTime = function (s) {
 
-        return (s >= 60 ? ((0.0166666667 * s) | 0) + 'm ' : '') + (s | 0) % 60 + 's'
+        return (s>=3600?((0.00027777777*s)|0)+'h ':'')+(s>=60?(((0.0166666667*s)%60)|0)+'m ':'')+(s|0)%60+'s'
     }
 
     MATH.doPlural = function (s) {

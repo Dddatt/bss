@@ -2124,7 +2124,7 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
     <header style='text-align:center;margin-bottom:0px;font-size:35px;'>Bee Swarm Simulator</header>
     <p style='text-align:center;margin-top:0px;'>Dat Approved!</p>
     
-    <p style='text-align:left;margin-top:0px;color:white;position:fixed;left:235px;top:100px'>the new building in the 15 bee zone is the sprinkler shop and has the blender and i also added the blue cannon<br><br>im working on the blender rn u can access it at spawn for convience<br><br>also added turpentine and moon charms but moon charms are kinda useless rn<br><br>minor changes include adding turps into the gummyballer and fixing minor details in the map and fixing some prices and also re-wording the descriptions for the 3 endgame tools to sound cooler ig<br><br>honestly thinking about rebranding the porcelain port o hive to porcelain hive to make the text fit *-*</p>
+    <p style='text-align:left;margin-top:0px;color:white;position:fixed;left:235px;top:100px'>the new building in the 15 bee zone is the sprinkler shop and has the blender and i also added the blue cannon<br><br>i think the blender is done but needs more better testing. Also the "o" key now makes the blender(and really everything else like bee wiggling) go faster by speeding up time<br><br>also added turpentine and moon charms but moon charms are kinda useless rn<br><br>minor changes include adding turps into the gummyballer and fixing minor details in the map and fixing some prices and also re-wording the descriptions for the 3 endgame tools to sound cooler ig<br><br>honestly thinking about rebranding the porcelain port o hive to porcelain hive to make the text fit *-*</p>
     
     <span style='display:block;margin-top:50px;'></span>
     <button id='runFullScreen' style='margin-left:10px;width:200px;height:50px;background-color:rgb(248, 255, 150);'>New Fullscreen Game</button>
@@ -3423,7 +3423,7 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         <text x='134' y='19' style='font-family:trebuchet ms;font-size:17px;' fill='rgb(0,0,0)' text-anchor='middle'>Caustic Wax</text>
         <text x='136' y='35' style='font-family:trebuchet ms;font-size:10.5px;' fill='rgb(0,0,0)' text-anchor='middle'>A glowing hunk of wax. Has</text>
         <text x='135' y='50' style='font-family:trebuchet ms;font-size:10.5px;' fill='rgb(0,0,0)' text-anchor='middle'>a 25% chance to improve, </text>
-        <text x='136' y='64' style='font-family:trebuchet ms;font-size:10.5px;' fill='rgb(0,0,0)' text-anchor='middle'>or else destroy a beequip.</text>
+        <text x='136' y='64' style='font-family:trebuchet ms;font-size:10.5px;' fill='rgb(0,0,0)' text-anchor='middle'>or else DESTROY a beequip.</text>
         <text id='causticWax_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
         
         <g transform='translate(-4,-2)'>
@@ -4304,7 +4304,30 @@ gl.depthFunc(gl.LEQUAL)
 gl.enable(gl.CULL_FACE)
 gl.cullFace(gl.BACK)
 
-let blenderRecipes=[{item:'softWax',req:[['honeysuckle',5],['oil',1],['enzymes',1],['royalJelly',5]]},{item:'redExtract',req:[['strawberry',50]]},]
+let blenderRecipes=[
+    
+    {item:'gumdrops',req:[['pineapple',2],['strawberry',2],['blueberry',2]]},
+    {item:'moonCharm',req:[['royalJelly',2],['pineapple',3],['gumdrop',3]]},
+    {item:'redExtract',req:[['strawberry',35],['royalJelly',5]]},
+    {item:'blueExtract',req:[['blueberry',35],['royalJelly',5]]},
+    {item:'enzymes',req:[['pineapple',35],['royalJelly',5]]},
+    {item:'oil',req:[['sunflowerSeed',35],['royalJelly',5]]},
+    {item:'glue',req:[['gumdrops',35],['royalJelly',5]]},
+    {item:'tropicalDrink',req:[['coconut',5],['oil',1],['enzymes',1]]},
+    {item:'glitter',req:[['moonCharm',20],['magicBean',1]]},
+    {item:'starJelly',req:[['royalJelly',75],['glitter',3]]},
+    {item:'purplePotion',req:[['neonberry',3],['redExtract',2],['blueExtract',2],['glue',2]]},
+    {item:'superSmoothie',req:[['neonberry',3],['starJelly',1],['purplePotion',1],['tropicalDrink',3]]},
+    {item:'fieldDice',req:[['softWax',1],['whirligig',1],['redExtract',1],['blueExtract',1]]},
+    {item:'smoothDice',req:[['fieldDice',2],['whirligig',2],['softWax',2],['oil',2]]},
+    {item:'loadedDice',req:[['smoothDice',2],['hardWax',1],['oil',2],['glue',1]]},
+    {item:'softWax',req:[['honeysuckle',5],['oil',1],['enzymes',1],['royalJelly',5]]},
+    {item:'hardWax',req:[['softWax',2],['enzymes',2],['bitterberry',5],['royalJelly',25]]},
+    {item:'swirledWax',req:[['hardWax',1],['softWax',2],['purplePotion',1],['royalJelly',75]]},
+    {item:'causticWax',req:[['hardWax',3],['neonberry',5],['gumdrops',10],['royalJelly',175]]},
+    {item:'turpentine',req:[['superSmoothie',3],['causticWax',3],['starJelly',5],['honeysuckle',50]]},
+
+]
 
 let passiveActivationPopup=document.getElementById('passiveActivationPopup')
 let pollenAmount=document.getElementById('pollenAmount')
@@ -4347,7 +4370,7 @@ for(let i in _svgs){
     itemSVGCode[name+'_description']=itemSVGCode[name+'_description'].join(' ')
     
     itemSVGCode[name]=_svgs[i].split('</text>')
-    itemSVGCode[name]='<svg style="transform:translate(0px,7px);width:150px;height:36px;"><g transform="scale(0.77,0.77) translate(0,-10)"><text x="70" y="45" stroke="rgb(0,0,0)" stroke-width="3" style="font-family:cursive;font-size:20px;">AMOUNTOFITEMREQUIREDTOCRAFT</text><text x="70" y="45" fill="TEXTCOLORDEPENDINGONIFENOUGHITEMS" style="font-family:cursive;font-size:20px;">AMOUNTOFITEMREQUIREDTOCRAFT</text>'+(itemSVGCode[name][itemSVGCode[name].length-1]).substr(0,itemSVGCode[name][itemSVGCode[name].length-1].indexOf('</svg>'))+'</g><title>'+MATH.doGrammar(name)+'</title><text x="36" y="34" fill="rgb(0,0,0)" style="font-family:cursive;font-size:10px;" text-anchor="end">AMOUNTININVENTORY</text></svg>'
+    itemSVGCode[name]='<svg style="transform:translate(0px,7px);width:150px;height:36px;"><g transform="scale(0.77,0.77) translate(0,-5)"><text x="70" y="45" stroke="rgb(0,0,0)" stroke-width="3" style="font-family:cursive;font-size:20px;">AMOUNTOFITEMREQUIREDTOCRAFT</text><text x="70" y="45" fill="TEXTCOLORDEPENDINGONIFENOUGHITEMS" style="font-family:cursive;font-size:20px;">AMOUNTOFITEMREQUIREDTOCRAFT</text>'+(itemSVGCode[name][itemSVGCode[name].length-1]).substr(0,itemSVGCode[name][itemSVGCode[name].length-1].indexOf('</svg>'))+'</g><title>'+MATH.doGrammar(name)+'</title><text x="36" y="34" fill="rgb(0,0,0)" style="font-family:cursive;font-size:10px;" text-anchor="end">AMOUNTININVENTORY</text></svg>'
 }
 
 for(let i in hotbarSlots){
@@ -4558,7 +4581,7 @@ let triggers={
 
     blender:{
 
-        minX:8,maxX:15,minY:-5,maxY:5,minZ:-10,maxZ:10,isMachine:true,message:'Use Blender',requirements:function(player){
+        minX:59-3-1,maxX:59+3,minY:10,maxY:19,minZ:50.5-3,maxZ:50.5+3+1,isMachine:true,message:'Use Blender',requirements:function(player){
             
             if(document.getElementById('blenderMenu').style.display==='block') return "You're using the Blender"        
         },
@@ -21341,11 +21364,9 @@ player=(function(out){
 
         if(player.isCrafting&&document.getElementById('blenderMenu').style.display==='block'){
 
-            // player.isCrafting={time:TIME+waitTime,waitTime:waitTime,item:item,amount:maximumCanCraft}
-            
             let p=MATH.constrain((player.isCrafting.time-TIME)/player.isCrafting.waitTime,0,1),a=(player.isCrafting.amount*(1-p))|0,n=Math.ceil(p*player.isCrafting.amount*0.25)
 
-            document.getElementById('blenderName').innerHTML="Crafting...<div style='position:fixed;left:50%;top:175%;transform:translate(-50%,-50%);width:200px;height:25px;border-radius:2px;border:1.5px solid black;background-color:rgb(150,0,0)'><div style='height:25px;width:"+(200-p*200)+"px;background-color:rgb(0,200,0)'></div><p style='color:white;font-size:16px;position:fixed;left:50%;top:-20%;transform:translate(-50%,-50%)'>"+MATH.doTime(Math.max(player.isCrafting.time-TIME,0))+"</p><p style='color:white;font-size:20px;position:fixed;left:-40%;top:200%;transform:translate(-50%,-50%)'>"+a+" / "+player.isCrafting.amount+"</p></div>"
+            document.getElementById('blenderName').innerHTML="Crafting...<div style='position:fixed;left:50%;top:175%;transform:translate(-50%,-50%);width:200px;height:25px;border-radius:2px;border:1.5px solid black;background-color:rgb(150,0,0)'><div style='height:25px;width:"+(200-p*200)+"px;background-color:rgb(0,200,0)'></div><p style='color:white;font-size:16px;position:fixed;left:50%;top:-20%;transform:translate(-50%,-50%)'>"+MATH.doTime(Math.max(player.isCrafting.time-TIME,0))+"</p><p style='color:white;font-size:20px;position:fixed;left:-40%;top:200%;transform:translate(-50%,-50%)'>"+MATH.addCommas(a+'')+" / "+MATH.addCommas(player.isCrafting.amount+'')+"</p></div>"
 
             document.getElementById('blenderSpeed').innerHTML='Speed Up for '+n+(n===1?' ticket':' Tickets')
 
@@ -21443,7 +21464,7 @@ player=(function(out){
         }
         document.getElementById('leftBlenderButton').onclick=function(){
 
-            player.blenderIndex=((player.blenderIndex-2)%blenderRecipes.length)+1
+            player.blenderIndex=((player.blenderIndex+blenderRecipes.length-1)%blenderRecipes.length)
             out.updateBlenderMenu()
         }
         document.getElementById('rightBlenderButton').onclick=function(){
@@ -21497,6 +21518,17 @@ player=(function(out){
                     player.isCrafting={time:TIME+waitTime,waitTime:waitTime,item:item,amount:am}
                     out.updateBlenderMenu()
                 }           
+            }
+
+            document.getElementById('blenderReq').innerHTML=''
+
+            let num=Number(document.getElementById('blenderCraftAmount').value)
+
+            for(let i in blenderRecipes[player.blenderIndex].req){
+
+                let r=blenderRecipes[player.blenderIndex].req[i]
+
+                document.getElementById('blenderReq').innerHTML+="<div style='position:fixed;left:75%;top:20px;transform:translate(-50%,-50%) translate("+((i-blenderRecipes[player.blenderIndex].req.length*0.5+0.5)*90)+"px,0px) scale(1.75,1.75)'>"+itemSVGCode[r[0]].replaceAll('AMOUNTININVENTORY','').replaceAll('AMOUNTOFITEMREQUIREDTOCRAFT','').replace('translate(0px,7px)','translate(-2px,2px)').replace('scale(0.77,0.77)','scale(0.5,0.5)')+'<p style="position:fixed;font-size:8px;left:20px;top:20px">x'+MATH.addCommas((r[1]*(num?num:1))+'')+'</p></div>'
             }
         }
         f()
@@ -26227,7 +26259,7 @@ function loop(now){
     
     if(user.keys.o){
 
-        objects.mobs.push(new LawnMower(5))
+        TIME+=dt*50
 
         for(let i in objects.planters){
 
@@ -26375,7 +26407,7 @@ if(window.thisProgramIsInFullScreen){
 
 //<script>
 
-// console.log=0
+console.log=0
 
 </script>
 
