@@ -14197,13 +14197,78 @@ class BugMob {
                     this.state='dead'
                     this.respawnTimer=3*60
                     
-                    let amountOfTokens=4+((player.lootLuck-1)|0),radius=amountOfTokens*0.2+1.5
+                    let amountOfTokens=((player.lootLuck-1)|0)
                     
-                    let dropTable=['blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueExtract','treat','treat','gumdrops','gumdrops'],dropAmountTable={blueberry:[1,1,1,1,1,1,1,1,1,5,5,5,10],blueExtract:[1,1,1,1,1,1,1,1,1,3],treat:[1,1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[1,1,1,1,1,1,1,5,5,10]}
+                    let dropTable,dropAmountTable
+
+                    switch(this.type){
+
+                        case 'rhinoBeetle':
+
+                            amountOfTokens+=4
+                            dropTable=['blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueExtract','treat','treat','gumdrops','gumdrops']
+                            dropAmountTable={blueberry:[1,1,1,1,1,1,1,1,1,1,1,3,3,5],blueExtract:[1,1,1,1,1,1,1,1,1,3],treat:[1,1,1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[1,1,1,1,1,1,1,3,3,5]}
+
+                        break
+
+                        case 'ladybug':
+
+                            amountOfTokens+=4
+                            dropTable=['strawberry','strawberry','strawberry','strawberry','strawberry','strawberry','strawberry','strawberry','strawberry','strawberry','strawberry','redExtract','treat','treat','gumdrops','gumdrops']
+                            dropAmountTable={strawberry:[1,1,1,1,1,1,1,1,1,1,1,3,3,5],redExtract:[1,1,1,1,1,1,1,1,1,3],treat:[1,1,1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[1,1,1,1,1,1,1,3,3,5]}
+
+                        break
+
+                        case 'spider':
+
+                            amountOfTokens+=7
+                            dropTable=['treat','treat','treat','pineapple','sunflowerSeed','gumdrops','treat','treat','treat','pineapple','sunflowerSeed','gumdrops','glue','enzymes','oil','fieldDice','ticket','royalJelly','ticket','royalJelly','moonCharm','moonCharm']
+                            dropAmountTable={treat:[1,1,1,1,5,5,5,10,10,15],enzymes:[1,1,1,1,1,1,1,2,2,3],oil:[1,1,1,1,1,1,1,2,2,3],fieldDice:[1,1,1,1,1,2,2,3],glue:[1,1,1,1,1,1,3,3,5],pineapple:[1,1,1,1,1,1,1,3,3,3,5,5,10],sunflowerSeed:[1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[1,1,1,1,1,1,1,5,5,10],ticket:[1,1,1,1,1,1,1,1,3,3,5],royalJelly:[1,1,1,1,1,1,1,3,3,5],moonCharm:[1,1,1,1,3,3,5]}
+
+                        break
+
+                        case 'werewolf':
+
+                            amountOfTokens+=9
+                            dropTable=['treat','treat','treat','pineapple','sunflowerSeed','gumdrops','treat','treat','treat','pineapple','sunflowerSeed','gumdrops','gumdrops','glue','enzymes','oil','fieldDice','fieldDice','smoothDice','treat','treat','treat','pineapple','sunflowerSeed','gumdrops','treat','treat','treat','pineapple','sunflowerSeed','gumdrops','glue','glue','enzymes','oil','fieldDice','fieldDice','smoothDice','loadedDice','ticket','royalJelly','ticket','royalJelly','ticket','royalJelly','antPass','moonCharm','moonCharm']
+                            dropAmountTable={treat:[1,1,1,1,5,5,5,15,20,35],enzymes:[1,1,1,1,1,1,1,2,2,3],oil:[1,1,1,1,1,1,1,2,2,3],fieldDice:[1,1,1,1,1,2,2,3],smoothDice:[1,1,1,1,1,1,1,1,1,1,3],loadedDice:[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3],glue:[1,1,1,1,1,1,1,3,3,5,10,15],pineapple:[1,1,1,1,1,1,3,3,3,5,5,10,15,25],sunflowerSeed:[1,1,1,1,1,1,3,3,3,5,5,10,15,25],gumdrops:[1,1,1,1,1,1,5,5,5,10,10,15],ticket:[1,1,1,1,1,1,3,3,5,10],royalJelly:[1,1,1,1,1,1,3,3,5,10,15],antPass:[1],moonCharm:[1,1,1,1,3,3,5]}
+
+                        break
+
+                        case 'scorpion':
+
+                            amountOfTokens+=7
+                            dropTable=['strawberry','strawberry','strawberry','strawberry','strawberry','strawberry','strawberry','redExtract','treat','treat','treat','gumdrops','gumdrops','gumdrops','ticket','royalJelly','ticket','royalJelly']
+                            dropAmountTable={strawberry:[1,1,1,1,1,1,3,3,3,5,5,15],redExtract:[1,1,1,1,1,1,3,3,5],treat:[1,1,1,1,1,5,5,5,15,15,30],gumdrops:[1,1,1,1,1,1,3,3,5,15],ticket:[1,1,1,1,1,1,3,3,5],royalJelly:[1,1,1,1,1,1,3,3,5,10]}
+
+                        break
+
+                        case 'mantis':
+
+                            amountOfTokens+=7
+                            dropTable=['blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueExtract','treat','treat','treat','gumdrops','gumdrops','gumdrops','ticket','royalJelly','ticket','royalJelly']
+                            dropAmountTable={blueberry:[1,1,1,1,1,1,3,3,3,5,5,15],blueExtract:[1,1,1,1,1,1,3,3,5],treat:[1,1,1,1,1,5,5,5,15,15,30],gumdrops:[1,1,1,1,1,1,3,3,5,15],ticket:[1,1,1,1,1,1,3,3,5],royalJelly:[1,1,1,1,1,1,3,3,5,10]}
+
+                        break
+
+                        case 'kingBeetle':
+
+                            amountOfTokens+=7
+
+                            // dropTable=['glitter','redExtract','blueExtract','gumdrops','ticket','royalJelly','microConverter','fieldDice','smoothDice','loadedDice','antPass']
+                            // dropAmountTable={}
+
+                            dropTable=['blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueExtract','treat','treat','treat','gumdrops','gumdrops','gumdrops','ticket','royalJelly','ticket','royalJelly']
+                            dropAmountTable={blueberry:[1,1,1,1,1,1,3,3,3,5,5,15],blueExtract:[1,1,1,1,1,1,3,3,5],treat:[1,1,1,1,1,5,5,5,15,15,30],gumdrops:[1,1,1,1,1,1,3,3,5,15],ticket:[1,1,1,1,1,1,3,3,5],royalJelly:[1,1,1,1,1,1,3,3,5,10]}
+
+                        break
+                    }
                     
+                    let radius=amountOfTokens*0.2+1.5
+
                     for(let i=0,inc=MATH.TWO_PI/amountOfTokens;i<MATH.TWO_PI;i+=inc){
                         
-                        let r=1-Math.pow(1-0.2,player.lootLuck)
+                        let r=1-Math.pow(1-0.2,player.lootLuck*1.5)
                         
                         if(Math.random()<r){
                             
@@ -14213,7 +14278,7 @@ class BugMob {
                             
                         } else {
                             
-                            objects.tokens.push(new LootToken(45,[this.pos[0]+Math.cos(i)*radius,this.pos[1],this.pos[2]+Math.sin(i)*radius],'honey',25,true,MATH.doGrammar(this.type)))
+                            objects.tokens.push(new LootToken(45,[this.pos[0]+Math.cos(i)*radius,this.pos[1],this.pos[2]+Math.sin(i)*radius],'honey',{rhinoBeetle:15,ladybug:15,spider:50,werewolf:500,scorpion:300,mantis:300,kingBeetle:1500}[this.type],true,MATH.doGrammar(this.type)))
                             
                         }
                     }
@@ -26346,7 +26411,7 @@ if(window.thisProgramIsInFullScreen){
 
 //<script>
 
-// console.log=0
+console.log=0
 
 </script>
 
