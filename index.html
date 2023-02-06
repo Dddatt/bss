@@ -14253,13 +14253,10 @@ class BugMob {
 
                         case 'kingBeetle':
 
-                            amountOfTokens+=7
+                            amountOfTokens+=12
 
-                            // dropTable=['glitter','redExtract','blueExtract','gumdrops','ticket','royalJelly','microConverter','fieldDice','smoothDice','loadedDice','antPass']
-                            // dropAmountTable={}
-
-                            dropTable=['blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueExtract','treat','treat','treat','gumdrops','gumdrops','gumdrops','ticket','royalJelly','ticket','royalJelly']
-                            dropAmountTable={blueberry:[1,1,1,1,1,1,3,3,3,5,5,15],blueExtract:[1,1,1,1,1,1,3,3,5],treat:[1,1,1,1,1,5,5,5,15,15,30],gumdrops:[1,1,1,1,1,1,3,3,5,15],ticket:[1,1,1,1,1,1,3,3,5],royalJelly:[1,1,1,1,1,1,3,3,5,10]}
+                            dropTable=['treat','treat','treat','treat','treat','redExtract','blueExtract','redExtract','blueExtract','redExtract','blueExtract','gumdrops','ticket','royalJelly','gumdrops','ticket','royalJelly','gumdrops','ticket','royalJelly','microConverter','fieldDice','fieldDice','fieldDice','smoothDice','smoothDice','loadedDice','antPass','moonCharm','antPass','moonCharm','oil','enzymes','glitter','glue']
+                            dropAmountTable={treat:[15,15,15,20,25,25,25,50,50,50,50,100,100,100,150,150,175,175,250,350,500],redExtract:[1,1,1,1,1,1,1,3,3,3,5,5,10],blueExtract:[1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[3,3,3,3,5,5,5,15,15,25],ticket:[1,1,1,1,3,3,3,5,5,10],royalJelly:[1,1,3,3,3,3,3,5,5,10],microConverter:[1,1,1,1,1,3,3,5],fieldDice:[1,1,1,1,1,3,3,5],smoothDice:[1,1,1,1,1,1,2,2,2,3],loadedDice:[1],antPass:[1,1,1,1,1,3,3,3,5],moonCharm:[3,3,3,3,5,5,5,15,15,25],oil:[1,1,1,1,1,3,3,5],enzymes:[1,1,1,1,1,3,3,5],glitter:[1,1,1,1,1,3,3,5],glue:[1,1,1,1,1,3,3,5]}
 
                         break
                     }
@@ -14332,7 +14329,7 @@ class BugMob {
                     
                     if(!this.aimPos){
                         
-                        if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])>6){
+                        if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])>(this.type==='tunnelBear'?0:6)){
                             
                             this.pos[0]+=d[0]*dt*5
                             this.pos[2]+=d[1]*dt*5
@@ -19911,6 +19908,7 @@ player=(function(out){
             out.currentNPC=null
             dialogueBox.style.display='none'
             out.viewMatrixToChange=undefined
+            uiCanvas.requestPointerLock()
             
         } else if(typeof NPCs[out.currentNPC].dialogue[NPCs[out.currentNPC].dialogueIndex]==='object'){
             
@@ -19951,9 +19949,9 @@ player=(function(out){
         }
         
         out.currentNPC=i
-        document.exitPointerLock()
         actionWarning.style.display='none'
         dialogueBox.style.display='block'
+        document.exitPointerLock()
         NPCName.innerHTML=MATH.doGrammar(out.currentNPC)
         NPCDialogue.innerHTML=NPCs[out.currentNPC].dialogue[NPCs[out.currentNPC].dialogueIndex]
         out.viewMatrixToChange=NPCs[player.currentNPC].viewMatrix
@@ -22065,7 +22063,7 @@ let user=(function(out){
             }
         }
 
-        if(e.key==='e'&&player.currentNPC&&TIME-player.eKeyDialoguePress>1){
+        if(e.key==='e'&&player.currentNPC&&TIME-player.eKeyDialoguePress>0.25){
             
             dialogueBox.onclick()
         }
