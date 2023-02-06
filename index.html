@@ -4071,6 +4071,24 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
 
 </div>
 
+<div id='roboMenu' style='position:fixed;width:500px;height:500px;z-index:1;left:50%;top:50%;transform:translate(-50%,-50%);background-color:rgb(0,140,0);color:rgb(255,255,255);font-size:17px;text-align:center;border-radius:5px;display:none'>
+    
+    <div id='roboTitle' style='position:fixed;left:50%;top:7%;transform:translate(-50%,-50%);font-size:30px;'></div>
+    
+    <div id='roboActiveBeesAmount' style='position:fixed;width:200px;height:400px;left:21%;top:54%;transform:translate(-50%,-50%);font-size:16px;'></div>
+    
+    <div id='roboActiveBees' style='position:fixed;width:200px;height:400px;left:21%;top:59%;transform:translate(-50%,-50%);font-size:29px;background-color:rgb(255,255,255,0.3);border-radius:4px;'></div>
+    
+    <div id='roboBeeChoices' style='position:fixed;width:285px;height:400px;left:70.5%;top:59%;transform:translate(-50%,-50%);font-size:19px;'>
+        
+        <div id='roboBeeChoice1' style='cursor:pointer;position:fixed;background-color:rgb(255,255,255);border-radius:5px;width:255px;height:100px;left:50%;top:20%;transform:translate(-50%,-50%);'></div>
+        <div id='roboBeeChoice2' style='cursor:pointer;position:fixed;background-color:rgb(255,255,255);border-radius:5px;width:255px;height:100px;left:50%;top:50%;transform:translate(-50%,-50%);'></div>
+        <div id='roboBeeChoice3' style='cursor:pointer;position:fixed;background-color:rgb(255,255,255);border-radius:5px;width:255px;height:100px;left:50%;top:80%;transform:translate(-50%,-50%);'></div>
+        
+    </div>
+    
+</div>
+
 <div id='actionWarning' style='position:fixed;margin-left:50%;margin-top:5px;width:360px;height:60px;z-index:2;transform:translate(-50%,0px);display:none'>
     
     <div style='position:fixed;margin-left:60px;margin-top:0px;width:300px;height:50px;background-color:rgb(30,70,255,0.8);border-radius:3px;padding:0px;font-size:18px;color:white;text-align:center;padding-top:0px' id='actionName'></div>
@@ -13303,10 +13321,10 @@ class Flame {
             this.oilPos=[player.body.position.x,player.body.position.y+0.3,player.body.position.z]
             this.oilTrail=new TrailRenderer.Trail({length:10,size:0.75,triangle:true,color:[0.1,0,0,1]})
             
-            player.pollen-=Math.min(Math.ceil(player.convertTotal*0.01),player.pollen)
-            player.honey+=Math.ceil(Math.min(Math.ceil(player.convertTotal*0.01),player.pollen)*player.honeyPerPollen)
+            player.pollen-=Math.min(Math.ceil(player.convertTotal*0.03),player.pollen)
+            player.honey+=Math.ceil(Math.min(Math.ceil(player.convertTotal*0.03),player.pollen)*player.honeyPerPollen)
             if(player.setting_enablePollenText)
-                textRenderer.add(Math.ceil(Math.min(Math.ceil(player.convertTotal*0.01),player.pollen)*player.honeyPerPollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
+                textRenderer.add(Math.ceil(Math.min(Math.ceil(player.convertTotal*0.03),player.pollen)*player.honeyPerPollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
         }
     }
     
@@ -13329,10 +13347,10 @@ class Flame {
             if(player.flameFuel){
                 
                 this.life*=1.5
-                player.pollen-=Math.min(Math.ceil(player.convertTotal*0.01),player.pollen)
-                player.honey+=Math.ceil(Math.min(Math.ceil(player.convertTotal*0.01),player.pollen)*player.honeyPerPollen)
+                player.pollen-=Math.min(Math.ceil(player.convertTotal*0.03),player.pollen)
+                player.honey+=Math.ceil(Math.min(Math.ceil(player.convertTotal*0.03),player.pollen)*player.honeyPerPollen)
                 if(player.setting_enablePollenText)
-                    textRenderer.add(Math.ceil(Math.min(Math.ceil(player.convertTotal*0.01),player.pollen)*player.honeyPerPollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
+                    textRenderer.add(Math.ceil(Math.min(Math.ceil(player.convertTotal*0.03),player.pollen)*player.honeyPerPollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
                 this.getRidOfOilTrailTimer=2
                 this.oilT=0
                 this.oilPos=[player.body.position.x,player.body.position.y+0.3,player.body.position.z]
@@ -19736,6 +19754,86 @@ player=(function(out){
         glitched:50
     }
 
+    out.updateRoboChallenge=function(){
+
+        if(!out.roboChallenge) return
+
+        out.roboChallenge.timer-=dt
+
+        if(out.roboChallenge.timer<=0){
+
+            out.roboChallenge=undefined
+            document.getElementById('roboMenu').style.display='none'
+            return
+        }
+
+    }
+
+    out.updateRoboUI=function(){
+
+        document.getElementById('roboMenu').style.display='block'
+        document.getElementById('roboTitle').innerHTML="Select Bees<p id='roboBeesOutOf' style='font-size:13px;margin-top:0px'>("+(out.roboChallenge.beesPicked+1)+" of "+out.roboChallenge.beesPerRound+")</p>"
+        document.getElementById('roboActiveBeesAmount').innerHTML="Active Bees ("+out.roboChallenge.activeBees.length+")"
+
+        let beesToSelect=[],strActiveBees='#'+out.roboChallenge.activeBees.join('#')+'#'
+
+        for(let y in out.hive){
+
+            for(let x in out.hive[y]){
+
+                let h=out.hive[y][x]
+
+                if(h.type!==null&&strActiveBees.indexOf('#'+x+','+y+'#')<0){
+
+                    beesToSelect.push([x,y])
+                }
+            }
+        }
+
+        for(let i=0;i<3;i++){
+
+            if(beesToSelect.length<=0){
+
+                document.getElementById('roboBeeChoice'+(i+1)).style.display='none'
+                return
+            }
+
+            let r=(Math.random()*beesToSelect.length)|0,bee=beesToSelect[r]
+            bee=out.hive[bee[1]][bee[0]].bee
+
+            beesToSelect.splice(r,1)
+
+            document.getElementById('roboBeeChoice'+(i+1)).style.display='block'
+            document.getElementById('roboBeeChoice'+(i+1)).style.backgroundColor=beeInfo[bee.type].color==='red'?'rgb(255,0,0,0.6)':beeInfo[bee.type].color==='blue'?'rgb(0,0,255,0.6)':'rgb(255,255,255,0.6)'
+
+            let img=document.createElement('canvas')
+
+            img.width=80
+            img.height=80
+            img.style.borderRadius='4px'
+            img.style.position='fixed'
+            img.style.left='3%'
+            img.style.top='10%'
+
+            let img_ctx=img.getContext('2d')
+
+            img_ctx.drawImage(beeCanvas,beeInfo[bee.type].u*2048,beeInfo[bee.type].v*2048,128,128,0,0,80,80)
+
+            document.getElementById('roboBeeChoice'+(i+1)).innerHTML="<p style='position:fixed;width:200px;height:30px;left:67%;top:-3%;transform:translate(-50%,-50%)'>"+MATH.doGrammar(bee.type)+' Bee</p>'
+            document.getElementById('roboBeeChoice'+(i+1)).appendChild(img)
+        }
+
+
+        document.getElementById('roboActiveBees').innerHTML=''
+
+        for(let i in out.roboChallenge.activeBees){
+
+            let b=out.roboChallenge.activeBees[i]
+
+            document.getElementById('roboActiveBees').innerHTML+=out.hive[b[1]][b[0]].bee.type
+        }
+    }
+
     out.endAntChallenge=function(){
 
         if(!out.antChallenge) return
@@ -26001,6 +26099,10 @@ objects.mobs.push(new MondoChick('MountainTopField',7))
 
 objects.mobs.push(new RogueViciousBee('DandelionField',MATH.random(1,13)|0))
 
+//@
+player.roboChallenge={timer:3,page:'bee',beesPerRound:2,beesPicked:0,activeBees:[]}
+player.updateRoboUI()
+
 function loop(now){
     
     if(!then){
@@ -26529,6 +26631,7 @@ function loop(now){
     
     player.updateHiveBalloon()
     player.updateAntChallenge()
+    player.updateRoboChallenge()
     
     gl.bindBuffer(gl.ARRAY_BUFFER,meshes.cylinder_explosion.vertBuffer)
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.cylinder_explosion.indexBuffer)
