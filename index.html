@@ -3010,6 +3010,48 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         <path d='M 27 27L 29 34M 37 27L 39 34M 30 39 L 35 42L40 37' stroke='rgb(255,255,255)' fill='rgb(0,0,0,0)' stroke-width='2'></path>
         
     </svg>
+
+    <svg id='starTreat' style='width:200;height:70;cursor:pointer;border-radius:5px'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='130' y='18' style='font-family:trebuchet ms;font-size:16.5px;' fill='rgb(0,0,0)' text-anchor='middle'>Star Treat</text>
+        <text x='130' y='35' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>Improves a bee's </text>
+        <text x='130' y='49' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>bond by 1,000 and</text>
+        <text x='130' y='64' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>makes it gifted!</text>
+        <text id='starTreat_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <path d='M 26 40C 14 39 4 12 30 28C 35 1 45 12 50 26C 68 10 73 31 60 41C 67 58 51 74 41 52C 37 58 2 74 26 40' stroke='rgb(0,0,0)' fill='rgb(186, 157, 54)' stroke-width='2' transform='scale(0.9,0.9) translate(-2,0)'></path>
+        
+        <path fill='rgb(255, 255, 110)' d='M5.71,16.85L8.23,26.33L0.00,21.00L-8.23,26.33L-5.71,16.85L-13.31,10.67L-3.53,10.15L-0.00,1.00L3.53,10.15L13.31,10.67L5.71,16.85z' transform='translate(34,23) scale(0.75,0.75) rotate(-7)' stroke='black' stroke-width='1.5'></path>
+        
+        <path d='M 31 14L 32 21M 52 23L 46 28M 44 52L 42 45M 16 50L 22 43M 13 25L 19 29' stroke='rgb(240, 255, 145)' fill='rgb(0,0,0,0)' stroke-width='2' transform='translate(2,0)'></path>
+        
+    </svg>
+    
+    <svg id='atomicTreat' style='width:200;height:70;cursor:pointer;border-radius:5px'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='130' y='18' style='font-family:trebuchet ms;font-size:16.5px;' fill='rgb(0,0,0)' text-anchor='middle'>Atomic Treat</text>
+        <text x='130' y='35' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>Improves a bee's </text>
+        <text x='130' y='49' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>bond by 1,000 and</text>
+        <text x='130' y='63' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>causes a mutation.</text>
+        <text id='atomicTreat_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <path d='M 26 40C 14 39 4 12 30 28C 35 1 45 12 50 26C 68 10 73 31 60 41C 67 58 51 74 41 52C 37 58 2 74 26 40' stroke='rgb(0,0,0)' fill='rgb(118, 191, 105)' stroke-width='2' transform='scale(0.9,0.9) translate(-1,0)'></path>
+        
+        <g transform='translate(-17,6) scale(1.3,1.3) rotate(-18) scale(0.9,1)'>
+        <circle cx='0' cy='0' fill='rgb(0,0,0,0)' stroke='rgb(173, 56, 56)' stroke-width='2' r='8' transform='translate(37,34) scale(0.4,1)'></circle>
+        <circle cx='0' cy='0' fill='rgb(0,0,0,0)' stroke='rgb(173, 56, 56)' stroke-width='2' r='8' transform='translate(37,34) rotate(60) scale(0.4,1)'></circle>
+        <circle cx='0' cy='0' fill='rgb(0,0,0,0)' stroke='rgb(173, 56, 56)' stroke-width='2' r='8' transform='translate(37,34) rotate(120) scale(0.4,1)'></circle>
+        </g>
+        
+        <circle cx='37' cy='30' fill='rgb(230,230,230)' r='2'></circle>
+        <circle cx='45' cy='40' fill='rgb(230,230,230)' r='2'></circle>
+        <circle cx='30' cy='39' fill='rgb(230,230,230)' r='2'></circle>
+        
+    </svg>
     
     <svg id='blueberry' style='width:200;height:70;cursor:pointer;border-radius:5px'>
         
@@ -10301,17 +10343,17 @@ let items={
                     
                     switch(stat){
                         
-                        case 'attack':num=oper==='+'?MATH.random(1+level*(4/20),3+level*(10/20))|0:MATH.random(1.05,1.25+level*(0.02));break
+                        case 'attack':num=oper==='+'?MATH.random(1+level*(2/20),3+level*(4/20))|0:MATH.random(1.05,1.35+level*(0.02));break
                         case 'gatherAmount':num=oper==='+'?MATH.random(4+level*(8/20),10+level*(16/20))|0:MATH.random(1.1,1.3+level*(0.04));break
                         case 'convertAmount':num=oper==='+'?MATH.random(7+level*(10/20),15+level*(20/20))|0:MATH.random(1.15,1.4+level*(0.04));break
                         case 'maxEnergy':num=MATH.random(1.2,1.5+level*(0.04));break
                         case 'abilityRate':num=MATH.random(1.05,1.15+level*(0.0175));break
                         
                     }
-                    
+                        
                     num=Number(num.toFixed(2))
                     
-                    player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.mutation={stat:stat,num:num,oper:oper}
+                    player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.mutation=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].mutation={stat:stat,num:num,oper:oper}
                     
                     player.addMessage('☢️ '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' got '+oper.replace('*','x')+num+' '+MATH.doGrammar(stat.replace('max','')).toLowerCase()+'! ☢️',[50,225,90])
                     
@@ -10455,7 +10497,7 @@ let items={
                 items.moonCharm.amount-=amount
                 player.updateInventory()
                 
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond+=amount*10
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond+=amount*250
                 
                 let l,r=[0,10,50,250,1000,5000,20000,80000,350000,800000,2000000,4000000,8000000,15000000,30000000,150000000,600000000,2500000000,10000000000,25000000000]
                 
@@ -10481,10 +10523,10 @@ let items={
                 
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level=l
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.computeLevel(l)
-                textRenderer.add(amount*10+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.2)
+                textRenderer.add(amount*250+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.2)
                 
                 player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
-                player.addMessage('by '+MATH.addCommas(amount*10)+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
+                player.addMessage('by '+MATH.addCommas(amount*250)+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
                 player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
                 
             }
@@ -10554,6 +10596,172 @@ let items={
                 player.addMessage('by '+MATH.addCommas(amount*10)+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
                 player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
                 
+            }
+        }
+    },
+
+    starTreat:{
+        
+        canUseOnSlot:(slot)=>{
+            
+            return slot.type!==null
+        },
+        amount:0,u:128*1/2048,v:128*13/2048,value:500,
+        use:function(){
+            
+            howManyToFeed.style.display='block'
+            feedAmount.value=1
+            howManyMessage.innerHTML='How many star treats will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
+            document.getElementById('feedUntilGifted').style.display='none'
+            
+            howManyToFeed.onmousemove=feedAmount.onchange=function(){
+                
+                let a=feedAmount.value
+                feedAmount.value=MATH.constrain(a,1,items.starTreat.amount)
+            }
+            
+            document.getElementById('cancelFeeding').onclick=function(){
+                howManyToFeed.style.display='none'
+            }
+            
+            document.getElementById('feedThisAmount').onclick=function(){
+                howManyToFeed.style.display='none'
+                
+                let amount=feedAmount.value
+                items.starTreat.amount-=amount
+                player.updateInventory()
+                
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond+=amount*1000
+                
+                let l,r=[0,10,50,250,1000,5000,20000,80000,350000,800000,2000000,4000000,8000000,15000000,30000000,150000000,600000000,2500000000,10000000000,25000000000]
+                
+                for(let i in r){
+                    
+                    if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond>=r[i]){
+                        
+                        l=i
+                    }
+                }
+                
+                if(l<20){
+                    
+                    l++
+                }
+                
+                let leveled
+                
+                if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level!==l){
+                    
+                    leveled=true
+                }
+
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted=true
+                player.addMessage('⭐ The treat made the bee gifted! ⭐',COLORS.honey)
+                
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level=l
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.computeLevel(l)
+                textRenderer.add(amount*1000+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.2)
+                
+                player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
+                player.addMessage('by '+MATH.addCommas(amount*1000)+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
+                player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
+
+                player.updateHive()
+                
+            }
+        }
+    },
+
+    atomicTreat:{
+        
+        canUseOnSlot:(slot)=>{
+            
+            return slot.type!==null
+        },
+        amount:0,u:128*2/2048,v:128*13/2048,value:40,
+        use:function(){
+            
+            howManyToFeed.style.display='block'
+            feedAmount.value=1
+            howManyMessage.innerHTML='How many atomic treats will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
+            document.getElementById('feedUntilGifted').style.display='none'
+            
+            howManyToFeed.onmousemove=feedAmount.onchange=function(){
+                
+                let a=feedAmount.value
+                feedAmount.value=MATH.constrain(a,1,items.atomicTreat.amount)
+            }
+            
+            document.getElementById('cancelFeeding').onclick=function(){
+                howManyToFeed.style.display='none'
+            }
+            
+            document.getElementById('feedThisAmount').onclick=function(){
+                howManyToFeed.style.display='none'
+                
+                let amount=feedAmount.value
+                items.atomicTreat.amount-=amount
+                player.updateInventory()
+                
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond+=amount*1000
+                
+                let l,r=[0,10,50,250,1000,5000,20000,80000,350000,800000,2000000,4000000,8000000,15000000,30000000,150000000,600000000,2500000000,10000000000,25000000000]
+                
+                for(let i in r){
+                    
+                    if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond>=r[i]){
+                        
+                        l=i
+                    }
+                }
+                
+                if(l<20){
+                    
+                    l++
+                }
+                
+                let leveled
+                
+                if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level!==l){
+                    
+                    leveled=true
+                }
+
+                player.addMessage('☢️ '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' bee gained a mutation! ☢️',[50,225,90])
+                
+                let stat=['abilityRate','gatherAmount','convertAmount','maxEnergy','attack','gatherAmount','convertAmount','maxEnergy','attack','gatherAmount','convertAmount','maxEnergy','attack','gatherAmount','convertAmount','maxEnergy','attack','gatherAmount','convertAmount','maxEnergy','attack','gatherAmount','convertAmount','maxEnergy','attack','gatherAmount','convertAmount','maxEnergy','attack','gatherAmount','convertAmount','maxEnergy','attack'],oper,num,level=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.level-1
+                
+                stat=stat[(Math.random()*stat.length)|0]
+                
+                oper=stat==='attack'||stat==='convertAmount'||stat==='gatherAmount'?Math.random()<0.5?'+':'*':'*'
+                
+                switch(stat){
+                    
+                    case 'attack':num=oper==='+'?MATH.random(1+level*(2/20),3+level*(4/20))|0:MATH.random(1.05,1.35+level*(0.02));break
+                    case 'gatherAmount':num=oper==='+'?MATH.random(4+level*(8/20),10+level*(16/20))|0:MATH.random(1.1,1.3+level*(0.04));break
+                    case 'convertAmount':num=oper==='+'?MATH.random(7+level*(10/20),15+level*(20/20))|0:MATH.random(1.15,1.4+level*(0.04));break
+                    case 'maxEnergy':num=MATH.random(1.2,1.5+level*(0.04));break
+                    case 'abilityRate':num=MATH.random(1.05,1.15+level*(0.0175));break
+                    
+                }
+                
+                num=Number(num.toFixed(2))
+                
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.mutation=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].mutation={stat:stat,num:num,oper:oper}
+                
+                player.addMessage('☢️ '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' got '+oper.replace('*','x')+num+' '+MATH.doGrammar(stat.replace('max','')).toLowerCase()+'! ☢️',[50,225,90])
+                
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level=l
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.computeLevel(l)
+                textRenderer.add(amount*1000+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.2)
+                
+                player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
+                player.addMessage('by '+MATH.addCommas(amount*1000)+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
+                player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
+
+                player.updateHive()
+                
+                console.log(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.mutation)
             }
         }
     },
@@ -11650,11 +11858,12 @@ let objects={
 
 class Bee {
     
-    constructor(pos,type,lvl,gifted,x,y){
+    constructor(pos,type,lvl,gifted,x,y,mutation){
         
         this.meshScale=type==='baby'||type==='tadpole'?0.65:1
         this.GIFTED_BEE_TEXTURE_OFFSET=beeInfo[type].v+(gifted?GIFTED_BEE_TEXTURE_OFFSET:0)
 
+        this.mutation=mutation
         this.hiveX=x
         this.hiveY=y
         this.gifted=gifted
@@ -20677,7 +20886,7 @@ player=(function(out){
                         if(out.hive[y][x].gifted)
                             giftedRing(out.hivePos[0]+x*0.8,out.hivePos[1]+y*0.8-2.25,out.hivePos[2]-0.2,0.45,0.45,out.hive[y][x].type)
                         
-                        let _b=new Bee([out.hivePos[0]+x*0.8,out.hivePos[1]+y*0.8-2.25,out.hivePos[2]],out.hive[y][x].type,out.hive[y][x].level,out.hive[y][x].gifted,x,y)
+                        let _b=new Bee([out.hivePos[0]+x*0.8,out.hivePos[1]+y*0.8-2.25,out.hivePos[2]],out.hive[y][x].type,out.hive[y][x].level,out.hive[y][x].gifted,x,y,out.hive[y][x].mutation)
                         
                         out.hive[y][x].bee=_b
                         objects.bees.push(_b)
@@ -26409,7 +26618,7 @@ if(window.thisProgramIsInFullScreen){
 
 //<script>
 
-console.log=0
+// console.log=0
 
 </script>
 
