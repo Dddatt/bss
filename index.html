@@ -4081,9 +4081,9 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
     
     <div id='roboBeeChoices' style='position:fixed;width:285px;height:400px;left:70.5%;top:59%;transform:translate(-50%,-50%);font-size:19px;'>
         
-        <div id='roboBeeChoice1' style='cursor:pointer;position:fixed;background-color:rgb(255,255,255);border-radius:5px;width:255px;height:100px;left:50%;top:20%;transform:translate(-50%,-50%);'></div>
-        <div id='roboBeeChoice2' style='cursor:pointer;position:fixed;background-color:rgb(255,255,255);border-radius:5px;width:255px;height:100px;left:50%;top:50%;transform:translate(-50%,-50%);'></div>
-        <div id='roboBeeChoice3' style='cursor:pointer;position:fixed;background-color:rgb(255,255,255);border-radius:5px;width:255px;height:100px;left:50%;top:80%;transform:translate(-50%,-50%);'></div>
+        <div id='roboBeeChoice1' style='cursor:pointer;position:fixed;background-color:rgb(255,255,255);border-radius:5px;width:255px;height:100px;left:50%;top:20%;transform:translate(-50%,-50%);color:black'></div>
+        <div id='roboBeeChoice2' style='cursor:pointer;position:fixed;background-color:rgb(255,255,255);border-radius:5px;width:255px;height:100px;left:50%;top:50%;transform:translate(-50%,-50%);color:black'></div>
+        <div id='roboBeeChoice3' style='cursor:pointer;position:fixed;background-color:rgb(255,255,255);border-radius:5px;width:255px;height:100px;left:50%;top:80%;transform:translate(-50%,-50%);color:black'></div>
         
     </div>
     
@@ -19768,7 +19768,7 @@ player=(function(out){
         }
 
     }
-
+    //@
     out.updateRoboUI=function(){
 
         document.getElementById('roboMenu').style.display='block'
@@ -19790,6 +19790,34 @@ player=(function(out){
             }
         }
 
+        document.getElementById('roboActiveBees').innerHTML=''
+
+        for(let i in out.roboChallenge.activeBees){
+
+            let b=out.roboChallenge.activeBees[i]
+
+            b=out.hive[b[1]][b[0]].bee
+
+            let img=document.createElement('canvas')
+
+            img.width=35
+            img.height=35
+            img.style.width=35
+            img.style.height=35
+            img.style.borderRadius='2px'
+            img.style.position='fixed'
+            img.style.left=(((i%5)+0.5-2.5)*20+50)+'%'
+            img.style.top=(((i/5)|0)*10+5)+'%'
+            img.style.transform='translate(-17px,-17px)'
+
+            let img_ctx=img.getContext('2d')
+
+            img_ctx.drawImage(beeCanvas,beeInfo[b.type].u*2048,beeInfo[b.type].v*2048+(b.gifted?768:0),128,128,0,0,35,35)
+
+            document.getElementById('roboActiveBees').appendChild(img)
+
+        }
+
         for(let i=0;i<3;i++){
 
             if(beesToSelect.length<=0){
@@ -19798,13 +19826,14 @@ player=(function(out){
                 return
             }
 
-            let r=(Math.random()*beesToSelect.length)|0,bee=beesToSelect[r]
+            let r=(Math.random()*beesToSelect.length)|0,bee=beesToSelect[r],_bee=bee.slice()
+
             bee=out.hive[bee[1]][bee[0]].bee
 
             beesToSelect.splice(r,1)
 
             document.getElementById('roboBeeChoice'+(i+1)).style.display='block'
-            document.getElementById('roboBeeChoice'+(i+1)).style.backgroundColor=beeInfo[bee.type].color==='red'?'rgb(255,0,0,0.6)':beeInfo[bee.type].color==='blue'?'rgb(0,0,255,0.6)':'rgb(255,255,255,0.6)'
+            document.getElementById('roboBeeChoice'+(i+1)).style.backgroundColor=beeInfo[bee.type].color==='red'?'rgb(255,50,50,0.6)':beeInfo[bee.type].color==='blue'?'rgb(50,50,255,0.6)':'rgb(255,255,255,0.6)'
 
             let img=document.createElement('canvas')
 
@@ -19817,20 +19846,18 @@ player=(function(out){
 
             let img_ctx=img.getContext('2d')
 
-            img_ctx.drawImage(beeCanvas,beeInfo[bee.type].u*2048,beeInfo[bee.type].v*2048,128,128,0,0,80,80)
+            img_ctx.drawImage(beeCanvas,beeInfo[bee.type].u*2048,beeInfo[bee.type].v*2048+(bee.gifted?768:0),128,128,0,0,80,80)
 
-            document.getElementById('roboBeeChoice'+(i+1)).innerHTML="<p style='position:fixed;width:200px;height:30px;left:67%;top:-3%;transform:translate(-50%,-50%)'>"+MATH.doGrammar(bee.type)+' Bee</p>'
+            let descStr='Level: '+bee.level+'<br>'+(bee.gifted?'⭐ Gifted ⭐':'')+(bee.mutation?'<br>☢️ '+bee.mutation.oper.replace('*','x')+bee.mutation.num+' '+MATH.doGrammar(bee.mutation.stat)+' ☢️':'')+(out.hive[_bee[1]][_bee[0]].beequip?'<br>Beequip: '+MATH.doGrammar(out.hive[_bee[1]][_bee[0]].beequip.type):'')
+
+            document.getElementById('roboBeeChoice'+(i+1)).innerHTML="<p style='position:fixed;width:200px;height:30px;left:67%;top:-3%;transform:translate(-50%,-50%)'>"+MATH.doGrammar(bee.type)+" Bee</p><p style='position:fixed;width:200px;left:67%;top:50%;transform:translate(-50%,-50%);font-size:11px'>"+descStr+"</p>"
             document.getElementById('roboBeeChoice'+(i+1)).appendChild(img)
-        }
 
+            document.getElementById('roboBeeChoice'+(i+1)).onclick=function(){
 
-        document.getElementById('roboActiveBees').innerHTML=''
-
-        for(let i in out.roboChallenge.activeBees){
-
-            let b=out.roboChallenge.activeBees[i]
-
-            document.getElementById('roboActiveBees').innerHTML+=out.hive[b[1]][b[0]].bee.type
+                out.roboChallenge.activeBees.push([Number(_bee[0]),Number(_bee[1])])
+                out.updateRoboUI()
+            }
         }
     }
 
@@ -25937,6 +25964,12 @@ player.addSlot('bear')
 player.addSlot('puppy')
 player.addSlot('festive')
 player.addSlot('digital')
+player.addSlot('buoyant')
+player.addSlot('buoyant')
+player.addSlot('buoyant')
+player.addSlot('buoyant')
+player.addSlot('buoyant')
+player.addSlot('buoyant')
 
 player.updateHive()
 player.updateGear()
@@ -26098,10 +26131,6 @@ window.deleteBeequip=function(){
 objects.mobs.push(new MondoChick('MountainTopField',7))
 
 objects.mobs.push(new RogueViciousBee('DandelionField',MATH.random(1,13)|0))
-
-//@
-player.roboChallenge={timer:3,page:'bee',beesPerRound:2,beesPicked:0,activeBees:[]}
-player.updateRoboUI()
 
 function loop(now){
     
@@ -26564,6 +26593,9 @@ function loop(now){
 
         TIME+=dt*50
 
+        player.roboChallenge={timer:3*60,page:'bee',beesPerRound:2,beesPicked:0,activeBees:[]}
+        player.updateRoboUI()
+
         for(let i in objects.planters){
 
             objects.planters[i].growth+=dt*500
@@ -26714,8 +26746,6 @@ if(window.thisProgramIsInFullScreen){
 console.log=0
 
 </script>
-
-<!--<script>-->
 
 </body>
 </html>
