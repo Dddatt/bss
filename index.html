@@ -4086,6 +4086,13 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         <div id='roboBeeChoice3' style='cursor:pointer;position:fixed;background-color:rgb(255,255,255);border-radius:5px;width:255px;height:100px;left:50%;top:80%;transform:translate(-50%,-50%);color:black'></div>
         
     </div>
+
+    <div id='roboQuestChoices' style='position:fixed;width:285px;height:400px;left:70.5%;top:59%;transform:translate(-50%,-50%);font-size:19px;'>
+        
+        <div id='roboQuestChoice1' style='cursor:pointer;position:fixed;background-color:rgb(255,255,255,0.7);border-radius:5px;width:277px;height:190px;left:50%;top:25%;transform:translate(-50%,-50%);color:black'></div>
+        <div id='roboQuestChoice2' style='cursor:pointer;position:fixed;background-color:rgb(255,255,255,0.7);border-radius:5px;width:277px;height:190px;left:50%;top:75%;transform:translate(-50%,-50%);color:black'></div>
+        
+    </div>
     
 </div>
 
@@ -19772,92 +19779,153 @@ player=(function(out){
     out.updateRoboUI=function(){
 
         document.getElementById('roboMenu').style.display='block'
-        document.getElementById('roboTitle').innerHTML="Select Bees<p id='roboBeesOutOf' style='font-size:13px;margin-top:0px'>("+(out.roboChallenge.beesPicked+1)+" of "+out.roboChallenge.beesPerRound+")</p>"
-        document.getElementById('roboActiveBeesAmount').innerHTML="Active Bees ("+out.roboChallenge.activeBees.length+")"
 
-        let beesToSelect=[],strActiveBees='#'+out.roboChallenge.activeBees.join('#')+'#'
+        switch(out.roboChallenge.scene){
 
-        for(let y in out.hive){
+            case 'quest':
 
-            for(let x in out.hive[y]){
+                document.getElementById('roboTitle').innerHTML="Select Quest<p style='font-size:14.5px;margin-top:0px'><u style='cursor:pointer'>Reroll Quests</u> ("+out.roboChallenge.questRerolls+" left)</p>"
+                document.getElementById('roboActiveBeesAmount').innerHTML="Active Bees ("+out.roboChallenge.activeBees.length+")"
+                document.getElementById('roboBeeChoices').style.display='none'
+                document.getElementById('roboQuestChoices').style.display='block'
+                document.getElementById('roboActiveBees').innerHTML=''
 
-                let h=out.hive[y][x]
+                for(let i in out.roboChallenge.activeBees){
 
-                if(h.type!==null&&strActiveBees.indexOf('#'+x+','+y+'#')<0){
+                    let b=out.roboChallenge.activeBees[i]
 
-                    beesToSelect.push([x,y])
+                    b=out.hive[b[1]][b[0]].bee
+
+                    let img=document.createElement('canvas')
+
+                    img.width=35
+                    img.height=35
+                    img.style.width=35
+                    img.style.height=35
+                    img.style.borderRadius='2px'
+                    img.style.position='fixed'
+                    img.style.left=(((i%5)+0.5-2.5)*20+50)+'%'
+                    img.style.top=(((i/5)|0)*10+5)+'%'
+                    img.style.transform='translate(-17px,-17px)'
+
+                    let img_ctx=img.getContext('2d')
+
+                    img_ctx.drawImage(beeCanvas,beeInfo[b.type].u*2048,beeInfo[b.type].v*2048+(b.gifted?768:0),128,128,0,0,35,35)
+
+                    document.getElementById('roboActiveBees').appendChild(img)
+
                 }
-            }
-        }
 
-        document.getElementById('roboActiveBees').innerHTML=''
+                let types=['redPollen','whitePollen','bluePollen','pollenFromSunflowerField','pollenFromDandelionField','pollenFromMushroomField','pollenFromBlueFlowerField','pollenFromCloverField','pollenFromSpiderField','pollenFromStrawberryField','pollenFromBambooField','pollenFromPineapplePatch','pollenFromCactusField','pollenFromPumpkinPatch','pollenFromPineTreeForest','pollenFromRoseField']
 
-        for(let i in out.roboChallenge.activeBees){
+                if(out.roboChallenge.round>5) types.push('pollenFromMountainTopField')
+                if(out.roboChallenge.round>10) types.push('pollenFromPepperPatch')
 
-            let b=out.roboChallenge.activeBees[i]
 
-            b=out.hive[b[1]][b[0]].bee
 
-            let img=document.createElement('canvas')
+            break
 
-            img.width=35
-            img.height=35
-            img.style.width=35
-            img.style.height=35
-            img.style.borderRadius='2px'
-            img.style.position='fixed'
-            img.style.left=(((i%5)+0.5-2.5)*20+50)+'%'
-            img.style.top=(((i/5)|0)*10+5)+'%'
-            img.style.transform='translate(-17px,-17px)'
+            case 'bee':
 
-            let img_ctx=img.getContext('2d')
+                if(out.roboChallenge.beesPicked>=out.roboChallenge.beesPerRound){
 
-            img_ctx.drawImage(beeCanvas,beeInfo[b.type].u*2048,beeInfo[b.type].v*2048+(b.gifted?768:0),128,128,0,0,35,35)
+                    out.roboChallenge.scene='quest'
+                    out.updateRoboUI()
+                    return
+                }
 
-            document.getElementById('roboActiveBees').appendChild(img)
+                document.getElementById('roboTitle').innerHTML="Select Bees<p style='font-size:13px;margin-top:0px'>("+(out.roboChallenge.beesPicked+1)+" of "+out.roboChallenge.beesPerRound+")</p>"
+                document.getElementById('roboActiveBeesAmount').innerHTML="Active Bees ("+out.roboChallenge.activeBees.length+")"
+                document.getElementById('roboBeeChoices').style.display='block'
+                document.getElementById('roboQuestChoices').style.display='none'
 
-        }
+                let beesToSelect=[],strActiveBees='#'+out.roboChallenge.activeBees.join('#')+'#'
 
-        for(let i=0;i<3;i++){
+                for(let y in out.hive){
 
-            if(beesToSelect.length<=0){
+                    for(let x in out.hive[y]){
 
-                document.getElementById('roboBeeChoice'+(i+1)).style.display='none'
-                return
-            }
+                        let h=out.hive[y][x]
 
-            let r=(Math.random()*beesToSelect.length)|0,bee=beesToSelect[r],_bee=bee.slice()
+                        if(h.type!==null&&strActiveBees.indexOf('#'+x+','+y+'#')<0){
 
-            bee=out.hive[bee[1]][bee[0]].bee
+                            beesToSelect.push([x,y])
+                        }
+                    }
+                }
 
-            beesToSelect.splice(r,1)
+                document.getElementById('roboActiveBees').innerHTML=''
 
-            document.getElementById('roboBeeChoice'+(i+1)).style.display='block'
-            document.getElementById('roboBeeChoice'+(i+1)).style.backgroundColor=beeInfo[bee.type].color==='red'?'rgb(255,50,50,0.6)':beeInfo[bee.type].color==='blue'?'rgb(50,50,255,0.6)':'rgb(255,255,255,0.6)'
+                for(let i in out.roboChallenge.activeBees){
 
-            let img=document.createElement('canvas')
+                    let b=out.roboChallenge.activeBees[i]
 
-            img.width=80
-            img.height=80
-            img.style.borderRadius='4px'
-            img.style.position='fixed'
-            img.style.left='3%'
-            img.style.top='10%'
+                    b=out.hive[b[1]][b[0]].bee
 
-            let img_ctx=img.getContext('2d')
+                    let img=document.createElement('canvas')
 
-            img_ctx.drawImage(beeCanvas,beeInfo[bee.type].u*2048,beeInfo[bee.type].v*2048+(bee.gifted?768:0),128,128,0,0,80,80)
+                    img.width=35
+                    img.height=35
+                    img.style.width=35
+                    img.style.height=35
+                    img.style.borderRadius='2px'
+                    img.style.position='fixed'
+                    img.style.left=(((i%5)+0.5-2.5)*20+50)+'%'
+                    img.style.top=(((i/5)|0)*10+5)+'%'
+                    img.style.transform='translate(-17px,-17px)'
 
-            let descStr='Level: '+bee.level+'<br>'+(bee.gifted?'⭐ Gifted ⭐':'')+(bee.mutation?'<br>☢️ '+bee.mutation.oper.replace('*','x')+bee.mutation.num+' '+MATH.doGrammar(bee.mutation.stat)+' ☢️':'')+(out.hive[_bee[1]][_bee[0]].beequip?'<br>Beequip: '+MATH.doGrammar(out.hive[_bee[1]][_bee[0]].beequip.type):'')
+                    let img_ctx=img.getContext('2d')
 
-            document.getElementById('roboBeeChoice'+(i+1)).innerHTML="<p style='position:fixed;width:200px;height:30px;left:67%;top:-3%;transform:translate(-50%,-50%)'>"+MATH.doGrammar(bee.type)+" Bee</p><p style='position:fixed;width:200px;left:67%;top:50%;transform:translate(-50%,-50%);font-size:11px'>"+descStr+"</p>"
-            document.getElementById('roboBeeChoice'+(i+1)).appendChild(img)
+                    img_ctx.drawImage(beeCanvas,beeInfo[b.type].u*2048,beeInfo[b.type].v*2048+(b.gifted?768:0),128,128,0,0,35,35)
 
-            document.getElementById('roboBeeChoice'+(i+1)).onclick=function(){
+                    document.getElementById('roboActiveBees').appendChild(img)
 
-                out.roboChallenge.activeBees.push([Number(_bee[0]),Number(_bee[1])])
-                out.updateRoboUI()
-            }
+                }
+
+                for(let i=0;i<3;i++){
+
+                    if(beesToSelect.length<=0){
+
+                        document.getElementById('roboBeeChoice'+(i+1)).style.display='none'
+                        return
+                    }
+
+                    let r=(Math.random()*beesToSelect.length)|0,bee=beesToSelect[r],_bee=bee.slice()
+
+                    bee=out.hive[bee[1]][bee[0]].bee
+
+                    beesToSelect.splice(r,1)
+
+                    document.getElementById('roboBeeChoice'+(i+1)).style.display='block'
+                    document.getElementById('roboBeeChoice'+(i+1)).style.backgroundColor=beeInfo[bee.type].color==='red'?'rgb(255,50,50,0.6)':beeInfo[bee.type].color==='blue'?'rgb(50,50,255,0.6)':'rgb(255,255,255,0.6)'
+
+                    let img=document.createElement('canvas')
+
+                    img.width=80
+                    img.height=80
+                    img.style.borderRadius='4px'
+                    img.style.position='fixed'
+                    img.style.left='3%'
+                    img.style.top='10%'
+
+                    let img_ctx=img.getContext('2d')
+
+                    img_ctx.drawImage(beeCanvas,beeInfo[bee.type].u*2048,beeInfo[bee.type].v*2048+(bee.gifted?768:0),128,128,0,0,80,80)
+
+                    let descStr='Level: '+bee.level+'<br>'+(bee.gifted?'⭐ Gifted ⭐':'')+(bee.mutation?'<br>☢️ '+bee.mutation.oper.replace('*','x')+bee.mutation.num+' '+MATH.doGrammar(bee.mutation.stat)+' ☢️':'')+(out.hive[_bee[1]][_bee[0]].beequip?'<br>Beequip: '+MATH.doGrammar(out.hive[_bee[1]][_bee[0]].beequip.type):'')
+
+                    document.getElementById('roboBeeChoice'+(i+1)).innerHTML="<p style='position:fixed;width:200px;height:30px;left:67%;top:-3%;transform:translate(-50%,-50%)'>"+MATH.doGrammar(bee.type)+" Bee</p><p style='position:fixed;width:200px;left:67%;top:50%;transform:translate(-50%,-50%);font-size:11px'>"+descStr+"</p>"
+                    document.getElementById('roboBeeChoice'+(i+1)).appendChild(img)
+
+                    document.getElementById('roboBeeChoice'+(i+1)).onclick=function(){
+
+                        out.roboChallenge.activeBees.push([Number(_bee[0]),Number(_bee[1])])
+                        out.roboChallenge.beesPicked++
+                        out.updateRoboUI()
+                    }
+                }
+
+            break
         }
     }
 
@@ -26593,7 +26661,7 @@ function loop(now){
 
         TIME+=dt*50
 
-        player.roboChallenge={timer:3*60,page:'bee',beesPerRound:2,beesPicked:0,activeBees:[]}
+        player.roboChallenge={timer:3*60,page:'bee',beesPerRound:2,beesPicked:0,activeBees:[],scene:'bee',questRerolls:1}
         player.updateRoboUI()
 
         for(let i in objects.planters){
