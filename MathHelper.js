@@ -286,7 +286,7 @@ window.MATH = (function (MATH) {
 
     MATH.doStatGrammar = function (s) {
 
-        return s === 'rhinoBeetle' ? 'Defeat' : 'Collect'
+        return s==='itemsUsingBlender'?'Craft':s==='fallingCoconuts'?'Catch':s==='bubbles'?'Pop':s==='flames'?'Spawn':['rhinoBeetle','ladybug','spider','werewolf','mantis','scorpion','kingBeetle','tunnelBear','ant','fireAnt','armyAnt','flyingAnt','giantAnt','mondoChick'].indexOf(s)>-1 ?'Defeat':s.toLowerCase().indexOf('token')>-1||s.toLowerCase().indexOf('pollen')>-1||s.toLowerCase().indexOf('goo')>-1?'Collect':'Use'
     }
 
     MATH.indexOfArrays = function (arr, val) {

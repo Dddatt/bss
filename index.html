@@ -4393,7 +4393,7 @@ gl.cullFace(gl.BACK)
 let blenderRecipes=[
     
     {item:'gumdrops',req:[['pineapple',2],['strawberry',2],['blueberry',2]]},
-    {item:'moonCharm',req:[['royalJelly',2],['pineapple',3],['gumdrop',3]]},
+    {item:'moonCharm',req:[['royalJelly',2],['pineapple',3],['gumdrops',3]]},
     {item:'redExtract',req:[['strawberry',35],['royalJelly',5]]},
     {item:'blueExtract',req:[['blueberry',35],['royalJelly',5]]},
     {item:'enzymes',req:[['pineapple',35],['royalJelly',5]]},
@@ -4483,6 +4483,8 @@ for(let i in hotbarSlots){
                 if(autoHotbarButtons[i].autoEnabled){
                     
                     autoHotbarButtons[i].interval=window.setInterval(function(){
+
+                        player.stats[hotbarSlots[i].itemType]++
                         items[hotbarSlots[i].itemType].use()
                         items[hotbarSlots[i].itemType].cooldown=TIME
                         player.updateInventory()
@@ -4525,6 +4527,7 @@ for(let i in hotbarSlots){
                 
                 if(TIME-items[hotbarSlots[i].itemType].cooldown>items[hotbarSlots[i].itemType].maxCooldown){
                     
+                    player.stats[hotbarSlots[i].itemType]++
                     items[hotbarSlots[i].itemType].use()
                     items[hotbarSlots[i].itemType].cooldown=TIME
                     player.updateInventory()
@@ -13303,6 +13306,8 @@ class Flame {
     
     constructor(field,x,z,isStatic){
         
+        player.stats.flames++
+
         this.life=3*(player.flameFuel?1.5:1)*player.flameLife
         this.isStatic=isStatic
         
@@ -13462,6 +13467,8 @@ class Bubble {
     }
     
     pop(){
+
+        player.stats.bubbles++
 
         if(player.popStarActive){
 
@@ -15216,7 +15223,7 @@ class Ant {
                 
                 if(this.health<=0){
                     
-                    // player.stats.ant++
+                    player.stats[this.type]++
                     return true
                 }
                 
@@ -16345,12 +16352,18 @@ class Coconut {
         
         let hpt=Math.ceil(Math.min(player.convertTotal,player.pollen)/5)
         
-        if(hpt&&vec3.sqrDist(this.pos,[player.body.position.x,player.body.position.y,player.body.position.z])<=this.displaySize){
-            player.pollen-=Math.ceil(Math.min(player.convertTotal,player.pollen))
-            
-            for(let i=0;i<MATH.TWO_PI;i+=MATH.TWO_PI/5){
+        if(vec3.sqrDist(this.pos,[player.body.position.x,player.body.position.y,player.body.position.z])<=this.displaySize){
+
+            player.stats.fallingCoconuts++
+
+            if(hpt){
+
+                player.pollen-=Math.ceil(Math.min(player.convertTotal,player.pollen))
                 
-                objects.tokens.push(new LootToken(30,[this.pos[0]+Math.cos(i)*this.displaySize*0.6,fieldInfo[this.field].y+1,this.pos[2]+Math.sin(i)*this.displaySize*0.6],'honey',Math.ceil(hpt),true,'Coconut'))
+                for(let i=0;i<MATH.TWO_PI;i+=MATH.TWO_PI/5){
+                    
+                    objects.tokens.push(new LootToken(30,[this.pos[0]+Math.cos(i)*this.displaySize*0.6,fieldInfo[this.field].y+1,this.pos[2]+Math.sin(i)*this.displaySize*0.6],'honey',Math.ceil(hpt),true,'Coconut'))
+                }
             }
         }
 
@@ -20181,6 +20194,10 @@ player=(function(out){
     out.lagPos=[0,0,0]
     out.stats={
         
+        itemsUsingBlender:0,
+        fallingCoconuts:0,
+        flames:0,
+        bubbles:0,
         redPollen:0,
         bluePollen:0,
         whitePollen:0,
@@ -20188,6 +20205,18 @@ player=(function(out){
         abilityTokens:0,
         honeyTokens:0,
         rhinoBeetle:0,
+        ladybug:0,
+        spider:0,
+        werewolf:0,
+        mantis:0,
+        scorpion:0,
+        kingBeetle:0,
+        tunnelBear:0,
+        ant:0,
+        fireAnt:0,
+        armyAnt:0,
+        flyingAnt:0,
+        giantAnt:0,
         goo:0,
         popStar:0,
         scorchingStar:0,
@@ -20200,6 +20229,7 @@ player=(function(out){
     for(let i in items){
         
         out.stats[i+'Tokens']=0
+        out.stats[i]=0
     }
     
     for(let i in LIST_OF_STATS_FOR_PLAYER){
@@ -21275,7 +21305,7 @@ player=(function(out){
             
             for(let i in out.quests){
                 
-                pages[1].innerHTML+=`<div style='background-color:${out.quests[i].completed?"rgb(0,"+(Math.sin(TIME*5)*20+215)+",0)":"rgb(240,240,240)"};font-size:17px;text-align:center;margin-top:10px'>${out.quests[i].name}${(function(){
+                pages[1].innerHTML+=`<div style='background-color:${out.quests[i].completed?"rgb(0,"+(Math.sin(TIME*5)*20+215)+",0)":"rgb(240,240,240)"};font-size:17px;text-align:center;margin-top:-16px;border-radius:3px'><p style='margin-bottom:10px'>${out.quests[i].name}</p>${(function(){
                     
                     let s='',isCompleted=true
                     
@@ -21290,10 +21320,11 @@ player=(function(out){
                             isCompleted=false
                         }
                         
-                        s+=`<svg style='width:195px;height:30px;margin-top:5px'>
-                        <rect x='0' y='0' width='195' height='30' fill='rgb(255,0,0)'></rect>
+                        s+=`<svg style='border-radius:3px;width:190px;height:30px;margin-top:0px'>
+
+                        <rect x='0' y='0' width='190' height='30' fill='rgb(255,0,0)'></rect>
                         
-                        <rect x='0' y='0' width='${((out.stats[out.quests[i].req[j][0]]-out.quests[i].req[j][2])/out.quests[i].req[j][1])*195}' height='30' fill='rgb(0,255,0)'></rect>
+                        <rect x='-1' y='0' width='${((out.stats[out.quests[i].req[j][0]]-out.quests[i].req[j][2])/out.quests[i].req[j][1])*192}' height='30' fill='rgb(0,255,0)'></rect>
                         <text fill='rgb(0,0,0)' x='97.5' y='12' text-anchor='middle' style='font-family:calibri;font-size:13px;'>${MATH.doStatGrammar(out.quests[i].req[j][0])+' '+MATH.addCommas(out.quests[i].req[j][1].toString())+' '+MATH.doGrammar(out.quests[i].req[j][0])}</text>
                         
                         <text fill='rgb(0,0,0)' x='97.5' y='25' text-anchor='middle' style='font-family:calibri;font-size:13px;'>(${(MATH.constrain((out.stats[out.quests[i].req[j][0]]-out.quests[i].req[j][2])/out.quests[i].req[j][1],0,1)*100).toFixed(0)+'%'})</text>
@@ -21606,6 +21637,7 @@ player=(function(out){
             document.getElementById('blenderEnd').onclick=function(){
 
                 items[player.isCrafting.item].amount+=a
+                player.stats.itemsUsingBlender+=a
 
                 if(a)
                     player.addMessage('+'+MATH.addCommas(a+'')+' '+(a>1?MATH.doPlural(MATH.doGrammar(player.isCrafting.item)):MATH.doGrammar(player.isCrafting.item))+' (from Blender)')
@@ -21623,7 +21655,7 @@ player=(function(out){
                             items[b.req[j][0]].amount+=b.req[j][1]*f
 
                             if(f)
-                                player.addMessage('+'+MATH.addCommas(f+'')+' '+(f>1?MATH.doPlural(MATH.doGrammar(b.req[j][0])):MATH.doGrammar(b.req[j][0]))+' (from Blender Refund)')
+                                player.addMessage('+'+MATH.addCommas((b.req[j][1]*f)+'')+' '+(f>1?MATH.doPlural(MATH.doGrammar(b.req[j][0])):MATH.doGrammar(b.req[j][0]))+' (from Blender Refund)')
                         }
 
                         break
@@ -21643,6 +21675,7 @@ player=(function(out){
                 player.addMessage('-'+MATH.addCommas(n+'')+(n===1?' Ticket':' Tickets'))
                 items[player.isCrafting.item].amount+=player.isCrafting.amount
                 player.addMessage('+'+MATH.addCommas(player.isCrafting.amount+'')+' '+(player.isCrafting.amount>1?MATH.doPlural(MATH.doGrammar(player.isCrafting.item)):MATH.doGrammar(player.isCrafting.item))+' (from Blender)')
+                player.stats.itemsUsingBlender+=player.isCrafting.amount
                 player.isCrafting=false
                 player.updateInventory()
                 document.getElementById('blenderX').onclick()
@@ -21738,6 +21771,25 @@ player=(function(out){
                     let am=Number(document.getElementById('blenderCraftAmount').value),waitTime=30*am
 
                     player.isCrafting={time:TIME+waitTime,waitTime:waitTime,item:item,amount:am}
+
+                    for(let i in blenderRecipes){
+
+                        let b=blenderRecipes[i]
+
+                        if(b.item===player.isCrafting.item){
+
+                            for(let j in b.req){
+
+                                items[b.req[j][0]].amount-=b.req[j][1]*am
+
+                                player.addMessage('-'+MATH.addCommas((b.req[j][1]*am)+'')+' '+(am>1?MATH.doPlural(MATH.doGrammar(b.req[j][0])):MATH.doGrammar(b.req[j][0])))
+                            }
+
+                            break
+                        }
+                    }
+
+                    out.updateInventory()
                     out.updateBlenderMenu()
                 }           
             }
@@ -22263,7 +22315,8 @@ NPCs={
         viewMatrix:[24,2,0.5,MATH.HALF_PI,-0.25],
         exclaimPos:[29,0.5,0.5],
         dialogueIndex:0,
-        dialogue:window.dialogue_blackBear(player,items,NPCs),
+        // dialogue:window.dialogue_blackBear(player,items,NPCs),
+        dialogue:window.dialogue_dddatt(player,items,NPCs),
         mesh:new Mesh(),
         meshParams:{x:0.5,y:0,z:-31.5,r:1,s:1.2,texture:{face:{u:0,v:0},torso:{texture:false,u:0,v:0.5}}}
     },
@@ -22395,6 +22448,7 @@ let user=(function(out){
                     
                     if(TIME-items[player.itemDragging].cooldown>items[player.itemDragging].maxCooldown){
                         
+                        player.stats[player.itemDragging]++
                         items[player.itemDragging].use()
                         items[player.itemDragging].cooldown=TIME
                         
@@ -22453,6 +22507,7 @@ let user=(function(out){
                 
                 if(TIME-items[hotbarSlots[n].itemType].cooldown>items[hotbarSlots[n].itemType].maxCooldown){
                     
+                    player.stats[hotbarSlots[i].itemType]++
                     items[hotbarSlots[n].itemType].use()
                     items[hotbarSlots[n].itemType].cooldown=TIME
                     player.updateInventory()
@@ -22464,7 +22519,7 @@ let user=(function(out){
             }
         }
 
-        if(e.key==='e'&&player.currentNPC&&TIME-player.eKeyDialoguePress>0.25){
+        if(e.key==='e'&&player.currentNPC&&TIME-player.eKeyDialoguePress>0.75){
             
             dialogueBox.onclick()
         }
@@ -23469,6 +23524,9 @@ class Token {
                     
                     player.stats[effects[this.type].statsToAddTo[i]]++
                 }
+
+                if(effects[this.type].statsToAddTo.indexOf(this.type+'Tokens')<0)
+                    player.stats[this.type+'Tokens']++
             }
             
             if(this.func){
