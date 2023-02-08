@@ -14439,7 +14439,7 @@ class BugMob {
                     
                     player.stats[this.type]++
                     this.state='dead'
-                    this.respawnTimer=3*60
+                    this.respawnTimer=0
                     
                     let amountOfTokens=((player.lootLuck-1)|0)
                     
@@ -14703,7 +14703,7 @@ class BugMob {
                 
                 this.respawnTimer-=dt
                 
-                if(this.respawnTimer<=0){
+                if(this.respawnTimer<=0&&!player.fieldIn){
                     
                     this.state='hide'
                     this.health=this.maxHealth
@@ -14960,7 +14960,7 @@ class RogueViciousBee {
                 
                 if(this.health<=0||this.timeLimit<=0){
                     
-                    // player.stats.rogueViciousBee++
+                    player.stats.rogueViciousBee++
                     this.state='dead'
                     
                     return
@@ -20237,6 +20237,9 @@ player=(function(out){
         armyAnt:0,
         flyingAnt:0,
         giantAnt:0,
+        mondoChick:0,
+        rogueVicousBee:0,
+        wildWindyBee:0,
         goo:0,
         popStar:0,
         scorchingStar:0,
