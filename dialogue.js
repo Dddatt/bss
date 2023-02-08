@@ -467,6 +467,6 @@ window.dialogue_dddatt=function(player,items){
 
     // return ["Hi! I'm Dat, the creator of this awesome game!","This NPC was supposed to be Onett, the creator of the original game, but I didn't think that was cool so I replaced it with the best WebGL game developer alive!","Onett gives 5 hard quests, the Star Journey questline, rewarding a Star Treat at the end. A Star Treat can be used to make any bee gifted.","I'll do the same, but I'll rename the quest names to something better.","So here's the first quest:",function(){player.addQuest('wip',[['pollen',1000000]],'dddatt');},"wip",function(){addReward([['honey',1000000]])},'bye']
 
-    return ["here",function(){player.addQuest('*very* specific quest requirements',[['hasteTokens',1],['redExtract',1],['goo',1],['flames',8],['bubbles',8],['fallingCoconuts',1],['fireAnt',1],['itemsUsingBlender',1]],'blackBear');},"a",function(){addReward([['honey',1000000]])},'bye']
+    return ["here",function(){player.addQuest('*very* specific quest requirements',[['hasteTokens',1],['redExtract',1],['goo',1],['flames',8],['bubbles',8],['fallingCoconuts',1],['fireAnt',1],['itemsUsingTheBlender',1],['timesUsingTheRedCannon',1],['tokensFromSprouts',10],['tokensFromPlanters',5],['hoursOfInvigoratingNectar',1]],'blackBear');},"a",function(){addReward([['honey',1000000]])},'bye']
   
 }

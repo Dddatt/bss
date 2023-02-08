@@ -5007,6 +5007,7 @@ let triggers={
         
         isMachine:true,minX:33-4,maxX:33+4,minY:0,maxY:3,minZ:-13-4,maxZ:-13+4,message:'Use Red Cannon',func:function(player){
             
+            player.stats.timesUsingTheRedCannon++
             player.body.position.x=34
             player.body.position.y=3
             player.body.position.z=-12
@@ -5024,6 +5025,7 @@ let triggers={
         
         isMachine:true,minX:-67-3,maxX:-67+3,minY:22,maxY:26,minZ:49-3,maxZ:49+3,message:'Use Yellow Cannon',func:function(player){
             
+            player.stats.timesUsingTheYellowCannon++
             player.body.position.x=-67
             player.body.position.y=24
             player.body.position.z=49
@@ -5041,6 +5043,7 @@ let triggers={
         
         isMachine:true,minX:36.5-4,maxX:36.5+4,minY:10,maxY:16,minZ:57.25-4,maxZ:57.25+4,message:'Use Blue Cannon',func:function(player){
             
+            player.stats.timesUsingTheBlueCannon++
             player.body.position.x=36.5
             player.body.position.y=13
             player.body.position.z=58
@@ -5058,6 +5061,7 @@ let triggers={
         
         isMachine:true,minX:-25-2.5,maxX:-25+2.5,minY:1,maxY:8,minZ:24.5-2.5,maxZ:24.5+2.5,message:'Use Slingshot',func:function(player){
             
+            player.stats.timesUsingTheSlingshot++
             player.body.position.x=-25
             player.body.position.y=3.5
             player.body.position.z=24.5
@@ -16863,7 +16867,12 @@ class Planter {
             break
         }
 
-        player.addEffect(fieldInfo[this.field].nectarType,(this.maxGrowth*perc*perc*1.85*nectarBonus[fieldInfo[this.field].nectarType.replace('Nectar','')])/(6*60*60))
+        let seconds=(this.maxGrowth*perc*perc*1.95*nectarBonus[fieldInfo[this.field].nectarType.replace('Nectar','')])
+
+        player.addEffect(fieldInfo[this.field].nectarType,seconds/(6*60*60))
+
+        
+        player.stats['hoursOf'+MATH.doGrammar(fieldInfo[this.field].nectarType).replace(' ','')]+=seconds/(60*60)
         
         let amountOfTokens=Math.ceil({paper:9,plastic:13,candy:16,redClay:19,blueClay:19,tacky:22,pesticide:25,petal:27,plenty:30}[this.type]*perc*perc),dropTable=[],dropRates={}
 
@@ -17122,7 +17131,7 @@ class Planter {
 
             window.setTimeout(function(){
 
-                objects.tokens.push(new LootToken(45,[DIS.pos[0]+f[0],DIS.pos[1]+0.5,DIS.pos[2]+f[1]],it,MATH.random(1,(({paper:5,plastic:6,candy:7,redClay:8,blueClay:8,tacky:9,pesticide:9.5,petal:13,plenty:15}[DIS.type]*(perc*0.5+0.5))/items[it].value)+1)|0,true,MATH.doGrammar(DIS.type+'Planter')))
+                objects.tokens.push(new LootToken(45,[DIS.pos[0]+f[0],DIS.pos[1]+0.5,DIS.pos[2]+f[1]],it,MATH.random(1,(({paper:5,plastic:6,candy:7,redClay:8,blueClay:8,tacky:9,pesticide:9.5,petal:13,plenty:15}[DIS.type]*(perc*0.5+0.5))/items[it].value)+1)|0,true,'Planter'))
 
             },225*i)
             
@@ -20194,7 +20203,18 @@ player=(function(out){
     out.lagPos=[0,0,0]
     out.stats={
         
-        itemsUsingBlender:0,
+        hoursOfInvigoratingNectar:0,
+        hoursOfMotivatingNectar:0,
+        hoursOfSatisfyingNectar:0,
+        hoursOfComfortingNectar:0,
+        hoursOfRefreshingNectar:0,
+        tokensFromPlanters:0,
+        tokensFromSprouts:0,
+        timesUsingTheRedCannon:0,
+        timesUsingTheBlueCannon:0,
+        timesUsingTheYellowCannon:0,
+        timesUsingTheSlingshot:0,
+        itemsUsingTheBlender:0,
         fallingCoconuts:0,
         flames:0,
         bubbles:0,
@@ -21637,7 +21657,7 @@ player=(function(out){
             document.getElementById('blenderEnd').onclick=function(){
 
                 items[player.isCrafting.item].amount+=a
-                player.stats.itemsUsingBlender+=a
+                player.stats.itemsUsingTheBlender+=a
 
                 if(a)
                     player.addMessage('+'+MATH.addCommas(a+'')+' '+(a>1?MATH.doPlural(MATH.doGrammar(player.isCrafting.item)):MATH.doGrammar(player.isCrafting.item))+' (from Blender)')
@@ -21675,7 +21695,7 @@ player=(function(out){
                 player.addMessage('-'+MATH.addCommas(n+'')+(n===1?' Ticket':' Tickets'))
                 items[player.isCrafting.item].amount+=player.isCrafting.amount
                 player.addMessage('+'+MATH.addCommas(player.isCrafting.amount+'')+' '+(player.isCrafting.amount>1?MATH.doPlural(MATH.doGrammar(player.isCrafting.item)):MATH.doGrammar(player.isCrafting.item))+' (from Blender)')
-                player.stats.itemsUsingBlender+=player.isCrafting.amount
+                player.stats.itemsUsingTheBlender+=player.isCrafting.amount
                 player.isCrafting=false
                 player.updateInventory()
                 document.getElementById('blenderX').onclick()
@@ -23617,6 +23637,7 @@ class LootToken {
             this.life=0.75
             
             player.stats[this.type+'Tokens']++
+            player.stats['tokensFrom'+this.from+'s']++
             
             if(this.type==='honey'){
                 
@@ -26740,6 +26761,14 @@ function loop(now){
         if(objects.mobs[i].update()){
             
             objects.mobs[i].die(i)
+        }
+    }
+
+    for(let i=objects.planters.length;i--;){
+        
+        if(objects.planters[i].update()){
+            
+            objects.planters[i].die(i)
         }
     }
 
