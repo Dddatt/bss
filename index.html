@@ -15113,6 +15113,267 @@ class RogueViciousBee {
     }
 }
 
+class WildWindyBee {
+    
+    constructor(field,pos){
+
+        this.field=field
+        this.starSawHitTimer=0
+        this.level=1
+        this.health=500
+        this.maxHealth=this.health
+        this.pos=pos
+        this.flameTimer=0
+        this.waitTimer=0
+        this.target=[this.pos[0],this.pos[2]]
+        this.bodySize=1.5
+        this.timeLimit=5*60
+        this.maxTimeLimit=this.timeLimit
+        this.state='attack'
+
+        this.mindHacked=0
+
+        this.spikes=[]
+        this.addSpikeAttackTimer=0
+        this.nextAttackTimer=0
+        this.attackAlternate=0
+        
+    }
+    
+    die(index){
+        
+        objects.mobs.splice(index,1)
+    }
+    
+    damage(am){
+        
+        let crit=Math.random()<player.criticalChance,superCrit=Math.random()<player.superCritChance,d=am*(crit?superCrit?player.superCritPower*player.criticalPower:player.criticalPower:1)
+        
+        if(this.mindHacked>0)
+            d*=1.25
+
+        this.health-=d|0
+        textRenderer.add((d|0)+'',[this.pos[0],this.pos[1]+Math.random()*2.75+1.5,this.pos[2]],[255,0,0],crit?superCrit?2:1:0,'',[0,1.25,1.275,1.3,1.65,1.75][Math.min(d.toString().length),5])
+    }
+    
+    update(){
+
+        switch(this.state){
+
+            case 'flee':
+
+                this.mindHacked=0
+                this.pos[0]+=this.moveDir[0]*dt
+                this.pos[1]+=this.moveDir[1]*dt
+                this.pos[2]+=this.moveDir[2]*dt
+
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1.5,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo.windy.u,beeInfo.windy.v,beeInfo.windy.meshPartId)
+
+                if(this.pos[1]>55){
+
+                    return true
+                }
+
+            break
+
+            case 'move':
+
+                this.mindHacked=0
+                this.pos[0]+=this.moveDir[0]*dt
+                this.pos[1]+=this.moveDir[1]*dt
+                this.pos[2]+=this.moveDir[2]*dt
+
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1.5,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo.windy.u,beeInfo.windy.v,beeInfo.windy.meshPartId)
+
+                if(Math.abs(this.pos[1]-this.moveTo[1])<1){
+
+                    this.state='attack'
+                    this.pos=this.moveTo
+                }
+
+            break
+
+            case 'attack':
+
+                if(this.health<=0){
+
+                    let f=[]
+
+                    for(let i in fieldInfo){
+
+                        if(i!=='AntField'&&i!=='StumpField'&&i!==this.field)f.push(i)
+                    }
+
+                    f=f[(Math.random()*f.length)|0]
+
+                    this.state='move'
+                    this.field=f
+                    this.moveTo=[fieldInfo[f].x+((Math.random()*fieldInfo[f].width)|0),fieldInfo[f].y+0.55+4,fieldInfo[f].z+((Math.random()*fieldInfo[f].length)|0)]
+                    this.moveDir=vec3.sub([],this.moveTo,this.pos)
+                    vec3.normalize(this.moveDir,this.moveDir)
+                    vec3.scale(this.moveDir,this.moveDir,8)
+                    this.level++
+                    this.health=this.level*2500+500
+                    this.maxHealth=this.health
+
+                    console.error(this.moveDir)
+                }
+
+                if(this.timeLimit<=0){
+                    
+                    this.state='flee'
+                    this.moveDir=[100-this.pos[0],50-this.pos[1],-30-this.pos[2]]
+                    vec3.normalize(this.moveDir,this.moveDir)
+                    vec3.scale(this.moveDir,this.moveDir,8)
+
+                    return
+                }
+                
+                this.mindHacked-=dt
+                this.timeLimit-=dt
+                this.starSawHitTimer-=dt
+                this.flameTimer-=dt
+                
+                if(this.flameTimer<=0){
+                    
+                    this.flameTimer=1
+                    
+                    for(let f in objects.flames){
+                        
+                        if(Math.abs(this.pos[0]-objects.flames[f].pos[0])+Math.abs(this.pos[2]-objects.flames[f].pos[2])<this.bodySize){
+                            
+                            this.damage(objects.flames[f].dark?25:15)
+                        }
+                    }
+                }
+                
+                if(player.fieldIn===this.field){
+                    
+                    player.attacked.push(this)
+                }
+                
+                if(this.mindHacked<=0){
+
+                    let d=[this.target[0]-this.pos[0],this.target[1]-this.pos[2]]
+
+                    if(Math.abs(d[0])+Math.abs(d[1])<0.75&&this.attackState===undefined){
+
+                        this.attackState=(this.attackAlternate++)%2
+                        this.nextAttackTimer=7.5
+
+                    } else if(this.attackState===undefined){
+                        
+                        vec2.normalize(d,d)
+                        
+                        this.pos[0]+=d[0]*dt*6
+                        this.pos[2]+=d[1]*dt*6
+
+                        meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1.5,d[0],0,d[1],BEE_FLY,beeInfo.windy.u,beeInfo.windy.v,beeInfo.windy.meshPartId)
+                    }
+
+                    if(this.nextAttackTimer<=0){
+
+                        this.target=[fieldInfo[this.field].x+((Math.random()*fieldInfo[this.field].width)|0),fieldInfo[this.field].z+((Math.random()*fieldInfo[this.field].length)|0)]
+                        this.attackState=undefined
+                        this.nextAttackTimer=Infinity
+                    }
+
+                    if(this.attackState===0){
+
+                        this.nextAttackTimer-=dt
+                        this.addSpikeAttackTimer-=dt
+
+                        meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1.5,Math.sin(TIME*8),0,Math.cos(TIME*8),BEE_FLY,beeInfo.windy.u,beeInfo.windy.v,beeInfo.windy.meshPartId)
+
+                        if(this.addSpikeAttackTimer<=0){
+
+                            this.spikes.push({pos:[fieldInfo[this.field].x+((Math.random()*fieldInfo[this.field].width)|0),fieldInfo[this.field].y+0.51-10,fieldInfo[this.field].z+((Math.random()*fieldInfo[this.field].length)|0),0],life:2.5,glow:0,y:fieldInfo[this.field].y+0.51})
+
+                            this.addSpikeAttackTimer=0.15
+                        }
+
+                    } else if(this.attackState===1){
+                        
+                        this.nextAttackTimer-=dt
+                        this.addSpikeAttackTimer-=dt
+
+                        meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1.5,player.body.position.x-this.pos[0],player.body.position.y-this.pos[1],player.body.position.z-this.pos[2],BEE_FLY,beeInfo.windy.u,beeInfo.windy.v,beeInfo.windy.meshPartId)
+
+                        if(this.addSpikeAttackTimer<=0){
+
+                            this.spikes.push({pos:[fieldInfo[this.field].x+player.flowerIn.x,fieldInfo[this.field].y+0.51-10,fieldInfo[this.field].z+player.flowerIn.z,0],life:2.5,glow:0,y:fieldInfo[this.field].y+0.51})
+
+                            this.addSpikeAttackTimer=0.5
+                        }
+                    }
+
+                    gl.bindBuffer(gl.ARRAY_BUFFER,meshes.spike.vertBuffer)
+                    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.spike.indexBuffer)
+                    gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
+                    gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
+                    gl.uniform2f(glCache.mob_instanceInfo2,0.5,1)
+
+                    for(let i=this.spikes.length;i--;){
+
+                        let s=this.spikes[i]
+
+                        this.spikes[i].life-=dt
+                        this.spikes[i].glow+=dt
+
+                        if(s.life<1&&s.life>0.5){
+                            
+                            s.pos[1]+=(s.y+2-s.pos[1])*dt*22
+
+                            meshes.cylinder_explosions.instanceData.push(s.pos[0],s.y,s.pos[2],1,0,0,s.glow,1.5,0.001)
+
+                        } else if(s.life<0.5){
+                            
+                            s.pos[1]+=(s.y-10-s.pos[1])*dt*10
+
+                        } else {
+
+                            meshes.cylinder_explosions.instanceData.push(s.pos[0],s.y,s.pos[2],1,0,0,s.glow,1.5,0.001)
+                        }
+
+                        if(Math.abs(player.body.position.x-s.pos[0])+Math.abs(player.body.position.z-s.pos[2])+Math.abs(s.pos[1]-player.body.position.y)<1.5&&!s.damaged){
+
+                            s.damaged=true
+                            player.damage(40)
+                        }
+
+                        gl.uniform4fv(glCache.mob_instanceInfo1,s.pos)
+                        gl.drawElements(gl.TRIANGLES,meshes.spike.indexAmount,gl.UNSIGNED_SHORT,0)
+
+                        if(s.life<=0){
+
+                            this.spikes.splice(i,1)
+                        }
+                    }
+                    
+                } else {
+
+                    meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1.5,Math.random()-0.5,Math.random()-0.5,Math.random()-0.5,BEE_FLY,beeInfo.windy.u,beeInfo.windy.v,beeInfo.windy.meshPartId)
+
+                    textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV.smiley,0.75,0,0,-2,-2,0)
+                }
+                
+                this.pos[1]+=1.25
+                textRenderer.addCTX('Wild Windy Bee (Level '+this.level+')',[this.pos[0],this.pos[1]+0.9,this.pos[2]],COLORS.whiteArr,100)
+                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,1.5,...textRenderer.decalUV['rect'],0.61*0.5,0.42*0.5,0.27*0.5,2.5,0.4,0)
+                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.timeLimit/this.maxTimeLimit)*0.5)/(this.timeLimit/this.maxTimeLimit),1.5,...textRenderer.decalUV['rect'],0.61,0.42,0.27,this.timeLimit*2.5/this.maxTimeLimit,0.4,0)
+                
+                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV['rect'],0.6,0,0,2.5,0.4,0)
+                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.health/this.maxHealth)*0.5)/(this.health/this.maxHealth),0,...textRenderer.decalUV['rect'],0.2,0.85,0.2,this.health*2.5/this.maxHealth,0.4,0)
+                
+                textRenderer.addSingle('HP: '+MATH.addCommas((this.health|0)+''),this.pos,COLORS.whiteArr,-1,false,false)
+                textRenderer.addSingle('Time: '+MATH.doTime((this.timeLimit|0)+''),this.pos,COLORS.whiteArr,-1,false,false,0,0.6)
+                this.pos[1]-=1.25
+
+            break
+        }
+    }
+}
+
 class Ant {
     
     constructor(round,x,z,type){
@@ -16474,8 +16735,15 @@ class DrainingDiamond {
 
 class Cloud {
     
-    constructor(field,x,z,life){
+    constructor(field,x,z,life,windyBee){
         
+        this.windyBee=windyBee
+
+        if(windyBee){
+
+            this.trails=[new TrailRenderer.ConstantTrail({length:9,size:0.4,color:[0.5,0.5,0.5,0.6]}),new TrailRenderer.ConstantTrail({length:9,size:0.4,color:[0.5,0.5,0.5,0.6],vertical:true})]
+        }
+
         this.life=life
         this.field=field
         this.x=x
@@ -16505,6 +16773,9 @@ class Cloud {
     
     die(index){
         
+        this.trails[0].splice=true
+        this.trails[1].splice=true
+
         objects.mobs.splice(index,1)
     }
     
@@ -16548,6 +16819,14 @@ class Cloud {
             if(vec3.sqrDist(this.pos,[player.body.position.x,player.body.position.y+4,player.body.position.z])<=6.25){
                 
                 player.addEffect('cloudBoost',0.1)
+
+                if(this.windyBee){
+
+                    objects.mobs.push(new WildWindyBee(this.field,this.pos.slice()))
+                    this.trails[0].splice=true
+                    this.trails[1].splice=true
+                    this.windyBee=false
+                }
             }
         }
         
@@ -16560,11 +16839,30 @@ class Cloud {
         
         if(Math.abs(this.pos[0]-this.moveTo[0])+Math.abs(this.pos[2]-this.moveTo[1])<1){
             
+            this.flowerTo=this.moveTo.slice()
+
+            this.flowerTo[0]-=fieldInfo[this.field].x
+            this.flowerTo[1]-=fieldInfo[this.field].z
+
             this.moveTo=[fieldInfo[this.field].x+((Math.random()*fieldInfo[this.field].width)|0),fieldInfo[this.field].z+((Math.random()*fieldInfo[this.field].length)|0)]
             
             this.moveDir=[this.moveTo[0]-this.pos[0],this.moveTo[1]-this.pos[2]]
             
             vec2.normalize(this.moveDir,this.moveDir)
+
+            if(this.windyBee)vec3.scale(this.moveDir,this.moveDir,1.25)
+
+        }
+
+        if(this.windyBee){
+
+            meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1.5,this.moveDir[0],0,this.moveDir[1],BEE_FLY,beeInfo.windy.u,beeInfo.windy.v,beeInfo.windy.meshPartId)
+            
+            if(!(frameCount%12)){
+
+                this.trails[0].addPos([this.pos[0],this.pos[1],this.pos[2]])
+                this.trails[1].addPos([this.pos[0],this.pos[1],this.pos[2]])
+            }
         }
         
         return this.life<=0
@@ -19797,7 +20095,7 @@ player=(function(out){
         }
 
     }
-    //@
+    
     out.updateRoboUI=function(){
 
         document.getElementById('roboMenu').style.display='block'
@@ -20238,8 +20536,7 @@ player=(function(out){
         flyingAnt:0,
         giantAnt:0,
         mondoChick:0,
-        rogueVicousBee:0,
-        wildWindyBee:0,
+        rogueViciousBee:0,
         goo:0,
         popStar:0,
         scorchingStar:0,
@@ -26280,7 +26577,10 @@ window.deleteBeequip=function(){
 
 objects.mobs.push(new MondoChick('MountainTopField',7))
 
-objects.mobs.push(new RogueViciousBee('DandelionField',MATH.random(1,13)|0))
+// objects.mobs.push(new RogueViciousBee('DandelionField',MATH.random(1,13)|0))
+
+objects.mobs.push(new Cloud('DandelionField',2,2,60,true))
+
 
 function loop(now){
     
