@@ -14428,6 +14428,7 @@ class BugMob {
                         
                         this.state='attack'
                         this.pos=this.spawnPos.slice()
+                        this.aimPos=false
                     }
                 }
                 
@@ -15197,10 +15198,11 @@ class WildWindyBee {
 
                 meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1.5,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo.windy.u,beeInfo.windy.v,beeInfo.windy.meshPartId)
 
-                if(Math.abs(this.pos[0]-this.moveTo[0])+Math.abs(this.pos[1]-this.moveTo[1])+Math.abs(this.pos[2]-this.moveTo[2])<0.5){
+                if(TIME>this.timeAtArrival){
 
                     this.state='attack'
                     this.pos=this.moveTo
+                    this.target=[fieldInfo[this.field].x+((Math.random()*fieldInfo[this.field].width)|0),fieldInfo[this.field].z+((Math.random()*fieldInfo[this.field].length)|0)]
                 }
 
             break
@@ -15222,8 +15224,9 @@ class WildWindyBee {
                     this.field=f
                     this.moveTo=[fieldInfo[f].x+((Math.random()*fieldInfo[f].width)|0),fieldInfo[f].y+0.55+2,fieldInfo[f].z+((Math.random()*fieldInfo[f].length)|0)]
                     this.moveDir=vec3.sub([],this.moveTo,this.pos)
-                    vec3.normalize(this.moveDir,this.moveDir)
-                    vec3.scale(this.moveDir,this.moveDir,8)
+                    let dist=vec3.len(this.moveDir)
+                    this.timeAtArrival=TIME+(dist/8)
+                    vec3.scale(this.moveDir,this.moveDir,8/dist)
                     this.level++
                     this.health=this.level*2500+500
                     this.maxHealth=this.health
@@ -22842,7 +22845,7 @@ let user=(function(out){
                 
                 if(TIME-items[hotbarSlots[n].itemType].cooldown>items[hotbarSlots[n].itemType].maxCooldown){
                     
-                    player.stats[hotbarSlots[i].itemType]++
+                    player.stats[hotbarSlots[n].itemType]++
                     items[hotbarSlots[n].itemType].use()
                     items[hotbarSlots[n].itemType].cooldown=TIME
                     player.updateInventory()
