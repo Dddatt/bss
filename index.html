@@ -15123,6 +15123,7 @@ class WildWindyBee {
         this.health=500
         this.maxHealth=this.health
         this.pos=pos
+        this.pos[1]-=2
         this.flameTimer=0
         this.waitTimer=0
         this.target=[this.pos[0],this.pos[2]]
@@ -15137,11 +15138,16 @@ class WildWindyBee {
         this.addSpikeAttackTimer=0
         this.nextAttackTimer=0
         this.attackAlternate=0
+
+        this.trails=[new TrailRenderer.ConstantTrail({length:9,size:0.4,color:[0.5,0.5,0.5,0.6]}),new TrailRenderer.ConstantTrail({length:9,size:0.4,color:[0.5,0.5,0.5,0.6],vertical:true})]
         
     }
     
     die(index){
         
+        this.trails[0].splice=true
+        this.trails[1].splice=true
+
         objects.mobs.splice(index,1)
     }
     
@@ -15157,6 +15163,12 @@ class WildWindyBee {
     }
     
     update(){
+
+        if(!(frameCount%6)){
+
+            this.trails[0].addPos(this.pos.slice())
+            this.trails[1].addPos(this.pos.slice())
+        }
 
         switch(this.state){
 
@@ -15185,7 +15197,7 @@ class WildWindyBee {
 
                 meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1.5,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo.windy.u,beeInfo.windy.v,beeInfo.windy.meshPartId)
 
-                if(Math.abs(this.pos[1]-this.moveTo[1])<1){
+                if(Math.abs(this.pos[0]-this.moveTo[0])+Math.abs(this.pos[1]-this.moveTo[1])+Math.abs(this.pos[2]-this.moveTo[2])<0.5){
 
                     this.state='attack'
                     this.pos=this.moveTo
@@ -15208,7 +15220,7 @@ class WildWindyBee {
 
                     this.state='move'
                     this.field=f
-                    this.moveTo=[fieldInfo[f].x+((Math.random()*fieldInfo[f].width)|0),fieldInfo[f].y+0.55+4,fieldInfo[f].z+((Math.random()*fieldInfo[f].length)|0)]
+                    this.moveTo=[fieldInfo[f].x+((Math.random()*fieldInfo[f].width)|0),fieldInfo[f].y+0.55+2,fieldInfo[f].z+((Math.random()*fieldInfo[f].length)|0)]
                     this.moveDir=vec3.sub([],this.moveTo,this.pos)
                     vec3.normalize(this.moveDir,this.moveDir)
                     vec3.scale(this.moveDir,this.moveDir,8)
@@ -16773,8 +16785,11 @@ class Cloud {
     
     die(index){
         
-        this.trails[0].splice=true
-        this.trails[1].splice=true
+        if(this.windyBee){
+
+            this.trails[0].splice=true
+            this.trails[1].splice=true
+        }
 
         objects.mobs.splice(index,1)
     }
@@ -16860,8 +16875,8 @@ class Cloud {
             
             if(!(frameCount%12)){
 
-                this.trails[0].addPos([this.pos[0],this.pos[1],this.pos[2]])
-                this.trails[1].addPos([this.pos[0],this.pos[1],this.pos[2]])
+                this.trails[0].addPos(this.pos.slice())
+                this.trails[1].addPos(this.pos.slice())
             }
         }
         
