@@ -343,6 +343,16 @@ window.MATH = (function (MATH) {
         return (1-x)*(1-x)*tmq-qptmq
     }
 
+    MATH.closestPointOnLine=function(a,b,p){
+    
+        let del=vec3.sub([],b,a),
+            t=vec3.dot(vec3.sub([],p,a),del)/vec3.dot(del,del)
+        vec3.scale(del,del,MATH.constrain(t,0,1))
+        vec3.add(del,del,a)
+        return del
+    }
+    
+
     return MATH
 
 })({})

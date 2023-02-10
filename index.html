@@ -15140,6 +15140,7 @@ class WildWindyBee {
         this.attackAlternate=0
 
         this.trails=[new TrailRenderer.ConstantTrail({length:9,size:0.4,color:[0.5,0.5,0.5,0.6]}),new TrailRenderer.ConstantTrail({length:9,size:0.4,color:[0.5,0.5,0.5,0.6],vertical:true})]
+        this.whipTrail=new TrailRenderer.ConstantTrail({length:2,size:2,color:[0.8,0,0,0.5]})
         
     }
     
@@ -15299,7 +15300,7 @@ class WildWindyBee {
                         this.nextAttackTimer=skip?0:2
                         this.skipAttack=skip
 
-                        if(!skip) this.attackState=(this.attackAlternate++)%3===0&&this.tornados.length>=3?1:0
+                        if(!skip) this.attackState=(this.attackAlternate++)%3===0||this.tornados.length>=3?1:0
 
                     } else if(this.attackState===undefined){
                         
@@ -15313,17 +15314,24 @@ class WildWindyBee {
 
                     if(this.nextAttackTimer<=0){
 
-                        if(!this.skipAttack&&this.tornados.length<3){
+                        if(!this.skipAttack){
                             
                             if(this.attackState){
 
-                                //wind push
+                                if(player.fieldIn===this.field){
+
+                                    this.windWhipTimer=1
+                                    this.whipA=[this.pos[0],this.pos[1]-1.9,this.pos[2]]
+                                    this.whipB=[player.body.position.x,this.pos[1]-1.9,player.body.position.z]
+
+                                    this.whipTrail.addPos(this.whipA)
+                                    this.whipTrail.addPos(this.whipB)
+                                }
 
                             } else {
 
                                 this.tornados.push({pos:[...this.pos,0],timer:0,timeAtArrival:-1})
                             }
-
                         }
 
                         this.skipAttack=false
@@ -15344,6 +15352,38 @@ class WildWindyBee {
                         this.nextAttackTimer-=dt
 
                         meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1.5,player.body.position.x-this.pos[0],player.body.position.y-this.pos[1],player.body.position.z-this.pos[2],BEE_FLY,beeInfo.windy.u,beeInfo.windy.v,beeInfo.windy.meshPartId)
+                    }
+
+                    if(this.windWhipTimer>0){
+
+                        this.whipTrail.addPos(this.whipA)
+                        this.whipTrail.addPos(this.whipB)
+
+                        this.windWhipTimer-=dt
+
+                        if(this.windWhipTimer<=0){
+
+                            let p=MATH.closestPointOnLine(this.whipA,this.whipB,[player.body.position.x,this.pos[1]-1.9,player.body.position.z])
+
+                            let d=vec3.sqrDist(p,[player.body.position.x,this.pos[1]-1.9,player.body.position.z])
+
+                            if(d<4){
+
+                                let dir=vec3.sub([],this.whipB,this.whipA)
+                                vec3.normalize(dir,dir)
+                                player.body.position.y+=0.5
+                                player.body.velocity.x=dir[0]*50
+                                player.body.velocity.y=(4-d)*5+5
+                                player.body.velocity.z=dir[2]*50
+                                player.removeAirFrictionUntilGrounded=true
+                                player.isGliding=false
+                                player.grounded=false
+                                player.updateGear()
+                            }
+
+                            this.whipTrail.addPos([])
+                            this.whipTrail.addPos([])
+                        }
                     }
 
                     let m=TIME*2
