@@ -15140,7 +15140,9 @@ class WildWindyBee {
         this.attackAlternate=0
 
         this.trails=[new TrailRenderer.ConstantTrail({length:9,size:0.4,color:[0.5,0.5,0.5,0.6]}),new TrailRenderer.ConstantTrail({length:9,size:0.4,color:[0.5,0.5,0.5,0.6],vertical:true})]
-        this.whipTrail=new TrailRenderer.ConstantTrail({length:2,size:2,color:[0.8,0,0,0.5]})
+        this.whipWarning=new TrailRenderer.ConstantTrail({length:5,size:0.05,color:[0.85,0,0,1]})
+
+        this.windWhipTrails=[{trail:new TrailRenderer.ConstantTrail({length:10,triangle:true,size:1.1,color:[0.5,0.6,0.6,1]})},{trail:new TrailRenderer.ConstantTrail({length:10,triangle:true,size:1.9,color:[0.8,0.8,0.8,1]})},{trail:new TrailRenderer.ConstantTrail({length:10,triangle:true,size:1.55,color:[0.4,0.5,0.7,1]})}]
         
     }
     
@@ -15296,11 +15298,45 @@ class WildWindyBee {
 
                     if(Math.abs(d[0])+Math.abs(d[1])<0.75&&this.attackState===undefined){
 
-                        let skip=Math.random()<0.5
-                        this.nextAttackTimer=skip?0:2
+                        let skip=Math.random()<0.35
+                        this.nextAttackTimer=skip?0:1.5
                         this.skipAttack=skip
 
-                        if(!skip) this.attackState=(this.attackAlternate++)%3===0||this.tornados.length>=3?1:0
+                        if(!skip){
+                            
+                            this.attackState=(this.attackAlternate++)%2===0||this.tornados.length>=3?1:0
+
+                            if(player.fieldIn===this.field&&this.attackState){
+
+                                this.windWhipTimer=1
+                                this.whipA=[this.pos[0],this.pos[1]-1.9,this.pos[2]]
+                                this.whipB=[player.body.position.x,this.pos[1]-1.9,player.body.position.z]
+
+                                let dir=vec3.sub([],this.whipB,this.whipA)
+                                vec3.normalize(dir,dir)
+                                dir[0]*=2
+                                dir[2]*=2
+                                let c=[dir[2],dir[1],-dir[0]]
+                                
+                                this.whipWarning.addPos(vec3.add([],this.whipA,c))
+                                this.whipWarning.addPos(vec3.sub([],this.whipA,c))
+                                this.whipWarning.addPos(vec3.add([],vec3.sub([],this.whipB,c),dir))
+                                this.whipWarning.addPos(vec3.add([],vec3.add([],this.whipB,c),dir))
+                                this.whipWarning.addPos(vec3.add([],this.whipA,c))
+
+                                for(let i in this.windWhipTrails){
+
+                                    let t=this.windWhipTrails[i]
+
+                                    let y=MATH.random(-0.01,0.01)+0.5,s=MATH.random(-0.5,0.5),l=MATH.random(0.8,1)
+
+                                    t.speed=MATH.random(8,12)
+
+                                    t.pos=vec3.add([],this.whipA,[c[0]*s,y,c[2]*s])
+                                    t.target=vec3.add([],vec3.add([],this.whipB,[c[0]*s,y,c[2]*s]),[dir[0]*l,0,dir[2]*l])
+                                }
+                            }
+                        }
 
                     } else if(this.attackState===undefined){
                         
@@ -15314,25 +15350,7 @@ class WildWindyBee {
 
                     if(this.nextAttackTimer<=0){
 
-                        if(!this.skipAttack){
-                            
-                            if(this.attackState){
-
-                                if(player.fieldIn===this.field){
-
-                                    this.windWhipTimer=1
-                                    this.whipA=[this.pos[0],this.pos[1]-1.9,this.pos[2]]
-                                    this.whipB=[player.body.position.x,this.pos[1]-1.9,player.body.position.z]
-
-                                    this.whipTrail.addPos(this.whipA)
-                                    this.whipTrail.addPos(this.whipB)
-                                }
-
-                            } else {
-
-                                this.tornados.push({pos:[...this.pos,0],timer:0,timeAtArrival:-1})
-                            }
-                        }
+                        if(!this.skipAttack&&!this.attackState)this.tornados.push({pos:[...this.pos,0],timer:0,timeAtArrival:-1})
 
                         this.skipAttack=false
 
@@ -15354,14 +15372,36 @@ class WildWindyBee {
                         meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1.5,player.body.position.x-this.pos[0],player.body.position.y-this.pos[1],player.body.position.z-this.pos[2],BEE_FLY,beeInfo.windy.u,beeInfo.windy.v,beeInfo.windy.meshPartId)
                     }
 
-                    if(this.windWhipTimer>0){
-
-                        this.whipTrail.addPos(this.whipA)
-                        this.whipTrail.addPos(this.whipB)
+                    if(this.windWhipTimer>-0.25){
 
                         this.windWhipTimer-=dt
 
                         if(this.windWhipTimer<=0){
+
+                            for(let i in this.windWhipTrails){
+
+                                let t=this.windWhipTrails[i]
+
+                                vec3.lerp(t.pos,t.pos,t.target,dt*t.speed)
+
+                                t.trail.addPos(t.pos.slice())
+                            }
+                        }
+
+                        if(this.windWhipTimer<=-0.25){
+
+                            for(let i in this.windWhipTrails){
+
+                                let t=this.windWhipTrails[i]
+
+                                t.trail.addPos([])
+                                t.trail.addPos([])
+                                t.trail.addPos([])
+                                t.trail.addPos([])
+                                t.trail.addPos([])
+                                t.trail.addPos([])
+                                t.trail.addPos([])
+                            }
 
                             let p=MATH.closestPointOnLine(this.whipA,this.whipB,[player.body.position.x,this.pos[1]-1.9,player.body.position.z])
 
@@ -15369,6 +15409,7 @@ class WildWindyBee {
 
                             if(d<4){
 
+                                player.damage(15)
                                 let dir=vec3.sub([],this.whipB,this.whipA)
                                 vec3.normalize(dir,dir)
                                 player.body.position.y+=0.5
@@ -15381,8 +15422,11 @@ class WildWindyBee {
                                 player.updateGear()
                             }
 
-                            this.whipTrail.addPos([])
-                            this.whipTrail.addPos([])
+                            this.whipWarning.addPos([])
+                            this.whipWarning.addPos([])
+                            this.whipWarning.addPos([])
+                            this.whipWarning.addPos([])
+                            this.whipWarning.addPos([])
                         }
                     }
 
