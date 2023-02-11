@@ -15150,6 +15150,12 @@ class WildWindyBee {
         
         this.trails[0].splice=true
         this.trails[1].splice=true
+        this.whipWarning.splice=true
+
+        for(let i in this.windWhipTrails){
+
+            this.windWhipTrails[i].trail.splice=true
+        }
 
         objects.mobs.splice(index,1)
     }
