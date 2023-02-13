@@ -21791,7 +21791,7 @@ player=(function(out){
             
             for(let i in out.quests){
                 
-                pages[1].innerHTML+=`<div style='background-color:${out.quests[i].completed?"rgb(0,"+(Math.sin(TIME*5)*20+215)+",0)":"rgb(240,240,240)"};font-size:17px;text-align:center;margin-top:-16px;border-radius:3px'><p style='margin-bottom:10px'>${out.quests[i].name}</p>${(function(){
+                pages[1].innerHTML+=`<div style='background-color:${out.quests[i].completed?"rgb(0,"+(Math.sin(TIME*5)*20+215)+",0)":"rgb(240,240,240)"};font-size:17px;text-align:center;margin-top:-16px;border-radius:3px;'><p style='margin-bottom:5px'>${out.quests[i].name}</p>${(function(){
                     
                     let s='',isCompleted=true
                     
@@ -21806,23 +21806,27 @@ player=(function(out){
                             isCompleted=false
                         }
                         
-                        s+=`<svg style='border-radius:3px;width:190px;height:30px;margin-top:0px'>
+                        // s+=`<svg style='border-radius:3px;width:190px;height:30px;margin-top:0px'>
 
-                        <rect x='0' y='0' width='190' height='30' fill='rgb(255,0,0)'></rect>
+                        // <rect x='0' y='0' width='190' height='30' fill='rgb(255,0,0)'></rect>
                         
-                        <rect x='-1' y='0' width='${((out.stats[out.quests[i].req[j][0]]-out.quests[i].req[j][2])/out.quests[i].req[j][1])*192}' height='30' fill='rgb(0,255,0)'></rect>
-                        <text fill='rgb(0,0,0)' x='97.5' y='12' text-anchor='middle' style='font-family:calibri;font-size:13px;'>${MATH.doStatGrammar(out.quests[i].req[j][0])+' '+MATH.addCommas(out.quests[i].req[j][1].toString())+' '+MATH.doGrammar(out.quests[i].req[j][0])}</text>
+                        // <rect x='-1' y='0' width='${((out.stats[out.quests[i].req[j][0]]-out.quests[i].req[j][2])/out.quests[i].req[j][1])*192}' height='30' fill='rgb(0,255,0)'></rect>
+                        // <text fill='rgb(0,0,0)' x='97.5' y='12' text-anchor='middle' style='font-family:calibri;font-size:13px;'>${MATH.doStatGrammar(out.quests[i].req[j][0])+' '+MATH.addCommas(out.quests[i].req[j][1].toString())+' '+MATH.doGrammar(out.quests[i].req[j][0])}</text>
                         
-                        <text fill='rgb(0,0,0)' x='97.5' y='25' text-anchor='middle' style='font-family:calibri;font-size:13px;'>(${(MATH.constrain((out.stats[out.quests[i].req[j][0]]-out.quests[i].req[j][2])/out.quests[i].req[j][1],0,1)*100).toFixed(0)+'%'})</text>
+                        // <text fill='rgb(0,0,0)' x='97.5' y='25' text-anchor='middle' style='font-family:calibri;font-size:13px;'>(${(MATH.constrain((out.stats[out.quests[i].req[j][0]]-out.quests[i].req[j][2])/out.quests[i].req[j][1],0,1)*100).toFixed(0)+'%'})</text>
                         
-                        </svg>`
+                        // </svg>`
+
+                        let c=MATH.doStatGrammar(out.quests[i].req[j][0])+' '+MATH.addCommas(out.quests[i].req[j][1].toString())+' '+MATH.doGrammar(out.quests[i].req[j][0])+'<br>('+(MATH.constrain((out.stats[out.quests[i].req[j][0]]-out.quests[i].req[j][2])/out.quests[i].req[j][1],0,1)*100).toFixed(0)
+
+                        s+="<div style='border-radius:3px;width:190px;margin-top:0px;margin-bottom:5px;background-color:rgb(255,0,0);color:black;font-family:calibri;font-size:13px;margin-left:5px;position:relative;'><div style='position:absolute;left:0px;top:0px;border-radius:2px;right:"+(190-Math.min(((out.stats[out.quests[i].req[j][0]]-out.quests[i].req[j][2])/out.quests[i].req[j][1])*190,190))+"px;bottom:0px;background-color:rgb(0,250,0);'></div><div style='position:absolute;left:0px;top:0px;border-radius:2px;right:0px;bottom:0px'>"+c+"%)</div><u style='color:rgb(0,0,0,0)'>"+c+"</u></div>"
                         
                     }
                     
                     out.quests[i].completed=isCompleted
                     NPCs[out.quests[i].NPC].activeQuest=!isCompleted
                     
-                    return s
+                    return s+'<p style="font-size:2px"><br></p>'
                     
                 })()}</div>`
             }
