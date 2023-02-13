@@ -8397,7 +8397,6 @@ window.textures_decals=function(tex_ctx){
 }
 
 window.textures_bear=function(tex_ctx){
-
     function e(x,y,w,h,r=0){
         tex_ctx.beginPath()
         tex_ctx.ellipse(x,y,w,h,r,0,7)
@@ -8510,7 +8509,7 @@ window.textures_bear=function(tex_ctx){
     tex_ctx.fill()
     g=tex_ctx.createLinearGradient(0,0,0,64)
     g.addColorStop(0.1,'rgb(99, 73, 41)')
-    g.addColorStop(1,'rgb(130, 114, 95)')
+    g.addColorStop(1,'rgb(115, 88, 57)')
     tex_ctx.fillStyle=g
     tex_ctx.beginPath()
     tex_ctx.fill()
@@ -8522,7 +8521,7 @@ window.textures_bear=function(tex_ctx){
     tex_ctx.fillStyle='rgb(20,20,20)'
     e(-19,-13,5,9)
     e(19,-13,5,9)
-    tex_ctx.fillStyle='rgb(200,200,200)'
+    tex_ctx.fillStyle='rgb(99, 73, 41)'
     e(16,-16,2,3)
     e(-22,-16,2,3)
     tex_ctx.setTransform(1,0,0,1,0,0)
@@ -8572,4 +8571,111 @@ window.textures_bear=function(tex_ctx){
     tex_ctx.fillRect(-64,64-11,128,11)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
+    tex_ctx.translate(128*4+128*0.5,256*0+128*0.5)
+    tex_ctx.lineWidth=7
+    tex_ctx.fillStyle='rgb(230,230,230)'
+    tex_ctx.fillRect(-128*0.5,-128*0.5,128,128)
+    g=tex_ctx.createRadialGradient(-22,-14,27,-22,-14,28)
+    g.addColorStop(0,'rgb(50,50,50)')
+    g.addColorStop(1,'rgb(200,200,200)')
+    tex_ctx.fillStyle=g
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-64,64)
+    tex_ctx.lineTo(-64,-13)
+    tex_ctx.bezierCurveTo(-36,18,-29,-72,-10,-20)
+    tex_ctx.lineTo(-10,64)
+    tex_ctx.fill()
+    g=tex_ctx.createRadialGradient(22,-14,27,22,-14,28)
+    g.addColorStop(0,'rgb(50,50,50)')
+    g.addColorStop(1,'rgb(200,200,200)')
+    tex_ctx.fillStyle=g
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(64,64)
+    tex_ctx.lineTo(64,-13)
+    tex_ctx.bezierCurveTo(36,18,29,-72,10,-20)
+    tex_ctx.lineTo(10,64)
+    tex_ctx.fill()
+    tex_ctx.fillStyle='rgb(230,230,230)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-9,-12)
+    tex_ctx.bezierCurveTo(-11,5,-30,56,-9,64)
+    tex_ctx.moveTo(9,-12)
+    tex_ctx.bezierCurveTo(11,5,30,56,9,64)
+    tex_ctx.fill()
+    tex_ctx.fillRect(-10,-11,20,75)
+    tex_ctx.fillStyle='rgb(45, 50, 53)'
+    e(0,49,10,8)
+    tex_ctx.fillStyle='rgb(33, 35, 37)'
+    e(0,52,5,3)
+    tex_ctx.fillStyle='rgb(0,0,0)'
+    e(-16,-13,5,9)
+    e(16,-13,5,9)
+    tex_ctx.fillStyle='rgb(70,70,70)'
+    e(13,-16,2,3)
+    e(-19,-16,2,3)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*5+128*0.5,256*0+128*0.5)
+    tex_ctx.lineWidth=7
+    tex_ctx.fillStyle='rgb(227, 225, 193)'
+    tex_ctx.fillRect(-128*0.5,-128*0.5,128,128)
+    tex_ctx.fillStyle='rgb(173, 166, 173)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-64,64)
+    tex_ctx.lineTo(-64,-13)
+    tex_ctx.bezierCurveTo(-66,-24,-12,-64,-10,-1)
+    tex_ctx.lineTo(-10,64)
+    tex_ctx.moveTo(64,64)
+    tex_ctx.lineTo(64,-13)
+    tex_ctx.bezierCurveTo(66,-24,12,-64,10,-1)
+    tex_ctx.lineTo(10,64)
+    tex_ctx.fill()
+    g=tex_ctx.createLinearGradient(0,0,0,64)
+    g.addColorStop(0,'rgb(227, 225, 193)')
+    g.addColorStop(0.6,'rgb(209, 207, 178)')
+    tex_ctx.fillStyle=g
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-11,-25)
+    tex_ctx.bezierCurveTo(-11,49,-30,40,-11,64)
+    tex_ctx.moveTo(11,-25)
+    tex_ctx.bezierCurveTo(11,49,30,40,11,64)
+    tex_ctx.fill()
+    tex_ctx.fillRect(-11,-11,22,75)
+    tex_ctx.fillStyle='rgb(45, 50, 53)'
+    e(0,49,10,8)
+    tex_ctx.fillStyle='rgb(33, 35, 37)'
+    e(0,52,5,3)
+    tex_ctx.fillStyle='rgb(0,0,0,0.1)'
+    e(-22,-11,9,7)
+    e(22,-11,9,7)
+    tex_ctx.strokeStyle='rgb(40,40,40)'
+    tex_ctx.lineWidth=3
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-29,-11)
+    tex_ctx.bezierCurveTo(-23,-14,-21,-15,-16,-13)
+    tex_ctx.moveTo(29,-11)
+    tex_ctx.bezierCurveTo(23,-14,21,-15,16,-13)
+    tex_ctx.stroke()
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-64,64)
+    tex_ctx.lineTo(-64+15,64-10)
+    tex_ctx.lineTo(-64,64-20)
+    tex_ctx.lineTo(-64+21,64-30)
+    tex_ctx.lineTo(-64,64-40)
+    tex_ctx.lineTo(-64+13,64-50)
+    tex_ctx.lineTo(-64,64-60)
+    tex_ctx.lineTo(-64+9,64-70)
+    tex_ctx.lineTo(-64,64-80)
+    tex_ctx.scale(-1,1)
+    tex_ctx.moveTo(-64,64)
+    tex_ctx.lineTo(-64+15,64-10)
+    tex_ctx.lineTo(-64,64-20)
+    tex_ctx.lineTo(-64+21,64-30)
+    tex_ctx.lineTo(-64,64-40)
+    tex_ctx.lineTo(-64+13,64-50)
+    tex_ctx.lineTo(-64,64-60)
+    tex_ctx.lineTo(-64+9,64-70)
+    tex_ctx.lineTo(-64,64-80)
+    tex_ctx.fill()
+    tex_ctx.setTransform(1,0,0,1,0,0)
 }
