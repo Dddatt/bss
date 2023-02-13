@@ -12176,7 +12176,7 @@ class Bee {
                     
                     if(fieldInfo[player.fieldIn].planter){
 
-                        let chance=0.05,p=fieldInfo[player.fieldIn].planter
+                        let chance=0.07,p=fieldInfo[player.fieldIn].planter
 
                         if(p.type==='redClay'){
 
@@ -17263,7 +17263,7 @@ class Planter {
 
     beeSipped(bee){
 
-        this.growth+=bee.gatherAmount*0.025+3
+        this.growth+=bee.gatherAmount*0.025+2
         player.addEffect(fieldInfo[this.field].nectarType,(bee.planterSipTime*4)/(6*60*60))
     }
     
@@ -20004,8 +20004,21 @@ gear.tool={
             
             ParticleRenderer.add({x:player.body.position.x+x+MATH.random(-0.4,0.4),y:player.body.position.y+1.75+MATH.random(-0.4,0.4),z:player.body.position.z+z+MATH.random(-0.4,0.4),vx:MATH.random(-0.8,0.8),vy:Math.random()*0.5+0.4,vz:MATH.random(-0.8,0.8),grav:-1.25*Math.random()-0.25,size:MATH.random(20,60),col:[0.95,0.95,0.95],life:1,rotVel:MATH.random(-3,3),alpha:0.5})
         },
+        ability:function(){
+            
+            if(player.toolUses%10===0){
+                
+                objects.explosions.push(new ReverseExplosion({col:[1,1,1],pos:[player.body.position.x,player.body.position.y,player.body.position.z],life:0.4,size:5,alpha:2,height:500}))
+
+                if(player.fieldIn){
+
+                    collectPollen({x:player.flowerIn.x,z:player.flowerIn.z,pattern:[[-4,0],[-3,-2],[-3,-1],[-3,0],[-3,1],[-3,2],[-2,-3],[-2,-2],[-2,-1],[-2,0],[-2,1],[-2,2],[-2,3],[-1,-3],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[-1,3],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[0,1],[0,2],[0,3],[0,4],[1,-3],[1,-2],[1,-1],[1,0],[1,1],[1,2],[1,3],[2,-3],[2,-2],[2,-1],[2,0],[2,1],[2,2],[2,3],[3,-2],[3,-1],[3,0],[3,1],[3,2],[4,0]],amount:50,stackHeight:0.6+Math.random()*0.5})
+                }
+            }
+        },
         desc:'A dipper drizzled with brittle liquid porcelain.<br><br>Collects 3 pollen from 49 flowers every 0.7s. Collects x1.5 more white pollen.<br><br>Every 10th swing summons a pillar of light that collects massive pollen.',
-        cost:['150000000 honey']
+        cost:['150000000 honey'],
+
     },
     
     petalWand:{
@@ -20040,7 +20053,7 @@ gear.tool={
             
             if(player.toolUses%3===0){
                 
-                objects.mobs.push(new PetalShuriken([player.body.position.x,player.body.position.y+0.25,player.body.position.z],player.bodyDir.slice()))
+                objects.explosions.push(new ReverseExplosion({col:[1,1,0],pos:f.pos,life:0.3,size:this.diameter*0.8,alpha:0.75}))
             }
         },
         particles:function(){
@@ -21830,7 +21843,7 @@ player=(function(out){
         if(currentPage===3&&TIME-player.statsStringLastUpdate>0.5){
 
             player.statsStringLastUpdate=TIME
-            player.statString='<br>FPS: '+(1/dt).toFixed(2)+'<br>Delta Time: '+dt.toFixed(4)+'<br><br>Convert Rate: '+Math.round(player.convertRate*100)+'%<br>Red Pollen: '+Math.round(player.redPollen*100)+'%<br>Blue Pollen: '+Math.round(player.bluePollen*100)+'%<br>White Pollen: '+Math.round(player.whitePollen*100)+'%<br>Walk Speed: '+player.walkSpeed.toFixed(1)+'<br>Jump Power: '+player.jumpPower.toFixed(1)+'<br>Instant Red Conversion: '+Math.round(player.instantRedConversion*100)+'%<br>Instant Blue Conversion: '+Math.round(player.instantBlueConversion*100)+'%<br>Instant White Conversion: '+Math.round(player.instantWhiteConversion*100)+'%<br>Instant Flame Conversion: '+Math.round(player.instantFlameConversion*100)+'%<br>Critical Chance: '+Math.round(player.criticalChance*100)+'%<br>Critical Power: '+Math.round(player.criticalPower*100)+'%<br>Super-Crit Chance: '+Math.round(player.superCritChance*100)+'%<br>Super-Crit Power: '+Math.round(player.superCritPower*100)+'%<br>Goo: '+Math.round(player.goo*100)+'%<br>Flame Pollen: '+Math.round(player.flamePollen*100)+'%<br>Bubble Pollen: '+Math.round(player.bubblePollen*100)+'%<br>Pollen From Tools: '+Math.round(player.pollenFromTools*100)+'%<br>Pollen From Bees: '+Math.round(player.pollenFromBees*100)+'%<br>White Bomb Pollen: '+Math.round(player.whiteBombPollen*100)+'%<br>Red Bomb Pollen: '+Math.round(player.redBombPollen*100)+'%<br>Blue Bomb Pollen: '+Math.round(player.blueBombPollen*100)+'%<br>White Bee Attack: '+player.whiteBeeAttack+'<br>Blue Bee Attack: '+player.blueBeeAttack+'<br>Red Bee Attack: '+player.redBeeAttack+'<br>Bee Attack Multiplier: '+Math.round(player.beeAttack*100)+'%<br>Honey From Tokens: '+Math.round(player.honeyFromTokens*100)+'%<br>Red Bee Ability Rate: '+Math.round(player.redBeeAbilityRate*100)+'%<br>Blue Bee Ability Rate: '+Math.round(player.blueBeeAbilityRate*100)+'%<br>White Bee Ability Rate: '+Math.round(player.whiteBeeAbilityRate*100)+'%<br>Bee Movespeed: '+Math.round(player.beeSpeed*100)+'%<br>Bee Energy: '+Math.round(player.beeEnergy*100)+'%<br>Honey At Hive: '+Math.round(player.honeyAtHive*100)+'%<br>Loot Luck: '+Math.round(player.lootLuck*100)+'%<br>Red Field Capacity: '+Math.round(player.redFieldCapacity*100)+'%<br>White Field Capacity: '+Math.round(player.whiteFieldCapacity*100)+'%<br>Blue Field Capacity: '+Math.round(player.blueFieldCapacity*100)+'%<br>Ability Duplication Chance: '+Math.round(player.abilityDuplicationChance*100+(player.drives.maxed?1:0))+'%<br><br>Convert Total: '+Math.round(player.convertTotal)+'<br>Attack Total: '+Math.round(player.attackTotal)
+            player.statString='<br>FPS: '+(1/dt).toFixed(2)+'<br>Delta Time: '+dt.toFixed(4)+'<br><br>Convert Rate: '+Math.round(player.convertRate*100)+'%<br>Red Pollen: '+Math.round(player.redPollen*100)+'%<br>Blue Pollen: '+Math.round(player.bluePollen*100)+'%<br>White Pollen: '+Math.round(player.whitePollen*100)+'%<br>Walk Speed: '+player.walkSpeed.toFixed(1)+'<br>Jump Power: '+player.jumpPower.toFixed(1)+'<br>Instant Red Conversion: '+Math.round(player.instantRedConversion*100)+'%<br>Instant Blue Conversion: '+Math.round(player.instantBlueConversion*100)+'%<br>Instant White Conversion: '+Math.round(player.instantWhiteConversion*100)+'%<br>Instant Flame Conversion: '+Math.round(player.instantFlameConversion*100)+'%<br>Critical Chance: '+Math.round(player.criticalChance*100)+'%<br>Critical Power: '+Math.round(player.criticalPower*100)+'%<br>Super-Crit Chance: '+Math.round(player.superCritChance*100)+'%<br>Super-Crit Power: '+Math.round(player.superCritPower*100)+'%<br>Goo: '+Math.round(player.goo*100)+'%<br>Flame Pollen: '+Math.round(player.flamePollen*100)+'%<br>Bubble Pollen: '+Math.round(player.bubblePollen*100)+'%<br>Pollen From Tools: '+Math.round(player.pollenFromTools*100)+'%<br>Pollen From Bees: '+Math.round(player.pollenFromBees*100)+'%<br>White Bomb Pollen: '+Math.round(player.whiteBombPollen*100)+'%<br>Red Bomb Pollen: '+Math.round(player.redBombPollen*100)+'%<br>Blue Bomb Pollen: '+Math.round(player.blueBombPollen*100)+'%<br>White Bee Attack: '+player.whiteBeeAttack+'<br>Blue Bee Attack: '+player.blueBeeAttack+'<br>Red Bee Attack: '+player.redBeeAttack+'<br>Bee Attack Multiplier: '+Math.round(player.beeAttack*100)+'%<br>Honey From Tokens: '+Math.round(player.honeyFromTokens*100)+'%<br>Red Bee Ability Rate: '+Math.round(player.redBeeAbilityRate*100)+'%<br>Blue Bee Ability Rate: '+Math.round(player.blueBeeAbilityRate*100)+'%<br>White Bee Ability Rate: '+Math.round(player.whiteBeeAbilityRate*100)+'%<br>Bee Movespeed: '+Math.round(player.beeSpeed*100)+'%<br>Bee Energy: '+Math.round(player.beeEnergy*100)+'%<br>Honey At Hive: '+Math.round(player.honeyAtHive*100)+'%<br>Honey Per Pollen: '+Math.round(player.honeyPerPollen*100)+'%<br>Loot Luck: '+Math.round(player.lootLuck*100)+'%<br>Red Field Capacity: '+Math.round(player.redFieldCapacity*100)+'%<br>White Field Capacity: '+Math.round(player.whiteFieldCapacity*100)+'%<br>Blue Field Capacity: '+Math.round(player.blueFieldCapacity*100)+'%<br>Ability Duplication Chance: '+Math.round(player.abilityDuplicationChance*100+(player.drives.maxed?1:0))+'%<br><br>Convert Total: '+Math.round(player.convertTotal)+'<br>Attack Total: '+Math.round(player.attackTotal)
             
             pages[3].innerHTML='<div style="cursor:pointer;background-color:rgb(170,170,170);font-size:15px;border-radius:3px;color:'+(player.setting_enablePollenText?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenText">Pollen Text: '+(player.setting_enablePollenText?'On':'Off')+'</div>'+'<div style="cursor:pointer;margin-top:5px;background-color:rgb(170,170,170);font-size:15px;border-radius:3px;color:'+(player.setting_enablePollenAbv?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenAbv">Abbreviate Pollen: '+(player.setting_enablePollenAbv?'On':'Off')+'</div>'+player.statString
             
@@ -25374,6 +25387,8 @@ gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.petalShuriken.indexBuffer)
 gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
 
+meshes.petalShuriken.indexAmount=index.length
+
 meshes.lawnMower={}
 meshes.lawnMower.vertBuffer=gl.createBuffer()
 meshes.lawnMower.indexBuffer=gl.createBuffer()
@@ -25408,8 +25423,6 @@ gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.lawnMowerWarning.indexBuffer)
 gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
 
 meshes.lawnMowerWarning.indexAmount=index.length
-
-meshes.petalShuriken.indexAmount=index.length
 
 meshes.popStar={}
 meshes.popStar.vertBuffer=gl.createBuffer()
