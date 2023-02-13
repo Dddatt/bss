@@ -9698,20 +9698,23 @@ let items={
 
     whirligig:{
         
-        //@ fix whirligig after panda bear testing
         amount:0,u:128*2/2048,v:128*11/2048,value:30,cooldown:15,
         use:function(){
 
             if(player.antChallenge){
 
-                player.addMessage('Cannot use whirligigs in the ant challenge!',COLORS.redArr)
-                // return
+                out.endAntChallenge()
+                return
             }
 
             items.whirligig.amount--
 
             player.hivePos[0]+=1.5
             player.hivePos[2]+=2
+
+            player.body.velocity.x=0
+            player.body.velocity.y=0
+            player.body.velocity.z=0
 
             player.body.position.x=player.hivePos[0]
             player.body.position.y=player.hivePos[1]
@@ -15645,7 +15648,10 @@ class Ant {
                 
                 if(this.health<=0){
                     
-                    player.stats[this.type]++
+                    player.stats.ant++
+
+                    if(this.type!=='ant')player.stats[this.type]++
+
                     return true
                 }
                 
@@ -16122,7 +16128,7 @@ class StarSaw {
         gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
         gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
         
-        let theta=TIME*3,dx=Math.sin(theta)*4,dz=Math.cos(theta)*4
+        let theta=TIME*3.5,dx=Math.sin(theta)*4,dz=Math.cos(theta)*4
         
         let p=[player.body.position.x+dx,player.body.position.y+0.1,player.body.position.z+dz,TIME*10]
         
@@ -21805,19 +21811,8 @@ player=(function(out){
                             
                             isCompleted=false
                         }
-                        
-                        // s+=`<svg style='border-radius:3px;width:190px;height:30px;margin-top:0px'>
 
-                        // <rect x='0' y='0' width='190' height='30' fill='rgb(255,0,0)'></rect>
-                        
-                        // <rect x='-1' y='0' width='${((out.stats[out.quests[i].req[j][0]]-out.quests[i].req[j][2])/out.quests[i].req[j][1])*192}' height='30' fill='rgb(0,255,0)'></rect>
-                        // <text fill='rgb(0,0,0)' x='97.5' y='12' text-anchor='middle' style='font-family:calibri;font-size:13px;'>${MATH.doStatGrammar(out.quests[i].req[j][0])+' '+MATH.addCommas(out.quests[i].req[j][1].toString())+' '+MATH.doGrammar(out.quests[i].req[j][0])}</text>
-                        
-                        // <text fill='rgb(0,0,0)' x='97.5' y='25' text-anchor='middle' style='font-family:calibri;font-size:13px;'>(${(MATH.constrain((out.stats[out.quests[i].req[j][0]]-out.quests[i].req[j][2])/out.quests[i].req[j][1],0,1)*100).toFixed(0)+'%'})</text>
-                        
-                        // </svg>`
-
-                        let c=MATH.doStatGrammar(out.quests[i].req[j][0])+' '+MATH.addCommas(out.quests[i].req[j][1].toString())+' '+MATH.doGrammar(out.quests[i].req[j][0])+'<br>('+(MATH.constrain((out.stats[out.quests[i].req[j][0]]-out.quests[i].req[j][2])/out.quests[i].req[j][1],0,1)*100).toFixed(0)
+                        let c=MATH.doStatGrammar(out.quests[i].req[j][0])+' '+MATH.addCommas(out.quests[i].req[j][1].toString())+' '+(out.quests[i].req[j][1]>1&&MATH.doStatGrammar(out.quests[i].req[j][0])==='Defeat'?MATH.doPlural(MATH.doGrammar(out.quests[i].req[j][0])):MATH.doGrammar(out.quests[i].req[j][0]))+'<br>('+(MATH.constrain((out.stats[out.quests[i].req[j][0]]-out.quests[i].req[j][2])/out.quests[i].req[j][1],0,1)*100).toFixed(0)
 
                         s+="<div style='border-radius:3px;width:190px;margin-top:0px;margin-bottom:5px;background-color:rgb(255,0,0);color:black;font-family:calibri;font-size:13px;margin-left:5px;position:relative;'><div style='position:absolute;left:0px;top:0px;border-radius:2px;right:"+(190-Math.min(((out.stats[out.quests[i].req[j][0]]-out.quests[i].req[j][2])/out.quests[i].req[j][1])*190,190))+"px;bottom:0px;background-color:rgb(0,250,0);'></div><div style='position:absolute;left:0px;top:0px;border-radius:2px;right:0px;bottom:0px'>"+c+"%)</div><u style='color:rgb(0,0,0,0)'>"+c+"</u></div>"
                         
