@@ -15576,6 +15576,9 @@ class Mechsquito {
         this.bodySize=1.5
         this.runningAmount=0
         this.mindHacked=0
+
+        this.bulletTrail1=new TrailRenderer.ConstantTrail({length:2,size:0.1,color:[0,1,0]})
+        this.bulletTrail2=new TrailRenderer.ConstantTrail({length:2,size:0.1,color:[0,1,0],vertical:true})
     }
     
     die(index){
@@ -15646,6 +15649,25 @@ class Mechsquito {
                             
                             this.waitTimer=1
                             this.runningAmount=3
+
+                            let DIS=this,t
+
+                            window.setTimeout(function(){
+
+                                t=[player.body.position.x-DIS.pos[0],player.body.position.y-DIS.pos[1],player.body.position.z-DIS.pos[2]]
+
+                            },450)
+
+                            window.setTimeout(function(){
+                                    
+                                vec3.normalize(t,t)
+                                vec3.scale(t,t,35)
+
+                                DIS.bullet={pos:DIS.pos.slice(),vel:t,life:0.5}
+                                
+                                ParticleRenderer.add({x:DIS.pos[0],y:DIS.pos[1],z:DIS.pos[2],vx:t[0],vy:t[1],vz:t[2],grav:0,size:300,col:[0,1,0],life:0.5,rotVel:MATH.random(-15,15),alpha:1000})
+
+                            },600)
                         }
                     }
                     
@@ -15669,7 +15691,22 @@ class Mechsquito {
                         this.damageTimer=1
                     }
 
-                    this.pos[3]=Math.atan2(d[1],d[0])+MATH.HALF_PI+Math.sin(TIME*40)*0.1+(!this.running?TIME*8.5:0)
+                    this.pos[3]=Math.atan2(d[1],d[0])+MATH.HALF_PI+Math.sin(TIME*40)*0.1+(!this.running?TIME*10:0)
+
+                    if(this.bullet){
+
+                        this.bullet.life-=dt
+
+                        vec3.scaleAndAdd(this.bullet.pos,this.bullet.pos,this.bullet.vel,dt)
+
+                        if(Math.abs(this.bullet.pos[0]-player.body.position.x)+Math.abs(this.bullet.pos[1]-player.body.position.y)+Math.abs(this.bullet.pos[2]-player.body.position.z)<2){
+
+                            player.damage(5)
+                            this.bullet.damaged=true
+                        }
+
+                        if(this.bullet.life<=0||this.bullet.damaged) this.bullet=undefined
+                    }
 
                 } else {
 
@@ -15678,7 +15715,7 @@ class Mechsquito {
                 }
                 
                 this.pos[1]+=1
-                textRenderer.addCTX(MATH.doGrammar(this.mega)+' (Level '+this.level+')',[this.pos[0],this.pos[1]+0.5,this.pos[2]],COLORS.whiteArr,100)
+                textRenderer.addCTX(MATH.doGrammar(this.mega)+' (Level '+this.level+')',[this.pos[0],this.pos[1]+0.4,this.pos[2]],COLORS.whiteArr,100)
                 
                 textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV['rect'],0.6,0,0,2.5,0.4,0)
                 textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.health/this.maxHealth)*0.5)/(this.health/this.maxHealth),0,...textRenderer.decalUV['rect'],0.2,0.85,0.2,this.health*2.5/this.maxHealth,0.4,0)
