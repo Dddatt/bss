@@ -15254,7 +15254,7 @@ class WildWindyBee {
                     this.health=this.level*this.level*250+250
                     this.maxHealth=this.health
 
-                    let amountOfTokens=13,
+                    let amountOfTokens=MATH.random(10,14)|0,
                     dropTable=['treat','treat','sunflowerSeed','sunflowerSeed','ticket','royalJelly','cloudVial','fieldDice','treat','treat','sunflowerSeed','sunflowerSeed','ticket','royalJelly','cloudVial','fieldDice','tropicalDrink','oil','glitter','magicBean','starJelly'],radius=amountOfTokens*0.2+1.5
 
                     if(_f==='CoconutField') dropTable.push('tropicalDrink')
@@ -15271,6 +15271,25 @@ class WildWindyBee {
                             
                             objects.tokens.push(new LootToken(45,[center[0]+Math.cos(i)*radius,center[1],center[2]+Math.sin(i)*radius],'honey',(this.level-2)*10000+1000,true,'Wild Windy Bee'))
                         }
+                    }
+
+                    this.whipWarning.addPos([])
+                    this.whipWarning.addPos([])
+                    this.whipWarning.addPos([])
+                    this.whipWarning.addPos([])
+                    this.whipWarning.addPos([])
+
+                    for(let i in this.windWhipTrails){
+
+                        let t=this.windWhipTrails[i]
+
+                        t.trail.addPos([])
+                        t.trail.addPos([])
+                        t.trail.addPos([])
+                        t.trail.addPos([])
+                        t.trail.addPos([])
+                        t.trail.addPos([])
+                        t.trail.addPos([])
                     }
                 }
 
@@ -15345,7 +15364,7 @@ class WildWindyBee {
 
                                     let y=MATH.random(-0.01,0.01)+0.5,s=MATH.random(-0.5,0.5),l=MATH.random(0.8,1)
 
-                                    t.speed=MATH.random(8,12)
+                                    t.speed=MATH.random(10,14)
 
                                     t.pos=vec3.add([],this.whipA,[c[0]*s,y,c[2]*s])
                                     t.target=vec3.add([],vec3.add([],this.whipB,[c[0]*s,y,c[2]*s]),[dir[0]*l,0,dir[2]*l])
@@ -15391,7 +15410,7 @@ class WildWindyBee {
 
                         this.windWhipTimer-=dt
 
-                        if(this.windWhipTimer<=0){
+                        if(this.windWhipTimer<=0.25){
 
                             for(let i in this.windWhipTrails){
 
