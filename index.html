@@ -15558,6 +15558,7 @@ class Mechsquito {
     constructor(field,level,isMega){
         
         this.mega=isMega?'megaMechsquito':'mechsquito'
+        this.isMega=isMega
         this.field=field
         this.state='attack'
         this.starSawHitTimer=0
@@ -15577,6 +15578,7 @@ class Mechsquito {
         this.runningAmount=0
         this.mindHacked=0
 
+        this.bullets=[]
         this.bulletTrail1=new TrailRenderer.ConstantTrail({length:2,size:0.1,color:[0,1,0]})
         this.bulletTrail2=new TrailRenderer.ConstantTrail({length:2,size:0.1,color:[0,1,0],vertical:true})
     }
@@ -15663,9 +15665,24 @@ class Mechsquito {
                                 vec3.normalize(t,t)
                                 vec3.scale(t,t,35)
 
-                                DIS.bullet={pos:DIS.pos.slice(),vel:t,life:0.5}
-                                
-                                ParticleRenderer.add({x:DIS.pos[0],y:DIS.pos[1],z:DIS.pos[2],vx:t[0],vy:t[1],vz:t[2],grav:0,size:300,col:[0,1,0],life:0.5,rotVel:MATH.random(-15,15),alpha:1000})
+                                if(DIS.isMega){
+
+                                    for(let i=0;i<6;i++){
+
+                                        let _t=[t[0]+MATH.random(-5,5),t[1]+MATH.random(-5,5),t[2]+MATH.random(-5,5)]
+
+                                        DIS.bullets.push({pos:DIS.pos.slice(),vel:_t,life:0.5})
+                                        
+                                        ParticleRenderer.add({x:DIS.pos[0],y:DIS.pos[1],z:DIS.pos[2],vx:_t[0],vy:_t[1],vz:_t[2],grav:0,size:200,col:[0,1,0],life:0.5,rotVel:MATH.random(-15,15),alpha:1000})
+                                    }
+
+                                } else {
+
+                                    DIS.bullets.push({pos:DIS.pos.slice(),vel:t,life:0.5})
+                                    
+                                    ParticleRenderer.add({x:DIS.pos[0],y:DIS.pos[1],z:DIS.pos[2],vx:t[0],vy:t[1],vz:t[2],grav:0,size:200,col:[0,1,0],life:0.5,rotVel:MATH.random(-15,15),alpha:1000})
+
+                                }
 
                             },600)
                         }
@@ -15693,19 +15710,19 @@ class Mechsquito {
 
                     this.pos[3]=Math.atan2(d[1],d[0])+MATH.HALF_PI+Math.sin(TIME*40)*0.1+(!this.running?TIME*10:0)
 
-                    if(this.bullet){
+                    for(let i in this.bullets){
+                    
+                        this.bullets[i].life-=dt
 
-                        this.bullet.life-=dt
+                        vec3.scaleAndAdd(this.bullets[i].pos,this.bullets[i].pos,this.bullets[i].vel,dt)
 
-                        vec3.scaleAndAdd(this.bullet.pos,this.bullet.pos,this.bullet.vel,dt)
+                        if(Math.abs(this.bullets[i].pos[0]-player.body.position.x)+Math.abs(this.bullets[i].pos[1]-player.body.position.y)+Math.abs(this.bullets[i].pos[2]-player.body.position.z)<2){
 
-                        if(Math.abs(this.bullet.pos[0]-player.body.position.x)+Math.abs(this.bullet.pos[1]-player.body.position.y)+Math.abs(this.bullet.pos[2]-player.body.position.z)<2){
-
-                            player.damage(5)
-                            this.bullet.damaged=true
+                            player.damage(7)
+                            this.bullets[i].damaged=true
                         }
 
-                        if(this.bullet.life<=0||this.bullet.damaged) this.bullet=undefined
+                        if(this.bullets[i].life<=0||this.bullets[i].damaged) this.bullets.splice(i,1)
                     }
 
                 } else {
@@ -25478,6 +25495,113 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
 
 meshes.mechsquito.indexAmount=index.length
 
+meshes.megaMechsquito={}
+meshes.megaMechsquito.vertBuffer=gl.createBuffer()
+meshes.megaMechsquito.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+_s=MATH.icosphere(1)
+_vl=verts.length/6
+
+for(let i=0;i<_s.verts.length;i+=3){
+    
+    _s.verts[i]*=1.1
+    _s.verts[i+1]*=1.1
+    _s.verts[i+2]*=1.1
+    
+    verts.push(_s.verts[i],_s.verts[i+1],_s.verts[i+2],0.1,0.1,0.1)
+}
+
+for(let i in _s.index){
+    
+    index.push(_s.index[i]+_vl)
+}
+
+_s=MATH.icosphere(1)
+_vl=verts.length/6
+
+for(let i=0;i<_s.verts.length;i+=3){
+    
+    verts.push(_s.verts[i],_s.verts[i+1],_s.verts[i+2]+0.75,0.1,0.1,0.1)
+}
+
+for(let i in _s.index){
+    
+    index.push(_s.index[i]+_vl)
+}
+
+_vl=verts.length/6
+
+for(let i=0;i<_s.verts.length;i+=3){
+    
+    verts.push(_s.verts[i],_s.verts[i+1],_s.verts[i+2]+0.75*2,0.1,0.1,0.1)
+}
+
+for(let i in _s.index){
+    
+    index.push(_s.index[i]+_vl)
+}
+
+_s=MATH.icosphere(1)
+_vl=verts.length/6
+
+for(let i=0;i<_s.verts.length;i+=3){
+    
+    _s.verts[i]*=0.45
+    _s.verts[i+1]*=0.45
+    _s.verts[i+2]*=0.45
+    
+    _s.verts[i]-=0.2
+    _s.verts[i+1]+=0.15
+    _s.verts[i+2]-=0.35
+
+    verts.push(_s.verts[i],_s.verts[i+1],_s.verts[i+2],10,0,0)
+}
+
+for(let i in _s.index){
+    
+    index.push(_s.index[i]+_vl)
+}
+
+_s=MATH.icosphere(1)
+_vl=verts.length/6
+
+for(let i=0;i<_s.verts.length;i+=3){
+    
+    _s.verts[i]*=0.45
+    _s.verts[i+1]*=0.45
+    _s.verts[i+2]*=0.45
+    
+    _s.verts[i]+=0.2
+    _s.verts[i+1]+=0.15
+    _s.verts[i+2]-=0.35
+
+    verts.push(_s.verts[i],_s.verts[i+1],_s.verts[i+2],10,0,0)
+}
+
+for(let i in _s.index){
+    
+    index.push(_s.index[i]+_vl)
+}
+
+b(0,-0.1,-0.6,0.1,0.1,1,0.12,0.12,0.12,-5,0,45)
+
+b(0.4,0.4,-0.15,0.1,1,0.1,0.12,0.12,0.12,35,45,0)
+b(-0.4,0.4,-0.15,0.1,1,0.1,0.12,0.12,0.12,35,-45,0)
+
+c(0.75,0,0.75,0.7,0.1,10,0,10,0,90,0,0)
+c(-0.75,0,0.75,0.7,0.1,10,0,10,0,90,0,0)
+
+c(0,0,0.75*2,0.7,0.2,10,0.2,0.2,0.2)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.megaMechsquito.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.megaMechsquito.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.megaMechsquito.indexAmount=index.length
+
 meshes.mondoChick={}
 meshes.mondoChick.vertBuffer=gl.createBuffer()
 meshes.mondoChick.indexBuffer=gl.createBuffer()
@@ -27068,7 +27192,7 @@ objects.mobs.push(new MondoChick('MountainTopField',7))
 // objects.mobs.push(new RogueViciousBee('DandelionField',MATH.random(1,13)|0))
 // objects.mobs.push(new Cloud('DandelionField',2,2,60,true))
 
-objects.mobs.push(new Mechsquito('DandelionField',1))
+objects.mobs.push(new Mechsquito('DandelionField',1,true))
 
 
 function loop(now){
