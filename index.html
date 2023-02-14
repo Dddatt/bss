@@ -15742,7 +15742,7 @@ class Mechsquito {
                 this.pos[1]-=1
                 
                 gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
-                gl.uniform2f(glCache.mob_instanceInfo2,1,1)
+                gl.uniform2f(glCache.mob_instanceInfo2,this.isMega?1.25:0.8,1)
                 gl.bindBuffer(gl.ARRAY_BUFFER,meshes[this.mega].vertBuffer)
                 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes[this.mega].indexBuffer)
                 gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
@@ -15780,20 +15780,18 @@ class Cogmower {
         this.checkTimer=TIME
         this.flameTimer=0
         this.waitTimer=0
-        this.target=[this.pos[0],this.pos[2]]
         this.damageTimer=0
         this.bodySize=1.5
-        this.runningAmount=0
         this.mindHacked=0
 
         let r=1
 
         this.bounds={
             
-            minX:fieldInfo[this.field].x+r,
-            maxX:fieldInfo[this.field].x+fieldInfo[this.field].width-r,
-            minZ:fieldInfo[this.field].z+r,
-            maxZ:fieldInfo[this.field].z+fieldInfo[this.field].length-r,
+            minX:fieldInfo[this.field].x+r-0.5,
+            maxX:fieldInfo[this.field].x+fieldInfo[this.field].width-r-0.5,
+            minZ:fieldInfo[this.field].z+r-0.5,
+            maxZ:fieldInfo[this.field].z+fieldInfo[this.field].length-r-0.5,
         }
     }
     
@@ -15852,6 +15850,9 @@ class Cogmower {
                 
                 if(this.mindHacked<=0){
 
+                    this.pos[0]+=this.moveDir[0]*dt
+                    this.pos[2]+=this.moveDir[1]*dt
+
                     if(this.pos[0]<=this.bounds.minX){
                         
                         this.pos[0]=this.bounds.minX
@@ -15867,7 +15868,7 @@ class Cogmower {
                     if(this.pos[2]<=this.bounds.minZ){
                         
                         this.pos[2]=this.bounds.minZ
-                        this.moveDir[2]=-this.moveDir[2]
+                        this.moveDir[1]=-this.moveDir[1]
                     }
                     
                     if(this.pos[2]>=this.bounds.maxZ){
@@ -15875,9 +15876,6 @@ class Cogmower {
                         this.pos[2]=this.bounds.maxZ
                         this.moveDir[1]=-this.moveDir[1]
                     }
-
-                    this.pos[0]+=this.moveDir[0]*dt
-                    this.pos[2]+=this.moveDir[1]*dt
 
                     this.damageTimer-=dt
 
@@ -15915,6 +15913,156 @@ class Cogmower {
                 gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
                 gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
                 gl.drawElements(gl.TRIANGLES,meshes[this.gold].indexAmount,gl.UNSIGNED_SHORT,0)
+                
+            break
+            
+        }
+        
+    }
+}
+
+class CogTurret {
+    
+    constructor(field,level,side){
+
+        this.side=side
+        this.field=field
+        this.state='attack'
+        this.starSawHitTimer=0
+        this.level=level
+        this.health=(level-1)*750+750
+        this.maxHealth=this.health
+
+        switch(this.side){
+
+            case 0:
+
+                this.pos=[fieldInfo[this.field].x+Math.random()*fieldInfo[this.field].width,fieldInfo[this.field].y+1,fieldInfo[this.field].z-0.5,0]
+                this.constraintAxis=0
+                this.constraintRange=[fieldInfo[this.field].x-0.5,fieldInfo[this.field].x+fieldInfo[this.field].width-0.5]
+
+            break
+
+            case 1:
+
+                this.pos=[fieldInfo[this.field].x+Math.random()*fieldInfo[this.field].width,fieldInfo[this.field].y+1,fieldInfo[this.field].z+fieldInfo[this.field].length-0.5,MATH.HALF_PI]
+                this.constraintAxis=0
+                this.constraintRange=[fieldInfo[this.field].x-0.5,fieldInfo[this.field].x+fieldInfo[this.field].width-0.5]
+
+            break
+
+            case 2:
+
+                this.pos=[fieldInfo[this.field].x-0.5,fieldInfo[this.field].y+1,fieldInfo[this.field].z+Math.random()*fieldInfo[this.field].length,Math.PI]
+                this.constraintAxis=2
+                this.constraintRange=[fieldInfo[this.field].z-0.5,fieldInfo[this.field].z+fieldInfo[this.field].length-0.5]
+
+            break
+
+            case 3:
+
+                this.pos=[fieldInfo[this.field].x+fieldInfo[this.field].width-0.5,fieldInfo[this.field].y+1,fieldInfo[this.field].z+Math.random()*fieldInfo[this.field].length,Math.PI*3/2]
+                this.constraintAxis=2
+                this.constraintRange=[fieldInfo[this.field].z,fieldInfo[this.field].z+fieldInfo[this.field].length]
+
+            break
+        }
+        
+        this.checkTimer=TIME
+        this.flameTimer=0
+        this.waitTimer=0
+        this.damageTimer=0
+        this.bodySize=1.5
+        this.mindHacked=0
+    }
+    
+    die(index){
+        
+        objects.mobs.splice(index,1)
+    }
+    
+    damage(am){
+        
+        let crit=Math.random()<player.criticalChance,superCrit=Math.random()<player.superCritChance,d=am*(crit?superCrit?player.superCritPower*player.criticalPower:player.criticalPower:1)
+        
+        if(this.mindHacked>0)
+            d*=1.25
+
+        this.health-=d|0
+        textRenderer.add((d|0)+'',[this.pos[0],this.pos[1]+Math.random()*2.75+1.5,this.pos[2]],[255,0,0],crit?superCrit?2:1:0,'',[0,1.25,1.275,1.3,1.65,1.75][Math.min(d.toString().length),5])
+        
+    }
+    
+    update(){
+        
+        switch(this.state){
+            
+            case 'attack':
+                
+                if(this.health<=0){
+                    
+                    player.stats.mechsquito++
+                    
+                    return true
+                }
+                
+                this.mindHacked-=dt
+                this.timeLimit-=dt
+                this.starSawHitTimer-=dt
+                this.flameTimer-=dt
+                
+                if(this.flameTimer<=0){
+                    
+                    this.flameTimer=1
+                    
+                    for(let f in objects.flames){
+                        
+                        if(Math.abs(this.pos[0]-objects.flames[f].pos[0])+Math.abs(this.pos[2]-objects.flames[f].pos[2])<this.bodySize){
+                            
+                            this.damage(objects.flames[f].dark?25:15)
+                        }
+                    }
+                }
+                
+                if(player.fieldIn===this.field){
+                    
+                    player.attacked.push(this)
+                }
+                
+                if(this.mindHacked<=0){
+
+                    this.pos[this.constraintAxis]=MATH.constrain(player.body.position[this.constraintAxis?'z':'x'],this.constraintRange[0],this.constraintRange[1])
+
+                    this.damageTimer-=dt
+
+                    if(this.damageTimer<=0&&Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1])+Math.abs(player.body.position.z-this.pos[2])<this.bodySize){
+                        
+                        player.damage(15+(this.level-1))
+                        this.damageTimer=0.5
+                    }
+
+                } else {
+
+                    textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV.smiley,0.75,0,0,-2,-2,0)
+                }
+                
+                this.pos[1]+=1
+                textRenderer.addCTX('Cogturret (Level '+this.level+')',[this.pos[0],this.pos[1]+0.4,this.pos[2]],COLORS.whiteArr,100)
+                
+                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV['rect'],0.6,0,0,2.5,0.4,0)
+                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.health/this.maxHealth)*0.5)/(this.health/this.maxHealth),0,...textRenderer.decalUV['rect'],0.2,0.85,0.2,this.health*2.5/this.maxHealth,0.4,0)
+                
+                textRenderer.addSingle('HP: '+MATH.addCommas((this.health|0)+''),this.pos,COLORS.whiteArr,-1,false,false)
+            
+                this.pos[1]-=1
+                
+                gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
+                gl.uniform2f(glCache.mob_instanceInfo2,1,1)
+                gl.bindBuffer(gl.ARRAY_BUFFER,meshes.cogTurret.vertBuffer)
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.cogTurret.indexBuffer)
+                gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
+                gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
+                gl.drawElements(gl.TRIANGLES,meshes.cogTurret.indexAmount,gl.UNSIGNED_SHORT,0)
                 
             break
             
@@ -25806,6 +25954,80 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
 
 meshes.cogmower.indexAmount=index.length
 
+meshes.goldenCogmower={}
+meshes.goldenCogmower.vertBuffer=gl.createBuffer()
+meshes.goldenCogmower.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+_s=MATH.icosphere(1)
+_vl=verts.length/6
+
+for(let i=0;i<_s.verts.length;i+=3){
+    
+    _s.verts[i]*=1.75
+    _s.verts[i+1]*=1.75
+    _s.verts[i+2]*=1.75
+    
+    verts.push(_s.verts[i],_s.verts[i+1],_s.verts[i+2],0.9,0.85,0.2)
+}
+
+for(let i in _s.index){
+    
+    index.push(_s.index[i]+_vl)
+}
+
+c(0,0,0,1.15,0.2,10,10,10,0,90,0,0)
+c(0,0,0,1.05,0.35,10,0.75,0.7,0.1,90,0,0)
+
+b(0,0,0,2.75,0.35,0.5,0.75,0.7,0.1,0.001,0,0)
+b(0,0,0,2.75,0.35,0.5,0.75,0.7,0.1,0.001,60,0)
+b(0,0,0,2.75,0.35,0.5,0.75,0.7,0.1,0.001,120,0)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.goldenCogmower.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.goldenCogmower.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.goldenCogmower.indexAmount=index.length
+
+meshes.cogTurret={}
+meshes.cogTurret.vertBuffer=gl.createBuffer()
+meshes.cogTurret.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+_s=MATH.icosphere(1)
+_vl=verts.length/6
+
+for(let i=0;i<_s.verts.length;i+=3){
+    
+    _s.verts[i]*=1.75
+    _s.verts[i+1]*=1.75
+    _s.verts[i+2]*=1.75
+    
+    verts.push(_s.verts[i],_s.verts[i+1],_s.verts[i+2],0.9,0.85,0.2)
+}
+
+for(let i in _s.index){
+    
+    index.push(_s.index[i]+_vl)
+}
+
+c(0,0,0,1.15,0.2,10,10,10,0,90,0,0)
+c(0,0,0,1.05,0.35,10,0.75,0.7,0.1,90,0,0)
+
+b(0,0,0,2.75,0.35,0.5,0.75,0.7,0.1,0.001,0,0)
+b(0,0,0,2.75,0.35,0.5,0.75,0.7,0.1,0.001,60,0)
+b(0,0,0,2.75,0.35,0.5,0.75,0.7,0.1,0.001,120,0)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.cogTurret.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.cogTurret.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.cogTurret.indexAmount=index.length
+
 meshes.mondoChick={}
 meshes.mondoChick.vertBuffer=gl.createBuffer()
 meshes.mondoChick.indexBuffer=gl.createBuffer()
@@ -27396,9 +27618,12 @@ objects.mobs.push(new MondoChick('MountainTopField',7))
 // objects.mobs.push(new RogueViciousBee('DandelionField',MATH.random(1,13)|0))
 // objects.mobs.push(new Cloud('DandelionField',2,2,60,true))
 
-// objects.mobs.push(new Mechsquito('DandelionField',1,true))
-
+objects.mobs.push(new Mechsquito('DandelionField',1,false))
 objects.mobs.push(new Cogmower('DandelionField',1,false))
+objects.mobs.push(new Mechsquito('DandelionField',1,true))
+objects.mobs.push(new Cogmower('DandelionField',1,true))
+
+// objects.mobs.push(new CogTurret('DandelionField',1,2))
 
 
 function loop(now){
