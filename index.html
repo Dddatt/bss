@@ -15974,6 +15974,9 @@ class CogTurret {
         this.damageTimer=0
         this.bodySize=1.5
         this.mindHacked=0
+
+        this.cogs=[]
+        this.cogFireTimer=2
     }
     
     die(index){
@@ -16027,6 +16030,18 @@ class CogTurret {
                 if(player.fieldIn===this.field){
                     
                     player.attacked.push(this)
+
+                    this.cogFireTimer-=dt
+
+                    if(this.cogFireTimer<=0){
+
+                        let v=[0,0]
+
+                        v[2-this.constraintAxis]=Math.sign(player.body.position[this.constraintAxis?'x':'z']-this.pos[2-this.constraintAxis])*8
+
+                        this.cogs.push({pos:this.pos.slice(),vel:v,timer:0,deathY:this.pos[1]-3})
+                        this.cogFireTimer=2
+                    }
                 }
                 
                 if(this.mindHacked<=0){
@@ -16037,7 +16052,7 @@ class CogTurret {
 
                     if(this.damageTimer<=0&&Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1])+Math.abs(player.body.position.z-this.pos[2])<this.bodySize){
                         
-                        player.damage(15+(this.level-1))
+                        player.damage(20+(this.level-1))
                         this.damageTimer=0.5
                     }
 
@@ -16063,6 +16078,54 @@ class CogTurret {
                 gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
                 gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
                 gl.drawElements(gl.TRIANGLES,meshes.cogTurret.indexAmount,gl.UNSIGNED_SHORT,0)
+                
+                gl.bindBuffer(gl.ARRAY_BUFFER,meshes.cog.vertBuffer)
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.cog.indexBuffer)
+                gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
+                gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
+                gl.uniform2f(glCache.mob_instanceInfo2,1,1)
+
+                for(let i=this.cogs.length;i--;){
+
+                    let s=this.cogs[i]
+
+                    s.timer-=dt
+
+                    s.pos[0]+=s.vel[0]*dt
+                    s.pos[2]+=s.vel[1]*dt
+                    s.pos[3]+=dt*8
+
+                    s.fx=Math.round(s.pos[0]-fieldInfo[this.field].x)
+                    s.fz=Math.round(s.pos[2]-fieldInfo[this.field].z)
+
+                    if(s.fx<0||s.fx>=fieldInfo[this.field].width||s.fz<0||s.fz>=fieldInfo[this.field].length){
+
+                        s.pos[1]-=dt*10
+                    }
+
+                    if(s._fx!==s.fx||s._fz!==s.fz){
+
+                        collectPollen({x:Math.round(s.pos[0]-fieldInfo[this.field].x),z:Math.round(s.pos[2]-fieldInfo[this.field].z),field:this.field,pattern:[[0,0]],amount:1000,multiplier:0.00000000001})
+                    }
+
+                    s._fx=s.fx
+                    s._fz=s.fz
+
+
+                    if(Math.abs(player.body.position.x-s.pos[0])+Math.abs(player.body.position.z-s.pos[2])+Math.abs(s.pos[1]-player.body.position.y)<1.5&&s.timer<=0){
+
+                        s.timer=0.5
+                        player.damage(15)
+                    }
+
+                    gl.uniform4fv(glCache.mob_instanceInfo1,s.pos)
+                    gl.drawElements(gl.TRIANGLES,meshes.cog.indexAmount,gl.UNSIGNED_SHORT,0)
+
+                    if(s.pos[1]<s.deathY){
+
+                        this.cogs.splice(i,1)
+                    }
+                }
                 
             break
             
@@ -26028,6 +26091,26 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
 
 meshes.cogTurret.indexAmount=index.length
 
+meshes.cog={}
+meshes.cog.vertBuffer=gl.createBuffer()
+meshes.cog.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+c(0,0,0,1.15,0.2,10,10,10,0,90,0,0)
+c(0,0,0,1.05,0.35,10,0.75,0.7,0.1,90,0,0)
+
+b(0,0,0,2.75,0.35,0.5,0.75,0.7,0.1,0.001,0,0)
+b(0,0,0,2.75,0.35,0.5,0.75,0.7,0.1,0.001,60,0)
+b(0,0,0,2.75,0.35,0.5,0.75,0.7,0.1,0.001,120,0)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.cog.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.cog.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.cog.indexAmount=index.length
+
 meshes.mondoChick={}
 meshes.mondoChick.vertBuffer=gl.createBuffer()
 meshes.mondoChick.indexBuffer=gl.createBuffer()
@@ -27618,12 +27701,12 @@ objects.mobs.push(new MondoChick('MountainTopField',7))
 // objects.mobs.push(new RogueViciousBee('DandelionField',MATH.random(1,13)|0))
 // objects.mobs.push(new Cloud('DandelionField',2,2,60,true))
 
-objects.mobs.push(new Mechsquito('DandelionField',1,false))
-objects.mobs.push(new Cogmower('DandelionField',1,false))
-objects.mobs.push(new Mechsquito('DandelionField',1,true))
-objects.mobs.push(new Cogmower('DandelionField',1,true))
+// objects.mobs.push(new Mechsquito('DandelionField',1,false))
+// objects.mobs.push(new Cogmower('DandelionField',1,false))
+// objects.mobs.push(new Mechsquito('DandelionField',1,true))
+// objects.mobs.push(new Cogmower('DandelionField',1,true))
 
-// objects.mobs.push(new CogTurret('DandelionField',1,2))
+objects.mobs.push(new CogTurret('DandelionField',1,2))
 
 
 function loop(now){
