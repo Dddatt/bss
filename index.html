@@ -4078,6 +4078,10 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
     <div id='roboActiveBeesAmount' style='position:fixed;width:200px;height:400px;left:21%;top:54%;transform:translate(-50%,-50%);font-size:16px;'></div>
     
     <div id='roboActiveBees' style='position:fixed;width:200px;height:400px;left:21%;top:59%;transform:translate(-50%,-50%);font-size:29px;background-color:rgb(255,255,255,0.3);border-radius:4px;'></div>
+
+    <div id='roboActiveUpgradesAmount' style='position:fixed;width:200px;height:400px;left:21%;top:54%;transform:translate(-50%,-50%);font-size:16px;'></div>
+    
+    <div id='roboActiveUpgrades' style='position:fixed;width:200px;height:400px;left:21%;top:59%;transform:translate(-50%,-50%);font-size:29px;background-color:rgb(255,255,255,0.3);border-radius:4px;'></div>
     
     <div id='roboBeeChoices' style='position:fixed;width:285px;height:400px;left:70.5%;top:59%;transform:translate(-50%,-50%);font-size:19px;'>
         
@@ -4087,10 +4091,18 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         
     </div>
 
-    <div id='roboQuestChoices' style='position:fixed;width:285px;height:400px;left:70.5%;top:59%;transform:translate(-50%,-50%);font-size:19px;'>
+    <div id='roboQuestChoices' style='position:fixed;width:285px;height:400px;left:50%;top:59%;transform:translate(-50%,-50%);font-size:19px;'>
         
-        <div id='roboQuestChoice1' style='cursor:pointer;position:fixed;background-color:rgb(255,255,255,0.7);border-radius:5px;width:277px;height:190px;left:50%;top:25%;transform:translate(-50%,-50%);color:black'></div>
-        <div id='roboQuestChoice2' style='cursor:pointer;position:fixed;background-color:rgb(255,255,255,0.7);border-radius:5px;width:277px;height:190px;left:50%;top:75%;transform:translate(-50%,-50%);color:black'></div>
+        <div id='roboQuestChoice1' style='cursor:pointer;position:fixed;background-color:rgb(255,255,255,0.4);border-radius:5px;width:235px;height:375px;left:7%;top:52%;transform:translate(-50%,-50%);color:black;font-size:16px;text-align:left;padding-left:5px;font-family:trebuchet ms'></div>
+        <div id='roboQuestChoice2' style='cursor:pointer;position:fixed;background-color:rgb(255,255,255,0.4);border-radius:5px;width:235px;height:375px;left:93%;top:52%;transform:translate(-50%,-50%);color:black;font-size:16px;text-align:left;padding-left:5px;font-family:trebuchet ms'></div>
+        
+    </div>
+
+    <div id='roboUpgradeChoices' style='position:fixed;width:285px;height:400px;left:70.5%;top:59%;transform:translate(-50%,-50%);font-size:19px;'>
+        
+        <div id='roboUpgradeChoice1' style='cursor:pointer;position:fixed;background-color:rgb(255,255,255);border-radius:5px;width:255px;height:100px;left:50%;top:20%;transform:translate(-50%,-50%);color:black'></div>
+        <div id='roboUpgradeChoice2' style='cursor:pointer;position:fixed;background-color:rgb(255,255,255);border-radius:5px;width:255px;height:100px;left:50%;top:50%;transform:translate(-50%,-50%);color:black'></div>
+        <div id='roboUpgradeChoice3' style='cursor:pointer;position:fixed;background-color:rgb(255,255,255);border-radius:5px;width:255px;height:100px;left:50%;top:80%;transform:translate(-50%,-50%);color:black'></div>
         
     </div>
     
@@ -20886,7 +20898,6 @@ player=(function(out){
             document.getElementById('roboMenu').style.display='none'
             return
         }
-
     }
     
     out.updateRoboUI=function(){
@@ -20895,46 +20906,95 @@ player=(function(out){
 
         switch(out.roboChallenge.scene){
 
+            case 'upgrade':
+
+                document.getElementById('roboTitle').innerHTML="Buy Upgrades<p style='font-size:14.5px;margin-top:0px'><u style='cursor:pointer'>Reroll Upgrades</u> ("+out.roboChallenge.rerollCost+" cogs)</p>"
+                document.getElementById('roboBeeChoices').style.display='none'
+                document.getElementById('roboQuestChoices').style.display='none'
+                document.getElementById('roboUpgradeChoices').style.display='block'
+                document.getElementById('roboActiveBees').style.display='none'
+                document.getElementById('roboActiveBeesAmount').style.display='none'
+                document.getElementById('roboActiveUpgrades').style.display='block'
+                document.getElementById('roboActiveUpgradesAmount').style.display='block'
+
+                let upgrades={Botnet:'*1.25 pollenFromBees',Iterate:'*1.08 pollen',Sharpen:'*1.2 beeAttack,*0.9 capacity'},u=[],c=[]
+
+                for(let i in upgrades){
+
+                    if(out.roboChallenge.activeUpgrades.indexOf(i)<0){
+
+                        u.push(i)
+                    }
+                }
+
+                for(let i=0,_i=Math.min(3,u.length);i<_i;i++){
+
+                    let r=(Math.random()*u.length)|0
+
+                    c.push(u[r])
+                    u.splice(r,1)
+                }
+
+                for(let i=1;i<4;i++){
+
+                    document.getElementById('roboUpgradeChoice'+i).innerHTML=c[i-1]
+
+                    document.getElementById('roboUpgradeChoice'+i).onclick=function(){
+
+                        out.roboChallenge.scene=''
+                        out.updateRoboUI()
+                    }
+                    }
+
+            break
+
             case 'quest':
 
-                document.getElementById('roboTitle').innerHTML="Select Quest<p style='font-size:14.5px;margin-top:0px'><u style='cursor:pointer'>Reroll Quests</u> ("+out.roboChallenge.questRerolls+" left)</p>"
-                document.getElementById('roboActiveBeesAmount').innerHTML="Active Bees ("+out.roboChallenge.activeBees.length+")"
+                document.getElementById('roboTitle').innerHTML="Select Quest<p style='font-size:14.5px;margin-top:0px'><u style='cursor:pointer'>Reroll Quests</u> ("+out.roboChallenge.rerollCost+" cogs)</p>"
                 document.getElementById('roboBeeChoices').style.display='none'
                 document.getElementById('roboQuestChoices').style.display='block'
-                document.getElementById('roboActiveBees').innerHTML=''
-
-                for(let i in out.roboChallenge.activeBees){
-
-                    let b=out.roboChallenge.activeBees[i]
-
-                    b=out.hive[b[1]][b[0]].bee
-
-                    let img=document.createElement('canvas')
-
-                    img.width=35
-                    img.height=35
-                    img.style.width=35
-                    img.style.height=35
-                    img.style.borderRadius='2px'
-                    img.style.position='fixed'
-                    img.style.left=(((i%5)+0.5-2.5)*20+50)+'%'
-                    img.style.top=(((i/5)|0)*10+5)+'%'
-                    img.style.transform='translate(-17px,-17px)'
-
-                    let img_ctx=img.getContext('2d')
-
-                    img_ctx.drawImage(beeCanvas,beeInfo[b.type].u*2048,beeInfo[b.type].v*2048+(b.gifted?768:0),128,128,0,0,35,35)
-
-                    document.getElementById('roboActiveBees').appendChild(img)
-
-                }
+                document.getElementById('roboActiveBees').style.display='none'
+                document.getElementById('roboActiveBeesAmount').style.display='none'
+                document.getElementById('roboActiveUpgrades').style.display='none'
+                document.getElementById('roboActiveUpgradesAmount').style.display='none'
+                document.getElementById('roboUpgradeChoices').style.display='none'
 
                 let types=['redPollen','whitePollen','bluePollen','pollenFromSunflowerField','pollenFromDandelionField','pollenFromMushroomField','pollenFromBlueFlowerField','pollenFromCloverField','pollenFromSpiderField','pollenFromStrawberryField','pollenFromBambooField','pollenFromPineapplePatch','pollenFromCactusField','pollenFromPumpkinPatch','pollenFromPineTreeForest','pollenFromRoseField']
 
                 if(out.roboChallenge.round>5) types.push('pollenFromMountainTopField')
                 if(out.roboChallenge.round>10) types.push('pollenFromPepperPatch')
 
+                if(out.roboChallenge.round>2) types.push('mechsquito')
+                if(out.roboChallenge.round>4) types.push('cogmower')
+                if(out.roboChallenge.round>8) types.push('cogturret')
+                if(out.roboChallenge.round>11) types.push('megaMechsquito')
+                if(out.roboChallenge.round>15) types.push('goldenCogmower')
 
+                for(let i=1;i<3;i++){
+
+                    let q=[],t=types.slice(),re=[]
+
+                    for(let j=0,c=MATH.random(2,5)|0;j<c;j++){
+
+                        let r=(Math.random()*t.length)|0
+
+                        re.push(t[r])
+                        t.splice(r,1)
+                    }
+
+                    document.getElementById('roboQuestChoice'+i).innerHTML='<br>'
+
+                    for(let j in re){
+
+                        document.getElementById('roboQuestChoice'+i).innerHTML+='- '+MATH.doStatGrammar(re[j])+' '+10+' '+MATH.doGrammar(re[j])+'<br><br>'
+                    }
+
+                    document.getElementById('roboQuestChoice'+i).onclick=function(){
+
+                        out.roboChallenge.scene='upgrade'
+                        out.updateRoboUI()
+                    }
+                }
 
             break
 
@@ -20947,10 +21007,14 @@ player=(function(out){
                     return
                 }
 
-                document.getElementById('roboTitle').innerHTML="Select Bees<p style='font-size:13px;margin-top:0px'>("+(out.roboChallenge.beesPicked+1)+" of "+out.roboChallenge.beesPerRound+")</p>"
+                document.getElementById('roboTitle').innerHTML="<p style='margin-top:-15px'></p>Select Bees<p style='font-size:13px;margin-top:0px'>("+(out.roboChallenge.beesPicked+1)+" of "+out.roboChallenge.beesPerRound+")<br><u>Reroll Bees</u> ("+out.roboChallenge.rerollCost+" cogs)</p>"
                 document.getElementById('roboActiveBeesAmount').innerHTML="Active Bees ("+out.roboChallenge.activeBees.length+")"
                 document.getElementById('roboBeeChoices').style.display='block'
                 document.getElementById('roboQuestChoices').style.display='none'
+                document.getElementById('roboActiveBeesAmount').style.display='block'
+                document.getElementById('roboActiveUpgrades').style.display='none'
+                document.getElementById('roboActiveUpgradesAmount').style.display='none'
+                document.getElementById('roboUpgradeChoices').style.display='none'
 
                 let beesToSelect=[],strActiveBees='#'+out.roboChallenge.activeBees.join('#')+'#'
 
@@ -20968,6 +21032,7 @@ player=(function(out){
                 }
 
                 document.getElementById('roboActiveBees').innerHTML=''
+                document.getElementById('roboActiveBees').style.display='block'
 
                 for(let i in out.roboChallenge.activeBees){
 
@@ -28170,7 +28235,7 @@ function loop(now){
 
         TIME+=dt*50
 
-        player.roboChallenge={timer:3*60,page:'bee',beesPerRound:2,beesPicked:0,activeBees:[],scene:'bee',questRerolls:1}
+        player.roboChallenge={timer:3*60,page:'bee',beesPerRound:2,beesPicked:0,activeBees:[],scene:'bee',rerollCost:10,activeUpgrades:[]}
         player.updateRoboUI()
 
         for(let i in objects.planters){
