@@ -4098,11 +4098,11 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         
     </div>
 
-    <div id='roboUpgradeChoices' style='position:fixed;width:285px;height:400px;left:70.5%;top:59%;transform:translate(-50%,-50%);font-size:19px;'>
+    <div id='roboUpgradeChoices' style='position:fixed;width:285px;height:400px;left:70.5%;top:59%;transform:translate(-50%,-50%);font-size:17px;text-align:left;'>
         
-        <div id='roboUpgradeChoice1' style='cursor:pointer;position:fixed;background-color:rgb(255,255,255);border-radius:5px;width:255px;height:100px;left:50%;top:20%;transform:translate(-50%,-50%);color:black'></div>
-        <div id='roboUpgradeChoice2' style='cursor:pointer;position:fixed;background-color:rgb(255,255,255);border-radius:5px;width:255px;height:100px;left:50%;top:50%;transform:translate(-50%,-50%);color:black'></div>
-        <div id='roboUpgradeChoice3' style='cursor:pointer;position:fixed;background-color:rgb(255,255,255);border-radius:5px;width:255px;height:100px;left:50%;top:80%;transform:translate(-50%,-50%);color:black'></div>
+        <div id='roboUpgradeChoice1' style='cursor:pointer;position:fixed;background-color:rgb(243, 225, 165);border-radius:5px;width:285px;height:125px;left:50%;top:17%;transform:translate(-50%,-50%);color:black'></div>
+        <div id='roboUpgradeChoice2' style='cursor:pointer;position:fixed;background-color:rgb(243, 225, 165);border-radius:5px;width:285px;height:125px;left:50%;top:50%;transform:translate(-50%,-50%);color:black'></div>
+        <div id='roboUpgradeChoice3' style='cursor:pointer;position:fixed;background-color:rgb(243, 225, 165);border-radius:5px;width:285px;height:125px;left:50%;top:83%;transform:translate(-50%,-50%);color:black'></div>
         
     </div>
     
@@ -20937,14 +20937,25 @@ player=(function(out){
 
                 for(let i=1;i<4;i++){
 
-                    document.getElementById('roboUpgradeChoice'+i).innerHTML=c[i-1]
+                    let s='',_s=upgrades[c[i-1]].split(',')
+
+                    for(let j in _s){
+
+                        let n=_s[j]
+
+                        n=n.substring(0,n.indexOf(' ')+1)+MATH.doGrammar(n.substring(n.indexOf(' ')+1,n.length))
+
+                        s+='<div style="color:'+(Number(n.substring(1,n.indexOf(' ')))<1?'rgb(255,50,50)':'rgb(60,255,60)')+'">'+n.replace('*','x')+'<br></div>'
+                    }
+
+                    document.getElementById('roboUpgradeChoice'+i).innerHTML='&nbsp;'+c[i-1]+"<div style='border-radius:5px;position:fixed;left:10px;top:35px;right:5px;bottom:5px;background-color:rgb(0,0,0,0.75);font-family:trebuchet ms;font-size:14px;padding-left:10px;padding-top:8px'>"+s+"</div>"
 
                     document.getElementById('roboUpgradeChoice'+i).onclick=function(){
 
                         out.roboChallenge.scene=''
                         out.updateRoboUI()
                     }
-                    }
+                }
 
             break
 
