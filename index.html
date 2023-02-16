@@ -8906,10 +8906,11 @@ let effects={
         func:function(params){
             
             if(player.fieldIn){
-                
-                fieldInfo[player.fieldIn].corruption=Math.min(fieldInfo[player.fieldIn].corruption+20+params.bee.level,100)
+
+                fieldInfo[player.fieldIn].corruption=Math.min(fieldInfo[player.fieldIn].corruption+15+params.bee.level*0.5+(((fieldInfo[player.fieldIn].generalColorComp.r*player.drives.red/50)+(fieldInfo[player.fieldIn].generalColorComp.w*player.drives.white/50)+(fieldInfo[player.fieldIn].generalColorComp.b*player.drives.blue/50)+(player.drives.glitched/50))*15/4),100)
                 
                 objects.mobs.push(new GlitchEffect(player.fieldIn,5))
+                15+10+15
             }
         },
     },
@@ -8961,7 +8962,7 @@ let effects={
             
             f=f[(Math.random()*f.length)|0]
             
-            fieldInfo[f].corruption=Math.min(fieldInfo[f].corruption+30+params.bee.level*2,100)
+            fieldInfo[f].corruption=Math.min(fieldInfo[f].corruption+30+params.bee.level*2+(((fieldInfo[player.fieldIn].generalColorComp.r*player.drives.red/50)+(fieldInfo[player.fieldIn].generalColorComp.w*player.drives.white/50)+(fieldInfo[player.fieldIn].generalColorComp.b*player.drives.blue/50)+(player.drives.glitched/50))*15/4),100)
             
             objects.mobs.push(new GlitchEffect(f,5))
             
@@ -15673,7 +15674,7 @@ class Mechsquito {
 
                                         DIS.bullets.push({pos:DIS.pos.slice(),vel:_t,life:0.5})
                                         
-                                        ParticleRenderer.add({x:DIS.pos[0],y:DIS.pos[1],z:DIS.pos[2],vx:_t[0],vy:_t[1],vz:_t[2],grav:0,size:200,col:[0,1,0],life:0.5,rotVel:MATH.random(-15,15),alpha:1000})
+                                        ParticleRenderer.add({x:DIS.pos[0],y:DIS.pos[1],z:DIS.pos[2],vx:_t[0],vy:_t[1],vz:_t[2],grav:0,size:100,col:[0,1,0],life:0.5,rotVel:MATH.random(-15,15),alpha:1000})
                                     }
 
                                 } else {
@@ -15937,7 +15938,7 @@ class CogTurret {
 
             case 0:
 
-                this.pos=[fieldInfo[this.field].x+Math.random()*fieldInfo[this.field].width,fieldInfo[this.field].y+1,fieldInfo[this.field].z-0.5,0]
+                this.pos=[fieldInfo[this.field].x+Math.random()*fieldInfo[this.field].width,fieldInfo[this.field].y+1,fieldInfo[this.field].z-0.5,-MATH.HALF_PI]
                 this.constraintAxis=0
                 this.constraintRange=[fieldInfo[this.field].x-0.5,fieldInfo[this.field].x+fieldInfo[this.field].width-0.5]
 
@@ -15961,7 +15962,7 @@ class CogTurret {
 
             case 3:
 
-                this.pos=[fieldInfo[this.field].x+fieldInfo[this.field].width-0.5,fieldInfo[this.field].y+1,fieldInfo[this.field].z+Math.random()*fieldInfo[this.field].length,Math.PI*3/2]
+                this.pos=[fieldInfo[this.field].x+fieldInfo[this.field].width-0.5,fieldInfo[this.field].y+1,fieldInfo[this.field].z+Math.random()*fieldInfo[this.field].length,0]
                 this.constraintAxis=2
                 this.constraintRange=[fieldInfo[this.field].z,fieldInfo[this.field].z+fieldInfo[this.field].length]
 
@@ -16030,23 +16031,30 @@ class CogTurret {
                 if(player.fieldIn===this.field){
                     
                     player.attacked.push(this)
-
-                    this.cogFireTimer-=dt
-
-                    if(this.cogFireTimer<=0){
-
-                        let v=[0,0]
-
-                        v[2-this.constraintAxis]=Math.sign(player.body.position[this.constraintAxis?'x':'z']-this.pos[2-this.constraintAxis])*8
-
-                        this.cogs.push({pos:this.pos.slice(),vel:v,timer:0,deathY:this.pos[1]-3})
-                        this.cogFireTimer=2
-                    }
                 }
                 
                 if(this.mindHacked<=0){
 
-                    this.pos[this.constraintAxis]=MATH.constrain(player.body.position[this.constraintAxis?'z':'x'],this.constraintRange[0],this.constraintRange[1])
+                    this.cogFireTimer-=dt
+
+                    if(player.fieldIn===this.field){
+
+                        if(this.cogFireTimer<=0){
+
+                            let v=[0,0,0]
+
+                            v[2-this.constraintAxis]=Math.sign(player.body.position[this.constraintAxis?'x':'z']-this.pos[2-this.constraintAxis])*8
+
+                            this.cogs.push({pos:[this.pos[0],this.pos[1]-0.75,this.pos[2],0],vel:v,timer:0,deathY:this.pos[1]-3})
+
+                            this.cogFireTimer=2
+                        }
+
+                        this.desiredPos=MATH.constrain(player.body.position[this.constraintAxis?'z':'x'],this.constraintRange[0],this.constraintRange[1])
+
+                        this.pos[this.constraintAxis]+=(this.desiredPos-this.pos[this.constraintAxis])*dt*5
+                    }
+                    
 
                     this.damageTimer-=dt
 
@@ -16083,7 +16091,7 @@ class CogTurret {
                 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.cog.indexBuffer)
                 gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
                 gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
-                gl.uniform2f(glCache.mob_instanceInfo2,1,1)
+                gl.uniform2f(glCache.mob_instanceInfo2,0.6,1)
 
                 for(let i=this.cogs.length;i--;){
 
@@ -16092,7 +16100,7 @@ class CogTurret {
                     s.timer-=dt
 
                     s.pos[0]+=s.vel[0]*dt
-                    s.pos[2]+=s.vel[1]*dt
+                    s.pos[2]+=s.vel[2]*dt
                     s.pos[3]+=dt*8
 
                     s.fx=Math.round(s.pos[0]-fieldInfo[this.field].x)
@@ -26060,29 +26068,22 @@ meshes.cogTurret.indexBuffer=gl.createBuffer()
 verts=[]
 index=[]
 
-_s=MATH.icosphere(1)
-_vl=verts.length/6
+c(0,0,0,1.2,0.25,6,0.4*0.95,0.4*0.95,0.45*0.95,0.001,0,30)
+b(0,0,0,2.75,0.6,0.25,0.4,0.4,0.45,0.001,0,0)
+b(0,0,0,2.75,0.6,0.25,0.4,0.4,0.45,0.001,0,60)
+b(0,0,0,2.75,0.6,0.25,0.4,0.4,0.45,0.001,0,120)
 
-for(let i=0;i<_s.verts.length;i+=3){
-    
-    _s.verts[i]*=1.75
-    _s.verts[i+1]*=1.75
-    _s.verts[i+2]*=1.75
-    
-    verts.push(_s.verts[i],_s.verts[i+1],_s.verts[i+2],0.9,0.85,0.2)
-}
+c(0,0,0,1.2,0.4,6,0.4*0.95,0.4*0.95,0.45*0.95,0.001,90,0)
+b(0,0,0,0.4,2.75,0.6,0.4,0.4,0.45,0.001,0,0)
+b(0,0,0,0.4,2.75,0.6,0.4,0.4,0.45,60,0,0)
+b(0,0,0,0.4,2.75,0.6,0.4,0.4,0.45,120,0,0)
 
-for(let i in _s.index){
-    
-    index.push(_s.index[i]+_vl)
-}
+c(0,-0.5,0,0.75,2,10,0.7,0.7,0.7,90,0,0)
+c(0,-0.25,0,0.8,0.25,10,0.9,0.9,0.9,90,0,0)
+c(0,0.15,0,0.8,0.25,10,0.9,0.9,0.9,90,0,0)
 
-c(0,0,0,1.15,0.2,10,10,10,0,90,0,0)
-c(0,0,0,1.05,0.35,10,0.75,0.7,0.1,90,0,0)
-
-b(0,0,0,2.75,0.35,0.5,0.75,0.7,0.1,0.001,0,0)
-b(0,0,0,2.75,0.35,0.5,0.75,0.7,0.1,0.001,60,0)
-b(0,0,0,2.75,0.35,0.5,0.75,0.7,0.1,0.001,120,0)
+c(-0.4,0.15,0.2,0.1,0.7,10,10,0,0,0.001,120,0)
+c(-0.4,0.15,-0.2,0.1,0.7,10,10,0,0,0.001,60,0)
 
 gl.bindBuffer(gl.ARRAY_BUFFER,meshes.cogTurret.vertBuffer)
 gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
@@ -26097,12 +26098,10 @@ meshes.cog.indexBuffer=gl.createBuffer()
 verts=[]
 index=[]
 
-c(0,0,0,1.15,0.2,10,10,10,0,90,0,0)
-c(0,0,0,1.05,0.35,10,0.75,0.7,0.1,90,0,0)
-
-b(0,0,0,2.75,0.35,0.5,0.75,0.7,0.1,0.001,0,0)
-b(0,0,0,2.75,0.35,0.5,0.75,0.7,0.1,0.001,60,0)
-b(0,0,0,2.75,0.35,0.5,0.75,0.7,0.1,0.001,120,0)
+c(0,0,0,1.05,1.5,10,10,0,0,90,0,0)
+b(0,0,0,2.75,1.5,0.5,10,0,0,0.001,0,0)
+b(0,0,0,2.75,1.5,0.5,10,0,0,0.001,60,0)
+b(0,0,0,2.75,1.5,0.5,10,0,0,0.001,120,0)
 
 gl.bindBuffer(gl.ARRAY_BUFFER,meshes.cog.vertBuffer)
 gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
@@ -27701,12 +27700,13 @@ objects.mobs.push(new MondoChick('MountainTopField',7))
 // objects.mobs.push(new RogueViciousBee('DandelionField',MATH.random(1,13)|0))
 // objects.mobs.push(new Cloud('DandelionField',2,2,60,true))
 
-// objects.mobs.push(new Mechsquito('DandelionField',1,false))
-// objects.mobs.push(new Cogmower('DandelionField',1,false))
-// objects.mobs.push(new Mechsquito('DandelionField',1,true))
-// objects.mobs.push(new Cogmower('DandelionField',1,true))
+objects.mobs.push(new Mechsquito('DandelionField',1,false))
+objects.mobs.push(new Cogmower('DandelionField',1,false))
+objects.mobs.push(new Mechsquito('DandelionField',1,true))
+objects.mobs.push(new Cogmower('DandelionField',1,true))
 
-objects.mobs.push(new CogTurret('DandelionField',1,2))
+objects.mobs.push(new CogTurret('DandelionField',1,3))
+objects.mobs.push(new CogTurret('DandelionField',1,1))
 
 
 function loop(now){
