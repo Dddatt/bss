@@ -534,6 +534,16 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         <text id='satisfyingNectar_amount' x='28' y='28' style='font-family:calibri;font-size:11px;' text-anchor='end'></text>
         
     </svg>
+
+    <svg id='roboChallengeBuff' style='width:30;height:30;display:none'>
+        
+        <rect width='30' height='30' fill='rgb(0,200,0)'></rect>
+
+        <text id='roboChallengeBuff_amount' x='29' y='29' style='font-family:calibri;font-size:12px' text-anchor='end' fill='rgb(0,0,0)'></text>
+        
+        <rect id='roboChallengeBuff_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0'></rect>
+        
+    </svg>
     
     <svg id='redDriveBuff' style='width:30;height:30;display:none'>
         
@@ -9187,6 +9197,21 @@ let effects={
             return 'Yellow Jelly Bean\n+'+(5*amount+10)+'% instant conversion'
         }
     },
+
+    roboChallengeBuff:{
+        
+        u:0,v:0,
+        svg:document.getElementById('roboChallengeBuff'),
+        cooldown:document.getElementById('roboChallengeBuff_cooldown'),
+        amount:document.getElementById('roboChallengeBuff_amount'),
+        maxCooldown:3*60,
+        tokenLife:4,
+        maxAmount:1,
+        
+        update:'thisIsPointlessAndWillBeReplacedByAFunctionLaterCuzTheFunctionThatAppliesStatsForThisEffectChangesSoIDKThisIsTHeBestWayIGSoOK',
+        
+        getMessage:'thisIsAlsoPointlessTooAndWillBeReplacedByAFunctionLaterCuzTheFunctionThatAppliesStatsForThisEffectChangesSoIDKThisIsTHeBestWayIGSoOK'
+    },
     
     redDriveBuff:{
         
@@ -12078,7 +12103,7 @@ class Bee {
             this.trails[i].addPos([this.pos[0],this.pos[1]+this.beeOffsets[i],this.pos[2]])
         }
         
-        if(this.energy<=0&&this.state!=='sleep'&&this.state!=='moveToTriangulate'&&this.state!=='moveToTargetPractice'&&this.state!=='shootTargetPractice'){
+        if(this.energy<=0&&this.state!=='sleep'&&this.state!=='moveToTriangulate'&&this.state!=='moveToTargetPractice'&&this.state!=='shootTargetPractice'||player.hive[this.hiveY][this.hiveX].roboDisabled&&this.state!=='sleep'){
             
             this.state='moveToSleep'
         }
@@ -20912,6 +20937,30 @@ player=(function(out){
         out.roboChallenge.isPlaying=true
         out.roboChallenge.timer=3*60
         document.getElementById('roboMenu').style.display='none'
+
+        let amp=0.1/((out.roboChallenge.round/25)*2+1),ef='player.capacity*='+amp+';player.pollenFromTools*='+amp+';player.pollenFromCoconuts*='+amp+';player.movementCollection*='+amp
+
+        effects.roboChallengeBuff.update=Object.constructor('amount','player',ef)
+        effects.roboChallengeBuff.getMessage=Object.constructor('amount','return "a"')
+
+        player.addEffect('roboChallengeBuff')
+
+        let acStr='#'+out.roboChallenge.activeBees.join('#')+'#'
+
+        for(let y in out.hive){
+
+            for(let x in out.hive[y]){
+
+                let h=out.hive[y][x]
+
+                if(acStr.indexOf('#'+x+','+y+'#')<0){
+
+                    h.roboDisabled=true
+                }
+            }
+        }
+
+        out.updateHive()
     }
     
     out.updateRoboUI=function(){
@@ -21972,6 +22021,8 @@ player=(function(out){
         
         for(let i in objects.bees){
 
+            if(player.hive[objects.bees[i].hiveY][objects.bees[i].hiveX].roboDisabled) continue
+            
             out.beeColorAmounts[beeInfo[objects.bees[i].type].color[0]]++
             
             out.defaultStats.convertTotal+=objects.bees[i].convertAmount
@@ -22033,7 +22084,7 @@ player=(function(out){
         for(let i in giftedTypes){
             
             let b=beeInfo[giftedTypes[i]].giftedHiveBonus
-            
+
             if(b.oper==='+'){
                 
                 let s=b.stat.split(',')
@@ -28273,7 +28324,7 @@ function loop(now){
 
         TIME+=dt*50
 
-        player.roboChallenge={timer:3*60,page:'bee',beesPerRound:2,beesPicked:0,activeBees:[],scene:'bee',rerollCost:10,activeUpgrades:[]}
+        player.roboChallenge={page:'bee',beesPerRound:2,beesPicked:0,activeBees:[],scene:'bee',rerollCost:10,activeUpgrades:[],round:1}
         player.updateRoboUI()
 
         for(let i in objects.planters){
