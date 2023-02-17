@@ -9370,7 +9370,7 @@ for(let i in effects){
             }
         }
         
-        let m=effects[i].getMessage(player.effects[index].amount),_i=m.indexOf('\n')
+        let m=effects[i].getMessage(player.effects[index].amount,'\n'),_i=m.indexOf('\n')
         
         if(!effects[i].amountFromCooldown&&player.effects[index].amount!==1)
             m=m.substr(0,_i)+' (x'+player.effects[index].amount+')'+m.substr(_i,m.length)
@@ -20932,16 +20932,34 @@ player=(function(out){
         }
     }
 
+    let upgrades={Botnet:'*1.25 pollenFromBees',Iterate:'*1.08 pollen',Sharpen:'*1.2 beeAttack,*0.9 capacity',Translation:'*1.1 beeSpeed',Defragment:'*1.5 capacity,-50 criticalPower','Schematic Error':'*1.1 redPollen,+3 abilityDuplicationChance'},common='rgb(180,130,30)',rare='rgb(210,210,210)',epic='rgb(250,230,10)',legendary='rgb(20,240,255)',rarityColor={Botnet:common,Iterate:common,Sharpen:common,Defragment:common,Translation:rare,'Schematic Error':legendary}
+    
     out.startRoboChallenge=function(){
 
         out.roboChallenge.isPlaying=true
         out.roboChallenge.timer=3*60
         document.getElementById('roboMenu').style.display='none'
 
-        let amp=0.1/((out.roboChallenge.round/25)*2+1),ef='player.capacity*='+amp+';player.pollenFromTools*='+amp+';player.pollenFromCoconuts*='+amp+';player.movementCollection*='+amp
+        let amp=0.1/(((out.roboChallenge.round-1)/25)*2+1),ef='player.capacity*='+amp+';player.pollenFromTools*='+amp+';player.pollenFromCoconuts*='+amp+';player.movementCollection*='+amp
+
+        for(let i in out.roboChallenge.activeUpgrades){
+
+            let u=upgrades[out.roboChallenge.activeUpgrades[i]].split(',')
+
+            for(let j in u){
+
+                let _u=u[j],n=Number(_u.substring(1,_u.indexOf(' ')))
+
+                ef+=';player.'+_u.substring(_u.indexOf(' ')+1,_u.length)+_u[0]+'='+(_u[0]!=='*'?n*0.01:n)
+            }
+        }
 
         effects.roboChallengeBuff.update=Object.constructor('amount','player',ef)
-        effects.roboChallengeBuff.getMessage=Object.constructor('amount','return "a"')
+
+        effects.roboChallengeBuff.getMessage=function(){
+
+            return 'Robo Challenge\nx'+amp+' capacity\nx'+amp+' pollen from tools\nx'+amp+' pollen from coconuts\nx'+amp+' movement collection\n\n------Upgrades------\n'+out.roboChallenge.activeUpgrades.join('\n')
+        }
 
         player.addEffect('roboChallengeBuff')
 
@@ -20981,9 +20999,8 @@ player=(function(out){
                 document.getElementById('roboActiveUpgrades').style.display='block'
                 document.getElementById('roboActiveUpgradesAmount').style.display='block'
 
-                let upgrades={Botnet:'*1.25 pollenFromBees',Iterate:'*1.08 pollen',Sharpen:'*1.2 beeAttack,*0.9 capacity',Translation:'*1.1 beeSpeed',Defragment:'*1.5 capacity,-50 criticalPower','Schematic Error':'*1.1 redPollen,+3 abilityDuplicationChance'},u=[],c=[],costs=[MATH.random(8,20)|0,MATH.random(8,20)|0,MATH.random(8,20)|0]
-                
-                let common='rgb(180,130,30)',rare='rgb(210,210,210)',epic='rgb(250,230,10)',legendary='rgb(20,240,255)',rarityColor={Botnet:common,Iterate:common,Sharpen:common,Defragment:common,Translation:rare,'Schematic Error':legendary}
+                let u=[],c=[],costs=[MATH.random(8,20)|0,MATH.random(8,20)|0,MATH.random(8,20)|0]
+        
 
                 for(let i in upgrades){
 
