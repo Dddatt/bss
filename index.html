@@ -4073,6 +4073,8 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
 
 <div id='roboMenu' style='position:fixed;width:500px;height:500px;z-index:1;left:50%;top:50%;transform:translate(-50%,-50%);background-color:rgb(0,140,0);color:rgb(255,255,255);font-size:17px;text-align:center;border-radius:5px;display:none'>
     
+    <div id='roboCogsAmount' style='position:fixed;left:22%;top:3%;transform:translate(-50%,-50%);font-size:20px;color:black;width:200px;text-align:left'></div>
+
     <div id='roboTitle' style='position:fixed;left:50%;top:7%;transform:translate(-50%,-50%);font-size:30px;'></div>
     
     <div id='roboActiveBeesAmount' style='position:fixed;width:200px;height:400px;left:21%;top:54%;transform:translate(-50%,-50%);font-size:16px;'></div>
@@ -9363,6 +9365,12 @@ let toolParticle=0
 let howManyToFeed=document.getElementById('howManyToFeed'),howManyMessage=document.getElementById('howManyMessage'),feedAmount=document.getElementById('feedAmount')
 
 let items={
+
+    cog:{
+        
+        amount:0,u:128*0/2048,v:128*0/2048,value:Infinity,
+        use:function(){}
+    },
 
     jellyBeans:{
         
@@ -20892,17 +20900,24 @@ player=(function(out){
 
         out.roboChallenge.timer-=dt
 
-        if(out.roboChallenge.timer<=0){
+        if(out.roboChallenge.timer<=0&&out.roboChallenge.isPlaying){
 
-            out.roboChallenge=undefined
-            document.getElementById('roboMenu').style.display='none'
+
             return
         }
+    }
+
+    out.startRoboChallenge=function(){
+
+        out.roboChallenge.isPlaying=true
+        out.roboChallenge.timer=3*60
+        document.getElementById('roboMenu').style.display='none'
     }
     
     out.updateRoboUI=function(){
 
         document.getElementById('roboMenu').style.display='block'
+        document.getElementById('roboCogsAmount').innerHTML='<u>Cogs: '+MATH.addCommas(items.cog.amount)+'</u>'
 
         switch(out.roboChallenge.scene){
 
@@ -20917,7 +20932,9 @@ player=(function(out){
                 document.getElementById('roboActiveUpgrades').style.display='block'
                 document.getElementById('roboActiveUpgradesAmount').style.display='block'
 
-                let upgrades={Botnet:'*1.25 pollenFromBees',Iterate:'*1.08 pollen',Sharpen:'*1.2 beeAttack,*0.9 capacity'},u=[],c=[]
+                let upgrades={Botnet:'*1.25 pollenFromBees',Iterate:'*1.08 pollen',Sharpen:'*1.2 beeAttack,*0.9 capacity',Translation:'*1.1 beeSpeed',Defragment:'*1.5 capacity,-50 criticalPower','Schematic Error':'*1.1 redPollen,+3 abilityDuplicationChance'},u=[],c=[],costs=[MATH.random(8,20)|0,MATH.random(8,20)|0,MATH.random(8,20)|0]
+                
+                let common='rgb(180,130,30)',rare='rgb(210,210,210)',epic='rgb(250,230,10)',legendary='rgb(20,240,255)',rarityColor={Botnet:common,Iterate:common,Sharpen:common,Defragment:common,Translation:rare,'Schematic Error':legendary}
 
                 for(let i in upgrades){
 
@@ -20945,15 +20962,25 @@ player=(function(out){
 
                         n=n.substring(0,n.indexOf(' ')+1)+MATH.doGrammar(n.substring(n.indexOf(' ')+1,n.length))
 
-                        s+='<div style="color:'+(Number(n.substring(1,n.indexOf(' ')))<1?'rgb(255,50,50)':'rgb(60,255,60)')+'">'+n.replace('*','x')+'<br></div>'
+                        s+='<div style="color:'+(Number(n.substring(1,n.indexOf(' ')))<1||n[0]==='-'?'rgb(255,50,50)':'rgb(60,255,60)')+'">'
+
+                        n=n.replace('*','x')
+
+                        if(n[0]!=='x') n=n.replace(' ','% ')
+
+                        s+=n+'<br></div>'
                     }
 
-                    document.getElementById('roboUpgradeChoice'+i).innerHTML='&nbsp;'+c[i-1]+"<div style='border-radius:5px;position:fixed;left:10px;top:35px;right:5px;bottom:5px;background-color:rgb(0,0,0,0.75);font-family:trebuchet ms;font-size:14px;padding-left:10px;padding-top:8px'>"+s+"</div>"
+                    document.getElementById('roboUpgradeChoice'+i).style.backgroundColor=rarityColor[c[i-1]]
+
+                    document.getElementById('roboUpgradeChoice'+i).innerHTML='&nbsp;'+c[i-1]+"&nbsp;&nbsp;&nbsp;<i style='font-size:13px;color:"+(items.cog.amount>=costs[i-1]?'black':'rgb(200,0,0)')+"'>"+costs[i-1]+" Cogs</i><div style='border-radius:5px;position:fixed;left:10px;top:35px;right:5px;bottom:5px;background-color:rgb(0,0,0,0.75);font-family:trebuchet ms;font-size:14px;padding-left:10px;padding-top:8px'>"+s+"</div>"
+
+                    document.getElementById('roboUpgradeChoice'+i).style.cursor=items.cog.amount>=costs[i-1]?'pointer':'default'
 
                     document.getElementById('roboUpgradeChoice'+i).onclick=function(){
 
-                        out.roboChallenge.scene=''
-                        out.updateRoboUI()
+                        out.roboChallenge.activeUpgrades.push(c[i-1])
+                        out.startRoboChallenge()
                     }
                 }
 
@@ -21018,7 +21045,7 @@ player=(function(out){
                     return
                 }
 
-                document.getElementById('roboTitle').innerHTML="<p style='margin-top:-15px'></p>Select Bees<p style='font-size:13px;margin-top:0px'>("+(out.roboChallenge.beesPicked+1)+" of "+out.roboChallenge.beesPerRound+")<br><u>Reroll Bees</u> ("+out.roboChallenge.rerollCost+" cogs)</p>"
+                document.getElementById('roboTitle').innerHTML="<p style='margin-top:-15px'></p>Select Bees<p style='font-size:13px;margin-top:0px'>("+(out.roboChallenge.beesPicked+1)+" of "+out.roboChallenge.beesPerRound+")<br><u style='cursor:pointer'>Reroll Bees</u> ("+out.roboChallenge.rerollCost+" cogs)</p>"
                 document.getElementById('roboActiveBeesAmount').innerHTML="Active Bees ("+out.roboChallenge.activeBees.length+")"
                 document.getElementById('roboBeeChoices').style.display='block'
                 document.getElementById('roboQuestChoices').style.display='none'
