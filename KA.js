@@ -120,7 +120,7 @@ function playSound(sound,vol) {
 
 let Math=_M,GIFTED_BEE_TEXTURE_OFFSET=768/2048
 
-let width=window.thisProgramIsInFullScreen?500:window.innerWidth+1,height=window.thisProgramIsInFullScreen?500:window.innerHeight+1,half_width=width*0.5,half_height=height*0.5,aspect=width/height,FETCHED_CODE={},beeCanvas
+let width=window.thisProgramIsInFullScreen?500:window.innerWidth+1,height=window.thisProgramIsInFullScreen?500:window.innerHeight+1,half_width=width*0.5,half_height=height*0.5,aspect=width/height,FETCHED_CODE={},beeCanvas,UPDATE_FLOWER_MESH=true
 
 let glCanvas=document.getElementById('gl-canvas')
 let gl=glCanvas.getContext('webgl2',{antialias:true})
@@ -129,11 +129,11 @@ let uiCanvas=document.getElementById('ui-canvas')
 let ctx=uiCanvas.getContext('2d')
 
 let texCanvas=document.getElementById('tex-canvas')
-let tex_ctx=texCanvas.getContext('2d')
+let tex_ctx=texCanvas.getContext('2d',{willReadFrequently:true})
 
 if(!gl){
     
-    // alert('WebGL2 is not suppoerted on  your brower')
+    alert('WebGL2 is not supported on your brower')
     return
 }
 
@@ -205,7 +205,7 @@ document.getElementById('runFullScreen').addEventListener('click',function(){
     w.document.close()
 })
 
-let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,BEE_COLLECT=0,BEE_FLY=0,then,dt,frameCount=0,TIME=0,player,honeyMarkConvert=TIME,NIGHT_DARKNESS=0.6
+let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,BEE_COLLECT=0,BEE_FLY=0,then,dt,frameCount=0,TIME=0,player,honeyMarkConvert=TIME,NIGHT_DARKNESS=0.6,NPCs
 
 gl.enable(gl.BLEND)
 gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)
@@ -214,6 +214,31 @@ gl.enable(gl.DEPTH_TEST)
 gl.depthFunc(gl.LEQUAL)
 gl.enable(gl.CULL_FACE)
 gl.cullFace(gl.BACK)
+
+let blenderRecipes=[
+    
+    {item:'gumdrops',req:[['pineapple',2],['strawberry',2],['blueberry',2]]},
+    {item:'moonCharm',req:[['royalJelly',2],['pineapple',3],['gumdrops',3]]},
+    {item:'redExtract',req:[['strawberry',35],['royalJelly',5]]},
+    {item:'blueExtract',req:[['blueberry',35],['royalJelly',5]]},
+    {item:'enzymes',req:[['pineapple',35],['royalJelly',5]]},
+    {item:'oil',req:[['sunflowerSeed',35],['royalJelly',5]]},
+    {item:'glue',req:[['gumdrops',35],['royalJelly',5]]},
+    {item:'tropicalDrink',req:[['coconut',5],['oil',1],['enzymes',1]]},
+    {item:'glitter',req:[['moonCharm',20],['magicBean',1]]},
+    {item:'starJelly',req:[['royalJelly',75],['glitter',3]]},
+    {item:'purplePotion',req:[['neonberry',3],['redExtract',2],['blueExtract',2],['glue',2]]},
+    {item:'superSmoothie',req:[['neonberry',3],['starJelly',1],['purplePotion',1],['tropicalDrink',3]]},
+    {item:'fieldDice',req:[['softWax',1],['whirligig',1],['redExtract',1],['blueExtract',1]]},
+    {item:'smoothDice',req:[['fieldDice',2],['whirligig',2],['softWax',2],['oil',2]]},
+    {item:'loadedDice',req:[['smoothDice',2],['hardWax',1],['oil',2],['glue',1]]},
+    {item:'softWax',req:[['honeysuckle',5],['oil',1],['enzymes',1],['royalJelly',5]]},
+    {item:'hardWax',req:[['softWax',2],['enzymes',2],['bitterberry',5],['royalJelly',25]]},
+    {item:'swirledWax',req:[['hardWax',1],['softWax',2],['purplePotion',1],['royalJelly',75]]},
+    {item:'causticWax',req:[['hardWax',3],['neonberry',5],['gumdrops',10],['royalJelly',175]]},
+    {item:'turpentine',req:[['superSmoothie',3],['causticWax',3],['starJelly',5],['honeysuckle',50]]},
+
+]
 
 let passiveActivationPopup=document.getElementById('passiveActivationPopup')
 let pollenAmount=document.getElementById('pollenAmount')
@@ -243,9 +268,20 @@ for(let i in _svgs){
     let name=_svgs[i].substr(0,_svgs[i].indexOf('"'))
     
     _svgs[i]='<svg id="'+_svgs[i]
+
+    itemSVGCode[name+'_description']=_svgs[i].split('<text')
+
+    for(let j in itemSVGCode[name+'_description']){
+
+        itemSVGCode[name+'_description'][j]=itemSVGCode[name+'_description'][j].substring(itemSVGCode[name+'_description'][j].indexOf('>')+1,itemSVGCode[name+'_description'][j].indexOf('<'))
+    }
+
+    itemSVGCode[name+'_description'].shift()
+    itemSVGCode[name+'_description'].shift()
+    itemSVGCode[name+'_description']=itemSVGCode[name+'_description'].join(' ')
     
     itemSVGCode[name]=_svgs[i].split('</text>')
-    itemSVGCode[name]='<svg style="transform:translate(0px,7px);width:150px;height:36px;"><g transform="scale(0.77,0.77) translate(0,-10)"><text x="70" y="45" stroke="rgb(0,0,0)" stroke-width="3" style="font-family:cursive;font-size:20px;">AMOUNTOFITEMREQUIREDTOCRAFT</text><text x="70" y="45" fill="TEXTCOLORDEPENDINGONIFENOUGHITEMS" style="font-family:cursive;font-size:20px;">AMOUNTOFITEMREQUIREDTOCRAFT</text>'+(itemSVGCode[name][itemSVGCode[name].length-1]).substr(0,itemSVGCode[name][itemSVGCode[name].length-1].indexOf('</svg>'))+'</g><title>'+MATH.doGrammar(name)+'</title><text x="36" y="34" fill="rgb(0,0,0)" style="font-family:cursive;font-size:10px;" text-anchor="end">AMOUNTININVENTORY</text></svg>'
+    itemSVGCode[name]='<svg style="transform:translate(0px,7px);width:150px;height:36px;"><g transform="scale(0.77,0.77) translate(0,-5)"><text x="70" y="45" stroke="rgb(0,0,0)" stroke-width="3" style="font-family:cursive;font-size:20px;">AMOUNTOFITEMREQUIREDTOCRAFT</text><text x="70" y="45" fill="TEXTCOLORDEPENDINGONIFENOUGHITEMS" style="font-family:cursive;font-size:20px;">AMOUNTOFITEMREQUIREDTOCRAFT</text>'+(itemSVGCode[name][itemSVGCode[name].length-1]).substr(0,itemSVGCode[name][itemSVGCode[name].length-1].indexOf('</svg>'))+'</g><title>'+MATH.doGrammar(name)+'</title><text x="36" y="34" fill="rgb(0,0,0)" style="font-family:cursive;font-size:10px;" text-anchor="end">AMOUNTININVENTORY</text></svg>'
 }
 
 for(let i in hotbarSlots){
@@ -272,6 +308,8 @@ for(let i in hotbarSlots){
                 if(autoHotbarButtons[i].autoEnabled){
                     
                     autoHotbarButtons[i].interval=window.setInterval(function(){
+
+                        player.stats[hotbarSlots[i].itemType]++
                         items[hotbarSlots[i].itemType].use()
                         items[hotbarSlots[i].itemType].cooldown=TIME
                         player.updateInventory()
@@ -314,6 +352,7 @@ for(let i in hotbarSlots){
                 
                 if(TIME-items[hotbarSlots[i].itemType].cooldown>items[hotbarSlots[i].itemType].maxCooldown){
                     
+                    player.stats[hotbarSlots[i].itemType]++
                     items[hotbarSlots[i].itemType].use()
                     items[hotbarSlots[i].itemType].cooldown=TIME
                     player.updateInventory()
@@ -453,6 +492,20 @@ world.defaultContactMaterial.friction=0
 world.defaultContactMaterial.restitution=0.01
 
 let triggers={
+
+    blender:{
+
+        minX:59-3-1,maxX:59+3,minY:10,maxY:19,minZ:50.5-3,maxZ:50.5+3+1,isMachine:true,message:'Use Blender',requirements:function(player){
+            
+            if(document.getElementById('blenderMenu').style.display==='block') return "You're using the Blender"        
+        },
+        func:function(player){
+            
+            document.exitPointerLock()
+            player.blenderIndex=0
+            player.updateBlenderMenu()
+        }
+    },
     
     enter_ant_challenge:{
 
@@ -463,11 +516,17 @@ let triggers={
         },func:function(player){
             
             player.body.position.x=-21
-            player.body.position.y=6
+            player.body.position.y=7
             player.body.position.z=-50
             player.yaw=0
             player.antChallenge={timer:5*60,score:0,pollenReq:1000,pollenBeforeReq:player.stats.pollenFromAntField,spawnDelay:0,round:0,lawnMowerTimer:25}
             items.antPass.amount--
+
+            textRenderer.add((player.pollen*player.honeyPerPollen)|0,[player.body.position.x,player.body.position.y+1.5,player.body.position.z],COLORS.honey,1,'⇆')
+            player.honey+=(player.pollen*player.honeyPerPollen)|0
+            player.pollen=0
+            player.addEffect('antChallenge')
+
             player.updateInventory()
         }
     },
@@ -515,6 +574,16 @@ let triggers={
     polarBear_NPC:{
         
         minX:-1.5-2,maxX:-1.5+2,minY:20,maxY:26,minZ:66-2,maxZ:66+2
+    },
+
+    roboBear_NPC:{
+
+        minX:54-3,maxX:54+0.5,minY:0,maxY:10,minZ:40-2,maxZ:40+2
+    },
+
+    pandaBear_NPC:{
+
+        minX:-37-2.5,maxX:-37+2.5,minY:3,maxY:9,minZ:46.5-2.5,maxZ:46.5+2.5
     },
     
     cool_shop:{
@@ -768,6 +837,7 @@ let triggers={
         
         isMachine:true,minX:33-4,maxX:33+4,minY:0,maxY:3,minZ:-13-4,maxZ:-13+4,message:'Use Red Cannon',func:function(player){
             
+            player.stats.timesUsingTheRedCannon++
             player.body.position.x=34
             player.body.position.y=3
             player.body.position.z=-12
@@ -785,6 +855,7 @@ let triggers={
         
         isMachine:true,minX:-67-3,maxX:-67+3,minY:22,maxY:26,minZ:49-3,maxZ:49+3,message:'Use Yellow Cannon',func:function(player){
             
+            player.stats.timesUsingTheYellowCannon++
             player.body.position.x=-67
             player.body.position.y=24
             player.body.position.z=49
@@ -797,11 +868,30 @@ let triggers={
             player.updateGear()
         }
     },
+
+    blue_cannon:{
+        
+        isMachine:true,minX:36.5-4,maxX:36.5+4,minY:10,maxY:16,minZ:57.25-4,maxZ:57.25+4,message:'Use Blue Cannon',func:function(player){
+            
+            player.stats.timesUsingTheBlueCannon++
+            player.body.position.x=36.5
+            player.body.position.y=13
+            player.body.position.z=58
+            player.body.velocity.x=-35
+            player.body.velocity.y=25
+            player.body.velocity.z=-18
+            player.removeAirFrictionUntilGrounded=true
+            player.isGliding=false
+            player.grounded=false
+            player.updateGear()
+        }
+    },
     
     slingshot:{
         
         isMachine:true,minX:-25-2.5,maxX:-25+2.5,minY:1,maxY:8,minZ:24.5-2.5,maxZ:24.5+2.5,message:'Use Slingshot',func:function(player){
             
+            player.stats.timesUsingTheSlingshot++
             player.body.position.x=-25
             player.body.position.y=3.5
             player.body.position.z=24.5
@@ -1072,7 +1162,7 @@ let beeInfo={
     
     precise:{
         
-        u:128*14/2048,v:0,meshPartId:1,gatherSpeed:4,gatherAmount:20,speed:11.2,convertSpeed:4,convertAmount:130,tokens:['targetPractice','redBomb_'],attack:8,energy:40,attackTokens:['targetPractice'],favoriteTreat:'sunflowerSeed',rarity:'mythic',color:'red',description:'This sharpshooting bee is always on point and expects the same of you.',giftedHiveBonus:{oper:'+',stat:'superCritChance',num:0.05},trails:[{length:4,size:0.25,triangle:true,color:[219/255,72/255,92/255,1],skipFrame:3,skipAdd:3}]
+        u:128*14/2048,v:0,meshPartId:1,gatherSpeed:4,gatherAmount:20,speed:11.2,convertSpeed:4,convertAmount:130,tokens:['targetPractice','redBomb_'],attack:8,energy:40,attackTokens:['targetPractice'],favoriteTreat:'sunflowerSeed',rarity:'mythic',color:'red',description:'This sharpshooting bee is always on point and expects the same of you.',giftedHiveBonus:{oper:'+',stat:'superCritChance',num:0.05},trails:[{length:4,size:0.25,triangle:true,color:[219/255,72/255,92/255,1],skipFrame:5,skipAdd:5}]
     },
     
     rage:{
@@ -1083,13 +1173,11 @@ let beeInfo={
     crimson:{
         
         u:128*0/2048,v:256/2048,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:18.2,convertSpeed:3,convertAmount:120,tokens:['redPulse','redBombSync'],attack:6,energy:35,rarity:'event',color:'red',description:"A superhero and defender of all things Red! Together with Cobalt Bee it works to unite bees of all colors.",giftedHiveBonus:{oper:'+',stat:'instantRedConversion',num:0.1},trails:[{length:7,size:0.2,triangle:true,color:[1,0,0,1],skipFrame:3,skipAdd:3,beeOffset:-0.05},{length:7,size:0.075,triangle:true,color:[1,1,1,1],skipFrame:3,skipAdd:3,beeOffset:0.05}]
-        
     },
     
     cobalt:{
         
         u:128*1/2048,v:256/2048,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:18.2,convertSpeed:3,convertAmount:120,tokens:['bluePulse','blueBombSync'],attack:6,energy:35,rarity:'event',color:'blue',description:"A superhero and defender of all things Blue! Together with Crimson Bee it works to unite bees of all colors.",giftedHiveBonus:{oper:'+',stat:'instantBlueConversion',num:0.1},trails:[{length:7,size:0.2,triangle:true,color:[0,0,1,1],skipFrame:3,skipAdd:3,beeOffset:-0.05},{length:7,size:0.075,triangle:true,color:[1,1,1,1],skipFrame:3,skipAdd:3,beeOffset:0.05}]
-        
     },
     
     photon:{
@@ -1100,25 +1188,21 @@ let beeInfo={
     bumble:{
         
         u:128*3/2048,v:256/2048,meshPartId:0,gatherSpeed:4,gatherAmount:18,speed:10.5,tokens:['blueBomb'],convertSpeed:4,convertAmount:80,attack:1,attackTokens:[],energy:50,favoriteTreat:'blueberry',rarity:'rare',color:'blue',description:'A mellow fellow who moves a little slow, but works harder and longer than others.',giftedHiveBonus:{oper:'*',stat:'capacityMultiplier',num:1.1}
-        
     },
     
     rascal:{
         
         u:128*4/2048,v:256/2048,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:16.1,tokens:['redBomb'],convertSpeed:4,convertAmount:80,attack:3,attackTokens:[],energy:20,favoriteTreat:'strawberry',rarity:'rare',color:'red',description:'A mischevious bee who moves quick and hits hard. Keep an eye out on this one!',giftedHiveBonus:{oper:'*',stat:'redBombPollen',num:1.3}
-        
     },
     
     cool:{
         
-        u:128*5/2048,v:256/2048,meshPartId:0,gatherSpeed:3,gatherAmount:10,speed:14,tokens:['blueBoost'],convertSpeed:4,convertAmount:80,attack:2,attackTokens:[],energy:20,favoriteTreat:'blueberry',rarity:'rare',color:'blue',description:"A sarcastic bee who's a little better than the others. Sometimes boosts pollen from Blue flowers.",giftedHiveBonus:{oper:'*',stat:'bluePollen',num:1.15}
-        
+        u:128*5/2048,v:256/2048,meshPartId:0,gatherSpeed:3,gatherAmount:10,speed:14,tokens:['blueBoost'],convertSpeed:4,convertAmount:80,attack:2,attackTokens:[],energy:20,favoriteTreat:'blueberry',rarity:'rare',color:'blue',description:"A sarcastic bee who's a little better than the others. Sometimes boosts pollen from blue flowers.",giftedHiveBonus:{oper:'*',stat:'bluePollen',num:1.15}
     },
     
     rad:{
         
         u:128*6/2048,v:256/2048,meshPartId:0,gatherSpeed:4,gatherAmount:13,speed:14,tokens:['redBomb'],convertSpeed:3,convertAmount:80,attack:1,attackTokens:[],energy:20,favoriteTreat:'strawberry',rarity:'rare',color:'red',description:'A stylish bee with a taste for red flowers. Everyone wants to be this bee.',giftedHiveBonus:{oper:'*',stat:'redPollen',num:1.15}
-        
     },
     
     brave:{
@@ -1133,12 +1217,12 @@ let beeInfo={
     
     bucko:{
         
-        u:128*9/2048,v:256/2048,meshPartId:8,gatherSpeed:4,gatherAmount:17,speed:15.4,convertSpeed:3,convertAmount:80,attack:5,energy:30,tokens:['blueBoost'],favoriteTreat:'blueberry',rarity:'epic',color:'blue',description:"Leader of the Blue bees, and a long time rival of Riley Bee. It's tenacity is it's greatest strength.",giftedHiveBonus:{oper:'*',stat:'blueFieldCapacity',num:1.25}
+        u:128*9/2048,v:256/2048,meshPartId:8,gatherSpeed:4,gatherAmount:17,speed:15.4,convertSpeed:3,convertAmount:80,attack:5,energy:30,tokens:['blueBoost'],favoriteTreat:'blueberry',rarity:'epic',color:'blue',description:"Leader of the blue bees, and a long time rival of Riley Bee. It's tenacity is it's greatest strength.",giftedHiveBonus:{oper:'*',stat:'blueFieldCapacity',num:1.25}
     },
     
     riley:{
         
-        u:128*10/2048,v:256/2048,meshPartId:8,gatherSpeed:2,gatherAmount:10,speed:15.4,convertSpeed:4,convertAmount:140,attack:5,energy:25,tokens:['redBoost'],favoriteTreat:'strawberry',rarity:'epic',color:'red',description:"Leader of the Red bees, and a long time rival of Bucko Bee. It's fiery nature has elevated it above the rest.",giftedHiveBonus:{oper:'*',stat:'redFieldCapacity',num:1.25}
+        u:128*10/2048,v:256/2048,meshPartId:8,gatherSpeed:2,gatherAmount:10,speed:15.4,convertSpeed:4,convertAmount:140,attack:5,energy:25,tokens:['redBoost'],favoriteTreat:'strawberry',rarity:'epic',color:'red',description:"Leader of the red bees, and a long time rival of Bucko Bee. It's fiery nature has elevated it above the rest.",giftedHiveBonus:{oper:'*',stat:'redFieldCapacity',num:1.25}
     },
     
     commander:{
@@ -3165,7 +3249,7 @@ let effects={
         
         func:function(params){
             
-            if(params.field===player.fieldIn&&player.fieldIn&&!player.attacked.length){
+            if(params.field===player.fieldIn&&player.fieldIn&&!player.attacked.length&&params.bee.state!=='shootTargetPractice'&&params.bee.state!=='moveToTargetPractice'){
                 
                 params.bee.startTargetPractice()
                 
@@ -4647,10 +4731,11 @@ let effects={
         func:function(params){
             
             if(player.fieldIn){
-                
-                fieldInfo[player.fieldIn].corruption=Math.min(fieldInfo[player.fieldIn].corruption+20+params.bee.level,100)
+
+                fieldInfo[player.fieldIn].corruption=Math.min(fieldInfo[player.fieldIn].corruption+15+params.bee.level*0.5+(((fieldInfo[player.fieldIn].generalColorComp.r*player.drives.red/50)+(fieldInfo[player.fieldIn].generalColorComp.w*player.drives.white/50)+(fieldInfo[player.fieldIn].generalColorComp.b*player.drives.blue/50)+(player.drives.glitched/50))*15/4),100)
                 
                 objects.mobs.push(new GlitchEffect(player.fieldIn,5))
+                15+10+15
             }
         },
     },
@@ -4702,7 +4787,7 @@ let effects={
             
             f=f[(Math.random()*f.length)|0]
             
-            fieldInfo[f].corruption=Math.min(fieldInfo[f].corruption+30+params.bee.level*2,100)
+            fieldInfo[f].corruption=Math.min(fieldInfo[f].corruption+30+params.bee.level*2+(((fieldInfo[player.fieldIn].generalColorComp.r*player.drives.red/50)+(fieldInfo[player.fieldIn].generalColorComp.w*player.drives.white/50)+(fieldInfo[player.fieldIn].generalColorComp.b*player.drives.blue/50)+(player.drives.glitched/50))*15/4),100)
             
             objects.mobs.push(new GlitchEffect(f,5))
             
@@ -4913,6 +4998,125 @@ let effects={
             return 'Yellow Jelly Bean\n+'+(5*amount+10)+'% instant conversion'
         }
     },
+    
+    redDriveBuff:{
+        
+        u:0,v:0,
+        svg:document.getElementById('redDriveBuff'),
+        cooldown:document.getElementById('redDriveBuff_cooldown'),
+        amount:document.getElementById('redDriveBuff_amount'),
+        maxCooldown:3*60,
+        tokenLife:4,
+        maxAmount:1,
+        
+        update:(amount,player)=>{
+            
+            player.redPollen*=1.25
+            player.redFieldCapacity*=1.25
+            player.redBeeAttack++
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Red Drive\nx1.25 red pollen\nx1.25 red field capacity\n+1 red bee attack'
+        }
+    },
+    
+    blueDriveBuff:{
+        
+        u:0,v:0,
+        svg:document.getElementById('blueDriveBuff'),
+        cooldown:document.getElementById('blueDriveBuff_cooldown'),
+        amount:document.getElementById('blueDriveBuff_amount'),
+        maxCooldown:3*60,
+        tokenLife:4,
+        maxAmount:1,
+        
+        update:(amount,player)=>{
+            
+            player.bluePollen*=1.25
+            player.blueFieldCapacity*=1.25
+            player.blueBeeAttack++
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Blue Drive\nx1.25 blue pollen\nx1.25 blue field capacity\n+1 blue bee attack'
+        }
+    },
+    
+    whiteDriveBuff:{
+        
+        u:0,v:0,
+        svg:document.getElementById('whiteDriveBuff'),
+        cooldown:document.getElementById('whiteDriveBuff_cooldown'),
+        amount:document.getElementById('whiteDriveBuff_amount'),
+        maxCooldown:3*60,
+        tokenLife:4,
+        maxAmount:1,
+        
+        update:(amount,player)=>{
+            
+            player.whitePollen*=1.25
+            player.whiteFieldCapacity*=1.25
+            player.whiteBeeAttack++
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'White Drive\nx1.25 white pollen\nx1.25 white field capacity\n+1 white bee attack'
+        }
+    },
+    
+    glitchedDriveBuff:{
+        
+        u:0,v:0,
+        svg:document.getElementById('glitchedDriveBuff'),
+        cooldown:document.getElementById('glitchedDriveBuff_cooldown'),
+        amount:document.getElementById('glitchedDriveBuff_amount'),
+        maxCooldown:3*60,
+        tokenLife:4,
+        maxAmount:1,
+        
+        update:(amount,player)=>{
+            
+            player.redPollen*=1.25
+            player.bluePollen*=1.25
+            player.whitePollen*=1.25
+            player.capacity*=1.25
+            player.whiteBeeAttack++
+            player.blueBeeAttack++
+            player.redBeeAttack++
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Glitched Drive\nx1.25 pollen\nx1.25 capacity\n+1 bee attack'
+        }
+    },
+
+    antChallenge:{
+        
+        u:0,v:0,
+        svg:document.getElementById('antChallenge'),
+        cooldown:document.getElementById('antChallenge_cooldown'),
+        amount:document.getElementById('antChallenge_amount'),
+        maxCooldown:5*60,
+        tokenLife:4,
+        maxAmount:1,
+        
+        update:(amount,player)=>{
+            
+            player.instantRedConversion=1
+            player.instantWhiteConversion=1
+            player.instantBlueConversion=1
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Ant Challenge\n+100% instant conversion'
+        }
+    },
 }
 
 let LIST_OF_STATS_FOR_PLAYER=[]
@@ -4977,7 +5181,15 @@ let items={
         
         amount:0,u:128*3/2048,v:128*11/2048,value:20,
         use:function(){
-
+            
+            if(!player.fieldIn){
+                
+                player.addMessage('You must be in a field to use Jelly Beans!',COLORS.redArr)
+                return
+            }
+            
+            items.jellyBeans.amount--
+            
             for(let i=0;i<12;i++){
 
                 window.setTimeout(function(){
@@ -5013,10 +5225,175 @@ let items={
 
     antPass:{
         
-        amount:0,u:128*4/2048,v:128*10/2048,value:80,
+        amount:0,u:128*4/2048,v:128*10/2048,value:30,
         use:function(){}
     },
+    
+    cloudVial:{
+        
+        amount:0,u:128*5/2048,v:128*12/2048,value:25,
+        use:function(){
+            
+            if(!player.fieldIn){
+                
+                player.addMessage('You must be in a field to use Cloud Vials!',COLORS.redArr)
+                return
+            }
 
+            let count=0
+
+            for(let i in objects.mobs){
+
+                if(objects.mobs[i] instanceof Cloud&&objects.mobs[i].field===player.fieldIn){
+
+                    count++
+                }
+            }
+            
+            if(count>6){
+
+                player.addMessage('There are too many clouds in this field!',COLORS.redArr)
+                return
+            }
+
+            items.cloudVial.amount--
+            
+            objects.mobs.push(new Cloud(player.fieldIn,player.flowerIn.x,player.flowerIn.z,3*60))
+        }
+    },
+
+    magicBean:{
+        
+        amount:0,u:128*4/2048,v:128*12/2048,value:25,
+        use:function(){
+            
+            if(!player.fieldIn){
+                
+                player.addMessage('You must be in a field to use Magic Beans!',COLORS.redArr)
+                return
+            }
+            
+            for(let i in objects.mobs){
+
+                if(objects.mobs[i] instanceof Sprout&&objects.mobs[i].field===player.fieldIn){
+
+                    player.addMessage('There is already a sprout in this field!',COLORS.redArr)
+                    return
+                }
+            }
+
+            items.magicBean.amount--
+            
+            let type=['basic','rare','epic','legendary','supreme','gummy','moon']
+
+            type=type[(Math.random()*type.length)|0]
+
+            player.addMessage('You planted a '+MATH.doGrammar(type)+' Sprout!',{basic:undefined,rare:[130,130,130],epic:[210,170,0],legendary:[0,190,220],supreme:[30,220,90],gummy:[230,70,230],moon:[140,200,230]}[type])
+
+            objects.mobs.push(new Sprout(player.fieldIn,type))
+        }
+    },
+    
+    comfortingVial:{
+        
+        amount:0,u:128*0/2048,v:128*0/2048,value:35,
+        use:function(){
+            
+            items.comfortingVial.amount--
+            player.addEffect('comfortingNectar',(60*60)/(60*60*6))
+        }
+    },
+    
+    invigoratingVial:{
+        
+        amount:0,u:128*0/2048,v:128*0/2048,value:35,
+        use:function(){
+            
+            items.invigoratingVial.amount--
+            player.addEffect('invigoratingNectar',(60*60)/(60*60*6))
+        }
+    },
+    
+    motivatingVial:{
+        
+        amount:0,u:128*0/2048,v:128*0/2048,value:35,
+        use:function(){
+            
+            items.motivatingVial.amount--
+            player.addEffect('motivatingNectar',(60*60)/(60*60*6))
+        }
+    },
+    
+    refreshingVial:{
+        
+        amount:0,u:128*0/2048,v:128*0/2048,value:35,
+        use:function(){
+            
+            items.refreshingVial.amount--
+            player.addEffect('refreshingNectar',(60*60)/(60*60*6))
+        }
+    },
+    
+    satisfyingVial:{
+        
+        amount:0,u:128*0/2048,v:128*0/2048,value:35,
+        use:function(){
+            
+            items.satisfyingVial.amount--
+            player.addEffect('satisfyingNectar',(60*60)/(60*60*6))
+        }
+    },
+    
+    redDrive:{
+        
+        amount:0,u:128*0/2048,v:128*0/2048,value:35,
+        use:function(){
+            
+            items.redDrive.amount--
+            player.addEffect('redDriveBuff')
+            player.drives.red++
+        }
+    },
+    
+    blueDrive:{
+        
+        amount:0,u:128*0/2048,v:128*0/2048,value:35,
+        use:function(){
+            
+            items.blueDrive.amount--
+            player.addEffect('blueDriveBuff')
+            player.drives.blue++
+        }
+    },
+    
+    whiteDrive:{
+        
+        amount:0,u:128*0/2048,v:128*0/2048,value:35,
+        use:function(){
+            
+            items.whiteDrive.amount--
+            player.addEffect('whiteDriveBuff')
+            player.drives.white++
+        }
+    },
+    
+    glitchedDrive:{
+        
+        amount:0,u:128*0/2048,v:128*0/2048,value:35,
+        use:function(){
+            
+            items.glitchedDrive.amount--
+            player.addEffect('glitchedDriveBuff')
+            player.drives.glitched++
+        }
+    },
+    
+    roboPass:{
+        
+        amount:0,u:128*6/2048,v:128*12/2048,value:50,
+        use:function(){}
+    },
+    
     fieldDice:{
         
         amount:0,u:128*5/2048,v:128*10/2048,value:12,
@@ -5152,7 +5529,7 @@ let items={
 
             if(player.antChallenge){
 
-                player.addMessage('Cannot use whirligigs in the ant challenge!',COLORS.redArr)
+                out.endAntChallenge()
                 return
             }
 
@@ -5160,6 +5537,10 @@ let items={
 
             player.hivePos[0]+=1.5
             player.hivePos[2]+=2
+
+            player.body.velocity.x=0
+            player.body.velocity.y=0
+            player.body.velocity.z=0
 
             player.body.position.x=player.hivePos[0]
             player.body.position.y=player.hivePos[1]
@@ -5379,6 +5760,35 @@ let items={
                 let newNum=Number(stats[i].substring(1,stats[i].indexOf(' ')))*(stats[i][0]==='*'?MATH.random(0.8,1.25):MATH.random(0.5,2))
 
                 stats[i]=stats[i][0]+(stats[i][0]==='+'?Math.round(newNum):newNum.toFixed(2).replace('.00',''))+stats[i].substring(stats[i].indexOf(' '),stats[i].length)
+            }
+
+            player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee=stats.join(',')
+
+            player.updateBeequipPage()
+            player.updateHive()
+        }
+    },
+
+    turpentine:{
+        
+        canUseOnSlot:(slot)=>{
+            
+            return slot.beequip&&slot.beequip.waxes.length>0
+        },
+        amount:0,u:128*0/2048,v:128*13/2048,value:60,
+        use:function(){
+            
+            items.turpentine.amount--
+
+            player.addMessage('The turpentine removed all waxes on the beequip!')
+
+            player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.waxes=[]
+
+            let stats=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee.split(',')
+
+            for(let i in stats){
+
+                stats[i]=stats[i].substr(0,stats[i].indexOf('('))+'(+0)'                
             }
 
             player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee=stats.join(',')
@@ -5771,7 +6181,7 @@ let items={
             howManyMessage.innerHTML='How many bitterberries will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
             document.getElementById('feedUntilGifted').style.display='none'
 
-            howManyToFeed.onmousemove=function(){
+            howManyToFeed.onmousemove=feedAmount.onchange=function(){
                 
                 let a=feedAmount.value
                 feedAmount.value=MATH.constrain(a,1,items.bitterberry.amount)
@@ -5800,17 +6210,17 @@ let items={
                     
                     switch(stat){
                         
-                        case 'attack':num=oper==='+'?MATH.random(1+level*(4/20),3+level*(10/20))|0:MATH.random(1.05,1.25+level*(0.02));break
+                        case 'attack':num=oper==='+'?MATH.random(1+level*(2/20),3+level*(4/20))|0:MATH.random(1.05,1.35+level*(0.02));break
                         case 'gatherAmount':num=oper==='+'?MATH.random(4+level*(8/20),10+level*(16/20))|0:MATH.random(1.1,1.3+level*(0.04));break
                         case 'convertAmount':num=oper==='+'?MATH.random(7+level*(10/20),15+level*(20/20))|0:MATH.random(1.15,1.4+level*(0.04));break
                         case 'maxEnergy':num=MATH.random(1.2,1.5+level*(0.04));break
                         case 'abilityRate':num=MATH.random(1.05,1.15+level*(0.0175));break
                         
                     }
-                    
+                        
                     num=Number(num.toFixed(2))
                     
-                    player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.mutation={stat:stat,num:num,oper:oper}
+                    player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.mutation=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].mutation={stat:stat,num:num,oper:oper}
                     
                     player.addMessage('☢️ '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' got '+oper.replace('*','x')+num+' '+MATH.doGrammar(stat.replace('max','')).toLowerCase()+'! ☢️',[50,225,90])
                     
@@ -5845,7 +6255,7 @@ let items={
                 textRenderer.add(amount*100+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.2)
                 
                 player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
-                player.addMessage('by '+MATH.addCommas(amount*100)+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
+                player.addMessage('by '+MATH.addCommas((amount*100)+'')+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
                 player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
                 
             }
@@ -5866,7 +6276,7 @@ let items={
             howManyMessage.innerHTML='How many neonberries will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
             document.getElementById('feedUntilGifted').style.display='none'
 
-            howManyToFeed.onmousemove=function(){
+            howManyToFeed.onmousemove=feedAmount.onchange=function(){
                 
                 let a=feedAmount.value
                 feedAmount.value=MATH.constrain(a,1,items.neonberry.amount)
@@ -5916,27 +6326,95 @@ let items={
                 textRenderer.add(amount*500+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.2)
                 
                 player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
-                player.addMessage('by '+MATH.addCommas(amount*500)+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
+                player.addMessage('by '+MATH.addCommas((amount*500)+'')+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
                 player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
                 
             }
         }
     },
     
+    moonCharm:{
+        
+        canUseOnSlot:(slot)=>{
+            
+            return slot.type!==null
+        },
+        amount:0,u:128*7/2048,v:128*12/2048,value:10,
+        use:function(){
+            
+            howManyToFeed.style.display='block'
+            feedAmount.value=1
+            howManyMessage.innerHTML='How many moon charms will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
+            document.getElementById('feedUntilGifted').style.display='none'
+
+            howManyToFeed.onmousemove=feedAmount.onchange=function(){
+                
+                let a=feedAmount.value
+                feedAmount.value=MATH.constrain(a,1,items.moonCharm.amount)
+            }
+            
+            document.getElementById('cancelFeeding').onclick=function(){
+                howManyToFeed.style.display='none'
+            }
+            
+            document.getElementById('feedThisAmount').onclick=function(){
+                howManyToFeed.style.display='none'
+                
+                let amount=feedAmount.value
+                items.moonCharm.amount-=amount
+                player.updateInventory()
+                
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond+=amount*250
+                
+                let l,r=[0,10,50,250,1000,5000,20000,80000,350000,800000,2000000,4000000,8000000,15000000,30000000,150000000,600000000,2500000000,10000000000,25000000000]
+                
+                for(let i in r){
+                    
+                    if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond>=r[i]){
+                        
+                        l=i
+                    }
+                }
+                
+                if(l<20){
+                    
+                    l++
+                }
+                
+                let leveled
+                
+                if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level!==l){
+                    
+                    leveled=true
+                }
+                
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level=l
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.computeLevel(l)
+                textRenderer.add(amount*250+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.2)
+                
+                player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
+                player.addMessage('by '+MATH.addCommas((amount*250)+'')+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
+                player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
+                
+            }
+        }
+    },
+
     treat:{
         
         canUseOnSlot:(slot)=>{
             
             return slot.type!==null
         },
-        amount:1000,u:0,v:128*4/2048,value:1,
+        amount:0,u:0,v:128*4/2048,value:1,
         use:function(){
             
             howManyToFeed.style.display='block'
             feedAmount.value=1
             howManyMessage.innerHTML='How many treats will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
+            document.getElementById('feedUntilGifted').style.display='none'
             
-            howManyToFeed.onmousemove=function(){
+            howManyToFeed.onmousemove=feedAmount.onchange=function(){
                 
                 let a=feedAmount.value
                 feedAmount.value=MATH.constrain(a,1,items.treat.amount)
@@ -5982,8 +6460,173 @@ let items={
                 textRenderer.add(amount*10+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.2)
                 
                 player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
-                player.addMessage('by '+MATH.addCommas(amount*10)+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
+                player.addMessage('by '+MATH.addCommas((amount*10)+'')+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
                 player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
+                
+            }
+        }
+    },
+
+    starTreat:{
+        
+        canUseOnSlot:(slot)=>{
+            
+            return slot.type!==null
+        },
+        amount:0,u:128*1/2048,v:128*13/2048,value:500,
+        use:function(){
+            
+            howManyToFeed.style.display='block'
+            feedAmount.value=1
+            howManyMessage.innerHTML='How many star treats will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
+            document.getElementById('feedUntilGifted').style.display='none'
+            
+            howManyToFeed.onmousemove=feedAmount.onchange=function(){
+                
+                let a=feedAmount.value
+                feedAmount.value=MATH.constrain(a,1,items.starTreat.amount)
+            }
+            
+            document.getElementById('cancelFeeding').onclick=function(){
+                howManyToFeed.style.display='none'
+            }
+            
+            document.getElementById('feedThisAmount').onclick=function(){
+                howManyToFeed.style.display='none'
+                
+                let amount=feedAmount.value
+                items.starTreat.amount-=amount
+                player.updateInventory()
+                
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond+=amount*1000
+                
+                let l,r=[0,10,50,250,1000,5000,20000,80000,350000,800000,2000000,4000000,8000000,15000000,30000000,150000000,600000000,2500000000,10000000000,25000000000]
+                
+                for(let i in r){
+                    
+                    if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond>=r[i]){
+                        
+                        l=i
+                    }
+                }
+                
+                if(l<20){
+                    
+                    l++
+                }
+                
+                let leveled
+                
+                if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level!==l){
+                    
+                    leveled=true
+                }
+
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted=true
+                player.addMessage('⭐ The treat made the bee gifted! ⭐',COLORS.honey)
+                
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level=l
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.computeLevel(l)
+                textRenderer.add(amount*1000+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.2)
+                
+                player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
+                player.addMessage('by '+MATH.addCommas((amount*1000)+'')+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
+                player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
+
+                player.updateHive()
+                
+            }
+        }
+    },
+
+    atomicTreat:{
+        
+        canUseOnSlot:(slot)=>{
+            
+            return slot.type!==null
+        },
+        amount:0,u:128*2/2048,v:128*13/2048,value:40,
+        use:function(){
+            
+            howManyToFeed.style.display='block'
+            feedAmount.value=1
+            howManyMessage.innerHTML='How many atomic treats will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
+            document.getElementById('feedUntilGifted').style.display='none'
+            
+            howManyToFeed.onmousemove=feedAmount.onchange=function(){
+                
+                let a=feedAmount.value
+                feedAmount.value=MATH.constrain(a,1,items.atomicTreat.amount)
+            }
+            
+            document.getElementById('cancelFeeding').onclick=function(){
+                howManyToFeed.style.display='none'
+            }
+            
+            document.getElementById('feedThisAmount').onclick=function(){
+                howManyToFeed.style.display='none'
+                
+                let amount=feedAmount.value
+                items.atomicTreat.amount-=amount
+                player.updateInventory()
+                
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond+=amount*1000
+                
+                let l,r=[0,10,50,250,1000,5000,20000,80000,350000,800000,2000000,4000000,8000000,15000000,30000000,150000000,600000000,2500000000,10000000000,25000000000]
+                
+                for(let i in r){
+                    
+                    if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond>=r[i]){
+                        
+                        l=i
+                    }
+                }
+                
+                if(l<20){
+                    
+                    l++
+                }
+                
+                let leveled
+                
+                if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level!==l){
+                    
+                    leveled=true
+                }
+
+                player.addMessage('☢️ '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' bee gained a mutation! ☢️',[50,225,90])
+                
+                let stat=['abilityRate','gatherAmount','convertAmount','maxEnergy','attack','gatherAmount','convertAmount','maxEnergy','attack','gatherAmount','convertAmount','maxEnergy','attack','gatherAmount','convertAmount','maxEnergy','attack','gatherAmount','convertAmount','maxEnergy','attack','gatherAmount','convertAmount','maxEnergy','attack','gatherAmount','convertAmount','maxEnergy','attack','gatherAmount','convertAmount','maxEnergy','attack'],oper,num,level=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.level-1
+                
+                stat=stat[(Math.random()*stat.length)|0]
+                
+                oper=stat==='attack'||stat==='convertAmount'||stat==='gatherAmount'?Math.random()<0.5?'+':'*':'*'
+                
+                switch(stat){
+                    
+                    case 'attack':num=oper==='+'?MATH.random(1+level*(2/20),3+level*(4/20))|0:MATH.random(1.05,1.35+level*(0.02));break
+                    case 'gatherAmount':num=oper==='+'?MATH.random(4+level*(8/20),10+level*(16/20))|0:MATH.random(1.1,1.3+level*(0.04));break
+                    case 'convertAmount':num=oper==='+'?MATH.random(7+level*(10/20),15+level*(20/20))|0:MATH.random(1.15,1.4+level*(0.04));break
+                    case 'maxEnergy':num=MATH.random(1.2,1.5+level*(0.04));break
+                    case 'abilityRate':num=MATH.random(1.05,1.15+level*(0.0175));break
+                    
+                }
+                
+                num=Number(num.toFixed(2))
+                
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.mutation=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].mutation={stat:stat,num:num,oper:oper}
+                
+                player.addMessage('☢️ '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' got '+oper.replace('*','x')+num+' '+MATH.doGrammar(stat.replace('max','')).toLowerCase()+'! ☢️',[50,225,90])
+                
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level=l
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.computeLevel(l)
+                textRenderer.add(amount*1000+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.2)
+                
+                player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
+                player.addMessage('by '+MATH.addCommas((amount*1000)+'')+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
+                player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
+
+                player.updateHive()
                 
             }
         }
@@ -6004,7 +6647,7 @@ let items={
             
             document.getElementById('feedUntilGifted').style.display=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='blueberry'&&!player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted?'block':'none'
             
-            howManyToFeed.onmousemove=function(){
+            howManyToFeed.onmousemove=feedAmount.onchange=function(){
                 
                 let a=feedAmount.value
                 feedAmount.value=MATH.constrain(a,1,items.blueberry.amount)
@@ -6057,7 +6700,7 @@ let items={
                 }
                 
                 player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
-                player.addMessage('by '+bondToAdd+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
+                player.addMessage('by '+MATH.addCommas(bondToAdd+'')+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
                 player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
                 
             }
@@ -6101,7 +6744,7 @@ let items={
             
             document.getElementById('feedUntilGifted').style.display=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='strawberry'&&!player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted?'block':'none'
             
-            howManyToFeed.onmousemove=function(){
+            howManyToFeed.onmousemove=feedAmount.onchange=function(){
                 
                 let a=feedAmount.value
                 feedAmount.value=MATH.constrain(a,1,items.strawberry.amount)
@@ -6154,7 +6797,7 @@ let items={
                 }
                 
                 player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
-                player.addMessage('by '+bondToAdd+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
+                player.addMessage('by '+MATH.addCommas(bondToAdd+'')+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
                 player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
                 
             }
@@ -6198,7 +6841,7 @@ let items={
             
             document.getElementById('feedUntilGifted').style.display=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='pineapple'&&!player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted?'block':'none'
             
-            howManyToFeed.onmousemove=function(){
+            howManyToFeed.onmousemove=feedAmount.onchange=function(){
                 
                 let a=feedAmount.value
                 feedAmount.value=MATH.constrain(a,1,items.pineapple.amount)
@@ -6251,7 +6894,7 @@ let items={
                 }
                 
                 player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
-                player.addMessage('by '+bondToAdd+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
+                player.addMessage('by '+MATH.addCommas(bondToAdd+'')+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
                 player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
                 
             }
@@ -6295,7 +6938,7 @@ let items={
             
             document.getElementById('feedUntilGifted').style.display=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='sunflowerSeed'&&!player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted?'block':'none'
             
-            howManyToFeed.onmousemove=function(){
+            howManyToFeed.onmousemove=feedAmount.onchange=function(){
                 
                 let a=feedAmount.value
                 feedAmount.value=MATH.constrain(a,1,items.sunflowerSeed.amount)
@@ -6348,7 +6991,7 @@ let items={
                 }
                 
                 player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
-                player.addMessage('by '+bondToAdd+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
+                player.addMessage('by '+MATH.addCommas(bondToAdd+'')+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
                 player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
                 
             }
@@ -7081,11 +7724,12 @@ let objects={
 
 class Bee {
     
-    constructor(pos,type,lvl,gifted,x,y){
+    constructor(pos,type,lvl,gifted,x,y,mutation){
         
         this.meshScale=type==='baby'||type==='tadpole'?0.65:1
         this.GIFTED_BEE_TEXTURE_OFFSET=beeInfo[type].v+(gifted?GIFTED_BEE_TEXTURE_OFFSET:0)
 
+        this.mutation=mutation
         this.hiveX=x
         this.hiveY=y
         this.gifted=gifted
@@ -7154,6 +7798,20 @@ class Bee {
         this.maxEnergy=beeInfo[this.type].energy
         this.attack=beeInfo[this.type].attack
         this.abilityRate=1
+
+        if(this.type==='digital'){
+
+            this.attack+=player.drives.red*0.3
+            this.convertAmount+=player.drives.blue*20
+            this.gatherAmount+=player.drives.white*2.5
+            this.abilityRate+=player.drives.glitched*0.0075
+
+            if(player.drives.red>=50&&player.drives.blue>=50&&player.drives.white>=50&&player.drives.glitched>=50){
+
+                this.speed+=10
+                player.drives.maxed=true
+            }
+        }
         
         if(this.mutation){
             
@@ -7344,7 +8002,7 @@ class Bee {
                     
                     if(fieldInfo[player.fieldIn].planter){
 
-                        let chance=0.1,p=fieldInfo[player.fieldIn].planter
+                        let chance=0.07,p=fieldInfo[player.fieldIn].planter
 
                         if(p.type==='redClay'){
 
@@ -8487,6 +9145,8 @@ class Flame {
     
     constructor(field,x,z,isStatic){
         
+        player.stats.flames++
+
         this.life=3*(player.flameFuel?1.5:1)*player.flameLife
         this.isStatic=isStatic
         
@@ -8512,10 +9172,10 @@ class Flame {
             this.oilPos=[player.body.position.x,player.body.position.y+0.3,player.body.position.z]
             this.oilTrail=new TrailRenderer.Trail({length:10,size:0.75,triangle:true,color:[0.1,0,0,1]})
             
-            player.pollen-=Math.min(Math.ceil(player.convertTotal*0.01),player.pollen)
-            player.honey+=Math.ceil(Math.min(Math.ceil(player.convertTotal*0.01),player.pollen)*player.honeyPerPollen)
+            player.pollen-=Math.min(Math.ceil(player.convertTotal*0.03),player.pollen)
+            player.honey+=Math.ceil(Math.min(Math.ceil(player.convertTotal*0.03),player.pollen)*player.honeyPerPollen)
             if(player.setting_enablePollenText)
-                textRenderer.add(Math.ceil(Math.min(Math.ceil(player.convertTotal*0.01),player.pollen)*player.honeyPerPollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
+                textRenderer.add(Math.ceil(Math.min(Math.ceil(player.convertTotal*0.03),player.pollen)*player.honeyPerPollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
         }
     }
     
@@ -8538,10 +9198,10 @@ class Flame {
             if(player.flameFuel){
                 
                 this.life*=1.5
-                player.pollen-=Math.min(Math.ceil(player.convertTotal*0.01),player.pollen)
-                player.honey+=Math.ceil(Math.min(Math.ceil(player.convertTotal*0.01),player.pollen)*player.honeyPerPollen)
+                player.pollen-=Math.min(Math.ceil(player.convertTotal*0.03),player.pollen)
+                player.honey+=Math.ceil(Math.min(Math.ceil(player.convertTotal*0.03),player.pollen)*player.honeyPerPollen)
                 if(player.setting_enablePollenText)
-                    textRenderer.add(Math.ceil(Math.min(Math.ceil(player.convertTotal*0.01),player.pollen)*player.honeyPerPollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
+                    textRenderer.add(Math.ceil(Math.min(Math.ceil(player.convertTotal*0.03),player.pollen)*player.honeyPerPollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
                 this.getRidOfOilTrailTimer=2
                 this.oilT=0
                 this.oilPos=[player.body.position.x,player.body.position.y+0.3,player.body.position.z]
@@ -8646,6 +9306,8 @@ class Bubble {
     }
     
     pop(){
+
+        player.stats.bubbles++
 
         if(player.popStarActive){
 
@@ -8880,7 +9542,6 @@ class Frog {
         this.state=0
         this.jumpCount=0
         
-        //a ring of radius 4-5
         this.jumpPattern=[[-5,-3],[-5,-2],[-5,-1],[-5,0],[-5,1],[-5,2],[-5,3],[-4,-4],[-4,-3],[-4,3],[-4,4],[-3,-5],[-3,-4],[-3,4],[-3,5],[-2,-5],[-2,5],[-1,-5],[-1,5],[0,-5],[0,5],[1,-5],[1,5],[2,-5],[2,5],[3,-5],[3,-4],[3,4],[3,5],[4,-4],[4,-3],[4,3],[4,4],[5,-3],[5,-2],[5,-1],[5,0],[5,1],[5,2]]
         
     }
@@ -9260,7 +9921,6 @@ class Triangulate {
     
     die(index){
         
-        //smort grid-triangle thing i came up with, also decently fast
         let px=Math.round(player.body.position.x-fieldInfo[this.field].x),
             pz=Math.round(player.body.position.z-fieldInfo[this.field].z),
             tx=Math.round(this.tokenPos[0]-fieldInfo[this.field].x),
@@ -9549,13 +10209,14 @@ class PetalShuriken {
     }
 }
 
-class Beetle {
+class BugMob {
     
-    constructor(spawnPos,bounds,level,health){
+    constructor(spawnPos,bounds,level,health,type){
         
+        this.type=type
         this.starSawHitTimer=0
         this.level=level
-        this.health=health||(level-1)*6+8
+        this.health=health
         this.maxHealth=this.health
         this.spawnPos=spawnPos
         this.pos=spawnPos
@@ -9602,6 +10263,7 @@ class Beetle {
                         
                         this.state='attack'
                         this.pos=this.spawnPos.slice()
+                        this.aimPos=false
                     }
                 }
                 
@@ -9611,30 +10273,91 @@ class Beetle {
                 
                 if(this.health<=0){
                     
-                    player.stats.rhinoBeetle++
+                    player.stats[this.type]++
                     this.state='dead'
-                    this.respawnTimer=3*60
+                    this.respawnTimer=0
                     
-                    let amountOfTokens=4+((player.lootLuck-1)|0),radius=amountOfTokens*0.2+1.5
+                    let amountOfTokens=((player.lootLuck-1)|0)
                     
-                    let dropTable=['blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueExtract','treat','treat','gumdrops','gumdrops'],dropAmountTable={blueberry:[1,1,1,1,1,1,1,1,1,5,5,5,10],blueExtract:[1,1,1,1,1,1,1,1,1,3],treat:[1,1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[1,1,1,1,1,1,1,5,5,10]}
+                    let dropTable,dropAmountTable
+
+                    switch(this.type){
+
+                        case 'rhinoBeetle':
+
+                            amountOfTokens+=4
+                            dropTable=['blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueExtract','treat','treat','gumdrops','gumdrops']
+                            dropAmountTable={blueberry:[1,1,1,1,1,1,1,1,1,1,1,3,3,5],blueExtract:[1,1,1,1,1,1,1,1,1,3],treat:[1,1,1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[1,1,1,1,1,1,1,3,3,5]}
+
+                        break
+
+                        case 'ladybug':
+
+                            amountOfTokens+=4
+                            dropTable=['strawberry','strawberry','strawberry','strawberry','strawberry','strawberry','strawberry','strawberry','strawberry','strawberry','strawberry','redExtract','treat','treat','gumdrops','gumdrops']
+                            dropAmountTable={strawberry:[1,1,1,1,1,1,1,1,1,1,1,3,3,5],redExtract:[1,1,1,1,1,1,1,1,1,3],treat:[1,1,1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[1,1,1,1,1,1,1,3,3,5]}
+
+                        break
+
+                        case 'spider':
+
+                            amountOfTokens+=7
+                            dropTable=['treat','treat','treat','pineapple','sunflowerSeed','gumdrops','treat','treat','treat','pineapple','sunflowerSeed','gumdrops','glue','enzymes','oil','fieldDice','ticket','royalJelly','ticket','royalJelly','moonCharm','moonCharm']
+                            dropAmountTable={treat:[1,1,1,1,5,5,5,10,10,15],enzymes:[1,1,1,1,1,1,1,2,2,3],oil:[1,1,1,1,1,1,1,2,2,3],fieldDice:[1,1,1,1,1,2,2,3],glue:[1,1,1,1,1,1,3,3,5],pineapple:[1,1,1,1,1,1,1,3,3,3,5,5,10],sunflowerSeed:[1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[1,1,1,1,1,1,1,5,5,10],ticket:[1,1,1,1,1,1,1,1,3,3,5],royalJelly:[1,1,1,1,1,1,1,3,3,5],moonCharm:[1,1,1,1,3,3,5]}
+
+                        break
+
+                        case 'werewolf':
+
+                            amountOfTokens+=9
+                            dropTable=['treat','treat','treat','pineapple','sunflowerSeed','gumdrops','treat','treat','treat','pineapple','sunflowerSeed','gumdrops','gumdrops','glue','enzymes','oil','fieldDice','fieldDice','smoothDice','treat','treat','treat','pineapple','sunflowerSeed','gumdrops','treat','treat','treat','pineapple','sunflowerSeed','gumdrops','glue','glue','enzymes','oil','fieldDice','fieldDice','smoothDice','loadedDice','ticket','royalJelly','ticket','royalJelly','ticket','royalJelly','antPass','moonCharm','moonCharm']
+                            dropAmountTable={treat:[1,1,1,1,5,5,5,15,20,35],enzymes:[1,1,1,1,1,1,1,2,2,3],oil:[1,1,1,1,1,1,1,2,2,3],fieldDice:[1,1,1,1,1,2,2,3],smoothDice:[1,1,1,1,1,1,1,1,1,1,3],loadedDice:[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3],glue:[1,1,1,1,1,1,1,3,3,5,10,15],pineapple:[1,1,1,1,1,1,3,3,3,5,5,10,15,25],sunflowerSeed:[1,1,1,1,1,1,3,3,3,5,5,10,15,25],gumdrops:[1,1,1,1,1,1,5,5,5,10,10,15],ticket:[1,1,1,1,1,1,3,3,5,10],royalJelly:[1,1,1,1,1,1,3,3,5,10,15],antPass:[1],moonCharm:[1,1,1,1,3,3,5]}
+
+                        break
+
+                        case 'scorpion':
+
+                            amountOfTokens+=7
+                            dropTable=['strawberry','strawberry','strawberry','strawberry','strawberry','strawberry','strawberry','redExtract','treat','treat','treat','gumdrops','gumdrops','gumdrops','ticket','royalJelly','ticket','royalJelly']
+                            dropAmountTable={strawberry:[1,1,1,1,1,1,3,3,3,5,5,15],redExtract:[1,1,1,1,1,1,3,3,5],treat:[1,1,1,1,1,5,5,5,15,15,30],gumdrops:[1,1,1,1,1,1,3,3,5,15],ticket:[1,1,1,1,1,1,3,3,5],royalJelly:[1,1,1,1,1,1,3,3,5,10]}
+
+                        break
+
+                        case 'mantis':
+
+                            amountOfTokens+=7
+                            dropTable=['blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueberry','blueExtract','treat','treat','treat','gumdrops','gumdrops','gumdrops','ticket','royalJelly','ticket','royalJelly']
+                            dropAmountTable={blueberry:[1,1,1,1,1,1,3,3,3,5,5,15],blueExtract:[1,1,1,1,1,1,3,3,5],treat:[1,1,1,1,1,5,5,5,15,15,30],gumdrops:[1,1,1,1,1,1,3,3,5,15],ticket:[1,1,1,1,1,1,3,3,5],royalJelly:[1,1,1,1,1,1,3,3,5,10]}
+
+                        break
+
+                        case 'kingBeetle':
+
+                            amountOfTokens+=12
+
+                            dropTable=['treat','treat','treat','treat','treat','redExtract','blueExtract','redExtract','blueExtract','redExtract','blueExtract','gumdrops','ticket','royalJelly','gumdrops','ticket','royalJelly','gumdrops','ticket','royalJelly','microConverter','fieldDice','fieldDice','fieldDice','smoothDice','smoothDice','loadedDice','antPass','moonCharm','antPass','moonCharm','oil','enzymes','glitter','glue']
+                            dropAmountTable={treat:[15,15,15,20,25,25,25,50,50,50,50,100,100,100,150,150,175,175,250,350,500],redExtract:[1,1,1,1,1,1,1,3,3,3,5,5,10],blueExtract:[1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[3,3,3,3,5,5,5,15,15,25],ticket:[1,1,1,1,3,3,3,5,5,10],royalJelly:[1,1,3,3,3,3,3,5,5,10],microConverter:[1,1,1,1,1,3,3,5],fieldDice:[1,1,1,1,1,3,3,5],smoothDice:[1,1,1,1,1,1,2,2,2,3],loadedDice:[1],antPass:[1,1,1,1,1,3,3,3,5],moonCharm:[3,3,3,3,5,5,5,15,15,25],oil:[1,1,1,1,1,3,3,5],enzymes:[1,1,1,1,1,3,3,5],glitter:[1,1,1,1,1,3,3,5],glue:[1,1,1,1,1,3,3,5]}
+
+                        break
+                    }
                     
+                    let radius=amountOfTokens*0.2+1.5
+
                     for(let i=0,inc=MATH.TWO_PI/amountOfTokens;i<MATH.TWO_PI;i+=inc){
                         
-                        let r=1-Math.pow(1-0.2,player.lootLuck)
+                        let r=1-Math.pow(1-0.2,player.lootLuck*1.5)
                         
                         if(Math.random()<r){
                             
                             let ty=dropTable[(Math.random()*dropTable.length)|0],am=dropAmountTable[ty][(Math.random()*dropAmountTable[ty].length)|0]
                             
-                            objects.tokens.push(new LootToken(45,[this.pos[0]+Math.cos(i)*radius,this.pos[1],this.pos[2]+Math.sin(i)*radius],ty,am,true,'Rhino Beetle'))
+                            objects.tokens.push(new LootToken(45,[this.pos[0]+Math.cos(i)*radius,this.pos[1],this.pos[2]+Math.sin(i)*radius],ty,am,true,MATH.doGrammar(this.type)))
                             
                         } else {
                             
-                            objects.tokens.push(new LootToken(45,[this.pos[0]+Math.cos(i)*radius,this.pos[1],this.pos[2]+Math.sin(i)*radius],'honey',25,true,'Rhino Beetle'))
+                            objects.tokens.push(new LootToken(45,[this.pos[0]+Math.cos(i)*radius,this.pos[1],this.pos[2]+Math.sin(i)*radius],'honey',{rhinoBeetle:15,ladybug:15,spider:50,werewolf:500,scorpion:300,mantis:300,kingBeetle:1500}[this.type],true,MATH.doGrammar(this.type)))
                             
                         }
-                        
                     }
                     
                     return
@@ -9676,7 +10399,7 @@ class Beetle {
                     
                     if(this.damageTimer<=0&&this.aimTimer>0&&Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1])+Math.abs(player.body.position.z-this.pos[2])<1.5){
                         
-                        player.damage(20)
+                        player.damage({rhinoBeetle:20,ladybug:18,spider:25,werewolf:35,scorpion:30,mantis:30,kingBeetle:75,tunnelBear:10000}[this.type])
                         this.damageTimer=1.5
                     }
                     
@@ -9686,10 +10409,10 @@ class Beetle {
                     
                     if(!this.aimPos){
                         
-                        if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])>5){
+                        if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])>(this.type==='tunnelBear'?0:6)){
                             
-                            this.pos[0]+=d[0]*dt*4
-                            this.pos[2]+=d[1]*dt*4
+                            this.pos[0]+=d[0]*dt*5
+                            this.pos[2]+=d[1]*dt*5
                             
                         } else {
                             
@@ -9714,12 +10437,13 @@ class Beetle {
                                 this.pos[0]+=d[0]*dt*15
                                 this.pos[2]+=d[1]*dt*15
                                 
-                                if(Math.abs(this.aimPos[0]-this.pos[0])+Math.abs(this.aimPos[2]-this.pos[2])<1.5){
+                                if(Math.abs(this.aimPos[0]-this.pos[0])+Math.abs(this.aimPos[2]-this.pos[2])<1){
                                     
                                     this.lungeState=1
                                     
-                                    if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1])+Math.abs(player.body.position.z-this.pos[2])<1.75){
-                                        player.damage(20)
+                                    if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1])+Math.abs(player.body.position.z-this.pos[2])<2){
+                                        
+                                        player.damage({rhinoBeetle:20,ladybug:18,spider:25,werewolf:35,scorpion:30,mantis:30,kingBeetle:75,tunnelBear:10000}[this.type])
                                     }
                                 }
                                 
@@ -9741,7 +10465,7 @@ class Beetle {
                         }
                     }
                     
-                    this.pos[3]=Math.atan2(d[1],d[0])+MATH.HALF_PI
+                    this.pos[3]=Math.atan2(d[1],d[0])+MATH.HALF_PI+(!this.aimPos?BEE_FLY*0.5:0)
 
                 } else {
 
@@ -9750,20 +10474,20 @@ class Beetle {
                 
                 gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
                 gl.uniform2f(glCache.mob_instanceInfo2,1,1)
-                gl.bindBuffer(gl.ARRAY_BUFFER,meshes.beetle.vertBuffer)
-                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.beetle.indexBuffer)
+                gl.bindBuffer(gl.ARRAY_BUFFER,meshes[this.type].vertBuffer)
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes[this.type].indexBuffer)
                 gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
                 gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
-                gl.drawElements(gl.TRIANGLES,meshes.beetle.indexAmount,gl.UNSIGNED_SHORT,0)
+                gl.drawElements(gl.TRIANGLES,meshes[this.type].indexAmount,gl.UNSIGNED_SHORT,0)
                 
-                this.pos[1]+=1
-                textRenderer.addCTX('Rhino Beetle (Level '+this.level+')',[this.pos[0],this.pos[1]+0.4,this.pos[2]],COLORS.whiteArr,100)
+                this.pos[1]+=this.type==='werewolf'||this.type==='mantis'?3:1
+                textRenderer.addCTX(MATH.doGrammar(this.type)+' (Level '+this.level+')',[this.pos[0],this.pos[1]+0.4,this.pos[2]],COLORS.whiteArr,100)
                 
                 textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV['rect'],0.6,0,0,2.5,0.4,0)
                 textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.health/this.maxHealth)*0.5)/(this.health/this.maxHealth),0,...textRenderer.decalUV['rect'],0.2,0.85,0.2,this.health*2.5/this.maxHealth,0.4,0)
                 
                 textRenderer.addSingle('HP: '+MATH.addCommas((this.health|0)+''),this.pos,COLORS.whiteArr,-1,false,false)
-                this.pos[1]-=1
+                this.pos[1]-=this.type==='werewolf'||this.type==='mantis'?3:1
                 
             break
             
@@ -9794,20 +10518,20 @@ class Beetle {
                 
                 gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
                 gl.uniform2f(glCache.mob_instanceInfo2,1,1)
-                gl.bindBuffer(gl.ARRAY_BUFFER,meshes.beetle.vertBuffer)
-                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.beetle.indexBuffer)
+                gl.bindBuffer(gl.ARRAY_BUFFER,meshes[this.type].vertBuffer)
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes[this.type].indexBuffer)
                 gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
                 gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
-                gl.drawElements(gl.TRIANGLES,meshes.beetle.indexAmount,gl.UNSIGNED_SHORT,0)
+                gl.drawElements(gl.TRIANGLES,meshes[this.type].indexAmount,gl.UNSIGNED_SHORT,0)
                 
-                this.pos[1]+=1
+                this.pos[1]+=this.type==='werewolf'||this.type==='mantis'?3:1
                 textRenderer.addCTX('Rhino Beetle (Level '+this.level+')',[this.pos[0],this.pos[1]+0.4,this.pos[2]],COLORS.whiteArr,100)
                 
                 textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV['rect'],0.6,0,0,2.5,0.4,0)
                 textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.health/this.maxHealth)*0.5)/(this.health/this.maxHealth),0,...textRenderer.decalUV['rect'],0.2,0.85,0.2,this.health*2.5/this.maxHealth,0.4,0)
                 
                 textRenderer.addSingle('HP: '+MATH.addCommas((this.health|0)+''),this.pos,COLORS.whiteArr,-1,false,false)
-                this.pos[1]-=1
+                this.pos[1]-=this.type==='werewolf'||this.type==='mantis'?3:1
                 
             break
             
@@ -9815,283 +10539,7 @@ class Beetle {
                 
                 this.respawnTimer-=dt
                 
-                if(this.respawnTimer<=0){
-                    
-                    this.state='hide'
-                    this.health=this.maxHealth
-                }
-                
-            break
-        }
-        
-    }
-}
-
-class Ladybug {
-    
-    constructor(spawnPos,bounds,level,health){
-        
-        this.starSawHitTimer=0
-        this.level=level
-        this.health=health||(level-1)*7+10
-        this.maxHealth=this.health
-        this.spawnPos=spawnPos
-        this.pos=spawnPos
-        this.state='hide'
-        this.bounds=bounds
-        this.checkTimer=TIME
-        this.respawnTimer=0
-        this.flameTimer=0
-        this.damageTimer=0
-        this.mindHacked=0
-    }
-    
-    die(index){
-        
-        objects.mobs.splice(index,1)
-    }
-    
-    damage(am){
-        
-        let crit=Math.random()<player.criticalChance,superCrit=Math.random()<player.superCritChance,d=am*(crit?superCrit?player.superCritPower*player.criticalPower:player.criticalPower:1)
-        
-        if(this.mindHacked>0)
-            d*=1.25
-
-        this.health-=d|0
-        textRenderer.add((d|0)+'',[this.pos[0],this.pos[1]+Math.random()*2.75+1.5,this.pos[2]],[255,0,0],crit?superCrit?2:1:0,'',1.25)
-        
-    }
-    
-    update(){
-        
-        switch(this.state){
-            
-            case 'hide':
-                
-                if(TIME-this.checkTimer>0.5){
-                    
-                    this.checkTimer=TIME+Math.random()*0.2
-                    let b=this.bounds,p=player.body.position
-                    
-                    if(p.x>b.minX&&p.x<b.maxX&&p.y>b.minY&&p.y<b.maxY&&p.z>b.minZ&&p.z<b.maxZ){
-                        
-                        this.state='attack'
-                        this.pos=this.spawnPos.slice()
-                    }
-                }
-                
-            break
-            
-            case 'attack':
-                
-                if(this.health<=0){
-                    
-                    player.stats.ladybug++
-                    this.state='dead'
-                    this.respawnTimer=3*60
-                    
-                    let amountOfTokens=4+((player.lootLuck-1)|0),radius=amountOfTokens*0.2+1.5
-                    
-                    let dropTable=['strawberry','strawberry','strawberry','strawberry','strawberry','strawberry','strawberry','strawberry','strawberry','strawberry','strawberry','redExtract','treat','treat','gumdrops','gumdrops'],dropAmountTable={strawberry:[1,1,1,1,1,1,1,1,1,5,5,5,10],redExtract:[1,1,1,1,1,1,1,1,1,3],treat:[1,1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[1,1,1,1,1,1,1,5,5,10]}
-                    
-                    for(let i=0,inc=MATH.TWO_PI/amountOfTokens;i<MATH.TWO_PI;i+=inc){
-                        
-                        let r=1-Math.pow(1-0.2,player.lootLuck)
-                        
-                        if(Math.random()<r){
-                            
-                            let ty=dropTable[(Math.random()*dropTable.length)|0],am=dropAmountTable[ty][(Math.random()*dropAmountTable[ty].length)|0]
-                            
-                            objects.tokens.push(new LootToken(45,[this.pos[0]+Math.cos(i)*radius,this.pos[1],this.pos[2]+Math.sin(i)*radius],ty,am,true,'Ladybug'))
-                            
-                        } else {
-                            
-                            objects.tokens.push(new LootToken(45,[this.pos[0]+Math.cos(i)*radius,this.pos[1],this.pos[2]+Math.sin(i)*radius],'honey',25,true,'Ladybug'))
-                            
-                        }
-                        
-                    }
-                    
-                    return
-                }
-                
-                this.mindHacked-=dt
-                this.starSawHitTimer-=dt
-                this.flameTimer-=dt
-                
-                if(this.flameTimer<=0){
-                    
-                    this.flameTimer=1
-                    
-                    for(let f in objects.flames){
-                        
-                        if(Math.abs(this.pos[0]-objects.flames[f].pos[0])+Math.abs(this.pos[2]-objects.flames[f].pos[2])<2.25){
-                            
-                            this.damage(objects.flames[f].dark?25:15)
-                        }
-                    }
-                }
-                
-                player.attacked.push(this)
-                
-                if(this.mindHacked<=0){
-
-                    if(TIME-this.checkTimer>0.25){
-                        
-                        this.checkTimer=TIME+Math.random()*0.2
-                        let b=this.bounds,p=player.body.position
-                        
-                        if(!(p.x>b.minX&&p.x<b.maxX&&p.y>b.minY&&p.y<b.maxY&&p.z>b.minZ&&p.z<b.maxZ)){
-                            
-                            this.state='moveToHide'
-                        }
-                    }
-                    
-                    this.damageTimer-=dt
-                    
-                    if(this.damageTimer<=0&&this.aimTimer>0&&Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1])+Math.abs(player.body.position.z-this.pos[2])<1.5){
-                        
-                        player.damage(15)
-                        this.damageTimer=1.5
-                    }
-                    
-                    let d=[player.body.position.x-this.pos[0],player.body.position.z-this.pos[2]]
-                    
-                    vec2.normalize(d,d)
-                    
-                    if(!this.aimPos){
-                        
-                        if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])>5){
-                            
-                            this.pos[0]+=d[0]*dt*4
-                            this.pos[2]+=d[1]*dt*4
-                            
-                        } else {
-                            
-                            this.aimPos=[player.body.position.x,player.body.position.y,player.body.position.z]
-                            this.landPos=this.pos.slice()
-                            this.lungeState=0
-                            this.aimTimer=1.5
-                        }
-                        
-                    } else {
-                        
-                        this.aimTimer-=dt
-                        
-                        if(this.aimTimer<=0){
-                            
-                            if(!this.lungeState){
-                                
-                                d=[this.aimPos[0]-this.pos[0],this.aimPos[2]-this.pos[2]]
-                        
-                                vec2.normalize(d,d)
-                                
-                                this.pos[0]+=d[0]*dt*15
-                                this.pos[2]+=d[1]*dt*15
-                                
-                                if(Math.abs(this.aimPos[0]-this.pos[0])+Math.abs(this.aimPos[2]-this.pos[2])<1.5){
-                                    
-                                    this.lungeState=1
-                                    
-                                    if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])<1.75){
-                                        player.damage(15)
-                                    }
-                                }
-                                
-                            } else {
-                                
-                                d=[this.landPos[0]-this.pos[0],this.landPos[2]-this.pos[2]]
-                        
-                                vec2.normalize(d,d)
-                                
-                                this.pos[0]+=d[0]*dt*15
-                                this.pos[2]+=d[1]*dt*15
-                                
-                                if(Math.abs(this.landPos[0]-this.pos[0])+Math.abs(this.landPos[2]-this.pos[2])<0.75){
-                                    
-                                    this.aimPos=undefined
-                                    this.aimTimer=1.5
-                                }
-                            }
-                        }
-                    }
-                    
-                    this.pos[3]=Math.atan2(d[1],d[0])+MATH.HALF_PI
-
-                } else {
-
-                    textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV.smiley,0.75,0,0,-2,-2,0)
-                }
-                
-                gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
-                gl.uniform2f(glCache.mob_instanceInfo2,1,1)
-                gl.bindBuffer(gl.ARRAY_BUFFER,meshes.ladybug.vertBuffer)
-                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.ladybug.indexBuffer)
-                gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
-                gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
-                gl.drawElements(gl.TRIANGLES,meshes.ladybug.indexAmount,gl.UNSIGNED_SHORT,0)
-                
-                this.pos[1]+=1
-                textRenderer.addCTX('Ladybug (Level '+this.level+')',[this.pos[0],this.pos[1]+0.4,this.pos[2]],COLORS.whiteArr,100)
-                
-                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV['rect'],0.6,0,0,2.5,0.4,0)
-                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.health/this.maxHealth)*0.5)/(this.health/this.maxHealth),0,...textRenderer.decalUV['rect'],0.2,0.85,0.2,this.health*2.5/this.maxHealth,0.4,0)
-                
-                textRenderer.addSingle('HP: '+MATH.addCommas((this.health|0)+''),this.pos,COLORS.whiteArr,-1,false,false)
-                this.pos[1]-=1
-                
-            break
-            
-            case 'moveToHide':
-                
-                let b=this.bounds,p=player.body.position
-                
-                if(p.x>b.minX&&p.x<b.maxX&&p.y>b.minY&&p.y<b.maxY&&p.z>b.minZ&&p.z<b.maxZ){
-                    
-                    this.state='attack'
-                    return
-                }
-                
-                if(Math.abs(this.spawnPos[0]-this.pos[0])+Math.abs(this.spawnPos[2]-this.pos[2])<1){
-                    
-                    this.state='hide'
-                    return
-                }
-                
-                let _d=[this.spawnPos[0]-this.pos[0],this.spawnPos[2]-this.pos[2]]
-                
-                vec2.normalize(_d,_d)
-                
-                this.pos[0]+=_d[0]*dt*4
-                this.pos[2]+=_d[1]*dt*4
-                
-                this.pos[3]=Math.atan2(_d[1],_d[0])+MATH.HALF_PI
-                
-                gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
-                gl.uniform2f(glCache.mob_instanceInfo2,1,1)
-                gl.bindBuffer(gl.ARRAY_BUFFER,meshes.ladybug.vertBuffer)
-                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.ladybug.indexBuffer)
-                gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
-                gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
-                gl.drawElements(gl.TRIANGLES,meshes.ladybug.indexAmount,gl.UNSIGNED_SHORT,0)
-                
-                this.pos[1]+=1
-                textRenderer.addCTX('Ladybug (Level '+this.level+')',[this.pos[0],this.pos[1]+0.4,this.pos[2]],COLORS.whiteArr,100)
-                
-                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV['rect'],0.6,0,0,2.5,0.4,0)
-                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.health/this.maxHealth)*0.5)/(this.health/this.maxHealth),0,...textRenderer.decalUV['rect'],0.2,0.85,0.2,this.health*2.5/this.maxHealth,0.4,0)
-                
-                textRenderer.addSingle('HP: '+MATH.addCommas((this.health|0)+''),this.pos,COLORS.whiteArr,-1,false,false)
-                this.pos[1]-=1
-                
-            break
-            
-            case 'dead':
-                
-                this.respawnTimer-=dt
-                
-                if(this.respawnTimer<=0){
+                if(this.respawnTimer<=0&&!player.fieldIn){
                     
                     this.state='hide'
                     this.health=this.maxHealth
@@ -10158,7 +10606,7 @@ class MondoChick {
                 
                 if(this.health<=0||this.timeLimit<=0){
                     
-                    // player.stats.mondoChicken++
+                    player.stats.mondoChicken++
                     this.state='dead'
                     
                     return
@@ -10348,7 +10796,7 @@ class RogueViciousBee {
                 
                 if(this.health<=0||this.timeLimit<=0){
                     
-                    // player.stats.rogueViciousBee++
+                    player.stats.rogueViciousBee++
                     this.state='dead'
                     
                     return
@@ -10501,6 +10949,1024 @@ class RogueViciousBee {
     }
 }
 
+class WildWindyBee {
+    
+    constructor(field,pos){
+
+        this.field=field
+        this.starSawHitTimer=0
+        this.level=1
+        this.health=250
+        this.maxHealth=this.health
+        this.pos=pos
+        this.pos[1]-=2
+        this.flameTimer=0
+        this.waitTimer=0
+        this.target=[this.pos[0],this.pos[2]]
+        this.bodySize=1.5
+        this.timeLimit=5*60
+        this.maxTimeLimit=this.timeLimit
+        this.state='attack'
+
+        this.mindHacked=0
+
+        this.tornados=[]
+        this.nextAttackTimer=0
+        this.attackAlternate=0
+
+        this.trails=[new TrailRenderer.ConstantTrail({length:9,size:0.4,color:[0.5,0.5,0.5,0.6]}),new TrailRenderer.ConstantTrail({length:9,size:0.4,color:[0.5,0.5,0.5,0.6],vertical:true})]
+        this.whipWarning=new TrailRenderer.ConstantTrail({length:5,size:0.05,color:[0.85,0,0,1]})
+
+        this.windWhipTrails=[{trail:new TrailRenderer.ConstantTrail({length:10,triangle:true,size:1.1,color:[0.5,0.6,0.6,1]})},{trail:new TrailRenderer.ConstantTrail({length:10,triangle:true,size:1.9,color:[0.8,0.8,0.8,1]})},{trail:new TrailRenderer.ConstantTrail({length:10,triangle:true,size:1.55,color:[0.4,0.5,0.7,1]})}]
+        
+    }
+    
+    die(index){
+        
+        this.trails[0].splice=true
+        this.trails[1].splice=true
+        this.whipWarning.splice=true
+
+        for(let i in this.windWhipTrails){
+
+            this.windWhipTrails[i].trail.splice=true
+        }
+
+        objects.mobs.splice(index,1)
+    }
+    
+    damage(am){
+        
+        let crit=Math.random()<player.criticalChance,superCrit=Math.random()<player.superCritChance,d=am*(crit?superCrit?player.superCritPower*player.criticalPower:player.criticalPower:1)
+        
+        if(this.mindHacked>0)
+            d*=1.25
+
+        this.health-=d|0
+        textRenderer.add((d|0)+'',[this.pos[0],this.pos[1]+Math.random()*2.75+1.5,this.pos[2]],[255,0,0],crit?superCrit?2:1:0,'',[0,1.25,1.275,1.3,1.65,1.75][Math.min(d.toString().length),5])
+    }
+    
+    update(){
+
+        if(!(frameCount%6)){
+
+            this.trails[0].addPos(this.pos.slice())
+            this.trails[1].addPos(this.pos.slice())
+        }
+
+        switch(this.state){
+
+            case 'flee':
+
+                this.mindHacked=0
+                this.pos[0]+=this.moveDir[0]*dt
+                this.pos[1]+=this.moveDir[1]*dt
+                this.pos[2]+=this.moveDir[2]*dt
+
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1.5,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo.windy.u,beeInfo.windy.v,beeInfo.windy.meshPartId)
+
+                if(this.pos[1]>55){
+
+                    return true
+                }
+
+            break
+
+            case 'move':
+
+                this.mindHacked=0
+                this.pos[0]+=this.moveDir[0]*dt
+                this.pos[1]+=this.moveDir[1]*dt
+                this.pos[2]+=this.moveDir[2]*dt
+
+                meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1.5,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo.windy.u,beeInfo.windy.v,beeInfo.windy.meshPartId)
+
+                if(TIME>this.timeAtArrival){
+
+                    this.state='attack'
+                    this.pos=this.moveTo
+                    this.target=[fieldInfo[this.field].x+((Math.random()*fieldInfo[this.field].width)|0),fieldInfo[this.field].z+((Math.random()*fieldInfo[this.field].length)|0)]
+                }
+
+            break
+
+            case 'attack':
+
+                if(this.health<=0){
+
+                    let f=[]
+
+                    for(let i in fieldInfo){
+
+                        if(i!=='AntField'&&i!=='StumpField'&&i!==this.field)f.push(i)
+                    }
+
+                    f=f[(Math.random()*f.length)|0]
+
+                    let center=[fieldInfo[this.field].x+fieldInfo[this.field].width*0.5,this.pos[1]-1.5,fieldInfo[this.field].z+fieldInfo[this.field].length*0.5],_f=this.field
+
+                    objects.mobs.push(new Cloud(this.field,(fieldInfo[this.field].width*0.5)|0,(fieldInfo[this.field].length*0.5)|0,3*60))
+
+
+                    this.tornados=[]
+                    this.state='move'
+                    this.field=f
+                    this.moveTo=[fieldInfo[f].x+((Math.random()*fieldInfo[f].width)|0),fieldInfo[f].y+0.55+2,fieldInfo[f].z+((Math.random()*fieldInfo[f].length)|0)]
+                    this.moveDir=vec3.sub([],this.moveTo,this.pos)
+                    let dist=vec3.len(this.moveDir)
+                    this.timeAtArrival=TIME+(dist/7)
+                    vec3.scale(this.moveDir,this.moveDir,7/dist)
+                    this.level++
+                    this.health=this.level*this.level*250+250
+                    this.maxHealth=this.health
+
+                    let amountOfTokens=MATH.random(10,14)|0,
+                    dropTable=['treat','treat','sunflowerSeed','sunflowerSeed','ticket','royalJelly','cloudVial','fieldDice','treat','treat','sunflowerSeed','sunflowerSeed','ticket','royalJelly','cloudVial','fieldDice','tropicalDrink','oil','glitter','magicBean','starJelly'],radius=amountOfTokens*0.2+1.5
+
+                    if(_f==='CoconutField') dropTable.push('tropicalDrink')
+
+                    for(let i=0,inc=MATH.TWO_PI/amountOfTokens;i<MATH.TWO_PI;i+=inc){
+                        
+                        if(Math.random()<0.5){
+                            
+                            let ty=dropTable[(Math.random()*dropTable.length)|0]
+                            
+                            objects.tokens.push(new LootToken(45,[center[0]+Math.cos(i)*radius,center[1],center[2]+Math.sin(i)*radius],ty,1,true,'Wild Windy Bee'))
+                            
+                        } else {
+                            
+                            objects.tokens.push(new LootToken(45,[center[0]+Math.cos(i)*radius,center[1],center[2]+Math.sin(i)*radius],'honey',(this.level-2)*10000+1000,true,'Wild Windy Bee'))
+                        }
+                    }
+
+                    this.whipWarning.addPos([])
+                    this.whipWarning.addPos([])
+                    this.whipWarning.addPos([])
+                    this.whipWarning.addPos([])
+                    this.whipWarning.addPos([])
+
+                    for(let i in this.windWhipTrails){
+
+                        let t=this.windWhipTrails[i]
+
+                        t.trail.addPos([])
+                        t.trail.addPos([])
+                        t.trail.addPos([])
+                        t.trail.addPos([])
+                        t.trail.addPos([])
+                        t.trail.addPos([])
+                        t.trail.addPos([])
+                    }
+                }
+
+                if(this.timeLimit<=0){
+                    
+                    this.state='flee'
+                    this.moveDir=[100-this.pos[0],50-this.pos[1],-30-this.pos[2]]
+                    vec3.normalize(this.moveDir,this.moveDir)
+                    vec3.scale(this.moveDir,this.moveDir,7)
+
+                    return
+                }
+                
+                this.mindHacked-=dt
+                this.timeLimit-=dt
+                this.starSawHitTimer-=dt
+                this.flameTimer-=dt
+                
+                if(this.flameTimer<=0){
+                    
+                    this.flameTimer=1
+                    
+                    for(let f in objects.flames){
+                        
+                        if(Math.abs(this.pos[0]-objects.flames[f].pos[0])+Math.abs(this.pos[2]-objects.flames[f].pos[2])<this.bodySize){
+                            
+                            this.damage(objects.flames[f].dark?25:15)
+                        }
+                    }
+                }
+                
+                if(player.fieldIn===this.field){
+                    
+                    player.attacked.push(this)
+                }
+                
+                if(this.mindHacked<=0){
+
+                    let d=[this.target[0]-this.pos[0],this.target[1]-this.pos[2]]
+
+                    if(Math.abs(d[0])+Math.abs(d[1])<0.75&&this.attackState===undefined){
+
+                        let skip=Math.random()<0.35
+                        this.nextAttackTimer=skip?0:1.5
+                        this.skipAttack=skip
+
+                        if(!skip){
+                            
+                            this.attackState=(this.attackAlternate++)%2===0||this.tornados.length>=3?1:0
+
+                            if(player.fieldIn===this.field&&this.attackState){
+
+                                this.windWhipTimer=1
+                                this.whipA=[this.pos[0],this.pos[1]-1.9,this.pos[2]]
+                                this.whipB=[player.body.position.x,this.pos[1]-1.9,player.body.position.z]
+
+                                let dir=vec3.sub([],this.whipB,this.whipA)
+                                vec3.normalize(dir,dir)
+                                dir[0]*=2
+                                dir[2]*=2
+                                let c=[dir[2],dir[1],-dir[0]]
+                                
+                                this.whipWarning.addPos(vec3.add([],this.whipA,c))
+                                this.whipWarning.addPos(vec3.sub([],this.whipA,c))
+                                this.whipWarning.addPos(vec3.add([],vec3.sub([],this.whipB,c),dir))
+                                this.whipWarning.addPos(vec3.add([],vec3.add([],this.whipB,c),dir))
+                                this.whipWarning.addPos(vec3.add([],this.whipA,c))
+
+                                for(let i in this.windWhipTrails){
+
+                                    let t=this.windWhipTrails[i]
+
+                                    let y=MATH.random(-0.01,0.01)+0.5,s=MATH.random(-0.5,0.5),l=MATH.random(0.8,1)
+
+                                    t.speed=MATH.random(10,14)
+
+                                    t.pos=vec3.add([],this.whipA,[c[0]*s,y,c[2]*s])
+                                    t.target=vec3.add([],vec3.add([],this.whipB,[c[0]*s,y,c[2]*s]),[dir[0]*l,0,dir[2]*l])
+                                }
+                            }
+                        }
+
+                    } else if(this.attackState===undefined){
+                        
+                        vec2.normalize(d,d)
+                        
+                        this.pos[0]+=d[0]*dt*6
+                        this.pos[2]+=d[1]*dt*6
+
+                        meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1.5,d[0],0,d[1],BEE_FLY,beeInfo.windy.u,beeInfo.windy.v,beeInfo.windy.meshPartId)
+                    }
+
+                    if(this.nextAttackTimer<=0){
+
+                        if(!this.skipAttack&&!this.attackState)this.tornados.push({pos:[...this.pos,0],timer:0,timeAtArrival:-1})
+
+                        this.skipAttack=false
+
+                        this.target=[fieldInfo[this.field].x+((Math.random()*fieldInfo[this.field].width)|0),fieldInfo[this.field].z+((Math.random()*fieldInfo[this.field].length)|0)]
+                        this.attackState=undefined
+                        this.nextAttackTimer=Infinity
+                    }
+
+                    if(this.attackState===0){
+
+                        this.nextAttackTimer-=dt
+
+                        meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1.5,Math.sin(TIME*8),0,Math.cos(TIME*8),BEE_FLY,beeInfo.windy.u,beeInfo.windy.v,beeInfo.windy.meshPartId)
+
+                    } else if(this.attackState===1){
+                        
+                        this.nextAttackTimer-=dt
+
+                        meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1.5,player.body.position.x-this.pos[0],player.body.position.y-this.pos[1],player.body.position.z-this.pos[2],BEE_FLY,beeInfo.windy.u,beeInfo.windy.v,beeInfo.windy.meshPartId)
+                    }
+
+                    if(this.windWhipTimer>-0.25){
+
+                        this.windWhipTimer-=dt
+
+                        if(this.windWhipTimer<=0.25){
+
+                            for(let i in this.windWhipTrails){
+
+                                let t=this.windWhipTrails[i]
+
+                                vec3.lerp(t.pos,t.pos,t.target,dt*t.speed)
+
+                                t.trail.addPos(t.pos.slice())
+                            }
+                        }
+
+                        if(this.windWhipTimer<=-0.25){
+
+                            for(let i in this.windWhipTrails){
+
+                                let t=this.windWhipTrails[i]
+
+                                t.trail.addPos([])
+                                t.trail.addPos([])
+                                t.trail.addPos([])
+                                t.trail.addPos([])
+                                t.trail.addPos([])
+                                t.trail.addPos([])
+                                t.trail.addPos([])
+                            }
+
+                            let p=MATH.closestPointOnLine(this.whipA,this.whipB,[player.body.position.x,this.pos[1]-1.9,player.body.position.z])
+
+                            let d=vec3.sqrDist(p,[player.body.position.x,this.pos[1]-1.9,player.body.position.z])
+
+                            if(d<4){
+
+                                player.damage(15)
+                                let dir=vec3.sub([],this.whipB,this.whipA)
+                                vec3.normalize(dir,dir)
+                                player.body.position.y+=0.5
+                                player.body.velocity.x=dir[0]*50
+                                player.body.velocity.y=(4-d)*5+5
+                                player.body.velocity.z=dir[2]*50
+                                player.removeAirFrictionUntilGrounded=true
+                                player.isGliding=false
+                                player.grounded=false
+                                player.updateGear()
+                            }
+
+                            this.whipWarning.addPos([])
+                            this.whipWarning.addPos([])
+                            this.whipWarning.addPos([])
+                            this.whipWarning.addPos([])
+                            this.whipWarning.addPos([])
+                        }
+                    }
+
+                    let m=TIME*2
+                    m=m-(m|0)<0.5?'tornado_red':'tornado'
+
+                    gl.bindBuffer(gl.ARRAY_BUFFER,meshes[m].vertBuffer)
+                    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes[m].indexBuffer)
+                    gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
+                    gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
+                    gl.uniform2f(glCache.mob_instanceInfo2,0.6,0.7)
+
+                    for(let i=this.tornados.length;i--;){
+
+                        let s=this.tornados[i]
+
+                        s.timer-=dt
+                        s.pos[3]+=dt*15
+
+                        if(!s.rised){
+
+                            if(!s.init){
+
+                                s.y=s.pos[1]-1
+                                s.pos[1]-=15
+                                s.init=true
+                            }
+
+                            s.pos[1]+=(s.y-s.pos[1])*dt*5
+                            
+                            if(Math.abs(s.y-s.pos[1])<0.1){
+                                
+                                s.rised=true
+                                s.pos[1]=s.y
+                            }
+                        }
+
+                        if(TIME>s.timeAtArrival){
+
+                            s.target=[fieldInfo[this.field].x+((Math.random()*fieldInfo[this.field].width)|0),fieldInfo[this.field].z+((Math.random()*fieldInfo[this.field].length)|0)]
+
+                            let d=[s.target[0]-s.pos[0],s.target[1]-s.pos[2]],m=vec2.len(d)
+                            d[0]*=7/m
+                            d[1]*=7/m
+                            s.moveDir=d
+                            s.timeAtArrival=TIME+(m/7)
+                        }
+
+                        s.pos[0]+=s.moveDir[0]*dt
+                        s.pos[2]+=s.moveDir[1]*dt
+
+                        if(s.timer<=0){
+
+                            if(Math.abs(player.body.position.x-s.pos[0])+Math.abs(player.body.position.z-s.pos[2])+Math.abs(s.pos[1]-player.body.position.y-1)<2.5){
+
+                                s.timer=0.5
+                                player.damage(this.level*0.25+5)
+                            }
+
+                            collectPollen({x:Math.round(s.pos[0]-fieldInfo[this.field].x),z:Math.round(s.pos[2]-fieldInfo[this.field].z),field:this.field,pattern:[[-4,0],[-3,-2],[-3,-1],[-3,0],[-3,1],[-3,2],[-2,-3],[-2,-2],[-2,-1],[-2,0],[-2,1],[-2,2],[-2,3],[-1,-3],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[-1,3],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[0,1],[0,2],[0,3],[0,4],[1,-3],[1,-2],[1,-1],[1,0],[1,1],[1,2],[1,3],[2,-3],[2,-2],[2,-1],[2,0],[2,1],[2,2],[2,3],[3,-2],[3,-1],[3,0],[3,1],[3,2],[4,0]],amount:0.35,multiplier:0.00000000001})
+                        }
+
+                        s.pos[1]-=1
+                        gl.uniform4fv(glCache.mob_instanceInfo1,s.pos)
+                        s.pos[1]+=1
+                        gl.drawElements(gl.TRIANGLES,meshes[m].indexAmount,gl.UNSIGNED_SHORT,0)
+                    }
+                    
+                } else {
+
+                    meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1.5,Math.random()-0.5,Math.random()-0.5,Math.random()-0.5,BEE_FLY,beeInfo.windy.u,beeInfo.windy.v,beeInfo.windy.meshPartId)
+
+                    textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV.smiley,0.75,0,0,-2,-2,0)
+                }
+                
+                this.pos[1]+=1.25
+                textRenderer.addCTX('Wild Windy Bee (Level '+this.level+')',[this.pos[0],this.pos[1]+0.9,this.pos[2]],COLORS.whiteArr,100)
+                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,1.5,...textRenderer.decalUV['rect'],0.61*0.5,0.42*0.5,0.27*0.5,2.5,0.4,0)
+                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.timeLimit/this.maxTimeLimit)*0.5)/(this.timeLimit/this.maxTimeLimit),1.5,...textRenderer.decalUV['rect'],0.61,0.42,0.27,this.timeLimit*2.5/this.maxTimeLimit,0.4,0)
+                
+                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV['rect'],0.6,0,0,2.5,0.4,0)
+                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.health/this.maxHealth)*0.5)/(this.health/this.maxHealth),0,...textRenderer.decalUV['rect'],0.2,0.85,0.2,this.health*2.5/this.maxHealth,0.4,0)
+                
+                textRenderer.addSingle('HP: '+MATH.addCommas((this.health|0)+''),this.pos,COLORS.whiteArr,-1,false,false)
+                textRenderer.addSingle('Time: '+MATH.doTime((this.timeLimit|0)+''),this.pos,COLORS.whiteArr,-1,false,false,0,0.6)
+                this.pos[1]-=1.25
+
+            break
+        }
+    }
+}
+
+class Mechsquito {
+    
+    constructor(field,level,isMega){
+        
+        this.mega=isMega?'megaMechsquito':'mechsquito'
+        this.isMega=isMega
+        this.field=field
+        this.state='attack'
+        this.starSawHitTimer=0
+        this.level=level
+        this.health=(level-1)*750+250
+
+        if(isMega) this.health=this.health*1.5+500
+
+        this.maxHealth=this.health
+        this.pos=[fieldInfo[this.field].x+Math.random()*fieldInfo[this.field].width,fieldInfo[this.field].y+4,fieldInfo[this.field].z+Math.random()*fieldInfo[this.field].length]
+        this.checkTimer=TIME
+        this.flameTimer=0
+        this.waitTimer=0
+        this.target=[this.pos[0],this.pos[2]]
+        this.damageTimer=0
+        this.bodySize=1.5
+        this.runningAmount=0
+        this.mindHacked=0
+
+        this.bullets=[]
+        this.bulletTrail1=new TrailRenderer.ConstantTrail({length:2,size:0.1,color:[0,1,0]})
+        this.bulletTrail2=new TrailRenderer.ConstantTrail({length:2,size:0.1,color:[0,1,0],vertical:true})
+    }
+    
+    die(index){
+        
+        objects.mobs.splice(index,1)
+    }
+    
+    damage(am){
+        
+        let crit=Math.random()<player.criticalChance,superCrit=Math.random()<player.superCritChance,d=am*(crit?superCrit?player.superCritPower*player.criticalPower:player.criticalPower:1)
+        
+        if(this.mindHacked>0)
+            d*=1.25
+
+        this.health-=d|0
+        textRenderer.add((d|0)+'',[this.pos[0],this.pos[1]+Math.random()*2.75+1.5,this.pos[2]],[255,0,0],crit?superCrit?2:1:0,'',[0,1.25,1.275,1.3,1.65,1.75][Math.min(d.toString().length),5])
+        
+    }
+    
+    update(){
+        
+        switch(this.state){
+            
+            case 'attack':
+                
+                if(this.health<=0){
+                    
+                    player.stats.mechsquito++
+                    
+                    return true
+                }
+                
+                this.mindHacked-=dt
+                this.timeLimit-=dt
+                this.starSawHitTimer-=dt
+                this.flameTimer-=dt
+                
+                if(this.flameTimer<=0){
+                    
+                    this.flameTimer=1
+                    
+                    for(let f in objects.flames){
+                        
+                        if(Math.abs(this.pos[0]-objects.flames[f].pos[0])+Math.abs(this.pos[2]-objects.flames[f].pos[2])<this.bodySize){
+                            
+                            this.damage(objects.flames[f].dark?25:15)
+                        }
+                    }
+                }
+                
+                if(player.fieldIn===this.field){
+                    
+                    player.attacked.push(this)
+                }
+                
+                if(this.mindHacked<=0){
+
+                    let d=[this.target[0]-this.pos[0],this.target[1]-this.pos[2]]
+
+                    if(Math.abs(d[0])+Math.abs(d[1])<0.75){
+                        
+                        this.target=[fieldInfo[this.field].x+Math.random()*fieldInfo[this.field].width,fieldInfo[this.field].z+Math.random()*fieldInfo[this.field].length]
+                        d=[this.target[0]-this.pos[0],this.target[1]-this.pos[2]]
+
+                        this.runningAmount--
+
+                        if(this.runningAmount<=0){
+                            
+                            this.waitTimer=1
+                            this.runningAmount=3
+
+                            let DIS=this,t
+
+                            window.setTimeout(function(){
+
+                                t=[player.body.position.x-DIS.pos[0],player.body.position.y-DIS.pos[1],player.body.position.z-DIS.pos[2]]
+
+                            },450)
+
+                            window.setTimeout(function(){
+                                    
+                                vec3.normalize(t,t)
+                                vec3.scale(t,t,35)
+
+                                if(DIS.isMega){
+
+                                    for(let i=0;i<6;i++){
+
+                                        let _t=[t[0]+MATH.random(-5,5),t[1]+MATH.random(-5,5),t[2]+MATH.random(-5,5)]
+
+                                        DIS.bullets.push({pos:DIS.pos.slice(),vel:_t,life:0.5})
+                                        
+                                        ParticleRenderer.add({x:DIS.pos[0],y:DIS.pos[1],z:DIS.pos[2],vx:_t[0],vy:_t[1],vz:_t[2],grav:0,size:100,col:[0,1,0],life:0.5,rotVel:MATH.random(-15,15),alpha:1000})
+                                    }
+
+                                } else {
+
+                                    DIS.bullets.push({pos:DIS.pos.slice(),vel:t,life:0.5})
+                                    
+                                    ParticleRenderer.add({x:DIS.pos[0],y:DIS.pos[1],z:DIS.pos[2],vx:t[0],vy:t[1],vz:t[2],grav:0,size:200,col:[0,1,0],life:0.5,rotVel:MATH.random(-15,15),alpha:1000})
+
+                                }
+
+                            },600)
+                        }
+                    }
+                    
+                    vec2.normalize(d,d)
+                    
+                    this.running=false
+                    this.waitTimer-=dt
+                    
+                    if(this.waitTimer<=0){
+                        
+                        this.pos[0]+=d[0]*dt*6
+                        this.pos[2]+=d[1]*dt*6
+                        this.running=true
+                    }
+                    
+                    this.damageTimer-=dt
+                    
+                    if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1]-2.5)+Math.abs(player.body.position.z-this.pos[2])<this.bodySize&&this.damageTimer<=0){
+                        
+                        player.damage(20)
+                        this.damageTimer=1
+                    }
+
+                    this.pos[3]=Math.atan2(d[1],d[0])+MATH.HALF_PI+Math.sin(TIME*40)*0.1+(!this.running?TIME*10:0)
+
+                    for(let i in this.bullets){
+                    
+                        this.bullets[i].life-=dt
+
+                        vec3.scaleAndAdd(this.bullets[i].pos,this.bullets[i].pos,this.bullets[i].vel,dt)
+
+                        if(Math.abs(this.bullets[i].pos[0]-player.body.position.x)+Math.abs(this.bullets[i].pos[1]-player.body.position.y)+Math.abs(this.bullets[i].pos[2]-player.body.position.z)<2){
+
+                            player.damage(7)
+                            this.bullets[i].damaged=true
+                        }
+
+                        if(this.bullets[i].life<=0||this.bullets[i].damaged) this.bullets.splice(i,1)
+                    }
+
+                } else {
+
+                    this.pos[3]=Math.random()*6.2
+                    textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV.smiley,0.75,0,0,-2,-2,0)
+                }
+                
+                this.pos[1]+=1
+                textRenderer.addCTX(MATH.doGrammar(this.mega)+' (Level '+this.level+')',[this.pos[0],this.pos[1]+0.4,this.pos[2]],COLORS.whiteArr,100)
+                
+                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV['rect'],0.6,0,0,2.5,0.4,0)
+                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.health/this.maxHealth)*0.5)/(this.health/this.maxHealth),0,...textRenderer.decalUV['rect'],0.2,0.85,0.2,this.health*2.5/this.maxHealth,0.4,0)
+                
+                textRenderer.addSingle('HP: '+MATH.addCommas((this.health|0)+''),this.pos,COLORS.whiteArr,-1,false,false)
+            
+                this.pos[1]-=1
+                
+                gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
+                gl.uniform2f(glCache.mob_instanceInfo2,this.isMega?1.25:0.8,1)
+                gl.bindBuffer(gl.ARRAY_BUFFER,meshes[this.mega].vertBuffer)
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes[this.mega].indexBuffer)
+                gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
+                gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
+                gl.drawElements(gl.TRIANGLES,meshes[this.mega].indexAmount,gl.UNSIGNED_SHORT,0)
+                
+            break
+            
+        }
+        
+    }
+}
+
+class Cogmower {
+    
+    constructor(field,level,isGold){
+        
+        this.gold=isGold?'goldenCogmower':'cogmower'
+        this.isGold=isGold
+        this.field=field
+        this.state='attack'
+        this.starSawHitTimer=0
+        this.level=level
+        this.health=(level-1)*850+1000
+
+        if(isGold) this.health=this.health*1.5+1500
+
+        this.maxHealth=this.health
+        this.pos=[fieldInfo[this.field].x+Math.random()*fieldInfo[this.field].width,fieldInfo[this.field].y+0.75,fieldInfo[this.field].z+Math.random()*fieldInfo[this.field].length]
+
+        this.moveDir=[Math.random()-0.5,Math.random()-0.5]
+        vec2.normalize(this.moveDir,this.moveDir)
+        vec2.scale(this.moveDir,this.moveDir,4)
+
+        this.checkTimer=TIME
+        this.flameTimer=0
+        this.waitTimer=0
+        this.damageTimer=0
+        this.bodySize=1.5
+        this.mindHacked=0
+
+        let r=1
+
+        this.bounds={
+            
+            minX:fieldInfo[this.field].x+r-0.5,
+            maxX:fieldInfo[this.field].x+fieldInfo[this.field].width-r-0.5,
+            minZ:fieldInfo[this.field].z+r-0.5,
+            maxZ:fieldInfo[this.field].z+fieldInfo[this.field].length-r-0.5,
+        }
+    }
+    
+    die(index){
+        
+        objects.mobs.splice(index,1)
+    }
+    
+    damage(am){
+        
+        let crit=Math.random()<player.criticalChance,superCrit=Math.random()<player.superCritChance,d=am*(crit?superCrit?player.superCritPower*player.criticalPower:player.criticalPower:1)
+        
+        if(this.mindHacked>0)
+            d*=1.25
+
+        this.health-=d|0
+        textRenderer.add((d|0)+'',[this.pos[0],this.pos[1]+Math.random()*2.75+1.5,this.pos[2]],[255,0,0],crit?superCrit?2:1:0,'',[0,1.25,1.275,1.3,1.65,1.75][Math.min(d.toString().length),5])
+        
+    }
+    
+    update(){
+        
+        switch(this.state){
+            
+            case 'attack':
+                
+                if(this.health<=0){
+                    
+                    player.stats.mechsquito++
+                    
+                    return true
+                }
+                
+                this.mindHacked-=dt
+                this.timeLimit-=dt
+                this.starSawHitTimer-=dt
+                this.flameTimer-=dt
+                
+                if(this.flameTimer<=0){
+                    
+                    this.flameTimer=1
+                    
+                    for(let f in objects.flames){
+                        
+                        if(Math.abs(this.pos[0]-objects.flames[f].pos[0])+Math.abs(this.pos[2]-objects.flames[f].pos[2])<this.bodySize){
+                            
+                            this.damage(objects.flames[f].dark?25:15)
+                        }
+                    }
+                }
+                
+                if(player.fieldIn===this.field){
+                    
+                    player.attacked.push(this)
+                }
+                
+                if(this.mindHacked<=0){
+
+                    this.pos[0]+=this.moveDir[0]*dt
+                    this.pos[2]+=this.moveDir[1]*dt
+
+                    if(this.pos[0]<=this.bounds.minX){
+                        
+                        this.pos[0]=this.bounds.minX
+                        this.moveDir[0]=-this.moveDir[0]
+                    }
+                    
+                    if(this.pos[0]>=this.bounds.maxX){
+                        
+                        this.pos[0]=this.bounds.maxX
+                        this.moveDir[0]=-this.moveDir[0]
+                    }
+                    
+                    if(this.pos[2]<=this.bounds.minZ){
+                        
+                        this.pos[2]=this.bounds.minZ
+                        this.moveDir[1]=-this.moveDir[1]
+                    }
+                    
+                    if(this.pos[2]>=this.bounds.maxZ){
+                        
+                        this.pos[2]=this.bounds.maxZ
+                        this.moveDir[1]=-this.moveDir[1]
+                    }
+
+                    this.damageTimer-=dt
+
+                    if(this.damageTimer<=0){
+                        
+                        if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1])+Math.abs(player.body.position.z-this.pos[2])<this.bodySize) player.damage(15+(this.level-1))
+
+                        this.damageTimer=0.5
+
+                        collectPollen({x:Math.round(this.pos[0]-fieldInfo[this.field].x),z:Math.round(this.pos[2]-fieldInfo[this.field].z),field:this.field,pattern:[[0,0],[1,1],[1,-1],[-1,1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]],amount:30+this.level,multiplier:0.00000000001})
+                    }
+
+                    this.pos[3]=TIME*7
+
+                } else {
+
+                    this.pos[3]=Math.random()*6.2
+                    textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV.smiley,0.75,0,0,-2,-2,0)
+                }
+                
+                this.pos[1]+=1
+                textRenderer.addCTX(MATH.doGrammar(this.gold)+' (Level '+this.level+')',[this.pos[0],this.pos[1]+0.4,this.pos[2]],COLORS.whiteArr,100)
+                
+                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV['rect'],0.6,0,0,2.5,0.4,0)
+                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.health/this.maxHealth)*0.5)/(this.health/this.maxHealth),0,...textRenderer.decalUV['rect'],0.2,0.85,0.2,this.health*2.5/this.maxHealth,0.4,0)
+                
+                textRenderer.addSingle('HP: '+MATH.addCommas((this.health|0)+''),this.pos,COLORS.whiteArr,-1,false,false)
+            
+                this.pos[1]-=1
+                
+                gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
+                gl.uniform2f(glCache.mob_instanceInfo2,1,1)
+                gl.bindBuffer(gl.ARRAY_BUFFER,meshes[this.gold].vertBuffer)
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes[this.gold].indexBuffer)
+                gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
+                gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
+                gl.drawElements(gl.TRIANGLES,meshes[this.gold].indexAmount,gl.UNSIGNED_SHORT,0)
+                
+            break
+            
+        }
+        
+    }
+}
+
+class CogTurret {
+    
+    constructor(field,level,side){
+
+        this.side=side
+        this.field=field
+        this.state='attack'
+        this.starSawHitTimer=0
+        this.level=level
+        this.health=(level-1)*750+750
+        this.maxHealth=this.health
+
+        switch(this.side){
+
+            case 0:
+
+                this.pos=[fieldInfo[this.field].x+Math.random()*fieldInfo[this.field].width,fieldInfo[this.field].y+1,fieldInfo[this.field].z-0.5,-MATH.HALF_PI]
+                this.constraintAxis=0
+                this.constraintRange=[fieldInfo[this.field].x-0.5,fieldInfo[this.field].x+fieldInfo[this.field].width-0.5]
+
+            break
+
+            case 1:
+
+                this.pos=[fieldInfo[this.field].x+Math.random()*fieldInfo[this.field].width,fieldInfo[this.field].y+1,fieldInfo[this.field].z+fieldInfo[this.field].length-0.5,MATH.HALF_PI]
+                this.constraintAxis=0
+                this.constraintRange=[fieldInfo[this.field].x-0.5,fieldInfo[this.field].x+fieldInfo[this.field].width-0.5]
+
+            break
+
+            case 2:
+
+                this.pos=[fieldInfo[this.field].x-0.5,fieldInfo[this.field].y+1,fieldInfo[this.field].z+Math.random()*fieldInfo[this.field].length,Math.PI]
+                this.constraintAxis=2
+                this.constraintRange=[fieldInfo[this.field].z-0.5,fieldInfo[this.field].z+fieldInfo[this.field].length-0.5]
+
+            break
+
+            case 3:
+
+                this.pos=[fieldInfo[this.field].x+fieldInfo[this.field].width-0.5,fieldInfo[this.field].y+1,fieldInfo[this.field].z+Math.random()*fieldInfo[this.field].length,0]
+                this.constraintAxis=2
+                this.constraintRange=[fieldInfo[this.field].z,fieldInfo[this.field].z+fieldInfo[this.field].length]
+
+            break
+        }
+        
+        this.checkTimer=TIME
+        this.flameTimer=0
+        this.waitTimer=0
+        this.damageTimer=0
+        this.bodySize=1.5
+        this.mindHacked=0
+
+        this.cogs=[]
+        this.cogFireTimer=2
+    }
+    
+    die(index){
+        
+        objects.mobs.splice(index,1)
+    }
+    
+    damage(am){
+        
+        let crit=Math.random()<player.criticalChance,superCrit=Math.random()<player.superCritChance,d=am*(crit?superCrit?player.superCritPower*player.criticalPower:player.criticalPower:1)
+        
+        if(this.mindHacked>0)
+            d*=1.25
+
+        this.health-=d|0
+        textRenderer.add((d|0)+'',[this.pos[0],this.pos[1]+Math.random()*2.75+1.5,this.pos[2]],[255,0,0],crit?superCrit?2:1:0,'',[0,1.25,1.275,1.3,1.65,1.75][Math.min(d.toString().length),5])
+        
+    }
+    
+    update(){
+        
+        switch(this.state){
+            
+            case 'attack':
+                
+                if(this.health<=0){
+                    
+                    player.stats.mechsquito++
+                    
+                    return true
+                }
+                
+                this.mindHacked-=dt
+                this.timeLimit-=dt
+                this.starSawHitTimer-=dt
+                this.flameTimer-=dt
+                
+                if(this.flameTimer<=0){
+                    
+                    this.flameTimer=1
+                    
+                    for(let f in objects.flames){
+                        
+                        if(Math.abs(this.pos[0]-objects.flames[f].pos[0])+Math.abs(this.pos[2]-objects.flames[f].pos[2])<this.bodySize){
+                            
+                            this.damage(objects.flames[f].dark?25:15)
+                        }
+                    }
+                }
+                
+                if(player.fieldIn===this.field){
+                    
+                    player.attacked.push(this)
+                }
+                
+                if(this.mindHacked<=0){
+
+                    this.cogFireTimer-=dt
+
+                    if(player.fieldIn===this.field){
+
+                        if(this.cogFireTimer<=0){
+
+                            let v=[0,0,0]
+
+                            v[2-this.constraintAxis]=Math.sign(player.body.position[this.constraintAxis?'x':'z']-this.pos[2-this.constraintAxis])*8
+
+                            this.cogs.push({pos:[this.pos[0],this.pos[1]-0.75,this.pos[2],0],vel:v,timer:0,deathY:this.pos[1]-3})
+
+                            this.cogFireTimer=2
+                        }
+
+                        this.desiredPos=MATH.constrain(player.body.position[this.constraintAxis?'z':'x'],this.constraintRange[0],this.constraintRange[1])
+
+                        this.pos[this.constraintAxis]+=(this.desiredPos-this.pos[this.constraintAxis])*dt*5
+                    }
+                    
+
+                    this.damageTimer-=dt
+
+                    if(this.damageTimer<=0&&Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1])+Math.abs(player.body.position.z-this.pos[2])<this.bodySize){
+                        
+                        player.damage(20+(this.level-1))
+                        this.damageTimer=0.5
+                    }
+
+                } else {
+
+                    textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV.smiley,0.75,0,0,-2,-2,0)
+                }
+                
+                this.pos[1]+=1
+                textRenderer.addCTX('Cogturret (Level '+this.level+')',[this.pos[0],this.pos[1]+0.4,this.pos[2]],COLORS.whiteArr,100)
+                
+                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV['rect'],0.6,0,0,2.5,0.4,0)
+                textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.health/this.maxHealth)*0.5)/(this.health/this.maxHealth),0,...textRenderer.decalUV['rect'],0.2,0.85,0.2,this.health*2.5/this.maxHealth,0.4,0)
+                
+                textRenderer.addSingle('HP: '+MATH.addCommas((this.health|0)+''),this.pos,COLORS.whiteArr,-1,false,false)
+            
+                this.pos[1]-=1
+                
+                gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
+                gl.uniform2f(glCache.mob_instanceInfo2,1,1)
+                gl.bindBuffer(gl.ARRAY_BUFFER,meshes.cogTurret.vertBuffer)
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.cogTurret.indexBuffer)
+                gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
+                gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
+                gl.drawElements(gl.TRIANGLES,meshes.cogTurret.indexAmount,gl.UNSIGNED_SHORT,0)
+                
+                gl.bindBuffer(gl.ARRAY_BUFFER,meshes.cog.vertBuffer)
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.cog.indexBuffer)
+                gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
+                gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
+                gl.uniform2f(glCache.mob_instanceInfo2,0.6,1)
+
+                for(let i=this.cogs.length;i--;){
+
+                    let s=this.cogs[i]
+
+                    s.timer-=dt
+
+                    s.pos[0]+=s.vel[0]*dt
+                    s.pos[2]+=s.vel[2]*dt
+                    s.pos[3]+=dt*8
+
+                    s.fx=Math.round(s.pos[0]-fieldInfo[this.field].x)
+                    s.fz=Math.round(s.pos[2]-fieldInfo[this.field].z)
+
+                    if(s.fx<0||s.fx>=fieldInfo[this.field].width||s.fz<0||s.fz>=fieldInfo[this.field].length){
+
+                        s.pos[1]-=dt*10
+                    }
+
+                    if(s._fx!==s.fx||s._fz!==s.fz){
+
+                        collectPollen({x:Math.round(s.pos[0]-fieldInfo[this.field].x),z:Math.round(s.pos[2]-fieldInfo[this.field].z),field:this.field,pattern:[[0,0]],amount:1000,multiplier:0.00000000001})
+                    }
+
+                    s._fx=s.fx
+                    s._fz=s.fz
+
+
+                    if(Math.abs(player.body.position.x-s.pos[0])+Math.abs(player.body.position.z-s.pos[2])+Math.abs(s.pos[1]-player.body.position.y)<1.5&&s.timer<=0){
+
+                        s.timer=0.5
+                        player.damage(15)
+                    }
+
+                    gl.uniform4fv(glCache.mob_instanceInfo1,s.pos)
+                    gl.drawElements(gl.TRIANGLES,meshes.cog.indexAmount,gl.UNSIGNED_SHORT,0)
+
+                    if(s.pos[1]<s.deathY){
+
+                        this.cogs.splice(i,1)
+                    }
+                }
+                
+            break
+            
+        }
+        
+    }
+}
+
 class Ant {
     
     constructor(round,x,z,type){
@@ -10615,7 +12081,10 @@ class Ant {
                 
                 if(this.health<=0){
                     
-                    // player.stats.ant++
+                    player.stats.ant++
+
+                    if(this.type!=='ant')player.stats[this.type]++
+
                     return true
                 }
                 
@@ -11092,7 +12561,7 @@ class StarSaw {
         gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
         gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
         
-        let theta=TIME*3,dx=Math.sin(theta)*4,dz=Math.cos(theta)*4
+        let theta=TIME*3.5,dx=Math.sin(theta)*4,dz=Math.cos(theta)*4
         
         let p=[player.body.position.x+dx,player.body.position.y+0.1,player.body.position.z+dz,TIME*10]
         
@@ -11701,7 +13170,7 @@ class GummyBall {
         gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
         gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
         gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
-        gl.uniform2f(glCache.mob_instanceInfo2,this.rad*2,this.life)
+        gl.uniform2f(glCache.mob_instanceInfo2,this.rad*2,this.life*0.5)
         gl.drawElements(gl.TRIANGLES,meshes.gummyBall.indexAmount,gl.UNSIGNED_SHORT,0)
         
         textRenderer.addSingle('x'+MATH.addCommas(this.amount+''),this.pos,COLORS.whiteArr,-3,true,false)
@@ -11744,12 +13213,18 @@ class Coconut {
         
         let hpt=Math.ceil(Math.min(player.convertTotal,player.pollen)/5)
         
-        if(hpt&&vec3.sqrDist(this.pos,[player.body.position.x,player.body.position.y,player.body.position.z])<=this.displaySize){
-            player.pollen-=Math.ceil(Math.min(player.convertTotal,player.pollen))
-            
-            for(let i=0;i<MATH.TWO_PI;i+=MATH.TWO_PI/5){
+        if(vec3.sqrDist(this.pos,[player.body.position.x,player.body.position.y,player.body.position.z])<=this.displaySize){
+
+            player.stats.fallingCoconuts++
+
+            if(hpt){
+
+                player.pollen-=Math.ceil(Math.min(player.convertTotal,player.pollen))
                 
-                objects.tokens.push(new LootToken(30,[this.pos[0]+Math.cos(i)*this.displaySize*0.6,fieldInfo[this.field].y+1,this.pos[2]+Math.sin(i)*this.displaySize*0.6],'honey',Math.ceil(hpt),true,'Coconut'))
+                for(let i=0;i<MATH.TWO_PI;i+=MATH.TWO_PI/5){
+                    
+                    objects.tokens.push(new LootToken(30,[this.pos[0]+Math.cos(i)*this.displaySize*0.6,fieldInfo[this.field].y+1,this.pos[2]+Math.sin(i)*this.displaySize*0.6],'honey',Math.ceil(hpt),true,'Coconut'))
+                }
             }
         }
 
@@ -11856,8 +13331,15 @@ class DrainingDiamond {
 
 class Cloud {
     
-    constructor(field,x,z,life){
+    constructor(field,x,z,life,windyBee){
         
+        this.windyBee=windyBee
+
+        if(windyBee){
+
+            this.trails=[new TrailRenderer.ConstantTrail({length:9,size:0.4,color:[0.5,0.5,0.5,0.6]}),new TrailRenderer.ConstantTrail({length:9,size:0.4,color:[0.5,0.5,0.5,0.6],vertical:true})]
+        }
+
         this.life=life
         this.field=field
         this.x=x
@@ -11866,7 +13348,8 @@ class Cloud {
         this._z=z
         this.moveTo=[fieldInfo[this.field].x+this.x,fieldInfo[this.field].z+this.z]
         this.moveDir=[0,0]
-        this.pos=[fieldInfo[this.field].x+this.x,fieldInfo[this.field].y+0.55+4,fieldInfo[this.field].z+this.z]
+        this.y=fieldInfo[this.field].y+0.55+4
+        this.pos=[fieldInfo[this.field].x+this.x,this.y-10,fieldInfo[this.field].z+this.z]
         
         this.flowers=[]
         this.timer=0
@@ -11887,10 +13370,21 @@ class Cloud {
     
     die(index){
         
+        if(this.windyBee){
+
+            this.trails[0].splice=true
+            this.trails[1].splice=true
+        }
+
         objects.mobs.splice(index,1)
     }
     
     update(){
+
+        if(this.pos[1]-0.1<this.y){
+
+            this.pos[1]+=(this.y-this.pos[1])*dt*5
+        }
         
         this.life-=dt
         
@@ -11930,6 +13424,14 @@ class Cloud {
             if(vec3.sqrDist(this.pos,[player.body.position.x,player.body.position.y+4,player.body.position.z])<=6.25){
                 
                 player.addEffect('cloudBoost',0.1)
+
+                if(this.windyBee){
+
+                    objects.mobs.push(new WildWindyBee(this.field,this.pos.slice()))
+                    this.trails[0].splice=true
+                    this.trails[1].splice=true
+                    this.windyBee=false
+                }
             }
         }
         
@@ -11942,11 +13444,30 @@ class Cloud {
         
         if(Math.abs(this.pos[0]-this.moveTo[0])+Math.abs(this.pos[2]-this.moveTo[1])<1){
             
+            this.flowerTo=this.moveTo.slice()
+
+            this.flowerTo[0]-=fieldInfo[this.field].x
+            this.flowerTo[1]-=fieldInfo[this.field].z
+
             this.moveTo=[fieldInfo[this.field].x+((Math.random()*fieldInfo[this.field].width)|0),fieldInfo[this.field].z+((Math.random()*fieldInfo[this.field].length)|0)]
             
             this.moveDir=[this.moveTo[0]-this.pos[0],this.moveTo[1]-this.pos[2]]
             
             vec2.normalize(this.moveDir,this.moveDir)
+
+            if(this.windyBee)vec3.scale(this.moveDir,this.moveDir,1.25)
+
+        }
+
+        if(this.windyBee){
+
+            meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1.5,this.moveDir[0],0,this.moveDir[1],BEE_FLY,beeInfo.windy.u,beeInfo.windy.v,beeInfo.windy.meshPartId)
+            
+            if(!(frameCount%12)){
+
+                this.trails[0].addPos(this.pos.slice())
+                this.trails[1].addPos(this.pos.slice())
+            }
         }
         
         return this.life<=0
@@ -12175,7 +13696,7 @@ class Planter {
 
     beeSipped(bee){
 
-        this.growth+=bee.gatherAmount*0.025+3
+        this.growth+=bee.gatherAmount*0.025+2
         player.addEffect(fieldInfo[this.field].nectarType,(bee.planterSipTime*4)/(6*60*60))
     }
     
@@ -12249,13 +13770,18 @@ class Planter {
             break
         }
 
-        player.addEffect(fieldInfo[this.field].nectarType,(this.maxGrowth*perc*perc*1.85*nectarBonus[fieldInfo[this.field].nectarType.replace('Nectar','')])/(6*60*60))
+        let seconds=(this.maxGrowth*perc*perc*1.95*nectarBonus[fieldInfo[this.field].nectarType.replace('Nectar','')])
+
+        player.addEffect(fieldInfo[this.field].nectarType,seconds/(6*60*60))
+
+        
+        player.stats['hoursOf'+MATH.doGrammar(fieldInfo[this.field].nectarType).replace(' ','')]+=seconds/(60*60)
         
         let amountOfTokens=Math.ceil({paper:9,plastic:13,candy:16,redClay:19,blueClay:19,tacky:22,pesticide:25,petal:27,plenty:30}[this.type]*perc*perc),dropTable=[],dropRates={}
 
         for(let i in items){
 
-            if(i.toLowerCase().indexOf('egg')>-1)
+            if(i.toLowerCase().indexOf('egg')>-1||i.toLowerCase().indexOf('pass')>-1||i.toLowerCase().indexOf('drive')>-1||i.toLowerCase().indexOf('vial')>-1)
                 continue
             
             dropTable.push(i)
@@ -12264,6 +13790,8 @@ class Planter {
 
         dropTable.splice(dropTable.indexOf('smoothDice'),1)
         dropTable.splice(dropTable.indexOf('loadedDice'),1)
+        dropTable.splice(dropTable.indexOf('moonCharm'),1)
+        dropTable.splice(dropTable.indexOf('turpentine'),1)
 
         if(this.field!=='CoconutField'){
                 
@@ -12404,6 +13932,7 @@ class Planter {
             dropTable.splice(dropTable.indexOf('blueExtract'),1)
             dropTable.push('smoothDice')
             dropTable.push('loadedDice')
+            dropTable.push('turpentine')
         }
 
         if(this.type==='plenty'){
@@ -12430,6 +13959,7 @@ class Planter {
             dropRates.whirligig*=2
             dropTable.push('bitterberry')
             dropTable.push('neonberry')
+            dropTable.push('turpentine')
             dropTable.splice(dropTable.indexOf('treat'),1)
             dropTable.splice(dropTable.indexOf('strawberry'),1)
             dropTable.splice(dropTable.indexOf('blueberry'),1)
@@ -12452,6 +13982,11 @@ class Planter {
             dropRates.pineapple*=10
             dropRates.enzymes*=17
             dropRates.treats*=0.15
+        }
+
+        if(this.field==='PepperPatch'){
+
+            dropRates.sunflowerSeed*=10
         }
 
         if(this.field==='SunflowerField'){
@@ -12499,7 +14034,7 @@ class Planter {
 
             window.setTimeout(function(){
 
-                objects.tokens.push(new LootToken(45,[DIS.pos[0]+f[0],DIS.pos[1]+0.5,DIS.pos[2]+f[1]],it,MATH.random(1,(({paper:5,plastic:6,candy:7,redClay:8,blueClay:8,tacky:9,pesticide:9.5,petal:13,plenty:15}[DIS.type]*(perc*0.5+0.5))/items[it].value)+1)|0,true,MATH.doGrammar(DIS.type+'Planter')))
+                objects.tokens.push(new LootToken(45,[DIS.pos[0]+f[0],DIS.pos[1]+0.5,DIS.pos[2]+f[1]],it,MATH.random(1,(({paper:5,plastic:6,candy:7,redClay:8,blueClay:8,tacky:9,pesticide:9.5,petal:13,plenty:15}[DIS.type]*(perc*0.5+0.5))/items[it].value)+1)|0,true,'Planter'))
 
             },225*i)
             
@@ -12827,6 +14362,264 @@ class JellyBean {
         meshes.explosions.instanceData.push(...this.pos,...this.col,1,0.35,1)
 
         return this.pos[1]<=this.y
+    }
+}
+
+class Sprout {
+    
+    constructor(field,type){
+        
+        this.amount={basic:50000,rare:150000,epic:500000,legendary:1500000,supreme:3000000,gummy:750000,moon:100000}[type]
+
+        this.invAmount=1/this.amount
+        this.growth=1
+
+        this.pollenBefore=player.stats['pollenFrom'+field]+this.amount
+        this.type=type
+        this.field=field
+        this.pos=[fieldInfo[this.field].x+fieldInfo[this.field].width*0.5,fieldInfo[this.field].y+0.5,fieldInfo[this.field].z+fieldInfo[this.field].length*0.5,0]
+    }
+    
+    die(index){
+
+        let amountOfTokens={basic:60,rare:75,epic:95,legendary:120,supreme:150,gummy:90,moon:70}[this.type],dropTable=[],dropRates={}
+
+        for(let i in items){
+
+            if(i.toLowerCase().indexOf('egg')>-1||i.toLowerCase().indexOf('pass')>-1||i.toLowerCase().indexOf('drive')>-1||i.toLowerCase().indexOf('dice')>-1||i.toLowerCase().indexOf('wax')>-1||i.toLowerCase().indexOf('vial')>-1)
+                continue
+            
+            dropTable.push(i)
+            dropRates[i]=1/items[i].value
+        }
+
+        if(this.field!=='CoconutField'){
+                
+            dropTable.splice(dropTable.indexOf('coconut'),1)
+            dropTable.splice(dropTable.indexOf('tropicalDrink'),1)
+        }
+
+        dropTable.splice(dropTable.indexOf('stinger'),1)
+
+        if(this.field==='StumpField'){
+                
+            dropTable.splice(dropTable.indexOf('strawberry'),1)
+            dropTable.splice(dropTable.indexOf('redExtract'),1)
+        }
+
+        dropTable.splice(dropTable.indexOf('bitterberry'),1)
+        dropTable.splice(dropTable.indexOf('neonberry'),1)
+        dropTable.splice(dropTable.indexOf('whirligig'),1)
+        dropTable.splice(dropTable.indexOf('honeysuckle'),1)
+        dropTable.splice(dropTable.indexOf('microConverter'),1)
+        dropTable.splice(dropTable.indexOf('jellyBeans'),1)
+        dropTable.splice(dropTable.indexOf('purplePotion'),1)
+        dropTable.splice(dropTable.indexOf('superSmoothie'),1)
+
+        dropRates.strawberry*=fieldInfo[this.field].generalColorComp.r*3.5
+        dropRates.redExtract*=fieldInfo[this.field].generalColorComp.r*2
+        dropRates.pineapple*=fieldInfo[this.field].generalColorComp.w+0.2
+        dropRates.enzymes*=fieldInfo[this.field].generalColorComp.b*0.5+0.5
+        dropRates.sunflowerSeed*=fieldInfo[this.field].generalColorComp.w+0.2
+        dropRates.oil*=fieldInfo[this.field].generalColorComp.r*0.5+0.5
+        dropRates.treat*=fieldInfo[this.field].generalColorComp.w<0.5?0.3:1
+        dropRates.blueberry*=fieldInfo[this.field].generalColorComp.b*3.5
+        dropRates.blueExtract*=fieldInfo[this.field].generalColorComp.b*2
+
+        dropRates.royalJelly*=4
+        dropRates.ticket*=0.75
+
+        if(this.field==='PineapplePatch'){
+
+            dropRates.pineapple*=6
+            dropRates.enzymes*=8
+            dropRates.treats*=0.15
+        }
+
+        if(this.field==='PepperPatch'){
+
+            dropRates.sunflowerSeed*=6
+        }
+
+        if(this.field==='SunflowerField'){
+
+            dropRates.sunflowerSeed*=6
+            dropRates.oil*=8
+            dropRates.treats*=0.15
+        }
+
+        if(this.field==='CoconutField'){
+
+            dropRates.coconut*=7
+            dropRates.tropicalDrink*=7
+            dropRates.treats*=1.5
+        }
+
+        if(this.type==='basic'){
+
+            dropTable.splice(dropTable.indexOf('redExtract'),1)
+            dropTable.splice(dropTable.indexOf('blueExtract'),1)
+            dropTable.splice(dropTable.indexOf('oil'),1)
+            dropTable.splice(dropTable.indexOf('enzymes'),1)
+            dropTable.splice(dropTable.indexOf('glitter'),1)
+            dropTable.splice(dropTable.indexOf('magicBean'),1)
+            dropTable.splice(dropTable.indexOf('tropicalDrink'),1)
+        }
+
+        if(this.type==='rare'){
+
+            dropRates.royalJelly*=1.5
+            dropRates.redExtract*=3
+            dropRates.blueExtract*=3
+            dropRates.oil*=2 
+            dropRates.enzymes*=2 
+            dropRates.magicBean*=1.5       
+            dropRates.treats*=0.65
+
+            dropRates.pineapple*=0.85
+            dropRates.blueberry*=0.85
+            dropRates.strawberry*=0.85
+            dropRates.sunflowerSeed*=0.85
+        }
+
+        if(this.type==='epic'){
+
+            dropRates.royalJelly*=2
+            dropRates.redExtract*=4.5
+            dropRates.blueExtract*=4.5
+            dropRates.oil*=3.5
+            dropRates.enzymes*=3.5 
+            dropRates.magicBean*=2.5 
+            dropRates.tropicalDrink*=1.5 
+            dropRates.glitter*=1.5    
+            dropRates.treats*=0.35  
+
+            dropRates.pineapple*=0.65
+            dropRates.blueberry*=0.65
+            dropRates.strawberry*=0.65
+            dropRates.sunflowerSeed*=0.65
+        }
+
+        if(this.type==='legendary'){
+
+            dropRates.royalJelly*=2.5
+            dropRates.redExtract*=6
+            dropRates.blueExtract*=6
+            dropRates.oil*=4
+            dropRates.enzymes*=4 
+            dropRates.magicBean*=2.5 
+            dropRates.tropicalDrink*=2  
+            dropRates.glitter*=1.75   
+            dropRates.treats*=0.25     
+              
+            dropRates.pineapple*=0.4
+            dropRates.blueberry*=0.4
+            dropRates.strawberry*=0.4
+            dropRates.sunflowerSeed*=0.4
+        }
+
+        if(this.type==='supreme'){
+
+            dropRates.royalJelly*=3
+            dropRates.redExtract*=6
+            dropRates.blueExtract*=6 
+            dropRates.oil*=5
+            dropRates.enzymes*=5 
+            dropRates.magicBean*=3
+            dropRates.tropicalDrink*=2.5  
+            dropRates.glitter*=2
+            dropRates.treats*=0.15 
+
+            dropRates.pineapple*=0.25
+            dropRates.blueberry*=0.25
+            dropRates.strawberry*=0.25
+            dropRates.sunflowerSeed*=0.25
+        }
+
+        if(this.type==='gummy'){
+
+            dropTable=['gumdrops','glue']
+            dropRates.glue=8
+            dropRates.gumdrops=1
+
+        } else {
+
+            dropTable.splice(dropTable.indexOf('gumdrops'),1)
+            dropTable.splice(dropTable.indexOf('glue'),1)
+        }
+
+        if(this.type==='moon'){
+
+            dropTable=['treat','moonCharm']
+            dropRates.moonCharm=4
+            dropRates.treat=1
+
+        } else {
+
+            dropTable.splice(dropTable.indexOf('moonCharm'),1)
+        }
+
+        let totalChance=0
+
+        for(let i in dropTable){
+
+            totalChance+=dropRates[dropTable[i]]
+        }
+
+        for(let i in dropRates){
+
+            dropRates[i]/=totalChance
+        }
+        
+        for(let i=0;i<amountOfTokens;i++){
+
+            let c=0,it,r=Math.random()
+
+            for(let j in dropTable){
+
+                if(r<=dropRates[dropTable[j]]+c){
+
+                    it=dropTable[j]
+                    break
+                }
+
+                c+=dropRates[dropTable[j]]
+            }
+
+            let DIS=this
+
+            window.setTimeout(function(){
+
+                objects.tokens.push(new LootToken(10,[fieldInfo[DIS.field].x+((fieldInfo[DIS.field].width*Math.random())|0),fieldInfo[DIS.field].y+1,fieldInfo[DIS.field].z+((fieldInfo[DIS.field].length*Math.random())|0),0],it,1,false,'Sprout'))
+
+            },200*i)
+            
+        }
+        
+        objects.explosions.push(new Explosion({col:[1,1,0.6],pos:this.pos,life:1,size:10,speed:0.1,aftershock:0.05,maxAlpha:1,primitive:'cylinder_explosions',height:500}))
+
+        objects.mobs.splice(index,1)
+    }
+    
+    update(){
+
+        let pollen=Math.max(this.pollenBefore-player.stats['pollenFrom'+this.field],0)
+
+        this.growth+=((pollen*this.invAmount)-this.growth)*dt*15
+
+        textRenderer.addSingle(MATH.addCommas(pollen+''),[this.pos[0],this.pos[1]+4,this.pos[2]],COLORS.whiteArr,-3.5,false)
+        
+        meshes.cylinder_explosions.instanceData.push(this.pos[0],this.pos[1],this.pos[2],1,1,0.6,0.15,5,500)
+
+        gl.bindBuffer(gl.ARRAY_BUFFER,meshes[this.type+'Sprout'].vertBuffer)
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes[this.type+'Sprout'].indexBuffer)
+        gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
+        gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
+        gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
+        gl.uniform2f(glCache.mob_instanceInfo2,0.6+(1-this.growth)*1.6,1)
+        gl.drawElements(gl.TRIANGLES,meshes[this.type+'Sprout'].indexAmount,gl.UNSIGNED_SHORT,0)
+        
+        return pollen<=0
     }
 }
 
@@ -13330,18 +15123,6 @@ class Mesh {
             }
             
             addGiftedRing=function(x,y,z,w,h){
-                
-                // let vl=verts.length/10,r=1,g=0.95,b=0
-                
-                // verts.push(
-                    
-                //     x-w,y-h,z,r,g,b,1,0,0,1,
-                //     x+w,y-h,z,r,g,b,1,0,0,1,
-                //     x+w,y+h,z,r,g,b,1,0,0,1,
-                //     x-w,y+h,z,r,g,b,1,0,0,1,
-                // )
-                
-                // index.push(vl,vl+1,vl+2,vl+2,vl+3,vl)
                 
                 addBox(x,y,z,w*2,h*2,0.25,false,[100,100,0],false,false)
             }
@@ -14656,8 +16437,21 @@ gear.tool={
             
             ParticleRenderer.add({x:player.body.position.x+x+MATH.random(-0.4,0.4),y:player.body.position.y+1.75+MATH.random(-0.4,0.4),z:player.body.position.z+z+MATH.random(-0.4,0.4),vx:MATH.random(-0.8,0.8),vy:Math.random()*0.5+0.4,vz:MATH.random(-0.8,0.8),grav:-1.25*Math.random()-0.25,size:MATH.random(20,60),col:[0.95,0.95,0.95],life:1,rotVel:MATH.random(-3,3),alpha:0.5})
         },
+        ability:function(){
+            
+            if(player.toolUses%10===0){
+                
+                objects.explosions.push(new ReverseExplosion({col:[1,1,1],pos:[player.body.position.x,player.body.position.y,player.body.position.z],life:0.4,size:5,alpha:2,height:500}))
+
+                if(player.fieldIn){
+
+                    collectPollen({x:player.flowerIn.x,z:player.flowerIn.z,pattern:[[-4,0],[-3,-2],[-3,-1],[-3,0],[-3,1],[-3,2],[-2,-3],[-2,-2],[-2,-1],[-2,0],[-2,1],[-2,2],[-2,3],[-1,-3],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[-1,3],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[0,1],[0,2],[0,3],[0,4],[1,-3],[1,-2],[1,-1],[1,0],[1,1],[1,2],[1,3],[2,-3],[2,-2],[2,-1],[2,0],[2,1],[2,2],[2,3],[3,-2],[3,-1],[3,0],[3,1],[3,2],[4,0]],amount:50,stackHeight:0.6+Math.random()*0.5})
+                }
+            }
+        },
         desc:'A dipper drizzled with brittle liquid porcelain.<br><br>Collects 3 pollen from 49 flowers every 0.7s. Collects x1.5 more white pollen.<br><br>Every 10th swing summons a pillar of light that collects massive pollen.',
-        cost:['150000000 honey']
+        cost:['150000000 honey'],
+
     },
     
     petalWand:{
@@ -14692,7 +16486,7 @@ gear.tool={
             
             if(player.toolUses%3===0){
                 
-                objects.mobs.push(new PetalShuriken([player.body.position.x,player.body.position.y+0.25,player.body.position.z],player.bodyDir.slice()))
+                objects.explosions.push(new ReverseExplosion({col:[1,1,0],pos:f.pos,life:0.3,size:this.diameter*0.8,alpha:0.75}))
             }
         },
         particles:function(){
@@ -14799,7 +16593,7 @@ gear.tool={
             
             ParticleRenderer.add({x:player.body.position.x+x,y:player.body.position.y+y,z:player.body.position.z+z,vx:-player.bodyDir[2]*2,vy:1.75,vz:player.bodyDir[0]*2,grav:0,size:MATH.random(70,120),col:[1,0,Math.random()],life:1,rotVel:MATH.random(-3,3),alpha:4.5})
         },
-        desc:'Swipe through flames to unlock their Dark potential. Ensue dark chaos in fields and refuel burning flames. Tend a violent field of violet fire to enhance your Super-Crit power and Instant Red Conversion.',
+        desc:'Swipe through flames to unlock their dark potential. Ensue dark chaos in fields and refuel burning flames, collecting more pollen and dealing more damage. Tend a destructive field of violet fire to enhance your Super-Crit power and Instant Red Conversion.',
         cost:['2500000000000 honey','1500 redExtract','200 stinger','50 hardWax','25 superSmoothie']
     },
     
@@ -14849,7 +16643,7 @@ gear.tool={
             
             
         },
-        desc:'Pierce through flowers and bubbles with torriental waves, washing away tokens and converting pollen from bees. Swings faster and ramps up the more you pop, then unleashes tidal waves in a surging flood at 500 bubbles. Splash Balloons with tall waves to earn Tide Blessing. Re-energize tidal surges with the destruction of bubbles.',
+        desc:'Pierce through flowers and bubbles with torriental waves, washing away tokens and converting pollen from bees. Swings faster and ramps up the more you pop, then unleashes tidal waves in a violent surge at 500 bubbles. Splash Balloons with tall waves to earn Tide Blessing and re-energize tidal waves with the destruction of bubbles.',
         cost:['2500000000000 honey','1500 blueExtract','200 stinger','25 swirledWax','25 superSmoothie']
     },
     
@@ -14889,8 +16683,8 @@ gear.tool={
             ParticleRenderer.add({x:player.lagPos[0]+x,y:player.lagPos[1]+2+player.gummyBallSize*0.3,z:player.lagPos[2]+z,vx:MATH.random(-player.gummyBallSize,player.gummyBallSize),vy:MATH.random(-player.gummyBallSize,player.gummyBallSize),vz:MATH.random(-player.gummyBallSize,player.gummyBallSize),grav:0,size:MATH.random(20,50)*player.gummyBallSize,col:[0.1,0.8,1],life:0.75,rotVel:MATH.random(-3,3),alpha:player.gummyBallSize-0.5})
             
         },
-        desc:'Absorb goo to conjure a delectable arsenal of gummy wrecking balls. Cover the field in goo and collect pollen with a giant gummyball. Release your gummyball early by jumping. Ricochet off Marks and Honey Tokens to build up your gummyball combo for massive gooey gains.',
-        cost:['10000000000000 honey','1500 glue','2500 gumdrops','50 causticWax','25 superSmoothie']
+        desc:'Absorb goo to conjure up a delectable arsenal of gummy wrecking balls. Cover the field in goo and collect pollen with a giant gummyball. Release your gummyball early by jumping. Ricochet off Marks and Honey Tokens to build up your gummyball combo for massive gooey gains.',
+        cost:['10000000000000 honey','1500 glue','2500 gumdrops','50 causticWax','3 turpentine']
     },
 }
 
@@ -14899,10 +16693,242 @@ player=(function(out){
     
     out.drives={
         
-        red:0,
-        blue:0,
-        white:0,
-        glitched:0
+        red:50,
+        blue:50,
+        white:50,
+        glitched:50
+    }
+
+    out.updateRoboChallenge=function(){
+
+        if(!out.roboChallenge) return
+
+        out.roboChallenge.timer-=dt
+
+        if(out.roboChallenge.timer<=0){
+
+            out.roboChallenge=undefined
+            document.getElementById('roboMenu').style.display='none'
+            return
+        }
+    }
+    
+    out.updateRoboUI=function(){
+
+        document.getElementById('roboMenu').style.display='block'
+
+        switch(out.roboChallenge.scene){
+
+            case 'upgrade':
+
+                document.getElementById('roboTitle').innerHTML="Buy Upgrades<p style='font-size:14.5px;margin-top:0px'><u style='cursor:pointer'>Reroll Upgrades</u> ("+out.roboChallenge.rerollCost+" cogs)</p>"
+                document.getElementById('roboBeeChoices').style.display='none'
+                document.getElementById('roboQuestChoices').style.display='none'
+                document.getElementById('roboUpgradeChoices').style.display='block'
+                document.getElementById('roboActiveBees').style.display='none'
+                document.getElementById('roboActiveBeesAmount').style.display='none'
+                document.getElementById('roboActiveUpgrades').style.display='block'
+                document.getElementById('roboActiveUpgradesAmount').style.display='block'
+
+                let upgrades={Botnet:'*1.25 pollenFromBees',Iterate:'*1.08 pollen',Sharpen:'*1.2 beeAttack,*0.9 capacity'},u=[],c=[]
+
+                for(let i in upgrades){
+
+                    if(out.roboChallenge.activeUpgrades.indexOf(i)<0){
+
+                        u.push(i)
+                    }
+                }
+
+                for(let i=0,_i=Math.min(3,u.length);i<_i;i++){
+
+                    let r=(Math.random()*u.length)|0
+
+                    c.push(u[r])
+                    u.splice(r,1)
+                }
+
+                for(let i=1;i<4;i++){
+
+                    let s='',_s=upgrades[c[i-1]].split(',')
+
+                    for(let j in _s){
+
+                        let n=_s[j]
+
+                        n=n.substring(0,n.indexOf(' ')+1)+MATH.doGrammar(n.substring(n.indexOf(' ')+1,n.length))
+
+                        s+='<div style="color:'+(Number(n.substring(1,n.indexOf(' ')))<1?'rgb(255,50,50)':'rgb(60,255,60)')+'">'+n.replace('*','x')+'<br></div>'
+                    }
+
+                    document.getElementById('roboUpgradeChoice'+i).innerHTML='&nbsp;'+c[i-1]+"<div style='border-radius:5px;position:fixed;left:10px;top:35px;right:5px;bottom:5px;background-color:rgb(0,0,0,0.75);font-family:trebuchet ms;font-size:14px;padding-left:10px;padding-top:8px'>"+s+"</div>"
+
+                    document.getElementById('roboUpgradeChoice'+i).onclick=function(){
+
+                        out.roboChallenge.scene=''
+                        out.updateRoboUI()
+                    }
+                }
+
+            break
+
+            case 'quest':
+
+                document.getElementById('roboTitle').innerHTML="Select Quest<p style='font-size:14.5px;margin-top:0px'><u style='cursor:pointer'>Reroll Quests</u> ("+out.roboChallenge.rerollCost+" cogs)</p>"
+                document.getElementById('roboBeeChoices').style.display='none'
+                document.getElementById('roboQuestChoices').style.display='block'
+                document.getElementById('roboActiveBees').style.display='none'
+                document.getElementById('roboActiveBeesAmount').style.display='none'
+                document.getElementById('roboActiveUpgrades').style.display='none'
+                document.getElementById('roboActiveUpgradesAmount').style.display='none'
+                document.getElementById('roboUpgradeChoices').style.display='none'
+
+                let types=['redPollen','whitePollen','bluePollen','pollenFromSunflowerField','pollenFromDandelionField','pollenFromMushroomField','pollenFromBlueFlowerField','pollenFromCloverField','pollenFromSpiderField','pollenFromStrawberryField','pollenFromBambooField','pollenFromPineapplePatch','pollenFromCactusField','pollenFromPumpkinPatch','pollenFromPineTreeForest','pollenFromRoseField']
+
+                if(out.roboChallenge.round>5) types.push('pollenFromMountainTopField')
+                if(out.roboChallenge.round>10) types.push('pollenFromPepperPatch')
+
+                if(out.roboChallenge.round>2) types.push('mechsquito')
+                if(out.roboChallenge.round>4) types.push('cogmower')
+                if(out.roboChallenge.round>8) types.push('cogturret')
+                if(out.roboChallenge.round>11) types.push('megaMechsquito')
+                if(out.roboChallenge.round>15) types.push('goldenCogmower')
+
+                for(let i=1;i<3;i++){
+
+                    let q=[],t=types.slice(),re=[]
+
+                    for(let j=0,c=MATH.random(2,5)|0;j<c;j++){
+
+                        let r=(Math.random()*t.length)|0
+
+                        re.push(t[r])
+                        t.splice(r,1)
+                    }
+
+                    document.getElementById('roboQuestChoice'+i).innerHTML='<br>'
+
+                    for(let j in re){
+
+                        document.getElementById('roboQuestChoice'+i).innerHTML+='- '+MATH.doStatGrammar(re[j])+' '+10+' '+MATH.doGrammar(re[j])+'<br><br>'
+                    }
+
+                    document.getElementById('roboQuestChoice'+i).onclick=function(){
+
+                        out.roboChallenge.scene='upgrade'
+                        out.updateRoboUI()
+                    }
+                }
+
+            break
+
+            case 'bee':
+
+                if(out.roboChallenge.beesPicked>=out.roboChallenge.beesPerRound){
+
+                    out.roboChallenge.scene='quest'
+                    out.updateRoboUI()
+                    return
+                }
+
+                document.getElementById('roboTitle').innerHTML="<p style='margin-top:-15px'></p>Select Bees<p style='font-size:13px;margin-top:0px'>("+(out.roboChallenge.beesPicked+1)+" of "+out.roboChallenge.beesPerRound+")<br><u>Reroll Bees</u> ("+out.roboChallenge.rerollCost+" cogs)</p>"
+                document.getElementById('roboActiveBeesAmount').innerHTML="Active Bees ("+out.roboChallenge.activeBees.length+")"
+                document.getElementById('roboBeeChoices').style.display='block'
+                document.getElementById('roboQuestChoices').style.display='none'
+                document.getElementById('roboActiveBeesAmount').style.display='block'
+                document.getElementById('roboActiveUpgrades').style.display='none'
+                document.getElementById('roboActiveUpgradesAmount').style.display='none'
+                document.getElementById('roboUpgradeChoices').style.display='none'
+
+                let beesToSelect=[],strActiveBees='#'+out.roboChallenge.activeBees.join('#')+'#'
+
+                for(let y in out.hive){
+
+                    for(let x in out.hive[y]){
+
+                        let h=out.hive[y][x]
+
+                        if(h.type!==null&&strActiveBees.indexOf('#'+x+','+y+'#')<0){
+
+                            beesToSelect.push([x,y])
+                        }
+                    }
+                }
+
+                document.getElementById('roboActiveBees').innerHTML=''
+                document.getElementById('roboActiveBees').style.display='block'
+
+                for(let i in out.roboChallenge.activeBees){
+
+                    let b=out.roboChallenge.activeBees[i]
+
+                    b=out.hive[b[1]][b[0]].bee
+
+                    let img=document.createElement('canvas')
+
+                    img.width=35
+                    img.height=35
+                    img.style.width=35
+                    img.style.height=35
+                    img.style.borderRadius='2px'
+                    img.style.position='fixed'
+                    img.style.left=(((i%5)+0.5-2.5)*20+50)+'%'
+                    img.style.top=(((i/5)|0)*10+5)+'%'
+                    img.style.transform='translate(-17px,-17px)'
+
+                    let img_ctx=img.getContext('2d')
+
+                    img_ctx.drawImage(beeCanvas,beeInfo[b.type].u*2048,beeInfo[b.type].v*2048+(b.gifted?768:0),128,128,0,0,35,35)
+
+                    document.getElementById('roboActiveBees').appendChild(img)
+
+                }
+
+                for(let i=0;i<3;i++){
+
+                    if(beesToSelect.length<=0){
+
+                        document.getElementById('roboBeeChoice'+(i+1)).style.display='none'
+                        return
+                    }
+
+                    let r=(Math.random()*beesToSelect.length)|0,bee=beesToSelect[r],_bee=bee.slice()
+
+                    bee=out.hive[bee[1]][bee[0]].bee
+
+                    beesToSelect.splice(r,1)
+
+                    document.getElementById('roboBeeChoice'+(i+1)).style.display='block'
+                    document.getElementById('roboBeeChoice'+(i+1)).style.backgroundColor=beeInfo[bee.type].color==='red'?'rgb(255,50,50,0.6)':beeInfo[bee.type].color==='blue'?'rgb(50,50,255,0.6)':'rgb(255,255,255,0.6)'
+
+                    let img=document.createElement('canvas')
+
+                    img.width=80
+                    img.height=80
+                    img.style.borderRadius='4px'
+                    img.style.position='fixed'
+                    img.style.left='3%'
+                    img.style.top='10%'
+
+                    let img_ctx=img.getContext('2d')
+
+                    img_ctx.drawImage(beeCanvas,beeInfo[bee.type].u*2048,beeInfo[bee.type].v*2048+(bee.gifted?768:0),128,128,0,0,80,80)
+
+                    let descStr='Level: '+bee.level+'<br>'+(bee.gifted?'⭐ Gifted ⭐':'')+(bee.mutation?'<br>☢️ '+bee.mutation.oper.replace('*','x')+bee.mutation.num+' '+MATH.doGrammar(bee.mutation.stat)+' ☢️':'')+(out.hive[_bee[1]][_bee[0]].beequip?'<br>Beequip: '+MATH.doGrammar(out.hive[_bee[1]][_bee[0]].beequip.type):'')
+
+                    document.getElementById('roboBeeChoice'+(i+1)).innerHTML="<p style='position:fixed;width:200px;height:30px;left:67%;top:-3%;transform:translate(-50%,-50%)'>"+MATH.doGrammar(bee.type)+" Bee</p><p style='position:fixed;width:200px;left:67%;top:50%;transform:translate(-50%,-50%);font-size:11px'>"+descStr+"</p>"
+                    document.getElementById('roboBeeChoice'+(i+1)).appendChild(img)
+
+                    document.getElementById('roboBeeChoice'+(i+1)).onclick=function(){
+
+                        out.roboChallenge.activeBees.push([Number(_bee[0]),Number(_bee[1])])
+                        out.roboChallenge.beesPicked++
+                        out.updateRoboUI()
+                    }
+                }
+
+            break
+        }
     }
 
     out.endAntChallenge=function(){
@@ -15157,6 +17183,21 @@ player=(function(out){
     out.lagPos=[0,0,0]
     out.stats={
         
+        hoursOfInvigoratingNectar:0,
+        hoursOfMotivatingNectar:0,
+        hoursOfSatisfyingNectar:0,
+        hoursOfComfortingNectar:0,
+        hoursOfRefreshingNectar:0,
+        tokensFromPlanters:0,
+        tokensFromSprouts:0,
+        timesUsingTheRedCannon:0,
+        timesUsingTheBlueCannon:0,
+        timesUsingTheYellowCannon:0,
+        timesUsingTheSlingshot:0,
+        itemsUsingTheBlender:0,
+        fallingCoconuts:0,
+        flames:0,
+        bubbles:0,
         redPollen:0,
         bluePollen:0,
         whitePollen:0,
@@ -15164,6 +17205,20 @@ player=(function(out){
         abilityTokens:0,
         honeyTokens:0,
         rhinoBeetle:0,
+        ladybug:0,
+        spider:0,
+        werewolf:0,
+        mantis:0,
+        scorpion:0,
+        kingBeetle:0,
+        tunnelBear:0,
+        ant:0,
+        fireAnt:0,
+        armyAnt:0,
+        flyingAnt:0,
+        giantAnt:0,
+        mondoChick:0,
+        rogueViciousBee:0,
         goo:0,
         popStar:0,
         scorchingStar:0,
@@ -15176,6 +17231,7 @@ player=(function(out){
     for(let i in items){
         
         out.stats[i+'Tokens']=0
+        out.stats[i]=0
     }
     
     for(let i in LIST_OF_STATS_FOR_PLAYER){
@@ -15285,6 +17341,7 @@ player=(function(out){
             out.currentNPC=null
             dialogueBox.style.display='none'
             out.viewMatrixToChange=undefined
+            uiCanvas.requestPointerLock()
             
         } else if(typeof NPCs[out.currentNPC].dialogue[NPCs[out.currentNPC].dialogueIndex]==='object'){
             
@@ -15315,7 +17372,7 @@ player=(function(out){
             
             if(NPCs[i].repeatable){
                 
-                NPCs[i].dialogue.push(...window['dialogue_'+i](out,items))
+                NPCs[i].dialogue.push(...window['dialogue_'+i](out,items,NPCs))
 
             } else {
 
@@ -15325,9 +17382,9 @@ player=(function(out){
         }
         
         out.currentNPC=i
-        document.exitPointerLock()
         actionWarning.style.display='none'
         dialogueBox.style.display='block'
+        document.exitPointerLock()
         NPCName.innerHTML=MATH.doGrammar(out.currentNPC)
         NPCDialogue.innerHTML=NPCs[out.currentNPC].dialogue[NPCs[out.currentNPC].dialogueIndex]
         out.viewMatrixToChange=NPCs[player.currentNPC].viewMatrix
@@ -16053,7 +18110,7 @@ player=(function(out){
                         if(out.hive[y][x].gifted)
                             giftedRing(out.hivePos[0]+x*0.8,out.hivePos[1]+y*0.8-2.25,out.hivePos[2]-0.2,0.45,0.45,out.hive[y][x].type)
                         
-                        let _b=new Bee([out.hivePos[0]+x*0.8,out.hivePos[1]+y*0.8-2.25,out.hivePos[2]],out.hive[y][x].type,out.hive[y][x].level,out.hive[y][x].gifted,x,y)
+                        let _b=new Bee([out.hivePos[0]+x*0.8,out.hivePos[1]+y*0.8-2.25,out.hivePos[2]],out.hive[y][x].type,out.hive[y][x].level,out.hive[y][x].gifted,x,y,out.hive[y][x].mutation)
                         
                         out.hive[y][x].bee=_b
                         objects.bees.push(_b)
@@ -16250,7 +18307,7 @@ player=(function(out){
             
             for(let i in out.quests){
                 
-                pages[1].innerHTML+=`<div style='background-color:${out.quests[i].completed?"rgb(0,"+(Math.sin(TIME*5)*20+215)+",0)":"rgb(240,240,240)"};font-size:17px;text-align:center;margin-top:10px'>${out.quests[i].name}${(function(){
+                pages[1].innerHTML+=`<div style='background-color:${out.quests[i].completed?"rgb(0,"+(Math.sin(TIME*5)*20+215)+",0)":"rgb(240,240,240)"};font-size:17px;text-align:center;margin-top:-16px;border-radius:3px;'><p style='margin-bottom:5px'>${out.quests[i].name}</p>${(function(){
                     
                     let s='',isCompleted=true
                     
@@ -16264,23 +18321,17 @@ player=(function(out){
                             
                             isCompleted=false
                         }
-                        
-                        s+=`<svg style='width:195px;height:30px;margin-top:5px'>
-                        <rect x='0' y='0' width='195' height='30' fill='rgb(255,0,0)'></rect>
-                        
-                        <rect x='0' y='0' width='${((out.stats[out.quests[i].req[j][0]]-out.quests[i].req[j][2])/out.quests[i].req[j][1])*195}' height='30' fill='rgb(0,255,0)'></rect>
-                        <text fill='rgb(0,0,0)' x='97.5' y='12' text-anchor='middle' style='font-family:calibri;font-size:13px;'>${MATH.doStatGrammar(out.quests[i].req[j][0])+' '+MATH.addCommas(out.quests[i].req[j][1].toString())+' '+MATH.doGrammar(out.quests[i].req[j][0])}</text>
-                        
-                        <text fill='rgb(0,0,0)' x='97.5' y='25' text-anchor='middle' style='font-family:calibri;font-size:13px;'>(${(MATH.constrain((out.stats[out.quests[i].req[j][0]]-out.quests[i].req[j][2])/out.quests[i].req[j][1],0,1)*100).toFixed(0)+'%'})</text>
-                        
-                        </svg>`
+
+                        let c=MATH.doStatGrammar(out.quests[i].req[j][0])+' '+MATH.addCommas(out.quests[i].req[j][1].toString())+' '+(out.quests[i].req[j][1]>1&&MATH.doStatGrammar(out.quests[i].req[j][0])==='Defeat'?MATH.doPlural(MATH.doGrammar(out.quests[i].req[j][0])):MATH.doGrammar(out.quests[i].req[j][0]))+'<br>('+(MATH.constrain((out.stats[out.quests[i].req[j][0]]-out.quests[i].req[j][2])/out.quests[i].req[j][1],0,1)*100).toFixed(0)
+
+                        s+="<div style='border-radius:3px;width:190px;margin-top:0px;margin-bottom:5px;background-color:rgb(255,0,0);color:black;font-family:calibri;font-size:13px;margin-left:5px;position:relative;'><div style='position:absolute;left:0px;top:0px;border-radius:2px;right:"+(190-Math.min(((out.stats[out.quests[i].req[j][0]]-out.quests[i].req[j][2])/out.quests[i].req[j][1])*190,190))+"px;bottom:0px;background-color:rgb(0,250,0);'></div><div style='position:absolute;left:0px;top:0px;border-radius:2px;right:0px;bottom:0px'>"+c+"%)</div><u style='color:rgb(0,0,0,0)'>"+c+"</u></div>"
                         
                     }
                     
                     out.quests[i].completed=isCompleted
                     NPCs[out.quests[i].NPC].activeQuest=!isCompleted
                     
-                    return s
+                    return s+'<p style="font-size:2px"><br></p>'
                     
                 })()}</div>`
             }
@@ -16289,7 +18340,7 @@ player=(function(out){
         if(currentPage===3&&TIME-player.statsStringLastUpdate>0.5){
 
             player.statsStringLastUpdate=TIME
-            player.statString='<br>FPS: '+(1/dt).toFixed(2)+'<br>Delta Time: '+dt.toFixed(4)+'<br><br>Convert Rate: '+Math.round(player.convertRate*100)+'%<br>Red Pollen: '+Math.round(player.redPollen*100)+'%<br>Blue Pollen: '+Math.round(player.bluePollen*100)+'%<br>White Pollen: '+Math.round(player.whitePollen*100)+'%<br>Walk Speed: '+player.walkSpeed.toFixed(1)+'<br>Jump Power: '+player.jumpPower.toFixed(1)+'<br>Instant Red Conversion: '+Math.round(player.instantRedConversion*100)+'%<br>Instant Blue Conversion: '+Math.round(player.instantBlueConversion*100)+'%<br>Instant White Conversion: '+Math.round(player.instantWhiteConversion*100)+'%<br>Instant Flame Conversion: '+Math.round(player.instantFlameConversion*100)+'%<br>Critical Chance: '+Math.round(player.criticalChance*100)+'%<br>Critical Power: '+Math.round(player.criticalPower*100)+'%<br>Super-Crit Chance: '+Math.round(player.superCritChance*100)+'%<br>Super-Crit Power: '+Math.round(player.superCritPower*100)+'%<br>Goo: '+Math.round(player.goo*100)+'%<br>Flame Pollen: '+Math.round(player.flamePollen*100)+'%<br>Bubble Pollen: '+Math.round(player.bubblePollen*100)+'%<br>Pollen From Tools: '+Math.round(player.pollenFromTools*100)+'%<br>Pollen From Bees: '+Math.round(player.pollenFromBees*100)+'%<br>White Bomb Pollen: '+Math.round(player.whiteBombPollen*100)+'%<br>Red Bomb Pollen: '+Math.round(player.redBombPollen*100)+'%<br>Blue Bomb Pollen: '+Math.round(player.blueBombPollen*100)+'%<br>White Bee Attack: '+player.whiteBeeAttack+'<br>Blue Bee Attack: '+player.blueBeeAttack+'<br>Red Bee Attack: '+player.redBeeAttack+'<br>Bee Attack Multiplier: '+Math.round(player.beeAttack*100)+'%<br>Honey From Tokens: '+Math.round(player.honeyFromTokens*100)+'%<br>Red Bee Ability Rate: '+Math.round(player.redBeeAbilityRate*100)+'%<br>Blue Bee Ability Rate: '+Math.round(player.blueBeeAbilityRate*100)+'%<br>White Bee Ability Rate: '+Math.round(player.whiteBeeAbilityRate*100)+'%<br>Bee Movespeed: '+Math.round(player.beeSpeed*100)+'%<br>Bee Energy: '+Math.round(player.beeEnergy*100)+'%<br>Honey At Hive: '+Math.round(player.honeyAtHive*100)+'%<br>Loot Luck: '+Math.round(player.lootLuck*100)+'%<br>Convert Total: '+Math.round(player.convertTotal)+'<br>Attack Total: '+Math.round(player.attackTotal)
+            player.statString='<br>FPS: '+(1/dt).toFixed(2)+'<br>Delta Time: '+dt.toFixed(4)+'<br><br>Convert Rate: '+Math.round(player.convertRate*100)+'%<br>Red Pollen: '+Math.round(player.redPollen*100)+'%<br>Blue Pollen: '+Math.round(player.bluePollen*100)+'%<br>White Pollen: '+Math.round(player.whitePollen*100)+'%<br>Walk Speed: '+player.walkSpeed.toFixed(1)+'<br>Jump Power: '+player.jumpPower.toFixed(1)+'<br>Instant Red Conversion: '+Math.round(player.instantRedConversion*100)+'%<br>Instant Blue Conversion: '+Math.round(player.instantBlueConversion*100)+'%<br>Instant White Conversion: '+Math.round(player.instantWhiteConversion*100)+'%<br>Instant Flame Conversion: '+Math.round(player.instantFlameConversion*100)+'%<br>Critical Chance: '+Math.round(player.criticalChance*100)+'%<br>Critical Power: '+Math.round(player.criticalPower*100)+'%<br>Super-Crit Chance: '+Math.round(player.superCritChance*100)+'%<br>Super-Crit Power: '+Math.round(player.superCritPower*100)+'%<br>Goo: '+Math.round(player.goo*100)+'%<br>Flame Pollen: '+Math.round(player.flamePollen*100)+'%<br>Bubble Pollen: '+Math.round(player.bubblePollen*100)+'%<br>Pollen From Tools: '+Math.round(player.pollenFromTools*100)+'%<br>Pollen From Bees: '+Math.round(player.pollenFromBees*100)+'%<br>White Bomb Pollen: '+Math.round(player.whiteBombPollen*100)+'%<br>Red Bomb Pollen: '+Math.round(player.redBombPollen*100)+'%<br>Blue Bomb Pollen: '+Math.round(player.blueBombPollen*100)+'%<br>White Bee Attack: '+player.whiteBeeAttack+'<br>Blue Bee Attack: '+player.blueBeeAttack+'<br>Red Bee Attack: '+player.redBeeAttack+'<br>Bee Attack Multiplier: '+Math.round(player.beeAttack*100)+'%<br>Honey From Tokens: '+Math.round(player.honeyFromTokens*100)+'%<br>Red Bee Ability Rate: '+Math.round(player.redBeeAbilityRate*100)+'%<br>Blue Bee Ability Rate: '+Math.round(player.blueBeeAbilityRate*100)+'%<br>White Bee Ability Rate: '+Math.round(player.whiteBeeAbilityRate*100)+'%<br>Bee Movespeed: '+Math.round(player.beeSpeed*100)+'%<br>Bee Energy: '+Math.round(player.beeEnergy*100)+'%<br>Honey At Hive: '+Math.round(player.honeyAtHive*100)+'%<br>Honey Per Pollen: '+Math.round(player.honeyPerPollen*100)+'%<br>Loot Luck: '+Math.round(player.lootLuck*100)+'%<br>Red Field Capacity: '+Math.round(player.redFieldCapacity*100)+'%<br>White Field Capacity: '+Math.round(player.whiteFieldCapacity*100)+'%<br>Blue Field Capacity: '+Math.round(player.blueFieldCapacity*100)+'%<br>Ability Duplication Chance: '+Math.round(player.abilityDuplicationChance*100+(player.drives.maxed?1:0))+'%<br><br>Convert Total: '+Math.round(player.convertTotal)+'<br>Attack Total: '+Math.round(player.attackTotal)
             
             pages[3].innerHTML='<div style="cursor:pointer;background-color:rgb(170,170,170);font-size:15px;border-radius:3px;color:'+(player.setting_enablePollenText?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenText">Pollen Text: '+(player.setting_enablePollenText?'On':'Off')+'</div>'+'<div style="cursor:pointer;margin-top:5px;background-color:rgb(170,170,170);font-size:15px;border-radius:3px;color:'+(player.setting_enablePollenAbv?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenAbv">Abbreviate Pollen: '+(player.setting_enablePollenAbv?'On':'Off')+'</div>'+player.statString
             
@@ -16558,6 +18609,200 @@ player=(function(out){
             gl.useProgram(trailRendererProgram)
             gl.uniform1f(glCache.trail_isNight,out.isNight)
         }
+
+        if(player.isCrafting&&document.getElementById('blenderMenu').style.display==='block'){
+
+            let p=MATH.constrain((player.isCrafting.time-TIME)/player.isCrafting.waitTime,0,1),a=(player.isCrafting.amount*(1-p))|0,n=Math.ceil(p*player.isCrafting.amount*0.25)
+
+            document.getElementById('blenderName').innerHTML="Crafting...<div style='position:fixed;left:50%;top:175%;transform:translate(-50%,-50%);width:200px;height:25px;border-radius:2px;border:1.5px solid black;background-color:rgb(150,0,0)'><div style='height:25px;width:"+(200-p*200)+"px;background-color:rgb(0,200,0)'></div><p style='color:white;font-size:16px;position:fixed;left:50%;top:-20%;transform:translate(-50%,-50%)'>"+MATH.doTime(Math.max(player.isCrafting.time-TIME,0))+"</p><p style='color:white;font-size:20px;position:fixed;left:-40%;top:200%;transform:translate(-50%,-50%)'>"+MATH.addCommas(a+'')+" / "+MATH.addCommas(player.isCrafting.amount+'')+"</p></div>"
+
+            document.getElementById('blenderSpeed').innerHTML='Speed Up for '+n+(n===1?' ticket':' Tickets')
+
+            if(!n)
+                document.getElementById('blenderEnd').style.backgroundColor='rgb(0,200,0)'
+            else
+                document.getElementById('blenderEnd').style.backgroundColor='rgb(200,0,0)'
+            
+            
+            if(items.ticket.amount<n)
+                document.getElementById('blenderSpeed').style.backgroundColor='rgb(230, 193, 99)'
+            else
+                document.getElementById('blenderSpeed').style.backgroundColor='rgb(255,190,0)'
+
+            document.getElementById('blenderEnd').onclick=function(){
+
+                items[player.isCrafting.item].amount+=a
+                player.stats.itemsUsingTheBlender+=a
+
+                if(a)
+                    player.addMessage('+'+MATH.addCommas(a+'')+' '+(a>1?MATH.doPlural(MATH.doGrammar(player.isCrafting.item)):MATH.doGrammar(player.isCrafting.item))+' (from Blender)')
+
+                for(let i in blenderRecipes){
+
+                    let b=blenderRecipes[i]
+
+                    if(b.item===player.isCrafting.item){
+
+                        for(let j in b.req){
+
+                            let f=player.isCrafting.amount-a
+
+                            items[b.req[j][0]].amount+=b.req[j][1]*f
+
+                            if(f)
+                                player.addMessage('+'+MATH.addCommas((b.req[j][1]*f)+'')+' '+(f>1?MATH.doPlural(MATH.doGrammar(b.req[j][0])):MATH.doGrammar(b.req[j][0]))+' (from Blender Refund)')
+                        }
+
+                        break
+                    }
+                }
+
+                player.isCrafting=false
+                player.updateInventory()
+                document.getElementById('blenderX').onclick()
+            }
+        
+            document.getElementById('blenderSpeed').onclick=function(){
+
+                if(items.ticket.amount<n) return
+
+                items.ticket.amount-=n
+                player.addMessage('-'+MATH.addCommas(n+'')+(n===1?' Ticket':' Tickets'))
+                items[player.isCrafting.item].amount+=player.isCrafting.amount
+                player.addMessage('+'+MATH.addCommas(player.isCrafting.amount+'')+' '+(player.isCrafting.amount>1?MATH.doPlural(MATH.doGrammar(player.isCrafting.item)):MATH.doGrammar(player.isCrafting.item))+' (from Blender)')
+                player.stats.itemsUsingTheBlender+=player.isCrafting.amount
+                player.isCrafting=false
+                player.updateInventory()
+                document.getElementById('blenderX').onclick()
+            }
+        }
+    }
+
+    out.updateBlenderMenu=function(){
+
+        if(player.isCrafting){
+
+            document.getElementById('blenderMenu').style.display='block'
+            document.getElementById('blenderTitle').style.display='none'
+            document.getElementById('leftBlenderButton').style.display='none'
+            document.getElementById('rightBlenderButton').style.display='none'
+            document.getElementById('blenderIndex').style.display='none'
+            document.getElementById('blenderCraft').style.display='none'
+            document.getElementById('blenderCraftAmount').style.display='none'
+            document.getElementById('blenderReq').style.display='none'
+            document.getElementById('blenderEnd').style.display='block'
+            document.getElementById('blenderSpeed').style.display='block'
+
+            return
+        }
+        
+        document.getElementById('leftBlenderButton').style.display='block'
+        document.getElementById('rightBlenderButton').style.display='block'
+        document.getElementById('blenderIndex').style.display='block'
+        document.getElementById('blenderTitle').style.display='block'
+        document.getElementById('blenderCraft').style.display='block'
+        document.getElementById('blenderCraftAmount').style.display='block'
+        document.getElementById('blenderReq').style.display='block'
+        document.getElementById('blenderEnd').style.display='none'
+        document.getElementById('blenderSpeed').style.display='none'
+
+        document.getElementById('blenderMenu').style.display='block'
+        document.getElementById('blenderTitle').innerHTML='What do you want to craft?'
+        document.getElementById('blenderX').onclick=function(){
+
+            document.getElementById('blenderMenu').style.display='none'
+        }
+        document.getElementById('leftBlenderButton').onclick=function(){
+
+            player.blenderIndex=((player.blenderIndex+blenderRecipes.length-1)%blenderRecipes.length)
+            out.updateBlenderMenu()
+        }
+        document.getElementById('rightBlenderButton').onclick=function(){
+
+            player.blenderIndex=(player.blenderIndex+1)%blenderRecipes.length
+            out.updateBlenderMenu()
+        }
+        document.getElementById('blenderIndex').innerHTML=(player.blenderIndex+1)+' / '+blenderRecipes.length
+
+        let item=blenderRecipes[player.blenderIndex].item
+
+        document.getElementById('blenderName').innerHTML=MATH.doGrammar(item)+'<p style="position:fixed;font-size:13px;left:50%;top:120%;transform:translate(-50%,-50%)">'+itemSVGCode[item+'_description']
+        +'</p></div>'
+
+        document.getElementById('blenderItem').innerHTML=itemSVGCode[item].replaceAll('AMOUNTININVENTORY','').replaceAll('AMOUNTOFITEMREQUIREDTOCRAFT','').replace('translate(0px,7px)','translate(-2px,2px)').replace('scale(0.77,0.77)','scale(0.5,0.5)')
+        document.getElementById('blenderItem').style.transform='translate(70px,50px) scale(3,3)'
+
+        document.getElementById('blenderReq').innerHTML=''
+
+        for(let i in blenderRecipes[player.blenderIndex].req){
+
+            let r=blenderRecipes[player.blenderIndex].req[i]
+
+            document.getElementById('blenderReq').innerHTML+="<div style='position:fixed;left:75%;top:20px;transform:translate(-50%,-50%) translate("+((i-blenderRecipes[player.blenderIndex].req.length*0.5+0.5)*90)+"px,0px) scale(1.75,1.75)'>"+itemSVGCode[r[0]].replaceAll('AMOUNTININVENTORY','').replaceAll('AMOUNTOFITEMREQUIREDTOCRAFT','').replace('translate(0px,7px)','translate(-2px,2px)').replace('scale(0.77,0.77)','scale(0.5,0.5)')+'<p style="position:fixed;font-size:8px;left:20px;top:20px">x'+r[1]+'</p></div>'
+        }
+
+        let f=function(){
+            
+            let maximumCanCraft=Infinity
+
+            for(let i in blenderRecipes[player.blenderIndex].req){
+
+                let r=blenderRecipes[player.blenderIndex].req[i]
+                maximumCanCraft=Math.min(maximumCanCraft,(items[r[0]].amount/r[1])|0)
+            }
+
+            document.getElementById('blenderCraftAmount').value=MATH.constrain(document.getElementById('blenderCraftAmount').value,maximumCanCraft?1:0,maximumCanCraft)
+
+            if(!Number(document.getElementById('blenderCraftAmount').value)){
+
+                document.getElementById('blenderCraft').style.backgroundColor='rgb(50,120,50)'
+                document.getElementById('blenderCraft').onclick=function(){}
+
+            } else {
+
+                document.getElementById('blenderCraft').style.backgroundColor='rgb(0,170,0)'
+                document.getElementById('blenderCraft').onclick=function(){
+
+                    let am=Number(document.getElementById('blenderCraftAmount').value),waitTime=30*am
+
+                    player.isCrafting={time:TIME+waitTime,waitTime:waitTime,item:item,amount:am}
+
+                    for(let i in blenderRecipes){
+
+                        let b=blenderRecipes[i]
+
+                        if(b.item===player.isCrafting.item){
+
+                            for(let j in b.req){
+
+                                items[b.req[j][0]].amount-=b.req[j][1]*am
+
+                                player.addMessage('-'+MATH.addCommas((b.req[j][1]*am)+'')+' '+(am>1?MATH.doPlural(MATH.doGrammar(b.req[j][0])):MATH.doGrammar(b.req[j][0])))
+                            }
+
+                            break
+                        }
+                    }
+
+                    out.updateInventory()
+                    out.updateBlenderMenu()
+                }           
+            }
+
+            document.getElementById('blenderReq').innerHTML=''
+
+            let num=Number(document.getElementById('blenderCraftAmount').value)
+
+            for(let i in blenderRecipes[player.blenderIndex].req){
+
+                let r=blenderRecipes[player.blenderIndex].req[i]
+
+                document.getElementById('blenderReq').innerHTML+="<div style='position:fixed;left:75%;top:20px;transform:translate(-50%,-50%) translate("+((i-blenderRecipes[player.blenderIndex].req.length*0.5+0.5)*90)+"px,0px) scale(1.75,1.75)'>"+itemSVGCode[r[0]].replaceAll('AMOUNTININVENTORY','').replaceAll('AMOUNTOFITEMREQUIREDTOCRAFT','').replace('translate(0px,7px)','translate(-2px,2px)').replace('scale(0.77,0.77)','scale(0.5,0.5)')+'<p style="position:fixed;font-size:8px;left:20px;top:20px">x'+MATH.addCommas((r[1]*(num?num:1))+'')+'</p></div>'
+            }
+        }
+        f()
+        document.getElementById('blenderMenu').onmousemove=document.getElementById('blenderCraftAmount').onchange=f
+
     }
     
     out.addMessage=function(m,color=[30,70,255]){
@@ -17055,30 +19300,51 @@ function computeSceneViewMatrix(x,y,z,yaw,pitch){
     return m
 }
 
-let NPCs={
+NPCs={
     
     //choice in dialouge
-    //[['2 + 3',function(){NPCs.blackBear.dialogue.push('','5! :D');NPCs.blackBear.dialogueIndex++}],['9 + 10',function(){NPCs.blackBear.dialogue.push('','21! :D');NPCs.blackBear.dialogueIndex++}]]
-    
+    // ['ask me a math question',[['2 + 3',function(){NPCs.blackBear.dialogue.push('','5! :D');NPCs.blackBear.dialogueIndex++}],['9 + 10',function(){NPCs.blackBear.dialogue.push('','21! :D');NPCs.blackBear.dialogueIndex++}]]]
+
     blackBear:{
         
         viewMatrix:[24,2,0.5,MATH.HALF_PI,-0.25],
         exclaimPos:[29,0.5,0.5],
         dialogueIndex:0,
-        dialogue:window.dialogue_blackBear(player,items),
+        dialogue:window.dialogue_blackBear(player,items,NPCs),
         mesh:new Mesh(),
-        meshParams:{x:0.5,y:0,z:-31.5,r:1,s:1.2,texture:{face:{u:0,v:0},torso:{texture:false,u:0,v:0.5}}}
+        meshParams:{x:0.5,y:0,z:-31.5,r:1,s:1.2,texture:{face:{u:0,v:0},torso:{texture:false,u:0,v:0.5},extremities:{u:0,v:0}}}
     },
     
     polarBear:{
         
         repeatable:true,
         viewMatrix:[-1.5,24.5,60,Math.PI,-0.25],
-        exclaimPos:[-1.5,23.5,66],
+        exclaimPos:[-1.5,22.5,66],
         dialogueIndex:0,
         dialogue:[],
         mesh:new Mesh(),
-        meshParams:{x:1.5,y:22,z:-68,r:2,s:1.2,texture:{face:{u:1,v:0},torso:{texture:false,u:1,v:0}}}
+        meshParams:{x:1.5,y:22,z:-68,r:2,s:1.2,texture:{face:{u:1,v:0},torso:{texture:false,u:1,v:0},extremities:{u:0,v:0}}}
+    },
+
+    roboBear:{
+        
+        repeatable:true,
+        viewMatrix:[53.5-5,7,40,MATH.HALF_PI,-0.25],
+        exclaimPos:[53.5,5.5,40],
+        dialogueIndex:0,
+        dialogue:[],
+        mesh:new Mesh(),
+        meshParams:{x:40,y:5,z:-55,r:1,s:1.2,texture:{face:{u:3,v:0},torso:{texture:false,u:3.1,v:0.5},extremities:{u:0,v:0}}}
+    },
+
+    pandaBear:{
+        
+        viewMatrix:[-37,8.5,39.5,Math.PI,-0.25],
+        exclaimPos:[-37,7.5,45.5],
+        dialogueIndex:0,
+        dialogue:window.dialogue_pandaBear(player,items,NPCs),
+        mesh:new Mesh(),
+        meshParams:{x:37,y:7,z:-47.5,r:2,s:1.2,texture:{face:{u:4,v:0},torso:{texture:false,u:4,v:0.8},extremities:{u:0.3,v:0.5}}}
     },
 }
 
@@ -17171,7 +19437,7 @@ let user=(function(out){
                 
                 if(player.beequipDragging){
                     
-                    if(player.currentGear.beequips[player.beequipLookingAt].bee){
+                    if(player.currentGear.beequips[player.beequipLookingAt].bee&&player.hive[player.currentGear.beequips[player.beequipLookingAt].bee[1]][player.currentGear.beequips[player.beequipLookingAt].bee[0]].beequip===player.beequipDragging){
                         
                         player.hive[player.currentGear.beequips[player.beequipLookingAt].bee[1]][player.currentGear.beequips[player.beequipLookingAt].bee[0]].beequip=null
                         
@@ -17186,6 +19452,7 @@ let user=(function(out){
                     
                     if(TIME-items[player.itemDragging].cooldown>items[player.itemDragging].maxCooldown){
                         
+                        player.stats[player.itemDragging]++
                         items[player.itemDragging].use()
                         items[player.itemDragging].cooldown=TIME
                         
@@ -17244,6 +19511,7 @@ let user=(function(out){
                 
                 if(TIME-items[hotbarSlots[n].itemType].cooldown>items[hotbarSlots[n].itemType].maxCooldown){
                     
+                    player.stats[hotbarSlots[n].itemType]++
                     items[hotbarSlots[n].itemType].use()
                     items[hotbarSlots[n].itemType].cooldown=TIME
                     player.updateInventory()
@@ -17255,7 +19523,7 @@ let user=(function(out){
             }
         }
 
-        if(e.key==='e'&&player.currentNPC&&TIME-player.eKeyDialoguePress>1){
+        if(e.key==='e'&&player.currentNPC&&TIME-player.eKeyDialoguePress>0.75){
             
             dialogueBox.onclick()
         }
@@ -18225,7 +20493,7 @@ class Token {
         this.func=effects[type].svg?false:effects[type].func
         this.canBeLinked=effects[type].canBeLinked===undefined||effects[type].canBeLinked
         
-        if(Math.random()<player.abilityDuplicationChance&&!backupFunc&&player.fieldIn&&funcParams){
+        if(Math.random()<(player.drives.maxed?player.abilityDuplicationChance+0.01:player.abilityDuplicationChance)&&!backupFunc&&player.fieldIn&&funcParams){
             
             let p,fp=funcParams,x=(Math.random()*fieldInfo[fp.field].width)|0,z=(Math.random()*fieldInfo[fp.field].length)|0
             
@@ -18260,6 +20528,9 @@ class Token {
                     
                     player.stats[effects[this.type].statsToAddTo[i]]++
                 }
+
+                if(effects[this.type].statsToAddTo.indexOf(this.type+'Tokens')<0)
+                    player.stats[this.type+'Tokens']++
             }
             
             if(this.func){
@@ -18350,6 +20621,7 @@ class LootToken {
             this.life=0.75
             
             player.stats[this.type+'Tokens']++
+            player.stats['tokensFrom'+this.from+'s']++
             
             if(this.type==='honey'){
                 
@@ -18399,7 +20671,7 @@ class DupedToken {
     
     constructor(life,pos,type,funcParams){
         
-        if(Math.random()<0.1||type==='glitch'||type==='mapCorruption'){
+        if(Math.random()<(0.1+player.drives.glitched*0.001)||type==='glitch'||type==='mapCorruption'){
             
             type='smiley'
         }
@@ -19232,9 +21504,9 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
 
 meshes.giftedFrog.indexAmount=index.length
 
-meshes.beetle={}
-meshes.beetle.vertBuffer=gl.createBuffer()
-meshes.beetle.indexBuffer=gl.createBuffer()
+meshes.rhinoBeetle={}
+meshes.rhinoBeetle.vertBuffer=gl.createBuffer()
+meshes.rhinoBeetle.indexBuffer=gl.createBuffer()
 verts=[]
 index=[]
 
@@ -19246,12 +21518,12 @@ b(0.65,-0.5,-0.4,0.7,0.1,0.1,0,0,0,0.00001,0,-30)
 b(-0.65,-0.5,0.4,0.7,0.1,0.1,0,0,0,0.00001,0,30)
 b(-0.65,-0.5,-0.4,0.7,0.1,0.1,0,0,0,0.00001,0,30)
 
-gl.bindBuffer(gl.ARRAY_BUFFER,meshes.beetle.vertBuffer)
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.rhinoBeetle.vertBuffer)
 gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
-gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.beetle.indexBuffer)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.rhinoBeetle.indexBuffer)
 gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
 
-meshes.beetle.indexAmount=index.length
+meshes.rhinoBeetle.indexAmount=index.length
 
 meshes.ladybug={}
 meshes.ladybug.vertBuffer=gl.createBuffer()
@@ -19273,6 +21545,459 @@ gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.ladybug.indexBuffer)
 gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
 
 meshes.ladybug.indexAmount=index.length
+
+meshes.spider={}
+meshes.spider.vertBuffer=gl.createBuffer()
+meshes.spider.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0,-0.6*1.3,0.6*1.3,0.6*1.3,0.6*1.3,0.05,0.05,0.05)
+b(0,0,-0.1*1.3,0.75*1.3,0.75*1.3,0.6*1.3,0.05,0.05,0.05)
+b(0,0,0.8*1.3,1*1.3,0.9*1.3,1.25*1.3,0.05,0.05,0.05)
+
+b(0.75-0.2,0.3,-0.7,0.2,1.5,0.2,0.05,0.05,0.05,0.0001,0,-35)
+b(1.6-0.2,0.375,-0.7,0.2,1.5,0.2,0.05,0.05,0.05,0.0001,0,45)
+b(-0.75+0.2,0.3,-0.7,0.2,1.5,0.2,0.05,0.05,0.05,0.0001,0,35)
+b(-1.6+0.2,0.375,-0.7,0.2,1.5,0.2,0.05,0.05,0.05,0.0001,0,-45)
+
+b(0.75,0.3,0,0.2,1.5,0.2,0.05,0.05,0.05,0.0001,0,-35)
+b(1.6,0.375,0,0.2,1.5,0.2,0.05,0.05,0.05,0.0001,0,45)
+b(-0.75,0.3,0,0.2,1.5,0.2,0.05,0.05,0.05,0.0001,0,35)
+b(-1.6,0.375,0,0.2,1.5,0.2,0.05,0.05,0.05,0.0001,0,-45)
+
+b(0.75+0.3,0.3+0.15,0.7,0.2,1.5,0.2,0.05,0.05,0.05,0.0001,0,-35)
+b(1.6+0.3,0.375+0.15,0.7,0.2,1.5,0.2,0.05,0.05,0.05,0.0001,0,45)
+b(-0.75-0.3,0.3+0.15,0.7,0.2,1.5,0.2,0.05,0.05,0.05,0.0001,0,35)
+b(-1.6-0.3,0.375+0.15,0.7,0.2,1.5,0.2,0.05,0.05,0.05,0.0001,0,-45)
+
+b(0.75+0.3,0.3+0.3,1.5,0.2,1.5,0.2,0.05,0.05,0.05,0.0001,0,-35)
+b(1.6+0.3,0.375+0.3,1.5,0.2,1.5,0.2,0.05,0.05,0.05,0.0001,0,45)
+b(-0.75-0.3,0.3+0.3,1.5,0.2,1.5,0.2,0.05,0.05,0.05,0.0001,0,35)
+b(-1.6-0.3,0.375+0.3,1.5,0.2,1.5,0.2,0.05,0.05,0.05,0.0001,0,-45)
+
+b(0.25,0.2,-0.9*1.3,0.1,0.1,0.15,0.7,0,0)
+b(-0.25,0.2,-0.9*1.3,0.1,0.1,0.15,0.7,0,0)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.spider.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.spider.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.spider.indexAmount=index.length
+
+meshes.werewolf={}
+meshes.werewolf.vertBuffer=gl.createBuffer()
+meshes.werewolf.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(-0.3,2.2,-0.05,0.1,0.1,1,0.05,0.05,0.05)
+b(0.3,2.2,-0.05,0.1,0.1,1,0.05,0.05,0.05)
+b(0.2,2.3,-0.05,0.2,0.075,1,0.05,0.05,0.05,0.001,0,30)
+b(-0.2,2.3,-0.05,0.2,0.075,1,0.05,0.05,0.05,0.001,0,-30)
+b(0,2,0,1,1,1,0.35,0.35,0.35)
+b(0,1,0.675,1.75,1.75,0.8,0.35,0.35,0.35,-15,0,0)
+b(0.5,0,0.5,0.5,1.3,0.5,0.35,0.35,0.35,25,0,0)
+b(-0.5,0,0.5,0.5,1.3,0.5,0.35,0.35,0.35,25,0,0)
+b(0.5,-0.7,0.3,0.5,0.75,0.5,0.35,0.35,0.35)
+b(-0.5,-0.7,0.3,0.5,0.75,0.5,0.35,0.35,0.35)
+b(1,1.25,0.25,1.3,0.5,0.5,0.35,0.35,0.35,0.001,45,-20)
+b(1.3,1.1,-0.5,1.3,0.5,0.5,0.35,0.35,0.35,0.001,-85,-20)
+b(-1,1.25,0.25,1.3,0.5,0.5,0.35,0.35,0.35,0.001,-45,20)
+b(-1.3,1.1,-0.5,1.3,0.5,0.5,0.35,0.35,0.35,0.001,85,20)
+b(0,1.8,-0.25,0.3,0.3,1,0.35,0.35,0.35,0.001,0,45)
+b(0,1.8,-0.35,0.25,0.25,1,0.15,0.15,0.15,0.001,0,45)
+b(0.4,2.45,-0.3,0.5,0.5,0.2,0.35,0.35,0.35,0.001,0,45)
+b(-0.4,2.45,-0.3,0.5,0.5,0.2,0.35,0.35,0.35,0.001,0,45)
+b(0.4,2.45,-0.35,0.4,0.4,0.2,0.15,0.15,0.15,0.001,0,45)
+b(-0.4,2.45,-0.35,0.4,0.4,0.2,0.15,0.15,0.15,0.001,0,45)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.werewolf.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.werewolf.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.werewolf.indexAmount=index.length
+
+meshes.mantis={}
+meshes.mantis.vertBuffer=gl.createBuffer()
+meshes.mantis.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,1,0,0.75,2.5,0.75,0.1*0.75,0.7*0.75,0.2*0.75,165,0,0)
+b(0.275,0.25,-0.5,0.2,1.5,0.2,0.1*0.75,0.7*0.75,0.2*0.75,215,0,0)
+b(0.275,0.25,-1.2,0.2,1.5,0.2,0.1*0.75,0.7*0.75,0.2*0.75,155,0,0)
+b(0.275,0.45,-2,0.2,1.5,0.2,0.1*0.75,0.7*0.75,0.2*0.75,235,0,0)
+b(-0.275,0.25,-0.5,0.2,1.5,0.2,0.1*0.75,0.7*0.75,0.2*0.75,215,0,0)
+b(-0.275,0.25,-1.2,0.2,1.5,0.2,0.1*0.75,0.7*0.75,0.2*0.75,155,0,0)
+b(-0.275,0.45,-2,0.2,1.5,0.2,0.1*0.75,0.7*0.75,0.2*0.75,235,0,0)
+
+b(-0.5,0.45,0,0.2,1.6,0.2,0.1*0.75,0.7*0.75,0.2*0.75,0.001,0,-40)
+b(0.5,0.45,0,0.2,1.6,0.2,0.1*0.75,0.7*0.75,0.2*0.75,0.001,0,40)
+
+b(-0.3,2.15,-0.7,0.2,0.2,0.2,0.2,0.5,0.5)
+b(0.3,2.15,-0.7,0.2,0.2,0.2,0.2,0.5,0.5)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.mantis.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.mantis.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.mantis.indexAmount=index.length
+
+meshes.scorpion={}
+meshes.scorpion.vertBuffer=gl.createBuffer()
+meshes.scorpion.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0,0,1,0.8,1.5,0.8,0.1,0.1)
+b(0.3,0.25,-0.75,0.15,0.15,0.15,0.05,0.05,0.05)
+b(-0.3,0.25,-0.75,0.15,0.15,0.15,0.05,0.05,0.05)
+b(0.5,-0.25,-1,0.3,0.3,1,0.8,0.1,0.1,0.001,-30,0)
+b(0.65,-0.25,-1.85,0.3,0.3,1,0.8,0.1,0.1,0.001,10,0)
+b(-0.5,-0.25,-1,0.3,0.3,1,0.8,0.1,0.1,0.001,30,0)
+b(-0.65,-0.25,-1.85,0.3,0.3,1,0.8,0.1,0.1,0.001,-10,0)
+b(0,0.5,1,0.3,0.3,1.5,0.8,0.1,0.1,-45,0,0)
+b(0,1.4,1.2,0.3,0.3,1.5,0.8,0.1,0.1,-115,0,0)
+b(-0.2,1.9,0.9,0.4,0.3,0.6,0.8,0.1,0.1,-45,35,-35)
+b(0.2,1.9,0.9,0.4,0.3,0.6,0.8,0.1,0.1,-45,-35,35)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.scorpion.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.scorpion.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.scorpion.indexAmount=index.length
+
+meshes.kingBeetle={}
+meshes.kingBeetle.vertBuffer=gl.createBuffer()
+meshes.kingBeetle.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0,0,1,1,1.25,10,0,0)
+b(-0.3,0.65,-0.8,0.1,0.1,1,10,10,0,30,45,0)
+b(0.3,0.65,-0.8,0.1,0.1,1,10,10,0,30,-45,0)
+b(0.65,-0.5,0.4,0.7,0.1,0.1,0,10,0,0.00001,0,-30)
+b(0.65,-0.5,-0.4,0.7,0.1,0.1,0,10,0,0.00001,0,-30)
+b(-0.65,-0.5,0.4,0.7,0.1,0.1,0,10,0,0.00001,0,30)
+b(-0.65,-0.5,-0.4,0.7,0.1,0.1,0,10,0,0.00001,0,30)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.kingBeetle.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.kingBeetle.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.kingBeetle.indexAmount=index.length
+
+meshes.mechsquito={}
+meshes.mechsquito.vertBuffer=gl.createBuffer()
+meshes.mechsquito.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+_s=MATH.icosphere(1)
+_vl=verts.length/6
+
+for(let i=0;i<_s.verts.length;i+=3){
+    
+    _s.verts[i]*=1.1
+    _s.verts[i+1]*=1.1
+    _s.verts[i+2]*=1.1
+    
+    verts.push(_s.verts[i],_s.verts[i+1],_s.verts[i+2],0.1,0.1,0.1)
+}
+
+for(let i in _s.index){
+    
+    index.push(_s.index[i]+_vl)
+}
+
+_s=MATH.icosphere(1)
+_vl=verts.length/6
+
+for(let i=0;i<_s.verts.length;i+=3){
+    
+    _s.verts[i]*=0.45
+    _s.verts[i+1]*=0.45
+    _s.verts[i+2]*=0.45
+    
+    _s.verts[i]-=0.2
+    _s.verts[i+1]+=0.15
+    _s.verts[i+2]-=0.35
+
+    verts.push(_s.verts[i],_s.verts[i+1],_s.verts[i+2],10,0,0)
+}
+
+for(let i in _s.index){
+    
+    index.push(_s.index[i]+_vl)
+}
+
+_s=MATH.icosphere(1)
+_vl=verts.length/6
+
+for(let i=0;i<_s.verts.length;i+=3){
+    
+    _s.verts[i]*=0.45
+    _s.verts[i+1]*=0.45
+    _s.verts[i+2]*=0.45
+    
+    _s.verts[i]+=0.2
+    _s.verts[i+1]+=0.15
+    _s.verts[i+2]-=0.35
+
+    verts.push(_s.verts[i],_s.verts[i+1],_s.verts[i+2],10,0,0)
+}
+
+for(let i in _s.index){
+    
+    index.push(_s.index[i]+_vl)
+}
+
+b(0,-0.1,-0.6,0.1,0.1,1,0.12,0.12,0.12,-5,0,45)
+
+c(0.7,0,0.7,0.6,0.1,10,0,10,0,90,0,0)
+c(-0.7,0,0.7,0.6,0.1,10,0,10,0,90,0,0)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.mechsquito.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.mechsquito.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.mechsquito.indexAmount=index.length
+
+meshes.megaMechsquito={}
+meshes.megaMechsquito.vertBuffer=gl.createBuffer()
+meshes.megaMechsquito.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+_s=MATH.icosphere(1)
+_vl=verts.length/6
+
+for(let i=0;i<_s.verts.length;i+=3){
+    
+    _s.verts[i]*=1.1
+    _s.verts[i+1]*=1.1
+    _s.verts[i+2]*=1.1
+    
+    verts.push(_s.verts[i],_s.verts[i+1],_s.verts[i+2],0.1,0.1,0.1)
+}
+
+for(let i in _s.index){
+    
+    index.push(_s.index[i]+_vl)
+}
+
+_s=MATH.icosphere(1)
+_vl=verts.length/6
+
+for(let i=0;i<_s.verts.length;i+=3){
+    
+    verts.push(_s.verts[i],_s.verts[i+1],_s.verts[i+2]+0.75,0.1,0.1,0.1)
+}
+
+for(let i in _s.index){
+    
+    index.push(_s.index[i]+_vl)
+}
+
+_vl=verts.length/6
+
+for(let i=0;i<_s.verts.length;i+=3){
+    
+    verts.push(_s.verts[i],_s.verts[i+1],_s.verts[i+2]+0.75*2,0.1,0.1,0.1)
+}
+
+for(let i in _s.index){
+    
+    index.push(_s.index[i]+_vl)
+}
+
+_s=MATH.icosphere(1)
+_vl=verts.length/6
+
+for(let i=0;i<_s.verts.length;i+=3){
+    
+    _s.verts[i]*=0.45
+    _s.verts[i+1]*=0.45
+    _s.verts[i+2]*=0.45
+    
+    _s.verts[i]-=0.2
+    _s.verts[i+1]+=0.15
+    _s.verts[i+2]-=0.35
+
+    verts.push(_s.verts[i],_s.verts[i+1],_s.verts[i+2],10,0,0)
+}
+
+for(let i in _s.index){
+    
+    index.push(_s.index[i]+_vl)
+}
+
+_s=MATH.icosphere(1)
+_vl=verts.length/6
+
+for(let i=0;i<_s.verts.length;i+=3){
+    
+    _s.verts[i]*=0.45
+    _s.verts[i+1]*=0.45
+    _s.verts[i+2]*=0.45
+    
+    _s.verts[i]+=0.2
+    _s.verts[i+1]+=0.15
+    _s.verts[i+2]-=0.35
+
+    verts.push(_s.verts[i],_s.verts[i+1],_s.verts[i+2],10,0,0)
+}
+
+for(let i in _s.index){
+    
+    index.push(_s.index[i]+_vl)
+}
+
+b(0,-0.1,-0.6,0.1,0.1,1,0.12,0.12,0.12,-5,0,45)
+
+b(0.4,0.4,-0.15,0.1,1,0.1,0.12,0.12,0.12,35,45,0)
+b(-0.4,0.4,-0.15,0.1,1,0.1,0.12,0.12,0.12,35,-45,0)
+
+c(0.75,0,0.75,0.7,0.1,10,0,10,0,90,0,0)
+c(-0.75,0,0.75,0.7,0.1,10,0,10,0,90,0,0)
+
+c(0,0,0.75*2,0.7,0.2,10,0.2,0.2,0.2)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.megaMechsquito.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.megaMechsquito.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.megaMechsquito.indexAmount=index.length
+
+meshes.cogmower={}
+meshes.cogmower.vertBuffer=gl.createBuffer()
+meshes.cogmower.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+_s=MATH.icosphere(1)
+_vl=verts.length/6
+
+for(let i=0;i<_s.verts.length;i+=3){
+    
+    _s.verts[i]*=1.75
+    _s.verts[i+1]*=1.75
+    _s.verts[i+2]*=1.75
+    
+    verts.push(_s.verts[i],_s.verts[i+1],_s.verts[i+2],0.85,0.85,0.9)
+}
+
+for(let i in _s.index){
+    
+    index.push(_s.index[i]+_vl)
+}
+
+c(0,0,0,1.15,0.2,10,10,0,0,90,0,0)
+c(0,0,0,1.05,0.35,10,0.5,0.7,0.7,90,0,0)
+
+b(0,0,0,2.75,0.35,0.5,0.5,0.75,0.8,0.001,0,0)
+b(0,0,0,2.75,0.35,0.5,0.5,0.75,0.8,0.001,60,0)
+b(0,0,0,2.75,0.35,0.5,0.5,0.75,0.8,0.001,120,0)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.cogmower.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.cogmower.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.cogmower.indexAmount=index.length
+
+meshes.goldenCogmower={}
+meshes.goldenCogmower.vertBuffer=gl.createBuffer()
+meshes.goldenCogmower.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+_s=MATH.icosphere(1)
+_vl=verts.length/6
+
+for(let i=0;i<_s.verts.length;i+=3){
+    
+    _s.verts[i]*=1.75
+    _s.verts[i+1]*=1.75
+    _s.verts[i+2]*=1.75
+    
+    verts.push(_s.verts[i],_s.verts[i+1],_s.verts[i+2],0.9,0.85,0.2)
+}
+
+for(let i in _s.index){
+    
+    index.push(_s.index[i]+_vl)
+}
+
+c(0,0,0,1.15,0.2,10,10,10,0,90,0,0)
+c(0,0,0,1.05,0.35,10,0.75,0.7,0.1,90,0,0)
+
+b(0,0,0,2.75,0.35,0.5,0.75,0.7,0.1,0.001,0,0)
+b(0,0,0,2.75,0.35,0.5,0.75,0.7,0.1,0.001,60,0)
+b(0,0,0,2.75,0.35,0.5,0.75,0.7,0.1,0.001,120,0)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.goldenCogmower.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.goldenCogmower.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.goldenCogmower.indexAmount=index.length
+
+meshes.cogTurret={}
+meshes.cogTurret.vertBuffer=gl.createBuffer()
+meshes.cogTurret.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+c(0,0,0,1.2,0.25,6,0.4*0.95,0.4*0.95,0.45*0.95,0.001,0,30)
+b(0,0,0,2.75,0.6,0.25,0.4,0.4,0.45,0.001,0,0)
+b(0,0,0,2.75,0.6,0.25,0.4,0.4,0.45,0.001,0,60)
+b(0,0,0,2.75,0.6,0.25,0.4,0.4,0.45,0.001,0,120)
+
+c(0,0,0,1.2,0.4,6,0.4*0.95,0.4*0.95,0.45*0.95,0.001,90,0)
+b(0,0,0,0.4,2.75,0.6,0.4,0.4,0.45,0.001,0,0)
+b(0,0,0,0.4,2.75,0.6,0.4,0.4,0.45,60,0,0)
+b(0,0,0,0.4,2.75,0.6,0.4,0.4,0.45,120,0,0)
+
+c(0,-0.5,0,0.75,2,10,0.7,0.7,0.7,90,0,0)
+c(0,-0.25,0,0.8,0.25,10,0.9,0.9,0.9,90,0,0)
+c(0,0.15,0,0.8,0.25,10,0.9,0.9,0.9,90,0,0)
+
+c(-0.4,0.15,0.2,0.1,0.7,10,10,0,0,0.001,120,0)
+c(-0.4,0.15,-0.2,0.1,0.7,10,10,0,0,0.001,60,0)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.cogTurret.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.cogTurret.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.cogTurret.indexAmount=index.length
+
+meshes.cog={}
+meshes.cog.vertBuffer=gl.createBuffer()
+meshes.cog.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+c(0,0,0,1.05,1.5,10,10,0,0,90,0,0)
+b(0,0,0,2.75,1.5,0.5,10,0,0,0.001,0,0)
+b(0,0,0,2.75,1.5,0.5,10,0,0,0.001,60,0)
+b(0,0,0,2.75,1.5,0.5,10,0,0,0.001,120,0)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.cog.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.cog.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.cog.indexAmount=index.length
 
 meshes.mondoChick={}
 meshes.mondoChick.vertBuffer=gl.createBuffer()
@@ -19312,7 +22037,8 @@ b(-0.9,0,0,0.2,0.5,0.75,0,0,1.2,15,-20,0)
 b(0.5,-2,-0.4,1,0.1,2,1,0.5,0.1,0.001,-30,0)
 b(-0.5,-2,-0.4,1,0.1,2,1,0.5,0.1,0.001,30,0)
 
-let _s=MATH.icosphere(1),_vl=verts.length/6
+_s=MATH.icosphere(1)
+_vl=verts.length/6
 
 for(let i=0;i<_s.verts.length;i+=3){
     
@@ -19393,7 +22119,7 @@ b(0.65,-0.5,0.4,0.7,0.1,0.1,0,0,0,0.00001,0,-30)
 b(0.65,-0.5,-0.4,0.7,0.1,0.1,0,0,0,0.00001,0,-30)
 b(-0.65,-0.5,0.4,0.7,0.1,0.1,0,0,0,0.00001,0,30)
 b(-0.65,-0.5,-0.4,0.7,0.1,0.1,0,0,0,0.00001,0,30)
-c(0,0,-0.7,0.2,0.1,10,0,0.7,0,0.001,0,0)
+c(0,0.6,-0.25,0.45,0.3,10,0,0.7,0,-90,0,0)
 
 gl.bindBuffer(gl.ARRAY_BUFFER,meshes.armyAnt.vertBuffer)
 gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
@@ -19416,8 +22142,8 @@ b(0.65,-0.5,-0.4,0.7,0.1,0.1,0,0,0,0.00001,0,-30)
 b(-0.65,-0.5,0.4,0.7,0.1,0.1,0,0,0,0.00001,0,30)
 b(-0.65,-0.5,-0.4,0.7,0.1,0.1,0,0,0,0.00001,0,30)
 
-b(-0.2,-0.5,0.25,0.25,0.05,0.4,0,0,0,0.00001,30,0)
-b(0.2,-0.5,0.25,0.25,0.05,0.4,0,0,0,0.00001,-30,0)
+b(-0.2,0.5,0.35,0.95,0.05,1.25,0.5,0.6,0.8,0.00001,-40,0)
+b(0.2,0.5,0.35,0.95,0.05,1.25,0.5,0.6,0.8,0.00001,40,0)
 
 gl.bindBuffer(gl.ARRAY_BUFFER,meshes.flyingAnt.vertBuffer)
 gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
@@ -19465,6 +22191,8 @@ gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.petalShuriken.indexBuffer)
 gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
 
+meshes.petalShuriken.indexAmount=index.length
+
 meshes.lawnMower={}
 meshes.lawnMower.vertBuffer=gl.createBuffer()
 meshes.lawnMower.indexBuffer=gl.createBuffer()
@@ -19499,8 +22227,6 @@ gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.lawnMowerWarning.indexBuffer)
 gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
 
 meshes.lawnMowerWarning.indexAmount=index.length
-
-meshes.petalShuriken.indexAmount=index.length
 
 meshes.popStar={}
 meshes.popStar.vertBuffer=gl.createBuffer()
@@ -19734,6 +22460,24 @@ gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.tornado.indexBuffer)
 gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
 
 meshes.tornado.indexAmount=index.length
+
+meshes.tornado_red={}
+meshes.tornado_red.vertBuffer=gl.createBuffer()
+meshes.tornado_red.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+for(let i=7;i>=0;i--){
+    
+    c(Math.sin(i*0.5),i,Math.cos(i*0.5),i*0.5+1,1,10,1,0.05,0.05,-90,0,0,i*0.5+1,true,true)
+}
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.tornado_red.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.tornado_red.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.tornado_red.indexAmount=index.length
 
 meshes.scratch={}
 meshes.scratch.vertBuffer=gl.createBuffer()
@@ -20042,6 +22786,132 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
 
 meshes.spike.indexAmount=index.length
 
+meshes.basicSprout={}
+meshes.basicSprout.vertBuffer=gl.createBuffer()
+meshes.basicSprout.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0+0.5,0,0.5,2,0.5,0.1,0.5,0.1)
+b(-0.1,1+1,0,0.4,1,0.4,0.1,0.5,0.1,0.01,32,8)
+b(-0.5,1.5+1,1,1.5,0.2,1.5,0.1,0.5,0.1,0.01,32,-15)
+b(0,1.5+1,-1.25,1.75,0.2,1.75,0.1,0.5,0.1,0.01,35,5)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.basicSprout.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.basicSprout.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.basicSprout.indexAmount=index.length
+
+meshes.rareSprout={}
+meshes.rareSprout.vertBuffer=gl.createBuffer()
+meshes.rareSprout.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0+0.5,0,0.5,2,0.5,0.6,0.6,0.6)
+b(-0.1,1+1,0,0.4,1,0.4,0.6,0.6,0.6,0.01,32,8)
+b(-0.5,1.5+1,1,1.5,0.2,1.5,0.6,0.6,0.6,0.01,32,-15)
+b(0,1.5+1,-1.25,1.75,0.2,1.75,0.6,0.6,0.6,0.01,35,5)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.rareSprout.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.rareSprout.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.rareSprout.indexAmount=index.length
+
+meshes.epicSprout={}
+meshes.epicSprout.vertBuffer=gl.createBuffer()
+meshes.epicSprout.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0+0.5,0,0.5,2,0.5,1*0.9,0.85*0.9,0)
+b(-0.1,1+1,0,0.4,1,0.4,1*0.9,0.85*0.9,0,0.01,32,8)
+b(-0.5,1.5+1,1,1.5,0.2,1.5,1*0.9,0.85*0.9,0,0.01,32,-15)
+b(0,1.5+1,-1.25,1.75,0.2,1.75,1*0.9,0.85*0.9,0,0.01,35,5)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.epicSprout.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.epicSprout.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.epicSprout.indexAmount=index.length
+
+meshes.legendarySprout={}
+meshes.legendarySprout.vertBuffer=gl.createBuffer()
+meshes.legendarySprout.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0+0.5,0,0.5,2,0.5,0,0.7,0.9)
+b(-0.1,1+1,0,0.4,1,0.4,0,0.7,0.9,0.01,32,8)
+b(-0.5,1.5+1,1,1.5,0.2,1.5,0,0.7,0.9,0.01,32,-15)
+b(0,1.5+1,-1.25,1.75,0.2,1.75,0,0.7,0.9,0.01,35,5)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.legendarySprout.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.legendarySprout.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.legendarySprout.indexAmount=index.length
+
+meshes.supremeSprout={}
+meshes.supremeSprout.vertBuffer=gl.createBuffer()
+meshes.supremeSprout.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0+0.5,0,0.5,2,0.5,0,10,0)
+b(-0.1,1+1,0,0.4,1,0.4,0,10,0,0.01,32,8)
+b(-0.5,1.5+1,1,1.5,0.2,1.5,0,10,0,0.01,32,-15)
+b(0,1.5+1,-1.25,1.75,0.2,1.75,0,10,0,0.01,35,5)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.supremeSprout.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.supremeSprout.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.supremeSprout.indexAmount=index.length
+
+meshes.gummySprout={}
+meshes.gummySprout.vertBuffer=gl.createBuffer()
+meshes.gummySprout.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0+0.5,0,0.5,2,0.5,1,0.4,1)
+b(-0.1,1+1,0,0.4,1,0.4,1,0.4,1,0.01,32,8)
+b(-0.5,1.5+1,1,1.5,0.2,1.5,1,0.4,1,0.01,32,-15)
+b(0,1.5+1,-1.25,1.75,0.2,1.75,1,0.4,1,0.01,35,5)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.gummySprout.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.gummySprout.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.gummySprout.indexAmount=index.length
+
+meshes.moonSprout={}
+meshes.moonSprout.vertBuffer=gl.createBuffer()
+meshes.moonSprout.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0+0.5,0,0.5,2,0.5,0.7,0.9,100)
+b(-0.1,1+1,0,0.4,1,0.4,0.7,0.9,100,0.01,32,8)
+b(-0.5,1.5+1,1,1.5,0.2,1.5,0.7,0.9,100,0.01,32,-15)
+b(0,1.5+1,-1.25,1.75,0.2,1.75,0.7,0.9,100,0.01,35,5)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.moonSprout.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.moonSprout.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.moonSprout.indexAmount=index.length
+
 
 player.createdMesh=window.mapMesh
 
@@ -20127,6 +22997,8 @@ function updateFlower(field,x,z,func,updateHeight,updateGoo,updatePollination){
     flowers[field][z][x].height=MATH.constrain(flowers[field][z][x].height,0,1)
     
     let i=flowers[field][z][x].id*64
+
+    UPDATE_FLOWER_MESH=true
     
     if(updateHeight){
         
@@ -20548,6 +23420,12 @@ player.addSlot('bear')
 player.addSlot('puppy')
 player.addSlot('festive')
 player.addSlot('digital')
+player.addSlot('buoyant')
+player.addSlot('buoyant')
+player.addSlot('buoyant')
+player.addSlot('buoyant')
+player.addSlot('buoyant')
+player.addSlot('buoyant')
 
 player.updateHive()
 player.updateGear()
@@ -20557,12 +23435,12 @@ for(let i in items){
     
     if(i.indexOf('Planter')>-1) continue
 
-    objects.tokens.push(new LootToken(10000,[(ct%6)*1.5,-1,(-3+((ct/6)|0))*1.5],i,1000000))
+    objects.tokens.push(new LootToken(10000,[(ct%9)-2,-1,(-7+((ct/9)|0))],i,1000000))
     
     ct++
 }
 
-objects.tokens.push(new LootToken(10000,[0,1,0],'honey',10000000000000))
+objects.tokens.push(new LootToken(10000,[0,1,0],'honey',100000000000000))
 
 player.pointerLocked=false
 
@@ -20574,28 +23452,44 @@ document.addEventListener('pointerlockchange',function(e){
 
 ctx.textAlign='center'
 ctx.textBaseline='middle'
-// -71.5,12.5,78,19,15
 
 //bamb
-objects.mobs.push(new Beetle([-50,3,61],{minX:-52,maxX:-52+21,minZ:50,maxZ:50+13,minY:1,maxY:7},3))
-objects.mobs.push(new Beetle([-33,3,61],{minX:-52,maxX:-52+21,minZ:50,maxZ:50+13,minY:1,maxY:7},2))
+objects.mobs.push(new BugMob([-50,3,61],{minX:-52,maxX:-52+21,minZ:50,maxZ:50+13,minY:1,maxY:7},2,15,'rhinoBeetle'))
+objects.mobs.push(new BugMob([-33,3,61],{minX:-52,maxX:-52+21,minZ:50,maxZ:50+13,minY:1,maxY:7},3,18,'rhinoBeetle'))
 
 //bluf
-objects.mobs.push(new Beetle([-55+22,-0.5,29+11],{minX:-55,maxX:-55+24,minZ:29,maxZ:29+13,minY:-2,maxY:5},1))
+objects.mobs.push(new BugMob([-55+22,-0.5,29+11],{minX:-55,maxX:-55+24,minZ:29,maxZ:29+13,minY:-2,maxY:5},1,8,'rhinoBeetle'))
 
 //clov
-objects.mobs.push(new Beetle([-50+17,5,9.5],{minX:-50,maxX:-50+18,minZ:8.5,maxZ:8.5+18,minY:3,maxY:8},2))
-objects.mobs.push(new Ladybug([-53,5,9.5+15],{minX:-50,maxX:-50+18,minZ:8.5,maxZ:8.5+18,minY:3,maxY:8},2))
+objects.mobs.push(new BugMob([-50+17,5,9.5],{minX:-50,maxX:-50+18,minZ:8.5,maxZ:8.5+18,minY:3,maxY:8},2,12,'rhinoBeetle'))
+objects.mobs.push(new BugMob([-53,5,9.5+15],{minX:-50,maxX:-50+18,minZ:8.5,maxZ:8.5+18,minY:3,maxY:8},2,10,'ladybug'))
 
 //pineap
-objects.mobs.push(new Beetle([-71.5+17,13.5,78+9],{minX:-71.5,maxX:-71.5+19,minZ:78,maxZ:78+15,minY:11.5,maxY:18},5))
+objects.mobs.push(new BugMob([-71.5+17,13.5,78+9],{minX:-71.5,maxX:-71.5+19,minZ:78,maxZ:78+15,minY:11.5,maxY:18},5,20,'rhinoBeetle'))
+objects.mobs.push(new BugMob([-71.5+19*0.5,13.5,78+14],{minX:-71.5,maxX:-71.5+19,minZ:78,maxZ:78+15,minY:11.5,maxY:18},4,25,'mantis'))
 
 //straw
-objects.mobs.push(new Ladybug([7.5+1,3,47+14],{minX:7.5,maxX:7.5+15,minZ:47,maxZ:47+15,minY:1,maxY:6},2))
-objects.mobs.push(new Ladybug([7.5+14,3,47+1],{minX:7.5,maxX:7.5+15,minZ:47,maxZ:47+15,minY:1,maxY:6},3))
+objects.mobs.push(new BugMob([7.5+1,3,47+14],{minX:7.5,maxX:7.5+15,minZ:47,maxZ:47+15,minY:1,maxY:6},2,10,'ladybug'))
+objects.mobs.push(new BugMob([7.5+14,3,47+1],{minX:7.5,maxX:7.5+15,minZ:47,maxZ:47+15,minY:1,maxY:6},3,12,'ladybug'))
 
 //mush
-objects.mobs.push(new Ladybug([-6+11,-0.5,29+12],{minX:-6,maxX:-6+19,minZ:29,maxZ:29+13,minY:-2,maxY:4},1))
+objects.mobs.push(new BugMob([-6+11,-0.5,29+12],{minX:-6,maxX:-6+19,minZ:29,maxZ:29+13,minY:-2,maxY:4},1,6,'ladybug'))
+
+//spi
+objects.mobs.push(new BugMob([-20+19*0.5,2.75,47.5+15],{minX:-20,maxX:-20+19,minZ:47.5,maxZ:47.5+14,minY:-0,maxY:6},4,25,'spider'))
+
+
+objects.mobs.push(new BugMob([4,12.5+1,(63.5+76.5+12)*0.5],{minX:4,maxX:4+31+15,minZ:63.5,maxZ:76.5+12,minY:11,maxY:15},6,75,'werewolf'))
+
+//pine
+objects.mobs.push(new BugMob([31+14,13.5,75],{minX:31,maxX:31+15,minZ:74,maxZ:74+19,minY:11,maxY:15},5,35,'mantis'))
+objects.mobs.push(new BugMob([31+14,13.5,74+18],{minX:31,maxX:31+15,minZ:74,maxZ:74+19,minY:11,maxY:15},6,45,'mantis'))
+
+//rose
+objects.mobs.push(new BugMob([30+19,2.75,32.5],{minX:31,maxX:31+19,minZ:31.5,maxZ:31.5+13,minY:0,maxY:6},5,35,'scorpion'))
+objects.mobs.push(new BugMob([32,2.75,30.5+13],{minX:31,maxX:31+19,minZ:31.5,maxZ:31.5+13,minY:0,maxY:6},5,35,'scorpion'))
+
+objects.mobs.push(new BugMob([-53+25*0.5,-0.75,8.5],{minX:-55,maxX:-53+25,minZ:6.5,maxZ:6.5+20,minY:-10,maxY:3.5},7,2500,'kingBeetle'))
 
 
 if(window.thisProgramIsInFullScreen){
@@ -20692,7 +23586,17 @@ window.deleteBeequip=function(){
 
 objects.mobs.push(new MondoChick('MountainTopField',7))
 
-objects.mobs.push(new RogueViciousBee('DandelionField',MATH.random(1,13)|0))
+// objects.mobs.push(new RogueViciousBee('DandelionField',MATH.random(1,13)|0))
+// objects.mobs.push(new Cloud('DandelionField',2,2,60,true))
+
+objects.mobs.push(new Mechsquito('DandelionField',1,false))
+objects.mobs.push(new Cogmower('DandelionField',1,false))
+objects.mobs.push(new Mechsquito('DandelionField',1,true))
+objects.mobs.push(new Cogmower('DandelionField',1,true))
+
+objects.mobs.push(new CogTurret('DandelionField',1,3))
+objects.mobs.push(new CogTurret('DandelionField',1,1))
+
 
 function loop(now){
     
@@ -20886,14 +23790,11 @@ function loop(now){
     gl.uniformMatrix4fv(glCache.dynamic_modelMatrix,gl.FALSE,MATH.IDENTITY_MATRIX)
     shopGearMesh.render()
     
-    if(player.zoom>0.2){
-        
-        gl.uniformMatrix4fv(glCache.dynamic_modelMatrix,gl.FALSE,player.modelMatrix)
-        playerMesh.render()
-        
-        gl.uniformMatrix4fv(glCache.dynamic_modelMatrix,gl.FALSE,player.toolMatrix)
-        player.toolMesh.render()
-    }
+    gl.uniformMatrix4fv(glCache.dynamic_modelMatrix,gl.FALSE,player.modelMatrix)
+    playerMesh.render()
+    
+    gl.uniformMatrix4fv(glCache.dynamic_modelMatrix,gl.FALSE,player.toolMatrix)
+    player.toolMesh.render()
     
     gl.bindTexture(gl.TEXTURE_2D,textures.flowers)
     gl.useProgram(flowerGeometryProgram)
@@ -20901,7 +23802,11 @@ function loop(now){
     gl.uniformMatrix4fv(glCache.flower_viewMatrix,gl.FALSE,player.viewMatrix)
     
     gl.bindBuffer(gl.ARRAY_BUFFER,flowers.mesh.vertBuffer)
-    gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(flowers.mesh.verts),gl.DYNAMIC_DRAW)
+
+    if(UPDATE_FLOWER_MESH)
+        gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(flowers.mesh.verts),gl.DYNAMIC_DRAW)
+
+    UPDATE_FLOWER_MESH=false
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,flowers.mesh.indexBuffer)
     gl.vertexAttribPointer(glCache.flower_vertPos,3,gl.FLOAT,gl.FALSE,32,0)
     gl.vertexAttribPointer(glCache.flower_vertUV,4,gl.FLOAT,gl.FALSE,32,12)
@@ -20988,13 +23893,13 @@ function loop(now){
         
         if(!NPCs[i].computedMesh){
             
-            minDist=0
+            minDist=-1
             minNPC=i
             NPCs[i].computedMesh=true
             break
         }
         
-        let d=Math.abs(player.body.position.x-(triggers[i+'_NPC'].minX+triggers[i+'_NPC'].maxX)*0.5)+Math.abs(player.body.position.y-(triggers[i+'_NPC'].minY+triggers[i+'_NPC'].maxY)*0.5)+Math.abs(player.body.position.z-(triggers[i+'_NPC'].minZ+triggers[i+'_NPC'].maxZ)*0.5)
+        let d=Math.abs(player.body.position.x-triggers[i+'_NPC'].minX)+Math.abs(player.body.position.y-triggers[i+'_NPC'].minY)+Math.abs(player.body.position.z-triggers[i+'_NPC'].minZ)
         
         if(minDist>d){
             
@@ -21003,18 +23908,16 @@ function loop(now){
         }
         
         NPCs[i].mesh.render()
-        
     }
     
     if(minDist<75){
         
-        if(minDist<45&&!NPCs[minNPC].activeQuest){
+        if(minDist<50&&!NPCs[minNPC].activeQuest){
             
             textRenderer.addDecalRaw(...NPCs[minNPC].exclaimPos,0,0,...textRenderer.decalUV['exclaim'],1,1,1,5,4,Math.PI)
-            
         }
         
-        if(frameCount%2===0){
+        if(frameCount%2||minDist<0){
             
             NPCs[minNPC].mesh.setMeshFromFunction(function(box,a,cylinder,sphere,d,e,star,limbBox,limbCylinder){
                 
@@ -21023,17 +23926,17 @@ function loop(now){
                 limbBox(r,x,y+Math.cos(t1*MATH.TO_RAD*2)*s*0.6,z+Math.sin(t1*MATH.TO_RAD*2)*s*0.6,1.1*s,0.9*s,0.6*s,[t1*2,0,0],NPCs[minNPC].meshParams.texture.torso.u*128/1024,NPCs[minNPC].meshParams.texture.torso.v*128/1024,NPCs[minNPC].meshParams.texture.torso.texture)
                 limbBox(r,x,y+Math.cos(t1*MATH.TO_RAD*2.75)*s*1.65,z+Math.sin(t1*MATH.TO_RAD*2.75)*s*1.65,1.2*s,1.15*s,0.6*s,[t1*4,0,0],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024,true)
                 limbBox(r,x,y,z,1.1*s,0.25*s,0.6*s,[t1,0,0],NPCs[minNPC].meshParams.texture.torso.u*128/1024,NPCs[minNPC].meshParams.texture.torso.v*128/1024)
-                limbBox(r,x+s/1.25,y-Math.cos(t1*MATH.TO_RAD*3.5*2)*s*0.65+s*1.15,z-Math.sin(t1*MATH.TO_RAD*3.5*2)*s*0.2,0.5*s,1.15*s,0.5*s,[t1*3.5*2,0,9],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
+                limbBox(r,x+s/1.25,y-Math.cos(t1*MATH.TO_RAD*3.5*2)*s*0.65+s*1.15,z-Math.sin(t1*MATH.TO_RAD*3.5*2)*s*0.2,0.5*s,1.15*s,0.5*s,[t1*3.5*2,0,9],(NPCs[minNPC].meshParams.texture.face.u+NPCs[minNPC].meshParams.texture.extremities.u)*128/1024,(NPCs[minNPC].meshParams.texture.face.v+NPCs[minNPC].meshParams.texture.extremities.v)*128/1024)
                 s/=1.25
-                limbBox(r,x-0.35*s,y-0.55*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[t1*1.25-10,0,-5],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
-                limbBox(r,x-0.42*s,y-1.15*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[10-t1*0.5,0,-5],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
-                limbBox(r,x+0.35*s,y-0.55*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[t1*1.25-10,0,5],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
-                limbBox(r,x+0.42*s,y-1.15*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[10-t1*0.5,0,5],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
+                limbBox(r,x-0.35*s,y-0.55*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[t1*1.25-10,0,-5],(NPCs[minNPC].meshParams.texture.face.u+NPCs[minNPC].meshParams.texture.extremities.u)*128/1024,(NPCs[minNPC].meshParams.texture.face.v+NPCs[minNPC].meshParams.texture.extremities.v)*128/1024)
+                limbBox(r,x-0.42*s,y-1.15*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[10-t1*0.5,0,-5],(NPCs[minNPC].meshParams.texture.face.u+NPCs[minNPC].meshParams.texture.extremities.u)*128/1024,(NPCs[minNPC].meshParams.texture.face.v+NPCs[minNPC].meshParams.texture.extremities.v)*128/1024)
+                limbBox(r,x+0.35*s,y-0.55*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[t1*1.25-10,0,5],(NPCs[minNPC].meshParams.texture.face.u+NPCs[minNPC].meshParams.texture.extremities.u)*128/1024,(NPCs[minNPC].meshParams.texture.face.v+NPCs[minNPC].meshParams.texture.extremities.v)*128/1024)
+                limbBox(r,x+0.42*s,y-1.15*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[10-t1*0.5,0,5],(NPCs[minNPC].meshParams.texture.face.u+NPCs[minNPC].meshParams.texture.extremities.u)*128/1024,(NPCs[minNPC].meshParams.texture.face.v+NPCs[minNPC].meshParams.texture.extremities.v)*128/1024)
                 s*=1.25
-                limbCylinder(r,x-0.6*s,y+Math.cos(t1*MATH.TO_RAD*3)*s*2.2,z+Math.sin(t1*MATH.TO_RAD*3)*s*2.2,0.3*s,0.6*s,10,0.9,0.9,0.9,1,t1*4,0,0,NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
-                limbCylinder(r,x+0.6*s,y+Math.cos(t1*MATH.TO_RAD*3)*s*2.2,z+Math.sin(t1*MATH.TO_RAD*3)*s*2.2,0.3*s,0.6*s,10,0.9,0.9,0.9,1,t1*4,0,0,NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
+                limbCylinder(r,x-0.6*s,y+Math.cos(t1*MATH.TO_RAD*3)*s*2.2,z+Math.sin(t1*MATH.TO_RAD*3)*s*2.2,0.3*s,0.65*s,10,0.9,0.9,0.9,1,t1*4,0,0,(NPCs[minNPC].meshParams.texture.face.u+NPCs[minNPC].meshParams.texture.extremities.u)*128/1024,(NPCs[minNPC].meshParams.texture.face.v+NPCs[minNPC].meshParams.texture.extremities.v)*128/1024)
+                limbCylinder(r,x+0.6*s,y+Math.cos(t1*MATH.TO_RAD*3)*s*2.2,z+Math.sin(t1*MATH.TO_RAD*3)*s*2.2,0.3*s,0.65*s,10,0.9,0.9,0.9,1,t1*4,0,0,(NPCs[minNPC].meshParams.texture.face.u+NPCs[minNPC].meshParams.texture.extremities.u)*128/1024,(NPCs[minNPC].meshParams.texture.face.v+NPCs[minNPC].meshParams.texture.extremities.v)*128/1024)
                 t1=Math.sin(t*2.1+0.5)*5-0.5
-                limbBox(r,x-1*s/1.25,y-Math.cos(t1*MATH.TO_RAD*3.5*2)*s*0.65+s*1.15,z-Math.sin(t1*MATH.TO_RAD*3.5*2)*s*0.2,0.5*s,1.15*s,0.5*s,[t1*3.5*2,0,-9],NPCs[minNPC].meshParams.texture.face.u*128/1024,NPCs[minNPC].meshParams.texture.face.v*128/1024)
+                limbBox(r,x-1*s/1.25,y-Math.cos(t1*MATH.TO_RAD*3.5*2)*s*0.65+s*1.15,z-Math.sin(t1*MATH.TO_RAD*3.5*2)*s*0.2,0.5*s,1.15*s,0.5*s,[t1*3.5*2,0,-9],(NPCs[minNPC].meshParams.texture.face.u+NPCs[minNPC].meshParams.texture.extremities.u)*128/1024,(NPCs[minNPC].meshParams.texture.face.v+NPCs[minNPC].meshParams.texture.extremities.v)*128/1024)
                 
             })
             
@@ -21154,7 +24057,10 @@ function loop(now){
     
     if(user.keys.o){
 
-        objects.mobs.push(new LawnMower(5))
+        TIME+=dt*50
+
+        player.roboChallenge={timer:3*60,page:'bee',beesPerRound:2,beesPicked:0,activeBees:[],scene:'bee',rerollCost:10,activeUpgrades:[]}
+        player.updateRoboUI()
 
         for(let i in objects.planters){
 
@@ -21231,6 +24137,7 @@ function loop(now){
     
     player.updateHiveBalloon()
     player.updateAntChallenge()
+    player.updateRoboChallenge()
     
     gl.bindBuffer(gl.ARRAY_BUFFER,meshes.cylinder_explosion.vertBuffer)
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.cylinder_explosion.indexBuffer)
@@ -21283,7 +24190,7 @@ function loop(now){
     }
     
     user.update()
-    
+
     then=now
     
     window.parent.raf=window.requestAnimationFrame(loop)
