@@ -4120,6 +4120,10 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
     
 </div>
 
+<div id='roboQuest' style='position:fixed;width:500px;height:500px;z-index:1;left:50%;top:50%;transform:translate(-50%,-50%);background-color:rgb(0,140,0);color:rgb(255,255,255);font-size:17px;text-align:center;border-radius:5px;display:none'>
+    @
+</div>
+
 <div id='actionWarning' style='position:fixed;margin-left:50%;margin-top:5px;width:360px;height:60px;z-index:2;transform:translate(-50%,0px);display:none'>
     
     <div style='position:fixed;margin-left:60px;margin-top:0px;width:300px;height:50px;background-color:rgb(30,70,255,0.8);border-radius:3px;padding:0px;font-size:18px;color:white;text-align:center;padding-top:0px' id='actionName'></div>
@@ -21063,7 +21067,7 @@ player=(function(out){
                 document.getElementById('roboActiveUpgradesAmount').style.display='none'
                 document.getElementById('roboUpgradeChoices').style.display='none'
 
-                let types=['redPollen','whitePollen','bluePollen','pollenFromSunflowerField','pollenFromDandelionField','pollenFromMushroomField','pollenFromBlueFlowerField','pollenFromCloverField','pollenFromSpiderField','pollenFromStrawberryField','pollenFromBambooField','pollenFromPineapplePatch','pollenFromCactusField','pollenFromPumpkinPatch','pollenFromPineTreeForest','pollenFromRoseField']
+                let types=['redPollen','whitePollen','bluePollen','redPollen','whitePollen','bluePollen','pollenFromSunflowerField','pollenFromDandelionField','pollenFromMushroomField','pollenFromBlueFlowerField','pollenFromCloverField','pollenFromSpiderField','pollenFromStrawberryField','pollenFromBambooField','pollenFromPineapplePatch','pollenFromCactusField','pollenFromPumpkinPatch','pollenFromPineTreeForest','pollenFromRoseField']
 
                 if(out.roboChallenge.round>5) types.push('pollenFromMountainTopField')
                 if(out.roboChallenge.round>10) types.push('pollenFromPepperPatch')
@@ -21078,7 +21082,7 @@ player=(function(out){
 
                     let q=[],t=types.slice(),re=[]
 
-                    for(let j=0,c=MATH.random(2,5)|0;j<c;j++){
+                    for(let j=0,c=MATH.random(1,5)|0;j<c;j++){
 
                         let r=(Math.random()*t.length)|0
 
@@ -21091,11 +21095,14 @@ player=(function(out){
                     for(let j in re){
 
                         document.getElementById('roboQuestChoice'+i).innerHTML+='- '+MATH.doStatGrammar(re[j])+' '+10+' '+MATH.doGrammar(re[j])+'<br><br>'
+
+                        q.push([re[j],10])
                     }
 
                     document.getElementById('roboQuestChoice'+i).onclick=function(){
 
                         out.roboChallenge.scene='upgrade'
+                        out.roboChallenge.quest=q
                         out.updateRoboUI()
                     }
                 }
