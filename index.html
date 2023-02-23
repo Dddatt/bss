@@ -15315,11 +15315,11 @@ class WildWindyBee {
                             
                             let ty=dropTable[(Math.random()*dropTable.length)|0]
                             
-                            objects.tokens.push(new LootToken(45,[center[0]+Math.cos(i)*radius,center[1],center[2]+Math.sin(i)*radius],ty,1,true,'Wild Windy Bee'))
+                            objects.tokens.push(new LootToken(45,[center[0]+Math.cos(i)*radius,center[1],center[2]+Math.sin(i)*radius],ty,1,true,'Wild Windy Bee',['tokensFromWildWindyBee']))
                             
                         } else {
                             
-                            objects.tokens.push(new LootToken(45,[center[0]+Math.cos(i)*radius,center[1],center[2]+Math.sin(i)*radius],'honey',(this.level-2)*10000+1000,true,'Wild Windy Bee'))
+                            objects.tokens.push(new LootToken(45,[center[0]+Math.cos(i)*radius,center[1],center[2]+Math.sin(i)*radius],'honey',(this.level-2)*10000+1000,true,'Wild Windy Bee',['tokensFromWildWindyBee']))
                         }
                     }
 
@@ -17998,8 +17998,10 @@ class Planter {
 
         player.addEffect(fieldInfo[this.field].nectarType,seconds/(6*60*60))
 
-        
+        player.stats.hoursOfNectar+=seconds/(60*60)
+        player.stats.minutesOfNectar+=seconds/(60)
         player.stats['hoursOf'+MATH.doGrammar(fieldInfo[this.field].nectarType).replace(' ','')]+=seconds/(60*60)
+        player.stats['minutesOf'+MATH.doGrammar(fieldInfo[this.field].nectarType).replace(' ','')]+=seconds/(60)
         
         let amountOfTokens=Math.ceil({paper:9,plastic:13,candy:16,redClay:19,blueClay:19,tacky:22,pesticide:25,petal:27,plenty:30}[this.type]*perc*perc),dropTable=[],dropRates={}
 
@@ -18258,7 +18260,7 @@ class Planter {
 
             window.setTimeout(function(){
 
-                objects.tokens.push(new LootToken(45,[DIS.pos[0]+f[0],DIS.pos[1]+0.5,DIS.pos[2]+f[1]],it,MATH.random(1,(({paper:5,plastic:6,candy:7,redClay:8,blueClay:8,tacky:9,pesticide:9.5,petal:13,plenty:15}[DIS.type]*(perc*0.5+0.5))/items[it].value)+1)|0,true,'Planter'))
+                objects.tokens.push(new LootToken(45,[DIS.pos[0]+f[0],DIS.pos[1]+0.5,DIS.pos[2]+f[1]],it,MATH.random(1,(({paper:5,plastic:6,candy:7,redClay:8,blueClay:8,tacky:9,pesticide:9.5,petal:13,plenty:15}[DIS.type]*(perc*0.5+0.5))/items[it].value)+1)|0,true,'Planter',['tokensFromPlanters','tokensFromPlantersInThe'+DIS.field]))
 
             },225*i)
             
@@ -18814,7 +18816,7 @@ class Sprout {
 
             window.setTimeout(function(){
 
-                objects.tokens.push(new LootToken(10,[fieldInfo[DIS.field].x+((fieldInfo[DIS.field].width*Math.random())|0),fieldInfo[DIS.field].y+1,fieldInfo[DIS.field].z+((fieldInfo[DIS.field].length*Math.random())|0),0],it,1,false,'Sprout'))
+                objects.tokens.push(new LootToken(10,[fieldInfo[DIS.field].x+((fieldInfo[DIS.field].width*Math.random())|0),fieldInfo[DIS.field].y+1,fieldInfo[DIS.field].z+((fieldInfo[DIS.field].length*Math.random())|0),0],it,1,false,'Sprout',['tokensFromSprouts']))
 
             },200*i)
             
@@ -21468,15 +21470,32 @@ player=(function(out){
     }
     
     out.lagPos=[0,0,0]
+
+    out.discoveredBees=[]
+
     out.stats={
         
+        puffshrooms:0,
+        rarePuffshrooms:0,
+        epicPuffshrooms:0,
+        legendaryPuffshrooms:0,
+        mythicPuffshrooms:0,
+        beeTypes:0,
+        minutesOfNectar:0,
+        hoursOfNectar:0,
         hoursOfInvigoratingNectar:0,
         hoursOfMotivatingNectar:0,
         hoursOfSatisfyingNectar:0,
         hoursOfComfortingNectar:0,
         hoursOfRefreshingNectar:0,
+        minutesOfInvigoratingNectar:0,
+        minutesOfMotivatingNectar:0,
+        minutesOfSatisfyingNectar:0,
+        minutesOfComfortingNectar:0,
+        minutesOfRefreshingNectar:0,
         tokensFromPlanters:0,
         tokensFromSprouts:0,
+        tokensFromWildWindyBee:0,
         timesUsingTheRedCannon:0,
         timesUsingTheBlueCannon:0,
         timesUsingTheYellowCannon:0,
@@ -21519,6 +21538,7 @@ player=(function(out){
         
         out.stats[i+'Tokens']=0
         out.stats[i]=0
+        out.stats[i+'ToTheWindShrine']=0
     }
     
     for(let i in LIST_OF_STATS_FOR_PLAYER){
@@ -21600,7 +21620,7 @@ player=(function(out){
         
         for(let i in req){
             
-            req[i].push(out.stats[req[i][0]])
+            req[i].push(req[i][0]==='beeTypes'?0:out.stats[req[i][0]])
         }
         
         out.quests=[{name:name,req:req,NPC:NPC},...out.quests]
@@ -22045,6 +22065,12 @@ player=(function(out){
         
         for(let i in objects.bees){
 
+            if(out.discoveredBees.indexOf(objects.bees[i].type)<0){
+
+                out.discoveredBees.push(objects.bees[i].type)
+                out.stats.beeTypes++
+            }
+
             if(player.hive[objects.bees[i].hiveY][objects.bees[i].hiveX].roboDisabled) continue
             
             out.beeColorAmounts[beeInfo[objects.bees[i].type].color[0]]++
@@ -22104,7 +22130,7 @@ player=(function(out){
                 }
             }
         }
-        
+
         for(let i in giftedTypes){
             
             let b=beeInfo[giftedTypes[i]].giftedHiveBonus
@@ -24875,8 +24901,9 @@ class Token {
 
 class LootToken {
     
-    constructor(life,pos,type,amount,canBeLinked=false,source){
+    constructor(life,pos,type,amount,canBeLinked=false,source,statsToAdd){
         
+        this.statsToAdd=statsToAdd||[]
         this.life=life
         this.pos=pos
         this.type=type
@@ -24910,7 +24937,9 @@ class LootToken {
             this.life=0.75
             
             player.stats[this.type+'Tokens']++
-            player.stats['tokensFrom'+this.from+'s']++
+
+            for(let i in this.statsToAdd)
+                player.stats[this.statsToAdd[i]]++
             
             if(this.type==='honey'){
                 
@@ -27475,6 +27504,12 @@ function collectPollen(params){
 function createField(name,x,y,z,w,l,c,_l,generalColorComp,nectarType){
     
     player.stats['pollenFrom'+name]=0
+    player.stats['tokensFromPlantersInThe'+name]=0
+    player.stats['puffshroomsInThe'+name]=0
+    player.stats['rarePuffshroomsInThe'+name]=0
+    player.stats['epicPuffshroomsInThe'+name]=0
+    player.stats['legendaryPuffshroomsInThe'+name]=0
+    player.stats['mythicPuffshroomsInThe'+name]=0
     
     fieldInfo[name]={x:x,y:y,z:z,width:w,length:l,getColor:c,getLevel:_l,haze:{},generalColorComp:generalColorComp,nectarType:nectarType+'Nectar',degration:0,corruption:0}
     
