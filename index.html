@@ -229,7 +229,6 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
 
 </style>
 
-
 <div id='abilityUI' style='margin:5px;padding:0px;margin-top:35px;position:fixed'>
     
     <svg id='inspireCoconutsPassive' style='width:30;height:30;display:none;'>
@@ -4086,6 +4085,8 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
     <div id='roboCogsAmount' style='position:fixed;left:22%;top:3%;transform:translate(-50%,-50%);font-size:20px;color:black;width:200px;text-align:left'></div>
 
     <div id='roboTitle' style='position:fixed;left:50%;top:7%;transform:translate(-50%,-50%);font-size:30px;'></div>
+
+    <div id='roboStartRound' style='position:fixed;left:92%;top:7.5%;transform:translate(-50%,-50%);color:black;font-size:18px;background-color:rgb(46, 247, 93);padding:5px;border:2px solid black;border-radius:9px;cursor:pointer' onclick='window.roboStartRound()'>Start Round!</div>
     
     <div id='roboActiveBeesAmount' style='position:fixed;width:200px;height:400px;left:21%;top:54%;transform:translate(-50%,-50%);font-size:16px;'></div>
     
@@ -4800,8 +4801,8 @@ let triggers={
     },
 
     datsocool_NPC:{
-        
-        minX:-74-2.5,maxX:-74+2.5,minY:20,maxY:30,minZ:49.5-2.5,maxZ:49.5+2.5
+        //@
+        minX:-74-2.5,maxX:-74+2.5,minY:30,maxY:30,minZ:49.5-2.5,maxZ:49.5+2.5
     },
     
     cool_shop:{
@@ -21005,13 +21006,15 @@ player=(function(out){
     out.updateRoboUI=function(){
 
         document.getElementById('roboMenu').style.display='block'
-        document.getElementById('roboCogsAmount').innerHTML='<u>Cogs: '+MATH.addCommas(items.cog.amount)+'</u>'
+        document.getElementById('roboCogsAmount').innerHTML='<u>Cogs: '+MATH.addCommas(items.cog.amount+'')+'</u>'
+        document.getElementById('roboStartRound').style.display='none'
 
         switch(out.roboChallenge.scene){
 
             case 'upgrade':
 
-                document.getElementById('roboTitle').innerHTML="Buy Upgrades<p style='font-size:14.5px;margin-top:0px'><u style='cursor:pointer'>Reroll Upgrades</u> ("+out.roboChallenge.rerollCost+" cogs)</p>"
+                document.getElementById('roboStartRound').style.display='block'
+                document.getElementById('roboTitle').innerHTML="Buy Upgrades<p style='font-size:14.5px;margin-top:0px'><u style='cursor:"+(items.cog.amount>=out.roboChallenge.rerollCost?'pointer':'not-allowed')+"' onclick='window.rerollInRoboBearChallenge()'>Reroll Upgrades</u> ("+out.roboChallenge.rerollCost+" cogs)</p>"
                 document.getElementById('roboBeeChoices').style.display='none'
                 document.getElementById('roboQuestChoices').style.display='none'
                 document.getElementById('roboUpgradeChoices').style.display='block'
@@ -21019,9 +21022,9 @@ player=(function(out){
                 document.getElementById('roboActiveBeesAmount').style.display='none'
                 document.getElementById('roboActiveUpgrades').style.display='block'
                 document.getElementById('roboActiveUpgradesAmount').style.display='block'
+                document.getElementById('roboActiveUpgradesAmount').innerHTML='Active Upgrades ('+out.roboChallenge.activeUpgrades.length+')'
 
                 let u=[],c=[],costs=[MATH.random(8,20)|0,MATH.random(8,20)|0,MATH.random(8,20)|0]
-        
 
                 for(let i in upgrades){
 
@@ -21062,12 +21065,20 @@ player=(function(out){
 
                     document.getElementById('roboUpgradeChoice'+i).innerHTML='&nbsp;'+c[i-1]+"&nbsp;&nbsp;&nbsp;<i style='font-size:13px;color:"+(items.cog.amount>=costs[i-1]?'black':'rgb(200,0,0)')+"'>"+costs[i-1]+" Cogs</i><div style='border-radius:5px;position:fixed;left:10px;top:35px;right:5px;bottom:5px;background-color:rgb(0,0,0,0.75);font-family:trebuchet ms;font-size:14px;padding-left:10px;padding-top:8px'>"+s+"</div>"
 
-                    document.getElementById('roboUpgradeChoice'+i).style.cursor=items.cog.amount>=costs[i-1]?'pointer':'default'
+                    document.getElementById('roboUpgradeChoice'+i).style.cursor=items.cog.amount>=costs[i-1]?'pointer':'not-allowed'
 
                     document.getElementById('roboUpgradeChoice'+i).onclick=function(){
 
-                        out.roboChallenge.activeUpgrades.push(c[i-1])
-                        out.startRoboChallenge()
+                        if(items.cog.amount>=costs[i-1]){
+
+                            out.roboChallenge.activeUpgrades.push(c[i-1])
+                            out.startRoboChallenge()
+
+                        } else {
+
+                            out.addMessage('Not enough Cogs!',COLORS.redArr)
+                        }
+                        
                     }
                 }
 
@@ -21075,7 +21086,7 @@ player=(function(out){
 
             case 'quest':
 
-                document.getElementById('roboTitle').innerHTML="Select Quest<p style='font-size:14.5px;margin-top:0px'><u style='cursor:pointer'>Reroll Quests</u> ("+out.roboChallenge.rerollCost+" cogs)</p>"
+                document.getElementById('roboTitle').innerHTML="Select Quest<p style='font-size:14.5px;margin-top:0px'><u style='cursor:"+(items.cog.amount>=out.roboChallenge.rerollCost?'pointer':'not-allowed')+"' onclick='window.rerollInRoboBearChallenge()'>Reroll Quests</u> ("+out.roboChallenge.rerollCost+" cogs)</p>"
                 document.getElementById('roboBeeChoices').style.display='none'
                 document.getElementById('roboQuestChoices').style.display='block'
                 document.getElementById('roboActiveBees').style.display='none'
@@ -21137,7 +21148,6 @@ player=(function(out){
                     document.getElementById('roboQuestChoice'+i).onclick=function(){
 
                         out.roboChallenge.scene='upgrade'
-
                         out.roboChallenge.quest=q
                         out.updateRoboUI()
                     }
@@ -21154,7 +21164,7 @@ player=(function(out){
                     return
                 }
 
-                document.getElementById('roboTitle').innerHTML="<p style='margin-top:-15px'></p>Select Bees<p style='font-size:13px;margin-top:0px'>("+(out.roboChallenge.beesPicked+1)+" of "+out.roboChallenge.beesPerRound+")<br><u style='cursor:pointer'>Reroll Bees</u> ("+out.roboChallenge.rerollCost+" cogs)</p>"
+                document.getElementById('roboTitle').innerHTML="<p style='margin-top:-15px'></p>Select Bees<p style='font-size:13px;margin-top:0px'>("+(out.roboChallenge.beesPicked+1)+" of "+out.roboChallenge.beesPerRound+")<br><u style='cursor:"+(items.cog.amount>=out.roboChallenge.rerollCost?'pointer':'not-allowed')+"' onclick='window.rerollInRoboBearChallenge()'>Reroll Bees</u> ("+out.roboChallenge.rerollCost+" cogs)</p>"
                 document.getElementById('roboActiveBeesAmount').innerHTML="Active Bees ("+out.roboChallenge.activeBees.length+")"
                 document.getElementById('roboBeeChoices').style.display='block'
                 document.getElementById('roboQuestChoices').style.display='none'
@@ -21253,6 +21263,23 @@ player=(function(out){
             break
         }
     }
+
+    window.rerollInRoboBearChallenge=function(){
+        
+        if(items.cog.amount>=out.roboChallenge.rerollCost){
+
+            items.cog.amount-=out.roboChallenge.rerollCost
+            out.updateInventory()
+            out.updateRoboUI()
+            out.roboChallenge.rerollCost+=5
+
+        } else {
+
+            out.addMessage('Not enough Cogs!',COLORS.redArr)
+        }
+    }
+
+    window.roboStartRound=out.startRoboChallenge
 
     out.endAntChallenge=function(){
 
