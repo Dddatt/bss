@@ -4788,6 +4788,21 @@ let triggers={
 
         minX:-37-2.5,maxX:-37+2.5,minY:3,maxY:9,minZ:46.5-2.5,maxZ:46.5+2.5
     },
+
+    spiritBear_NPC:{
+
+        minX:45-2.5,maxX:45+2.5,minY:12,maxY:25,minZ:-35.5-2.5,maxZ:-35.5+2.5
+    },
+
+    scienceBear_NPC:{
+            
+        minX:-74-2.5,maxX:-74+2.5,minY:20,maxY:30,minZ:49.5-2.5,maxZ:49.5+2.5
+    },
+
+    datsocool_NPC:{
+        
+        minX:-74-2.5,maxX:-74+2.5,minY:20,maxY:30,minZ:49.5-2.5,maxZ:49.5+2.5
+    },
     
     cool_shop:{
         
@@ -23627,7 +23642,7 @@ NPCs={
         dialogueIndex:0,
         dialogue:window.dialogue_blackBear(player,items,NPCs),
         mesh:new Mesh(),
-        meshParams:{x:0.5,y:0,z:-31.5,r:1,s:1.2,texture:{face:{u:0,v:0},torso:{texture:false,u:0,v:0.5},extremities:{u:0,v:0}}}
+        meshParams:{x:0.5,y:0,z:-31.5,r:1,s:1.2,texture:{face:{u:0,v:0},torso:{texture:false,u:0,v:0.5},extremities:{u:0,v:0},ears:{u:0,v:0}}}
     },
     
     polarBear:{
@@ -23638,7 +23653,7 @@ NPCs={
         dialogueIndex:0,
         dialogue:[],
         mesh:new Mesh(),
-        meshParams:{x:1.5,y:22,z:-68,r:2,s:1.2,texture:{face:{u:1,v:0},torso:{texture:false,u:1,v:0},extremities:{u:0,v:0}}}
+        meshParams:{x:1.5,y:22,z:-68,r:2,s:1.2,texture:{face:{u:1,v:0},torso:{texture:false,u:1,v:0},extremities:{u:0,v:0},ears:{u:0,v:0}}}
     },
 
     roboBear:{
@@ -23649,7 +23664,7 @@ NPCs={
         dialogueIndex:0,
         dialogue:[],
         mesh:new Mesh(),
-        meshParams:{x:40,y:5,z:-55,r:1,s:1.2,texture:{face:{u:3,v:0},torso:{texture:false,u:3.1,v:0.5},extremities:{u:0,v:0}}}
+        meshParams:{x:40,y:5,z:-55,r:1,s:1.2,texture:{face:{u:3,v:0},torso:{texture:false,u:3.1,v:0.5},extremities:{u:0,v:0},ears:{u:0,v:0}}}
     },
 
     pandaBear:{
@@ -23659,7 +23674,38 @@ NPCs={
         dialogueIndex:0,
         dialogue:window.dialogue_pandaBear(player,items,NPCs),
         mesh:new Mesh(),
-        meshParams:{x:37,y:7,z:-47.5,r:2,s:1.2,texture:{face:{u:4,v:0},torso:{texture:false,u:4,v:0.8},extremities:{u:0.3,v:0.5}}}
+        meshParams:{x:37,y:7,z:-47.5,r:2,s:1.2,texture:{face:{u:4,v:0},torso:{texture:false,u:4,v:0.8},extremities:{u:0.3,v:0.5},ears:{u:0.3,v:0.5}}}
+    },
+
+    spiritBear:{
+        
+        viewMatrix:[45,18.5,-29.5,0,-0.25],
+        exclaimPos:[45,17.5,-35],
+        dialogueIndex:0,
+        dialogue:window.dialogue_spiritBear(player,items,NPCs),
+        mesh:new Mesh(),
+        meshParams:{x:45,y:17,z:-37,r:0,s:1.2,texture:{face:{u:5,v:0},torso:{texture:false,u:5,v:0},extremities:{u:0,v:0.8},ears:{u:0,v:0}}}
+    },
+
+    scienceBear:{
+        
+        viewMatrix:[-68,25,49.5,-MATH.HALF_PI,-0.25],
+        exclaimPos:[-74,24,49.5],
+        dialogueIndex:0,
+        dialogue:window.dialogue_scienceBear(player,items,NPCs),
+        mesh:new Mesh(),
+        meshParams:{x:-49.5,y:23.5,z:-76,r:3,s:1.2,texture:{face:{u:0,v:1},torso:{texture:false,u:1,v:2},extremities:{u:0,v:0},ears:{u:0,v:0.1}}}
+    },
+
+    datsocool:{
+        
+        viewMatrix:[-68,25,49.5,-MATH.HALF_PI,-0.25],
+        exclaimPos:[-74,24,49.5],
+        dialogueIndex:0,
+        dialogue:window.dialogue_datsocool(player,items,NPCs),
+        mesh:new Mesh(),
+        doesntHaveMesh:true,
+        meshParams:{x:50,y:120,z:150,r:0,s:100.2,texture:{face:{u:0,v:1},torso:{texture:false,u:1,v:2},extremities:{u:0,v:0},ears:{u:0,v:0.1}}}
     },
 }
 
@@ -28231,7 +28277,8 @@ function loop(now){
             minNPC=i
         }
         
-        NPCs[i].mesh.render()
+        if(!NPCs[minNPC].doesntHaveMesh)
+            NPCs[i].mesh.render()
     }
     
     if(minDist<75){
@@ -28241,7 +28288,7 @@ function loop(now){
             textRenderer.addDecalRaw(...NPCs[minNPC].exclaimPos,0,0,...textRenderer.decalUV['exclaim'],1,1,1,5,4,Math.PI)
         }
         
-        if(frameCount%2||minDist<0){
+        if((frameCount%2||minDist<0)&&!NPCs[minNPC].doesntHaveMesh){
             
             NPCs[minNPC].mesh.setMeshFromFunction(function(box,a,cylinder,sphere,d,e,star,limbBox,limbCylinder){
                 
@@ -28257,8 +28304,8 @@ function loop(now){
                 limbBox(r,x+0.35*s,y-0.55*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[t1*1.25-10,0,5],(NPCs[minNPC].meshParams.texture.face.u+NPCs[minNPC].meshParams.texture.extremities.u)*128/1024,(NPCs[minNPC].meshParams.texture.face.v+NPCs[minNPC].meshParams.texture.extremities.v)*128/1024)
                 limbBox(r,x+0.42*s,y-1.15*s,z+0.1*s,0.55*s*1.25,0.6*s*1.25,0.55*s*1.25,[10-t1*0.5,0,5],(NPCs[minNPC].meshParams.texture.face.u+NPCs[minNPC].meshParams.texture.extremities.u)*128/1024,(NPCs[minNPC].meshParams.texture.face.v+NPCs[minNPC].meshParams.texture.extremities.v)*128/1024)
                 s*=1.25
-                limbCylinder(r,x-0.6*s,y+Math.cos(t1*MATH.TO_RAD*3)*s*2.2,z+Math.sin(t1*MATH.TO_RAD*3)*s*2.2,0.3*s,0.65*s,10,0.9,0.9,0.9,1,t1*4,0,0,(NPCs[minNPC].meshParams.texture.face.u+NPCs[minNPC].meshParams.texture.extremities.u)*128/1024,(NPCs[minNPC].meshParams.texture.face.v+NPCs[minNPC].meshParams.texture.extremities.v)*128/1024)
-                limbCylinder(r,x+0.6*s,y+Math.cos(t1*MATH.TO_RAD*3)*s*2.2,z+Math.sin(t1*MATH.TO_RAD*3)*s*2.2,0.3*s,0.65*s,10,0.9,0.9,0.9,1,t1*4,0,0,(NPCs[minNPC].meshParams.texture.face.u+NPCs[minNPC].meshParams.texture.extremities.u)*128/1024,(NPCs[minNPC].meshParams.texture.face.v+NPCs[minNPC].meshParams.texture.extremities.v)*128/1024)
+                limbCylinder(r,x-0.6*s,y+Math.cos(t1*MATH.TO_RAD*3)*s*2.2,z+Math.sin(t1*MATH.TO_RAD*3)*s*2.2,0.3*s,0.65*s,10,0.9,0.9,0.9,1,t1*4,0,0,(NPCs[minNPC].meshParams.texture.face.u+NPCs[minNPC].meshParams.texture.ears.u)*128/1024,(NPCs[minNPC].meshParams.texture.face.v+NPCs[minNPC].meshParams.texture.ears.v)*128/1024)
+                limbCylinder(r,x+0.6*s,y+Math.cos(t1*MATH.TO_RAD*3)*s*2.2,z+Math.sin(t1*MATH.TO_RAD*3)*s*2.2,0.3*s,0.65*s,10,0.9,0.9,0.9,1,t1*4,0,0,(NPCs[minNPC].meshParams.texture.face.u+NPCs[minNPC].meshParams.texture.ears.u)*128/1024,(NPCs[minNPC].meshParams.texture.face.v+NPCs[minNPC].meshParams.texture.ears.v)*128/1024)
                 t1=Math.sin(t*2.1+0.5)*5-0.5
                 limbBox(r,x-1*s/1.25,y-Math.cos(t1*MATH.TO_RAD*3.5*2)*s*0.65+s*1.15,z-Math.sin(t1*MATH.TO_RAD*3.5*2)*s*0.2,0.5*s,1.15*s,0.5*s,[t1*3.5*2,0,-9],(NPCs[minNPC].meshParams.texture.face.u+NPCs[minNPC].meshParams.texture.extremities.u)*128/1024,(NPCs[minNPC].meshParams.texture.face.v+NPCs[minNPC].meshParams.texture.extremities.v)*128/1024)
                 
