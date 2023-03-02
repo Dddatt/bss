@@ -20932,7 +20932,6 @@ gear.tool={
     },
 }
 
-
 player=(function(out){
     
     out.drives={
@@ -20947,11 +20946,12 @@ player=(function(out){
 
         if(!out.roboChallenge) return
 
-        out.roboChallenge.timer-=dt
+        if(!out.roboChallenge.questCompleted)
+            out.roboChallenge.timer-=dt
 
         if(out.roboChallenge.timer<=0&&out.roboChallenge.isPlaying){
 
-
+            
             return
         }
     }
@@ -20964,7 +20964,7 @@ player=(function(out){
         out.roboChallenge.timer=3*60
         document.getElementById('roboMenu').style.display='none'
 
-        let amp=0.1/(((out.roboChallenge.round-1)/25)*2+1),ef='player.capacity*='+amp+';player.pollenFromTools*='+amp+';player.pollenFromCoconuts*='+amp+';player.movementCollection*='+amp
+        let amp=0.1,ef='player.capacity*='+amp+';player.pollenFromTools*='+amp+';player.pollenFromCoconuts*='+amp+';player.movementCollection*='+amp
 
         for(let i in out.roboChallenge.activeUpgrades){
 
@@ -21010,6 +21010,7 @@ player=(function(out){
     
     out.updateRoboUI=function(){
 
+        out.roboChallenge.isPlaying=false
         document.getElementById('roboMenu').style.display='block'
         document.getElementById('roboCogsAmount').innerHTML='<u>Cogs: '+MATH.addCommas(items.cog.amount+'')+'</u>'
         document.getElementById('roboStartRound').style.display='none'
@@ -22777,7 +22778,7 @@ player=(function(out){
                 
                 for(let i in NPCs){
                     
-                    if(triggers[i+'_NPC'].colliding&&!NPCs[i].activeQuest){
+                    if(triggers[i+'_NPC'].colliding&&(!NPCs[i].activeQuest&&i!=='roboBear'||i==='roboBear'&&player.roboChallenge&&player.roboChallenge.questCompleted&&player.roboChallenge.isPlaying||i==='roboBear'&&!player.roboChallenge)){
                         
                         actionWarning.style.display='block'
                         actionName.innerHTML='Talk To '+MATH.doGrammar(i)
@@ -23066,7 +23067,9 @@ player=(function(out){
     
         if(out.roboChallenge&&out.roboChallenge.isPlaying){
 
-            roboQuestMenu.innerHTML="<div style='font-size:21px;margin-top:5px'>Robo Challenge</div><div style='font-size:14px;margin-left:12px;margin-top:5px;margin-bottom:10px'>Round: "+out.roboChallenge.round+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Time: "+MATH.doTime(out.roboChallenge.timer)+"</div>"
+            roboQuestMenu.innerHTML="<div style='font-size:21px;margin-top:5px'>Robo Challenge</div><div style='font-size:14px;margin-left:12px;margin-top:5px;margin-bottom:10px'>"+(out.roboChallenge.questCompleted?"<b style='font-size:17px'>DONE!</b><br>Talk to Robo Bear!":"Round: "+out.roboChallenge.round+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Time: "+MATH.doTime(out.roboChallenge.timer))+"</div>"
+
+            out.roboChallenge.questCompleted=true
 
             for(let i in out.roboChallenge.quest){
 
@@ -23074,6 +23077,10 @@ player=(function(out){
 
                 roboQuestMenu.innerHTML+="<div style='border-radius:3px;width:183px;margin-top:0px;margin-bottom:5px;background-color:rgb(255,0,0);color:black;font-family:calibri;font-size:13px;margin-left:10px;position:relative;'><div style='position:absolute;left:0px;top:0px;border-radius:2px;right:"+(183-Math.min(((out.stats[req[0]]-req[2])/req[1])*183,183))+"px;bottom:0px;background-color:rgb(0,250,0);'></div><div style='position:absolute;left:0px;top:0px;border-radius:2px;right:0px;bottom:0px'>"+c+"</div><u style='color:rgb(0,0,0,0)'>"+c+"</u></div>"
                 
+                if(out.stats[req[0]]-req[2]<req[1]){
+
+                    out.roboChallenge.questCompleted=false
+                }
             }
             
         }
@@ -28354,7 +28361,7 @@ function loop(now){
     
     if(minDist<75){
         
-        if(minDist<50&&!NPCs[minNPC].activeQuest){
+        if(minDist<50&&!NPCs[minNPC].activeQuest&&minNPC!=='roboBear'||minNPC==='roboBear'&&player.roboChallenge&&player.roboChallenge.questCompleted&&player.roboChallenge.isPlaying||minNPC==='roboBear'&&!player.roboChallenge){
             
             textRenderer.addDecalRaw(...NPCs[minNPC].exclaimPos,0,0,...textRenderer.decalUV['exclaim'],1,1,1,5,4,Math.PI)
         }

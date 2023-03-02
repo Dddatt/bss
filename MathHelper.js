@@ -286,7 +286,7 @@ window.MATH = (function (MATH) {
 
     MATH.doStatGrammar = function (s) {
         
-        return s.indexOf('WindShrine')>-1?'Donate':s==='beeTypes'?'Discover':s.indexOf('Cannon')>-1||s==='timesUsingTheSlingshot'?'Fly':s==='itemsUsingTheBlender'?'Craft':s==='fallingCoconuts'?'Catch':s==='bubbles'?'Pop':s==='flames'?'Spawn':['rhinoBeetle','ladybug','spider','werewolf','mantis','scorpion','kingBeetle','tunnelBear','ant','fireAnt','armyAnt','flyingAnt','giantAnt','mondoChick','rogueViciousBee'].indexOf(s)>-1 ?'Defeat':s.toLowerCase().indexOf('token')>-1||s.toLowerCase().indexOf('pollen')>-1||s.toLowerCase().indexOf('goo')>-1||s.toLowerCase().indexOf('nectar')>-1?'Collect':'Use'
+        return s.indexOf('WindShrine')>-1?'Donate':s==='beeTypes'?'Discover':s.indexOf('Cannon')>-1||s==='timesUsingTheSlingshot'?'Fly':s==='itemsUsingTheBlender'?'Craft':s==='fallingCoconuts'?'Catch':s==='bubbles'?'Pop':s==='flames'?'Spawn':['rhinoBeetle','ladybug','spider','werewolf','mantis','scorpion','kingBeetle','tunnelBear','ant','fireAnt','armyAnt','flyingAnt','giantAnt','mondoChick','rogueViciousBee','mechsquito','megaMechsquito','cogmower','goldenCogmower','cogturret'].indexOf(s)>-1 ?'Defeat':s.toLowerCase().indexOf('token')>-1||s.toLowerCase().indexOf('pollen')>-1||s.toLowerCase().indexOf('goo')>-1||s.toLowerCase().indexOf('nectar')>-1?'Collect':'Use'
     }
 
     MATH.indexOfArrays = function (arr, val) {
