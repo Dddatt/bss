@@ -90,7 +90,7 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         position:fixed;
         left:0;
         top:0;
-        z-index:-2;
+        z-index:-3;
 	}
 	
 	div::-webkit-scrollbar{
@@ -4121,8 +4121,9 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
     
 </div>
 
-<div id='roboQuest' style='position:fixed;width:500px;height:500px;z-index:1;left:50%;top:50%;transform:translate(-50%,-50%);background-color:rgb(0,140,0);color:rgb(255,255,255);font-size:17px;text-align:center;border-radius:5px;display:none'>
-    @
+<div id='roboQuestMenu' style='position:fixed;width:200px;height:250px;z-index:-3;left:-5px;top:50%;transform:translate(0%,-50%);background-color:rgb(0,140,0);color:rgb(255,255,255);font-size:21px;text-align:center;border-radius:9px;display:none'>
+        
+
 </div>
 
 <div id='actionWarning' style='position:fixed;margin-left:50%;margin-top:5px;width:360px;height:60px;z-index:2;transform:translate(-50%,0px);display:none'>
@@ -4460,6 +4461,7 @@ let pages=document.getElementsByClassName('uiPage')
 let currentPage=null
 let hotbarSlots=document.getElementsByClassName('hotbarSlot')
 let autoHotbarButtons=document.getElementsByClassName('autoHotbarButton')
+let roboQuestMenu=document.getElementById('roboQuestMenu')
 
 let _code=pages[0].innerHTML
 
@@ -21001,6 +21003,9 @@ player=(function(out){
         }
 
         out.updateHive()
+
+        document.getElementById('roboQuestMenu').style.display='block'
+
     }
     
     out.updateRoboUI=function(){
@@ -21148,6 +21153,12 @@ player=(function(out){
                     document.getElementById('roboQuestChoice'+i).onclick=function(){
 
                         out.roboChallenge.scene='upgrade'
+
+                        for(let j in q){
+
+                            q[j][2]=out.stats[q[j][0]]
+                        }
+
                         out.roboChallenge.quest=q
                         out.updateRoboUI()
                     }
@@ -23051,6 +23062,20 @@ player=(function(out){
                 player.updateInventory()
                 document.getElementById('blenderX').onclick()
             }
+        }
+    
+        if(out.roboChallenge&&out.roboChallenge.isPlaying){
+
+            roboQuestMenu.innerHTML="<div style='font-size:21px;margin-top:5px'>Robo Challenge</div><div style='font-size:14px;margin-left:12px;margin-top:5px;margin-bottom:10px'>Round: "+out.roboChallenge.round+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Time: "+MATH.doTime(out.roboChallenge.timer)+"</div>"
+
+            for(let i in out.roboChallenge.quest){
+
+                let req=out.roboChallenge.quest[i],c=MATH.doStatGrammar(req[0])+' '+MATH.addCommas(req[1]+'')+' '+MATH.doGrammar(req[0])
+
+                roboQuestMenu.innerHTML+="<div style='border-radius:3px;width:183px;margin-top:0px;margin-bottom:5px;background-color:rgb(255,0,0);color:black;font-family:calibri;font-size:13px;margin-left:10px;position:relative;'><div style='position:absolute;left:0px;top:0px;border-radius:2px;right:"+(183-Math.min(((out.stats[req[0]]-req[2])/req[1])*183,183))+"px;bottom:0px;background-color:rgb(0,250,0);'></div><div style='position:absolute;left:0px;top:0px;border-radius:2px;right:0px;bottom:0px'>"+c+"</div><u style='color:rgb(0,0,0,0)'>"+c+"</u></div>"
+                
+            }
+            
         }
     }
 
