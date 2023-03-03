@@ -20942,6 +20942,14 @@ player=(function(out){
         glitched:50
     }
 
+    out.endRoboChallenge=function(){
+
+        out.addMessage('The Robo Challenge is over! Your score is '+out.roboChallenge.round+'!',[0,150,0])
+
+        
+        out.roboChallenge=undefined
+    }
+
     out.updateRoboChallenge=function(){
 
         if(!out.roboChallenge) return
@@ -20951,12 +20959,12 @@ player=(function(out){
 
         if(out.roboChallenge.timer<=0&&out.roboChallenge.isPlaying){
 
-            
+            out.endRoboChallenge()
             return
         }
     }
 
-    let upgrades={Botnet:'*1.2 pollenFromBees',Iterate:'*1.08 redPollen,*1.08 bluePollen,*1.08 whitePollen',Sharpen:'*1.2 beeAttack,*0.9 capacity',Translation:'*1.06 beeSpeed',Defragment:'*1.5 capacity,-50 criticalPower','Schematic Error':'*1.1 redPollen,+3 abilityDuplicationChance'},common='rgb(180,130,30)',rare='rgb(210,210,210)',epic='rgb(250,230,10)',legendary='rgb(20,240,255)',rarityColor={Botnet:common,Iterate:common,Sharpen:common,Defragment:common,Translation:rare,'Schematic Error':legendary}
+    let upgrades={Botnet:'*1.15 pollenFromBees',Iterate:'*1.08 redPollen,*1.08 bluePollen,*1.08 whitePollen',Sharpen:'*1.2 beeAttack,*0.9 capacity',Translation:'*1.05 beeSpeed',Defragment:'*1.5 capacity,-20 criticalPower','Schematic Error':'*1.1 redPollen,+3 abilityDuplicationChance'},common='rgb(180,130,30)',rare='rgb(210,210,210)',epic='rgb(250,230,10)',legendary='rgb(20,240,255)',rarityColor={Botnet:common,Iterate:common,Sharpen:common,Defragment:common,Translation:rare,'Schematic Error':legendary}
     
     out.startRoboChallenge=function(){
 
@@ -21003,6 +21011,8 @@ player=(function(out){
 
                 let h=out.hive[y][x]
 
+                h.roboDisabled=false
+
                 if(acStr.indexOf('#'+x+','+y+'#')<0){
 
                     h.roboDisabled=true
@@ -21013,7 +21023,6 @@ player=(function(out){
         out.updateHive()
 
         document.getElementById('roboQuestMenu').style.display='block'
-
     }
     
     out.updateRoboUI=function(){
@@ -28064,7 +28073,7 @@ function loop(now){
         ctx.textBaseline='middle'
     }
     
-    dt=MATH.constrain((now-then)*0.001,0.01,0.1)
+    dt=Math.min((now-then)*0.001,0.07)
 
     TIME+=dt
     frameCount++
