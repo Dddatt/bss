@@ -21101,16 +21101,10 @@ player=(function(out){
                 document.getElementById('roboActiveUpgradesAmount').style.display='none'
                 document.getElementById('roboUpgradeChoices').style.display='none'
 
-                let types=['redPollen','whitePollen','bluePollen','redPollen','whitePollen','bluePollen','pollenFromSunflowerField','pollenFromDandelionField','pollenFromMushroomField','pollenFromBlueFlowerField','pollenFromCloverField','pollenFromSpiderField','pollenFromStrawberryField','pollenFromBambooField','pollenFromPineapplePatch','pollenFromCactusField','pollenFromPumpkinPatch','pollenFromPineTreeForest','pollenFromRoseField']
+                let types=['pollen','pollen','pollen','pollen','pollen','redPollen','whitePollen','bluePollen','redPollen','whitePollen','bluePollen','pollenFromSunflowerField','pollenFromDandelionField','pollenFromMushroomField','pollenFromBlueFlowerField','pollenFromCloverField','pollenFromSpiderField','pollenFromStrawberryField','pollenFromBambooField','pollenFromPineapplePatch','pollenFromCactusField','pollenFromPumpkinPatch','pollenFromPineTreeForest','pollenFromRoseField']
 
                 if(out.roboChallenge.round>5) types.push('pollenFromMountainTopField')
                 if(out.roboChallenge.round>10) types.push('pollenFromPepperPatch')
-
-                if(out.roboChallenge.round>2) types.push('mechsquito')
-                if(out.roboChallenge.round>4) types.push('cogmower')
-                if(out.roboChallenge.round>8) types.push('cogturret')
-                if(out.roboChallenge.round>11) types.push('megaMechsquito')
-                if(out.roboChallenge.round>15) types.push('goldenCogmower')
 
                 for(let i=1;i<3;i++){
 
@@ -21130,13 +21124,18 @@ player=(function(out){
 
                         let am=out.roboChallenge.round*0.025
 
-                        am=65000000000*am*am*am*am+10000
+                        am=40000000000*am*am*am*am*am
 
                         am*=MATH.random(1/1.1,1.1)-(re.length-1)*0.2
 
                         if(re[j].indexOf('From')>-1){
 
                             am=am*MATH.random(0.15,0.4)
+                        }
+
+                        if(re[j]==='pollen'){
+
+                            am*=1.25
                         }
 
                         am=(((am*0.0001)|0)+1)*1000
