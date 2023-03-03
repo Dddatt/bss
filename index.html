@@ -4087,6 +4087,8 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
     <div id='roboTitle' style='position:fixed;left:50%;top:7%;transform:translate(-50%,-50%);font-size:30px;'></div>
 
     <div id='roboStartRound' style='position:fixed;left:92%;top:7.5%;transform:translate(-50%,-50%);color:black;font-size:18px;background-color:rgb(46, 247, 93);padding:5px;border:2px solid black;border-radius:9px;cursor:pointer' onclick='window.roboStartRound()'>Start Round!</div>
+
+    <div id='roboSkipBeePage' style='position:fixed;left:92%;top:7.5%;transform:translate(-50%,-50%);color:black;font-size:18px;background-color:rgb(46, 247, 93);padding:5px;border:2px solid black;border-radius:9px;cursor:pointer' onclick='window.roboSkipBeePage()'>Next</div>
     
     <div id='roboActiveBeesAmount' style='position:fixed;width:200px;height:400px;left:21%;top:54%;transform:translate(-50%,-50%);font-size:16px;'></div>
     
@@ -4410,7 +4412,7 @@ document.getElementById('runFullScreen').addEventListener('click',function(){
     w.document.close()
 })
 
-let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,BEE_COLLECT=0,BEE_FLY=0,then,dt,frameCount=0,TIME=0,player,honeyMarkConvert=TIME,NIGHT_DARKNESS=0.6,NPCs
+let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,BEE_COLLECT=0,BEE_FLY=0,then=0,dt,frameCount=0,TIME=0,player,honeyMarkConvert=TIME,NIGHT_DARKNESS=0.6,NPCs
 
 gl.enable(gl.BLEND)
 gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)
@@ -6509,7 +6511,7 @@ let effects={
         svg:document.getElementById('haste__'),
         cooldown:document.getElementById('haste___cooldown'),
         amount:document.getElementById('haste___amount'),
-        maxCooldown:45*99,
+        maxCooldown:60,
         maxAmount:1,
         
         update:(amount,player)=>{
@@ -21043,6 +21045,7 @@ player=(function(out){
         document.getElementById('roboMenu').style.display='block'
         document.getElementById('roboCogsAmount').innerHTML='<u>Cogs: '+MATH.addCommas(items.cog.amount+'')+'</u>'
         document.getElementById('roboStartRound').style.display='none'
+        document.getElementById('roboSkipBeePage').style.display='none'
 
         switch(out.roboChallenge.scene){
 
@@ -21130,7 +21133,7 @@ player=(function(out){
                 document.getElementById('roboActiveUpgradesAmount').style.display='none'
                 document.getElementById('roboUpgradeChoices').style.display='none'
 
-                let types=['pollen','pollen','pollen','pollen','pollen','redPollen','whitePollen','bluePollen','redPollen','whitePollen','bluePollen','pollenFromSunflowerField','pollenFromDandelionField','pollenFromMushroomField','pollenFromBlueFlowerField','pollenFromCloverField','pollenFromSpiderField','pollenFromStrawberryField','pollenFromBambooField','pollenFromPineapplePatch','pollenFromCactusField','pollenFromPumpkinPatch','pollenFromPineTreeForest','pollenFromRoseField']
+                let types=['pollen','pollen','pollen','pollen','pollen','pollen','pollen','redPollen','whitePollen','bluePollen','redPollen','whitePollen','bluePollen','pollenFromSunflowerField','pollenFromDandelionField','pollenFromMushroomField','pollenFromBlueFlowerField','pollenFromCloverField','pollenFromSpiderField','pollenFromStrawberryField','pollenFromBambooField','pollenFromPineapplePatch','pollenFromCactusField','pollenFromPumpkinPatch','pollenFromPineTreeForest','pollenFromRoseField']
 
                 if(out.roboChallenge.round>5) types.push('pollenFromMountainTopField')
                 if(out.roboChallenge.round>10) types.push('pollenFromPepperPatch')
@@ -21141,10 +21144,15 @@ player=(function(out){
 
                     for(let j=0,c=MATH.random(1,4)|0;j<c;j++){
 
-                        let r=(Math.random()*t.length)|0
+                        let r=t[(Math.random()*t.length)|0]
 
-                        re.push(t[r])
-                        t.splice(r,1)
+                        re.push(r)
+
+                        for(let k=t.length;k--;){
+
+                            if(t[k]===r)
+                                t.splice(k,1)
+                        }
                     }
 
                     document.getElementById('roboQuestChoice'+i).innerHTML='<div style="text-align:center;font-size:25px"><u>Quest '+(i===1?'A':'B')+'</u></div><br>'
@@ -21167,11 +21175,11 @@ player=(function(out){
                             am*=1.25
                         }
 
-                        if(out.roboChallenge.round>5) am*=1.5
-                        if(out.roboChallenge.round>10) am*=1.5
+                        if(out.roboChallenge.round>5) am*=1.25
+                        if(out.roboChallenge.round>10) am*=1.3
                         if(out.roboChallenge.round>15) am*=1.5
-                        if(out.roboChallenge.round>20) am*=1.5
-                        if(out.roboChallenge.round>25) am*=1.5
+                        if(out.roboChallenge.round>20) am*=1.65
+                        if(out.roboChallenge.round>25) am*=1.75
 
                         am=(((am*0.0001)|0)+1)*1000
 
@@ -21268,7 +21276,7 @@ player=(function(out){
                     if(beesToSelect.length<=0){
 
                         document.getElementById('roboBeeChoice'+(i+1)).style.display='none'
-                        document.getElementById('roboStartRound').style.display='block'
+                        document.getElementById('roboSkipBeePage').style.display='block'
 
                         return
                     }
@@ -21328,6 +21336,11 @@ player=(function(out){
     }
 
     window.roboStartRound=out.startRoboChallenge
+    window.roboSkipBeePage=function(){
+
+        out.roboChallenge.beesPicked=out.roboChallenge.beesPerRound
+        out.updateRoboUI()
+    }
 
     out.endAntChallenge=function(){
 
@@ -28081,17 +28094,10 @@ objects.mobs.push(new Cogmower('DandelionField',1,true))
 objects.mobs.push(new CogTurret('DandelionField',1,3))
 objects.mobs.push(new CogTurret('DandelionField',1,1))
 
+ctx.textAlign='center'
+ctx.textBaseline='middle'
 
 function loop(now){
-    
-    if(!then){
-        
-        now=window.performance.now()
-        then=now
-        
-        ctx.textAlign='center'
-        ctx.textBaseline='middle'
-    }
     
     dt=Math.min((now-then)*0.001,0.07)
 
@@ -28689,7 +28695,7 @@ if(window.parent.raf){
 function noFullScreen(){
     
     document.getElementById('useFullscreen').style.display='none'
-    loop()
+    loop(0)
 }
 
 document.getElementById('noFullScreen').addEventListener('click',noFullScreen)
