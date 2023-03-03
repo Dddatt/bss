@@ -270,6 +270,9 @@ window.dialogue_roboBear=function(player,items,NPCs){
             player.roboChallenge.beesPicked=0
             player.roboChallenge.scene='bee'
             player.roboChallenge.round++
+            items.cog.amount+=player.roboChallenge.cogsPerRound
+            player.addMessage('+'+player.roboChallenge.cogsPerRound+' Cogs')
+            player.updateInventory()
             player.updateRoboUI()
         }]
     }

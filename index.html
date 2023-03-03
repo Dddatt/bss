@@ -20960,6 +20960,8 @@ player=(function(out){
     
     out.startRoboChallenge=function(){
 
+        out.roboChallenge.cogsPerRound=13
+
         out.roboChallenge.isPlaying=true
         out.roboChallenge.timer=3*60
         document.getElementById('roboMenu').style.display='none'
@@ -20969,6 +20971,12 @@ player=(function(out){
         for(let i in out.roboChallenge.activeUpgrades){
 
             let u=upgrades[out.roboChallenge.activeUpgrades[i]].split(',')
+
+            if(u.indexOf('cogs')>-1){
+
+                out.roboChallenge.cogsPerRound+=3
+                continue
+            }
 
             for(let j in u){
 
@@ -21282,7 +21290,7 @@ player=(function(out){
             items.cog.amount-=out.roboChallenge.rerollCost
             out.updateInventory()
             out.updateRoboUI()
-            out.roboChallenge.rerollCost+=5
+            out.roboChallenge.rerollCost+=2
 
         } else {
 
