@@ -105,6 +105,19 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         background:rgb(120,120,120);
         border-radius:10px;
     }
+
+    #roboActiveUpgrades::-webkit-scrollbar{
+	    
+        width:5px;
+        height:8px;
+        background-color:rgb(0,0,0,0); 
+    }
+    
+    #roboActiveUpgrades::-webkit-scrollbar-thumb{
+        
+        background:rgb(40,80,40);
+        border-radius:10px;
+    }
     
     #inventoryButton:hover,#questButton:hover,#beesButton:hover,#settingsButton:hover,#beequipButton:hover{
         
@@ -4096,7 +4109,7 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
 
     <div id='roboActiveUpgradesAmount' style='position:fixed;width:200px;height:400px;left:21%;top:54%;transform:translate(-50%,-50%);font-size:16px;'></div>
     
-    <div id='roboActiveUpgrades' style='position:fixed;width:200px;height:400px;left:21%;top:59%;transform:translate(-50%,-50%);font-size:29px;background-color:rgb(255,255,255,0.3);border-radius:4px;'></div>
+    <div id='roboActiveUpgrades' style='position:fixed;width:200px;height:400px;left:21%;top:59%;transform:translate(-50%,-50%);background-color:rgb(255,255,255,0.3);border-radius:4px;font-size:17px;text-align:left;color:black;overflow-y:auto;overflow-x:hidden'></div>
     
     <div id='roboBeeChoices' style='position:fixed;width:285px;height:400px;left:70.5%;top:59%;transform:translate(-50%,-50%);font-size:19px;'>
         
@@ -21170,6 +21183,34 @@ player=(function(out){
                         }
                         
                     }
+                }
+
+                document.getElementById('roboActiveUpgrades').innerHTML=''
+
+                for(let i in out.roboChallenge.activeUpgrades){
+
+                    let s='',_s=upgrades[out.roboChallenge.activeUpgrades[i]].stats.split(',')
+
+                    for(let j in _s){
+
+                        let n=_s[j]
+
+                        n=n.substring(0,n.indexOf(' ')+1)+MATH.doGrammar(n.substring(n.indexOf(' ')+1,n.length))
+
+                        s+='<div style="color:'+(Number(n.substring(1,n.indexOf(' ')))<1||n[0]==='-'?'rgb(255,50,50)':'rgb(60,255,60)')+'">'
+
+                        n=n.replace('*','x')
+
+                        if(n.indexOf('.')<0)
+                            n=n[0]+MATH.addCommas(n.substring(1,n.indexOf('%')>-1?n.indexOf('%'):n.indexOf(' ')))+n.substring(n.indexOf('%')>-1?n.indexOf('%'):n.indexOf(' '),n.length)
+
+                        s+=n+'<br></div>'
+                    }
+
+                    let elem=document.createElement('div')
+
+                    document.getElementById('roboActiveUpgrades').innerHTML+="<div style='background-color:"+rarityColor[upgrades[out.roboChallenge.activeUpgrades[i]].rarity]+";border-radius:5px;width:285px;height:125px;transform:scale(0.66,0.66);margin-top:-16px;margin-left:-44px;margin-bottom:-38px;color:black;'>&nbsp;"+out.roboChallenge.activeUpgrades[i]+"&nbsp;&nbsp;&nbsp;<div style='border-radius:5px;position:fixed;left:10px;top:35px;right:5px;bottom:5px;background-color:rgb(0,0,0,0.75);font-family:trebuchet ms;font-size:14px;padding-left:10px;padding-top:8px'>"+s+"</div></div>"
+
                 }
 
             break
