@@ -20966,7 +20966,51 @@ player=(function(out){
         }
     }
 
-    let upgrades={Botnet:'*1.15 pollenFromBees',Iterate:'*1.08 redPollen,*1.08 bluePollen,*1.08 whitePollen',Sharpen:'*1.2 beeAttack,*0.9 capacity',Translation:'*1.05 beeSpeed',Defragment:'*1.5 capacity,-20 criticalPower','Schematic Error':'*1.1 redPollen,+3 abilityDuplicationChance'},common='rgb(180,130,30)',rare='rgb(210,210,210)',epic='rgb(250,230,10)',legendary='rgb(20,240,255)',rarityColor={Botnet:common,Iterate:common,Sharpen:common,Defragment:common,Translation:rare,'Schematic Error':legendary}
+    let upgrades={
+        
+        Botnet:{stats:'*1.25 pollenFromBees',rarity:'common',maxStacks:1},
+        Iterate:{stats:'*1.06 redPollen,*1.06 bluePollen,*1.06 whitePollen',rarity:'common',maxStacks:15},
+        Sharpen:{stats:'*1.25 beeAttack,*0.9 capacity',rarity:'common',maxStacks:5},
+        Defragment:{stats:'*1.5 capacity,-20% criticalPower',rarity:'common',maxStacks:5},
+        XSS:{stats:'*1.1 bluePollen,*0.91 whitePollen',rarity:'common',maxStacks:1},
+        'Overfit: Red':{stats:'*1.1 redPollen,*0.95 capacity',rarity:'common',maxStacks:10},
+        'Overfit: Blue':{stats:'*1.1 bluePollen,*0.95 beeSpeed,*0.95 walkSpeed,',rarity:'common',maxStacks:10},
+        'Overfit: White':{stats:'*1.1 whitePollen,*0.9 convertRate',rarity:'common',maxStacks:10},
+        Credit:{stats:'+2 cogsPerRound',rarity:'common',maxStacks:3},
+        Outsource:{stats:'*1.1 pollenFromTools,*0.95 pollenFromBees',rarity:'common',maxStacks:5},
+        
+        
+        Translation:{stats:'*1.04 beeSpeed',rarity:'rare',maxStacks:3},
+        'Blue Screen':{stats:'*1.08 blueBeeAbilityRate,+2 blueBeeAttack',rarity:'rare',maxStacks:3},
+        Commit:{stats:'+4% superCritChance,-3% criticalChance',rarity:'rare',maxStacks:2},
+        Equalize:{stats:'+1 beeAttack,*0.9 convertRate',rarity:'rare',maxStacks:1},
+        GPU:{stats:'*1.1 walkSpeed',rarity:'rare',maxStacks:1},
+        CPU:{stats:'+20% criticalPower,*0.9 walkSpeed',rarity:'rare',maxStacks:1},
+        Saturate:{stats:'+2 redBeeAttack,+2 blueBeeAttack,-2 whiteBeeAttack',rarity:'rare',maxStacks:3},
+        RAM:{stats:'+50000 capacity,+1 cogsPerRound',rarity:'rare',maxStacks:10},
+        'SSD: Blue':{stats:'*1.5 blueFieldCapacity,*1.25 blueConvertRate,-3% criticalChance',rarity:'rare',maxStacks:3},
+        'SSD: Red':{stats:'*1.5 redFieldCapacity,*1.25 redConvertRate,*0.7 whiteBombPollen',rarity:'rare',maxStacks:3},
+        'SSD: White':{stats:'*1.5 whiteFieldCapacity,*1.25 whiteConvertRate,*0.9 beeAttack',rarity:'rare',maxStacks:3},
+        
+        
+        Bandwidth:{stats:'x1.25 convertRateAtHive,*1.05 markDuration',rarity:'epic',maxStacks:3},
+        beeBay:{stats:'+1 beesPerRound',rarity:'epic',maxStacks:1},
+        Instancing:{stats:'+4% instantRedConversion,+4% instantBlueConversion,+4% instantWhiteConversion',rarity:'epic',maxStacks:5},
+        'Pop-up':{stats:'*1.25 bubblePollen,-1 blueBeeAttack',rarity:'epic',maxStacks:3},
+        'White Noise':{stats:'*1.1 whitePollen,*1.25 whiteBombPollen,-1 cogsPerRound',rarity:'epic',maxStacks:1},
+        
+        
+        'Schematic Error':{stats:'*1.1 redPollen,+2% abilityDuplicationChance',rarity:'legendary',maxStacks:1},
+        Cloud:{stats:'*1.25 capacity',rarity:'legendary',maxStacks:5},
+        "d^=b[,7'":{stats:'*2 goo,*0.8 whitePollen',rarity:'legendary',maxStacks:1}
+        
+        
+    },rarityColor={common:'rgb(180,130,30)',rare:'rgb(210,210,210)',epic:'rgb(250,230,10)',legendary:'rgb(20,240,255)'}
+
+
+    // let upgrades={Botnet:'*1.15 pollenFromBees',Iterate:'*1.08 redPollen,*1.08 bluePollen,*1.08 whitePollen',Sharpen:'*1.2 beeAttack,*0.9 capacity',Translation:'*1.05 beeSpeed',Defragment:'*1.5 capacity,-20 criticalPower','Schematic Error':'*1.1 redPollen,+3 abilityDuplicationChance'},common='rgb(180,130,30)',rare='rgb(210,210,210)',epic='rgb(250,230,10)',legendary='rgb(20,240,255)',
+    
+    
     
     out.startRoboChallenge=function(){
 
@@ -20980,7 +21024,7 @@ player=(function(out){
 
         for(let i in out.roboChallenge.activeUpgrades){
 
-            let u=upgrades[out.roboChallenge.activeUpgrades[i]].split(',')
+            let u=upgrades[out.roboChallenge.activeUpgrades[i]].stats.split(',')
 
             if(u.indexOf('cogs')>-1){
 
@@ -20990,9 +21034,16 @@ player=(function(out){
 
             for(let j in u){
 
-                let _u=u[j],n=Number(_u.substring(1,_u.indexOf(' ')))
+                let _u=u[j],n=Number(_u.substring(1,_u.indexOf('%')>-1?_u.indexOf('%'):_u.indexOf(' ')))
 
-                ef+=';player.'+_u.substring(_u.indexOf(' ')+1,_u.length)+_u[0]+'='+(_u[0]!=='*'?n*0.01:n)
+                if(_u.substring(_u.indexOf(' ')+1,_u.length).indexOf('Conversion')>-1){
+
+                    ef+=';player.'+_u.substring(_u.indexOf(' ')+1,_u.length)+'='+'MATH.applyPercentage(player.'+_u.substring(_u.indexOf(' ')+1,_u.length)+','+n*0.01+')'
+                    
+                } else {
+
+                    ef+=';player.'+_u.substring(_u.indexOf(' ')+1,_u.length)+_u[0]+'='+(_u.indexOf('%')>-1?n*0.01:n)
+                }
             }
         }
 
@@ -21082,7 +21133,7 @@ player=(function(out){
 
                 for(let i=1;i<4;i++){
 
-                    let s='',_s=upgrades[c[i-1]].split(',')
+                    let s='',_s=upgrades[c[i-1]].stats.split(',')
 
                     for(let j in _s){
 
@@ -21094,12 +21145,13 @@ player=(function(out){
 
                         n=n.replace('*','x')
 
-                        if(n[0]!=='x') n=n.replace(' ','% ')
+                        if(n.indexOf('.')<0)
+                            n=n[0]+MATH.addCommas(n.substring(1,n.indexOf('%')>-1?n.indexOf('%'):n.indexOf(' ')))+n.substring(n.indexOf('%')>-1?n.indexOf('%'):n.indexOf(' '),n.length)
 
                         s+=n+'<br></div>'
                     }
 
-                    document.getElementById('roboUpgradeChoice'+i).style.backgroundColor=rarityColor[c[i-1]]
+                    document.getElementById('roboUpgradeChoice'+i).style.backgroundColor=rarityColor[upgrades[c[i-1]].rarity]
 
                     document.getElementById('roboUpgradeChoice'+i).innerHTML='&nbsp;'+c[i-1]+"&nbsp;&nbsp;&nbsp;<i style='font-size:13px;color:"+(items.cog.amount>=costs[i-1]?'black':'rgb(200,0,0)')+"'>"+costs[i-1]+" Cogs</i><div style='border-radius:5px;position:fixed;left:10px;top:35px;right:5px;bottom:5px;background-color:rgb(0,0,0,0.75);font-family:trebuchet ms;font-size:14px;padding-left:10px;padding-top:8px'>"+s+"</div>"
 
