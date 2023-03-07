@@ -20987,7 +20987,7 @@ player=(function(out){
         Defragment:{stats:'*1.5 capacity,-20% criticalPower',rarity:'common',maxStacks:5},
         XSS:{stats:'*1.1 bluePollen,*0.91 whitePollen',rarity:'common',maxStacks:1},
         'Overfit: Red':{stats:'*1.1 redPollen,*0.95 capacity',rarity:'common',maxStacks:10},
-        'Overfit: Blue':{stats:'*1.1 bluePollen,*0.95 beeSpeed,*0.95 walkSpeed,',rarity:'common',maxStacks:10},
+        'Overfit: Blue':{stats:'*1.1 bluePollen,*0.95 beeSpeed,*0.95 walkSpeed',rarity:'common',maxStacks:10},
         'Overfit: White':{stats:'*1.1 whitePollen,*0.9 convertRate',rarity:'common',maxStacks:10},
         Apply:{stats:'*1.2 pollenFromCoconuts',rarity:'common',maxStacks:3},
         Clockwork:{stats:'+2 cogsPerRound,*0.9 markDuration',rarity:'common',maxStacks:3},
@@ -21007,7 +21007,7 @@ player=(function(out){
         Sine:{stats:'*1.05 bluePollen',rarity:'common',maxStacks:4},
         Cosine:{stats:'*1.05 redPollen',rarity:'common',maxStacks:4},
         Tangent:{stats:'*1.05 whitePollen',rarity:'common',maxStacks:4},
-        Reduce:{stats:'1.025 beeAttack,*0.98 redPollen,*0.98 bluePollen,*0.98 whitePollen',rarity:'common',maxStacks:10},
+        Reduce:{stats:'*1.025 beeAttack,*0.98 redPollen,*0.98 bluePollen,*0.98 whitePollen',rarity:'common',maxStacks:10},
         Refractor:{stats:'*1.06 convertRate',rarity:'common',maxStacks:10},
         RNG:{stats:'*1.07 beeEnergy',rarity:'common',maxStacks:10},
         
@@ -21034,9 +21034,9 @@ player=(function(out){
         
         Bandwidth:{stats:'x1.25 convertRateAtHive,*1.05 markDuration',rarity:'epic',maxStacks:3},
         beeBay:{stats:'+1 beesPerRound',rarity:'epic',maxStacks:1},
-        Instancing:{stats:'+4% instantRedConversion,+4% instantBlueConversion,+4% instantWhiteConversion',rarity:'epic',maxStacks:5},
+        Instancing:{stats:'+3% instantRedConversion,+3% instantBlueConversion,+3% instantWhiteConversion',rarity:'epic',maxStacks:5},
         'Pop-up':{stats:'*1.25 bubblePollen,-1 blueBeeAttack',rarity:'epic',maxStacks:3},
-        Overheat:{stats:'*1.25 flamePollen,*0.92 redPollen',rarity:'epic',maxStacks:3},
+        Overheat:{stats:'*1.25 flamePollen,*0.93 redPollen',rarity:'epic',maxStacks:3},
         'White Noise':{stats:'*1.1 whitePollen,*1.25 whiteBombPollen,-1 cogsPerRound',rarity:'epic',maxStacks:1},
         Battery:{stats:'*1.1 markDuration,*1.1 flameLife,*0.92 walkSpeed',rarity:'epic',maxStacks:1},
         Asynchronize:{stats:'+4 movementCollection,*0.96 tokenLifespan',rarity:'epic',maxStacks:3},
@@ -21048,14 +21048,14 @@ player=(function(out){
         Furnace:{stats:'*1.07 flamePollen,+5% instantFlameConversion,*1.07 flameLife,-3 cogsPerRound',rarity:'epic',maxStacks:3},
         
         
-        'Cloud 9':{stats:'*1.2 capacity',rarity:'legendary',maxStacks:9},
+        'Cloud 9':{stats:'*1.35 capacity',rarity:'legendary',maxStacks:5},
         '180°':{stats:'*1.8 pollen,-25% criticalChance',rarity:'legendary',maxStacks:1},
-        'Vice Versa':{stats:'*1.5 redBombPollen,*1.5 blueBombPollen,*0.85 whiteBombPollen',rarity:'legendary',maxStacks:1},
-        'Schematic Error':{stats:'*1.2 redBombPollen,+3% abilityDuplicationChance',rarity:'legendary',maxStacks:1},
-        "d^=b[,7'":{stats:'*2 goo,*0.8 whitePollen',rarity:'legendary',maxStacks:1},
+        'Vice Versa':{stats:'*1.5 redBombPollen,*1.5 blueBombPollen,*0.9 whiteBombPollen',rarity:'legendary',maxStacks:1},
+        'Schematic Error':{stats:'*1.25 redBombPollen,+3% abilityDuplicationChance',rarity:'legendary',maxStacks:1},
+        "d^=b[,7'":{stats:'*2 goo,*0.85 whitePollen',rarity:'legendary',maxStacks:1},
         Unlisted:{stats:'+3% criticalChance,*1.2 superCritPower',rarity:'legendary',maxStacks:1},
-        '23.5':{stats:'+2% instantBlueConversion,+3% instantWhiteConversion,+5% instantRedConversion,',rarity:'legendary',maxStacks:4},
-        Knock:{stats:'*1.25 beeAttack,-8% defense',rarity:'legendary',maxStacks:1},
+        '23.5':{stats:'+2% instantBlueConversion,+3% instantWhiteConversion,+5% instantRedConversion',rarity:'legendary',maxStacks:5},
+        Knock:{stats:'*1.25 beeAttack,-5% defense',rarity:'legendary',maxStacks:1},
         '12%':{stats:'*0.12 goo,*1.55 whitePollen',rarity:'legendary',maxStacks:1},
         'Plus Minus':{stats:'+6% criticalChance,-2% superCritChance',rarity:'legendary',maxStacks:2},
         '8.2':{stats:'*1.8 pollenFromCoconuts,*1.2 capacity',rarity:'legendary',maxStacks:1},
@@ -21064,14 +21064,9 @@ player=(function(out){
         
     },rarityColor={common:'rgb(180,130,30)',rare:'rgb(210,210,210)',epic:'rgb(250,230,10)',legendary:'rgb(20,240,255)'}
 
-
-    // let upgrades={Botnet:'*1.15 pollenFromBees',Iterate:'*1.08 redPollen,*1.08 bluePollen,*1.08 whitePollen',Sharpen:'*1.2 beeAttack,*0.9 capacity',Translation:'*1.05 beeSpeed',Defragment:'*1.5 capacity,-20 criticalPower','Schematic Error':'*1.1 redPollen,+3 abilityDuplicationChance'},common='rgb(180,130,30)',rare='rgb(210,210,210)',epic='rgb(250,230,10)',legendary='rgb(20,240,255)',
-    
-    
-    
     out.startRoboChallenge=function(){
 
-        out.roboChallenge.cogsPerRound=13
+        out.roboChallenge.cogsPerRound=14
 
         out.roboChallenge.isPlaying=true
         out.roboChallenge.timer=3*60
@@ -21172,9 +21167,19 @@ player=(function(out){
 
                 let u=[],c=[],costs=[MATH.random(8,20)|0,MATH.random(8,20)|0,MATH.random(8,20)|0]
 
+                let upgradeStacks={}
+
+                for(let i in out.roboChallenge.activeUpgrades){
+
+                    if(!upgradeStacks[out.roboChallenge.activeUpgrades[i]])
+                        upgradeStacks[out.roboChallenge.activeUpgrades[i]]=0
+
+                    upgradeStacks[out.roboChallenge.activeUpgrades[i]]++
+                }
+
                 for(let i in upgrades){
 
-                    if(out.roboChallenge.activeUpgrades.indexOf(i)<0){
+                    if((upgradeStacks[i]||0)<upgrades[i].maxStacks){
 
                         u.push(i)
                     }
@@ -21189,6 +21194,16 @@ player=(function(out){
                 }
 
                 for(let i=1;i<4;i++){
+
+                    if(!upgrades[c[i-1]]){
+
+                        document.getElementById('roboUpgradeChoice'+i).style.display='none'
+                        continue
+
+                    } else {
+
+                        document.getElementById('roboUpgradeChoice'+i).style.display='block'
+                    }
 
                     let s='',_s=upgrades[c[i-1]].stats.split(',')
 
@@ -21210,7 +21225,7 @@ player=(function(out){
 
                     document.getElementById('roboUpgradeChoice'+i).style.backgroundColor=rarityColor[upgrades[c[i-1]].rarity]
 
-                    document.getElementById('roboUpgradeChoice'+i).innerHTML='&nbsp;'+c[i-1]+"&nbsp;&nbsp;&nbsp;<i style='font-size:13px;color:"+(items.cog.amount>=costs[i-1]?'black':'rgb(200,0,0)')+"'>"+costs[i-1]+" Cogs</i><div style='border-radius:5px;position:fixed;left:10px;top:35px;right:5px;bottom:5px;background-color:rgb(0,0,0,0.75);font-family:trebuchet ms;font-size:14px;padding-left:10px;padding-top:8px'>"+s+"</div>"
+                    document.getElementById('roboUpgradeChoice'+i).innerHTML='&nbsp;'+c[i-1]+"&nbsp;&nbsp;&nbsp;<i style='font-size:13px;color:"+(items.cog.amount>=costs[i-1]?'black':'rgb(200,0,0)')+"'>"+costs[i-1]+" Cogs</i>&nbsp;&nbsp;&nbsp;&nbsp;<i style='font-size:13px;color:black'>Max Lvl:"+upgrades[c[i-1]].maxStacks+"</i><div style='border-radius:5px;position:fixed;left:10px;top:35px;right:5px;bottom:5px;background-color:rgb(0,0,0,0.75);font-family:trebuchet ms;font-size:14px;padding-left:10px;padding-top:8px'>"+s+"</div>"
 
                     document.getElementById('roboUpgradeChoice'+i).style.cursor=items.cog.amount>=costs[i-1]?'pointer':'not-allowed'
 
@@ -21219,7 +21234,9 @@ player=(function(out){
                         if(items.cog.amount>=costs[i-1]){
 
                             out.roboChallenge.activeUpgrades.push(c[i-1])
-                            out.startRoboChallenge()
+                            items.cog.amount-=costs[i-1]
+                            out.updateInventory()
+                            out.updateRoboUI()
 
                         } else {
 
@@ -21231,9 +21248,17 @@ player=(function(out){
 
                 document.getElementById('roboActiveUpgrades').innerHTML=''
 
+                let cleaned=[]
+
                 for(let i in out.roboChallenge.activeUpgrades){
 
-                    let s='',_s=upgrades[out.roboChallenge.activeUpgrades[i]].stats.split(',')
+                    if(cleaned.indexOf(out.roboChallenge.activeUpgrades[i])<0)
+                        cleaned.push(out.roboChallenge.activeUpgrades[i])
+                }
+
+                for(let i in cleaned){
+
+                    let s='',_s=upgrades[cleaned[i]].stats.split(',')
 
                     for(let j in _s){
 
@@ -21253,7 +21278,7 @@ player=(function(out){
 
                     let elem=document.createElement('div')
 
-                    document.getElementById('roboActiveUpgrades').innerHTML+="<div style='background-color:"+rarityColor[upgrades[out.roboChallenge.activeUpgrades[i]].rarity]+";border-radius:5px;width:285px;height:125px;transform:scale(0.66,0.66);margin-top:-16px;margin-left:-44px;margin-bottom:-38px;color:black;'>&nbsp;"+out.roboChallenge.activeUpgrades[i]+"&nbsp;&nbsp;&nbsp;<div style='border-radius:5px;position:fixed;left:10px;top:35px;right:5px;bottom:5px;background-color:rgb(0,0,0,0.75);font-family:trebuchet ms;font-size:14px;padding-left:10px;padding-top:8px'>"+s+"</div></div>"
+                    document.getElementById('roboActiveUpgrades').innerHTML+="<div style='background-color:"+rarityColor[upgrades[cleaned[i]].rarity]+";border-radius:5px;width:285px;height:125px;transform:scale(0.66,0.66);margin-top:-16px;margin-left:-44px;margin-bottom:-38px;color:black;'>&nbsp;"+cleaned[i]+"&nbsp;&nbsp;&nbsp;&nbsp;<i style='font-size:13px;color:black'>Lvl:"+upgradeStacks[cleaned[i]]+"</i><div style='border-radius:5px;position:fixed;left:10px;top:35px;right:5px;bottom:5px;background-color:rgb(0,0,0,0.75);font-family:trebuchet ms;font-size:14px;padding-left:10px;padding-top:8px'>"+s+"</div></div>"
 
                 }
 
