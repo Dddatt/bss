@@ -15646,9 +15646,9 @@ class Mechsquito {
         this.state='attack'
         this.starSawHitTimer=0
         this.level=level
-        this.health=(level-1)*750+250
+        this.health=(level-1)*(level-1)*50+50
 
-        if(isMega) this.health=this.health*1.5+500
+        if(isMega) this.health=this.health*1.5
 
         this.maxHealth=this.health
         this.pos=[fieldInfo[this.field].x+Math.random()*fieldInfo[this.field].width,fieldInfo[this.field].y+4,fieldInfo[this.field].z+Math.random()*fieldInfo[this.field].length]
@@ -15744,9 +15744,12 @@ class Mechsquito {
                             },450)
 
                             window.setTimeout(function(){
-                                    
+                                
+                                if(player.fieldIn!==DIS.field)
+                                    return
+                                
                                 vec3.normalize(t,t)
-                                vec3.scale(t,t,35)
+                                vec3.scale(t,t,38)
 
                                 if(DIS.isMega){
 
@@ -15756,14 +15759,18 @@ class Mechsquito {
 
                                         DIS.bullets.push({pos:DIS.pos.slice(),vel:_t,life:0.5})
                                         
-                                        ParticleRenderer.add({x:DIS.pos[0],y:DIS.pos[1],z:DIS.pos[2],vx:_t[0],vy:_t[1],vz:_t[2],grav:0,size:100,col:[0,1,0],life:0.5,rotVel:MATH.random(-15,15),alpha:1000})
+                                        let _c=MATH.random(0.05,0.2)
+
+                                        ParticleRenderer.add({x:DIS.pos[0],y:DIS.pos[1],z:DIS.pos[2],vx:_t[0],vy:_t[1],vz:_t[2],grav:0,size:100,col:[1,_c,_c],life:0.5,rotVel:MATH.random(-15,15),alpha:1000})
                                     }
 
                                 } else {
 
                                     DIS.bullets.push({pos:DIS.pos.slice(),vel:t,life:0.5})
                                     
-                                    ParticleRenderer.add({x:DIS.pos[0],y:DIS.pos[1],z:DIS.pos[2],vx:t[0],vy:t[1],vz:t[2],grav:0,size:200,col:[0,1,0],life:0.5,rotVel:MATH.random(-15,15),alpha:1000})
+                                    let _c=MATH.random(0.05,0.2)
+
+                                    ParticleRenderer.add({x:DIS.pos[0],y:DIS.pos[1],z:DIS.pos[2],vx:t[0],vy:t[1],vz:t[2],grav:0,size:200,col:[1,_c,_c],life:0.5,rotVel:MATH.random(-15,15),alpha:1000})
 
                                 }
 
@@ -15849,9 +15856,9 @@ class Cogmower {
         this.state='attack'
         this.starSawHitTimer=0
         this.level=level
-        this.health=(level-1)*850+1000
+        this.health=(level-1)*(level-1)*70+100
 
-        if(isGold) this.health=this.health*1.5+1500
+        if(isGold) this.health=this.health*1.65
 
         this.maxHealth=this.health
         this.pos=[fieldInfo[this.field].x+Math.random()*fieldInfo[this.field].width,fieldInfo[this.field].y+0.75,fieldInfo[this.field].z+Math.random()*fieldInfo[this.field].length]
@@ -16013,7 +16020,7 @@ class CogTurret {
         this.state='attack'
         this.starSawHitTimer=0
         this.level=level
-        this.health=(level-1)*750+750
+        this.health=(level-1)*(level-1)*75+250
         this.maxHealth=this.health
 
         switch(this.side){
@@ -20960,7 +20967,9 @@ player=(function(out){
     out.endRoboChallenge=function(){
 
         out.addMessage('The Robo Challenge is over! Your score is '+out.roboChallenge.round+'!',[0,150,0])
-
+        
+        if(out.roboChallenge.mobSpawnIntervalID!==undefined)
+            window.clearInterval(out.roboChallenge.mobSpawnIntervalID)
         
         out.roboChallenge=undefined
     }
@@ -21148,9 +21157,81 @@ player=(function(out){
         }
 
         document.getElementById('roboQuestMenu').style.display='block'
+
+        for(let i in out.roboChallenge.quest){
+
+            let q=out.roboChallenge.quest[i]
+
+            if(q[0].indexOf('From')>-1){
+
+                for(let i=0,c=MATH.random(1,4)|0;i<c;i++){
+
+                    let m=[Mechsquito,Mechsquito,Mechsquito,Mechsquito,Mechsquito,Cogmower,Cogmower,Cogmower,Cogmower,CogTurret,CogTurret,CogTurret]
+
+                    m=m[(Math.random()*m.length)|0]
+
+                    objects.mobs.push(new m(q[0].replace('pollenFrom',''),(out.roboChallenge.round*MATH.random(0.55,0.65)+1)|0,m===CogTurret?MATH.random(0,4)|0:Math.random()<0.8))
+                }
+
+            } else {
+
+                for(let i=0;i<2;i++){
+
+                    let m=[Mechsquito,Mechsquito,Mechsquito,Mechsquito,Mechsquito,Cogmower,Cogmower,Cogmower,Cogmower,CogTurret,CogTurret,CogTurret]
+
+                    m=m[(Math.random()*m.length)|0]
+
+                    let f=[]
+                    
+                    for(let i in fieldInfo){
+                        
+                        if(i!=='StumpField'&&i!=='AntField'&&i!=='CoconutField')
+                            f.push(i)
+                    }
+                    
+                    objects.mobs.push(new m(f[(Math.random()*f.length)|0],(out.roboChallenge.round*MATH.random(0.55,0.65)+1)|0,m===CogTurret?MATH.random(0,4)|0:Math.random()<0.8))
+                }
+            }
+        }
+
+        out.roboChallenge.mobSpawnIntervalID=window.setInterval(function(){
+
+            if(Math.random()<0.5)
+                return
+            
+            let f=[]
+
+            if(out.fieldIn){
+
+                f=out.fieldIn
+
+            } else {
+
+                if(Math.random()<0.8)
+                    return
+
+                for(let i in fieldInfo){
+                    
+                    if(i!=='StumpField'&&i!=='AntField'&&i!=='CoconutField')
+                        f.push(i)
+                }
+
+                f=f[(Math.random()*f.length)|0]
+            }
+
+            let m=[Mechsquito,Mechsquito,Mechsquito,Mechsquito,Mechsquito,Cogmower,Cogmower,Cogmower,Cogmower,CogTurret,CogTurret,CogTurret]
+
+            m=m[(Math.random()*m.length)|0]
+
+            objects.mobs.push(new m(f,(out.roboChallenge.round*MATH.random(0.5,0.6)+1)|0,m===CogTurret?MATH.random(0,4)|0:Math.random()<0.8))
+
+        },20000)
     }
     
     out.updateRoboUI=function(){
+
+        if(out.roboChallenge.mobSpawnIntervalID!==undefined)
+            window.clearInterval(out.roboChallenge.mobSpawnIntervalID)
 
         out.roboChallenge.isPlaying=false
         document.getElementById('roboMenu').style.display='block'
@@ -28260,13 +28341,6 @@ objects.mobs.push(new MondoChick('MountainTopField',7))
 // objects.mobs.push(new RogueViciousBee('DandelionField',MATH.random(1,13)|0))
 // objects.mobs.push(new Cloud('DandelionField',2,2,60,true))
 
-objects.mobs.push(new Mechsquito('DandelionField',1,false))
-objects.mobs.push(new Cogmower('DandelionField',1,false))
-objects.mobs.push(new Mechsquito('DandelionField',1,true))
-objects.mobs.push(new Cogmower('DandelionField',1,true))
-
-objects.mobs.push(new CogTurret('DandelionField',1,3))
-objects.mobs.push(new CogTurret('DandelionField',1,1))
 
 ctx.textAlign='center'
 ctx.textBaseline='middle'
