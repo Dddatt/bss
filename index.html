@@ -21067,6 +21067,7 @@ player=(function(out){
     out.startRoboChallenge=function(){
 
         out.roboChallenge.cogsPerRound=15
+        out.roboChallenge.beesPerRound=2
 
         out.roboChallenge.isPlaying=true
         out.roboChallenge.timer=3*60
@@ -21097,6 +21098,11 @@ player=(function(out){
                 } else {
 
                     ef+=';player.'+_u.substring(_u.indexOf(' ')+1,_u.length)+_u[0]+'='+(_u.indexOf('%')>-1?n*0.01:n)
+                }
+
+                if(_u.substring(_u.indexOf(' ')+1,_u.length).indexOf('PerRound')>-1){
+
+                    out.roboChallenge[_u.substring(_u.indexOf(' ')+1,_u.length)]+=n
                 }
             }
         }
