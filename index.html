@@ -4818,13 +4818,18 @@ let triggers={
     },
 
     datsocool_NPC:{
-        //@
+
         minX:-74-2.5,maxX:-74+2.5,minY:30,maxY:30,minZ:49.5-2.5,maxZ:49.5+2.5
     },
     
     cool_shop:{
         
         minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:10-1,maxZ:10+1
+    },
+
+    roboShop_shop:{
+        
+        minX:13-1,maxX:13+1,minY:-2,maxY:5,minZ:10-1,maxZ:10+1
     },
     
     become_red_hive:{
@@ -22094,11 +22099,21 @@ player=(function(out){
         out.viewMatrixCopy=out.viewMatrix.slice()
         out.easeAmount=0
         itemName.innerHTML=MATH.doGrammar(shops[out.currentShop].items[shops[out.currentShop].currentIndex].name)
-        itemDesc.innerHTML=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].desc
         
         itemCostSVG.innerHTML=''
         
-        let cost=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].cost
+        let cost
+
+        if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'){
+
+            cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost
+            itemDesc.innerHTML=shops[out.currentShop].items[shops[out.currentShop].currentIndex].desc
+            
+        } else {
+
+            cost=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].cost
+            itemDesc.innerHTML=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].desc
+        }
         
         for(let i in cost){
             
@@ -22113,11 +22128,21 @@ player=(function(out){
             out.viewMatrixToChange=shops[out.currentShop].items[shops[out.currentShop].currentIndex].viewMatrix
             out.easeAmount=0
             itemName.innerHTML=MATH.doGrammar(shops[out.currentShop].items[shops[out.currentShop].currentIndex].name)
-            itemDesc.innerHTML=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].desc
             
             itemCostSVG.innerHTML=''
             
-            let cost=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].cost
+            let cost
+
+            if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'){
+
+                cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost
+                itemDesc.innerHTML=shops[out.currentShop].items[shops[out.currentShop].currentIndex].desc
+                
+            } else {
+
+                cost=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].cost
+                itemDesc.innerHTML=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].desc
+            }
             
             for(let i in cost){
                 
@@ -22133,12 +22158,22 @@ player=(function(out){
             out.viewMatrixToChange=shops[out.currentShop].items[shops[out.currentShop].currentIndex].viewMatrix
             out.easeAmount=0
             itemName.innerHTML=MATH.doGrammar(shops[out.currentShop].items[shops[out.currentShop].currentIndex].name)
-            itemDesc.innerHTML=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].desc
-            
+
             itemCostSVG.innerHTML=''
-        
-            let cost=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].cost
             
+            let cost
+
+            if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'){
+
+                cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost
+                itemDesc.innerHTML=shops[out.currentShop].items[shops[out.currentShop].currentIndex].desc
+                
+            } else {
+
+                cost=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].cost
+                itemDesc.innerHTML=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].desc
+            }
+
             for(let i in cost){
                 
                 let c=cost[i].split(' ')
@@ -23136,7 +23171,16 @@ player=(function(out){
                 actionWarning.style.display='block'
                 actionName.innerHTML='Leave Shop'
                 
-                let cost=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].cost,canBuy=true
+                let cost,canBuy=true
+
+                if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'){
+
+                    cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost
+                    
+                } else {
+
+                    cost=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].cost
+                }
                 
                 for(let j in cost){
                     
@@ -24133,6 +24177,38 @@ let shops={
         items:[],
         currentIndex:0,message:'Explore Cool Shop'
     },
+
+    roboShop:{
+        
+        items:[{
+            name:'redDrive',
+            slot:'item',
+            viewMatrix:[25,1,10,-Math.PI,-0.4],
+            cost:['10 cog'],
+            desc:'A red computer drive for use in the Robo Challenge.<br><br>Grants x1.25 red pollen, x1.25 red field capacity, and +1 red bee attack'
+        },{
+            name:'blueDrive',
+            slot:'item',
+            viewMatrix:[25,1,10,-Math.PI,-0.4],
+            cost:['10 cog'],
+            desc:'A blue computer drive for use in the Robo Challenge.<br><br>Grants x1.25 blue pollen, x1.25 blue field capacity, and +1 blue bee attack'
+        },{
+            name:'whiteDrive',
+            slot:'item',
+            viewMatrix:[25,1,10,-Math.PI,-0.4],
+            cost:['10 cog'],
+            desc:'A white computer drive for use in the Robo Challenge.<br><br>Grants x1.25 white pollen, x1.25 white field capacity, and +1 white bee attack'
+        },{
+            name:'glitchedDrive',
+            slot:'item',
+            viewMatrix:[25,1,10,-Math.PI,-0.4],
+            cost:['20 cog'],
+            desc:'A glitched computer drive for use in the Robo Challenge.<br><br>Grants x1.25 pollen, x1.25 capacity, and +1 attack'
+        }],
+        currentIndex:0,message:'Explore Robo Shop'
+    },
+
+    
 }
 
 shopGearMesh.setMeshFromFunction(function(box,a,cylinder,sphere,applyFinalRotation,c,star){
