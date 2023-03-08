@@ -22160,7 +22160,7 @@ player=(function(out){
             itemName.innerHTML=MATH.doGrammar(shops[out.currentShop].items[shops[out.currentShop].currentIndex].name)
 
             itemCostSVG.innerHTML=''
-            
+
             let cost
 
             if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'){
@@ -22198,7 +22198,16 @@ player=(function(out){
                 return
             }
             
-            let cost=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].cost
+            let cost
+
+            if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'){
+
+                cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost
+
+            } else {
+
+                cost=gear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot][shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].cost
+            }
             
             for(let i in cost){
                 
@@ -22223,9 +22232,20 @@ player=(function(out){
                     items[c[1]].amount-=Number(c[0])
                 }
             }
-            
-            shops[out.currentShop].items[shops[out.currentShop].currentIndex].owned=true
-            out.currentGear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot]=shops[out.currentShop].items[shops[out.currentShop].currentIndex].name
+
+            if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'){
+
+                items[shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].amount++
+                player.addMessage('+1 '+MATH.doGrammar(shops[out.currentShop].items[shops[out.currentShop].currentIndex].name))
+
+            } else {
+
+                shops[out.currentShop].items[shops[out.currentShop].currentIndex].owned=true
+                out.currentGear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot]=shops[out.currentShop].items[shops[out.currentShop].currentIndex].name
+                
+                player.addMessage('Received '+MATH.doGrammar(shops[out.currentShop].items[shops[out.currentShop].currentIndex].name))
+            }
+
             out.updateInventory()
             out.updateGear()
         }
@@ -22258,7 +22278,7 @@ player=(function(out){
     out.beequipDragging=''
     
     out.updateInventory=function(){
-        
+
         for(let i in items){
             
             if(items[i].amount===0){
@@ -22266,7 +22286,7 @@ player=(function(out){
                 items[i].svg.style.display='none'
                 
             } else {
-                
+
                 items[i].svg.style.display='inline'
                 items[i].amountText.textContent='x'+items[i].amount
             }
