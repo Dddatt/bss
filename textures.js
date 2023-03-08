@@ -8220,7 +8220,7 @@ window.textures_decals=function(tex_ctx){
     }
     
     tex_ctx.clearRect(0,0,1024,1024)
-    // tex_ctx.fillStyle='rgb(0,200,0,0.2)'
+    // tex_ctx.fillStyle='rgb(100,100,100)'
     // tex_ctx.fillRect(0,0,1024,1024)
     
     tex_ctx.lineCap='butt'
@@ -8393,6 +8393,203 @@ window.textures_decals=function(tex_ctx){
     tex_ctx.textBaseline='middle'
     tex_ctx.textAlign='center'
     tex_ctx.fillText('☺',2,-5)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*4+128*0.5,128*1+128*0.5-10)
+    tex_ctx.scale(1.6,1.6)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.lineWidth=3
+    tex_ctx.fillStyle='rgb(100,100,100)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-20,0)
+    tex_ctx.lineTo(0,-15)
+    tex_ctx.lineTo(20,-0)
+    tex_ctx.lineTo(0,15)
+    tex_ctx.closePath()
+    tex_ctx.stroke()
+    tex_ctx.fill()
+    tex_ctx.fillStyle='rgb(85,85,85)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-20,0)
+    tex_ctx.lineTo(-19,10)
+    tex_ctx.lineTo(0,25)
+    tex_ctx.lineTo(0,15)
+    tex_ctx.closePath()
+    tex_ctx.stroke()
+    tex_ctx.fill()
+    tex_ctx.fillStyle='rgb(70,70,70)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(20,0)
+    tex_ctx.lineTo(20,10)
+    tex_ctx.lineTo(0,25)
+    tex_ctx.lineTo(0,15)
+    tex_ctx.closePath()
+    tex_ctx.stroke()
+    tex_ctx.fill()
+    tex_ctx.fillStyle='rgb(255,220,50,0.9)'
+    tex_ctx.fillRect(-19,8,4,8)
+    tex_ctx.fillRect(-13,11,4,8)
+    tex_ctx.fillRect(-7,14,4,8)
+    tex_ctx.lineWidth=7
+    tex_ctx.strokeStyle='rgb(155,0,0)'
+    tex_ctx.fillStyle='rgb(0,0,0,0)'
+    e(0,-1,8,8*0.75)
+    tex_ctx.stroke()
+    tex_ctx.strokeStyle='rgb(255,0,0)'
+    e(0,-4,8,8*0.75)
+    tex_ctx.stroke()
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*5+128*0.5,128*1+128*0.5-10)
+    tex_ctx.scale(1.6,1.6)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.lineWidth=3
+    tex_ctx.fillStyle='rgb(100,100,100)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-20,0)
+    tex_ctx.lineTo(0,-15)
+    tex_ctx.lineTo(20,-0)
+    tex_ctx.lineTo(0,15)
+    tex_ctx.closePath()
+    tex_ctx.stroke()
+    tex_ctx.fill()
+    tex_ctx.fillStyle='rgb(85,85,85)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-20,0)
+    tex_ctx.lineTo(-20,10)
+    tex_ctx.lineTo(0,25)
+    tex_ctx.lineTo(0,15)
+    tex_ctx.closePath()
+    tex_ctx.stroke()
+    tex_ctx.fill()
+    tex_ctx.fillStyle='rgb(70,70,70)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(20,0)
+    tex_ctx.lineTo(20,10)
+    tex_ctx.lineTo(0,25)
+    tex_ctx.lineTo(0,15)
+    tex_ctx.closePath()
+    tex_ctx.stroke()
+    tex_ctx.fill()
+    tex_ctx.fillStyle='rgb(255,220,50,0.9)'
+    tex_ctx.fillRect(-19,8,4,8)
+    tex_ctx.fillRect(-13,11,4,8)
+    tex_ctx.fillRect(-7,14,4,8)
+    tex_ctx.lineWidth=7
+    tex_ctx.strokeStyle='rgb(175,175,175)'
+    tex_ctx.fillStyle='rgb(0,0,0,0)'
+    e(0,-1,8,8*0.75)
+    tex_ctx.stroke()
+    tex_ctx.strokeStyle='rgb(255,255,255)'
+    e(0,-4,8,8*0.75)
+    tex_ctx.stroke()
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*6+128*0.5,128*1+128*0.5-10)
+    tex_ctx.scale(1.6,1.6)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.lineWidth=3
+    tex_ctx.fillStyle='rgb(100,100,100)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-20,0)
+    tex_ctx.lineTo(0,-15)
+    tex_ctx.lineTo(20,-0)
+    tex_ctx.lineTo(0,15)
+    tex_ctx.closePath()
+    tex_ctx.stroke()
+    tex_ctx.fill()
+    tex_ctx.fillStyle='rgb(85,85,85)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-20,0)
+    tex_ctx.lineTo(-20,10)
+    tex_ctx.lineTo(0,25)
+    tex_ctx.lineTo(0,15)
+    tex_ctx.closePath()
+    tex_ctx.stroke()
+    tex_ctx.fill()
+    tex_ctx.fillStyle='rgb(70,70,70)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(20,0)
+    tex_ctx.lineTo(20,10)
+    tex_ctx.lineTo(0,25)
+    tex_ctx.lineTo(0,15)
+    tex_ctx.closePath()
+    tex_ctx.stroke()
+    tex_ctx.fill()
+    tex_ctx.fillStyle='rgb(255,220,50,0.9)'
+    tex_ctx.fillRect(-19,8,4,8)
+    tex_ctx.fillRect(-13,11,4,8)
+    tex_ctx.fillRect(-7,14,4,8)
+    tex_ctx.lineWidth=7
+    tex_ctx.strokeStyle='rgb(0,0,155)'
+    tex_ctx.fillStyle='rgb(0,0,0,0)'
+    e(0,-1,8,8*0.75)
+    tex_ctx.stroke()
+    tex_ctx.strokeStyle='rgb(0,0,255)'
+    e(0,-4,8,8*0.75)
+    tex_ctx.stroke()
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*7+128*0.5,128*1+128*0.5-10)
+    tex_ctx.scale(1.6,1.6)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.lineWidth=3
+    tex_ctx.fillStyle='rgb(100,100,100)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-20,0)
+    tex_ctx.lineTo(0,-15)
+    tex_ctx.lineTo(20,-0)
+    tex_ctx.lineTo(0,15)
+    tex_ctx.closePath()
+    tex_ctx.stroke()
+    tex_ctx.fill()
+    tex_ctx.fillStyle='rgb(85,85,85)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-20,0)
+    tex_ctx.lineTo(-20,10)
+    tex_ctx.lineTo(0,25)
+    tex_ctx.lineTo(0,15)
+    tex_ctx.closePath()
+    tex_ctx.stroke()
+    tex_ctx.fill()
+    tex_ctx.fillStyle='rgb(70,70,70)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(20,0)
+    tex_ctx.lineTo(20,10)
+    tex_ctx.lineTo(0,25)
+    tex_ctx.lineTo(0,15)
+    tex_ctx.closePath()
+    tex_ctx.stroke()
+    tex_ctx.fill()
+    tex_ctx.fillStyle='rgb(255,220,50,0.9)'
+    tex_ctx.fillRect(-19,8,4,8)
+    tex_ctx.fillRect(-13,11,4,8)
+    tex_ctx.fillRect(-7,14,4,8)
+    tex_ctx.lineWidth=7
+    tex_ctx.translate(-2,1)
+    tex_ctx.strokeStyle='rgb(181, 181, 0,0.5)'
+    tex_ctx.fillStyle='rgb(0,0,0,0)'
+    e(0,-1,8,8*0.75)
+    tex_ctx.stroke()
+    tex_ctx.strokeStyle='rgb(255,255,0,0.5)'
+    e(0,-4,8,8*0.75)
+    tex_ctx.stroke()
+    tex_ctx.translate(4,0)
+    tex_ctx.strokeStyle='rgb(190,80,190,0.4)'
+    tex_ctx.fillStyle='rgb(0,0,0,0)'
+    e(0,-1,8,8*0.75)
+    tex_ctx.stroke()
+    tex_ctx.strokeStyle='rgb(237, 102, 237,0.4)'
+    e(0,-4,8,8*0.75)
+    tex_ctx.stroke()
+    tex_ctx.translate(-2,-2)
+    tex_ctx.strokeStyle='rgb(0,190,190,0.3)'
+    tex_ctx.fillStyle='rgb(0,0,0,0)'
+    e(0,-1,8,8*0.75)
+    tex_ctx.stroke()
+    tex_ctx.strokeStyle='rgb(0,255,255,0.3)'
+    e(0,-4,8,8*0.75)
+    tex_ctx.stroke()
     tex_ctx.setTransform(1,0,0,1,0,0)
 }
 

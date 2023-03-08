@@ -4828,8 +4828,8 @@ let triggers={
     },
 
     roboShop_shop:{
-        
-        minX:13-1,maxX:13+1,minY:-2,maxY:5,minZ:10-1,maxZ:10+1
+
+        minX:55.5,maxX:62,minY:7,maxY:13,minZ:36.5,maxZ:45
     },
     
     become_red_hive:{
@@ -20972,11 +20972,14 @@ player=(function(out){
     out.endRoboChallenge=function(){
 
         out.addMessage('The Robo Challenge is over! Your score is '+out.roboChallenge.round+'!',[0,150,0])
-        
+
         if(out.roboChallenge.mobSpawnIntervalID!==undefined)
             window.clearInterval(out.roboChallenge.mobSpawnIntervalID)
         
         out.roboChallenge=undefined
+
+        items.cog.amount=0
+        out.updateInventory()
     }
 
     out.updateRoboChallenge=function(){
@@ -22242,7 +22245,7 @@ player=(function(out){
 
                 shops[out.currentShop].items[shops[out.currentShop].currentIndex].owned=true
                 out.currentGear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot]=shops[out.currentShop].items[shops[out.currentShop].currentIndex].name
-                
+
                 player.addMessage('Received '+MATH.doGrammar(shops[out.currentShop].items[shops[out.currentShop].currentIndex].name))
             }
 
@@ -24199,29 +24202,29 @@ let shops={
     },
 
     roboShop:{
-        
+
         items:[{
             name:'redDrive',
             slot:'item',
-            viewMatrix:[25,1,10,-Math.PI,-0.4],
+            viewMatrix:[58,11,38,MATH.HALF_PI,-0.25],
             cost:['10 cog'],
             desc:'A red computer drive for use in the Robo Challenge.<br><br>Grants x1.25 red pollen, x1.25 red field capacity, and +1 red bee attack'
         },{
             name:'blueDrive',
             slot:'item',
-            viewMatrix:[25,1,10,-Math.PI,-0.4],
+            viewMatrix:[58,11,39.8315,MATH.HALF_PI,-0.25],
             cost:['10 cog'],
             desc:'A blue computer drive for use in the Robo Challenge.<br><br>Grants x1.25 blue pollen, x1.25 blue field capacity, and +1 blue bee attack'
         },{
             name:'whiteDrive',
             slot:'item',
-            viewMatrix:[25,1,10,-Math.PI,-0.4],
+            viewMatrix:[58,11,41.663,MATH.HALF_PI,-0.25],
             cost:['10 cog'],
             desc:'A white computer drive for use in the Robo Challenge.<br><br>Grants x1.25 white pollen, x1.25 white field capacity, and +1 white bee attack'
         },{
             name:'glitchedDrive',
             slot:'item',
-            viewMatrix:[25,1,10,-Math.PI,-0.4],
+            viewMatrix:[58,11,43.5,MATH.HALF_PI,-0.25],
             cost:['20 cog'],
             desc:'A glitched computer drive for use in the Robo Challenge.<br><br>Grants x1.25 pollen, x1.25 capacity, and +1 attack'
         }],
@@ -24415,7 +24418,11 @@ let textRenderer=(function(out){
         lightrays:[128*0/1024,128/1024],
         circle:[128*1/1024,128/1024],
         arc:[128*2/1024,128/1024],
-        smiley:[128*3/1024,128/1024]
+        smiley:[128*3/1024,128/1024],
+        redDrive:[128*4/1024,128/1024],
+        whiteDrive:[128*5/1024,128/1024],
+        blueDrive:[128*6/1024,128/1024],
+        glitchedDrive:[128*7/1024,128/1024],
     }
     
     out.instanceData=[]
@@ -24637,7 +24644,7 @@ let textRenderer=(function(out){
         
         gl.useProgram(textRendererProgram)
         gl.uniformMatrix4fv(glCache.text_viewMatrix,gl.FALSE,player.viewMatrix)
-        
+
         if(out.drawDecals){
             
             gl.bindTexture(gl.TEXTURE_2D,textures.decals)
@@ -24660,7 +24667,12 @@ let textRenderer=(function(out){
             gl.vertexAttribDivisor(glCache.text_instanceInfo,1)
             gl.drawElementsInstanced(gl.TRIANGLES,out.decal_indexAmount,gl.UNSIGNED_SHORT,0,out.decal_instanceData.length*MATH.INV_13)
             
-            out.decal_instanceData=[]
+            out.decal_instanceData=[
+            61,10.25,43.5,0,0,0.875,0.125,1,1,1,-1.75,-1.75,0,
+            61,10.25,41.663,0,0,0.625,0.125,1,1,1,-1.75,-1.75,0,
+            61,10.25,39.8315,0,0,0.75,0.125,1,1,1,-1.75,-1.75,0,
+            61,10.25,38,0,0,0.5,0.125,1,1,1,-1.75,-1.75,0]
+
             out.drawDecals=false
             
         } else {
@@ -28887,13 +28899,13 @@ function loop(now){
     gl.vertexAttribDivisor(glCache.token_instanceUV,0)
     meshes.tokens.instanceData=[]
     
-    gl.depthMask(false)
+    // gl.depthMask(false)
     
     ParticleRenderer.render()
     
     TrailRenderer.render()
     
-    gl.depthMask(true)
+    // gl.depthMask(true)
     
     gl.useProgram(mobRendererProgram)
     gl.uniformMatrix4fv(glCache.mob_viewMatrix,gl.FALSE,player.viewMatrix)
