@@ -4021,7 +4021,7 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
     
 </div>
 
-<div id='shopUI' style='position:fixed;z-index:1;;width:100%;height:100%;display:none'>
+<div id='shopUI' style='position:fixed;z-index:1;width:100%;height:100%;display:none'>
     
     <div style='position:fixed;width:175px;height:300px;z-index:1;left:100%;top:45%;transform:translate(-100%,-50%);background-color:rgb(30,70,255);border-radius:10px;'>
         
@@ -22764,34 +22764,94 @@ player=(function(out){
     out.generateBeequip('boombox')
     out.generateBeequip('pencil')
 
+    out.beesPageBee=false
+
+    window.exitBeesPageBee=function(){
+
+        out.beesPageBee=false
+        out.updateBeesPage()
+    }
+
     out.updateBeesPage=function(){
 
         pages[2].innerHTML=''
+        pages[2].style.backgroundColor='rgba(195,195,195,0.9)'
 
-        for(let i in beeInfo){
+        if(out.beesPageBee){
 
-            let div=document.createElement('div'),img=document.createElement('canvas'),text=document.createElement('div')
-            div.style.width='195px'
-            div.style.height='70px'
-            div.style.marginTop='3px'
-            div.style.borderRadius='5px'
-            div.style.backgroundColor=beeInfo[i].color==='red'?'rgb(255,0,0,0.5)':beeInfo[i].color==='blue'?'rgb(0,0,255,0.5)':'rgb(255,255,255,0.5)'
+            pages[2].style.backgroundColor='rgb(160,150,0,0.9)'
 
-            img.width=70
-            img.height=70
-            img.style.borderTopLeftRadius='5px'
-            img.style.borderBottomLeftRadius='5px'
+            let img=document.createElement('canvas')
+
+            img.width=76
+            img.height=76
+            img.style.borderRadius='5px'
+            img.style.margin='5px'
+            img.style.marginLeft='5px'
+            img.style.marginTop='35px'
 
             let img_ctx=img.getContext('2d')
 
-            img_ctx.drawImage(beeCanvas,beeInfo[i].u*2048,beeInfo[i].v*2048,128,128,0,0,70,70)
+            img_ctx.drawImage(beeCanvas,beeInfo[out.beesPageBee].u*2048,beeInfo[out.beesPageBee].v*2048,128,128,0,0,76,76)
 
-            text.innerHTML="<p style='margin-left:70px;margin-top:-70px;font-family:trebuchet ms;font-size:17px;text-align:center'>"+MATH.doGrammar(i)+" Bee</p>"+"<p style='margin-left:73px;margin-top:-14px;font-family:trebuchet ms;font-size:9px;text-align:center;width:122px'>"+beeInfo[i].description+"</p>"
+            let count=0,gifted
 
-            div.appendChild(img)
-            div.appendChild(text)
+            for(let y in out.hive){
 
-            pages[2].appendChild(div)
+                for(let x in out.hive[y]){
+
+                    if(out.hive[y][x].type===out.beesPageBee){
+
+                        count++
+                        
+                        if(out.hive[y][x].gifted){
+
+                            gifted=true
+                        }
+                    }
+                }
+            }
+
+            pages[2].innerHTML+="<div style='margin-left:3px;margin-top:-118px;width:188px;height:26px;background-color:rgb(245,235,90);border-radius:2px;padding-left:3px;padding-top:2px;font-family:trebuchet ms;font-size:19px;text-align:center'><div style='position:absolute;left:8px;top:7px;width:20px;height:20px;font-size:19px;background-color:rgb(255,0,0);cursor:pointer;border:2px solid black;border-radius:4px;padding-top:0px'><div style='margin-top:-3px' onclick='window.exitBeesPageBee()'>x</div></div>&nbsp;&nbsp;"+MATH.doGrammar(out.beesPageBee)+" Bee</div><div style='margin-left:90px;margin-top:5px;width:103px;height:16px;background-color:rgb(230,220,150);border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center'>"+MATH.doGrammar(beeInfo[out.beesPageBee].rarity)+"</div><div style='margin-left:90px;margin-top:3px;width:103px;height:16px;background-color:rgb(230,220,150);border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center'>"+MATH.doGrammar(beeInfo[out.beesPageBee].color)+"</div><div style='margin-left:90px;margin-top:3px;width:103px;height:16px;background-color:rgb(230,220,150);border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center'>Energy: "+beeInfo[out.beesPageBee].energy+"</div><div style='margin-left:90px;margin-top:3px;width:103px;height:16px;background-color:rgb(230,220,150);border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center'>Speed: "+beeInfo[out.beesPageBee].speed+"</div><div style='margin-left:90px;margin-top:3px;width:103px;height:16px;background-color:rgb(230,220,150);border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center'>Attack: "+beeInfo[out.beesPageBee].attack+"</div><div style='margin-left:0px;margin-top:-15px;width:90px;height:16px;background-color:rgb(0,0,0,0);border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center'><b>x"+count+"</b>"+(gifted?'&nbsp;&nbsp;&nbsp;&nbsp;⭐':'')+"</div>"
+
+            
+            pages[2].prepend(img)
+
+        } else {
+
+            for(let i in beeInfo){
+
+                let div=document.createElement('div'),img=document.createElement('canvas'),text=document.createElement('div')
+
+                div.style.cursor='pointer'
+                div.style.width='195px'
+                div.style.height='70px'
+                div.style.marginTop='3px'
+                div.style.borderRadius='5px'
+                div.style.backgroundColor=beeInfo[i].color==='red'?'rgb(255,0,0,0.5)':beeInfo[i].color==='blue'?'rgb(0,0,255,0.5)':'rgb(255,255,255,0.5)'
+
+                img.width=70
+                img.height=70
+                img.style.borderTopLeftRadius='5px'
+                img.style.borderBottomLeftRadius='5px'
+
+                let img_ctx=img.getContext('2d')
+
+                img_ctx.drawImage(beeCanvas,beeInfo[i].u*2048,beeInfo[i].v*2048,128,128,0,0,70,70)
+
+                text.innerHTML="<p style='margin-left:70px;margin-top:-70px;font-family:trebuchet ms;font-size:17px;text-align:center'>"+MATH.doGrammar(i)+" Bee</p>"+"<p style='margin-left:73px;margin-top:-10px;font-family:trebuchet ms;font-size:9px;text-align:center;width:122px'>"+(out.discoveredBees.indexOf(i)>-1?beeInfo[i].description:'<br>(Undiscovered)')+"</p>"
+
+                div.appendChild(img)
+                div.appendChild(text)
+
+                div.onclick=function(){
+                    
+                    out.beesPageBee=i
+                    out.updateBeesPage()
+                }
+
+                pages[2].appendChild(div)
+            }
         }
     }
     
