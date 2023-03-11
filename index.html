@@ -6503,6 +6503,7 @@ let effects={
     
     haste:{
         
+        desc:"Grants x1.1 movespeed for 20s. Stacks up to 10x, for a maximum of x2 movespeed.",
         trialCooldown:15,trialRate:0.5,
         statsToAddTo:['hasteTokens'],
         u:0,v:0,
@@ -6547,6 +6548,7 @@ let effects={
     
     focus:{
         
+        desc:"Grants +3% critical chance for 20s. Stacks up to 10x, for a maximum of +30% critical chance.<br><br>Critical chance increases the chance of a critical hit, multiplying pollen collected or damage dealt by your critical power(x2 without any extra buffs).",
         trialCooldown:20,trialRate:0.5,
         statsToAddTo:['focusTokens','battleTokens'],
         u:128/2048,v:0,
@@ -6571,6 +6573,7 @@ let effects={
     
     melody:{
         
+        desc:"Grants +100% critical power for 30s.",
         trialCooldown:35,trialRate:0.35,
         statsToAddTo:['melodyTokens','battleTokens'],
         u:256/2048,v:0,
@@ -6595,6 +6598,7 @@ let effects={
     
     link:{
         
+        desc:"Collects all ability tokens and certain types of loot tokens.",
         trialCooldown:20,trialRate:0.75,
         statsToAddTo:['battleTokens'],
         u:128*3/2048,v:0,
@@ -6648,6 +6652,7 @@ let effects={
     
     whiteBomb:{
         
+        desc:"Collects 7.5 pollen from 29 nearby flowers. Pollen is multipled by +10% per bee lvl.",
         trialCooldown:15,trialRate:0.3,
         statsToAddTo:['bombTokens'],
         u:128*4/2048,v:0,
@@ -6672,6 +6677,7 @@ let effects={
     
     redBomb:{
         
+        desc:"Collects 10 red pollen from 29 nearby flowers. Pollen is multipled by +10% per bee lvl.",
         trialCooldown:15,trialRate:0.3,
         statsToAddTo:['redBombTokens','redAbilityTokens','bombTokens'],
         u:128*5/2048,v:0,
@@ -6696,6 +6702,7 @@ let effects={
     
     blueBomb:{
         
+        desc:"Collects 10 blue pollen from 29 nearby flowers. Pollen is multipled by +10% per bee lvl.",
         trialCooldown:15,trialRate:0.3,
         statsToAddTo:['blueBombTokens','blueAbilityTokens','bombTokens'],
         u:128*6/2048,v:0,
@@ -6720,6 +6727,7 @@ let effects={
     
     whiteBomb_:{
         
+        desc:"Collects 10 pollen from 49 nearby flowers. Pollen is multipled by +15% per bee lvl.",
         trialCooldown:15,trialRate:0.4,
         statsToAddTo:['bombTokens'],
         u:128*7/2048,v:0,
@@ -6744,6 +6752,7 @@ let effects={
     
     redBomb_:{
         
+        desc:"Collects 12.5 red pollen from 49 nearby flowers. Pollen is multipled by +20% per bee lvl.",
         trialCooldown:20,trialRate:0.3,
         statsToAddTo:['redBombTokens','redAbilityTokens','bombTokens'],
         u:0,v:128/2048,
@@ -6768,6 +6777,7 @@ let effects={
     
     blueBomb_:{
         
+        desc:"Collects 12.5 blue pollen from 49 nearby flowers. Pollen is multipled by +20% per bee lvl.",
         trialCooldown:20,trialRate:0.3,
         statsToAddTo:['blueBombTokens','blueAbilityTokens','bombTokens'],
         u:128/2048,v:128/2048,
@@ -6792,6 +6802,7 @@ let effects={
     
     blueBoost:{
         
+        desc:"Grants x1.2 blue pollen for 15s. Stacks up to 10x, for a maximum of x3 blue pollen.",
         trialCooldown:25,trialRate:0.6,
         statsToAddTo:['blueBoostTokens','blueAbilityTokens','boostTokens','markOrBoostTokens'],
         u:128*2/2048,v:128/2048,
@@ -6816,6 +6827,7 @@ let effects={
     
     redBoost:{
         
+        desc:"Grants x1.2 red pollen for 15s. Stacks up to 10x, for a maximum of x3 red pollen.",
         trialCooldown:25,trialRate:0.6,
         statsToAddTo:['redBoostTokens','redAbilityTokens','boostTokens','markOrBoostTokens'],
         u:128*3/2048,v:128/2048,
@@ -6840,6 +6852,7 @@ let effects={
     
     whiteBoost:{
         
+        desc:"Grants x1.2 white pollen for 15s. Stacks up to 10x, for a maximum of x3 white pollen.",
         trialCooldown:15,trialRate:0.8,
         statsToAddTo:['boostTokens','markOrBoostTokens'],
         u:128*4/2048,v:128/2048,
@@ -6864,6 +6877,7 @@ let effects={
     
     babyLove:{
         
+        desc:"Grants x2 pollen and +50% loot luck for 30s.",
         trialCooldown:35,trialRate:0.6,
         u:128*1/2048,v:256*4/2048,
         svg:document.getElementById('babyLove'),
@@ -6916,6 +6930,7 @@ let effects={
     
     rage:{
         
+        desc:"Grants +1 bee attack for 30s. Stacks up to 3x, for a maximum of +3 bee attack.",
         trialCooldown:25,trialRate:0.8,
         statsToAddTo:['rageTokens','battleTokens','redAbilityTokens'],
         u:128*6/2048,v:256*2/2048,
@@ -6988,6 +7003,7 @@ let effects={
     
     pollenMarkToken:{
         
+        desc:"Marks a random spot on the field with a radius of 4.5 flowers for 7s(+0.2s per bee lvl).<br><br>Standing in the mark grants x1.5 pollen. Stacks up to 3x, for a maximum of x2.5 pollen.",
         trialCooldown:20,trialRate:0.4,
         statsToAddTo:['markTokens','markOrBoostTokens'],
         u:128*6/2048,v:128/2048,
@@ -7007,6 +7023,7 @@ let effects={
     
     honeyMarkToken:{
         
+        desc:"Marks a random spot on the field with a radius of 4.5 flowers for 7s(+0.2s per bee lvl).<br><br>Standing in the mark converts 5% of your bag's capacity of pollen into honey per second. Stacks up to 3x, converting a maximum of 15% of your capacity of pollen into honey per second.",
         trialCooldown:17.5,trialRate:0.5,
         statsToAddTo:['markTokens','markOrBoostTokens'],
         u:128*7/2048,v:128/2048,
@@ -7118,7 +7135,8 @@ let effects={
     },
     
     inferno:{
-        
+
+        desc:"Summons 4 flames and 2 temporary Fire Bees that last for 15s(+1s per lvl). The Fire Bees are gifted if this bee is gifted.<br><br>Flames last for 3s, collecting 10R/4W/1B pollen from 9 nearby flowers every second. Pollen collected is multiplied by 4% per red bee(8% is gifted). Flames also deal 15 damage to mobs every second. Standing in flames grant Flame Heat, lasting for 20s, and giving up to x2 red pollen and x1.2 bee attack.",
         trialCooldown:20,trialRate:0.5,
         statsToAddTo:['redAbilityTokens','battleTokens'],
         u:0,v:256/2048,
@@ -7169,6 +7187,7 @@ let effects={
     
     flameFuel:{
         
+        desc:"For 15s, tosses oil onto new flames, increasing it's lifespan by x1.5 and makes it convert 3% of your hive's convert total of pollen into honey.",
         trialCooldown:30,trialRate:0.3,
         u:128/2048,v:256/2048,
         svg:document.getElementById('flameFuel'),
@@ -7192,6 +7211,7 @@ let effects={
     
     markSurge:{
         
+        desc:"Makes all active marks surge, collecting pollen and increasing it's lifespan by +1s(+0.1s per bee lvl). Marks can only surge 5 times.<br><br>Marks collect 7(12 is the mark is a Precise Mark) pollen from all flowers inside their radius. Pollen collected is multiplied by +10% per bee lvl.<br><br>• If the mark is a Honey Mark, it instantly converts all collected pollen.<br><br>• If the mark is a Precise Mark, it will always critical hit.",
         trialCooldown:20,trialRate:0.25,
         u:256/2048,v:256/2048,
         tokenLife:4,
@@ -7208,6 +7228,7 @@ let effects={
     
     triangulate:{
         
+        desc:"Draws a triangle between the token, the bee, and you. The bee will travel away from both points, maximizing the triangle's area. After 3s, all tokens inside the triangle is collected, pollen is collected, and marks inside the triangle surge.<br><br>10(+2 per bee lvl) pollen is collected from each flower inside the triangle.<br><br>• If the triangle contains a mark, it gains x1.5 pollen.<br><br>• If the triangle contains a Pollen Mark, it gains x2 white pollen.<br><br>• If the triangle contains a Honey Mark, it gains +50% instant conversion.<br><br>• If the triangle contains a Precise Mark, it always critical hits.",
         trialCooldown:20,trialRate:0.25,
         u:128*7/2048,v:256*2/2048,
         tokenLife:4,
@@ -7225,7 +7246,8 @@ let effects={
     },
     
     pollenHaze:{
-        
+
+        desc:"Summons a haze over the field, lasting for 30s. Every 0.07s, a flower is pollinated. If the flower is already at it's maximum pollination, it is replenished.<br><br>When a flower is pollinated, it moves up a tier. Flowers can be at the single, double, triple, large, or star tier. Pollen from the flower is multiplied based on it's tier, and higher tier flowers deplete slower. Over time, flowers naturally downgrade to it's original tier.",
         trialCooldown:150,trialRate:1,
         u:0,v:256*2.5/2048,
         tokenLife:8,
@@ -7247,6 +7269,7 @@ let effects={
     
     fuzzBomb:{
         
+        desc:"Summons 2(+1 per 5 bee lvls) fuzz bombs rolling around the field, lasting for 5s(+0.25s per bee lvl). Touching them collects 15W/10R/10B pollen from 25 nearby flowers and pollinates them. If the flower is already at it's maximum pollination, it is replenished.<br><br>When a flower is pollinated, it moves up a tier. Flowers can be at the single, double, triple, large, or star tier. Pollen from the flower is multiplied based on it's tier, and higher tier flowers deplete slower. Over time, flowers naturally downgrade to it's original tier.",
         trialCooldown:25,trialRate:0.5,
         u:128/2048,v:256*2.5/2048,
         tokenLife:4,
@@ -7286,6 +7309,7 @@ let effects={
     
     summonFrog:{
         
+        desc:"Summons a frog on the field, lasting for 25s(+1s per bee lvl). If the bee is gifted, this has a 10%(+2% per bee lvl) chance to spawn a gifted frog instead.<br><br>Frogs hop around the field, creating bubbles every 2nd and 3rd jump. Frogs also collect nearby tokens, and creates another bubble when they do.<br><br>Gifted frogs have a higher chance to collect tokens can do so from further away.<br><br>Bubbles last for 10s. When popped, they collect 10B/6W/2R pollen and replenish 33 flowers. Pollen collected is multiplied by 10% per gifted blue bee type.",
         trialCooldown:30,trialRate:0.33,
         statsToAddTo:['blueAbilityTokens','battleTokens'],
         u:128*3/2048,v:256/2048,
@@ -7304,6 +7328,7 @@ let effects={
     
     inflateBalloons:{
         
+        desc:"Summons a balloon on the field, lasting for 20s(+1s per bee lvl), and with a capacity scaling off of the bee's lvl and the player's capacity. This also inflates existing balloons by 1%(+0.1% per bee lvl) of their capacity.<br><br>Ballons hover around the field, absorbing and storing pollen collected under them. If the pollen is blue, it is multiplied by 25%, otherwise, by 10%.<br><br>Standing under balloons grant Balloon Aura, giving x1.02 pollen and honey from tokens. Stacks up to 10x, for a maximum of x1.2 pollen and honey from tokens.<br><br>After filling up, ballons float back to the hive, filling up the hive balloon. Converting the hive balloon grants the Balloon Blessing buff, boosting capacity and honey at hive. If the new Balloon Blessing is higher than the previous one, it replaces the old buff, otherwise, it refreshes it. The hive balloon deflates over time, depending on your capacity relative to it.<br><br>Balloons can be inflated a maximum of 4(+1 per 4 bee lvls)(+4 if the field contains at least 50% blue flowers)(+2 if the field contains at least 50% white flowers) times.<br><br>If the bee is gifted, balloons have a 10%(+1% per bee lvl) to become golden. Golden balloons have x1.143 more capacity, turn bubbles into golden bubbles, and are more effective with Tidal Surge.<br><br>Golden bubbles collect x1.5 pollen, has a 25% chance to spawn a honey token worth 50% of the collected pollen. Also contributes 2x as much to Pop Star, Bubble Bloat, Tide Power, and 3x as much to Tidal Surge.",
         trialCooldown:30,trialRate:0.25,
         statsToAddTo:['blueAbilityTokens'],
         u:128*4/2048,v:256/2048,
@@ -7336,6 +7361,7 @@ let effects={
     
     surpriseParty:{
         
+        desc:"Makes all active balloons on the field create random ability tokens and summons a golden balloon.",
         trialCooldown:150,trialRate:0.05,
         statsToAddTo:['blueAbilityTokens'],
         u:128*5/2048,v:256/2048,
@@ -7413,6 +7439,7 @@ let effects={
     
     gummyBlob:{
         
+        desc:"Drops a blob of goo onto the field, covering nearby flowers with a radius of 2(4 if the bee is gifted) and replenishing them.",
         trialCooldown:10,trialRate:0.6,
         u:128*6/2048,v:256/2048,
         tokenLife:8,
@@ -7447,6 +7474,7 @@ let effects={
     
     gummyBarrage:{
         
+        desc:"Drops several blobs of goo onto the field, covering nearby flowers and replenishing them.",
         trialCooldown:15,trialRate:0.6,
         u:128*7/2048,v:256/2048,
         tokenLife:8,
@@ -7485,6 +7513,7 @@ let effects={
     
     targetPractice:{
         
+        desc:"Causes the bee to fly up, projecting 3 targets onto the field for 4s. Running over a target activates it. After 4s, the bee shoots the targets.<br><br>• Unactivated targets create a red boost token when shot<br><br>• If an activated target is shot, it will create a focus token and collect 50%(+5% per bee lvl) of the bee's attack from 49 flowers. The shot can gain up to 50% instant conversion and x3 pollen based on your Flame Heat.<br><br>• If all 3 targets are shot, all ability tokens will be collected and 1 of the targets will summon a red boost, focus, and precision token. Precision grants +2% super-crit chance and stacks up to 10x, giving a maximum of +20% super-crit chance.<br><br>• If the player stands under a target as it is shot, all ability tokens are collected and Flame Heat is consumed to convert 50% of the hive's convert total plus 10 times the bee's convert amount. The amount of pollen converted scales up to x10 with Flame Heat.<br><br>• If the bee is gifted, 1 of the targets are highlighted in purple. Activating this target but not all 3 will summon a Precise Mark for 12s(+0.2 per bee lvl) with a radius of 6.5 flowers. Standing in the Precise Mark grants +7% critical and super-crit chance, stacking up to 3x, for a maximum of +21% critical and super-crit chance.<br><br>Super-crit chance increases the chance of a super-crit happening if the hit is a critical hit, multiplying pollen collected or damage dealt by your critical power and super-crit power(x2 super-crit power without any extra buffs, x4 in total).",
         trialCooldown:22.5,trialRate:0.25,
         statsToAddTo:['redAbilityTokens','battleTokens'],
         u:128*4/2048,v:256*2/2048,
@@ -8595,6 +8624,7 @@ let effects={
     
     redPulse:{
         
+        desc:"Activates a red pulse, hopping to every red bee twice, collecting 4(+0.75 for every hop) pollen from 25 flowers. Pollen collection increases with each hop. If the player owns a Cobalt Bee, a blue pulse is fired as well.",
         trialCooldown:25,trialRate:0.6,
         statsToAddTo:['redAbilityTokens'],
         u:128*1/2048,v:128*6/2048,
@@ -8613,6 +8643,7 @@ let effects={
     
     bluePulse:{
         
+        desc:"Activates a blue pulse, hopping to every red bee twice, collecting 4(+0.75 for every hop) pollen from 25 flowers. Pollen collection increases with each hop. If the player owns a Crimson Bee, a red pulse is fired as well.",
         trialCooldown:25,trialRate:0.6,
         statsToAddTo:['blueAbilityTokens'],
         u:128*2/2048,v:128*6/2048,
@@ -8631,6 +8662,7 @@ let effects={
     
     redBombSync:{
         
+        desc:"Allows red bombs to collect 7.5(10 if Red Bomb+) pollen from white flowers. If blue bomb sync is active, applies to blue flowers as well, collecting 5(7.5 if Red Bomb+) blue pollen.",
         trialCooldown:35,trialRate:0.7,
         statsToAddTo:['redAbilityTokens','redBombTokens'],
         u:128*3/2048,v:128*6/2048,
@@ -8654,6 +8686,7 @@ let effects={
     
     blueBombSync:{
         
+        desc:"Allows blue bombs to collect 7.5(10 if Blue Bomb+) pollen from white flowers. If red bomb sync is active, applies to red flowers as well, collecting 5(7.5 if Blue Bomb+) red pollen.",
         trialCooldown:35,trialRate:0.7,
         statsToAddTo:['blueAbilityTokens','blueBombTokens'],
         u:128*4/2048,v:128*6/2048,
@@ -8677,6 +8710,7 @@ let effects={
     
     beamStorm:{
         
+        desc:"Summons 25(+2 per bee lvl) beams of light, each collecting all pollen from a patch of flowers. If this bee is gifted, the pollen is instantly converted.",
         trialCooldown:30,trialRate:0.4,
         statsToAddTo:[],
         u:128*5/2048,v:128*6/2048,
@@ -8697,7 +8731,8 @@ let effects={
     },
     
     rainCloud:{
-        
+
+        desc:"Applies a stack of White Boost and summons a cloud in a field, lasting for 60s(+5s per bee lvl). There is a 25% chance of the cloud spawning in your current field, or else a random field is chosen.<br><br>Clouds float around the field, replenishing flowers. Standing under a cloud grants Cloud Boost, granting x1.25(x1.5 if you own a gifted windy bee) pollen for 7.5s.",
         trialCooldown:60,trialRate:0.5,
         statsToAddTo:[],
         u:128*6/2048,v:128*6/2048,
@@ -8730,6 +8765,7 @@ let effects={
     
     tornado:{
         
+        desc:"Applies a stack of White Boost and summons a tornado in the field, lasting for 7.5s(+0.5s per bee lvl)(+1s per haste stack). The tornado is improved based on the amount of haste stacks you had when it was summoned.<br><br>The tornado moves around at the speed of 1(+0.05 per bee lvl)(+0.25 per haste stack) flowers per second, picking up tokens, popping bubbles and fuzz bombs, and also collects 7 pollen from 21 flowers every 0.25s.",
         trialCooldown:75,trialRate:0.5,
         statsToAddTo:[],
         u:128*7/2048,v:128*6/2048,
@@ -8771,6 +8807,7 @@ let effects={
     
     scratch:{
         
+        desc:"Collects 40(+1.5 per bee lvl) pollen from 12 flowers.",
         trialCooldown:35,trialRate:0.333,
         statsToAddTo:[],
         u:128*4/2048,v:128*7/2048,
@@ -8787,6 +8824,7 @@ let effects={
     
     tabbyLove:{
         
+        desc:"Grants x1.01 Tabby Bee convert rate, Tabby Bee gather amount, and pollen from Scratch. Stacks up to 1,000x, for a maximum of x100 Tabby Bee convert rate, Tabby Bee gather amount, and pollen from Scratch.",
         trialCooldown:90,trialRate:1,
         statsToAddTo:[],
         u:128*5/2048,v:128*7/2048,
@@ -8810,6 +8848,7 @@ let effects={
 
     impale:{
         
+        desc:"Summons a spike per bee lvl, attacking a random enemy. Each spike deals damage equal to 5% of the enemy's health + the bee's attack. The damage is heavily reduced is past 1,000, and can vary between x0.74 to x1.35. Multiple spikes targeting an enemy reduces damage by up to 75%.",
         trialCooldown:35,trialRate:0.8,
         statsToAddTo:['blueAbilityTokens','attackTokens'],
         u:128*6/2048,v:128*9/2048,
@@ -8945,7 +8984,8 @@ let effects={
     },
 
     corruption:{
-        
+
+        desc:"Corrupts a random field 15x(+0.5x per bee lvl)(+ up to 15x depending on the bee's drives). Corruption stacks up to 100x, and standing in corrupted fields grant 5% to 15% ability dupication chance.<br><br>Ability dupication chance allows ability tokens to be duped, being reposition somewhere else on the field, lasting for x2(+0.1x per bee lvl) the original token's lifespan.<br><br>Standing under duped tokens for 1s will activate them. There is a 10%(+0.1% per glitched drive) that the duped token will become a ☺ token. ☺ tokens activate all duped tokens, add 3x corruption to the field, and collect x3 the bee's gather amount of pollen, instantly converting 50%. The pollen is multiplied by 25% for each duped token collected.",
         u:0,v:0,
         svg:document.getElementById('corruption'),
         cooldown:document.getElementById('corruption_cooldown'),
@@ -8967,6 +9007,7 @@ let effects={
     
     glitch:{
         
+        desc:"Corrupts a random field you're not in by 30x(+2x per bee lvl)(+ up to 15x depending on the bee's drives).",
         trialCooldown:120,trialRate:0.35,
         u:128*7/2048,v:128*9/2048,
         tokenLife:8,
@@ -8985,6 +9026,7 @@ let effects={
 
     mindHack:{
         
+        desc:"Stuns 3(+1 every 4 bee lvls) random nearby enemies for 3s(+0.1s per bee lvl). Stunned enemies take x1.25 damage.",
         trialCooldown:25,trialRate:0.4,
         u:128*0/2048,v:128*10/2048,
         tokenLife:8,
@@ -9010,6 +9052,7 @@ let effects={
     
     mapCorruption:{
         
+        desc:"Corrupts a random field you're not in by 30x(+2x per bee lvl)(+ up to 15x depending on the bee's drives).",
         trialCooldown:100,trialRate:0.25,
         u:128*1/2048,v:128*10/2048,
         tokenLife:8,
@@ -12024,7 +12067,6 @@ class Bee {
             
             this.trails.push(new TrailRenderer.ConstantTrail(beeInfo[this.type].trails[i]))
             this.beeOffsets.push(beeInfo[this.type].trails[i].beeOffset||0)
-            
         }
     }
     
@@ -12180,7 +12222,7 @@ class Bee {
                     
                     let _a=Math.random()*MATH.TWO_PI,r=this.type==='precise'?5:2
                     this.attackOffset=[Math.cos(_a)*r,Math.sin(_a)*r]
-                    this.attackTimer=1.25+Math.random()*0.5*(this.type==='precise'?1.75:1)
+                    this.attackTimer=(1.25+Math.random()*0.5)*(this.type==='precise'?1.6:1)
                 }
                 
                 meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
@@ -12214,7 +12256,7 @@ class Bee {
                     
                         if(Math.random()<(this.type==='precise'?Math.max(Math.pow(2,(this.gifted?2:1)+this.level-this.attackMob.level),0.05):Math.pow(2,this.level-this.attackMob.level))){
                             
-                            let h=(this.attack+player[beeInfo[this.type].color+'BeeAttack'])*player.beeAttack*(this.type==='precise'?this.gifted?2.25:1.5:1)
+                            let h=(this.attack+player[beeInfo[this.type].color+'BeeAttack'])*player.beeAttack*(this.type==='precise'?this.gifted?2:1.5:1)
                             
                             this.attackMob.damage(h)
                             
@@ -12466,8 +12508,8 @@ class Bee {
                 if(this.collectTimer<=0){
                     
                     this.energy--
-                    collectPollen({x:this.flowerCollecting[0],z:this.flowerCollecting[1],pattern:[[0,0]],amount:this.gatherAmount,yOffset:MATH.random(0.7,1.3),multiplier:{r:beeInfo[this.type].color==='red'?player.pollenFromBees*1.2:player.pollenFromBees,b:beeInfo[this.type].color==='blue'?player.pollenFromBees*1.2:player.pollenFromBees,w:player.pollenFromBees}})
-                    
+                    collectPollen({x:this.flowerCollecting[0],z:this.flowerCollecting[1],pattern:[[0,0]],amount:this.gatherAmount,yOffset:MATH.random(0.7,1.3),multiplier:{r:beeInfo[this.type].color==='red'?player.pollenFromBees*1.2*(this.type==='tabby'?player.tabbyLoveStacks:1):player.pollenFromBees*(this.type==='tabby'?player.tabbyLoveStacks:1),b:beeInfo[this.type].color==='blue'?player.pollenFromBees*1.2*(this.type==='tabby'?player.tabbyLoveStacks:1):player.pollenFromBees*(this.type==='tabby'?player.tabbyLoveStacks:1),w:player.pollenFromBees*(this.type==='tabby'?player.tabbyLoveStacks:1)}})
+
                     if(beeInfo[this.type].gatheringPassive){
                         
                         beeInfo[this.type].gatheringPassive(this)
@@ -12493,7 +12535,6 @@ class Bee {
                         token=this.gatheringTokens[token].type
                         
                         objects.tokens.push(new Token(effects[token].tokenLife,[Math.round(this.pos[0]),fieldInfo[player.fieldIn].y+1,Math.round(this.pos[2])],token,{field:player.fieldIn,x:this.flowerCollecting[0],z:this.flowerCollecting[1],bee:this}))
-                        
                     }
                     
                     this.flowerCollecting=[]
@@ -12522,7 +12563,7 @@ class Bee {
                     this.state='convertHoney'
                     this.convertTimer=this.convertSpeed
                     
-                    let amountToTake=Math.min(Math.round(this.convertAmount*player.convertRate*player[beeInfo[this.type].color+'ConvertRate']*player.convertRateAtHive),player.pollen)
+                    let amountToTake=Math.min(Math.round(this.convertAmount*player.convertRate*player[beeInfo[this.type].color+'ConvertRate']*player.convertRateAtHive*(this.type==='tabby'?player.tabbyLoveStacks:1)),player.pollen)
                     
                     if(amountToTake===player.pollen){
                         
@@ -12592,7 +12633,7 @@ class Bee {
                     this.state='convertBalloon'
                     this.convertTimer=this.convertSpeed
                     
-                    let amountToTake=Math.min(Math.round(this.convertAmount*player.convertRate*(this.type==='buoyant'?3:1)*player[beeInfo[this.type].color+'ConvertRate']*player.convertRateAtHive),player.hiveBalloon.pollen)
+                    let amountToTake=Math.min(Math.round(this.convertAmount*player.convertRate*(this.type==='buoyant'?3:1)*player[beeInfo[this.type].color+'ConvertRate']*player.convertRateAtHive*(this.type==='tabby'?player.tabbyLoveStacks:1)),player.hiveBalloon.pollen)
                     
                     if(amountToTake===player.hiveBalloon.pollen){
                         
@@ -18392,7 +18433,7 @@ class Scratch {
             
             if(this.mesh==='scratch'){
 
-                collectPollen({x:this.x,z:this.z,field:this.field,pattern:[[-2,0],[-2,1],[-2,-1],[-2,-2],[0,0],[0,1],[0,-1],[0,-2],[2,0],[2,1],[2,-1],[2,-2]],amount:40+this.bee.level*1.5})
+                collectPollen({x:this.x,z:this.z,field:this.field,pattern:[[-2,0],[-2,1],[-2,-1],[-2,-2],[0,0],[0,1],[0,-1],[0,-2],[2,0],[2,1],[2,-1],[2,-2]],amount:40+this.bee.level*1.5,multiplier:player.tabbyLoveStacks})
 
             } else {
 
@@ -21022,7 +21063,7 @@ player=(function(out){
         'Cross Product':{stats:'+2 movementCollection,*1.04 walkSpeed',rarity:'common',maxStacks:3},
         'Dot Product':{stats:'+2% criticalChance,*1.04 walkSpeed',rarity:'common',maxStacks:5},
         Projection:{stats:'*1.03 redPollen,*1.03 bluePollen',rarity:'common',maxStacks:5},
-        Offset:{stats:'*1.15 tokenLifespan,*0.96 walkSpeed',rarity:'common',maxStacks:3},
+        Offset:{stats:'*1.12 tokenLifespan,*0.96 walkSpeed',rarity:'common',maxStacks:3},
         Sine:{stats:'*1.05 bluePollen',rarity:'common',maxStacks:4},
         Cosine:{stats:'*1.05 redPollen',rarity:'common',maxStacks:4},
         Tangent:{stats:'*1.05 whitePollen',rarity:'common',maxStacks:4},
@@ -21031,14 +21072,14 @@ player=(function(out){
         RNG:{stats:'*1.07 beeEnergy,*1.02 walkSpeed',rarity:'common',maxStacks:10},
         
         
-        VPN:{stats:'+2% defense,*0.98 walkSpeed',rarity:'rare',maxStacks:10},
+        VPN:{stats:'+2% defense,*1.03 walkSpeed',rarity:'rare',maxStacks:10},
         Hyperbolic:{stats:'*1.06 beeAttack,*0.98 goo',rarity:'rare',maxStacks:5},
         Inject:{stats:'+1 redBeeAttack,+1 whiteBeeAttack,+1 blueBeeAttack,-1 cogsPerRound',rarity:'rare',maxStacks:3},
         Fragment:{stats:'+4% instantBombConversion',rarity:'rare',maxStacks:4},
         Translation:{stats:'*1.03 beeSpeed',rarity:'rare',maxStacks:3},
         'Blue Screen':{stats:'*1.08 blueBeeAbilityRate,+2 blueBeeAttack',rarity:'rare',maxStacks:3},
         Commit:{stats:'+4% superCritChance,-3% criticalChance',rarity:'rare',maxStacks:2},
-        GPU:{stats:'*1.05 walkSpeed',rarity:'rare',maxStacks:2},
+        GPU:{stats:'*1.1 walkSpeed',rarity:'rare',maxStacks:2},
         CPU:{stats:'+20% criticalPower,*0.9 walkSpeed',rarity:'rare',maxStacks:1},
         Saturate:{stats:'+2 redBeeAttack,+2 blueBeeAttack,-2 whiteBeeAttack',rarity:'rare',maxStacks:3},
         RAM:{stats:'+50000 capacity,+1 cogsPerRound,-2% defense',rarity:'rare',maxStacks:10},
@@ -21068,7 +21109,7 @@ player=(function(out){
         
         
         'Cloud 9':{stats:'*1.35 capacity',rarity:'legendary',maxStacks:5},
-        '180°':{stats:'*1.8 beeAttack,-18% criticalChance',rarity:'legendary',maxStacks:1},
+        '180°':{stats:'*1.8 pollen,-18% criticalChance',rarity:'legendary',maxStacks:1},
         'Vice Versa':{stats:'*1.5 redBombPollen,*1.5 blueBombPollen,*0.9 whiteBombPollen',rarity:'legendary',maxStacks:1},
         'Schematic Error':{stats:'*1.25 redBombPollen,+3% abilityDuplicationChance',rarity:'legendary',maxStacks:1},
         "d^=b[,7'":{stats:'*2 goo,*0.85 whitePollen',rarity:'legendary',maxStacks:1},
@@ -21079,9 +21120,7 @@ player=(function(out){
         'Plus Minus':{stats:'+6% criticalChance,-2% superCritChance',rarity:'legendary',maxStacks:2},
         '8.2':{stats:'*1.8 pollenFromCoconuts,*1.2 capacity',rarity:'legendary',maxStacks:1},
         'Friend Credits':{stats:'+7 cogsPerRound,*1.1 honeyFromTokens',rarity:'legendary',maxStacks:3},
-        Technoblade:{stats:'+25% defense',rarity:'legendary',maxStacks:4},
-        'A-List':{stats:'*1.25 beeSpeed,+4 movementCollection,-2 cogsPerRound',rarity:'legendary',maxStacks:2},
-        
+        Technoblade:{stats:'+100% defense',rarity:'legendary',maxStacks:1},
         
     },rarityColor={common:'rgb(180,130,30)',rare:'rgb(210,210,210)',epic:'rgb(250,230,10)',legendary:'rgb(20,240,255)'}
 
@@ -21945,6 +21984,7 @@ player=(function(out){
     
     out.precomputedStats={
         
+        tabbyLoveStacks:1,
         redFieldCapacity:1,
         blueFieldCapacity:1,
         whiteFieldCapacity:1,
@@ -22777,7 +22817,7 @@ player=(function(out){
     }
 
     out.updateBeesPage=function(){
-
+        pages[2].scrollTop=0
         pages[2].innerHTML=''
         pages[2].style.backgroundColor='rgba(195,195,195,0.9)'
 
@@ -22866,7 +22906,41 @@ player=(function(out){
 
             for(let i in tokens){
 
-                pages[2].innerHTML+="<div style='margin-left:5px;margin-top:3px;width:188px;background-color:rgb(230,220,150);border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center;padding-top:2px;padding-bottom:2px;'><b>["+(tokens[i].indexOf('*')>-1?'⭐':'')+MATH.doGrammar(tokens[i].replace('*','')).replace(' _','+')+"</b>"+(tokens[i].indexOf('*')>-1?'⭐':'')+"]<br><br>"+'descriptions for each ability goes here ugghhhhh i need to write soooooo much bruh ahhhhhhh lalalalalalala *sobs*'+"</div>"
+                pages[2].innerHTML+="<div style='margin-left:5px;margin-top:3px;width:188px;background-color:rgb(230,220,150);border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center;padding-top:2px;padding-bottom:2px;'><b>["+(tokens[i].indexOf('*')>-1?'⭐':'')+MATH.doGrammar(tokens[i].replace('*','')).replace(' _','+')+"</b>"+(tokens[i].indexOf('*')>-1?'⭐':'')+"]<br><br><div style='font-size:11px;user-select:text;padding-left:4px;padding-right:4px;'>"+(effects[tokens[i].replace('*','')]?effects[tokens[i].replace('*','')].desc:'ERROR DESCRIPTION UNDEFINED')+"</div></div>"
+            }
+
+            let passive
+
+            switch(out.beesPageBee){
+
+                case 'fire':passive=['Gathering Flames',"Has a 35%(50% if gifted) to summon a flame when collecting.<br><br>Flames last for 3s, collecting 10R/4W/1B pollen from 9 nearby flowers every second. Pollen collected is multiplied by 4% per red bee(8% is gifted). Flames also deal 15 damage to mobs every second. Standing in flames grant Flame Heat, lasting for 20s, and giving up to x2 red pollen and x1.2 bee attack."]
+                break
+
+                case 'bubble':passive=['Gathering Bubbbles',"Has a 35%(50% if gifted) to summon a bubble when collecting.<br><br>Bubbles last for 10s. When popped, they collect 10B/6W/2R pollen and replenish 33 flowers. Pollen collected is multiplied by 10% per gifted blue bee type."]
+                break
+
+                case 'demon':passive=['Gathering Flames',"Has a 55%(75% if gifted) to summon a flame when collecting.<br><br>Flames last for 3s, collecting 10R/4W/1B pollen from 9 nearby flowers every second. Pollen collected is multiplied by 4% per red bee(8% is gifted). Flames also deal 15 damage to mobs every second. Standing in flames grant Flame Heat, lasting for 20s, and giving up to x2 red pollen and x1.2 bee attack."]
+                break
+
+                case 'tadpole':passive=['Gathering Bubbbles+',"Has a 55%(75% if gifted) to summon a bubble when collecting.<br><br>Bubbles last for 10s. When popped, they collect 10B/6W/2R pollen and replenish 33 flowers. Pollen collected is multiplied by 10% per gifted blue bee type."]
+                break
+
+                case 'digital':passive=['Drive Expansion',"When using drives, this bee is permanently upgraded. A maximum of 50 drives of each type can be applied.<br><br>• Red drives grant up to +15 attack.<br><br>• Blue drives grant up to +1,000 convert amount.<br><br>• White drives grant up to +125 gather amount.<br><br>• Glitched drives grant up to +37.5 ability rate.<br><br>• Maxing out all types of drives grants the bee +10 speed.<br><br>"]
+                break
+
+                case 'fuzzy':passive=['Fuzzy Coat',"When collecting, this bee has a large chance to pollinate nearby flowers.<br><br>When a flower is pollinated, it moves up a tier. If the flower is already at it's maximum pollination, it is replenished. Flowers can be at the single, double, triple, large, or star tier. Pollen from the flower is multiplied based on it's tier, and higher tier flowers deplete slower. Over time, flowers naturally downgrade to it's original tier."]
+                break
+
+                case 'spicy':passive=['Steam Engine',"This bee's gather speed and movespeed increases up to x2 with Flame Heat."]
+                break
+
+                case 'precise':passive=['Sniper',"This bee uses slower, long ranged attack. Its attack's accuracy is calculated as if the bee's lvl is 1(2 if gifted) higher and can never be below 5%. It deals x1.5(x2 if gifted) damage per hit."]
+                break
+            }
+
+            if(passive){
+
+                pages[2].innerHTML+="<div style='margin-left:5px;margin-top:3px;width:188px;background-color:rgb(230,220,150);border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center;padding-top:2px;padding-bottom:2px;'><b>[Passive: "+passive[0]+"]</b><br><br><div style='font-size:11px;user-select:text;padding-left:4px;padding-right:4px;'>"+passive[1]+"</div></div>"
             }
 
             pages[2].prepend(img)
@@ -28402,7 +28476,7 @@ player.addSlot('bear')
 player.addSlot('puppy')
 player.addSlot('festive')
 player.addSlot('digital')
-player.addSlot('buoyant')
+player.addSlot('tabby')
 player.addSlot('buoyant')
 player.addSlot('buoyant')
 player.addSlot('buoyant')
