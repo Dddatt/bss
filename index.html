@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <!--
 
-the deadline is March 23rd cuz i NEED to release it on the og game's birthday it's perfect
+whoops the deadline is gone
+
+
 
 sound is currently disabled to stop my computer from becoming a waffle cooker
 
@@ -2167,7 +2169,7 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
     <header style='text-align:center;margin-bottom:0px;font-size:35px;'>Bee Swarm Simulator</header>
     <p style='text-align:center;margin-top:0px;'>Dat Approved!</p>
     
-    <p style='text-align:left;margin-top:0px;color:white;position:fixed;left:235px;top:100px'>ok i added star and atomic treats and fix mutations so things should work nicely<br><br><br><br>i just added all the non-boss field mobs and while doing so, commited war crimes by completely butchering the models...I mean that werewolf is *perfection* ;-;<br><br><br>the new building in the 15 bee zone is the sprinkler shop and has the blender and i also added the blue cannon<br><br>i think the blender is done but needs more better testing. Also the "o" key now makes the blender(and really everything else like bee wiggling) go faster by speeding up time<br><br>also added turpentine and moon charms but moon charms are kinda useless rn<br><br>minor changes include adding turps into the gummyballer and fixing minor details in the map and fixing some prices and also re-wording the descriptions for the 3 endgame tools to sound cooler ig<br><br>honestly thinking about rebranding the porcelain port o hive to porcelain hive to make the text fit *-*</p>
+    <p style='text-align:left;margin-top:0px;color:white;position:fixed;left:235px;top:100px'>so i need to add all the shops, npcs, wind shrine, finish the map, add a few more details, amulets, stick bug, and i'll bee done</p>
     
     <span style='display:block;margin-top:50px;'></span>
     <button id='runFullScreen' style='margin-left:10px;width:200px;height:50px;background-color:rgb(248, 255, 150);'>New Fullscreen Game</button>
@@ -4832,6 +4834,11 @@ let triggers={
     roboShop_shop:{
 
         minX:55.5,maxX:62,minY:7,maxY:13,minZ:36.5,maxZ:45
+    },
+
+    displayRoboShopItems:{
+
+        minX:27,maxX:62,minY:0,maxY:19,minZ:30,maxZ:58
     },
     
     become_red_hive:{
@@ -14970,7 +14977,7 @@ class MondoChick {
                     
                     this.damageTimer-=dt
                     
-                    if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1]-2.5)+Math.abs(player.body.position.z-this.pos[2])<this.bodySize&&this.damageTimer<=0){
+                    if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1]+1)+Math.abs(player.body.position.z-this.pos[2])<this.bodySize&&this.damageTimer<=0){
                         
                         player.damage(35)
                         this.damageTimer=1
@@ -15001,7 +15008,9 @@ class MondoChick {
                 
                 if(!this.running){
                     
-                    this.blocking=true
+                    if(this.mindHacked<=0)
+                        this.blocking=true
+
                     this.fallenEggShellEffect=0
                     return
                 }
@@ -18009,7 +18018,7 @@ class Planter {
     beeSipped(bee){
 
         this.growth+=bee.gatherAmount*0.025+2
-        player.addEffect(fieldInfo[this.field].nectarType,(bee.planterSipTime*4)/(6*60*60))
+        player.addEffect(fieldInfo[this.field].nectarType,(bee.planterSipTime*4*player.nectarMultiplier)/(6*60*60))
     }
     
     die(index){
@@ -18082,7 +18091,7 @@ class Planter {
             break
         }
 
-        let seconds=(this.maxGrowth*perc*perc*1.95*nectarBonus[fieldInfo[this.field].nectarType.replace('Nectar','')])
+        let seconds=(this.maxGrowth*perc*perc*1.95*nectarBonus[fieldInfo[this.field].nectarType.replace('Nectar','')])*player.nectarMultiplier
 
         player.addEffect(fieldInfo[this.field].nectarType,seconds/(6*60*60))
 
@@ -21063,7 +21072,7 @@ player=(function(out){
         'Cross Product':{stats:'+2 movementCollection,*1.04 walkSpeed',rarity:'common',maxStacks:3},
         'Dot Product':{stats:'+2% criticalChance,*1.04 walkSpeed',rarity:'common',maxStacks:5},
         Projection:{stats:'*1.03 redPollen,*1.03 bluePollen',rarity:'common',maxStacks:5},
-        Offset:{stats:'*1.12 tokenLifespan,*0.96 walkSpeed',rarity:'common',maxStacks:3},
+        Offset:{stats:'*1.15 tokenLifespan,*0.96 walkSpeed',rarity:'common',maxStacks:3},
         Sine:{stats:'*1.05 bluePollen',rarity:'common',maxStacks:4},
         Cosine:{stats:'*1.05 redPollen',rarity:'common',maxStacks:4},
         Tangent:{stats:'*1.05 whitePollen',rarity:'common',maxStacks:4},
@@ -21072,14 +21081,14 @@ player=(function(out){
         RNG:{stats:'*1.07 beeEnergy,*1.02 walkSpeed',rarity:'common',maxStacks:10},
         
         
-        VPN:{stats:'+2% defense,*1.03 walkSpeed',rarity:'rare',maxStacks:10},
+        VPN:{stats:'+2% defense,*0.98 walkSpeed',rarity:'rare',maxStacks:10},
         Hyperbolic:{stats:'*1.06 beeAttack,*0.98 goo',rarity:'rare',maxStacks:5},
         Inject:{stats:'+1 redBeeAttack,+1 whiteBeeAttack,+1 blueBeeAttack,-1 cogsPerRound',rarity:'rare',maxStacks:3},
         Fragment:{stats:'+4% instantBombConversion',rarity:'rare',maxStacks:4},
         Translation:{stats:'*1.03 beeSpeed',rarity:'rare',maxStacks:3},
         'Blue Screen':{stats:'*1.08 blueBeeAbilityRate,+2 blueBeeAttack',rarity:'rare',maxStacks:3},
         Commit:{stats:'+4% superCritChance,-3% criticalChance',rarity:'rare',maxStacks:2},
-        GPU:{stats:'*1.1 walkSpeed',rarity:'rare',maxStacks:2},
+        GPU:{stats:'*1.05 walkSpeed',rarity:'rare',maxStacks:2},
         CPU:{stats:'+20% criticalPower,*0.9 walkSpeed',rarity:'rare',maxStacks:1},
         Saturate:{stats:'+2 redBeeAttack,+2 blueBeeAttack,-2 whiteBeeAttack',rarity:'rare',maxStacks:3},
         RAM:{stats:'+50000 capacity,+1 cogsPerRound,-2% defense',rarity:'rare',maxStacks:10},
@@ -21109,7 +21118,7 @@ player=(function(out){
         
         
         'Cloud 9':{stats:'*1.35 capacity',rarity:'legendary',maxStacks:5},
-        '180°':{stats:'*1.8 pollen,-18% criticalChance',rarity:'legendary',maxStacks:1},
+        '180°':{stats:'*1.8 beeAttack,-18% criticalChance',rarity:'legendary',maxStacks:1},
         'Vice Versa':{stats:'*1.5 redBombPollen,*1.5 blueBombPollen,*0.9 whiteBombPollen',rarity:'legendary',maxStacks:1},
         'Schematic Error':{stats:'*1.25 redBombPollen,+3% abilityDuplicationChance',rarity:'legendary',maxStacks:1},
         "d^=b[,7'":{stats:'*2 goo,*0.85 whitePollen',rarity:'legendary',maxStacks:1},
@@ -21120,7 +21129,8 @@ player=(function(out){
         'Plus Minus':{stats:'+6% criticalChance,-2% superCritChance',rarity:'legendary',maxStacks:2},
         '8.2':{stats:'*1.8 pollenFromCoconuts,*1.2 capacity',rarity:'legendary',maxStacks:1},
         'Friend Credits':{stats:'+7 cogsPerRound,*1.1 honeyFromTokens',rarity:'legendary',maxStacks:3},
-        Technoblade:{stats:'+100% defense',rarity:'legendary',maxStacks:1},
+        Technoblade:{stats:'+25% defense',rarity:'legendary',maxStacks:4},
+        'A-List':{stats:'*1.25 beeSpeed,+4 movementCollection,-2 cogsPerRound',rarity:'legendary',maxStacks:2},
         
     },rarityColor={common:'rgb(180,130,30)',rare:'rgb(210,210,210)',epic:'rgb(250,230,10)',legendary:'rgb(20,240,255)'}
 
@@ -21983,7 +21993,8 @@ player=(function(out){
     }
     
     out.precomputedStats={
-        
+
+        nectarMultiplier:1,
         tabbyLoveStacks:1,
         redFieldCapacity:1,
         blueFieldCapacity:1,
@@ -24855,11 +24866,18 @@ let textRenderer=(function(out){
             gl.vertexAttribDivisor(glCache.text_instanceInfo,1)
             gl.drawElementsInstanced(gl.TRIANGLES,out.decal_indexAmount,gl.UNSIGNED_SHORT,0,out.decal_instanceData.length*MATH.INV_13)
             
-            out.decal_instanceData=[
-            61,10.25,43.5,0,0,0.875,0.125,1,1,1,-1.75,-1.75,0,
-            61,10.25,41.663,0,0,0.625,0.125,1,1,1,-1.75,-1.75,0,
-            61,10.25,39.8315,0,0,0.75,0.125,1,1,1,-1.75,-1.75,0,
-            61,10.25,38,0,0,0.5,0.125,1,1,1,-1.75,-1.75,0]
+            if(triggers.displayRoboShopItems.colliding){
+
+                out.decal_instanceData=[
+                61,10.25,43.5,0,0,0.875,0.125,1,1,1,-1.75,-1.75,0,
+                61,10.25,41.663,0,0,0.625,0.125,1,1,1,-1.75,-1.75,0,
+                61,10.25,39.8315,0,0,0.75,0.125,1,1,1,-1.75,-1.75,0,
+                61,10.25,38,0,0,0.5,0.125,1,1,1,-1.75,-1.75,0]
+
+            } else {
+
+                out.decal_instanceData=[]
+            }
 
             out.drawDecals=false
             
@@ -29098,6 +29116,186 @@ function loop(now){
     gl.useProgram(mobRendererProgram)
     gl.uniformMatrix4fv(glCache.mob_viewMatrix,gl.FALSE,player.viewMatrix)
     
+    if(user.clickedKeys.p){
+
+        let amulet=[],final=[],t=['bronze','silver','gold','diamond','supreme'][MATH.random(0,5)|0]
+
+        switch(t){
+
+            case 'bronze':
+
+            amulet.push('*'+MATH.random(1.05,1.12).toFixed(2)+' capacity')
+            amulet.push('*'+MATH.random(1.03,1.05).toFixed(2)+' beeAttack')
+
+            if(Math.random()<0.25){
+                amulet.push('*'+MATH.random(1.01,1.05).toFixed(2)+' POLLEN')
+            } else {
+                amulet.push('*'+MATH.random(1.05,1.1).toFixed(2)+' '+['red','blue','white'][(Math.random()*3)|0]+'Pollen')
+            }
+
+            if(Math.random()<0.333){
+                amulet.push('+'+MATH.random(0.01,0.03).toFixed(2)+' instantRedConversion')
+            } else if(Math.random()<0.5){
+                amulet.push('+'+MATH.random(0.01,0.03).toFixed(2)+' instantWhiteConversion')
+            } else {
+                amulet.push('+'+MATH.random(0.01,0.03).toFixed(2)+' instantBlueConversion')
+            }
+
+            break
+
+            case 'silver':
+
+            amulet.push('*'+MATH.random(1.12,1.17).toFixed(2)+' capacity')
+            amulet.push('*'+MATH.random(1.05,1.08).toFixed(2)+' beeAttack')
+
+            if(Math.random()<0.25){
+                amulet.push('*'+MATH.random(1.02,1.06).toFixed(2)+' POLLEN')
+            } else {
+                amulet.push('*'+MATH.random(1.07,1.15).toFixed(2)+' '+['red','blue','white'][(Math.random()*3)|0]+'Pollen')
+            }
+
+            if(Math.random()<0.333){
+                amulet.push('+'+MATH.random(0.02,0.03).toFixed(2)+' instantRedConversion')
+            } else if(Math.random()<0.5){
+                amulet.push('+'+MATH.random(0.02,0.03).toFixed(2)+' instantWhiteConversion')
+            } else {
+                amulet.push('+'+MATH.random(0.02,0.03).toFixed(2)+' instantBlueConversion')
+            }
+
+            if(Math.random()<0.333){
+                amulet.push('*'+MATH.random(1.02,1.06).toFixed(2)+' flamePollen')
+            } else if(Math.random()<0.5){
+                amulet.push('*'+MATH.random(1.02,1.06).toFixed(2)+' bubblePollen')
+            } else {
+                amulet.push('*'+MATH.random(1.02,1.06).toFixed(2)+' markDuration')
+            }
+
+            break
+
+            case 'gold':
+
+                amulet.push('*'+MATH.random(1.17,1.27).toFixed(2)+' capacity')
+                amulet.push('*'+MATH.random(1.06,1.1).toFixed(2)+' beeAttack')
+
+                if(Math.random()<0.25){
+                    amulet.push('*'+MATH.random(1.03,1.07).toFixed(2)+' POLLEN')
+                } else {
+                    amulet.push('*'+MATH.random(1.15,1.2).toFixed(2)+' '+['red','blue','white'][(Math.random()*3)|0]+'Pollen')
+                }
+
+                if(Math.random()<0.333){
+                    amulet.push('+'+MATH.random(0.02,0.05).toFixed(2)+' instantRedConversion')
+                } else if(Math.random()<0.5){
+                    amulet.push('+'+MATH.random(0.02,0.05).toFixed(2)+' instantWhiteConversion')
+                } else {
+                    amulet.push('+'+MATH.random(0.02,0.05).toFixed(2)+' instantBlueConversion')
+                }
+
+                if(Math.random()<0.333){
+                    amulet.push('*'+MATH.random(1.04,1.08).toFixed(2)+' flamePollen')
+                } else if(Math.random()<0.5){
+                    amulet.push('*'+MATH.random(1.04,1.08).toFixed(2)+' bubblePollen')
+                } else {
+                    amulet.push('*'+MATH.random(1.04,1.08).toFixed(2)+' markDuration')
+                }
+
+            break
+
+            case 'diamond':
+
+                amulet.push('*'+MATH.random(1.27,1.34).toFixed(2)+' capacity')
+                amulet.push('*'+MATH.random(1.07,1.12).toFixed(2)+' beeAttack')
+
+                if(Math.random()<0.25){
+                    amulet.push('*'+MATH.random(1.04,1.08).toFixed(2)+' POLLEN')
+                } else {
+                    amulet.push('*'+MATH.random(1.2,1.25).toFixed(2)+' '+['red','blue','white'][(Math.random()*3)|0]+'Pollen')
+                }
+
+                if(Math.random()<0.333){
+                    amulet.push('+'+MATH.random(0.04,0.09).toFixed(2)+' instantRedConversion')
+                } else if(Math.random()<0.5){
+                    amulet.push('+'+MATH.random(0.04,0.09).toFixed(2)+' instantWhiteConversion')
+                } else {
+                    amulet.push('+'+MATH.random(0.04,0.09).toFixed(2)+' instantBlueConversion')
+                }
+
+                if(Math.random()<0.333){
+                    amulet.push('*'+MATH.random(1.05,1.12).toFixed(2)+' flamePollen')
+                } else if(Math.random()<0.5){
+                    amulet.push('*'+MATH.random(1.05,1.12).toFixed(2)+' bubblePollen')
+                } else {
+                    amulet.push('*'+MATH.random(1.04,1.08).toFixed(2)+' markDuration')
+                }
+
+                if(Math.random()<0.5){
+
+                    if(Math.random()<0.5){
+                        amulet.push('*1.05 nectarMultiplier')
+                    } else {
+                        amulet.push('*'+MATH.random(1.15,1.35).toFixed(2)+' honeyFromTokens')
+                    }
+                    } else {
+
+                    if(Math.random()<0.5){
+                    amulet.push('*'+MATH.random(1.05,1.11).toFixed(2)+' superCritPower')
+                    } else {
+                        amulet.push('*'+MATH.random(1.1,1.2).toFixed(2)+' tokenLifespan')
+                    }
+                }
+
+            break
+
+            case 'supreme':
+
+                amulet.push('*'+MATH.random(1.35,1.5).toFixed(2)+' capacity')
+                amulet.push('*'+MATH.random(1.1,1.15).toFixed(2)+' beeAttack')
+
+                if(Math.random()<0.25){
+                    amulet.push('*'+MATH.random(1.05,1.1).toFixed(2)+' POLLEN')
+                } else {
+                    amulet.push('*'+MATH.random(1.2,1.3).toFixed(2)+' '+['red','blue','white'][(Math.random()*3)|0]+'Pollen')
+                }
+
+                if(Math.random()<0.333){
+                    amulet.push('+'+MATH.random(0.07,0.13).toFixed(2)+' instantRedConversion')
+                } else if(Math.random()<0.5){
+                    amulet.push('+'+MATH.random(0.07,0.13).toFixed(2)+' instantWhiteConversion')
+                } else {
+                    amulet.push('+'+MATH.random(0.07,0.13).toFixed(2)+' instantBlueConversion')
+                }
+
+                if(Math.random()<0.333){
+                    amulet.push('*'+MATH.random(1.07,1.15).toFixed(2)+' flamePollen')
+                } else if(Math.random()<0.5){
+                    amulet.push('*'+MATH.random(1.07,1.15).toFixed(2)+' bubblePollen')
+                } else {
+                    amulet.push('*'+MATH.random(1.04,1.08).toFixed(2)+' markDuration')
+                }
+
+                if(Math.random()<0.5){
+
+                    if(Math.random()<0.5){
+                        amulet.push('*1.05 nectarMultiplier')
+                    } else {
+                        amulet.push('*'+MATH.random(1.35,1.6).toFixed(2)+' honeyFromTokens')
+                    }
+                    } else {
+
+                    if(Math.random()<0.5){
+                    amulet.push('*'+MATH.random(1.08,1.15).toFixed(2)+' superCritPower')
+                    } else {
+                        amulet.push('*'+MATH.random(1.2,1.3).toFixed(2)+' tokenLifespan')
+                    }
+                }
+
+            break
+
+        }
+
+        player.showGeneratedAmulet(t+'CogAmulet',amulet)
+    }
+
     if(user.keys.o){
 
         TIME+=dt*50
