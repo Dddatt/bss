@@ -22083,7 +22083,7 @@ player=(function(out){
 
                 for(let i in out.currentGear){
 
-                    if(i.indexOf('Amulet')>-1&&i.indexOf(isOfType)){
+                    if(i.indexOf('Amulet')>-1&&i.indexOf(isOfType)>-1){
 
                         delete out.currentGear[i]
                     }
@@ -29316,7 +29316,15 @@ function loop(now){
     
     if(user.clickedKeys.p){
 
-        
+        let amulet=[],t='bronze'
+
+        let g=['bronze','silver','gold','diamond','supreme'].indexOf(t)
+
+        amulet.push('*'+MATH.random(1.05+g*0.15,1.15+g*0.15).toFixed(2)+' convertRate')
+
+        amulet.push(...MATH.selectFromArray(['*'+MATH.random(1.03+g*0.05,1.1+g*0.05).toFixed(2)+' redPollen','*'+MATH.random(1.03+g*0.05,1.1+g*0.05).toFixed(2)+' whitePollen','*'+MATH.random(1.03+g*0.05,1.1+g*0.05).toFixed(2)+' bluePollen','*'+MATH.random(1.01+g*0.01,1.03+g*0.01).toFixed(2)+' POLLEN','*'+MATH.random(1.02+g*0.015,1.06+g*0.015).toFixed(2)+' walkSpeed','+'+MATH.random(0.01+g*0.0075,0.03+g*0.0075).toFixed(2)+' criticalChance','*'+MATH.random(1.03+g*0.05,1.1+g*0.05).toFixed(2)+' pollenFromTools','*'+MATH.random(1.03+g*0.05,1.1+g*0.05).toFixed(2)+' pollenFromBees'],g+1))
+
+        player.showGeneratedAmulet(t+'AntAmulet',amulet)
     }
 
     if(user.keys.o){
