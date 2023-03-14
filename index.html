@@ -21852,6 +21852,21 @@ player=(function(out){
     out.endAntChallenge=function(){
 
         if(!out.antChallenge) return
+
+        let amulet=[],t='bronze'
+
+        if(out.antChallenge.score>=25) t='silver'
+        if(out.antChallenge.score>=50) t='gold'
+        if(out.antChallenge.score>=100) t='diamond'
+        if(out.antChallenge.score>=150) t='supreme'
+
+        let g=['bronze','silver','gold','diamond','supreme'].indexOf(t)
+
+        amulet.push('*'+MATH.random(1.05+g*0.15,1.15+g*0.15).toFixed(2)+' convertRate')
+
+        amulet.push(...MATH.selectFromArray(['*'+MATH.random(1.03+g*0.05,1.1+g*0.05).toFixed(2)+' redPollen','*'+MATH.random(1.03+g*0.05,1.1+g*0.05).toFixed(2)+' whitePollen','*'+MATH.random(1.03+g*0.05,1.1+g*0.05).toFixed(2)+' bluePollen','*'+MATH.random(1.01+g*0.01,1.03+g*0.01).toFixed(2)+' POLLEN','*'+MATH.random(1.02+g*0.015,1.06+g*0.015).toFixed(2)+' walkSpeed','+'+MATH.random(0.01+g*0.0075,0.03+g*0.0075).toFixed(2)+' criticalChance','*'+MATH.random(1.03+g*0.05,1.1+g*0.05).toFixed(2)+' pollenFromTools','*'+MATH.random(1.03+g*0.05,1.1+g*0.05).toFixed(2)+' pollenFromBees'],g+1))
+
+        player.showGeneratedAmulet(t+'AntAmulet',amulet)
         
         out.addMessage('The Ant Challenge is over! Your score is '+out.antChallenge.score+'!')
         out.antChallenge=false
@@ -29301,15 +29316,7 @@ function loop(now){
     
     if(user.clickedKeys.p){
 
-        let amulet=[],t=['bronze','silver','gold','diamond','supreme'][Math.random()*5|0]
-
-        let g=['bronze','silver','gold','diamond','supreme'].indexOf(t)
-
-        amulet.push('*'+MATH.random(1.05+g*0.15,1.15+g*0.15).toFixed(2)+' convertRate')
-
-        amulet.push(...MATH.selectFromArray(['*'+MATH.random(1.03+g*0.05,1.1+g*0.05).toFixed(2)+' redPollen','*'+MATH.random(1.03+g*0.05,1.1+g*0.05).toFixed(2)+' whitePollen','*'+MATH.random(1.03+g*0.05,1.1+g*0.05).toFixed(2)+' bluePollen','*'+MATH.random(1.01+g*0.01,1.03+g*0.01).toFixed(2)+' POLLEN','*'+MATH.random(1.02+g*0.015,1.06+g*0.015).toFixed(2)+' walkSpeed','+'+MATH.random(0.01+g*0.0075,0.03+g*0.0075).toFixed(2)+' criticalChance','*'+MATH.random(1.03+g*0.05,1.1+g*0.05).toFixed(2)+' pollenFromTools','*'+MATH.random(1.03+g*0.05,1.1+g*0.05).toFixed(2)+' pollenFromBees'],g+1))
-
-        player.showGeneratedAmulet(t+'AntAmulet',amulet)
+        
     }
 
     if(user.keys.o){
