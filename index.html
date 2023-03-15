@@ -2203,14 +2203,14 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
     <header style='text-align:center;margin-bottom:0px;font-size:35px;'>Bee Swarm Simulator</header>
     <p style='text-align:center;margin-top:0px;'>Dat Approved!</p>
     
-    <p style='text-align:left;margin-top:0px;color:white;position:fixed;left:235px;top:100px'>so i need to add all the shops, npcs, wind shrine, finish the map, add a few more details, amulets, stick bug, and i'll bee done</p>
+    <p style='text-align:left;margin-top:0px;color:white;position:fixed;left:235px;top:100px'>press the load saved game button to *hopefully* start the game with a save file of a white hive</p>
     
     <span style='display:block;margin-top:50px;'></span>
     <button id='runFullScreen' style='margin-left:10px;width:200px;height:50px;background-color:rgb(248, 255, 150);'>New Fullscreen Game</button>
     <span style='display:block;margin-top:50px;'></span>
     <button id='noFullScreen' style='margin-left:10px;width:200px;height:50px;background-color:rgb(157, 255, 150)'>New Local Game</button>
     <span style='display:block;margin-top:50px;'></span>
-    <button id='loadSavedGame' style='margin-left:10px;width:200px;height:50px;background-color:rgb(166, 166, 166)'>Load Saved Game<br>(not completed)</button>
+    <button id='loadSavedGame' style='margin-left:10px;width:200px;height:50px;background-color:rgb(166, 166, 166)'>Load Saved Game<br>(semi working)</button>
     <!--<p></p>-->
 </div>
 
@@ -28901,6 +28901,114 @@ objects.mobs.push(new MondoChick('MountainTopField',7))
 ctx.textAlign='center'
 ctx.textBaseline='middle'
 
+
+function noFullScreen(){
+    
+    document.getElementById('useFullscreen').style.display='none'
+    loop(0)
+}
+
+
+function RUN_SAVE_CODE(code){
+
+    let save=JSON.parse(code)
+
+    player.honey=save.honey
+    player.pollen=save.pollen
+    player.currentGear=save.currentGear
+    player.effects=save.effects
+    player.stats=save.stats
+    player.hive=[[]]
+
+    for(let i in save.items){
+        
+        items[i].amount=save.items[i]
+    }
+
+    for(let i in shops){
+        
+        for(let j in shops[i].items){
+            
+            shops[i].items.owned=save.owned[shops[i].items[j].name]
+        }
+    }
+
+    for(let y in save.hive){
+        
+        if(!player.hive[y]) player.hive[y]=[]
+        
+        for(let x in save.hive[y]){
+            
+            let h=save.hive[y][x]
+            
+            player.addSlot(h.type,h.gifted,h.bond,h.mutation,h.radioactive,h.beequip)
+        }
+    }
+
+    player.updateInventory()
+    player.updateGear()
+    player.updateHive()
+}
+
+function GENERATE_SAVE_CODE(){
+
+    let save={}
+
+    save.honey=player.honey|0
+    save.pollen=player.pollen|0
+    save.hive=[]
+    save.items={}
+    save.owned={}
+    save.currentGear=player.currentGear
+    save.effects=player.effects
+    save.stats=player.stats
+    save.NPCs={}
+
+    for(let i in items){
+        
+        if(items[i].amount)
+            save.items[i]=items[i].amount
+    }
+
+    for(let y in player.hive){
+        
+        if(!save.hive[y]) save.hive[y]=[]
+        
+        for(let x in player.hive[y]){
+            
+            let h=player.hive[y][x]
+            
+            save.hive[y][x]={type:h.type,gifted:h.gifted,bond:h.bond,mutation:h.mutation,radioactive:h.radioactive,beequip:h.beequip}
+            
+        }
+    }
+
+    for(let i in shops){
+        
+        for(let j in shops[i].items){
+            
+            save.owned[shops[i].items[j].name]=shops[i].items[j].owned
+        }
+    }
+
+    for(let i in NPCs){
+        
+        save.NPCs[i]=NPCs[i].dialogueIndex
+    }
+
+    return JSON.stringify(save)
+}
+
+
+document.getElementById('loadSavedGame').onclick=function(){RUN_SAVE_CODE('{"honey":0,"pollen":0,"hive":[[{"type":"basic","gifted":true,"bond":0},{"type":"bomber","gifted":true,"bond":0},{"type":"looker","gifted":true,"bond":0},{"type":"rage","gifted":true,"bond":0},{"type":"stubborn","gifted":true,"bond":0}],[{"type":"brave","gifted":true,"bond":0},{"type":"windy","gifted":true,"bond":0},{"type":"honey","gifted":true,"bond":0},{"type":"commander","gifted":true,"bond":0},{"type":"shocked","gifted":true,"bond":0}],[{"type":"hasty","gifted":true,"bond":0},{"type":"music","gifted":true,"bond":0},{"type":"music","gifted":true,"bond":0},{"type":"music","gifted":true,"bond":0},{"type":"crimson","gifted":true,"bond":0}],[{"type":"tadpole","gifted":true,"bond":0},{"type":"tadpole","gifted":true,"bond":0},{"type":"tadpole","gifted":true,"bond":0},{"type":"lion","gifted":true,"bond":0},{"type":"gummy","gifted":true,"bond":0}],[{"type":"photon","gifted":true,"bond":0},{"type":"tabby","gifted":true,"bond":0},{"type":"carpenter","gifted":true,"bond":0},{"type":"carpenter","gifted":true,"bond":0},{"type":"carpenter","gifted":true,"bond":0}],[{"type":"carpenter","gifted":true,"bond":0},{"type":"carpenter","gifted":true,"bond":0},{"type":"demo","gifted":true,"bond":0},{"type":"exhausted","gifted":true,"bond":0},{"type":"vector","gifted":true,"bond":0}],[{"type":"vector","gifted":true,"bond":0},{"type":"vector","gifted":true,"bond":0},{"type":"vector","gifted":true,"bond":0},{"type":"vector","gifted":true,"bond":0},{"type":"vector","gifted":true,"bond":0}],[{"type":"vector","gifted":true,"bond":0},{"type":"vector","gifted":true,"bond":0},{"type":"vector","gifted":true,"bond":0},{"type":"vector","gifted":true,"bond":0},{"type":"vector","gifted":true,"bond":0}],[{"type":"vector","gifted":true,"bond":0},{"type":"vector","gifted":true,"bond":0},{"type":"vector","gifted":true,"bond":0},{"type":"fuzzy","gifted":true,"bond":0},{"type":"precise","gifted":true,"bond":0}],[{"type":"precise","gifted":true,"bond":0},{"type":"precise","gifted":true,"bond":0},{"type":"precise","gifted":true,"bond":0},{"type":"precise","gifted":true,"bond":0},{"type":"digital","gifted":true,"bond":0}]],"items":{"paperPlanter":1,"plasticPlanter":1,"candyPlanter":1,"redClayPlanter":1,"blueClayPlanter":1,"tackyPlanter":1,"pesticidePlanter":1,"petalPlanter":1,"plentyPlanter":1},"owned":{},"currentGear":{"tool":"gummyBaller","boots":"gummyBoots","belt":"petalBelt","backpack":"coconutCanister","mask":"gummyMask","leftGuard":"crimsonGuard","rightGuard":"cobaltGuard","glider":"glider","supremeStarAmulet":"*2.5 capacityMultiplier,*1.5 convertRate,*1.1 redPollen,*1.1 bluePollen,*1.1 whitePollen,*1.6 whitePollen,+0.1 instantBlueConversion,+0.1 instantWhiteConversion,+0.1 instantRedConversion,+0.05 criticalChance,P gummyStarPassive,P starSawPassive","beequips":[]},"effects":[{"cooldown":null,"type":"tabbyLove","amount":1000},{"cooldown":19.41677499999999,"type":"haste","amount":10},{"cooldown":19.41677499999999,"type":"focus","amount":10},{"cooldown":29.41677499999999,"type":"melody","amount":1},{"cooldown":4.416774999999999,"type":"bombCombo","amount":10},{"cooldown":19.41677499999999,"type":"flameHeat","amount":0.9708387499999995},{"cooldown":1199.60014,"type":"superSmoothieBuff","amount":1},{"cooldown":21599.60014000001,"type":"comfortingNectar","amount":0.9999814879629634},{"cooldown":21599.60014000001,"type":"refreshingNectar","amount":0.9999814879629634},{"cooldown":21599.60014000001,"type":"invigoratingNectar","amount":0.9999814879629634},{"cooldown":21599.60014000001,"type":"motivatingNectar","amount":0.9999814879629634},{"cooldown":21599.60014000001,"type":"satisfyingNectar","amount":0.9999814879629634},{"cooldown":30,"type":"petalStormPassive","amount":1},{"cooldown":0.5,"type":"inspireCoconutsPassive","amount":1},{"cooldown":60,"type":"emergencyCoconutShieldPassive","amount":1},{"cooldown":25,"type":"gummyMorphPassive","amount":1},{"cooldown":45,"type":"coinScatterPassive","amount":1},{"cooldown":20,"type":"focusPulserPassive","amount":1},{"cooldown":20,"type":"hastePulserPassive","amount":1},{"cooldown":60,"type":"gummyStarPassive","amount":1},{"cooldown":40,"type":"starSawPassive","amount":1}],"stats":{"moonAmulets":0,"puffshrooms":0,"rarePuffshrooms":0,"epicPuffshrooms":0,"legendaryPuffshrooms":0,"mythicPuffshrooms":0,"beeTypes":30,"minutesOfNectar":0,"hoursOfNectar":0,"hoursOfInvigoratingNectar":0,"hoursOfMotivatingNectar":0,"hoursOfSatisfyingNectar":0,"hoursOfComfortingNectar":0,"hoursOfRefreshingNectar":0,"minutesOfInvigoratingNectar":0,"minutesOfMotivatingNectar":0,"minutesOfSatisfyingNectar":0,"minutesOfComfortingNectar":0,"minutesOfRefreshingNectar":0,"tokensFromPlanters":0,"tokensFromSprouts":0,"tokensFromWildWindyBee":0,"timesUsingTheRedCannon":0,"timesUsingTheBlueCannon":0,"timesUsingTheYellowCannon":0,"timesUsingTheSlingshot":0,"itemsUsingTheBlender":0,"fallingCoconuts":0,"flames":0,"bubbles":0,"redPollen":0,"bluePollen":0,"whitePollen":0,"pollen":0,"abilityTokens":0,"honeyTokens":0,"rhinoBeetle":0,"ladybug":0,"spider":0,"werewolf":0,"mantis":0,"scorpion":0,"kingBeetle":0,"tunnelBear":0,"ant":0,"fireAnt":0,"armyAnt":0,"flyingAnt":0,"giantAnt":0,"mondoChick":0,"rogueViciousBee":0,"goo":0,"popStar":0,"scorchingStar":0,"coconutShield":0,"stingerUsed":0,"gummyMorph":0,"gummyStar":0,"cogTokens":0,"cog":0,"cogToTheWindShrine":0,"jellyBeansTokens":0,"jellyBeans":0,"jellyBeansToTheWindShrine":0,"ticketTokens":0,"ticket":0,"ticketToTheWindShrine":0,"antPassTokens":0,"antPass":0,"antPassToTheWindShrine":0,"cloudVialTokens":0,"cloudVial":0,"cloudVialToTheWindShrine":0,"magicBeanTokens":0,"magicBean":0,"magicBeanToTheWindShrine":0,"comfortingVialTokens":0,"comfortingVial":0,"comfortingVialToTheWindShrine":0,"invigoratingVialTokens":0,"invigoratingVial":0,"invigoratingVialToTheWindShrine":0,"motivatingVialTokens":0,"motivatingVial":0,"motivatingVialToTheWindShrine":0,"refreshingVialTokens":0,"refreshingVial":0,"refreshingVialToTheWindShrine":0,"satisfyingVialTokens":0,"satisfyingVial":0,"satisfyingVialToTheWindShrine":0,"redDriveTokens":0,"redDrive":0,"redDriveToTheWindShrine":0,"blueDriveTokens":0,"blueDrive":0,"blueDriveToTheWindShrine":0,"whiteDriveTokens":0,"whiteDrive":0,"whiteDriveToTheWindShrine":0,"glitchedDriveTokens":0,"glitchedDrive":0,"glitchedDriveToTheWindShrine":0,"roboPassTokens":0,"roboPass":0,"roboPassToTheWindShrine":0,"fieldDiceTokens":0,"fieldDice":0,"fieldDiceToTheWindShrine":0,"smoothDiceTokens":0,"smoothDice":0,"smoothDiceToTheWindShrine":0,"loadedDiceTokens":0,"loadedDice":0,"loadedDiceToTheWindShrine":0,"microConverterTokens":0,"microConverter":0,"microConverterToTheWindShrine":0,"honeysuckleTokens":0,"honeysuckle":0,"honeysuckleToTheWindShrine":0,"whirligigTokens":0,"whirligig":0,"whirligigToTheWindShrine":0,"softWaxTokens":0,"softWax":0,"softWaxToTheWindShrine":0,"hardWaxTokens":0,"hardWax":0,"hardWaxToTheWindShrine":0,"causticWaxTokens":0,"causticWax":0,"causticWaxToTheWindShrine":0,"swirledWaxTokens":0,"swirledWax":0,"swirledWaxToTheWindShrine":0,"turpentineTokens":0,"turpentine":0,"turpentineToTheWindShrine":0,"paperPlanterTokens":0,"paperPlanter":0,"paperPlanterToTheWindShrine":0,"plasticPlanterTokens":0,"plasticPlanter":0,"plasticPlanterToTheWindShrine":0,"candyPlanterTokens":0,"candyPlanter":0,"candyPlanterToTheWindShrine":0,"redClayPlanterTokens":0,"redClayPlanter":0,"redClayPlanterToTheWindShrine":0,"blueClayPlanterTokens":0,"blueClayPlanter":0,"blueClayPlanterToTheWindShrine":0,"tackyPlanterTokens":0,"tackyPlanter":0,"tackyPlanterToTheWindShrine":0,"pesticidePlanterTokens":0,"pesticidePlanter":0,"pesticidePlanterToTheWindShrine":0,"petalPlanterTokens":0,"petalPlanter":0,"petalPlanterToTheWindShrine":0,"plentyPlanterTokens":0,"plentyPlanter":0,"plentyPlanterToTheWindShrine":0,"gumdropsTokens":0,"gumdrops":0,"gumdropsToTheWindShrine":0,"coconutTokens":0,"coconut":0,"coconutToTheWindShrine":0,"stingerTokens":0,"stinger":0,"stingerToTheWindShrine":0,"glueTokens":0,"glue":0,"glueToTheWindShrine":0,"oilTokens":0,"oil":0,"oilToTheWindShrine":0,"enzymesTokens":0,"enzymes":0,"enzymesToTheWindShrine":0,"redExtractTokens":0,"redExtract":0,"redExtractToTheWindShrine":0,"blueExtractTokens":0,"blueExtract":0,"blueExtractToTheWindShrine":0,"tropicalDrinkTokens":0,"tropicalDrink":0,"tropicalDrinkToTheWindShrine":0,"purplePotionTokens":0,"purplePotion":0,"purplePotionToTheWindShrine":0,"superSmoothieTokens":0,"superSmoothie":0,"superSmoothieToTheWindShrine":0,"bitterberryTokens":0,"bitterberry":0,"bitterberryToTheWindShrine":0,"neonberryTokens":0,"neonberry":0,"neonberryToTheWindShrine":0,"moonCharmTokens":0,"moonCharm":0,"moonCharmToTheWindShrine":0,"treatTokens":0,"treat":0,"treatToTheWindShrine":0,"starTreatTokens":0,"starTreat":0,"starTreatToTheWindShrine":0,"atomicTreatTokens":0,"atomicTreat":0,"atomicTreatToTheWindShrine":0,"blueberryTokens":0,"blueberry":0,"blueberryToTheWindShrine":0,"strawberryTokens":0,"strawberry":0,"strawberryToTheWindShrine":0,"pineappleTokens":0,"pineapple":0,"pineappleToTheWindShrine":0,"sunflowerSeedTokens":0,"sunflowerSeed":0,"sunflowerSeedToTheWindShrine":0,"basicEggTokens":0,"basicEgg":0,"basicEggToTheWindShrine":0,"silverEggTokens":0,"silverEgg":0,"silverEggToTheWindShrine":0,"goldEggTokens":0,"goldEgg":0,"goldEggToTheWindShrine":0,"diamondEggTokens":0,"diamondEgg":0,"diamondEggToTheWindShrine":0,"mythicEggTokens":0,"mythicEgg":0,"mythicEggToTheWindShrine":0,"giftedSilverEggTokens":0,"giftedSilverEgg":0,"giftedSilverEggToTheWindShrine":0,"giftedGoldEggTokens":0,"giftedGoldEgg":0,"giftedGoldEggToTheWindShrine":0,"giftedDiamondEggTokens":0,"giftedDiamondEgg":0,"giftedDiamondEggToTheWindShrine":0,"giftedMythicEggTokens":0,"giftedMythicEgg":0,"giftedMythicEggToTheWindShrine":0,"starEggTokens":0,"starEgg":0,"starEggToTheWindShrine":0,"royalJellyTokens":0,"royalJelly":0,"royalJellyToTheWindShrine":0,"starJellyTokens":0,"starJelly":0,"starJellyToTheWindShrine":0,"glitterTokens":0,"glitter":0,"glitterToTheWindShrine":0,"hasteTokens":0,"focusTokens":0,"battleTokens":0,"melodyTokens":0,"bombTokens":0,"redBombTokens":0,"redAbilityTokens":0,"blueBombTokens":0,"blueAbilityTokens":0,"blueBoostTokens":0,"boostTokens":0,"markOrBoostTokens":0,"redBoostTokens":0,"inspireTokens":0,"rageTokens":0,"markTokens":0,"attackTokens":0,"pollenFromCoconutField":0,"tokensFromPlantersInTheCoconutField":0,"puffshroomsInTheCoconutField":0,"rarePuffshroomsInTheCoconutField":0,"epicPuffshroomsInTheCoconutField":0,"legendaryPuffshroomsInTheCoconutField":0,"mythicPuffshroomsInTheCoconutField":0,"pollenFromPepperPatch":0,"tokensFromPlantersInThePepperPatch":0,"puffshroomsInThePepperPatch":0,"rarePuffshroomsInThePepperPatch":0,"epicPuffshroomsInThePepperPatch":0,"legendaryPuffshroomsInThePepperPatch":0,"mythicPuffshroomsInThePepperPatch":0,"pollenFromRoseField":0,"tokensFromPlantersInTheRoseField":0,"puffshroomsInTheRoseField":0,"rarePuffshroomsInTheRoseField":0,"epicPuffshroomsInTheRoseField":0,"legendaryPuffshroomsInTheRoseField":0,"mythicPuffshroomsInTheRoseField":0,"pollenFromPineTreeForest":0,"tokensFromPlantersInThePineTreeForest":0,"puffshroomsInThePineTreeForest":0,"rarePuffshroomsInThePineTreeForest":0,"epicPuffshroomsInThePineTreeForest":0,"legendaryPuffshroomsInThePineTreeForest":0,"mythicPuffshroomsInThePineTreeForest":0,"pollenFromPumpkinPatch":0,"tokensFromPlantersInThePumpkinPatch":0,"puffshroomsInThePumpkinPatch":0,"rarePuffshroomsInThePumpkinPatch":0,"epicPuffshroomsInThePumpkinPatch":0,"legendaryPuffshroomsInThePumpkinPatch":0,"mythicPuffshroomsInThePumpkinPatch":0,"pollenFromCactusField":0,"tokensFromPlantersInTheCactusField":0,"puffshroomsInTheCactusField":0,"rarePuffshroomsInTheCactusField":0,"epicPuffshroomsInTheCactusField":0,"legendaryPuffshroomsInTheCactusField":0,"mythicPuffshroomsInTheCactusField":0,"pollenFromMountainTopField":0,"tokensFromPlantersInTheMountainTopField":0,"puffshroomsInTheMountainTopField":0,"rarePuffshroomsInTheMountainTopField":0,"epicPuffshroomsInTheMountainTopField":0,"legendaryPuffshroomsInTheMountainTopField":0,"mythicPuffshroomsInTheMountainTopField":0,"pollenFromSunflowerField":0,"tokensFromPlantersInTheSunflowerField":0,"puffshroomsInTheSunflowerField":0,"rarePuffshroomsInTheSunflowerField":0,"epicPuffshroomsInTheSunflowerField":0,"legendaryPuffshroomsInTheSunflowerField":0,"mythicPuffshroomsInTheSunflowerField":0,"pollenFromMushroomField":0,"tokensFromPlantersInTheMushroomField":0,"puffshroomsInTheMushroomField":0,"rarePuffshroomsInTheMushroomField":0,"epicPuffshroomsInTheMushroomField":0,"legendaryPuffshroomsInTheMushroomField":0,"mythicPuffshroomsInTheMushroomField":0,"pollenFromStrawberryField":0,"tokensFromPlantersInTheStrawberryField":0,"puffshroomsInTheStrawberryField":0,"rarePuffshroomsInTheStrawberryField":0,"epicPuffshroomsInTheStrawberryField":0,"legendaryPuffshroomsInTheStrawberryField":0,"mythicPuffshroomsInTheStrawberryField":0,"pollenFromSpiderField":0,"tokensFromPlantersInTheSpiderField":0,"puffshroomsInTheSpiderField":0,"rarePuffshroomsInTheSpiderField":0,"epicPuffshroomsInTheSpiderField":0,"legendaryPuffshroomsInTheSpiderField":0,"mythicPuffshroomsInTheSpiderField":0,"pollenFromBambooField":0,"tokensFromPlantersInTheBambooField":0,"puffshroomsInTheBambooField":0,"rarePuffshroomsInTheBambooField":0,"epicPuffshroomsInTheBambooField":0,"legendaryPuffshroomsInTheBambooField":0,"mythicPuffshroomsInTheBambooField":0,"pollenFromPineapplePatch":0,"tokensFromPlantersInThePineapplePatch":0,"puffshroomsInThePineapplePatch":0,"rarePuffshroomsInThePineapplePatch":0,"epicPuffshroomsInThePineapplePatch":0,"legendaryPuffshroomsInThePineapplePatch":0,"mythicPuffshroomsInThePineapplePatch":0,"pollenFromStumpField":0,"tokensFromPlantersInTheStumpField":0,"puffshroomsInTheStumpField":0,"rarePuffshroomsInTheStumpField":0,"epicPuffshroomsInTheStumpField":0,"legendaryPuffshroomsInTheStumpField":0,"mythicPuffshroomsInTheStumpField":0,"pollenFromBlueFlowerField":0,"tokensFromPlantersInTheBlueFlowerField":0,"puffshroomsInTheBlueFlowerField":0,"rarePuffshroomsInTheBlueFlowerField":0,"epicPuffshroomsInTheBlueFlowerField":0,"legendaryPuffshroomsInTheBlueFlowerField":0,"mythicPuffshroomsInTheBlueFlowerField":0,"pollenFromCloverField":0,"tokensFromPlantersInTheCloverField":0,"puffshroomsInTheCloverField":0,"rarePuffshroomsInTheCloverField":0,"epicPuffshroomsInTheCloverField":0,"legendaryPuffshroomsInTheCloverField":0,"mythicPuffshroomsInTheCloverField":0,"pollenFromDandelionField":0,"tokensFromPlantersInTheDandelionField":0,"puffshroomsInTheDandelionField":0,"rarePuffshroomsInTheDandelionField":0,"epicPuffshroomsInTheDandelionField":0,"legendaryPuffshroomsInTheDandelionField":0,"mythicPuffshroomsInTheDandelionField":0,"pollenFromAntField":0,"tokensFromPlantersInTheAntField":0,"puffshroomsInTheAntField":0,"rarePuffshroomsInTheAntField":0,"epicPuffshroomsInTheAntField":0,"legendaryPuffshroomsInTheAntField":0,"mythicPuffshroomsInTheAntField":0},"NPCs":{"blackBear":0,"polarBear":0,"roboBear":0,"pandaBear":0,"spiritBear":0,"scienceBear":0,"datsocool":0}}')
+
+noFullScreen()
+
+}
+
+
+
+
 function loop(now){
     
     dt=Math.min((now-then)*0.001,0.07)
@@ -29352,44 +29460,10 @@ function loop(now){
     
     if(user.clickedKeys.p){
 
-        let save={}
-
-        save.honey=player.honey|0
-        save.pollen=player.pollen|0
-        save.hive=[]
-        save.items={}
-        save.owned={}
-        save.currentGear=player.currentGear
-
-        for(let i in items){
-            
-            if(items[i].amount)
-                save.items[i]=items[i].amount
-        }
-
-        for(let y in player.hive){
-            
-            if(!save.hive[y]) save.hive[y]=[]
-            
-            for(let x in player.hive[y]){
-                
-                let h=player.hive[y][x]
-                
-                save.hive[y][x]={type:h.type,bond:h.bond,mutation:h.mutation,radioactive:h.radioactive,beequip:h.beequip}
-                
-            }
-        }
-
-        for(let i in shops){
-            
-            for(let j in shops[i].items){
-                
-                save.owned[shops[i].items[j].name]=shops[i].items[j].owned
-            }
-        }
+        
 
 
-        console.error(JSON.stringify(save))
+        console.error(GENERATE_SAVE_CODE())
 
     }
 
@@ -29537,12 +29611,6 @@ function loop(now){
 if(window.parent.raf){
     
     window.cancelAnimationFrame(window.parent.raf)
-}
-
-function noFullScreen(){
-    
-    document.getElementById('useFullscreen').style.display='none'
-    loop(0)
 }
 
 document.getElementById('noFullScreen').addEventListener('click',noFullScreen)
