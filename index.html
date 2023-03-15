@@ -8,6 +8,40 @@ whoops the deadline is gone
 sound is currently disabled to stop my computer from becoming a waffle cooker
 
 
+
+
+        let amulet=[]
+
+        player.stats.moonAmulets++
+
+        amulet.push(('*'+Math.min(1.05+player.stats.moonAmulets*0.05,1.5).toFixed(2)+' capacityMultiplier').replace('0 ',' '))
+
+        let g=Math.min(player.stats.moonAmulets,25)
+
+        if(Math.random()<0.2+g*0.01){
+
+            amulet.push('*'+MATH.random(1.01+g*0.001,1.02+g*0.002).toFixed(2)+' nectarMultiplier')
+        }
+
+        if(Math.random()<0.25+g*0.0125){
+
+            amulet.push('+'+MATH.random(0.08+g*0.01,0.15+g*0.02).toFixed(2)+' lootLuck')
+        }
+
+        if(Math.random()<0.5){
+
+            amulet.push('*'+MATH.random(1.05+25*0.007,1.15+g*0.014).toFixed(2)+' whitePollen')
+
+        } else {
+
+            amulet.push('*'+MATH.random(1.03,1.1).toFixed(2)+' bondFromTreats')
+        }
+        
+        amulet.push(...MATH.selectFromArray(['*'+MATH.random(1.01+g*0.001,1.04+g*0.001).toFixed(2)+' POLLEN','*'+MATH.random(1.07+g*0.005,1.15+g*0.005).toFixed(2)+' pollenFromTools','*'+MATH.random(1.07+g*0.006,1.15+g*0.006).toFixed(2)+' pollenFromBees','+'+MATH.random(0.01+g*0.003,0.04+g*0.0036).toFixed(2)+' INSTANT_CONVERSION','*'+MATH.random(1.01+g*0.001,1.02+g*0.001).toFixed(2)+' honeyPerPollen',],g===25&&Math.random()<0.333?2:1))
+
+        player.showGeneratedAmulet('moonAmulet',amulet)
+
+
 -->
 <html>
 
@@ -22645,16 +22679,16 @@ player=(function(out){
     
     out.hiveMesh=new Mesh(true)
     
-    out.addSlot=function(bee,gifted=true){
+    out.addSlot=function(bee,gifted=true,bond=0,mutation,radioactive,beequip){
         
         if(out.hive[out.hive.length-1].length<5){
             
-            out.hive[out.hive.length-1].push({type:bee,level:1,bond:0,gifted:gifted})
+            out.hive[out.hive.length-1].push({type:bee,level:1,bond:bond,gifted:gifted,mutation})
             
         } else {
             
             out.hive.push([])
-            out.hive[out.hive.length-1].push({type:bee,level:1,bond:0,gifted:gifted})
+            out.hive[out.hive.length-1].push({type:bee,level:1,bond:bond,gifted:gifted,mutation})
         }
     }
     
@@ -29318,36 +29352,45 @@ function loop(now){
     
     if(user.clickedKeys.p){
 
-        let amulet=[]
+        let save={}
 
-        player.stats.moonAmulets++
+        save.honey=player.honey|0
+        save.pollen=player.pollen|0
+        save.hive=[]
+        save.items={}
+        save.owned={}
+        save.currentGear=player.currentGear
 
-        amulet.push(('*'+Math.min(1.05+player.stats.moonAmulets*0.05,1.5).toFixed(2)+' capacityMultiplier').replace('0 ',' '))
-
-        let g=Math.min(player.stats.moonAmulets,25)
-
-        if(Math.random()<0.2+g*0.01){
-
-            amulet.push('*'+MATH.random(1.01+g*0.001,1.02+g*0.002).toFixed(2)+' nectarMultiplier')
+        for(let i in items){
+            
+            if(items[i].amount)
+                save.items[i]=items[i].amount
         }
 
-        if(Math.random()<0.25+g*0.0125){
-
-            amulet.push('+'+MATH.random(0.08+g*0.01,0.15+g*0.02).toFixed(2)+' lootLuck')
+        for(let y in player.hive){
+            
+            if(!save.hive[y]) save.hive[y]=[]
+            
+            for(let x in player.hive[y]){
+                
+                let h=player.hive[y][x]
+                
+                save.hive[y][x]={type:h.type,bond:h.bond,mutation:h.mutation,radioactive:h.radioactive,beequip:h.beequip}
+                
+            }
         }
 
-        if(Math.random()<0.5){
-
-            amulet.push('*'+MATH.random(1.05+25*0.007,1.15+g*0.014).toFixed(2)+' whitePollen')
-
-        } else {
-
-            amulet.push('*'+MATH.random(1.03,1.1).toFixed(2)+' bondFromTreats')
+        for(let i in shops){
+            
+            for(let j in shops[i].items){
+                
+                save.owned[shops[i].items[j].name]=shops[i].items[j].owned
+            }
         }
-        
-        amulet.push(...MATH.selectFromArray(['*'+MATH.random(1.01+g*0.001,1.04+g*0.001).toFixed(2)+' POLLEN','*'+MATH.random(1.07+g*0.005,1.15+g*0.005).toFixed(2)+' pollenFromTools','*'+MATH.random(1.07+g*0.006,1.15+g*0.006).toFixed(2)+' pollenFromBees','+'+MATH.random(0.01+g*0.003,0.04+g*0.0036).toFixed(2)+' INSTANT_CONVERSION','*'+MATH.random(1.01+g*0.001,1.02+g*0.001).toFixed(2)+' honeyPerPollen',],g===25&&Math.random()<0.333?2:1))
 
-        player.showGeneratedAmulet('moonAmulet',amulet)
+
+        console.error(JSON.stringify(save))
+
     }
 
     if(user.keys.o){
