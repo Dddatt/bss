@@ -50,7 +50,7 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         <title>bss</title>
         <link rel="icon" type="image/x-icon" href="icon-image.png">
     </head>
-    <body onload='main()'>
+    <body>
 <canvas id='gl-canvas'></canvas>
 <canvas id='ui-canvas'></canvas>
 <canvas id='tex-canvas' width='2048' height='2048'></canvas>
@@ -4256,9 +4256,37 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
 
 <script type='application/javascript'>
 
+(function(){
+
+
+document.getElementById('runFullScreen').onclick=function(){
+
+    let w=window.open()
+    w.document.open()
+    w.document.write('<!doctype html><html>'+document.querySelector('html').innerHTML.replace('var _M=Math','var _M=Math;window.thisProgramIsInFullScreen=true'))
+    w.document.close()
+}
+
+document.getElementById('noFullScreen').onclick=function(){
+
+    BeeSwarmSimulator()
+}
+
+document.getElementById('loadSavedGame').onclick=function(){
+
+    BeeSwarmSimulator('}}@0olcosoat~darBeceenci~sarBeitirspr~eaaBndpar~eaoBob~rarBearol~parBeckla"b@{CsNP}#@0t|AnhenT$Iicthmy|~nteAThIny$arndgele|~nteAThInc$pi~et|AnhenT$Irera|~nteAThInmsoohrfsuf~pt|AnhenTsIerntlamProsFenok~tt|AnomFrenllpo|~onlideaneDThInc$hiyt~mn|ioelndDahenT$Irydaeneg~ln|ioelndDahenT$Iicep|~onlideaneDThIne$ar~rn|ioelndDahenTsIomroshffpu|~onlideaneDThInrsteanPlomFrnsketo|~onlideanmDronFleol~pr|veloeCThInc$hiyt~mr|veloeCThIny$arndgele|~erovClhenT$Iicep|~erovClhenT$Irera|~erovClhenTsIomroshffpu|~erovClhenTsIerntlamProsFenok~tr|velomCronFleol~pr|weloeFlueBThInc$hiyt~mr|weloeFlueBThIny$arndgele|~erowFlueBlhenT$Iicep|~erowFlueBlhenT$Irera|~erowFlueBlhenTsIomroshffpu|~erowFlueBlhenTsIerntlamProsFenok~tr|weloeFlumBronFleol~pp|umSthenT$Iicthmy|~mptueSThIny$arndgele|~mptueSThInc$pi~ep|umSthenT$Irera|~mptueSThInmsoohrfsuf~pp|umSthenTsIerntlamProsFenok~tp|umStomFrenllpoh~tcPaleppeainePThInc$hiyt~mchatePplapnePihenT$Irydaeneg~lchatePplapnePihenT$Iiceph~tcPaleppeainePThIne$ar~rchatePplapnePihenTsIomroshffpuh~tcPaleppeainePThInrsteanPlomFrnsketoh~tcPaleppeainmPronFleol~po|boameBThInc$hiyt~mo|boameBThIny$arndgele|~oombBahenT$Iicep|~oombBahenT$Irera|~oombBahenTsIomroshffpu|~oombBahenTsIerntlamProsFenok~to|boammBronFleol~pr|depieSThInc$hiyt~mr|depieSThIny$arndgele|~eridSphenT$Iicep|~eridSphenT$Irera|~eridSphenTsIomroshffpu|~eridSphenTsIerntlamProsFenok~tr|depimSronFleol~py|rrbeawtreSThInc$hiyt~my|rrbeawtreSThIny$arndgele|~ryerwbraSthenT$Iicep|~ryerwbraSthenT$Irera|~ryerwbraSthenTsIomroshffpu|~ryerwbraSthenTsIerntlamProsFenok~ty|rrbeawtrmSronFleol~pm|oohruseMThInc$hiyt~mm|oohruseMThIny$arndgele|~omroshMuhenT$Iicep|~omroshMuhenT$Irera|~omroshMuhenTsIomroshffpu|~omroshMuhenTsIerntlamProsFenok~tm|oohrusmMronFleol~pr|welonfSuhenT$Iicthmy|~erowfluneSThIny$arndgele|~erowfluneSThInc$pi~er|welonfSuhenT$Irera|~erowfluneSThInmsoohrfsuf~pr|welonfSuhenTsIerntlamProsFenok~tr|welonfSuomFrenllpo|~opnTaintoueMThInc$hiyt~mp|TointaunMohenT$Irydaeneg~lp|TointaunMohenT$Iicep|~opnTaintoueMThIne$ar~rp|TointaunMohenTsIomroshffpu|~opnTaintoueMThInrsteanPlomFrnsketo|~opnTaintoumMronFleol~ps|tuaceCThInc$hiyt~ms|tuaceCThIny$arndgele|~usctCahenT$Iicep|~usctCahenT$Irera|~usctCahenTsIomroshffpu|~usctCahenTsIerntlamProsFenok~ts|tuacmCronFleol~pchatnPkimpPuhenT$Iicthmyh~tcPainpkumePThIny$arndgeleh~tcPainpkumePThInc$pi~echatnPkimpPuhenT$Irerah~tcPainpkumePThInmsoohrfsuf~pchatnPkimpPuhenTsIerntlamProsFenok~tchatnPkimpPuomFrenllpot~esoreFreeTinePThInc$hiyt~mstreFoeeTrnePihenT$Irydaeneg~lstreFoeeTrnePihenT$Iicept~esoreFreeTinePThIne$ar~rstreFoeeTrnePihenTsIomroshffput~esoreFreeTinePThInrsteanPlomFrnsketot~esoreFreeTinmPronFleol~pe|oseRThInc$hiyt~me|oseRThIny$arndgele|~seRohenT$Iicep|~seRohenT$Irera|~seRohenTsIomroshffpu|~seRohenTsIerntlamProsFenok~te|osmRronFleol~pchatrPpeepePThInc$hiyt~mchatrPpeepePThIny$arndgeleh~tcPaerppPehenT$Iiceph~tcPaerppPehenT$Irerah~tcPaerppPehenTsIomroshffpuh~tcPaerppPehenTsIerntlamProsFenok~tchatrPpeepmPronFleol~pt|nucoCohenT$Iicthmy|~utonoceCThIny$arndgele|~utonoceCThInc$pi~et|nucoCohenT$Irera|~utonoceCThInmsoohrfsuf~pt|nucoCohenTsIerntlamProsFenok~tt|nucoCoomFrenllpo^~cktaat^~rkma^~gera^~repins~it^osBoed~rt^osBoOrrkma^~stoo~bt^osBouebl^~tylibieAlu~bb^omeBlu~by^itilAbed~rb^omdBre^~mbbo^~dylome^~lettba^~usoc~fe^stha&~erttli~gerttli~gr^teitgl&~lyelrJta~slyelrJta~sy^llJearst&~lyellJyaroy~llJealoy~ry^llJealoy~rg&Egarstg~Egarst^~ggrEta~sg&EgicthMyedftgig~EgicthMyedftgi^~ggcEhiytdMteif~gg&EgndmoiadDteif~gggdEonamDiedftgi^~ggdEonamDiedftgi&~ggdEoldGteif~gggdEoldGteif~gg^EgldGoedftgi&~ggrEveildSteif~gggrEveildSteif~gg^EgerlvSiedftgi&~ggcEhiyt~mggcEhiyt~mg^Egicthmy&~ggdEonamdig~Egndmoia~dg^Egndmoia~dg&Egldgog~Egldgo^~ggdEol~gg&Egerlvsig~Egerlvsi^~ggrEveil~sg&Egicas~bggcEsiba^~ggcEsiba&~edSeerowflun~sedSeerowflun~sd^eerSwelonfsu&~leppeain~pleppeain~pe^plapnepi&~ryerwbrasty~rrbeawtr~sy^rrbeawtr~sy&rrbeuebly~rrbeuebl^~ryereblu~bt&eaTricomatt~eaTricomat^~atrecTmito~at&eaTrarstt~eaTrarst^~atrerTta~st&eatrt~eatr^~atre~tm&arChonmom~arChonmo^~rmhanCoo~my&rrbeonney~rrbeonne^~ryernbeo~ny&rrbeerttbiy~rrbeerttbi^~ryerrbteit~be&hiotmorSpesue~hiotmorSpesu^~iethooSmerup~sn&iootePplur~pontiPolerppu^~ontiPolerppu&~nkrilDcapiro~tnkrilDcapiro~tk^inDralicoptr&~ctraxteElu~bctraxteElu~bt^actrExuebl&~ctraxtdEret~actrExed~rt^actrExed~rs&mezyens~mezyen^~esymnz~el&oil~oi^~il~oe&lu~guegl^~uegl&~erngti~serngti~sr^geinst&~utonoc~cutonoc~ct^nucoco&~psromdgus~opdrum~gs^opdrum~gr&teanPltyenplr~teanPltyenpl^~erntlayPntle~pr&teanPlalet~perntlalPtape^~erntlalPtape&~erntlaePidicstper~teanPldecities~pr^teanPldecities~pr&teanPlkyac~terntlayPckta^~erntlayPckta&~erntlayPlaeClu~berntlayPlaeClu~br^teanPlayCluebl&~erntlayPladCrer~teanPlayCled~rr^teanPlayCled~rr&teanPldyan~cerntlayPndca^~erntlayPndca&~erntlacPtiasplr~teanPlicstla~pr^teanPlicstla~pr&teanPlerap~perntlarPpepa^~erntlarPpepa&~netienrptue~inntpeur~te^inntpeur~tx&Waedrlwi~saxdWleirsw^~axdWleirsw&~axcWtiuscax~Waicstau~cx^Waicstau~cx&Wardhax~Wardha^~axdWar~hx&Waftsox~Waftso^~axtWof~sg&giliirwhg~giliirwh^~igigrlhi~we&klucysnehoe~klucysneho^~lecksueyon~hr&teernvCoroic~merrtveonoCcrmi^~errtveonoCcrmi&~ceDiedadloe~icdDdeoa~le^icdDdeoa~le&ichDotmo~sceDithoosm^~ceDithoosm&~ceDildie~fceDildie~fe^icdDelfi&~ssPaboros~asoPob~rs^asoPob~re&ivDredchitgle~ivDredchitgl^~veridDhetcli~ge&ivDrtehi~wverieDitwh^~verieDitwh&~verieDlu~bverieDlu~be^ivDruebl&~veridDree~ivDred~re^ivDred~rl&iagVinfyisat~salVingyisftisa^~alVingyisftisa&~alVinghiesfrrel~iagVinshreef~rl^iagVinshreef~rl&iagVinativot~malVingtivatimo^~alVingtivatimo&~alVingtiragoviinl~iagVinatorignv~il^iagVinatorignv~il&iagVinrtfoom~calVingtiormfco^~alVingtiormfco&~anBeicag~manBeicag~mn^eacBgima&~alViudlo~calViudlo~cl^iadVoucl&~ssPant~assPant~as^astPan&~etcktit~keic~tt^keic~ts&anBelyel~jnseayBllje^~nseayBllje&~og~cog~cg^cor~taySmmguh~rpMomyum~gedUserngti~sldieShutonoc~carStnghircco~sarStop~poo~geesBouciViueog~rckhioCndmot~Anntia~gntgAinly~fntyArm~anteAir~fnt~aarBeelnntue~tleegBin~konpiorscs~tian~mlfworewer~depi~sugybad~lleetBenohi~ry^neho^~tylibi~aenllpon~leolePitwhn~leolePlu~benllPoed~resblub~besamfls~utonocgCinllfar~deenBlhegTinUsmste~iotshnglieSThngsisUmetin~noanwCloeleYThngsisUmetin~noaneClueBThngsisUmetin~noandCRehegTinUsesim~teeyBndWildWiomFrnsketos~utroSpomFrnsketos~erntlamProsFenok~tarctNenghiesfrReOfesutin~marctNengtiormfCoOfesutin~marctNengyisftiSaOfesutin~marctNengtivatiMoOfesutin~marctNengtiragoviInOfesutin~marctNenghiesfrReOfrsou~harctNengtiormfCoOfrsou~harctNengyisftiSaOfrsou~harctNengtivatiMoOfrsou~harctNengtiragoviInOfrsou~harctNeOfrsou~harctNeOfesutin#m26s@peTyee~bc$hiyt~my$arndgele$~icep$~reras~omroshffpus~etulAmonmo{"s@atst]#5}88883851162399.9@0ntouam"#atloeBblub"be@yp#t869999499433.29735n@owldoo"c6!22728412798099.9@0ntouam"#ngsiesBldeti@"pety5#0000509433.29743@1wndoolco!"50t@unmo#ag"insslenBoollba@"pety6#9899994439237.59@3wndoolco!"81149818947198990.t@unmo#ar"taecgNinfyisat"se@yp#t4539237.5921n@owldoo"c1!48818941198799.9@0ntouam"#arctNengtivatimo@"pety5#9433.29715@2wndoolco!"81149818947198990.t@unmo#ar"taecgNinatorignv"ie@yp#t4539237.5921n@owldoo"c1!48818941198799.9@0ntouam"#arctNenghiesfrre@"pety5#9433.29715@2wndoolco!"81149818947198990.t@unmo#ar"taecgNinrtfoom"ce@yp#t4539237.5921n@owldoo"c1!t@unmo#af"ufeBhiotmorSpesu@"pety5#9433.29711n@owldoo"c7!99999999473393.9@0ntouam"#atHemela"fe@yp#t94999999596966.819n@owldoo"c0!@1ntouam"#boombCom"be@yp#t9666864.n@owldoo"c1!t@unmo#ay"odel"me@yp#t94999999596966.829n@owldoo"c0!@1ntouam"#usoc"fe@yp#t94999999596966.819n@owldoo"c0!@1ntouam"#teas"he@yp#t94999999596966.819n@owldoo"c0!00@1ntouam"#veLobyab"te@yp#tllnun@owldoo"c[{s@ctfeef}#[]s@ipquee#be"ivssPaerowSharstP e,ivssPaarStop p,PceanChalicitcr5 .0+0n,iorsveondCRenttans i.1+0n,iorsveoneCitWhnttans i.1+0n,iorsveoneClutBanstin1 0.,+enllPouebl6 1.,*enllPotehi w.1*1n,leolePlu b.1*1n,leoldPre1 1.,*teRartveon c.5*1r,iepltiulyMitacap c.5*2@"etulAmarStmereup#sr"deli"gr@deli#gd"arGultbaco@"rduatGghri"#rduanGsoimcr@"rduatGef#lk"asdMonamdi@"skma"#erstniCautonoc"ck@ackpac#bt"ellBtape@"ltbe"#tsooyBmmgu@"tsoo#br"peopePid"tl@oo"t@{arGentreur#c{}d@neow}#@1erntlayPntle#p@1erntlalPtape1#r@teanPldecities#p@1erntlayPckta1#r@teanPlayCluebl1#r@teanPlayCled#r@1erntlayPndca1#r@teanPlicstla#p@1erntlarPpepa{"s@emit]#}]@0ndboe#ru@tedftgi"#alitig"de@yp"t0!d@on#buetrd@teif#gt"alob"ce@yp"t0!d@on#buetrd@teif#gn"toho"pe@yp"t0!d@on#buetrd@teif#ge"oldpta@"pety!"@0ndboe#ru@tedftgi"#lepoad"te@yp"t[{],0}d@on#buetrd@teif#ge"oldpta@"pety!"@0ndboe#ru@tedftgi"#lepoad"te@yp"t0!d@on#buetrd@teif#ge"oldpta@"pety!"@0ndboe#ru@tedftgi"#lepoad"te@yp"t0!d@on#buetrd@teif#ge"oldpta@"pety{",[}]@0ndboe#ru@tedftgi"#lepoad"te@yp"t0!d@on#buetrd@teif#ge"oldpta@"pety!"@0ndboe#ru@tedftgi"#ntyauo"be@yp"t0!d@on#buetrd@teif#gt"anoybu@"pety!"@0ndboe#ru@tedftgi"#ntyauo"be@yp"t[{],0}d@on#buetrd@teif#gt"anoybu@"pety!"@0ndboe#ru@tedftgi"#ntyauo"be@yp"t0!d@on#buetrd@teif#gt"anoybu@"pety!"@0ndboe#ru@tedftgi"#ntyauo"be@yp"t0!d@on#buetrd@teif#gt"anoybu@"pety{",[}]@0ndboe#ru@tedftgi"#ntyauo"be@yp"t0!d@on#buetrd@teif#gt"anoybu@"pety!"@0ndboe#ru@tedftgi"#ntyauo"be@yp"t0!d@on#buetrd@teif#gt"anoybu@"pety!"@0ndboe#ru@tedftgi"#ntyauo"be@yp"t[{],0}d@on#buetrd@teif#gt"anoybu@"pety!"@0ndboe#ru@tedftgi"#ntyauo"be@yp"t0!d@on#buetrd@teif#gt"anoybu@"pety!"@0ndboe#ru@tedftgi"#ntyauo"be@yp"t0!d@on#buetrd@teif#gt"anoybu@"pety{",[}]@0ndboe#ru@tedftgi"#myum"ge@yp"t0!d@on#buetrd@teif#gc"simu@"pety!"@0ndboe#ru@tedftgi"#icus"me@yp"t0!d@on#buetrd@teif#gc"simu@"pety!"@0ndboe#ru@tedftgi"#usioic"ve@yp"t[{],0}d@on#buetrd@teif#ga"njni@"pety!"@0ndboe#ru@tedftgi"#zyuz"fe@yp"t0!d@on#buetrd@teif#gy"stha@"pety!"@0ndboe#ru@tedftgi"#ndmoia"de@yp"t0!d@on#buetrd@teif#gy"bbta@"pety{",[}]@0ndboe#ru@tedftgi"#dyin"we@yp"t0!d@on#buetrd@teif#gr"deanmmco@"pety!"@0ndboe#ru@tedftgi"#tyosfr@"pety!"@0ndboe#ru@tedftgi"#olco@"pety!"@0ndboe#ru@tedftgi"#kouc"be@yp"t[{],0}d@on#buetrd@teif#ge"blum"be@yp"t0!d@on#buetrd@teif#ge"blub"be@yp"t0!d@on#buetrd@teif#gr"beom"be@yp"t0!d@on#buetrd@teif#gr"keoo"le@yp"t0!d@on#buetrd@teif#gc"siba@"pety{"[[e@iv~henllpoy~neho{"')
+}
+
+})()
+
+</script>
+
+
+<script type='application/javascript'>
+
 var _M=Math
 
-function main(){
+function BeeSwarmSimulator(INITALIZATION_CODE){
 
 let audio_ctx=new AudioContext(),soundCache={}
 
@@ -4454,14 +4482,6 @@ window.onresize=()=>{
     gl.useProgram(trailRendererProgram)
     gl.uniform1f(glCache.trail_isNight,player.isNight)
 }
-
-document.getElementById('runFullScreen').addEventListener('click',function(){
-
-    let w=window.open()
-    w.document.open()
-    w.document.write('<!doctype html><html>'+document.querySelector('html').innerHTML.replace('var _M=Math','var _M=Math;window.thisProgramIsInFullScreen=true'))
-    w.document.close()
-})
 
 let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,BEE_COLLECT=0,BEE_FLY=0,then=0,dt,frameCount=0,TIME=0,player,honeyMarkConvert=TIME,NIGHT_DARKNESS=0.6,NPCs
 
@@ -22486,8 +22506,13 @@ player=(function(out){
             
             if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].owned){
                 
-                out.currentGear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot]=shops[out.currentShop].items[shops[out.currentShop].currentIndex].name
-                out.updateGear()
+                if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot!=='item'){
+
+                    out.currentGear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot]=shops[out.currentShop].items[shops[out.currentShop].currentIndex].name
+
+                    out.updateGear()
+                }
+                    
                 return
             }
             
@@ -22528,8 +22553,14 @@ player=(function(out){
 
             if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'){
 
+                shops[out.currentShop].items[shops[out.currentShop].currentIndex].amountPurchased++
                 items[shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].amount++
                 player.addMessage('+1 '+MATH.doGrammar(shops[out.currentShop].items[shops[out.currentShop].currentIndex].name))
+
+                if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].amountPurchased>=shops[out.currentShop].items[shops[out.currentShop].currentIndex].maxPurchasedAmount){
+
+                    shops[out.currentShop].items[shops[out.currentShop].currentIndex].owned=true
+                }
 
             } else {
 
@@ -23649,8 +23680,19 @@ player=(function(out){
                     }
                 }
                 
-                purchaseButton.innerHTML=shops[out.currentShop].items[shops[out.currentShop].currentIndex].owned?out.currentGear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot]===shops[out.currentShop].items[shops[out.currentShop].currentIndex].name?'Equipped':'Equip':canBuy?'Purchase':'Not Enough'
-                purchaseButton.style.backgroundColor=shops[out.currentShop].items[shops[out.currentShop].currentIndex].owned?out.currentGear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot]===shops[out.currentShop].items[shops[out.currentShop].currentIndex].name?'rgb(100,200,100)':'rgb(0,200,0)':canBuy?'rgb(0,200,0)':'rgb(225,0,0)'
+                if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'){
+
+                    purchaseButton.innerHTML=shops[out.currentShop].items[shops[out.currentShop].currentIndex].owned?'Sold Out':canBuy?'Purchase':'Not Enough'
+
+                    purchaseButton.style.backgroundColor=shops[out.currentShop].items[shops[out.currentShop].currentIndex].owned?'rgb(255,50,50)':canBuy?'rgb(0,200,0)':'rgb(225,0,0)'
+
+                } else {
+
+                    purchaseButton.innerHTML=shops[out.currentShop].items[shops[out.currentShop].currentIndex].owned?out.currentGear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot]===shops[out.currentShop].items[shops[out.currentShop].currentIndex].name?'Equipped':'Equip':canBuy?'Purchase':'Not Enough'
+
+                    purchaseButton.style.backgroundColor=shops[out.currentShop].items[shops[out.currentShop].currentIndex].owned?out.currentGear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot]===shops[out.currentShop].items[shops[out.currentShop].currentIndex].name?'rgb(100,200,100)':'rgb(0,200,0)':canBuy?'rgb(0,200,0)':'rgb(225,0,0)'
+
+                }
                 
                 if(user.clickedKeys.e){
                     
@@ -24638,24 +24680,28 @@ let shops={
     roboShop:{
 
         items:[{
+            amountPurchased:0,maxPurchasedAmount:Infinity,
             name:'redDrive',
             slot:'item',
             viewMatrix:[58,11,38,MATH.HALF_PI,-0.25],
             cost:['10 cog'],
             desc:'A red computer drive for use in the Robo Challenge.<br><br>Grants x1.25 red pollen, x1.25 red field capacity, and +1 red bee attack'
         },{
+            amountPurchased:0,maxPurchasedAmount:Infinity,
             name:'blueDrive',
             slot:'item',
             viewMatrix:[58,11,39.8315,MATH.HALF_PI,-0.25],
             cost:['10 cog'],
             desc:'A blue computer drive for use in the Robo Challenge.<br><br>Grants x1.25 blue pollen, x1.25 blue field capacity, and +1 blue bee attack'
         },{
+            amountPurchased:0,maxPurchasedAmount:Infinity,
             name:'whiteDrive',
             slot:'item',
             viewMatrix:[58,11,41.663,MATH.HALF_PI,-0.25],
             cost:['10 cog'],
             desc:'A white computer drive for use in the Robo Challenge.<br><br>Grants x1.25 white pollen, x1.25 white field capacity, and +1 white bee attack'
         },{
+            amountPurchased:0,maxPurchasedAmount:Infinity,
             name:'glitchedDrive',
             slot:'item',
             viewMatrix:[58,11,43.5,MATH.HALF_PI,-0.25],
@@ -28902,12 +28948,7 @@ objects.mobs.push(new MondoChick('MountainTopField',7))
 ctx.textAlign='center'
 ctx.textBaseline='middle'
 
-
-function noFullScreen(){
-    
-    document.getElementById('useFullscreen').style.display='none'
-    loop(0)
-}
+document.getElementById('useFullscreen').style.display='none'
 
 
 function RUN_SAVE_CODE(string){
@@ -28928,8 +28969,6 @@ function RUN_SAVE_CODE(string){
 
     string=string.replaceAll('|','Field').replaceAll('?','"type":').replaceAll('&','ToTheWindShrine').replaceAll('^','Tokens').replaceAll('$','Puffshrooms').replaceAll('#',',"').replaceAll('\u0040','":').replaceAll('~','":0,"').replaceAll('!','},{')
 
-    console.error(string)
-
     if(string[0]!=='{') string='{'+string
 
     let save=JSON.parse(string)
@@ -28949,7 +28988,7 @@ function RUN_SAVE_CODE(string){
         
         for(let j in shops[i].items){
             
-            shops[i].items.owned=save.owned[shops[i].items[j].name]
+            shops[i].items[j].owned=save.owned[shops[i].items[j].name]
         }
     }
 
@@ -29051,14 +29090,8 @@ function GENERATE_SAVE_CODE(){
     return string
 }
 
-
-document.getElementById('loadSavedGame').onclick=function(){RUN_SAVE_CODE('}}@0olcosoat~darBeceenci~sarBeitirspr~eaaBndpar~eaoBob~rarBearol~parBeckla"b@{CsNP}#@0t|AnhenT$Iicthmy|~nteAThIny$arndgele|~nteAThInc$pi~et|AnhenT$Irera|~nteAThInmsoohrfsuf~pt|AnhenTsIerntlamProsFenok~tt|AnomFrenllpo|~onlideaneDThInc$hiyt~mn|ioelndDahenT$Irydaeneg~ln|ioelndDahenT$Iicep|~onlideaneDThIne$ar~rn|ioelndDahenTsIomroshffpu|~onlideaneDThInrsteanPlomFrnsketo|~onlideanmDronFleol~pr|veloeCThInc$hiyt~mr|veloeCThIny$arndgele|~erovClhenT$Iicep|~erovClhenT$Irera|~erovClhenTsIomroshffpu|~erovClhenTsIerntlamProsFenok~tr|velomCronFleol~pr|weloeFlueBThInc$hiyt~mr|weloeFlueBThIny$arndgele|~erowFlueBlhenT$Iicep|~erowFlueBlhenT$Irera|~erowFlueBlhenTsIomroshffpu|~erowFlueBlhenTsIerntlamProsFenok~tr|weloeFlumBronFleol~pp|umSthenT$Iicthmy|~mptueSThIny$arndgele|~mptueSThInc$pi~ep|umSthenT$Irera|~mptueSThInmsoohrfsuf~pp|umSthenTsIerntlamProsFenok~tp|umStomFrenllpoh~tcPaleppeainePThInc$hiyt~mchatePplapnePihenT$Irydaeneg~lchatePplapnePihenT$Iiceph~tcPaleppeainePThIne$ar~rchatePplapnePihenTsIomroshffpuh~tcPaleppeainePThInrsteanPlomFrnsketoh~tcPaleppeainmPronFleol~po|boameBThInc$hiyt~mo|boameBThIny$arndgele|~oombBahenT$Iicep|~oombBahenT$Irera|~oombBahenTsIomroshffpu|~oombBahenTsIerntlamProsFenok~to|boammBronFleol~pr|depieSThInc$hiyt~mr|depieSThIny$arndgele|~eridSphenT$Iicep|~eridSphenT$Irera|~eridSphenTsIomroshffpu|~eridSphenTsIerntlamProsFenok~tr|depimSronFleol~py|rrbeawtreSThInc$hiyt~my|rrbeawtreSThIny$arndgele|~ryerwbraSthenT$Iicep|~ryerwbraSthenT$Irera|~ryerwbraSthenTsIomroshffpu|~ryerwbraSthenTsIerntlamProsFenok~ty|rrbeawtrmSronFleol~pm|oohruseMThInc$hiyt~mm|oohruseMThIny$arndgele|~omroshMuhenT$Iicep|~omroshMuhenT$Irera|~omroshMuhenTsIomroshffpu|~omroshMuhenTsIerntlamProsFenok~tm|oohrusmMronFleol~pr|welonfSuhenT$Iicthmy|~erowfluneSThIny$arndgele|~erowfluneSThInc$pi~er|welonfSuhenT$Irera|~erowfluneSThInmsoohrfsuf~pr|welonfSuhenTsIerntlamProsFenok~tr|welonfSuomFrenllpo|~opnTaintoueMThInc$hiyt~mp|TointaunMohenT$Irydaeneg~lp|TointaunMohenT$Iicep|~opnTaintoueMThIne$ar~rp|TointaunMohenTsIomroshffpu|~opnTaintoueMThInrsteanPlomFrnsketo|~opnTaintoumMronFleol~ps|tuaceCThInc$hiyt~ms|tuaceCThIny$arndgele|~usctCahenT$Iicep|~usctCahenT$Irera|~usctCahenTsIomroshffpu|~usctCahenTsIerntlamProsFenok~ts|tuacmCronFleol~pchatnPkimpPuhenT$Iicthmyh~tcPainpkumePThIny$arndgeleh~tcPainpkumePThInc$pi~echatnPkimpPuhenT$Irerah~tcPainpkumePThInmsoohrfsuf~pchatnPkimpPuhenTsIerntlamProsFenok~tchatnPkimpPuomFrenllpot~esoreFreeTinePThInc$hiyt~mstreFoeeTrnePihenT$Irydaeneg~lstreFoeeTrnePihenT$Iicept~esoreFreeTinePThIne$ar~rstreFoeeTrnePihenTsIomroshffput~esoreFreeTinePThInrsteanPlomFrnsketot~esoreFreeTinmPronFleol~pe|oseRThInc$hiyt~me|oseRThIny$arndgele|~seRohenT$Iicep|~seRohenT$Irera|~seRohenTsIomroshffpu|~seRohenTsIerntlamProsFenok~te|osmRronFleol~pchatrPpeepePThInc$hiyt~mchatrPpeepePThIny$arndgeleh~tcPaerppPehenT$Iiceph~tcPaerppPehenT$Irerah~tcPaerppPehenTsIomroshffpuh~tcPaerppPehenTsIerntlamProsFenok~tchatrPpeepmPronFleol~pt|nucoCohenT$Iicthmy|~utonoceCThIny$arndgele|~utonoceCThInc$pi~et|nucoCohenT$Irera|~utonoceCThInmsoohrfsuf~pt|nucoCohenTsIerntlamProsFenok~tt|nucoCoomFrenllpo^~cktaat^~rkma^~gera^~repins~it^osBoed~rt^osBoOrrkma^~stoo~bt^osBouebl^~tylibieAlu~bb^omeBlu~by^itilAbed~rb^omdBre^~mbbo^~dylome^~lettba^~usoc~fe^stha&~erttli~gerttli~gr^teitgl&~lyelrJta~slyelrJta~sy^llJearst&~lyellJyaroy~llJealoy~ry^llJealoy~rg&Egarstg~Egarst^~ggrEta~sg&EgicthMyedftgig~EgicthMyedftgi^~ggcEhiytdMteif~gg&EgndmoiadDteif~gggdEonamDiedftgi^~ggdEonamDiedftgi&~ggdEoldGteif~gggdEoldGteif~gg^EgldGoedftgi&~ggrEveildSteif~gggrEveildSteif~gg^EgerlvSiedftgi&~ggcEhiyt~mggcEhiyt~mg^Egicthmy&~ggdEonamdig~Egndmoia~dg^Egndmoia~dg&Egldgog~Egldgo^~ggdEol~gg&Egerlvsig~Egerlvsi^~ggrEveil~sg&Egicas~bggcEsiba^~ggcEsiba&~edSeerowflun~sedSeerowflun~sd^eerSwelonfsu&~leppeain~pleppeain~pe^plapnepi&~ryerwbrasty~rrbeawtr~sy^rrbeawtr~sy&rrbeuebly~rrbeuebl^~ryereblu~bt&eaTricomatt~eaTricomat^~atrecTmito~at&eaTrarstt~eaTrarst^~atrerTta~st&eatrt~eatr^~atre~tm&arChonmom~arChonmo^~rmhanCoo~my&rrbeonney~rrbeonne^~ryernbeo~ny&rrbeerttbiy~rrbeerttbi^~ryerrbteit~be&hiotmorSpesue~hiotmorSpesu^~iethooSmerup~sn&iootePplur~pontiPolerppu^~ontiPolerppu&~nkrilDcapiro~tnkrilDcapiro~tk^inDralicoptr&~ctraxteElu~bctraxteElu~bt^actrExuebl&~ctraxtdEret~actrExed~rt^actrExed~rs&mezyens~mezyen^~esymnz~el&oil~oi^~il~oe&lu~guegl^~uegl&~erngti~serngti~sr^geinst&~utonoc~cutonoc~ct^nucoco&~psromdgus~opdrum~gs^opdrum~gr&teanPltyenplr~teanPltyenpl^~erntlayPntle~pr&teanPlalet~perntlalPtape^~erntlalPtape&~erntlaePidicstper~teanPldecities~pr^teanPldecities~pr&teanPlkyac~terntlayPckta^~erntlayPckta&~erntlayPlaeClu~berntlayPlaeClu~br^teanPlayCluebl&~erntlayPladCrer~teanPlayCled~rr^teanPlayCled~rr&teanPldyan~cerntlayPndca^~erntlayPndca&~erntlacPtiasplr~teanPlicstla~pr^teanPlicstla~pr&teanPlerap~perntlarPpepa^~erntlarPpepa&~netienrptue~inntpeur~te^inntpeur~tx&Waedrlwi~saxdWleirsw^~axdWleirsw&~axcWtiuscax~Waicstau~cx^Waicstau~cx&Wardhax~Wardha^~axdWar~hx&Waftsox~Waftso^~axtWof~sg&giliirwhg~giliirwh^~igigrlhi~we&klucysnehoe~klucysneho^~lecksueyon~hr&teernvCoroic~merrtveonoCcrmi^~errtveonoCcrmi&~ceDiedadloe~icdDdeoa~le^icdDdeoa~le&ichDotmo~sceDithoosm^~ceDithoosm&~ceDildie~fceDildie~fe^icdDelfi&~ssPaboros~asoPob~rs^asoPob~re&ivDredchitgle~ivDredchitgl^~veridDhetcli~ge&ivDrtehi~wverieDitwh^~verieDitwh&~verieDlu~bverieDlu~be^ivDruebl&~veridDree~ivDred~re^ivDred~rl&iagVinfyisat~salVingyisftisa^~alVingyisftisa&~alVinghiesfrrel~iagVinshreef~rl^iagVinshreef~rl&iagVinativot~malVingtivatimo^~alVingtivatimo&~alVingtiragoviinl~iagVinatorignv~il^iagVinatorignv~il&iagVinrtfoom~calVingtiormfco^~alVingtiormfco&~anBeicag~manBeicag~mn^eacBgima&~alViudlo~calViudlo~cl^iadVoucl&~ssPant~assPant~as^astPan&~etcktit~keic~tt^keic~ts&anBelyel~jnseayBllje^~nseayBllje&~og~cog~cg^cor~taySmmguh~rpMomyum~gedUserngti~sldieShutonoc~carStnghircco~sarStop~poo~geesBouciViueog~rckhioCndmot~Anntia~gntgAinly~fntyArm~anteAir~fnt~aarBeelnntue~tleegBin~konpiorscs~tian~mlfworewer~depi~sugybad~lleetBenohi~ry^neho^~tylibi~aenllpon~leolePitwhn~leolePlu~benllPoed~resblub~besamfls~utonocgCinllfar~deenBlhegTinUsmste~iotshnglieSThngsisUmetin~noanwCloeleYThngsisUmetin~noaneClueBThngsisUmetin~noandCRehegTinUsesim~teeyBndWildWiomFrnsketos~utroSpomFrnsketos~erntlamProsFenok~tarctNenghiesfrReOfesutin~marctNengtiormfCoOfesutin~marctNengyisftiSaOfesutin~marctNengtivatiMoOfesutin~marctNengtiragoviInOfesutin~marctNenghiesfrReOfrsou~harctNengtiormfCoOfrsou~harctNengyisftiSaOfrsou~harctNengtivatiMoOfrsou~harctNengtiragoviInOfrsou~harctNeOfrsou~harctNeOfesutin#m26s@peTyee~bc$hiyt~my$arndgele$~icep$~reras~omroshffpus~etulAmonmo{"s@atst]#5}88883851162399.9@0ntouam"#atloeBblub"be@yp#t869999499433.29735n@owldoo"c6!22728412798099.9@0ntouam"#ngsiesBldeti@"pety5#0000509433.29743@1wndoolco!"50t@unmo#ag"insslenBoollba@"pety6#9899994439237.59@3wndoolco!"81149818947198990.t@unmo#ar"taecgNinfyisat"se@yp#t4539237.5921n@owldoo"c1!48818941198799.9@0ntouam"#arctNengtivatimo@"pety5#9433.29715@2wndoolco!"81149818947198990.t@unmo#ar"taecgNinatorignv"ie@yp#t4539237.5921n@owldoo"c1!48818941198799.9@0ntouam"#arctNenghiesfrre@"pety5#9433.29715@2wndoolco!"81149818947198990.t@unmo#ar"taecgNinrtfoom"ce@yp#t4539237.5921n@owldoo"c1!t@unmo#af"ufeBhiotmorSpesu@"pety5#9433.29711n@owldoo"c7!99999999473393.9@0ntouam"#atHemela"fe@yp#t94999999596966.819n@owldoo"c0!@1ntouam"#boombCom"be@yp#t9666864.n@owldoo"c1!t@unmo#ay"odel"me@yp#t94999999596966.829n@owldoo"c0!@1ntouam"#usoc"fe@yp#t94999999596966.819n@owldoo"c0!@1ntouam"#teas"he@yp#t94999999596966.819n@owldoo"c0!00@1ntouam"#veLobyab"te@yp#tllnun@owldoo"c[{s@ctfeef}#[]s@ipquee#be"ivssPaerowSharstP e,ivssPaarStop p,PceanChalicitcr5 .0+0n,iorsveondCRenttans i.1+0n,iorsveoneCitWhnttans i.1+0n,iorsveoneClutBanstin1 0.,+enllPouebl6 1.,*enllPotehi w.1*1n,leolePlu b.1*1n,leoldPre1 1.,*teRartveon c.5*1r,iepltiulyMitacap c.5*2@"etulAmarStmereup#sr"deli"gr@deli#gd"arGultbaco@"rduatGghri"#rduanGsoimcr@"rduatGef#lk"asdMonamdi@"skma"#erstniCautonoc"ck@ackpac#bt"ellBtape@"ltbe"#tsooyBmmgu@"tsoo#br"peopePid"tl@oo"t@{arGentreur#c{}d@neow}#@1erntlayPntle#p@1erntlalPtape1#r@teanPldecities#p@1erntlayPckta1#r@teanPlayCluebl1#r@teanPlayCled#r@1erntlayPndca1#r@teanPlicstla#p@1erntlarPpepa{"s@emit]#}]@0ndboe#ru@tedftgi"#alitig"de@yp"t0!d@on#buetrd@teif#gt"alob"ce@yp"t0!d@on#buetrd@teif#gn"toho"pe@yp"t0!d@on#buetrd@teif#ge"oldpta@"pety!"@0ndboe#ru@tedftgi"#lepoad"te@yp"t[{],0}d@on#buetrd@teif#ge"oldpta@"pety!"@0ndboe#ru@tedftgi"#lepoad"te@yp"t0!d@on#buetrd@teif#ge"oldpta@"pety!"@0ndboe#ru@tedftgi"#lepoad"te@yp"t0!d@on#buetrd@teif#ge"oldpta@"pety{",[}]@0ndboe#ru@tedftgi"#lepoad"te@yp"t0!d@on#buetrd@teif#ge"oldpta@"pety!"@0ndboe#ru@tedftgi"#ntyauo"be@yp"t0!d@on#buetrd@teif#gt"anoybu@"pety!"@0ndboe#ru@tedftgi"#ntyauo"be@yp"t[{],0}d@on#buetrd@teif#gt"anoybu@"pety!"@0ndboe#ru@tedftgi"#ntyauo"be@yp"t0!d@on#buetrd@teif#gt"anoybu@"pety!"@0ndboe#ru@tedftgi"#ntyauo"be@yp"t0!d@on#buetrd@teif#gt"anoybu@"pety{",[}]@0ndboe#ru@tedftgi"#ntyauo"be@yp"t0!d@on#buetrd@teif#gt"anoybu@"pety!"@0ndboe#ru@tedftgi"#ntyauo"be@yp"t0!d@on#buetrd@teif#gt"anoybu@"pety!"@0ndboe#ru@tedftgi"#ntyauo"be@yp"t[{],0}d@on#buetrd@teif#gt"anoybu@"pety!"@0ndboe#ru@tedftgi"#ntyauo"be@yp"t0!d@on#buetrd@teif#gt"anoybu@"pety!"@0ndboe#ru@tedftgi"#ntyauo"be@yp"t0!d@on#buetrd@teif#gt"anoybu@"pety{",[}]@0ndboe#ru@tedftgi"#myum"ge@yp"t0!d@on#buetrd@teif#gc"simu@"pety!"@0ndboe#ru@tedftgi"#icus"me@yp"t0!d@on#buetrd@teif#gc"simu@"pety!"@0ndboe#ru@tedftgi"#usioic"ve@yp"t[{],0}d@on#buetrd@teif#ga"njni@"pety!"@0ndboe#ru@tedftgi"#zyuz"fe@yp"t0!d@on#buetrd@teif#gy"stha@"pety!"@0ndboe#ru@tedftgi"#ndmoia"de@yp"t0!d@on#buetrd@teif#gy"bbta@"pety{",[}]@0ndboe#ru@tedftgi"#dyin"we@yp"t0!d@on#buetrd@teif#gr"deanmmco@"pety!"@0ndboe#ru@tedftgi"#tyosfr@"pety!"@0ndboe#ru@tedftgi"#olco@"pety!"@0ndboe#ru@tedftgi"#kouc"be@yp"t[{],0}d@on#buetrd@teif#ge"blum"be@yp"t0!d@on#buetrd@teif#ge"blub"be@yp"t0!d@on#buetrd@teif#gr"beom"be@yp"t0!d@on#buetrd@teif#gr"keoo"le@yp"t0!d@on#buetrd@teif#gc"siba@"pety{"[[e@iv~henllpoy~neho{"')
-
-noFullScreen()
-
-}
-
-
+if(INITALIZATION_CODE)
+    RUN_SAVE_CODE(INITALIZATION_CODE)
 
 
 function loop(now){
@@ -29665,12 +29698,8 @@ if(window.parent.raf){
     window.cancelAnimationFrame(window.parent.raf)
 }
 
-document.getElementById('noFullScreen').addEventListener('click',noFullScreen)
+loop(0)
 
-if(window.thisProgramIsInFullScreen){
-    
-    noFullScreen()
-}
 }
 
 //<script>
