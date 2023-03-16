@@ -4258,6 +4258,89 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
 
 (function(){
 
+async function createDatabase() {
+
+    return await new Promise(async (resolve, reject) => {
+
+        let request = window.indexedDB.open("Dat_IndexedDBTest", 1)
+
+        request.onupgradeneeded = function(event) {
+
+            let DB = event.target.result
+            
+            let store = DB.createObjectStore("worlds", { keyPath: "id" })
+            store.createIndex("id", "id", { unique: true })
+        }
+
+        request.onsuccess = function(e) {
+            resolve(request.result)
+        }
+
+        request.onerror = function(e) {
+            reject(e)
+        }
+    })
+}
+
+async function loadFromDB(id) {
+
+    return await new Promise(async (resolve, reject) => {
+
+        let db = await createDatabase()
+        let trans = db.transaction("worlds", "readwrite")
+        let store = trans.objectStore("worlds")
+        let req = id ? store.get(id) : store.getAll()
+
+        req.onsuccess = function(e) {
+            resolve(req.result)
+            db.close()
+        }
+        req.onerror = function(e) { 
+            resolve(null)
+            db.close()
+        }
+    })
+}
+
+async function saveToDB(id, data) {
+
+    return new Promise(async (resolve, reject) => {
+
+        let db = await createDatabase()
+        let trans = db.transaction("worlds", "readwrite")
+        let store = trans.objectStore("worlds")
+        let req = store.put({ id: id, data: data })
+        req.onsuccess = function() {
+            resolve(req.result)
+        }
+        req.onerror = function(e) {
+            reject(e)
+        }
+    })
+}
+
+async function deleteFromDB(id) {
+
+    return new Promise(async (resolve, reject) => {
+
+        let db = await createDatabase()
+        let trans = db.transaction("worlds", "readwrite")
+        let store = trans.objectStore("worlds")
+        let req = store.delete(id)
+        req.onsuccess = function() {
+            resolve(req.result)
+        }
+        req.onerror = function(e) {
+            reject(e)
+        }
+    })
+}
+
+window.createDatabase=createDatabase
+window.loadFromDB=loadFromDB
+window.saveToDB=saveToDB
+window.deleteFromDB=deleteFromDB
+
 
 document.getElementById('runFullScreen').onclick=function(){
 
@@ -4274,7 +4357,11 @@ document.getElementById('noFullScreen').onclick=function(){
 
 document.getElementById('loadSavedGame').onclick=function(){
 
-    BeeSwarmSimulator('}}@0olcosoat~darBeceenci~sarBeitirspr~eaaBndpar~eaoBob~rarBearol~parBeckla"b@{CsNP}#@0t|AnhenT$Iicthmy|~nteAThIny$arndgele|~nteAThInc$pi~et|AnhenT$Irera|~nteAThInmsoohrfsuf~pt|AnhenTsIerntlamProsFenok~tt|AnomFrenllpo|~onlideaneDThInc$hiyt~mn|ioelndDahenT$Irydaeneg~ln|ioelndDahenT$Iicep|~onlideaneDThIne$ar~rn|ioelndDahenTsIomroshffpu|~onlideaneDThInrsteanPlomFrnsketo|~onlideanmDronFleol~pr|veloeCThInc$hiyt~mr|veloeCThIny$arndgele|~erovClhenT$Iicep|~erovClhenT$Irera|~erovClhenTsIomroshffpu|~erovClhenTsIerntlamProsFenok~tr|velomCronFleol~pr|weloeFlueBThInc$hiyt~mr|weloeFlueBThIny$arndgele|~erowFlueBlhenT$Iicep|~erowFlueBlhenT$Irera|~erowFlueBlhenTsIomroshffpu|~erowFlueBlhenTsIerntlamProsFenok~tr|weloeFlumBronFleol~pp|umSthenT$Iicthmy|~mptueSThIny$arndgele|~mptueSThInc$pi~ep|umSthenT$Irera|~mptueSThInmsoohrfsuf~pp|umSthenTsIerntlamProsFenok~tp|umStomFrenllpoh~tcPaleppeainePThInc$hiyt~mchatePplapnePihenT$Irydaeneg~lchatePplapnePihenT$Iiceph~tcPaleppeainePThIne$ar~rchatePplapnePihenTsIomroshffpuh~tcPaleppeainePThInrsteanPlomFrnsketoh~tcPaleppeainmPronFleol~po|boameBThInc$hiyt~mo|boameBThIny$arndgele|~oombBahenT$Iicep|~oombBahenT$Irera|~oombBahenTsIomroshffpu|~oombBahenTsIerntlamProsFenok~to|boammBronFleol~pr|depieSThInc$hiyt~mr|depieSThIny$arndgele|~eridSphenT$Iicep|~eridSphenT$Irera|~eridSphenTsIomroshffpu|~eridSphenTsIerntlamProsFenok~tr|depimSronFleol~py|rrbeawtreSThInc$hiyt~my|rrbeawtreSThIny$arndgele|~ryerwbraSthenT$Iicep|~ryerwbraSthenT$Irera|~ryerwbraSthenTsIomroshffpu|~ryerwbraSthenTsIerntlamProsFenok~ty|rrbeawtrmSronFleol~pm|oohruseMThInc$hiyt~mm|oohruseMThIny$arndgele|~omroshMuhenT$Iicep|~omroshMuhenT$Irera|~omroshMuhenTsIomroshffpu|~omroshMuhenTsIerntlamProsFenok~tm|oohrusmMronFleol~pr|welonfSuhenT$Iicthmy|~erowfluneSThIny$arndgele|~erowfluneSThInc$pi~er|welonfSuhenT$Irera|~erowfluneSThInmsoohrfsuf~pr|welonfSuhenTsIerntlamProsFenok~tr|welonfSuomFrenllpo|~opnTaintoueMThInc$hiyt~mp|TointaunMohenT$Irydaeneg~lp|TointaunMohenT$Iicep|~opnTaintoueMThIne$ar~rp|TointaunMohenTsIomroshffpu|~opnTaintoueMThInrsteanPlomFrnsketo|~opnTaintoumMronFleol~ps|tuaceCThInc$hiyt~ms|tuaceCThIny$arndgele|~usctCahenT$Iicep|~usctCahenT$Irera|~usctCahenTsIomroshffpu|~usctCahenTsIerntlamProsFenok~ts|tuacmCronFleol~pchatnPkimpPuhenT$Iicthmyh~tcPainpkumePThIny$arndgeleh~tcPainpkumePThInc$pi~echatnPkimpPuhenT$Irerah~tcPainpkumePThInmsoohrfsuf~pchatnPkimpPuhenTsIerntlamProsFenok~tchatnPkimpPuomFrenllpot~esoreFreeTinePThInc$hiyt~mstreFoeeTrnePihenT$Irydaeneg~lstreFoeeTrnePihenT$Iicept~esoreFreeTinePThIne$ar~rstreFoeeTrnePihenTsIomroshffput~esoreFreeTinePThInrsteanPlomFrnsketot~esoreFreeTinmPronFleol~pe|oseRThInc$hiyt~me|oseRThIny$arndgele|~seRohenT$Iicep|~seRohenT$Irera|~seRohenTsIomroshffpu|~seRohenTsIerntlamProsFenok~te|osmRronFleol~pchatrPpeepePThInc$hiyt~mchatrPpeepePThIny$arndgeleh~tcPaerppPehenT$Iiceph~tcPaerppPehenT$Irerah~tcPaerppPehenTsIomroshffpuh~tcPaerppPehenTsIerntlamProsFenok~tchatrPpeepmPronFleol~pt|nucoCohenT$Iicthmy|~utonoceCThIny$arndgele|~utonoceCThInc$pi~et|nucoCohenT$Irera|~utonoceCThInmsoohrfsuf~pt|nucoCohenTsIerntlamProsFenok~tt|nucoCoomFrenllpo^~cktaat^~rkma^~gera^~repins~it^osBoed~rt^osBoOrrkma^~stoo~bt^osBouebl^~tylibieAlu~bb^omeBlu~by^itilAbed~rb^omdBre^~mbbo^~dylome^~lettba^~usoc~fe^stha&~erttli~gerttli~gr^teitgl&~lyelrJta~slyelrJta~sy^llJearst&~lyellJyaroy~llJealoy~ry^llJealoy~rg&Egarstg~Egarst^~ggrEta~sg&EgicthMyedftgig~EgicthMyedftgi^~ggcEhiytdMteif~gg&EgndmoiadDteif~gggdEonamDiedftgi^~ggdEonamDiedftgi&~ggdEoldGteif~gggdEoldGteif~gg^EgldGoedftgi&~ggrEveildSteif~gggrEveildSteif~gg^EgerlvSiedftgi&~ggcEhiyt~mggcEhiyt~mg^Egicthmy&~ggdEonamdig~Egndmoia~dg^Egndmoia~dg&Egldgog~Egldgo^~ggdEol~gg&Egerlvsig~Egerlvsi^~ggrEveil~sg&Egicas~bggcEsiba^~ggcEsiba&~edSeerowflun~sedSeerowflun~sd^eerSwelonfsu&~leppeain~pleppeain~pe^plapnepi&~ryerwbrasty~rrbeawtr~sy^rrbeawtr~sy&rrbeuebly~rrbeuebl^~ryereblu~bt&eaTricomatt~eaTricomat^~atrecTmito~at&eaTrarstt~eaTrarst^~atrerTta~st&eatrt~eatr^~atre~tm&arChonmom~arChonmo^~rmhanCoo~my&rrbeonney~rrbeonne^~ryernbeo~ny&rrbeerttbiy~rrbeerttbi^~ryerrbteit~be&hiotmorSpesue~hiotmorSpesu^~iethooSmerup~sn&iootePplur~pontiPolerppu^~ontiPolerppu&~nkrilDcapiro~tnkrilDcapiro~tk^inDralicoptr&~ctraxteElu~bctraxteElu~bt^actrExuebl&~ctraxtdEret~actrExed~rt^actrExed~rs&mezyens~mezyen^~esymnz~el&oil~oi^~il~oe&lu~guegl^~uegl&~erngti~serngti~sr^geinst&~utonoc~cutonoc~ct^nucoco&~psromdgus~opdrum~gs^opdrum~gr&teanPltyenplr~teanPltyenpl^~erntlayPntle~pr&teanPlalet~perntlalPtape^~erntlalPtape&~erntlaePidicstper~teanPldecities~pr^teanPldecities~pr&teanPlkyac~terntlayPckta^~erntlayPckta&~erntlayPlaeClu~berntlayPlaeClu~br^teanPlayCluebl&~erntlayPladCrer~teanPlayCled~rr^teanPlayCled~rr&teanPldyan~cerntlayPndca^~erntlayPndca&~erntlacPtiasplr~teanPlicstla~pr^teanPlicstla~pr&teanPlerap~perntlarPpepa^~erntlarPpepa&~netienrptue~inntpeur~te^inntpeur~tx&Waedrlwi~saxdWleirsw^~axdWleirsw&~axcWtiuscax~Waicstau~cx^Waicstau~cx&Wardhax~Wardha^~axdWar~hx&Waftsox~Waftso^~axtWof~sg&giliirwhg~giliirwh^~igigrlhi~we&klucysnehoe~klucysneho^~lecksueyon~hr&teernvCoroic~merrtveonoCcrmi^~errtveonoCcrmi&~ceDiedadloe~icdDdeoa~le^icdDdeoa~le&ichDotmo~sceDithoosm^~ceDithoosm&~ceDildie~fceDildie~fe^icdDelfi&~ssPaboros~asoPob~rs^asoPob~re&ivDredchitgle~ivDredchitgl^~veridDhetcli~ge&ivDrtehi~wverieDitwh^~verieDitwh&~verieDlu~bverieDlu~be^ivDruebl&~veridDree~ivDred~re^ivDred~rl&iagVinfyisat~salVingyisftisa^~alVingyisftisa&~alVinghiesfrrel~iagVinshreef~rl^iagVinshreef~rl&iagVinativot~malVingtivatimo^~alVingtivatimo&~alVingtiragoviinl~iagVinatorignv~il^iagVinatorignv~il&iagVinrtfoom~calVingtiormfco^~alVingtiormfco&~anBeicag~manBeicag~mn^eacBgima&~alViudlo~calViudlo~cl^iadVoucl&~ssPant~assPant~as^astPan&~etcktit~keic~tt^keic~ts&anBelyel~jnseayBllje^~nseayBllje&~og~cog~cg^cor~taySmmguh~rpMomyum~gedUserngti~sldieShutonoc~carStnghircco~sarStop~poo~geesBouciViueog~rckhioCndmot~Anntia~gntgAinly~fntyArm~anteAir~fnt~aarBeelnntue~tleegBin~konpiorscs~tian~mlfworewer~depi~sugybad~lleetBenohi~ry^neho^~tylibi~aenllpon~leolePitwhn~leolePlu~benllPoed~resblub~besamfls~utonocgCinllfar~deenBlhegTinUsmste~iotshnglieSThngsisUmetin~noanwCloeleYThngsisUmetin~noaneClueBThngsisUmetin~noandCRehegTinUsesim~teeyBndWildWiomFrnsketos~utroSpomFrnsketos~erntlamProsFenok~tarctNenghiesfrReOfesutin~marctNengtiormfCoOfesutin~marctNengyisftiSaOfesutin~marctNengtivatiMoOfesutin~marctNengtiragoviInOfesutin~marctNenghiesfrReOfrsou~harctNengtiormfCoOfrsou~harctNengyisftiSaOfrsou~harctNengtivatiMoOfrsou~harctNengtiragoviInOfrsou~harctNeOfrsou~harctNeOfesutin#m26s@peTyee~bc$hiyt~my$arndgele$~icep$~reras~omroshffpus~etulAmonmo{"s@atst]#5}88883851162399.9@0ntouam"#atloeBblub"be@yp#t869999499433.29735n@owldoo"c6!22728412798099.9@0ntouam"#ngsiesBldeti@"pety5#0000509433.29743@1wndoolco!"50t@unmo#ag"insslenBoollba@"pety6#9899994439237.59@3wndoolco!"81149818947198990.t@unmo#ar"taecgNinfyisat"se@yp#t4539237.5921n@owldoo"c1!48818941198799.9@0ntouam"#arctNengtivatimo@"pety5#9433.29715@2wndoolco!"81149818947198990.t@unmo#ar"taecgNinatorignv"ie@yp#t4539237.5921n@owldoo"c1!48818941198799.9@0ntouam"#arctNenghiesfrre@"pety5#9433.29715@2wndoolco!"81149818947198990.t@unmo#ar"taecgNinrtfoom"ce@yp#t4539237.5921n@owldoo"c1!t@unmo#af"ufeBhiotmorSpesu@"pety5#9433.29711n@owldoo"c7!99999999473393.9@0ntouam"#atHemela"fe@yp#t94999999596966.819n@owldoo"c0!@1ntouam"#boombCom"be@yp#t9666864.n@owldoo"c1!t@unmo#ay"odel"me@yp#t94999999596966.829n@owldoo"c0!@1ntouam"#usoc"fe@yp#t94999999596966.819n@owldoo"c0!@1ntouam"#teas"he@yp#t94999999596966.819n@owldoo"c0!00@1ntouam"#veLobyab"te@yp#tllnun@owldoo"c[{s@ctfeef}#[]s@ipquee#be"ivssPaerowSharstP e,ivssPaarStop p,PceanChalicitcr5 .0+0n,iorsveondCRenttans i.1+0n,iorsveoneCitWhnttans i.1+0n,iorsveoneClutBanstin1 0.,+enllPouebl6 1.,*enllPotehi w.1*1n,leolePlu b.1*1n,leoldPre1 1.,*teRartveon c.5*1r,iepltiulyMitacap c.5*2@"etulAmarStmereup#sr"deli"gr@deli#gd"arGultbaco@"rduatGghri"#rduanGsoimcr@"rduatGef#lk"asdMonamdi@"skma"#erstniCautonoc"ck@ackpac#bt"ellBtape@"ltbe"#tsooyBmmgu@"tsoo#br"peopePid"tl@oo"t@{arGentreur#c{}d@neow}#@1erntlayPntle#p@1erntlalPtape1#r@teanPldecities#p@1erntlayPckta1#r@teanPlayCluebl1#r@teanPlayCled#r@1erntlayPndca1#r@teanPlicstla#p@1erntlarPpepa{"s@emit]#}]@0ndboe#ru@tedftgi"#alitig"de@yp"t0!d@on#buetrd@teif#gt"alob"ce@yp"t0!d@on#buetrd@teif#gn"toho"pe@yp"t0!d@on#buetrd@teif#ge"oldpta@"pety!"@0ndboe#ru@tedftgi"#lepoad"te@yp"t[{],0}d@on#buetrd@teif#ge"oldpta@"pety!"@0ndboe#ru@tedftgi"#lepoad"te@yp"t0!d@on#buetrd@teif#ge"oldpta@"pety!"@0ndboe#ru@tedftgi"#lepoad"te@yp"t0!d@on#buetrd@teif#ge"oldpta@"pety{",[}]@0ndboe#ru@tedftgi"#lepoad"te@yp"t0!d@on#buetrd@teif#ge"oldpta@"pety!"@0ndboe#ru@tedftgi"#ntyauo"be@yp"t0!d@on#buetrd@teif#gt"anoybu@"pety!"@0ndboe#ru@tedftgi"#ntyauo"be@yp"t[{],0}d@on#buetrd@teif#gt"anoybu@"pety!"@0ndboe#ru@tedftgi"#ntyauo"be@yp"t0!d@on#buetrd@teif#gt"anoybu@"pety!"@0ndboe#ru@tedftgi"#ntyauo"be@yp"t0!d@on#buetrd@teif#gt"anoybu@"pety{",[}]@0ndboe#ru@tedftgi"#ntyauo"be@yp"t0!d@on#buetrd@teif#gt"anoybu@"pety!"@0ndboe#ru@tedftgi"#ntyauo"be@yp"t0!d@on#buetrd@teif#gt"anoybu@"pety!"@0ndboe#ru@tedftgi"#ntyauo"be@yp"t[{],0}d@on#buetrd@teif#gt"anoybu@"pety!"@0ndboe#ru@tedftgi"#ntyauo"be@yp"t0!d@on#buetrd@teif#gt"anoybu@"pety!"@0ndboe#ru@tedftgi"#ntyauo"be@yp"t0!d@on#buetrd@teif#gt"anoybu@"pety{",[}]@0ndboe#ru@tedftgi"#myum"ge@yp"t0!d@on#buetrd@teif#gc"simu@"pety!"@0ndboe#ru@tedftgi"#icus"me@yp"t0!d@on#buetrd@teif#gc"simu@"pety!"@0ndboe#ru@tedftgi"#usioic"ve@yp"t[{],0}d@on#buetrd@teif#ga"njni@"pety!"@0ndboe#ru@tedftgi"#zyuz"fe@yp"t0!d@on#buetrd@teif#gy"stha@"pety!"@0ndboe#ru@tedftgi"#ndmoia"de@yp"t0!d@on#buetrd@teif#gy"bbta@"pety{",[}]@0ndboe#ru@tedftgi"#dyin"we@yp"t0!d@on#buetrd@teif#gr"deanmmco@"pety!"@0ndboe#ru@tedftgi"#tyosfr@"pety!"@0ndboe#ru@tedftgi"#olco@"pety!"@0ndboe#ru@tedftgi"#kouc"be@yp"t[{],0}d@on#buetrd@teif#ge"blum"be@yp"t0!d@on#buetrd@teif#ge"blub"be@yp"t0!d@on#buetrd@teif#gr"beom"be@yp"t0!d@on#buetrd@teif#gr"keoo"le@yp"t0!d@on#buetrd@teif#gc"siba@"pety{"[[e@iv~henllpoy~neho{"')
+    loadFromDB().then(res=>{
+
+        BeeSwarmSimulator(res[0].data.saveCode)
+    })
+
 }
 
 })()
@@ -29545,11 +29632,7 @@ function loop(now){
     
     if(user.clickedKeys.p){
 
-        
-
-
-        console.error(GENERATE_SAVE_CODE())
-
+        saveToDB('worldA',{saveCode:GENERATE_SAVE_CODE()})
     }
 
     if(user.keys.o){
