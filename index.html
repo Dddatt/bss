@@ -4258,6 +4258,7 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
 
 (function(){
 
+//IndexedDB code from Willard
 async function createDatabase() {
 
     return await new Promise(async (resolve, reject) => {
@@ -29040,6 +29041,8 @@ document.getElementById('useFullscreen').style.display='none'
 
 function RUN_SAVE_CODE(string){
 
+    console.error(string)
+
     let _st=string
 
     string=''
@@ -29057,7 +29060,7 @@ function RUN_SAVE_CODE(string){
     string=string.replaceAll('|','Field').replaceAll('?','"type":').replaceAll('&','ToTheWindShrine').replaceAll('^','Tokens').replaceAll('$','Puffshrooms').replaceAll('#',',"').replaceAll('\u0040','":').replaceAll('~','":0,"').replaceAll('!','},{')
 
     if(string[0]!=='{') string='{'+string
-
+    
     let save=JSON.parse(string)
 
     player.honey=save.honey
@@ -29065,6 +29068,14 @@ function RUN_SAVE_CODE(string){
     player.currentGear=save.currentGear
     player.stats=save.stats
     player.hive=[[]]
+    player.quests=save.quests
+
+    let activeQuests={}
+
+    for(let i in player.quests){
+        
+        activeQuests[player.quests[i].NPC]=true
+    }
 
     for(let i in save.items){
         
@@ -29091,6 +29102,23 @@ function RUN_SAVE_CODE(string){
         }
     }
 
+    for(let i in effects){
+        
+        if(save.passives[i]){
+            
+            effects[i].startVal=save.passives[i]
+        }
+    }
+
+    for(let i in save.hotbar){
+        
+        if(save.hotbar[i]){
+            
+            player.itemDragging=save.hotbar[i]
+            hotbarSlots[i].onmousedown()
+        }
+    }
+
     player.updateInventory()
     player.updateGear()
     player.updateHive()
@@ -29100,27 +29128,54 @@ function RUN_SAVE_CODE(string){
         player.effects.push(save.effects[i])
         effects[save.effects[i].type].svg.style.display='inline'
     }
+
+    for(let i in NPCs){
+        
+        NPCs[i].dialogueIndex=save.NPCs[i]
+        NPCs[i].activeQuest=activeQuests[i]
+    }
 }
 
 function GENERATE_SAVE_CODE(){
 
     let save={}
 
-    save.honey=player.honey|0
-    save.pollen=player.pollen|0
+    save.honey=player.honey
+    save.pollen=player.pollen
     save.hive=[]
     save.items={}
     save.owned={}
     save.currentGear=player.currentGear
     save.effects=player.effects
+    save.passives={}
     save.stats=player.stats
     save.NPCs={}
+    save.hotbar=[]
+    save.quests=player.quests
+
+    for(let i in hotbarSlots){
+        
+        save.hotbar.push(hotbarSlots[i].itemType)
+    }
+
+    let passives=[]
 
     for(let i=save.effects.length;i--;){
         
+        save.effects[i].cooldown=save.effects[i].cooldown|0
+        
         if(save.effects[i].type.indexOf('Passive')>-1){
             
+            passives.push(save.effects[i].type)
             save.effects.splice(i,1)
+        }
+    }
+
+    for(let i in effects){
+        
+        if(passives.indexOf(i)>-1){
+            
+            save.passives[i]=effects[i].startVal
         }
     }
 
