@@ -2196,22 +2196,19 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
 
 <div id='hoverText' style='background-color:rgb(0,0,0);position:fixed;color:rgb(255,255,255);display:none;text-align:center;padding:5px;z-index:1'></div>
 
-<div id='useFullscreen' style='position:fixed;z-index:1;background-color:rgb(0, 179, 255);top:0px;left:0px;bottom:0px;right:0px;'>
+<div id='useFullscreen' style='position:fixed;z-index:1;background-color:rgb(255,255,255);top:0px;left:0px;bottom:0px;right:0px;'>
     
-    <img style='position:fixed;left:0px;top:0px;margin:0px;padding:0px;width:600px;height:600px;z-index:-1' src='https://www.khanacademy.org/computer-programming/background/5476309507031040/latest.png'>
+    <canvas id='thumbnailCanv' style='position:fixed;left:50%;top:50%;z-index:-1;transform:translate(-50%,-50%);'></canvas>
+
+    <div style='position:fixed;left:50%;top:10%;text-align:center;font-size:45px;text-align:center;background-color:rgb(255,255,255,0.6);border-radius:15px;padding:5px;padding-left:25px;padding-right:25px;transform:translate(-50%,-50%);backdrop-filter:blur(10px)'>Bee Swarm Simulator</div>
     
-    <header style='text-align:center;margin-bottom:0px;font-size:35px;'>Bee Swarm Simulator</header>
-    <p style='text-align:center;margin-top:0px;'>Dat Approved!</p>
     
-    <p style='text-align:left;margin-top:0px;color:white;position:fixed;left:235px;top:100px'>press the load saved game button to *hopefully* start the game with a save file of a blue hive with a lot of buffs</p>
+    <button id='runFullScreen' style='margin-left:50%;margin-top:19%;width:300px;height:70px;background-color:rgb(248, 255, 150);transform:translate(-50%,-50%);font-family:comic sans ms;font-size:25px'>New Fullscreen Game</button>
+
+    <button id='noFullScreen' style='margin-left:50%;margin-top:25px;width:300px;height:70px;background-color:rgb(157, 255, 150);transform:translate(-50%,-50%);font-family:comic sans ms;font-size:25px'>New Local Game</button>
+
+    <button id='loadSavedGame' style='margin-left:50%;margin-top:25px;width:300px;height:70px;background-color:rgb(166, 166, 166);transform:translate(-50%,-50%);font-family:comic sans ms;font-size:25px'>Load Saved Game</button>
     
-    <span style='display:block;margin-top:50px;'></span>
-    <button id='runFullScreen' style='margin-left:10px;width:200px;height:50px;background-color:rgb(248, 255, 150);'>New Fullscreen Game</button>
-    <span style='display:block;margin-top:50px;'></span>
-    <button id='noFullScreen' style='margin-left:10px;width:200px;height:50px;background-color:rgb(157, 255, 150)'>New Local Game</button>
-    <span style='display:block;margin-top:50px;'></span>
-    <button id='loadSavedGame' style='margin-left:10px;width:200px;height:50px;background-color:rgb(166, 166, 166)'>Load Saved Game<br>(semi working)</button>
-    <!--<p></p>-->
 </div>
 
 <div id='UIBar' style='position:absolute;margin:0px;z-index:0;width:210px;height:30px;background-color:rgba(195,195,195,0.9);margin-top:105px;'>
@@ -4234,6 +4231,7 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
 <script src="MathHelper.js"></script>
 <script src="GLSLShaders.js"></script>
 <script src="mapMesh.js"></script>
+<script src="thumbnail.js"></script>
 
 <!-- <script src="music_popStar.js"></script>
 <script src="music_scorchingStar.js"></script>
@@ -4362,8 +4360,9 @@ document.getElementById('loadSavedGame').onclick=function(){
 
         BeeSwarmSimulator(res[0].data.saveCode)
     })
-
 }
+
+window.drawThumbnail(thumbnailCanv)
 
 })()
 
