@@ -2236,14 +2236,35 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
 
 <div id='mainInfoMenu' style='position:fixed;z-index:1;top:0px;left:0px;background-color:rgb(255,255,255);bottom:0px;right:0px;display:none;overflow-y:auto'>
 
-    <canvas id='thumbnailCanvCopy' style='position:fixed;left:50%;top:50%;z-index:-1;transform:translate(-50%,-50%);filter:blur(10px)'></canvas>
+    <canvas id='info_thumbnailCanvCopy' style='position:fixed;left:50%;top:50%;z-index:-1;transform:translate(-50%,-50%);filter:blur(10px)'></canvas>
 
     <div style='margin-top:20px;font-size:45px;text-align:center;'>Instructions & Info</div>
     
-    <button id='mainBack' style='margin-left:80px;margin-top:-70px;width:120px;height:60px;background-color:rgb(174, 216, 255);transform:translate(-50%,-50%);font-family:comic sans ms;font-size:25px'>Back</button>
+    <button id='info_mainBack' style='margin-left:80px;margin-top:-70px;width:120px;height:60px;background-color:rgb(174, 216, 255);transform:translate(-50%,-50%);font-family:comic sans ms;font-size:25px'>Back</button>
 
     <div style='margin-left:10px;font-size:19px;text-align:center;user-select:text'>Welcome to Bee Swarm Simulator! In this game, you collect pollen from flowers and make honey.<br><br>But you don't do it alone... You are the leader of your own personal swarm of bees!<br><br>Open your inventory by clicking on the egg button. Click on the egg to select it, and then click a slot in your hive to hatch it.<br><br>With your bees, go into the fields to collect pollen. You can collect pollen by swinging your tool or when your bee gathers. After your bag becomes full, go back to your hive and your bees will convert the pollen into honey.<br><br>Talk to bears and NPCs around the mountain and complete their quests for rewards!<br><br>Expand your hive by buying more eggs and level up bees with treats. Upgrade your tools to make more honey. Defeat monsters around the map for loot. Collect rare ingredients to craft powerful gear!<br><br><br><br><br>------------------------------------------<br><br><br><b>Not all features are accurate to the original. Many changes include dialogue, quests, gear stats, loot drops, certain calculations, improved RNG rates, and singleplayer. All graphics are recreations of the original, not copied. Gameplay is meant to be accelerated from the original through the use of decreased item & bee rarity + easier & more rewarding quests. Audio is semi-uncompleted for this game.</b><br><br>v2.0.0<br><br>Made by Dat<br><br>Original made by Onett<br><br>Some info from the BSS Fandom Wiki<br><br>Bugtesters: HB_The_Pencil, Astro<br><br>Other sources are credited wherever used in the code.<br><br><br></div>
 
+</div>
+
+<div id='mainSelectMenu' style='position:fixed;z-index:1;top:0px;left:0px;background-color:rgb(255,255,255);bottom:0px;right:0px;display:none;overflow-y:auto'>
+
+    <canvas id='select_thumbnailCanvCopy' style='position:fixed;left:50%;top:50%;z-index:-1;transform:translate(-50%,-50%);filter:blur(10px)'></canvas>
+
+    <div style='margin-top:20px;font-size:45px;text-align:center;'>Saved Games</div>
+    
+    <button id='select_mainBack' style='margin-left:80px;margin-top:-70px;width:120px;height:60px;background-color:rgb(174, 216, 255);transform:translate(-50%,-50%);font-family:comic sans ms;font-size:25px'>Back</button>
+
+    <div style='width:100%;height:50px;'>
+
+        <button id='createNewGame' style='position:absolute;left:50%;width:200px;height:50px;background-color:rgb(225,225,225);transform:translate(-210px,0px);font-family:comic sans ms;font-size:23px;'>New Game</button>
+
+        <button id='createImportedGame' style='position:absolute;left:50%;width:200px;height:50px;background-color:rgb(225,225,225);transform:translate(10px,0px);font-family:comic sans ms;font-size:23px;'>Import Game</button>
+
+    </div>
+
+    <br><br>
+
+    <div id='savedGames'></div>
 
 </div>
 
@@ -4376,9 +4397,9 @@ window.loadFromDB=loadFromDB
 window.saveToDB=saveToDB
 window.deleteFromDB=deleteFromDB
 
-function copyThumbnail(){
+function copyThumbnail(t){
 
-    let canv=document.getElementById('thumbnailCanvCopy')
+    let canv=document.getElementById(t+'_thumbnailCanvCopy')
 
     let ctx=canv.getContext('2d')
 
@@ -4396,32 +4417,152 @@ document.getElementById('mainNew').onclick=function(){
     w.document.close()
 }
 
+let addedDivsToSplice=[],ableToImport
+
 document.getElementById('mainPlay').onclick=function(){
+    
+    copyThumbnail('select')
 
     document.getElementById('mainMenu').style.display='none'
-    BeeSwarmSimulator()
+    document.getElementById('mainSelectMenu').style.display='block'
+
+    for(let i in addedDivsToSplice){
+
+        document.getElementById('savedGames').removeChild(addedDivsToSplice[i])
+    }
+
+    addedDivsToSplice=[]
+    ableToImport=true
+
+    document.getElementById('createNewGame').onclick=function(){
+
+        document.getElementById('mainSelectMenu').style.display='none'
+        document.getElementById('mainMenu').style.display='none'
+
+        let date=new Date(Date.now())
+
+        let lastSavedDate=`${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getDate().toString().padStart(2,'0')}/${date.getFullYear()}  ${date.getHours().toString().padStart(2,'0')}:${date.getMinutes().toString().padStart(2,'0')}:${date.getSeconds().toString().padStart(2,'0')}`
+
+        BeeSwarmSimulator({id:'Untitled: '+lastSavedDate})
+    }
+
+    document.getElementById('createImportedGame').onclick=function(){
+
+        alert("\nTo import a game, you'll need a string containing the saved data of the game. Copy the string, and then use CTRL+V in this program to start the game. An invalid code will cause the game to crash(refresh if this happens).")
+    }
+
+    document.addEventListener('paste',(e)=>{
+
+        if(!ableToImport) return
+
+        ableToImport=false
+
+        let text=e.clipboardData.getData('text/plain')
+
+        document.getElementById('mainSelectMenu').style.display='none'
+        document.getElementById('mainMenu').style.display='none'
+
+        let date=new Date(Date.now())
+
+        let lastSavedDate=`${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getDate().toString().padStart(2,'0')}/${date.getFullYear()}  ${date.getHours().toString().padStart(2,'0')}:${date.getMinutes().toString().padStart(2,'0')}:${date.getSeconds().toString().padStart(2,'0')}`
+
+        BeeSwarmSimulator({id:'Imported: '+lastSavedDate,saveCode:text})
+    })
+
+    loadFromDB().then(res=>{
+
+        // document.getElementById('mainSelectMenu').style.display='none'
+        // document.getElementById('mainInfoMenu').style.display='none'
+        // document.getElementById('mainMenu').style.display='none'
+        // BeeSwarmSimulator()
+
+        window.initSave=function(index){
+
+            document.getElementById('mainSelectMenu').style.display='none'
+            document.getElementById('mainInfoMenu').style.display='none'
+            document.getElementById('mainMenu').style.display='none'
+            BeeSwarmSimulator({id:res[index].id,saveCode:res[index].data.saveCode})
+        }
+
+        let deleteSaveConfirmation=true
+
+        window.deleteSave=function(index){
+
+            if(deleteSaveConfirmation){
+
+                alert('\nDo you really want to delete save "'+res[index].id+'"? To permanently delete this save, click the delete button again after closing this message.')
+                deleteSaveConfirmation=false
+
+            } else {
+
+                deleteSaveConfirmation=true
+                deleteFromDB(res[index].id)
+                document.getElementById('mainPlay').onclick()
+            }
+        }
+
+        window.renameSave=function(index){
+
+            deleteFromDB(res[index].id)
+
+            saveToDB(document.getElementById('saveName'+index).value,{
+                
+                lastSaved:Date.now(),
+                saveCode:res[index].data.saveCode
+            })
+            
+            document.getElementById('mainPlay').onclick()
+        }
+
+        for(let i in res){
+
+            let div=document.createElement('div')
+
+            div.style.marginLeft=((window.innerWidth*0.5-250)|0)+'px'
+            div.style.width='500px'
+            div.style.height='70px'
+            div.style.borderRadius='5px'
+            div.style.border='4px solid rgb(180,160,0)'
+            div.style.backgroundColor='rgb(250,230,50)'
+            div.style.marginBottom='15px'
+
+            addedDivsToSplice.push(div)
+
+            let date=new Date(res[i].data.lastSaved)
+
+            let lastSavedDate=`${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getDate().toString().padStart(2,'0')}/${date.getFullYear()}&nbsp;&nbsp;${date.getHours().toString().padStart(2,'0')}:${date.getMinutes().toString().padStart(2,'0')}:${date.getSeconds().toString().padStart(2,'0')}`
+
+            div.innerHTML="<input id='saveName"+i+"' style='margin-top:3px;margin-left:3px;font-size:22px;background-color:rgb(0,0,0,0);border:none;font-family:comic sans ms;padding-left:4px;padding-bottom:5px;background-color:rgb(0,0,0,0.1)' spellcheck='false' size='17' value='"+res[i].id+"' onchange='window.renameSave("+i+")'><div style='margin-top:7px;margin-left:5px;font-size:14px;color:rgb(60,60,60)'>Last Saved: "+lastSavedDate+"</div><div style='margin-left:450px;margin-top:-25px;width:70px;height:32px;transform:translate(-50%,-50%);font-size:14px;background-color:rgb(210,50,50);border-radius:4px;border:2px solid black;text-align:center;font-size:18px;padding-top:3px;cursor:pointer' onclick='window.deleteSave("+i+")'>Delete</div><div style='margin-left:360px;margin-top:-39px;width:70px;height:32px;transform:translate(-50%,-50%);font-size:14px;background-color:rgb(50,210,50);border-radius:4px;border:2px solid black;text-align:center;font-size:18px;padding-top:3px;cursor:pointer' onclick='window.initSave("+i+")'>Play</div>"
+
+            document.getElementById('savedGames').appendChild(div)
+        }
+
+        if(!res.length){
+
+            let div=document.createElement('div')
+
+            addedDivsToSplice.push(div)
+
+            div.innerHTML="<p style='text-align:center;color:rgb(60,60,60)'>You have no saves. Start a new game or import one.</p>"
+
+            document.getElementById('savedGames').appendChild(div)
+        }
+    })
 }
-
-// document.getElementById('loadSavedGame').onclick=function(){
-
-//     loadFromDB().then(res=>{
-
-//         BeeSwarmSimulator(res[0].data.saveCode)
-//     })
-// }
 
 document.getElementById('mainInfo').onclick=function(){
 
-    copyThumbnail()
+    copyThumbnail('info')
     
     document.getElementById('mainMenu').style.display='none'
     document.getElementById('mainInfoMenu').style.display='block'
+}
 
-    document.getElementById('mainBack').onclick=function(){
+document.getElementById('info_mainBack').onclick=document.getElementById('select_mainBack').onclick=function(){
 
-        document.getElementById('mainInfoMenu').style.display='none'
-        document.getElementById('mainMenu').style.display='block'
-    }
+    document.getElementById('mainInfoMenu').style.display='none'
+    document.getElementById('mainSelectMenu').style.display='none'
+    document.getElementById('mainMenu').style.display='block'
 }
 
 
@@ -4436,7 +4577,7 @@ window.drawThumbnail(document.getElementById('thumbnailCanv'))
 
 var _M=Math
 
-function BeeSwarmSimulator(INITALIZATION_CODE){
+function BeeSwarmSimulator(DATA){
 
 let audio_ctx=new AudioContext(),soundCache={}
 
@@ -4569,7 +4710,7 @@ let tex_ctx=texCanvas.getContext('2d',{willReadFrequently:true})
 
 if(!gl){
     
-    alert('WebGL2 is not supported on your brower')
+    alert('WebGL2 is not supported. Switch to a compatiable browser or computer to play.')
     return
 }
 
@@ -29101,8 +29242,6 @@ ctx.textBaseline='middle'
 
 function RUN_SAVE_CODE(string){
 
-    console.error(string)
-
     let _st=string
 
     string=''
@@ -29222,7 +29361,7 @@ function GENERATE_SAVE_CODE(){
 
     for(let i=save.effects.length;i--;){
         
-        save.effects[i].cooldown=save.effects[i].cooldown|0
+        save.effects[i].cooldown=Math.ceil(save.effects[i].cooldown)
         
         if(save.effects[i].type.indexOf('Passive')>-1){
             
@@ -29292,8 +29431,23 @@ function GENERATE_SAVE_CODE(){
     return string
 }
 
-if(INITALIZATION_CODE)
-    RUN_SAVE_CODE(INITALIZATION_CODE)
+if(DATA.saveCode)
+    RUN_SAVE_CODE(DATA.saveCode)
+
+function SAVE_GAME(){
+
+    let code=GENERATE_SAVE_CODE()
+
+    console.error(code)
+
+    saveToDB(DATA.id,{
+        
+        lastSaved:Date.now(),
+        saveCode:code
+    })
+}
+
+SAVE_GAME()
 
 
 function loop(now){
@@ -29747,7 +29901,7 @@ function loop(now){
     
     if(user.clickedKeys.p){
 
-        saveToDB('worldA',{saveCode:GENERATE_SAVE_CODE()})
+        SAVE_GAME()
     }
 
     if(user.keys.o){
