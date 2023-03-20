@@ -4417,7 +4417,7 @@ document.getElementById('mainNew').onclick=function(){
     w.document.close()
 }
 
-let addedDivsToSplice=[],ableToImport
+let addedDivsToSplice=[],ableToImport,printedCode
 
 document.getElementById('mainPlay').onclick=function(){
     
@@ -4514,6 +4514,31 @@ document.getElementById('mainPlay').onclick=function(){
             document.getElementById('mainPlay').onclick()
         }
 
+        window.getSave=function(index){
+
+            navigator.clipboard.writeText(res[index].data.saveCode).then(()=>{
+
+                alert('\nThe save code for save "'+res[index].id+'" has been copied to your clipboard.')
+
+            }).catch(e=>{
+
+                if(printedCode){
+
+                    document.getElementById('savedGames').removeChild(printedCode)
+                }
+
+                let div=document.createElement('div')
+
+                printedCode=div
+
+                div.innerHTML="<div style='font-size:10px;font-family:trebuchet ms;word-break:break-all;padding-left:10px;padding-right:10px;user-select:text'><br><br>"+res[index].data.saveCode+'<br><br><br><br><br></div>'
+
+                document.getElementById('savedGames').appendChild(div)
+
+                alert('\nThere was an error copying the save code for save "'+res[index].id+'" to your clipboard. The code has been printed at the bottom of the page instead.')
+            })
+        }
+
         res.sort((a,b)=>b.data.lastSaved-a.data.lastSaved)
 
         for(let i in res){
@@ -4534,7 +4559,7 @@ document.getElementById('mainPlay').onclick=function(){
 
             let lastSavedDate=`${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getDate().toString().padStart(2,'0')}/${date.getFullYear()}&nbsp;&nbsp;${date.getHours().toString().padStart(2,'0')}:${date.getMinutes().toString().padStart(2,'0')}:${date.getSeconds().toString().padStart(2,'0')}`
 
-            div.innerHTML="<input id='saveName"+i+"' style='margin-top:3px;margin-left:3px;font-size:22px;background-color:rgb(0,0,0,0);border:none;font-family:comic sans ms;padding-left:4px;padding-bottom:5px;background-color:rgb(0,0,0,0.1)' spellcheck='false' size='17' value='"+res[i].id+"' onchange='window.renameSave("+i+")'><div style='margin-top:7px;margin-left:5px;font-size:14px;color:rgb(60,60,60)'>Last Saved: "+lastSavedDate+"</div><div style='margin-left:450px;margin-top:-25px;width:70px;height:32px;transform:translate(-50%,-50%);font-size:14px;background-color:rgb(210,50,50);border-radius:4px;border:2px solid black;text-align:center;font-size:18px;padding-top:3px;cursor:pointer' onclick='window.deleteSave("+i+")'>Delete</div><div style='margin-left:360px;margin-top:-39px;width:70px;height:32px;transform:translate(-50%,-50%);font-size:14px;background-color:rgb(50,210,50);border-radius:4px;border:2px solid black;text-align:center;font-size:18px;padding-top:3px;cursor:pointer' onclick='window.initSave("+i+")'>Play</div>"
+            div.innerHTML="<input id='saveName"+i+"' style='margin-top:3px;margin-left:3px;font-size:22px;background-color:rgb(0,0,0,0);border:none;font-family:comic sans ms;padding-left:4px;padding-bottom:5px;background-color:rgb(0,0,0,0.1)' spellcheck='false' size='17' value='"+res[i].id+"' onchange='window.renameSave("+i+")'><div style='margin-top:7px;margin-left:5px;font-size:14px;color:rgb(60,60,60)'>Last Saved: "+lastSavedDate+"</div><div style='margin-left:460px;margin-top:-25px;width:52px;height:27px;transform:translate(-50%,-50%);background-color:rgb(210,50,50);border-radius:4px;border:2px solid black;text-align:center;font-size:16px;cursor:pointer' onclick='window.deleteSave("+i+")'>Delete</div><div style='margin-left:395px;margin-top:-31px;width:52px;height:27px;transform:translate(-50%,-50%);background-color:rgb(195,100,255);border-radius:4px;border:2px solid black;text-align:center;font-size:16px;cursor:pointer' onclick='window.getSave("+i+")'>Export</div><div style='margin-left:330px;margin-top:-31px;width:52px;height:27px;transform:translate(-50%,-50%);background-color:rgb(50,210,50);border-radius:4px;border:2px solid black;text-align:center;font-size:16px;cursor:pointer' onclick='window.initSave("+i+")'>Play</div>"
 
             document.getElementById('savedGames').appendChild(div)
         }
@@ -29505,6 +29530,11 @@ function SAVE_GAME(){
 }
 
 SAVE_GAME()
+
+window.addEventListener('beforeunload',function(e){
+
+    SAVE_GAME()
+})
 
 
 function loop(now){
