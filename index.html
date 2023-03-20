@@ -4448,7 +4448,7 @@ document.getElementById('mainPlay').onclick=function(){
 
     document.getElementById('createImportedGame').onclick=function(){
 
-        alert("\nTo import a game, you'll need a string containing the saved data of the game. Copy the string, and then use CTRL+V in this program to start the game. An invalid code will cause the game to crash(refresh if this happens).")
+        alert("\nTo import a game, you'll need a string containing the saved data of the game. Copy the string, and then use CTRL+V in this program to start the game.\n\nAn invalid code will create an error message. There is a chance errors in the save code are not detected and pass through. This may corrupt the game, resulting in crashes.")
     }
 
     document.addEventListener('paste',(e)=>{
@@ -29306,7 +29306,18 @@ function RUN_SAVE_CODE(string){
 
     if(string[0]!=='{') string='{'+string
     
-    let save=JSON.parse(string)
+    let save
+
+    try {
+
+        save=JSON.parse(string)
+
+    } catch(e){
+
+        alert('\nSave code is invalid! The save code may contain other errors not detected by this program.\n\nAn empty new game will now be loaded.')
+
+        return
+    }
 
     player.honey=save.honey
     player.pollen=save.pollen
