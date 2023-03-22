@@ -50,7 +50,7 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         <title>bss</title>
         <link rel="icon" type="image/x-icon" href="icon-image.png">
     </head>
-    <body>
+    <body onload="main()">
 <canvas id='gl-canvas'></canvas>
 <canvas id='ui-canvas'></canvas>
 <canvas id='tex-canvas' width='2048' height='2048'></canvas>
@@ -2224,13 +2224,6 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
     <button id='mainInfo' style='margin-left:50%;margin-top:25px;width:300px;height:70px;background-color:rgb(248, 129, 129);transform:translate(-50%,-50%);font-family:comic sans ms;font-size:23px'>Instructions & Info</button>
 
     <button id='mainNew' style='margin-left:50%;margin-top:25px;width:300px;height:70px;background-color:rgb(248, 255, 150);transform:translate(-50%,-50%);font-family:comic sans ms;font-size:23px'>Open In New Window</button>
-
-
-    <!-- <button id='runFullScreen' style='margin-left:50%;margin-top:19%;width:300px;height:70px;background-color:rgb(248, 255, 150);transform:translate(-50%,-50%);font-family:comic sans ms;font-size:25px'>New Fullscreen Game</button>
-
-    <button id='noFullScreen' style='margin-left:50%;margin-top:25px;width:300px;height:70px;background-color:rgb(157, 255, 150);transform:translate(-50%,-50%);font-family:comic sans ms;font-size:25px'>New Local Game</button>
-
-    <button id='loadSavedGame' style='margin-left:50%;margin-top:25px;width:300px;height:70px;background-color:rgb(166, 166, 166);transform:translate(-50%,-50%);font-family:comic sans ms;font-size:25px'>Load Saved Game</button> -->
     
 </div>
 
@@ -4311,7 +4304,7 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
 
 <script type='application/javascript'>
 
-(function(){
+function main(){
 
 //IndexedDB code from Willard
 async function createDatabase() {
@@ -4413,8 +4406,9 @@ document.getElementById('mainNew').onclick=function(){
 
     let w=window.open()
     w.document.open()
-    w.document.write('<!doctype html><html>'+document.querySelector('html').innerHTML.replace('var _M=Math','var _M=Math;window.thisProgramIsInFullScreen=true'))
+    w.document.write('<!doctype html><html>'+document.querySelector('html').innerHTML.replaceAll('var _M=Math','var _M=Math;window.thisProgramIsInFullScreen=true'))
     w.document.close()
+
 }
 
 let addedDivsToSplice=[],ableToImport,printedCode
@@ -4595,7 +4589,7 @@ document.getElementById('info_mainBack').onclick=document.getElementById('select
 
 window.drawThumbnail(document.getElementById('thumbnailCanv'))
 
-})()
+}
 
 </script>
 
