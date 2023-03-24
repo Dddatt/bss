@@ -3102,6 +3102,54 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         
         </g>
     </svg>
+
+    <svg id='translator' style='width:200;height:70;cursor:pointer;border-radius:5px'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='130' y='18' style='font-family:trebuchet ms;font-size:16.5px;' fill='rgb(0,0,0)' text-anchor='middle'>Translator</text>
+        <text x='130' y='35' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>Allows you to talk to</text>
+        <text x='130' y='49' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>Gifted Bucko and</text>
+        <text x='130' y='63' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>Riley Bee or Stickbug.</text>
+        <text id='translator_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='scale(-1,1) rotate(-45) scale(1,1.3) rotate(58) scale(1,1) translate(-28,37) scale(0.9,0.9)'>
+
+        <path fill='rgb(150,150,150)' stroke='black' stroke-width='2' d='M -5 0L0 -5L5 0L0 5z' transform='scale(1,1) translate(-10,-12)'></path>
+        
+        <path fill='rgb(150,150,150)' stroke='black' stroke-width='2' d='M -20 0L0 -15L20 0L0 15z'></path>
+        <path fill='rgb(115,115,115)' stroke='black' stroke-width='2' d='M0 25L-20 10L-20 0L0 15z'></path>
+        <path fill='rgb(100,100,100)' stroke='black' stroke-width='2' d='M0 25L20 10L20 0L0 15z'></path>
+        
+        <path fill='rgb(230,230,230)' stroke='black' stroke-width='2.5' d='M -20 0L0 -15L20 0L0 15z' transform='scale(0.35,0.35) translate(-3,-15)'></path>
+        <path fill='rgb(230,230,230)' stroke='black' stroke-width='2.5' d='M -20 0L0 -15L20 0L0 15z' transform='scale(0.35,0.35) translate(-21,-1)'></path>
+        
+        <path fill='rgb(225,195,0)' stroke='black' stroke-width='3' d='M -20 0L0 -15L20 0L0 15z' transform='scale(0.2,0.2) translate(42,1)'></path>
+        <path fill='rgb(230,60,50)' stroke='black' stroke-width='3' d='M -20 0L0 -15L20 0L0 15z' transform='scale(0.2,0.2) translate(6,28)'></path>
+        
+        </g>
+    </svg>
+
+    <svg id='spiritPetal' style='width:200;height:70;cursor:pointer;border-radius:5px'>
+        
+        <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
+        <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
+        <text x='130' y='18' style='font-family:trebuchet ms;font-size:16.5px;' fill='rgb(0,0,0)' text-anchor='middle'>Spirit Petal</text>
+        <text x='130' y='35' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>A delicate flower</text>
+        <text x='130' y='49' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>petal used for crafting</text>
+        <text x='130' y='63' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>powerful rare items.</text>
+        <text id='spiritPetal_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='scale(1.1,1.1) translate(-5,3)'>
+        <path fill='rgb(219, 206, 222)' stroke='black' stroke-width='1.7' d='M 20 39C 30 42 44 48 57 27C 41 9 25 15 20 39'></path>
+        <path fill='rgb(0,0,0,0.1)' d='M 20 39C 30 42 44 48 57 27C 41 9 25 15 20 39' transform='scale(0.6,0.6) translate(26,19)'></path>
+        <path fill='rgb(0,0,0,0.08)' d='M 20 39C 30 42 44 48 57 27C 41 9 25 15 20 39' transform='scale(0.7,0.5) translate(20,36)'></path></g>
+        <path stroke='white' stroke-width='1.75' d='M-3 2L3 0M-1 -2L1 4' transform='translate(51,26) rotate(-12) scale(1.2,1.2)'></path>
+        <path stroke='white' stroke-width='1.75' d='M-3 2L3 0M-1 -2L1 4' transform='translate(35,26) rotate(44) scale(1.1,1.1)'></path>
+        <path stroke='white' stroke-width='1.75' d='M-3 2L3 0M-1 -2L1 4' transform='translate(42,41) rotate(23) scale(1.1,1.1)'></path>
+        <path stroke='white' stroke-width='1.75' d='M-3 2L3 0M-1 -2L1 4' transform='translate(23,35) rotate(20) scale(1.3,1.3)'></path>
+        
+    </svg>
     
     <svg id='treat' style='width:200;height:70;cursor:pointer;border-radius:5px'>
         
@@ -9856,6 +9904,18 @@ let toolParticle=0
 let howManyToFeed=document.getElementById('howManyToFeed'),howManyMessage=document.getElementById('howManyMessage'),feedAmount=document.getElementById('feedAmount')
 
 let items={
+
+    translator:{
+        
+        amount:0,u:128*0/2048,v:128*0/2048,value:Infinity,
+        use:function(){}
+    },
+
+    spiritPetal:{
+        
+        amount:0,u:128*0/2048,v:128*0/2048,value:Infinity,
+        use:function(){}
+    },
 
     cog:{
         
@@ -23801,7 +23861,7 @@ player=(function(out){
         capacityBar.style.fill='rgb('+p*255*1.5+','+(1-p)*255*1.5+',0)'
         out.health=Math.min(out.health+dt*2.5,100)
         
-        if(out.health<=0){
+        if(out.health<=0||out.body.position.y<-50){
             
             if(!out.dead){
                 
