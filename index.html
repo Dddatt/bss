@@ -23937,7 +23937,7 @@ player=(function(out){
                 pages[3].innerHTML='<div style="cursor:pointer;margin-top:5px;background-color:rgb(170,170,170);font-size:23px;border-radius:3px;color:rgb(0,0,0);text-align:center" id="saveGame">Save & Exit</div><div style="cursor:pointer;margin-top:10px;background-color:rgb(170,170,170);font-size:15px;border-radius:3px;color:'+(player.setting_enablePollenText?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenText">Pollen Text: '+(player.setting_enablePollenText?'On':'Off')+'</div>'+'<div style="cursor:pointer;margin-top:5px;background-color:rgb(170,170,170);font-size:15px;border-radius:3px;color:'+(player.setting_enablePollenAbv?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenAbv">Abbreviate Pollen: '+(player.setting_enablePollenAbv?'On':'Off')+'</div>'+player.statString
                 
             })
-//@
+
             document.getElementById('saveGame').addEventListener('click',function(){
                 
                 SAVE_GAME()
@@ -29402,7 +29402,8 @@ function RUN_SAVE_CODE(string){
         
         if(save.passives[i]){
             
-            effects[i].startVal=save.passives[i]
+            effects[i].startVal=save.passives[i].startVal
+            effects[i].currentCooldown=save.passives[i].currentCooldown
         }
     }
 
@@ -29473,7 +29474,7 @@ function GENERATE_SAVE_CODE(){
         
         if(passives.indexOf(i)>-1){
             
-            save.passives[i]=effects[i].startVal
+            save.passives[i]={startVal:effects[i].startVal,currentCooldown:effects[i].currentCooldown}
         }
     }
 
@@ -29554,6 +29555,9 @@ window.addEventListener('beforeunload',function(e){
 
     SAVE_GAME()
 })
+
+
+player.updateGear()
 
 
 function loop(now){
