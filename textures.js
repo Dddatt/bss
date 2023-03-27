@@ -5621,7 +5621,6 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillRect(0,213,128,128/3|0|0+1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
-    //@
     let pi2=Math.PI*2,side=pi2/10
     
     function star(c,x=0,y=0){
@@ -8590,6 +8589,54 @@ window.textures_decals=function(tex_ctx){
     tex_ctx.strokeStyle='rgb(0,255,255,0.3)'
     e(0,-4,8,8*0.75)
     tex_ctx.stroke()
+    tex_ctx.setTransform(1,0,0,1,0,0)
+
+
+    let canvas=document.getElementById('tex-canvas')
+    
+    tex_ctx.translate(-3,128*2+24)
+    tex_ctx.scale(1.75,1.75)
+    canvg(canvas,"<svg><path stroke='black' stroke-width='1.5' fill='rgb(209, 151, 57)' d='M 21 44L 37 50 L 53 44 L 53 11L 38 3L 21 11z'></path><path fill='rgb(0,0,0,0.1)' d='M 37 50 L 53 44 L 53 11L 38 3z'></path><path stroke='black' stroke-width='1' fill='rgb(89, 62, 19)' d='M 21 12L 38 3 L 53 11 L 38 19z'></path><circle stroke='black' stroke-width='1' cx='50' cy='4' r='9' fill='rgb(0,190,50)' transform='scale(0.75,1)'></circle><path stroke='rgb(153, 109, 38)' stroke-width='2' fill='rgb(0,0,0,0)' d='M 38 26L 22 20M 52 19L 38 26M 45 22L 39 48M 45 22L 52 44M 30 22L 38 50M 30 22L 22 45'></path></svg>")
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(117,128*2+4)
+    tex_ctx.scale(1.85,1.9)
+    canvg(canvas,"<svg><path stroke='black' stroke-width='1.5' fill='rgb(240, 240, 45)' d='M 55 50 C 45 56 26 53 27 48L 24 30L 24 23C 31 16 47 13 58 22L 58 34z'></path><circle cx='42' cy='59' r='11' fill='rgb(0,0,0,0.3)' transform='scale(1,0.4)'></circle><path stroke='rgb(0,0,0,0.1)' fill='rgb(0,0,0,0)' stroke-width='3' d='M 25 33 C 36 37 38 40 57 35'></path>")
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(117+128,128*2+4)
+    tex_ctx.scale(1.85,1.9)
+    canvg(canvas,"<svg><path stroke='black' stroke-width='1.5' fill='rgb(255, 145, 250)' d='M 55 50 C 45 56 26 53 27 48L 24 30L 24 23C 31 16 47 13 58 22L 58 34z'></path><circle cx='42' cy='59' r='11' fill='rgb(0,0,0,0.3)' transform='scale(1,0.4)'></circle><path stroke='rgb(0,0,0,0.1)' fill='rgb(0,0,0,0)' stroke-width='3' d='M 25 33 C 36 37 38 40 57 35'></path><path stroke='rgb(255,255,255)' fill='rgb(0,0,0,0)' stroke-width='3.5' d='M 27 47 C 34 46 41 42 41 39M 34 52 C 56 44 49 42 51 38'></path><circle cx='30' cy='30' r='2.5' fill='rgb(0,205,0)'></circle><circle cx='38' cy='33' r='2.5' fill='rgb(255,255,0)'></circle><circle cx='48' cy='32' r='2.5' fill='rgb(0,105,255)'></circle><circle cx='54' cy='28' r='2' fill='rgb(255,0,0)'></circle>")
+    tex_ctx.setTransform(1,0,0,1,0,0)
+
+    tex_ctx.translate(117+128*2,128*2+4)
+    tex_ctx.scale(1.85,1.9)
+    canvg(canvas,"<svg><path stroke='black' stroke-width='1.5' fill='rgb(255, 69, 69)' d='M 55 50 C 45 56 26 53 27 48L 24 30L 24 23C 31 16 47 13 58 22L 58 34z'></path><circle cx='42' cy='59' r='11' fill='rgb(0,0,0,0.3)' transform='scale(1,0.4)'></circle><path stroke='rgb(0,0,0,0.1)' fill='rgb(0,0,0,0)' stroke-width='3' d='M 25 33 C 36 37 38 40 57 35'></path><circle cx='33' cy='43' r='2' fill='rgb(0,0,0,0.3)'></circle><circle cx='42' cy='46' r='2' fill='rgb(0,0,0,0.3)'></circle><circle cx='51' cy='43' r='2' fill='rgb(0,0,0,0.3)'></circle></circle>")
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(117+128*3,128*2+4)
+    tex_ctx.scale(1.85,1.9)
+    canvg(canvas,"<svg><path stroke='black' stroke-width='1.5' fill='rgb(89, 71, 255)' d='M 55 50 C 45 56 26 53 27 48L 24 30L 24 23C 31 16 47 13 58 22L 58 34z'></path><circle cx='42' cy='59' r='11' fill='rgb(0,0,0,0.3)' transform='scale(1,0.4)'></circle><path stroke='rgb(0,0,0,0.1)' fill='rgb(0,0,0,0)' stroke-width='3' d='M 25 33 C 36 37 38 40 57 35'></path><circle cx='33' cy='43' r='2' fill='rgb(0,0,0,0.3)'></circle><circle cx='42' cy='46' r='2' fill='rgb(0,0,0,0.3)'></circle><circle cx='51' cy='43' r='2' fill='rgb(0,0,0,0.3)'></circle>")
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128+128*4,128*2+-1)
+    tex_ctx.scale(1.8,1.8)
+    canvg(canvas,"<svg><circle cx='35' cy='46' r='16' stroke='black' stroke-width='1.5' fill='rgb(188, 222, 153)' ></circle><path stroke='black' stroke-width='1.5' fill='rgb(250,250,250)' d='M 21 33 C 20 39 50 39 49 33L49 25C49 16 21 16 21 25z'></path><circle cx='35' cy='60' r='10' fill='rgb(0,0,0,0.4)' transform='scale(1,0.4)'></circle><path stroke='rgb(225,225,0)' stroke-width='4' fill='rgb(0,0,0,0)' d='M 26 36 L 26 27M 35 36 L 35 29M 44 36 L 44 27'></path><path stroke='rgb(255,120,0)' stroke-width='3' fill='rgb(0,0,0,0)' d='M 26 59 L 35 38M 44 59 L 35 38'></path><path stroke='rgb(0,100,240)' stroke-width='3' fill='rgb(0,0,0,0)' d='M 21 38 L 35 62M 35 62 L 49 38'></path><circle cx='35' cy='25' r='1.5' fill='rgb(220,0,0)' transform='scale(1,2)'></circle><circle cx='23' cy='25' r='1' fill='rgb(220,0,0)' transform='scale(1,2)'></circle><circle cx='47' cy='25' r='1' fill='rgb(220,0,0)' transform='scale(1,2)'></circle>");
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(153+128*5,128*2+38)
+    tex_ctx.scale(1.8,1.8)
+    canvg(canvas,"<svg><path stroke='black' stroke-width='1.5' fill='rgb(84, 222, 98)' d='M20 40 C 25 45 45 45 50 40L60 30L50 18C45 10 25 10 20 18L10 30z' transform='scale(0.6,1)'></path><path  fill='rgb(0,0,0,0.2)' d='M20 40 C 25 45 45 45 50 40L60 30C 44 38 30 41 10 30z' transform='scale(0.6,1)'></path><g transform='translate(2,-18) scale(0.9,0.9)'><path stroke='black' stroke-width='1.5' fill='rgb(84, 222, 98)' d='M20 40 C 25 45 45 45 50 40L60 30L50 18C45 10 25 10 20 18L10 30z' transform='scale(0.6,1)'></path><path  fill='rgb(0,0,0,0.2)' d='M20 40 C 25 45 45 45 50 40L60 30C 44 38 30 41 10 30z' transform='scale(0.6,1)'></path></g><path stroke='rgb(84, 222, 98)' stroke-width='3' fill='rgb(0,0,0,0)' d='M21 18 C 25 24 45 23 49 18' transform='scale(0.6,1)'></path><path stroke='black' stroke-width='1' fill='rgb(255,255,0)' d='M 22 23 L 28 32L 16 32z'></path><path stroke='black' stroke-width='1.5' fill='rgb(0,0,0,0)' d='M 22 26 L 22 28M 19 30.5 L 20.5 29.5M 25.5 30.5 L 23.5 29.5'></path><circle fill='rgb(0,0,0)' cx='22' cy='29.25' r='0.8'></circle><g transform='translate(2,-18) scale(0.9,0.9)'><path stroke='black' stroke-width='1' fill='rgb(255,255,0)' d='M 22 23 L 28 32L 16 32z'></path><path stroke='black' stroke-width='1.5' fill='rgb(0,0,0,0)' d='M 22 26 L 22 28M 19 30.5 L 20.5 29.5M 25.5 30.5 L 23.5 29.5'></path><circle fill='rgb(0,0,0)' cx='22' cy='29.25' r='0.8'></circle></g><circle fill='rgb(0,0,0,0.3)' cx='21' cy='-4' r='5' transform='scale(1,0.6)'></circle>");
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(134+128*6,128*2+0)
+    tex_ctx.scale(1.75,1.75)
+    canvg(canvas,"<svg><circle cx='35' cy='49' r='16' stroke='black' stroke-width='1.5' fill='rgb(240, 240, 178)' ></circle><path stroke='black' stroke-width='1.5' fill='rgb(240, 240, 178)' d='M 21 33 C 20 39 50 39 49 33L49 25C49 16 21 16 21 25z'></path><circle cx='35' cy='60' r='10' fill='rgb(0,0,0,0.4)' transform='scale(1,0.4)'></circle><circle cx='35' cy='42' r='3' fill='rgb(0,200,80)' transform='scale(1,1.25)'></circle><circle cx='25' cy='42' r='2' fill='rgb(255,255,0)' transform='scale(1,1.25)'></circle><circle cx='45' cy='42' r='2' fill='rgb(255,255,0)' transform='scale(1,1.25)'></circle><path stroke='black' stroke-width='1' fill='rgb(255,255,255)' d='M 30 30 C 22 45 30 37 35 47C 37 37 44 45 40 30' transform='translate(-7,-8) scale(1.2,1.2)'></path><path stroke='black' stroke-width='1' fill='rgb(255,255,255)' d='M 30 30 C 22 45 30 37 35 47C 37 37 44 45 40 30' transform='translate(8,-26) scale(1.2,1.2) rotate(30)'></path><path stroke='black' stroke-width='1' fill='rgb(255,255,255)' d='M 30 30 C 22 45 30 37 35 47C 37 37 44 45 40 30' transform='translate(-11,16) scale(1.2,1.2) rotate(-30)'></path>")
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(8+128*0,128*3+9)
+    tex_ctx.scale(1.75,1.75)
+    canvg(canvas,"<svg><path stroke='black' stroke-width='1.5' fill='rgb(255, 210, 0)' d='M 25 51 C 20 54 40 54 40 50C 37 46 35 42 37 33C 44 34 51 27 51 20C 42 9 14 14 13 20C 13 27 19 35 25 33C 31 36 28 51 24 52'></path><path stroke='black' stroke-width='1.5' fill='rgb(0,0,0,0)' d='M 14 23C 5 18 6 36 17 31M 50 23C 60 18 55 37 46 31'></path><path stroke='rgb(255,0,0)' stroke-width='3' fill='rgb(0,0,0,0)' d='M 15 27C 22 25 20 29 31 26'></path><path stroke='rgb(0,0,255)' stroke-width='3' fill='rgb(0,0,0,0)' d='M 49 26C 49 25 42 29 32 26'></path><text x='33' y='30' fill='rgb(255,255,255)' stroke='rgb(0,255,0)' stroke-width='0.9' style='font-family:cursive;font-size:17px;'>P</text><circle cx='32' cy='36' r='13' stroke-width='7' stroke='rgb(102, 179, 242)' fill='rgb(135, 110, 0)' transform='scale(1,0.4)'></circle>")
     tex_ctx.setTransform(1,0,0,1,0,0)
 }
 

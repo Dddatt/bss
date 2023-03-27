@@ -4322,6 +4322,7 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/canvg/dist/browser/canvg.min.js"></script>
 
 <script src="dialogue.js"></script>
 <script src="textures.js"></script>
@@ -5254,11 +5255,6 @@ let triggers={
     roboShop_shop:{
 
         minX:55.5,maxX:62,minY:7,maxY:13,minZ:36.5,maxZ:45
-    },
-
-    displayRoboShopItems:{
-
-        minX:27,maxX:62,minY:0,maxY:19,minZ:30,maxZ:58
     },
     
     become_red_hive:{
@@ -25338,6 +25334,16 @@ let textRenderer=(function(out){
         whiteDrive:[128*5/1024,128/1024],
         blueDrive:[128*6/1024,128/1024],
         glitchedDrive:[128*7/1024,128/1024],
+
+        paperPlanter:[128*0/1024,128*2/1024],
+        plasticPlanter:[128*1/1024,128*2/1024],
+        candyPlanter:[128*2/1024,128*2/1024],
+        redClayPlanter:[128*3/1024,128*2/1024],
+        blueClayPlanter:[128*4/1024,128*2/1024],
+        tackyPlanter:[128*5/1024,128*2/1024],
+        pesticidePlanter:[128*6/1024,128*2/1024],
+        petalPlanter:[128*7/1024,128*2/1024],
+        plentyPlanter:[128*0/1024,128*3/1024],
     }
     
     out.instanceData=[]
@@ -25582,19 +25588,20 @@ let textRenderer=(function(out){
             gl.vertexAttribDivisor(glCache.text_instanceInfo,1)
             gl.drawElementsInstanced(gl.TRIANGLES,out.decal_indexAmount,gl.UNSIGNED_SHORT,0,out.decal_instanceData.length*MATH.INV_13)
             
-            if(triggers.displayRoboShopItems.colliding){
+            out.decal_instanceData=[
 
-                out.decal_instanceData=[
                 61,10.25,43.5,0,0,0.875,0.125,1,1,1,-1.75,-1.75,0,
                 61,10.25,41.663,0,0,0.625,0.125,1,1,1,-1.75,-1.75,0,
                 61,10.25,39.8315,0,0,0.75,0.125,1,1,1,-1.75,-1.75,0,
-                61,10.25,38,0,0,0.5,0.125,1,1,1,-1.75,-1.75,0]
+                61,10.25,38,0,0,0.5,0.125,1,1,1,-1.75,-1.75,0,
 
-            } else {
-
-                out.decal_instanceData=[]
-            }
-
+                -98,23,106.5,0,0,0.125,0.25,1,1,1,-2,-2,0,
+                -98-2.25,23,106.5,0,0,0.25,0.25,1,1,1,-2,-2,0,
+                -98-2.25*2,23,106.5,0,0,0.625,0.25,1,1,1,-2,-2,0,
+                -98-2.25*3,23,106.5,0,0,0.75,0.25,1,1,1,-2,-2,0,
+                -98-2.25*4,23,106.5,0,0,0,0.375,1,1,1,-2,-2,0,
+            ]
+            
             out.drawDecals=false
             
         } else {
@@ -30189,9 +30196,9 @@ function loop(now){
     meshes.explosions.instanceData=[]
     meshes.cylinder_explosions.instanceData=[]
     
-    gl.disable(gl.DEPTH_TEST)
+    // gl.disable(gl.DEPTH_TEST)
     textRenderer.render(dt,Math.sin(TIME*20))
-    gl.enable(gl.DEPTH_TEST)
+    // gl.enable(gl.DEPTH_TEST)
     
     ctx.drawImage(gl.canvas,0,0)
     
