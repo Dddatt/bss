@@ -339,6 +339,68 @@ window.playerGear={
     belt:{
         
         none:{mesh:function(){},applyStats:function(){}},
+
+        beltPocket:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                box(0,-0.2,0.25,0.3,0.2,0.3,false,[0.7*1.2,0.5*1.2,0.2*1.2])
+                box(0,-0.27,0.25,0.295,0.2,0.2,false,[0.7,0.5,0.2])
+                box(0,-0.26,0.25,0.12,0.09,0.305,false,[0.4,0.4,0.4])
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.capacity+=5000
+                stats.lootLuck+=0.25
+                stats.convertRate*=1.1
+            },
+            desc:'Attaches to your waist to expand the size of your container.<br><br>+5,000 capacity<br>+25% loot luck<br>x1.1 convert rate',
+            cost:['14000 honey','1 sunflowerSeed'],
+        },
+
+        beltBag:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                box(0,-0.2,0.25,0.3*1.4,0.18,0.3,false,[1.3,1.3,1.3])
+                box(0,-0.26,0.25,0.295*1.4,0.2,0.2,false,[1.1,1.1,1.1])
+                box(0,-0.26,0.25,0.29*1.4,0.04,0.305,false,[0.4,0.4,0.4])
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.capacity+=25000
+                stats.lootLuck+=0.5
+                stats.convertRate*=1.3
+            },
+            desc:'A convenient pouch designed for easy access.<br><br>+25,000 capacity<br>+50% loot luck<br>x1.3 convert rate',
+            cost:['400000 honey','10 pineapple','10 sunflowerSeed','1 stinger'],
+        },
+
+        mondoBeltBag:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                box(0,-0.2,0.25,0.3*1.4,0.18,0.3,false,[1.3,1.3,1.3])
+                box(0,-0.26,0.25,0.295*1.4,0.2,0.2,false,[1.1,1.1,1.1])
+                box(0,-0.26,0.25,0.29*1.4,0.04,0.305,false,[0.4,0.4,0.4])
+                
+                box(0.27,-0.18,0.33,0.3,0.09,0.05,[0,15,10],[0,0,1.4])
+                box(0.27,-0.26,0.33,0.2,0.06,0.05,[0,15,-15],[0,0,1.4])
+                box(-0.27,-0.18,0.33,0.3,0.09,0.05,[0,-15,-10],[1.4,0,0])
+                box(-0.27,-0.26,0.33,0.2,0.06,0.05,[0,-15,15],[1.4,0,0])
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.capacity+=100000
+                stats.lootLuck+=0.75
+                stats.convertRate*=1.5
+            },
+            desc:'A convenient pouch designed for easy access.<br><br>+25,000 capacity<br>+50% loot luck<br>x1.3 convert rate',
+            cost:['12500000 honey','50 pineapple','50 sunflowerSeed','3 stinger'],
+        },
         
         honeycombBelt:{
             

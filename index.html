@@ -15461,7 +15461,7 @@ class MondoChick {
                     textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV.smiley,0.75,0,0,-2,-2,0)
                 }
                 
-                this.pos[1]+=1
+                this.pos[1]+=2.4
                 textRenderer.addCTX('Mondo Chick (Level '+this.level+')',[this.pos[0],this.pos[1]+0.9,this.pos[2]],COLORS.whiteArr,100)
                 textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,1.5,...textRenderer.decalUV['rect'],0.61*0.5,0.42*0.5,0.27*0.5,2.5,0.4,0)
                 textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.timeLimit/this.maxTimeLimit)*0.5)/(this.timeLimit/this.maxTimeLimit),1.5,...textRenderer.decalUV['rect'],0.61,0.42,0.27,this.timeLimit*2.5/this.maxTimeLimit,0.4,0)
@@ -15472,7 +15472,7 @@ class MondoChick {
                 textRenderer.addSingle('HP: '+MATH.addCommas((this.health|0)+''),this.pos,COLORS.whiteArr,-1,false,false)
                 textRenderer.addSingle('Time: '+MATH.doTime((this.timeLimit|0)+''),this.pos,COLORS.whiteArr,-1,false,false,0,0.6)
             
-                this.pos[1]-=1
+                this.pos[1]-=2.4
                 this.blocking=false
                 
                 meshes.explosions.instanceData.push(this.pos[0],this.pos[1]+this.fallenEggShellEffect,this.pos[2],0.9*player.isNight,0.9*player.isNight,0.9*player.isNight,this.fallenEggShellEffect*0.5+1,4,1.15)
@@ -30048,7 +30048,7 @@ function loop(now){
             textRenderer.addDecalRaw(...NPCs[minNPC].exclaimPos,0,0,...textRenderer.decalUV['exclaim'],1,1,1,5,4,Math.PI)
         }
         
-        if((frameCount%2||minDist<0)&&!NPCs[minNPC].doesntHaveMesh){
+        if((frameCount%2||minDist<0)&&!NPCs[minNPC].doesntHaveMesh&&!player.fieldIn){
             
             NPCs[minNPC].mesh.setMeshFromFunction(function(box,a,cylinder,sphere,d,e,star,limbBox,limbCylinder){
                 
