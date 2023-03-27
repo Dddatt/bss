@@ -4355,6 +4355,7 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
 
 function main(){
 
+
 //IndexedDB code from Willard
 async function createDatabase() {
 
@@ -25599,9 +25600,16 @@ let textRenderer=(function(out){
 
                 -98,23,106.5,0,0,0.125,0.25,1,1,1,-2,-2,0,
                 -98-2.25,23,106.5,0,0,0.25,0.25,1,1,1,-2,-2,0,
-                -98-2.25*2,23,106.5,0,0,0.625,0.25,1,1,1,-2,-2,0,
-                -98-2.25*3,23,106.5,0,0,0.75,0.25,1,1,1,-2,-2,0,
+                -98-2.25*2,23.07,106.5,0,0,0.625,0.25,1,1,1,-2,-2,0,
+                -98-2.25*3,23.1,106.5,0,0,0.75,0.25,1,1,1,-2,-2,0,
                 -98-2.25*4,23,106.5,0,0,0,0.375,1,1,1,-2,-2,0,
+
+                -64.5,5,41,0,0,0.5,0.25,1,1,1,-2.5,-2.5,0,
+
+                43,8,28,0,0,0.375,0.25,1,1,1,-2.5,-2.5,0,
+                
+                67.5,13.5,-42.6,0,0,0.875,0.25,1,1,1,-2.5,-2.5,0,
+
             ]
             
             out.drawDecals=false
@@ -29935,7 +29943,7 @@ function loop(now){
     
     if(minDist<75){
         
-        if(minDist<50&&!NPCs[minNPC].activeQuest&&minNPC!=='roboBear'||minNPC==='roboBear'&&player.roboChallenge&&player.roboChallenge.questCompleted&&player.roboChallenge.isPlaying||minNPC==='roboBear'&&!player.roboChallenge){
+        if(!NPCs[minNPC].activeQuest&&minNPC!=='roboBear'||minNPC==='roboBear'&&player.roboChallenge&&player.roboChallenge.questCompleted&&player.roboChallenge.isPlaying||minNPC==='roboBear'&&!player.roboChallenge){
             
             textRenderer.addDecalRaw(...NPCs[minNPC].exclaimPos,0,0,...textRenderer.decalUV['exclaim'],1,1,1,5,4,Math.PI)
         }
