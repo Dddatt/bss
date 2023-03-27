@@ -424,7 +424,7 @@ window.playerGear={
             mesh:function(box,cylinder,sphere){
                 
                 cylinder(0,0,-0.6,0.4,0.75,15,0.9*1.3,0.7*1.3,0.3*1.3,90,0,0)
-                cylinder(0,0.15,-0.6,0.38,0.75,15,0.6,0.6,0.6,90,0,0)
+                cylinder(0,0.33,-0.6,0.43,0.25,15,0.6,0.6,0.6,90,0,0)
             },
             
             applyStats:function(stats,player){

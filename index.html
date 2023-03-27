@@ -5255,6 +5255,11 @@ let triggers={
         minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:10-1,maxZ:10+1
     },
 
+    noob_shop:{
+        
+        minX:-50,maxX:-22.5,minY:-2,maxY:15,minZ:-9,maxZ:6
+    },
+
     roboShop_shop:{
 
         minX:55.5,maxX:62,minY:7,maxY:13,minZ:36.5,maxZ:45
@@ -20864,7 +20869,7 @@ gear.tool={
         cooldown:0.7,
         mesh:function(box,cylinder,sphere,star){
             
-            box(-0.3,0,0.6,0.1,0.1,0.8,false,[0.9,0.9,0.9])
+            box(-0.3,0,0.6,0.1,0.105,0.8,false,[0.9,0.9,0.9])
             box(-0.3+0.1,0,0.6+0.6,0.1,0.1,0.5,[0,20,0],[0.4,0.4,0.4])
             box(-0.3+0.2,0,0.6+0.5,0.1,0.1,0.5,[0,40,0],[0.4,0.4,0.4])
             box(-0.3-0.1,0,0.6+0.6,0.1,0.1,0.5,[0,-20,0],[0.4,0.4,0.4])
@@ -25144,6 +25149,84 @@ let shops={
         currentIndex:0,message:'Explore Robo Shop'
     },
 
+    noob:{
+
+        items:[{
+
+            name:'pouch',
+            slot:'backpack',
+            viewMatrix:[-40.5+4,0.3+1,4.5,-MATH.HALF_PI,-0.3],
+            displayRot:[0,-90,0],
+            displayPos:[-40.5,0.3,4.5],
+            displayScale:[1.5,1.5,1.5],
+            owned:true
+        },{
+
+            name:'jar',
+            slot:'backpack',
+            viewMatrix:[-40.5+4,0.3+1,1.5,-MATH.HALF_PI,-0.3],
+            displayRot:[0,-90,0],
+            displayPos:[-40.5,0.3,1.5],
+            displayScale:[1,1,1],
+        },{
+
+            name:'backpack',
+            slot:'backpack',
+            viewMatrix:[-40.5+4,0.3+1,-1.5,-MATH.HALF_PI,-0.3],
+            displayRot:[0,-90,0],
+            displayPos:[-40.5,0.3,-1.5],
+            displayScale:[1.4,1.4,1.4],
+        },{
+
+            name:'canister',
+            slot:'backpack',
+            viewMatrix:[-40.5+4,0.3+1,-4.5,-MATH.HALF_PI,-0.3],
+            displayRot:[0,-90,0],
+            displayPos:[-40.5,0.3,-4.5],
+            displayScale:[1.1,1.1,1.1],
+        },{
+
+            name:'shovel',
+            slot:'tool',
+            viewMatrix:[-34.5-0.5,2,-7+4,0,-0.3],
+            displayRot:[80,10,0],
+            displayPos:[-34.5,2,-7],
+            displayScale:[1.4,1.4,1.4],
+        },{
+
+            name:'rake',
+            slot:'tool',
+            viewMatrix:[-34.5-0.5+2.5,2,-7+4,0,-0.3],
+            displayRot:[80,-10,0],
+            displayPos:[-34.5+2.5,2,-7],
+            displayScale:[1.4,1.4,1.4],
+        },{
+
+            name:'clippers',
+            slot:'tool',
+            viewMatrix:[-34.5-0.5+2.5*2,2,-7.5+4,0,-0.3],
+            displayRot:[-10,0,10],
+            displayPos:[-34.5+2.5*2,0.5,-7.5],
+            displayScale:[1.4,1.4,1.4],
+        },{
+
+            name:'magnet',
+            slot:'tool',
+            viewMatrix:[-34.5-0.2+2.5*3,2,-7.5+4,0,-0.3],
+            displayRot:[-10,5,-10],
+            displayPos:[-34.5+2.5*3,0.5,-7.5],
+            displayScale:[1.3,1.3,1.3],
+        },{
+
+            name:'vacuum',
+            slot:'tool',
+            viewMatrix:[-34.5-0.2+2.5*4,2,-7.5+4,0,-0.3],
+            displayRot:[-10,8,0],
+            displayPos:[-34.5+2.5*4,0.5,-7.5],
+            displayScale:[1.3,1.3,1.3],
+        }],
+        currentIndex:0,message:'Explore Noob Shop'
+    },
     
 }
 
@@ -25151,23 +25234,40 @@ shopGearMesh.setMeshFromFunction(function(box,a,cylinder,sphere,applyFinalRotati
 
     let num=0
 
-    for(let i in gear){
+    for(let i in shops){
 
-        if(i.indexOf('Amulet')>-1||i==='glider') continue
+        let s=shops[i].items
 
-        for(let j in gear[i]){
+        for(let j in s){
 
-            if(j==='none') continue
+            let si=s[j]
 
-            shops.cool.items.push({name:j,slot:i,viewMatrix:[25-(num%10)*4,1,10+((num/10)|0)*6,-Math.PI,-0.4]})
-            mat4.fromRotationTranslation(shopGearMesh.matrix,quat.fromEuler([],0,i==='backpack'?0:180,0),[25-(num%10)*4,-0.5,13+((num/10)|0)*6])
+            if(si.slot!=='item'){
+
+                mat4.fromRotationTranslationScale(shopGearMesh.matrix,quat.fromEuler([],...(si.displayRot||[0,0,0])),si.displayPos,si.displayScale||[1,1,1])
             
-            gear[i][j].mesh(box,cylinder,sphere,star,applyFinalRotation)
-
-            num++
-
+                gear[si.slot][si.name].mesh(box,cylinder,sphere,star,applyFinalRotation)
+            }
         }
     }
+
+    // for(let i in gear){
+
+    //     if(i.indexOf('Amulet')>-1||i==='glider') continue
+
+    //     for(let j in gear[i]){
+
+    //         if(j==='none') continue
+
+    //         shops.cool.items.push({name:j,slot:i,viewMatrix:[25-(num%10)*4,1,10+((num/10)|0)*6,-Math.PI,-0.4]})
+    //         mat4.fromRotationTranslation(shopGearMesh.matrix,quat.fromEuler([],0,i==='backpack'?0:180,0),[25-(num%10)*4,-0.5,13+((num/10)|0)*6])
+            
+    //         gear[i][j].mesh(box,cylinder,sphere,star,applyFinalRotation)
+
+    //         num++
+
+    //     }
+    // }
 })
 
 shopGearMesh.setBuffers()
@@ -30075,13 +30175,9 @@ function loop(now){
     gl.vertexAttribDivisor(glCache.token_instanceUV,0)
     meshes.tokens.instanceData=[]
     
-    // gl.depthMask(false)
-    
     ParticleRenderer.render()
     
     TrailRenderer.render()
-    
-    // gl.depthMask(true)
     
     gl.useProgram(mobRendererProgram)
     gl.uniformMatrix4fv(glCache.mob_viewMatrix,gl.FALSE,player.viewMatrix)
@@ -30174,6 +30270,9 @@ function loop(now){
     player.updateHiveBalloon()
     player.updateAntChallenge()
     player.updateRoboChallenge()
+
+    
+    gl.depthMask(false)
     
     gl.bindBuffer(gl.ARRAY_BUFFER,meshes.cylinder_explosion.vertBuffer)
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.cylinder_explosion.indexBuffer)
@@ -30198,6 +30297,8 @@ function loop(now){
     gl.vertexAttribPointer(glCache.explosion_instanceColor,4,gl.FLOAT,gl.FLASE,36,12)
     gl.vertexAttribPointer(glCache.explosion_instanceScale,2,gl.FLOAT,gl.FLASE,36,28)
     gl.drawElementsInstanced(gl.TRIANGLES,meshes.explosion.indexAmount,gl.UNSIGNED_SHORT,0,meshes.explosions.instanceData.length*MATH.INV_9)
+
+    gl.depthMask(true)
     
     gl.vertexAttribDivisor(glCache.explosion_instancePos,0)
     gl.vertexAttribDivisor(glCache.explosion_instanceColor,0)
