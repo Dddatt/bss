@@ -225,6 +225,36 @@ window.playerGear={
                 box(0,0.5,0,0.55,0.1,0.55,false,[0,0,0])
             },applyStats:function(){}
         },
+
+        helmet:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                box(-0.1,0.3,0.225,0.05,0.1,0.1,false,[0,0,0])
+                box(0.1,0.3,0.225,0.05,0.1,0.1,false,[0,0,0])
+                box(0,0.15,0.225,0.2,0.05,0.1,false,[0,0,0])
+                box(0,0.5,0,0.55,0.1,0.55,false,[0,0,0])
+
+                cylinder(0,0.625,0.045,0.26*1.414,0.15,10,1.3,1.3,0,90,0,0,0.26*1.414*0.9)
+                cylinder(0,0.625+0.15,0.045,0.26*1.414*0.9,0.15,10,1.3,1.3,0,90,0,0,0.26*1.414*0.6)
+                cylinder(0,0.625+0.15+0.075*1.5,0.045,0.26*1.414*0.6,0.075,10,1.3,1.3,0,90,0,0,0.26*1.414*0.2)
+
+                box(0.28,0.4,0.2,0.05,0.4,0.05,[-30,0,0],[1.3,1.3,0])
+                box(-0.28,0.4,0.2,0.05,0.4,0.05,[-30,0,0],[1.3,1.3,0])
+                box(0,0.4-Math.cos(-30*0.01745329251)*0.2,0.2-Math.sin(-30*0.01745329251)*0.2,0.28*2+0.05,0.05,0.05,[-30,0,0],[1.3,1.3,0])
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.bluePollen*=1.1
+                stats.whitePollen*=1.1
+                stats.redPollen*=1.1
+                stats.defense+=0.1
+
+            },
+            desc:'A hard hat that grants bonus pollen and helps prevent head injuries.<br><br>x1.1 pollen<br>+10% defense',
+            cost:['30000 honey','3 pineapple'],
+        },
         
         gummyMask:{
             
@@ -398,7 +428,7 @@ window.playerGear={
                 stats.lootLuck+=0.75
                 stats.convertRate*=1.5
             },
-            desc:'A convenient pouch designed for easy access.<br><br>+25,000 capacity<br>+50% loot luck<br>x1.3 convert rate',
+            desc:'A highly-embellished belt bag imported from a lost land, as big as a tambourine.<br><br>+25,000 capacity<br>+50% loot luck<br>x1.3 convert rate',
             cost:['12500000 honey','50 pineapple','50 sunflowerSeed','3 stinger'],
         },
         
