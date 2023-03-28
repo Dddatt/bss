@@ -6955,13 +6955,13 @@ let effects={
         
         update:(amount,player)=>{
             
-            player.walkSpeed*=amount*0.1+1
+            player.walkSpeed*=amount*0.075+1
             player.hasteStacks=amount
         },
         
         getMessage:(amount)=>{
             
-            return 'Haste\nx'+((player.defaultStats.walkSpeed*(amount*0.1+1))/player.defaultStats.walkSpeed).toFixed(1)+' movespeed'
+            return 'Haste\nx'+((player.defaultStats.walkSpeed*(amount*0.075+1))/player.defaultStats.walkSpeed).toFixed(1)+' movespeed'
         }
     },
     
@@ -23401,7 +23401,7 @@ player=(function(out){
         boots:'none',
         belt:'none',
         backpack:'pouch',
-        mask:'bubbleMask',
+        mask:'none',
         leftGuard:'none',
         rightGuard:'none',
         glider:'glider',

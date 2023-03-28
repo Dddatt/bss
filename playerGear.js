@@ -967,7 +967,7 @@ window.playerGear={
             applyStats:function(stats,player){
                 
                 stats.movementCollection+=15
-                stats.movespeed*=1.275
+                stats.walkSpeed*=1.25
                 stats.jumpPower*=1.4
                 stats.pollenFromCoconuts*=2
                 stats.goo*=1.25
@@ -979,8 +979,49 @@ window.playerGear={
                 stats.beeAttack*=1.1
                 stats.convertRateAtHive*=2
             },
-            desc:'Squishy boots that leave a trail of Goo wherever you go.<br><br>+15 movement collection<br>x1.25 goo<br>x1.2 bee speed<br>x1.25 honey from tokens<br>x1.1 pollen<br>x1.1 bee attack<br>x2 pollen from coconuts<br>x1.275 movespeed<br>x1.4 jump power',
+            desc:'Squishy boots that leave a trail of Goo wherever you go.<br><br>+15 movement collection<br>x1.25 goo<br>x1.2 bee speed<br>x1.25 honey from tokens<br>x1.1 pollen<br>x1.1 bee attack<br>x2 pollen from coconuts<br>x2 convert rate at hive<br>x1.25 movespeed<br>x1.4 jump power<br>+Passive: Goo Trail<br>+Passive: Coconut Haste',
             cost:['100000000000 honey','500 glue','250 glitter','250 redExtract','250 blueExtract'],
+        },
+
+        coconutClogs:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                box(-0.2,-0.5,0.04,0.37,0.15,0.74,false,[0,0,1.5])
+                box(0.2,-0.5,0.04,0.37,0.15,0.74,false,[1.5,0,0])
+                box(-0.2,-0.4,0.04,0.36,0.15,0.73,false,[1.35,1.35,1.35])
+                box(0.2,-0.4,0.04,0.36,0.15,0.73,false,[1.35,1.35,1.35])
+                box(-0.2,-0.25,0,0.325,0.2,0.6,false,[0.4*1.3,0.3*1.3,0.2*1.3])
+                box(0.2,-0.25,0,0.325,0.2,0.6,false,[0.4*1.3,0.3*1.3,0.2*1.3])
+                box(-0.2,-0.25,0.2,0.15,0.05,0.25,false,[1.35,1.35,1.35])
+                box(0.2,-0.25,0.2,0.15,0.05,0.25,false,[1.35,1.35,1.35])
+                
+                sphere(0.2,-0.35,0.4,0.25,1,0.4*1.3,0.3*1.3,0.2*1.3)
+                sphere(-0.2,-0.35,0.4,0.25,1,0.4*1.3,0.3*1.3,0.2*1.3)
+
+                sphere(-0.2+0.07,-0.3,0.4+0.08,0.07,0,0.4*0.7,0.3*0.7,0.2*0.7)
+                sphere(-0.2-0.01,-0.3+0.02,0.4+0.1,0.07,0,0.4*0.7,0.3*0.7,0.2*0.7)
+                sphere(-0.2+0.04,-0.3+0.05,0.4+0.02,0.07,0,0.4*0.7,0.3*0.7,0.2*0.7)
+                sphere(0.2-0.07,-0.3,0.4+0.08,0.07,0,0.4*0.7,0.3*0.7,0.2*0.7)
+                sphere(0.2+0.01,-0.3+0.02,0.4+0.1,0.07,0,0.4*0.7,0.3*0.7,0.2*0.7)
+                sphere(0.2-0.04,-0.3+0.05,0.4+0.02,0.07,0,0.4*0.7,0.3*0.7,0.2*0.7)
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.movementCollection+=12
+                stats.walkSpeed*=1.225
+                stats.jumpPower*=1.375
+                stats.pollenFromCoconuts*=2
+                stats.redPollen*=1.1
+                stats.whitePollen*=1.1
+                stats.bluePollen*=1.1
+                stats.honeyFromTokens*=1.25
+                stats.beeAttack*=1.05
+                stats.convertRateAtHive*=1.5
+            },
+            desc:'Kick around coconuts with this pair of clunky kicks for a surge of speed.<br><br>+12 movement collection<br>x1.25 honey from tokens<br>x1.1 pollen<br>x1.05 bee attack<br>x2 pollen from coconuts<br>x1.5 convert rate at hive<br>x1.225 movespeed<br>x1.375 jump power<br>+Passive: Coconut Haste',
+            cost:['10000000000 honey','100 coconut','25 tropicalDrink','50 glue','50 oil'],
         },
         
         mondoBoots:{
@@ -991,19 +1032,58 @@ window.playerGear={
                 box(0.2,-0.5,0.04,0.36,0.15,0.73,false,[1.5,0,0])
                 box(-0.2,-0.35,0,0.325,0.2,0.6,false,[1.35,1.35,1.35])
                 box(0.2,-0.35,0,0.325,0.2,0.6,false,[1.35,1.35,1.35])
-                box(-0.2,-0.35,0.2,0.15,0.05,0.25,false,[0,0,1.5])
-                box(0.2,-0.35,0.2,0.15,0.05,0.25,false,[1.5,0,0])
+                box(-0.2,-0.35,0.2,0.15,0.05,0.25,false,[1.2,1.2,0])
+                box(0.2,-0.35,0.2,0.15,0.05,0.25,false,[1.2,1.2,0])
             },
             
             applyStats:function(stats,player){
                 
                 stats.movementCollection+=10
-                stats.movespeed*=1.225
+                stats.walkSpeed*=1.2
                 stats.jumpPower*=1.35
                 stats.pollenFromBees*=1.25
             },
-            desc:'Practical and stylish boots that aid in the beekeeping process.<br><br>+10 movement collection<br>x1.25 pollen from bees<br>x1.225 movespeed<br>x1.35 jump power',
+            desc:'Practical and stylish boots that aid in the beekeeping process.<br><br>+10 movement collection<br>x1.25 pollen from bees<br>x1.2 movespeed<br>x1.35 jump power',
             cost:['15000000 honey','5 oil','3 redExtract','3 blueExtract'],
+        },
+
+        basicBoots:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                box(-0.2,-0.5,0.065,0.325,0.15,0.73,false,[1,1,0.2])
+                box(0.2,-0.5,0.065,0.325,0.15,0.73,false,[1,1,0.2])
+                box(-0.2,-0.35,0,0.325,0.2,0.6,false,[1,1,0.2])
+                box(0.2,-0.35,0,0.325,0.2,0.6,false,[1,1,0.2])
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.movementCollection+=1
+                stats.walkSpeed*=1.1
+            },
+            desc:'Collect pollen as you walk through flowers!<br><br>+1 movement collection<br>x1.1 movespeed',
+            cost:['5000 honey','3 sunflowerSeed','3 blueberry','3 strawberry'],
+        },
+
+        hikingBoots:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                box(-0.2,-0.5,0.065,0.325,0.15,0.73,false,[0.7*0.5,0.4*0.5,0.3*0.5])
+                box(0.2,-0.5,0.065,0.325,0.15,0.73,false,[0.7*0.5,0.4*0.5,0.3*0.5])
+                box(-0.2,-0.3425,0,0.325,0.175,0.6,false,[0.7,0.4,0.3])
+                box(0.2,-0.3425,0,0.325,0.175,0.6,false,[0.7,0.4,0.3])
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.movementCollection+=5
+                stats.walkSpeed*=1.1
+                stats.jumpPower*=1.3
+            },
+            desc:'Collect pollen as you walk through flowers!<br><br>+5 movement collection<br>x1.1 movespeed<br>x1.3 jump power',
+            cost:['2000000 honey','20 pineapple','20 blueberry','20 strawberry'],
         },
     },
     
