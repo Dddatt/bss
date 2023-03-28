@@ -306,6 +306,131 @@ window.playerGear={
             desc:'A playful hat that keeps the sun out of your eyes.<br><br>x1.15 pollen<br>x1.05 bee ability rate<br>+10% defense<br>x1.1 jump power',
             cost:['2500000 honey','15 gumdrops','10 pineapples','1 moonCharm'],
         },
+
+        beekeeperMask:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                sphere(0,0.57,0,0.5*1.414,2,1.1,1.1,1.1)
+                cylinder(0,0.61,0,0.28*1.414,0.085,10,0.5,0.5,0.5,90,0,0)
+                cylinder(0,0.35,0,0.52*0.5*1.415,0.45,10,1.1,1.1,1.1,90,0,0)
+                box(-0.1,0.4,0.32,0.05,0.1,0.1,false,[0.2,0.2,0.2])
+                box(0.1,0.4,0.32,0.05,0.1,0.1,false,[0.2,0.2,0.2])
+                box(0,0.25,0.32,0.2,0.05,0.1,false,[0.2,0.2,0.2])
+                
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.bluePollen*=1.2
+                stats.whitePollen*=1.2
+                stats.redPollen*=1.2
+                stats.pollenFromBees*=1.2
+                stats.defense+=0.25
+                stats.redBeeAbilityRate*=1.1
+                stats.blueBeeAbilityRate*=1.1
+                stats.whiteBeeAbilityRate*=1.1
+
+            },
+            desc:'A veiled hat only worn by real-deal beekeepers.<br><br>x1.2 pollen<br>x1.2 pollen from bees<br>x1.1 bee ability rate<br>+25% defense',
+            cost:['20000000 honey','3 enzymes','1 glue','1 glitter'],
+        },
+
+        honeyMask:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                sphere(0,0.57,0,0.5*1.414,2,1.4,1.3,0)
+                cylinder(0,0.61,0,0.28*1.414,0.085,10,0.1,0.1,0.1,90,0,0)
+                cylinder(0,0.35,0,0.52*0.5*1.415,0.45,10,1.4,1.3,0,90,0,0)
+                box(-0.1,0.4,0.32,0.05,0.1,0.1,false,[0.1,0.1,0.1])
+                box(0.1,0.4,0.32,0.05,0.1,0.1,false,[0.1,0.1,0.1])
+                box(0,0.25,0.32,0.2,0.05,0.1,false,[0.1,0.1,0.1])
+                
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.capacityMultiplier*=1.75
+                stats.bluePollen*=1.3
+                stats.whitePollen*=1.3
+                stats.redPollen*=1.3
+                stats.pollenFromBees*=1.25
+                stats.defense+=0.3
+                stats.redBeeAbilityRate*=1.15
+                stats.blueBeeAbilityRate*=1.15
+                stats.whiteBeeAbilityRate*=1.15
+                stats.honeyFromTokens*=1.5
+                stats.convertRate*=1.8
+                player.addEffect('coinScatterPassive')
+
+            },
+            desc:'This handsome mask is guaranteed to bring satisfaction into your life.<br><br>x1.75 capacity<br>x1.3 pollen<br>x1.25 pollen from bees<br>x1.15 bee ability rate<br>x1.5 honey from tokens<br>x1.8 convert rate<br>+30% defense<br>+Passive: Coin Scatter',
+            cost:['100000000 honey','35 oil','15 enzymes','1 goldEgg','999 treats'],
+        },
+
+        fireMask:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                sphere(0,0.57,0,0.5*1.414,2,1.4,0.1,0)
+                cylinder(0,0.61,0,0.28*1.414,0.085,10,1.3,1.3,0.1,90,0,0)
+                cylinder(0,0.35,0,0.52*0.5*1.415,0.45,10,1.4,0.1,0,90,0,0)
+                box(-0.1,0.4,0.32,0.05,0.1,0.1,false,[1.3,1.3,0.1])
+                box(0.1,0.4,0.32,0.05,0.1,0.1,false,[1.3,1.3,0.1])
+                box(0,0.25,0.32,0.2,0.05,0.1,false,[1.3,1.3,0.1])
+                
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.capacityMultiplier*=1.75
+                stats.redPollen*=1.5
+                stats.instantRedConversion=window.applyPercentage(stats.instantRedConversion,0.2)
+                stats.instantFlameConversion=window.applyPercentage(stats.instantFlameConversion,0.5)
+                stats.defense+=0.35
+                stats.redBeeAbilityRate*=1.15
+                stats.blueBeeAbilityRate*=1.15
+                stats.whiteBeeAbilityRate*=1.15
+                stats.redBeeAttack+=2
+                stats.whiteBeeAttack++
+                stats.blueBeeAttack++
+                player.addEffect('ignitePassive')
+
+            },
+            desc:'Ignite your mind to enhance your red Bees.<br><br>x1.75 capacity<br>x1.5 red pollen<br>+20% instant red conversion<br>+50% instant flame conversion<br>+1 bee attack<br>+1 red bee attack<br>x1.15 bee ability rate<br>+35% defense<br>+Passive: Ignite',
+            cost:['100000000 honey','30 redExtracts','15 enzymes','5 glue','300 strawberries'],
+        },
+
+        bubbleMask:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                sphere(0,0.57,0,0.5*1.414,2,0.4,1.2,1.3)
+                cylinder(0,0.61,0,0.28*1.414,0.085,10,0.4*0.7,1*0.7,1.3*0.7,90,0,0)
+                cylinder(0,0.35,0,0.52*0.5*1.415,0.45,10,0.4,1.2,1.3,90,0,0)
+                box(-0.1,0.4,0.32,0.05,0.1,0.1,false,[0.4*0.7,1*0.7,1.3*0.7])
+                box(0.1,0.4,0.32,0.05,0.1,0.1,false,[0.4*0.7,1*0.7,1.3*0.7])
+                box(0,0.25,0.32,0.2,0.05,0.1,false,[0.4*0.7,1*0.7,1.3*0.7])
+                
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.capacityMultiplier*=2
+                stats.bluePollen*=1.5
+                stats.instantBlueConversion=window.applyPercentage(stats.instantBlueConversion,0.2)
+                stats.bubblePollen*=2
+                stats.defense+=0.3
+                stats.redBeeAbilityRate*=1.15
+                stats.blueBeeAbilityRate*=1.15
+                stats.whiteBeeAbilityRate*=1.15
+                player.addEffect('bubbleBombsPassive')
+
+            },
+            desc:'Ignite your mind to enhance your red Bees.<br><br>x2 capacity<br>x1.5 blue pollen<br>+20% instant blue conversion<br>x2 bubble pollen<br>x1.15 bee ability rate<br>+30% defense<br>+Passive: Bubble Bombs',
+            cost:['100000000 honey','30 redExtracts','15 enzymes','5 glue','300 strawberries'],
+        },
         
         gummyMask:{
             
@@ -366,19 +491,22 @@ window.playerGear={
                 
                 stats.capacityMultiplier*=3
                 stats.blueFieldCapacity*=1.75
-                stats.bluePollen*=1.75
+                stats.bluePollen*=1.5
+                stats.bluePollen*=1.25
+                stats.whitePollen*=1.25
+                stats.redPollen*=1.25
                 stats.instantBlueConversion=window.applyPercentage(stats.instantBlueConversion,0.25)
                 stats.convertRate*=100
                 stats.honeyAtHive*=1.1
-                stats.bubblePollen*=1.5
+                stats.bubblePollen*=2
                 stats.redBeeAbilityRate*=1.2
                 stats.blueBeeAbilityRate*=1.2
                 stats.whiteBeeAbilityRate*=1.2
-                stats.defense+=0.3
+                stats.defense+=0.35
                 player.addEffect('diamondDrainPassive')
                 player.addEffect('bubbleBombsPassive')
             },
-            desc:'Proudly show off your extreme wealth to the world. Shine so brightly that others will complain.<br><br>x3 capacity<br>x1.75 blue field capacity<br>x1.75 blue pollen<br>+25% instant blue conversion<br>x2 convert rate<br>x1.1 honey at hive<br>x1.5 bubble pollen<br>+30% defense<br>x1.2 bee ability rate<br>+Passive: Diamond Drain<br>+Passive: Bubble Bombs',
+            desc:'Proudly show off your extreme wealth to the world. Shine so brightly that others will complain.<br><br>x3 capacity<br>x1.75 blue field capacity<br>x1.5 blue pollen<br>x1.25 pollen<br>+25% instant blue conversion<br>x2 convert rate<br>x2 bubble pollen<br>+35% defense<br>x1.2 bee ability rate<br>+Passive: Diamond Drain<br>+Passive: Bubble Bombs',
             cost:['5000000000 honey','250 blueExtract','1 diamondEgg','100 glitter','150 oil'],
         },
         
