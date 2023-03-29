@@ -5256,20 +5256,84 @@ let triggers={
 
         minX:-74-2.5,maxX:-74+2.5,minY:30,maxY:30,minZ:49.5-2.5,maxZ:49.5+2.5
     },
-    
-    cool_shop:{
-        
-        minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:10-1,maxZ:10+1
-    },
 
     noob_shop:{
         
-        minX:-50,maxX:-22.5,minY:-2,maxY:15,minZ:-9,maxZ:6
+        minX:-50,maxX:-22.5,minY:-2,maxY:11,minZ:-9,maxZ:6
     },
 
     roboShop_shop:{
 
         minX:55.5,maxX:62,minY:7,maxY:13,minZ:36.5,maxZ:45
+    },
+    
+    become_mid_hive:{
+        
+        minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:10-1,maxZ:10+1,isMachine:true,message:'become midgame hive, u should make like up to 200k honey a sec with 10-150 dmg per hit and also u look rlly stubby bruh and stuff is soooooooooo sooooooooooo sooooooooooooo veryyyyyyyyyyy unbalanced ughhhh everything sucks and ugly i had to add like a million bee speed so not make the bees snails im sobbing',
+        func:function(player){
+            player.currentGear={
+                
+                tool:'petalWand',
+                boots:'mondoBoots',
+                belt:'honeycombBelt',
+                backpack:'porcelainPortOHive',
+                mask:'honeyMask',
+                leftGuard:'rileyGuard',
+                rightGuard:'buckoGuard',
+                glider:'glider',
+                beequips:[],
+            }
+            
+            player.updateGear()
+            player.hive=[[]]
+            player.addSlot('basic')
+            player.addSlot('looker')
+            player.addSlot('bomber')
+            player.addSlot('rascal')
+            player.addSlot('riley')
+            player.addSlot('cool')
+            player.addSlot('bumble')
+            player.addSlot('bucko')
+            player.addSlot('demo')
+            player.addSlot('commander')
+            player.addSlot('stubborn')
+            player.addSlot('hasty')
+            player.addSlot('rad')
+            player.addSlot('shocked')
+            player.addSlot('shocked',0)
+            player.addSlot('exhausted')
+            player.addSlot('baby')
+            player.addSlot('baby',0)
+            player.addSlot('baby',0)
+            player.addSlot('crimson',0)
+            player.addSlot('gummy',0)
+            player.addSlot('cobalt',0)
+            player.addSlot('fire')
+            player.addSlot('bubble')
+            player.addSlot('fire',0)
+            player.addSlot('bubble',0)
+            player.addSlot('frosty',0)
+            player.addSlot('frosty')
+            player.addSlot('shy')
+            player.addSlot('tadpole',0)
+            player.addSlot('ninja')
+            player.addSlot('tabby')
+            player.addSlot('rage',0)
+            player.addSlot('rage',0)
+            player.addSlot('rage')
+            player.addSlot('music')
+            player.addSlot('music',0)
+            player.addSlot('music')
+            player.addSlot('lion')
+            player.addSlot('lion',0)
+            player.addSlot('shy',0)
+            player.addSlot('demon',0)
+            player.addSlot('diamond')
+            player.addSlot('carpenter',0)
+            player.addSlot('carpenter',0)
+            player.addSlot('carpenter')
+            player.updateHive()
+        }
     },
     
     become_red_hive:{
@@ -12534,7 +12598,7 @@ class Bee {
         this.moveDir=[]
         
         // this.computeLevel(lvl||1)
-        this.computeLevel(20)
+        this.computeLevel(8)
         
         this.convertTimer=0
         this.flowerCollecting=[]
@@ -21287,7 +21351,7 @@ gear.tool={
             
             if(player.toolUses%3===0){
                 
-                objects.explosions.push(new ReverseExplosion({col:[1,1,0],pos:f.pos,life:0.3,size:this.diameter*0.8,alpha:0.75}))
+                objects.mobs.push(new PetalShuriken([player.body.position.x,player.body.position.y+0.25,player.body.position.z],player.bodyDir.slice()))
             }
         },
         particles:function(){
@@ -24011,7 +24075,7 @@ player=(function(out){
         if(currentPage===3&&TIME-player.statsStringLastUpdate>0.5){
 
             player.statsStringLastUpdate=TIME
-            player.statString='<br>FPS: '+(1/dt).toFixed(2)+'<br>Delta Time: '+dt.toFixed(4)+'<br><br>Convert Rate: '+Math.round(player.convertRate*100)+'%<br>Red Pollen: '+Math.round(player.redPollen*100)+'%<br>Blue Pollen: '+Math.round(player.bluePollen*100)+'%<br>White Pollen: '+Math.round(player.whitePollen*100)+'%<br>Walk Speed: '+player.walkSpeed.toFixed(1)+'<br>Jump Power: '+player.jumpPower.toFixed(1)+'<br>Instant Red Conversion: '+Math.round(player.instantRedConversion*100)+'%<br>Instant Blue Conversion: '+Math.round(player.instantBlueConversion*100)+'%<br>Instant White Conversion: '+Math.round(player.instantWhiteConversion*100)+'%<br>Instant Flame Conversion: '+Math.round(player.instantFlameConversion*100)+'%<br>Critical Chance: '+Math.round(player.criticalChance*100)+'%<br>Critical Power: '+Math.round(player.criticalPower*100)+'%<br>Super-Crit Chance: '+Math.round(player.superCritChance*100)+'%<br>Super-Crit Power: '+Math.round(player.superCritPower*100)+'%<br>Goo: '+Math.round(player.goo*100)+'%<br>Flame Pollen: '+Math.round(player.flamePollen*100)+'%<br>Bubble Pollen: '+Math.round(player.bubblePollen*100)+'%<br>Pollen From Tools: '+Math.round(player.pollenFromTools*100)+'%<br>Pollen From Bees: '+Math.round(player.pollenFromBees*100)+'%<br>White Bomb Pollen: '+Math.round(player.whiteBombPollen*100)+'%<br>Red Bomb Pollen: '+Math.round(player.redBombPollen*100)+'%<br>Blue Bomb Pollen: '+Math.round(player.blueBombPollen*100)+'%<br>White Bee Attack: '+player.whiteBeeAttack+'<br>Blue Bee Attack: '+player.blueBeeAttack+'<br>Red Bee Attack: '+player.redBeeAttack+'<br>Bee Attack Multiplier: '+Math.round(player.beeAttack*100)+'%<br>Honey From Tokens: '+Math.round(player.honeyFromTokens*100)+'%<br>Red Bee Ability Rate: '+Math.round(player.redBeeAbilityRate*100)+'%<br>Blue Bee Ability Rate: '+Math.round(player.blueBeeAbilityRate*100)+'%<br>White Bee Ability Rate: '+Math.round(player.whiteBeeAbilityRate*100)+'%<br>Bee Movespeed: '+Math.round(player.beeSpeed*100)+'%<br>Bee Energy: '+Math.round(player.beeEnergy*100)+'%<br>Honey At Hive: '+Math.round(player.honeyAtHive*100)+'%<br>Honey Per Pollen: '+Math.round(player.honeyPerPollen*100)+'%<br>Loot Luck: '+Math.round(player.lootLuck*100)+'%<br>Red Field Capacity: '+Math.round(player.redFieldCapacity*100)+'%<br>White Field Capacity: '+Math.round(player.whiteFieldCapacity*100)+'%<br>Blue Field Capacity: '+Math.round(player.blueFieldCapacity*100)+'%<br>Ability Duplication Chance: '+Math.round(player.abilityDuplicationChance*100+(player.drives.maxed?1:0))+'%<br>Bond From Treats: '+Math.round(player.bondFromTreats*100)+'%<br>Nectar Multiplier: '+Math.round(player.nectarMultiplier*100)+'%<br><br>Convert Total: '+Math.round(player.convertTotal)+'<br>Attack Total: '+Math.round(player.attackTotal)
+            player.statString='<br>FPS: '+(1/dt).toFixed(2)+'<br>Delta Time: '+dt.toFixed(4)+'<br><br>Convert Rate: '+Math.round(player.convertRate*100)+'%<br>Red Pollen: '+Math.round(player.redPollen*100)+'%<br>Blue Pollen: '+Math.round(player.bluePollen*100)+'%<br>White Pollen: '+Math.round(player.whitePollen*100)+'%<br>Walk Speed: '+player.walkSpeed.toFixed(1)+'<br>Jump Power: '+player.jumpPower.toFixed(1)+'<br>Instant Red Conversion: '+Math.round(player.instantRedConversion*100)+'%<br>Instant Blue Conversion: '+Math.round(player.instantBlueConversion*100)+'%<br>Instant White Conversion: '+Math.round(player.instantWhiteConversion*100)+'%<br>Instant Flame Conversion: '+Math.round(player.instantFlameConversion*100)+'%<br>Critical Chance: '+Math.round(player.criticalChance*100)+'%<br>Critical Power: '+Math.round(player.criticalPower*100)+'%<br>Super-Crit Chance: '+Math.round(player.superCritChance*100)+'%<br>Super-Crit Power: '+Math.round(player.superCritPower*100)+'%<br>Goo: '+Math.round(player.goo*100)+'%<br>Flame Pollen: '+Math.round(player.flamePollen*100)+'%<br>Bubble Pollen: '+Math.round(player.bubblePollen*100)+'%<br>Pollen From Tools: '+Math.round(player.pollenFromTools*100)+'%<br>Pollen From Bees: '+Math.round(player.pollenFromBees*100)+'%<br>White Bomb Pollen: '+Math.round(player.whiteBombPollen*100)+'%<br>Red Bomb Pollen: '+Math.round(player.redBombPollen*100)+'%<br>Blue Bomb Pollen: '+Math.round(player.blueBombPollen*100)+'%<br>White Bee Attack: '+player.whiteBeeAttack+'<br>Blue Bee Attack: '+player.blueBeeAttack+'<br>Red Bee Attack: '+player.redBeeAttack+'<br>Bee Attack Multiplier: '+Math.round(player.beeAttack*100)+'%<br>Honey From Tokens: '+Math.round(player.honeyFromTokens*100)+'%<br>Red Bee Ability Rate: '+Math.round(player.redBeeAbilityRate*100)+'%<br>Blue Bee Ability Rate: '+Math.round(player.blueBeeAbilityRate*100)+'%<br>White Bee Ability Rate: '+Math.round(player.whiteBeeAbilityRate*100)+'%<br>Bee Movespeed: '+Math.round(player.beeSpeed*100)+'%<br>Bee Energy: '+Math.round(player.beeEnergy*100)+'%<br>Honey At Hive: '+Math.round(player.honeyAtHive*100)+'%<br>Honey Per Pollen: '+Math.round(player.honeyPerPollen*100)+'%<br>Loot Luck: '+Math.round(player.lootLuck*100)+'%<br>Red Field Capacity: '+Math.round(player.redFieldCapacity*100)+'%<br>White Field Capacity: '+Math.round(player.whiteFieldCapacity*100)+'%<br>Blue Field Capacity: '+Math.round(player.blueFieldCapacity*100)+'%<br>Ability Duplication Chance: '+Math.round(player.abilityDuplicationChance*100+(player.hasDigitalBee&&player.drives.maxed?1:0))+'%<br>Bond From Treats: '+Math.round(player.bondFromTreats*100)+'%<br>Nectar Multiplier: '+Math.round(player.nectarMultiplier*100)+'%<br><br>Convert Total: '+Math.round(player.convertTotal)+'<br>Attack Total: '+Math.round(player.attackTotal)
             
             pages[3].innerHTML='<div style="cursor:pointer;margin-top:5px;background-color:rgb(170,170,170);font-size:23px;border-radius:3px;color:rgb(0,0,0);text-align:center" id="saveGame">Save & Exit</div><div style="cursor:pointer;margin-top:10px;background-color:rgb(170,170,170);font-size:15px;border-radius:3px;color:'+(player.setting_enablePollenText?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenText">Pollen Text: '+(player.setting_enablePollenText?'On':'Off')+'</div>'+'<div style="cursor:pointer;margin-top:5px;background-color:rgb(170,170,170);font-size:15px;border-radius:3px;color:'+(player.setting_enablePollenAbv?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenAbv">Abbreviate Pollen: '+(player.setting_enablePollenAbv?'On':'Off')+'</div>'+player.statString
             
@@ -25115,34 +25179,6 @@ for(let i in NPCs){
 }
 
 let shops={
-    
-    cool:{
-        
-        // items:[{
-
-        //     name:'gummyMask',
-        //     slot:'mask',
-        //     viewMatrix:[25,1,10,-Math.PI,-0.4],
-        // },{
-            
-        //     name:'diamondMask',
-        //     slot:'mask',
-        //     viewMatrix:[20,1,10,-Math.PI,-0.4],
-        // },{
-            
-        //     name:'demonMask',
-        //     slot:'mask',
-        //     viewMatrix:[15,1,10,-Math.PI,-0.4],
-        // },{
-            
-        //     name:'coconutCanister',
-        //     slot:'backpack',
-        //     viewMatrix:[10,1,10,-Math.PI,-0.4],
-        // }],
-        
-        items:[],
-        currentIndex:0,message:'Explore Cool Shop'
-    },
 
     roboShop:{
 
@@ -26420,7 +26456,7 @@ class Token {
         this.func=effects[type].svg?false:effects[type].func
         this.canBeLinked=effects[type].canBeLinked===undefined||effects[type].canBeLinked
         
-        if(Math.random()<(player.drives.maxed?player.abilityDuplicationChance+0.01:player.abilityDuplicationChance)&&!backupFunc&&player.fieldIn&&funcParams){
+        if(Math.random()<(player.hasDigitalBee&&player.drives.maxed?player.abilityDuplicationChance+0.01:player.abilityDuplicationChance)&&!backupFunc&&player.fieldIn&&funcParams){
             
             let p,fp=funcParams,x=(Math.random()*fieldInfo[fp.field].width)|0,z=(Math.random()*fieldInfo[fp.field].length)|0
             

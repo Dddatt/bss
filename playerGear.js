@@ -582,8 +582,9 @@ window.playerGear={
                 stats.capacity+=25000
                 stats.lootLuck+=0.5
                 stats.convertRate*=1.3
+                stats.beeSpeed*=1.15
             },
-            desc:'A convenient pouch designed for easy access.<br><br>+25,000 capacity<br>+50% loot luck<br>x1.3 convert rate',
+            desc:'A convenient pouch designed for easy access.<br><br>+25,000 capacity<br>+50% loot luck<br>x1.3 convert rate<br>x1.15 bee speed',
             cost:['400000 honey','10 pineapple','10 sunflowerSeed','1 stinger'],
         },
 
@@ -606,8 +607,9 @@ window.playerGear={
                 stats.capacity+=100000
                 stats.lootLuck+=0.75
                 stats.convertRate*=1.5
+                stats.beeSpeed*=1.25
             },
-            desc:'A highly-embellished belt bag imported from a lost land, as big as a tambourine.<br><br>+25,000 capacity<br>+50% loot luck<br>x1.3 convert rate',
+            desc:'A highly-embellished belt bag imported from a lost land, as big as a tambourine.<br><br>+100,000 capacity<br>+75% loot luck<br>x1.5 convert rate<br>x1.25 bee speed',
             cost:['12500000 honey','50 pineapple','50 sunflowerSeed','3 stinger'],
         },
         
@@ -634,8 +636,9 @@ window.playerGear={
                 stats.whiteBeeAttack++
                 stats.whiteBombPollen*=1.3
                 stats.beeEnergy*=1.15
+                stats.beeSpeed*=1.3
             },
-            desc:'A luxurious faux honeycombs you can wear as a belt to greatly enhance your pollen capacity.<br><br>+200,000 capacity<br>x1.75 capacity<br>+100% loot luck<br>x1.75 convert rate<br>x1.5 honey from tokens<br>+1 white bee attack<br>x1.3 white bomb pollen<br>x1.15 bee energy',
+            desc:'A luxurious faux honeycombs you can wear as a belt to greatly enhance your pollen capacity.<br><br>+200,000 capacity<br>x1.75 capacity<br>+100% loot luck<br>x1.75 convert rate<br>x1.5 honey from tokens<br>+1 white bee attack<br>x1.3 white bomb pollen<br>x1.15 bee energy<br>bee speed',
             cost:['75000000 honey','50 glue','35 enzymes','25 oil'],
         },
         
@@ -662,9 +665,10 @@ window.playerGear={
                 stats.whiteBeeAttack++
                 stats.whiteBombPollen*=1.5
                 stats.beeEnergy*=1.25
+                stats.beeSpeed*=1.3
                 player.addEffect('petalStormPassive')
             },
-            desc:'Drape these petals about your waist to harness unlimited flower power.<br><br>+300,000 capacity<br>x2 capacity<br>+100% loot luck<br>x1.8 convert rate<br>x1.5 honey from tokens<br>+1 white bee attack<br>x1.5 white bomb pollen<br>x1.25 bee energy<br>+Passive: Petal Storm',
+            desc:'Drape these petals about your waist to harness unlimited flower power.<br><br>+300,000 capacity<br>x2 capacity<br>+100% loot luck<br>x1.8 convert rate<br>x1.5 honey from tokens<br>+1 white bee attack<br>x1.5 white bomb pollen<br>x1.25 bee energy<br>bee speed<br>+Passive: Petal Storm',
             cost:['15000000000 honey','15 starJelly','50 glitter','100 glue'],
         }
     },
@@ -875,7 +879,7 @@ window.playerGear={
             cost:['12500000 honey'],
         },
 
-        PorcelainPortOHive:{
+        porcelainPortOHive:{
             
             mesh:function(box,cylinder,sphere){
                 
@@ -970,7 +974,7 @@ window.playerGear={
                 stats.jumpPower*=1.4
                 stats.pollenFromCoconuts*=2
                 stats.goo*=1.25
-                stats.beeSpeed*=1.2
+                stats.beeSpeed*=1.5
                 stats.honeyFromTokens*=1.25
                 stats.redPollen*=1.1
                 stats.bluePollen*=1.1
@@ -978,7 +982,7 @@ window.playerGear={
                 stats.beeAttack*=1.1
                 stats.convertRateAtHive*=2
             },
-            desc:'Squishy boots that leave a trail of Goo wherever you go.<br><br>+15 movement collection<br>x1.25 goo<br>x1.2 bee speed<br>x1.25 honey from tokens<br>x1.1 pollen<br>x1.1 bee attack<br>x2 pollen from coconuts<br>x2 convert rate at hive<br>x1.25 movespeed<br>x1.4 jump power<br>+Passive: Goo Trail<br>+Passive: Coconut Haste',
+            desc:'Squishy boots that leave a trail of Goo wherever you go.<br><br>+15 movement collection<br>x1.25 goo<br>x1.5 bee speed<br>x1.25 honey from tokens<br>x1.1 pollen<br>x1.1 bee attack<br>x2 pollen from coconuts<br>x2 convert rate at hive<br>x1.25 movespeed<br>x1.4 jump power<br>+Passive: Goo Trail<br>+Passive: Coconut Haste',
             cost:['100000000000 honey','500 glue','250 glitter','250 redExtract','250 blueExtract'],
         },
 
@@ -1018,8 +1022,9 @@ window.playerGear={
                 stats.honeyFromTokens*=1.25
                 stats.beeAttack*=1.05
                 stats.convertRateAtHive*=1.5
+                stats.beeSpeed*=1.5
             },
-            desc:'Kick around coconuts with this pair of clunky kicks for a surge of speed.<br><br>+12 movement collection<br>x1.25 honey from tokens<br>x1.1 pollen<br>x1.05 bee attack<br>x2 pollen from coconuts<br>x1.5 convert rate at hive<br>x1.225 movespeed<br>x1.375 jump power<br>+Passive: Coconut Haste',
+            desc:'Kick around coconuts with this pair of clunky kicks for a surge of speed.<br><br>+12 movement collection<br>x1.25 honey from tokens<br>x1.1 pollen<br>x1.5 bee speed<br>x1.05 bee attack<br>x2 pollen from coconuts<br>x1.5 convert rate at hive<br>x1.225 movespeed<br>x1.375 jump power<br>+Passive: Coconut Haste',
             cost:['10000000000 honey','100 coconut','25 tropicalDrink','50 glue','50 oil'],
         },
         
@@ -1041,8 +1046,9 @@ window.playerGear={
                 stats.walkSpeed*=1.2
                 stats.jumpPower*=1.35
                 stats.pollenFromBees*=1.25
+                stats.beeSpeed*=1.4
             },
-            desc:'Practical and stylish boots that aid in the beekeeping process.<br><br>+10 movement collection<br>x1.25 pollen from bees<br>x1.2 movespeed<br>x1.35 jump power',
+            desc:'Practical and stylish boots that aid in the beekeeping process.<br><br>+10 movement collection<br>x1.25 pollen from bees<br>x1.4 bee speed<br>x1.2 movespeed<br>x1.35 jump power',
             cost:['15000000 honey','5 oil','3 redExtract','3 blueExtract'],
         },
 
@@ -1060,8 +1066,9 @@ window.playerGear={
                 
                 stats.movementCollection+=1
                 stats.walkSpeed*=1.1
+                stats.beeSpeed*=1.1
             },
-            desc:'Collect pollen as you walk through flowers!<br><br>+1 movement collection<br>x1.1 movespeed',
+            desc:'Collect pollen as you walk through flowers!<br><br>+1 movement collection<br>x1.1 bee speed<br>x1.1 movespeed',
             cost:['5000 honey','3 sunflowerSeed','3 blueberry','3 strawberry'],
         },
 
@@ -1080,8 +1087,9 @@ window.playerGear={
                 stats.movementCollection+=5
                 stats.walkSpeed*=1.1
                 stats.jumpPower*=1.3
+                stats.beeSpeed*=1.3
             },
-            desc:'Collect pollen as you walk through flowers!<br><br>+5 movement collection<br>x1.1 movespeed<br>x1.3 jump power',
+            desc:'Collect pollen as you walk through flowers!<br><br>+5 movement collection<br>x1.3 bee speed<br>x1.1 movespeed<br>x1.3 jump power',
             cost:['2000000 honey','20 pineapple','20 blueberry','20 strawberry'],
         },
     },
