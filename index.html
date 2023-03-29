@@ -23064,12 +23064,27 @@ player=(function(out){
     out.updateHiveBalloon=function(){
         
         if(!out.hiveBalloon.pollen){
-            
-            if(out.hiveBalloon.maxPollen&&!player.converting){
+
+            if(out.hiveBalloon.maxPollen){
                 
-                player.addEffect('balloonBlessing',undefined,player.hiveBalloon.blessing)
-                player.addMessage('The hive balloon granted x'+player.hiveBalloon.blessing+' balloon blessing!')
-                player.hiveBalloon.maxPollen=0
+                out.addEffect('balloonBlessing',undefined,out.hiveBalloon.blessing)
+                out.hiveBalloon.maxPollen=0
+                out.hiveBalloon.pollen=0
+
+                for(let i in out.effects){
+
+                    if(out.effects[i].type==='balloonBlessing'){
+
+                        if(out.effects[i].amount<=out.hiveBalloon.blessing){
+
+                            out.addMessage('The hive balloon granted x'+out.hiveBalloon.blessing+' balloon blessing!',[205,205,0])
+                            
+                        } else {
+
+                            out.addMessage('The hive balloon refreshed your balloon blessing!',[205,205,0])
+                        }
+                    }
+                }
             }
             
             out.hiveBalloon.size=0
@@ -23331,7 +23346,14 @@ player=(function(out){
                 
                 for(let j in s){
                     
-                    out.defaultStats[s[j]]+=b.num
+                    if(s[j].indexOf('Conversion')>-1){
+
+                        out.defaultStats[s[j]]=MATH.applyPercentage(out.defaultStats[s[j]],b.num)
+
+                    } else {
+
+                        out.defaultStats[s[j]]+=b.num
+                    }
                 }
                 
             } else {
@@ -28968,6 +28990,12 @@ function collectPollen(params){
     multiplier.r*=player.redPollen*(crit.r===0?1:crit.r===1?player.criticalPower:player.criticalPower*player.superCritPower)
     multiplier.b*=player.bluePollen*(crit.b===0?1:crit.b===1?player.criticalPower:player.criticalPower*player.superCritPower)
     multiplier.w*=player.whitePollen*(crit.w===0?1:crit.w===1?player.criticalPower:player.criticalPower*player.superCritPower)
+
+    let instantConversion={r:params.instantConversion?(player.instantRedConversion-1)*params.instantConversion+1:player.instantRedConversion,b:params.instantConversion?(player.instantBlueConversion-1)*params.instantConversion+1:player.instantBlueConversion,w:params.instantConversion?(player.instantWhiteConversion-1)*params.instantConversion+1:player.instantWhiteConversion}
+    
+    instantConversion.r=crit.r===2?1:instantConversion.r
+    instantConversion.w=crit.w===2?1:instantConversion.w
+    instantConversion.b=crit.b===2?1:instantConversion.b
     
     for(let i in pattern){
         
@@ -29003,8 +29031,11 @@ function collectPollen(params){
                 
                 if(f.balloon){
                     
-                    amountToCollect*=f.color==='blue'?1.25:1.1
-                    f.balloon.pollen+=f.balloon.golden?amountToCollect*1.15:amountToCollect
+                    amountToCollect*=f.color==='blue'?1.2:1.1
+                    amountToCollect*=f.balloon.golden?1.05:1
+
+                    f.balloon.pollen+=amountToCollect
+                    balloon[f.color[0]]+=amountToCollect*(1-instantConversion[f.color[0]])
                     
                 } else {
                     
@@ -29030,7 +29061,7 @@ function collectPollen(params){
         if(total.w||balloon.w)stack.push({c:'white',v:total.w+balloon.w})
         if(total.r||balloon.r)stack.push({c:'red',v:total.r+balloon.r})
         if(total.b||balloon.b)stack.push({c:'blue',v:total.b+balloon.b})
-        
+
         if(stack[1]&&stack[0].v>stack[1].v){
             
             let n=stack[0]
@@ -29058,12 +29089,6 @@ function collectPollen(params){
             
         }
     }
-    
-    let instantConversion={r:params.instantConversion?(player.instantRedConversion-1)*params.instantConversion+1:player.instantRedConversion,b:params.instantConversion?(player.instantBlueConversion-1)*params.instantConversion+1:player.instantBlueConversion,w:params.instantConversion?(player.instantWhiteConversion-1)*params.instantConversion+1:player.instantWhiteConversion}
-    
-    instantConversion.r=crit.r===2?1:instantConversion.r
-    instantConversion.w=crit.w===2?1:instantConversion.w
-    instantConversion.b=crit.b===2?1:instantConversion.b
     
     totalHoney=(total.r*instantConversion.r)+(total.b*instantConversion.b)+(total.w*instantConversion.w)
 
@@ -29549,6 +29574,7 @@ function RUN_SAVE_CODE(string){
     player.quests=save.quests
     player.isCrafting=save.isCrafting
     TIME=save.TIME
+    player.hiveBalloon=save.hiveBalloon
 
     let activeQuests={}
 
@@ -29635,6 +29661,7 @@ function GENERATE_SAVE_CODE(){
     save.quests=player.quests
     save.isCrafting=player.isCrafting
     save.TIME=TIME
+    save.hiveBalloon=player.hiveBalloon
 
     for(let i in hotbarSlots){
         
@@ -29650,6 +29677,11 @@ function GENERATE_SAVE_CODE(){
         if(save.effects[i].type.indexOf('Passive')>-1){
             
             passives.push(save.effects[i].type)
+            save.effects.splice(i,1)
+        }
+
+        if(save.effects[i].type.indexOf('Aura')>-1){
+
             save.effects.splice(i,1)
         }
     }
