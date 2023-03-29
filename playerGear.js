@@ -1091,6 +1091,72 @@ window.playerGear={
         
         none:{mesh:function(){},applyStats:function(){}},
         
+        redGuard:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                box(0.35,0.05,0.1,0.2,0.2,0.2,[0,25,30],[1.3,0,0])
+                box(0.35,0.05,0.1,0.22,0.22,0.1,[0,25,30],[0.1,0.1,0.1])
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.convertRate*=1.1
+                stats.blueBeeAttack+=1
+                stats.capacity+=25000
+                stats.redPollen*=1.1
+                stats.instantRedConversion=window.applyPercentage(stats.instantRedConversion,0.03)
+            },
+            desc:'A durable pad worn on the left shoulder of red beekeepers.<br><br>+25,000 capacity<br>x1.1 red pollen<br>x1.1 convert rate<br>+3% instant red conversion<br>+1 red bee attack',
+            cost:['1000000 honey','30 strawberries','1 royalJelly','1 stinger'],
+        },
+
+        eliteRedGuard:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                box(0.35,0.05,0.1,0.2,0.2,0.2,[0,25,30],[1.3,0,0])
+                box(0.35,0.05,0.1,0.22,0.22,0.1,[0,25,30],[0.1,0.1,0.1])
+                box(0.35,0.1,0.1,0.5,0.1,0.05,[0,25,40],[0.1,0.1,0.1])
+                box(0.35,0,0.1,0.45,0.1,0.05,[0,25,20],[0.1,0.1,0.1])
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.convertRate*=1.15
+                stats.redBeeAttack+=1
+                stats.capacity+=75000
+                stats.redPollen*=1.15
+                stats.instantRedConversion=window.applyPercentage(stats.instantRedConversion,0.05)
+                stats.criticalChance+=0.05
+            },
+            desc:'A red guard reserved for the most dedicated red beekeepers.<br><br>+75,000 capacity<br>x1.15 blue pollen<br>x1.15 convert rate<br>+5% instant blue conversion<br>+5% critical chance<br>+1 red bee attack',
+            cost:['5000000 honey','1 redExtract','50 strawberries','3 royalJelly','3 stingers'],
+        },
+
+        rileyGuard:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                box(0.35,0.05,0.1,0.2,0.2,0.2,[0,25,30],[1.3,1.3,0])
+                box(0.35,0.05,0.1,0.27,0.27,0.1,[0,25,30],[1.3,0,0])
+                box(0.35,0.1,0.1,0.5,0.1,0.05,[0,25,40],[1.3,0,0])
+                box(0.35,0,0.1,0.45,0.1,0.05,[0,25,20],[1.3,0,0])
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.convertRate*=1.25
+                stats.redBeeAttack+=2
+                stats.capacity+=150000
+                stats.redPollen*=1.25
+                stats.instantRedConversion=window.applyPercentage(stats.instantRedConversion,0.15)
+                stats.criticalChance+=0.08
+            },
+            desc:'A piece of armor forged by the leader of red bees!<br><br>+150,000 capacity<br>x1.25 red pollen<br>x1.25 convert rate<br>+15% instant red conversion<br>+8% critical chance<br>+2 red bee attack',
+            cost:['35000000 honey','5 redExtract','100 strawberries','1 glue','5 stinger'],
+        },
+
         crimsonGuard:{
             
             mesh:function(box,cylinder,sphere){
@@ -1105,14 +1171,14 @@ window.playerGear={
                 stats.convertRate*=1.4
                 stats.redPollen*=1.35
                 stats.capacity+=300000
-                stats.instantRedConversion+=0.1
+                stats.instantRedConversion=window.applyPercentage(stats.instantRedConversion,0.2)
                 stats.redBombPollen*=1.5
                 stats.redBeeAttack+=2
                 stats.whiteBeeAttack+=1
-                stats.criticalPower+=0.75
+                stats.criticalChance+=0.1
                 player.addEffect('focusPulserPassive')
             },
-            desc:'A guard bestowed with the heroic power of Crimson Bee - Defender of the Red Bees.<br><br>+300000 capacity<br>x1.35 red pollen<br>x1.4 convert rate<br>+10% instant red conversion<br>x1.5 red bomb pollen<br>+2 red attack<br>+1 white bee attack<br>+75% critical power<br>+Passive: Focus Pulser',
+            desc:'A guard bestowed with the heroic power of Crimson Bee - Defender of the red bees.<br><br>+300,000 capacity<br>x1.35 red pollen<br>x1.4 convert rate<br>+20% instant red conversion<br>x1.5 red bomb pollen<br>+2 red attack<br>+1 white bee attack<br>+10% critical chance<br>+Passive: Focus Pulser',
             cost:['200000000 honey','100 redExtract','100 stinger','50 oil','25 glitter'],
         },
     },
@@ -1120,7 +1186,73 @@ window.playerGear={
     rightGuard:{
         
         none:{mesh:function(){},applyStats:function(){}},
-        
+
+        blueGuard:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                box(-0.35,0.05,0.1,0.2,0.2,0.2,[0,-25,-30],[0,0,1.3])
+                box(-0.35,0.05,0.1,0.22,0.22,0.1,[0,-25,-30],[0.1,0.1,0.1])
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.convertRate*=1.1
+                stats.blueBeeAttack+=1
+                stats.capacity+=25000
+                stats.bluePollen*=1.1
+                stats.instantBlueConversion=window.applyPercentage(stats.instantBlueConversion,0.03)
+            },
+            desc:'A durable pad worn on the right shoulder of blue beekeepers.<br><br>+25,000 capacity<br>x1.1 blue pollen<br>x1.1 convert rate<br>+3% instant blue conversion<br>+1 blue bee attack',
+            cost:['1000000 honey','30 blueberries','1 royalJelly','1 moonCharm'],
+        },
+
+        eliteBlueGuard:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                box(-0.35,0.05,0.1,0.2,0.2,0.2,[0,-25,-30],[0,0,1.3])
+                box(-0.35,0.05,0.1,0.22,0.22,0.1,[0,-25,-30],[0.1,0.1,0.1])
+                box(-0.35,0.1,0.1,0.5,0.1,0.05,[0,-25,-40],[0.1,0.1,0.1])
+                box(-0.35,0,0.1,0.45,0.1,0.05,[0,-25,-20],[0.1,0.1,0.1])
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.convertRate*=1.15
+                stats.blueBeeAttack+=1
+                stats.capacity+=75000
+                stats.bluePollen*=1.15
+                stats.instantBlueConversion=window.applyPercentage(stats.instantBlueConversion,0.05)
+                stats.criticalPower+=0.5
+            },
+            desc:'A blue guard reserved for the most dedicated blue beekeepers.<br><br>+75,000 capacity<br>x1.15 blue pollen<br>x1.15 convert rate<br>+5% instant blue conversion<br>+50% critical power<br>+1 blue bee attack',
+            cost:['5000000 honey','1 blueExtract','50 blueberries','3 royalJelly','3 moonCharm'],
+        },
+
+        buckoGuard:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                box(-0.35,0.05,0.1,0.2,0.2,0.2,[0,-25,-30],[1.3,1.3,0])
+                box(-0.35,0.05,0.1,0.27,0.27,0.1,[0,-25,-30],[0,0,1.3])
+                box(-0.35,0.1,0.1,0.5,0.1,0.05,[0,-25,-40],[0,0,1.3])
+                box(-0.35,0,0.1,0.45,0.1,0.05,[0,-25,-20],[0,0,1.3])
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.convertRate*=1.25
+                stats.blueBeeAttack+=1
+                stats.capacity+=150000
+                stats.bluePollen*=1.25 
+                stats.instantBlueConversion=window.applyPercentage(stats.instantBlueConversion,0.1)
+                stats.criticalPower+=0.75
+            },
+            desc:'A piece of armor forged by the leader of blue bees!<br><br>+150,000 capacity<br>x1.25 blue pollen<br>x1.25 convert rate<br>+10% instant blue conversion<br>+75% critical power<br>+2 blue bee attack',
+            cost:['35000000 honey','5 blueExtract','100 blueberries','1 glue','5 moonCharm'],
+        },
+
         cobaltGuard:{
             
             mesh:function(box,cylinder,sphere){
@@ -1135,14 +1267,14 @@ window.playerGear={
                 stats.convertRate*=1.4
                 stats.capacity+=300000
                 stats.bluePollen*=1.35
-                stats.instantBlueConversion+=0.1
+                stats.instantBlueConversion=window.applyPercentage(stats.instantBlueConversion,0.2)
                 stats.blueBombPollen*=1.5
                 stats.blueBeeAttack+=2
                 stats.whiteBeeAttack+=1
-                stats.criticalChance+=0.15
+                stats.criticalPower+=1
                 player.addEffect('hastePulserPassive')
             },
-            desc:'A guard bestowed with the heroic power of Cobalt Bee - Defender of the Blue Bees.<br><br>+300000 capacity<br>x1.35 red pollen<br>x1.4 convert rate<br>+10% instant blue conversion<br>x1.5 blue bomb pollen<br>+2 blue attack<br>+1 white bee attack<br>+15% critical chance<br>+Passive: Haste Pulser',
+            desc:'A guard bestowed with the heroic power of Cobalt Bee - Defender of the blue bees.<br><br>+300,000 capacity<br>x1.35 red pollen<br>x1.4 convert rate<br>+20% instant blue conversion<br>x1.5 blue bomb pollen<br>+2 blue bee attack<br>+1 white bee attack<br>+100% critical power<br>+Passive: Haste Pulser',
             cost:['200000000 honey','100 blueExtract','100 stinger','50 enzymes','25 glitter'],
         },
     }
