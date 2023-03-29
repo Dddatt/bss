@@ -1090,6 +1090,44 @@ window.playerGear={
     leftGuard:{
         
         none:{mesh:function(){},applyStats:function(){}},
+
+        lookerGuard:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                box(0.35,0.05,0.1,0.2,0.2,0.2,[0,25,30],[0.2,1.2,0.2])
+                box(0.35,0.05,0.1,0.22,0.22,0.1,[0,25,30],[0.1,0.1,0.1])
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.capacity+=15000
+                stats.criticalChance+=0.02
+                stats.criticalPower+=0.25
+            },
+            desc:'A left shoulder pad crafted by a Looker Bee.<br><br>+15,000 capacity<br>+2% critical chance<br>+25% critical power',
+            cost:['100000 honey','5 sunflowerSeed'],
+        },
+
+        bomberGuard:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                box(0.35,0.05,0.1,0.2,0.2,0.2,[0,25,30],[1.3,1.3,1.3])
+                box(0.35,0.05,0.1,0.22,0.22,0.1,[0,25,30],[0.1,0.1,0.1])
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.capacity+=15000
+                stats.whitePollen*=1.07
+                stats.whiteBombPollen*=1.15
+                stats.redBombPollen*=1.15
+                stats.blueBombPollen*=1.15
+            },
+            desc:'A left shoulder pad crafted by a Bomber Bee.<br><br>+15,000 capacity<br>x1.07 white pollen<br>x1.15 bomb pollen',
+            cost:['100000 honey','5 pineapple'],
+        },
         
         redGuard:{
             
@@ -1130,7 +1168,7 @@ window.playerGear={
                 stats.instantRedConversion=window.applyPercentage(stats.instantRedConversion,0.05)
                 stats.criticalChance+=0.05
             },
-            desc:'A red guard reserved for the most dedicated red beekeepers.<br><br>+75,000 capacity<br>x1.15 blue pollen<br>x1.15 convert rate<br>+5% instant blue conversion<br>+5% critical chance<br>+1 red bee attack',
+            desc:'A red guard reserved for the most dedicated red beekeepers.<br><br>+75,000 capacity<br>x1.15 red pollen<br>x1.15 convert rate<br>+5% instant red conversion<br>+5% critical chance<br>+1 red bee attack',
             cost:['5000000 honey','1 redExtract','50 strawberries','3 royalJelly','3 stingers'],
         },
 
@@ -1186,6 +1224,42 @@ window.playerGear={
     rightGuard:{
         
         none:{mesh:function(){},applyStats:function(){}},
+
+        hastyGuard:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                box(-0.35,0.05,0.1,0.2,0.2,0.2,[0,-25,-30],[1.2,1.2,1.2])
+                box(-0.35,0.05,0.1,0.22,0.22,0.1,[0,-25,-30],[1.3,1.3,0.1])
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.capacity+=15000
+                stats.walkSpeed*=1.07
+                stats.beeSpeed*=1.05
+            },
+            desc:'A right shoulder pad crafted by a Hasty Bee.<br><br>+15,000 capacity<br>x1.07 movespeed<br>x1.05 bee speed',
+            cost:['100000 honey','1 moonCharm'],
+        },
+
+        braveGuard:{
+            
+            mesh:function(box,cylinder,sphere){
+                
+                box(-0.35,0.05,0.1,0.2,0.2,0.2,[0,-25,-30],[0.7,0.7,0.7])
+                box(-0.35,0.05,0.1,0.22,0.22,0.1,[0,-25,-30],[1.2,1.2,1.2])
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.capacity+=15000
+                stats.whitePollen*=1.07
+                stats.whiteBeeAttack+=1
+            },
+            desc:'A right shoulder pad crafted by a Brave Bee.<br><br>+15,000 capacity<br>x1.07 white pollen<br>+1 white bee attack',
+            cost:['100000 honey','1 stinger'],
+        },
 
         blueGuard:{
             
