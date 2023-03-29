@@ -2848,8 +2848,8 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
         <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
         <text x='130' y='18' style='font-family:trebuchet ms;font-size:17px;' fill='rgb(0,0,0)' text-anchor='middle'>Oil</text>
-        <text x='130' y='35' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>Grants 1.2x  bee</text>
-        <text x='130' y='50' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>and player  speed</text>
+        <text x='130' y='35' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>Grants extra bee</text>
+        <text x='130' y='50' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>and player speed</text>
         <text x='130' y='65' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>for 10 minutes.</text>
         <text id='oil_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
         <path fill='rgb(255,255,120)' stroke='rgb(0,0,0)' stroke-width='1.5' d='M35 55C17 54 17 36 28 30C 31 28 31 21 30 20' transform='translate(0,-5)'></path>
@@ -8008,13 +8008,13 @@ let effects={
         
         update:(amount,player)=>{
             
-            player.walkSpeed*=1.2
+            player.walkSpeed*=1.1
             player.beeSpeed*=1.2
         },
         
         getMessage:(amount)=>{
             
-            return 'Oil\nx1.2 player and bee movespeed'
+            return 'Oil\nx1.2 bee speed\nx1.1 movespeed'
         }
     },
     
@@ -8154,7 +8154,7 @@ let effects={
             player.instantRedConversion=MATH.applyPercentage(player.instantRedConversion,0.17)
             player.instantWhiteConversion=MATH.applyPercentage(player.instantWhiteConversion,0.17)
             player.instantBlueConversion=MATH.applyPercentage(player.instantBlueConversion,0.17)
-            player.walkspeed*=1.25
+            player.walkSpeed*=1.15
             player.beeSpeed*=1.25
             player.criticalChance+=0.07
             player.superCritChance+=0.01
@@ -8162,7 +8162,7 @@ let effects={
         
         getMessage:(amount)=>{
             
-            return 'Super Smoothie\nx1.5 capacity\nx1.6 pollen\nx1.4 pollen from bees\nx1.4 pollen from tools\nx2 convert rate\nx1.1 honey at hive\n+17% instant conversion\n+7% critical chance\nx1.25 walkspeed\nx1.25 bee movespeed\n+1% super-crit chance'
+            return 'Super Smoothie\nx1.5 capacity\nx1.6 pollen\nx1.4 pollen from bees\nx1.4 pollen from tools\nx2 convert rate\nx1.1 honey at hive\n+17% instant conversion\n+7% critical chance\nx1.15 walkspeed\nx1.25 bee movespeed\n+1% super-crit chance'
         }
     },
     
@@ -14110,7 +14110,7 @@ class Bubble {
             player.addEffect('bubbleBloat',(this.golden?4:2)/(60*60))
         }
         
-        if(player.tool==='tidePopper'){
+        if(player.currentGear.tool==='tidePopper'){
             
             player.addEffect('tidePower')
             
