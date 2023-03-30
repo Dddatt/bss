@@ -399,7 +399,7 @@ window.playerGear={
 
             },
             desc:'Ignite your mind to enhance your red Bees.<br><br>x1.75 capacity<br>x1.5 red pollen<br>+20% instant red conversion<br>+50% instant flame conversion<br>+1 bee attack<br>+1 red bee attack<br>x1.15 bee ability rate<br>+35% defense<br>+Passive: Ignite',
-            cost:['100000000 honey','30 redExtracts','15 enzymes','5 glue','300 strawberries'],
+            cost:['100000000 honey','30 redExtract','15 enzymes','5 glue','300 strawberry'],
         },
 
         bubbleMask:{
@@ -429,7 +429,7 @@ window.playerGear={
 
             },
             desc:'Ignite your mind to enhance your red Bees.<br><br>x2 capacity<br>x1.5 blue pollen<br>+20% instant blue conversion<br>x2 bubble pollen<br>x1.15 bee ability rate<br>+30% defense<br>+Passive: Bubble Bombs',
-            cost:['100000000 honey','30 redExtracts','15 enzymes','5 glue','300 strawberries'],
+            cost:['100000000 honey','30 blueExtract','15 enzymes','5 glue','300 blueberry'],
         },
         
         gummyMask:{
@@ -1153,7 +1153,7 @@ window.playerGear={
                 stats.instantRedConversion=window.applyPercentage(stats.instantRedConversion,0.03)
             },
             desc:'A durable pad worn on the left shoulder of red beekeepers.<br><br>+25,000 capacity<br>x1.1 red pollen<br>x1.1 convert rate<br>+3% instant red conversion<br>+1 red bee attack',
-            cost:['1000000 honey','30 strawberries','1 royalJelly','1 stinger'],
+            cost:['1000000 honey','30 strawberry','1 royalJelly','1 stinger'],
         },
 
         eliteRedGuard:{
@@ -1176,7 +1176,7 @@ window.playerGear={
                 stats.criticalChance+=0.05
             },
             desc:'A red guard reserved for the most dedicated red beekeepers.<br><br>+75,000 capacity<br>x1.15 red pollen<br>x1.15 convert rate<br>+5% instant red conversion<br>+5% critical chance<br>+1 red bee attack',
-            cost:['5000000 honey','1 redExtract','50 strawberries','3 royalJelly','3 stingers'],
+            cost:['5000000 honey','1 redExtract','50 strawberry','3 royalJelly','3 stingers'],
         },
 
         rileyGuard:{
@@ -1199,7 +1199,7 @@ window.playerGear={
                 stats.criticalChance+=0.08
             },
             desc:'A piece of armor forged by the leader of red bees!<br><br>+150,000 capacity<br>x1.25 red pollen<br>x1.25 convert rate<br>+15% instant red conversion<br>+8% critical chance<br>+2 red bee attack',
-            cost:['35000000 honey','5 redExtract','100 strawberries','1 glue','5 stinger'],
+            cost:['35000000 honey','5 redExtract','100 strawberry','1 glue','5 stinger'],
         },
 
         crimsonGuard:{
@@ -1285,7 +1285,7 @@ window.playerGear={
                 stats.instantBlueConversion=window.applyPercentage(stats.instantBlueConversion,0.03)
             },
             desc:'A durable pad worn on the right shoulder of blue beekeepers.<br><br>+25,000 capacity<br>x1.1 blue pollen<br>x1.1 convert rate<br>+3% instant blue conversion<br>+1 blue bee attack',
-            cost:['1000000 honey','30 blueberries','1 royalJelly','1 moonCharm'],
+            cost:['1000000 honey','30 blueberry','1 royalJelly','1 moonCharm'],
         },
 
         eliteBlueGuard:{
@@ -1308,7 +1308,7 @@ window.playerGear={
                 stats.criticalPower+=0.5
             },
             desc:'A blue guard reserved for the most dedicated blue beekeepers.<br><br>+75,000 capacity<br>x1.15 blue pollen<br>x1.15 convert rate<br>+5% instant blue conversion<br>+50% critical power<br>+1 blue bee attack',
-            cost:['5000000 honey','1 blueExtract','50 blueberries','3 royalJelly','3 moonCharm'],
+            cost:['5000000 honey','1 blueExtract','50 blueberry','3 royalJelly','3 moonCharm'],
         },
 
         buckoGuard:{
@@ -1331,7 +1331,7 @@ window.playerGear={
                 stats.criticalPower+=0.75
             },
             desc:'A piece of armor forged by the leader of blue bees!<br><br>+150,000 capacity<br>x1.25 blue pollen<br>x1.25 convert rate<br>+10% instant blue conversion<br>+75% critical power<br>+2 blue bee attack',
-            cost:['35000000 honey','5 blueExtract','100 blueberries','1 glue','5 moonCharm'],
+            cost:['35000000 honey','5 blueExtract','100 blueberry','1 glue','5 moonCharm'],
         },
 
         cobaltGuard:{
