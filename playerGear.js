@@ -1176,7 +1176,7 @@ window.playerGear={
                 stats.criticalChance+=0.05
             },
             desc:'A red guard reserved for the most dedicated red beekeepers.<br><br>+75,000 capacity<br>x1.15 red pollen<br>x1.15 convert rate<br>+5% instant red conversion<br>+5% critical chance<br>+1 red bee attack',
-            cost:['5000000 honey','1 redExtract','50 strawberry','3 royalJelly','3 stingers'],
+            cost:['5000000 honey','1 redExtract','50 strawberry','3 royalJelly','3 stinger'],
         },
 
         rileyGuard:{

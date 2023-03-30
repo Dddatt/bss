@@ -5262,6 +5262,11 @@ let triggers={
         minX:-76.5,maxX:-61.5,minY:-2,maxY:4,minZ:34,maxZ:42
     },
 
+    redHQ_shop:{
+        
+        minX:36,maxX:46,minY:-2,maxY:7,minZ:10,maxZ:30
+    },
+
     robo_shop:{
 
         minX:55.5,maxX:62,minY:7,maxY:13,minZ:36.5,maxZ:45
@@ -10637,7 +10642,7 @@ let items={
 
     paperPlanter:{
         
-        amount:1,u:0,v:0,value:Infinity,
+        amount:0,u:0,v:0,value:Infinity,
         use:function(){
             
             if(objects.planters.length>3){
@@ -10669,7 +10674,7 @@ let items={
 
     plasticPlanter:{
         
-        amount:1,u:0,v:0,value:Infinity,
+        amount:0,u:0,v:0,value:Infinity,
         use:function(){
             
             if(objects.planters.length>3){
@@ -10692,7 +10697,7 @@ let items={
 
     candyPlanter:{
         
-        amount:1,u:0,v:0,value:Infinity,
+        amount:0,u:0,v:0,value:Infinity,
         use:function(){
             
             if(objects.planters.length>3){
@@ -10715,7 +10720,7 @@ let items={
 
     redClayPlanter:{
         
-        amount:1,u:0,v:0,value:Infinity,
+        amount:0,u:0,v:0,value:Infinity,
         use:function(){
             
             if(objects.planters.length>3){
@@ -10738,7 +10743,7 @@ let items={
 
     blueClayPlanter:{
         
-        amount:1,u:0,v:0,value:Infinity,
+        amount:0,u:0,v:0,value:Infinity,
         use:function(){
             
             if(objects.planters.length>3){
@@ -10761,7 +10766,7 @@ let items={
 
     tackyPlanter:{
         
-        amount:1,u:0,v:0,value:Infinity,
+        amount:0,u:0,v:0,value:Infinity,
         use:function(){
             
             if(objects.planters.length>3){
@@ -10784,7 +10789,7 @@ let items={
 
     pesticidePlanter:{
         
-        amount:1,u:0,v:0,value:Infinity,
+        amount:0,u:0,v:0,value:Infinity,
         use:function(){
             
             if(objects.planters.length>3){
@@ -10807,7 +10812,7 @@ let items={
 
     petalPlanter:{
         
-        amount:1,u:0,v:0,value:Infinity,
+        amount:0,u:0,v:0,value:Infinity,
         use:function(){
             
             if(objects.planters.length>3){
@@ -10830,7 +10835,7 @@ let items={
 
     plentyPlanter:{
         
-        amount:1,u:0,v:0,value:Infinity,
+        amount:0,u:0,v:0,value:Infinity,
         use:function(){
             
             if(objects.planters.length>3){
@@ -25320,21 +25325,21 @@ let shops={
             slot:'rightGuard',
             viewMatrix:[-63.5-2.75,0.3+1,40.5-3,Math.PI,-0.3],
             displayPos:[-63-2.75,0.3,40.5],
-            displayScale:[1.75,1.75,1.75],
+            displayScale:[1.9,1.9,1.9],
         },{
 
             name:'eliteBlueGuard',
             slot:'rightGuard',
             viewMatrix:[-63.5-2.75*2,0.3+1,40.5-3,Math.PI,-0.3],
             displayPos:[-63-2.75*2,0.3,40.5],
-            displayScale:[1.75,1.75,1.75],
+            displayScale:[1.9,1.9,1.9],
         },{
 
             name:'buckoGuard',
             slot:'rightGuard',
             viewMatrix:[-63.5-2.75*3,0.3+1,40.5-3,Math.PI,-0.3],
             displayPos:[-63-2.75*3,0.3,40.5],
-            displayScale:[1.75,1.75,1.75],
+            displayScale:[1.9,1.9,1.9],
         },{
 
             amountPurchased:0,maxPurchasedAmount:1,
@@ -25365,10 +25370,74 @@ let shops={
             slot:'tool',
             viewMatrix:[-63.9-4.5*3,2+2,40-5,Math.PI,-0.1],
             displayPos:[-63.5-4.5*3,2,40],
-            displayRot:[0,0,0],
             displayScale:[1.5,1.5,1.5],
         }],
         currentIndex:0,message:'Explore Blue HQ Shop'
+    },
+
+    redHQ:{
+
+        items:[{
+
+            name:'redGuard',
+            slot:'leftGuard',
+            viewMatrix:[43+0.7,3.75+1,28-2.5,Math.PI,-0.3],
+            displayPos:[43,3.75,28],
+            displayScale:[1.9,1.9,1.9],
+        },{
+
+            name:'eliteRedGuard',
+            slot:'leftGuard',
+            viewMatrix:[43+0.7-2.15,3.75+1,28-2.5,Math.PI,-0.3],
+            displayPos:[43-2.15,3.75,28],
+            displayScale:[1.9,1.9,1.9],
+        },{
+
+            name:'rileyGuard',
+            slot:'leftGuard',
+            viewMatrix:[43+0.7-2.15*2,3.75+1,28-2.5,Math.PI,-0.3],
+            displayPos:[43-2.15*2,3.75,28],
+            displayScale:[1.9,1.9,1.9],
+        },{
+
+            name:'scythe',
+            slot:'tool',
+            viewMatrix:[43+0.7-2.15*3,3.75+1,28-2.5,Math.PI,-0.3],
+            displayPos:[44.5-2.15*3,3.75,28],
+            displayRot:[5,-70,10],
+        },{
+
+            name:'redPortOHive',
+            slot:'backpack',
+            viewMatrix:[43.5,8+1,28-2.5,Math.PI,-0.3],
+            displayPos:[43.5,8,28],
+            displayRot:[0,175,-2],
+            displayScale:[1.4,1.4,1.4],
+        },{
+
+            name:'fireMask',
+            slot:'mask',
+            viewMatrix:[40.5,8+1,29.25-3.25,Math.PI,-0.3],
+            displayPos:[40.5,7.75,29.25],
+            displayRot:[10,180,0],
+            displayScale:[1.4,1.4,1.4],
+        },{
+
+            amountPurchased:0,maxPurchasedAmount:1,
+            name:'redClayPlanter',
+            slot:'item',
+            viewMatrix:[37.5,8+1,28-3.25,Math.PI,-0.3],
+            cost:['10000000 honey','1 magicBean','10 redExtract','10 softWax'],
+            desc:'Alone, grows in about 15m. Grants bonus strawberries, red extracts, and waxes.<br><br>• Grows x1.25 faster in fields with red flowers.<br><br>• Grants x1.25 Invigorating and Satisfying nectar.<br><br>• Red bees are 1.5x more likely to sip from this planter, but blue bees ignore it.'
+        },{
+
+            name:'darkScythe',
+            slot:'tool',
+            viewMatrix:[50-4,6+1,23.5-1.5,MATH.HALF_PI,-0.2],
+            displayPos:[50,6,23.5],
+            displayRot:[30,180,15],
+        }],
+        currentIndex:0,message:'Explore Red HQ Shop'
     },
     
 }
@@ -25847,9 +25916,9 @@ let textRenderer=(function(out){
                 -98-2.25*3,23.1,106.5,0,0,0.75,0.25,1,1,1,-2,-2,0,
                 -98-2.25*4,23,106.5,0,0,0,0.375,1,1,1,-2,-2,0,
 
-                -63.5,5,41,0,0,0.5,0.25,1,1,1,-2.5,-2.5,0,//@
+                -63.5,5,41,0,0,0.5,0.25,1,1,1,-2.5,-2.5,0,
 
-                43,8,28,0,0,0.375,0.25,1,1,1,-2.5,-2.5,0,
+                37.5,8,28,0,0,0.375,0.25,1,1,1,-2.5,-2.5,0,
                 
                 67.5,13.5,-42.6,0,0,0.875,0.25,1,1,1,-2.5,-2.5,0,
 
