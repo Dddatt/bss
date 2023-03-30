@@ -4854,7 +4854,7 @@ window.onresize=()=>{
     gl.uniform1f(glCache.trail_isNight,player.isNight)
 }
 
-let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,BEE_COLLECT=0,BEE_FLY=0,then=0,dt,frameCount=0,TIME=0,player,honeyMarkConvert=TIME,NIGHT_DARKNESS=0.6,NPCs
+let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,BEE_COLLECT=0,BEE_FLY=0,then=0,dt,frameCount=0,TIME=0,player,NIGHT_DARKNESS=0.6,NPCs
 
 gl.enable(gl.BLEND)
 gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)
@@ -7304,7 +7304,7 @@ let effects={
     
     blueBoost:{
         
-        desc:"Grants x1.2 blue pollen for 15s. Stacks up to 10x, for a maximum of x3 blue pollen.",
+        desc:"Grants x1.1 blue pollen for 15s. Stacks up to 10x, for a maximum of x2 blue pollen.",
         trialCooldown:25,trialRate:0.6,
         statsToAddTo:['blueBoostTokens','blueAbilityTokens','boostTokens','markOrBoostTokens'],
         u:128*2/2048,v:128/2048,
@@ -7318,18 +7318,18 @@ let effects={
         
         update:(amount,player)=>{
             
-            player.bluePollen*=amount*0.2+1
+            player.bluePollen*=amount*0.1+1
         },
         
         getMessage:(amount)=>{
             
-            return 'Blue Boost\nx'+(amount*0.2+1).toFixed(1)+' blue pollen'
+            return 'Blue Boost\nx'+(amount*0.1+1).toFixed(1)+' blue pollen'
         }
     },
     
     redBoost:{
         
-        desc:"Grants x1.2 red pollen for 15s. Stacks up to 10x, for a maximum of x3 red pollen.",
+        desc:"Grants x1.1 red pollen for 15s. Stacks up to 10x, for a maximum of x2 red pollen.",
         trialCooldown:25,trialRate:0.6,
         statsToAddTo:['redBoostTokens','redAbilityTokens','boostTokens','markOrBoostTokens'],
         u:128*3/2048,v:128/2048,
@@ -7343,18 +7343,18 @@ let effects={
         
         update:(amount,player)=>{
             
-            player.redPollen*=amount*0.2+1
+            player.redPollen*=amount*0.1+1
         },
         
         getMessage:(amount)=>{
             
-            return 'Red Boost\nx'+(amount*0.2+1).toFixed(1)+' red pollen'
+            return 'Red Boost\nx'+(amount*0.1+1).toFixed(1)+' red pollen'
         }
     },
     
     whiteBoost:{
         
-        desc:"Grants x1.2 white pollen for 15s. Stacks up to 10x, for a maximum of x3 white pollen.",
+        desc:"Grants x1.1 white pollen for 15s. Stacks up to 10x, for a maximum of x2 white pollen.",
         trialCooldown:15,trialRate:0.8,
         statsToAddTo:['boostTokens','markOrBoostTokens'],
         u:128*4/2048,v:128/2048,
@@ -7368,18 +7368,18 @@ let effects={
         
         update:(amount,player)=>{
             
-            player.whitePollen*=amount*0.2+1
+            player.whitePollen*=amount*0.1+1
         },
         
         getMessage:(amount)=>{
             
-            return 'White Boost\nx'+(amount*0.2+1).toFixed(1)+' white pollen'
+            return 'White Boost\nx'+(amount*0.1+1).toFixed(1)+' white pollen'
         }
     },
     
     babyLove:{
         
-        desc:"Grants x2 pollen and +50% loot luck for 30s.",
+        desc:"Grants x1.5 pollen and +50% loot luck for 30s.",
         trialCooldown:35,trialRate:0.6,
         u:128*1/2048,v:256*4/2048,
         svg:document.getElementById('babyLove'),
@@ -7392,27 +7392,27 @@ let effects={
         
         update:(amount,player)=>{
             
-            player.redPollen*=2
-            player.whitePollen*=2
-            player.bluePollen*=2
+            player.redPollen*=1.5
+            player.whitePollen*=1.5
+            player.bluePollen*=1.5
             player.lootLuck+=0.5
         },
         
         getMessage:(amount)=>{
             
-            return 'Baby Love\nx2 pollen\n+50% Loot Luck'
+            return 'Baby Love\nx1.5 pollen\n+50% Loot Luck'
         }
     },
     
     inspire:{
         
-        trialCooldown:60,trialRate:0.02,
+        trialCooldown:60,trialRate:0.0075,
         statsToAddTo:['inspireTokens'],
         u:128*2/2048,v:256*4/2048,
         svg:document.getElementById('inspire'),
         cooldown:document.getElementById('inspire_cooldown'),
         amount:document.getElementById('inspire_amount'),
-        maxCooldown:7.5,
+        maxCooldown:5,
         maxAmount:50,
         tokenLife:8,
         sound:function(){playSound('inspireToken',0.4)},
@@ -7595,22 +7595,13 @@ let effects={
         maxAmount:3,
         
         update:(amount,player)=>{
-            
-            if(TIME-honeyMarkConvert>1){
-                
-                honeyMarkConvert=TIME
-                
-                let a=Math.min(Math.round(player.capacity*amount*0.05),player.pollen)
-                player.pollen-=a
-                player.honey+=Math.ceil(a*player.honeyPerPollen)
-                if(player.setting_enablePollenText)
-                    textRenderer.add(a,[player.body.position.x,player.body.position.y+2,player.body.position.z],COLORS.honey,0,'+')
-            }
+
+            player.convertRate*=amount*0.25+1
         },
         
         getMessage:(amount)=>{
             
-            return 'Honey Mark\nConverts '+Math.round(player.convertTotal*amount*0.15)+' pollen/sec.'
+            return 'Honey Mark\nConverts the average of all your bee\'s convert amount of pollen.\nx'+(amount*0.25+1)+' convert rate'
         }
     },
     
@@ -8015,7 +8006,7 @@ let effects={
     
     targetPractice:{
         
-        desc:"Causes the bee to fly up, projecting 3 targets onto the field for 4s. Running over a target activates it. After 4s, the bee shoots the targets.<br><br>• Unactivated targets create a red boost token when shot<br><br>• If an activated target is shot, it will create a focus token and collect 50%(+5% per bee lvl) of the bee's attack from 49 flowers. The shot can gain up to 50% instant conversion and x3 pollen based on your Flame Heat.<br><br>• If all 3 targets are shot, all ability tokens will be collected and 1 of the targets will summon a red boost, focus, and precision token. Precision grants +2% super-crit chance and stacks up to 10x, giving a maximum of +20% super-crit chance.<br><br>• If the player stands under a target as it is shot, all ability tokens are collected and Flame Heat is consumed to convert 50% of the hive's convert total plus 10 times the bee's convert amount. The amount of pollen converted scales up to x10 with Flame Heat.<br><br>• If the bee is gifted, 1 of the targets are highlighted in purple. Activating this target but not all 3 will summon a Precise Mark for 12s(+0.2 per bee lvl) with a radius of 6.5 flowers. Standing in the Precise Mark grants +7% critical and super-crit chance, stacking up to 3x, for a maximum of +21% critical and super-crit chance.<br><br>Super-crit chance increases the chance of a super-crit happening if the hit is a critical hit, multiplying pollen collected or damage dealt by your critical power and super-crit power(x2 super-crit power without any extra buffs, x4 in total).",
+        desc:"Causes the bee to fly up, projecting 3 targets onto the field for 4s. Running over a target activates it. After 4s, the bee shoots the targets.<br><br>• Unactivated targets create a red boost token when shot<br><br>• If an activated target is shot, it will create a focus token and collect 50%(+5% per bee lvl) of the bee's attack from 49 flowers. The shot can gain up to 50% instant conversion and x3 pollen based on your Flame Heat.<br><br>• If all 3 targets are shot, all ability tokens will be collected and 1 of the targets will summon a red boost, focus, and precision token. Precision grants +2% super-crit chance and stacks up to 10x, giving a maximum of +20% super-crit chance.<br><br>• If the player stands under a target as it is shot, all ability tokens are collected and Flame Heat is consumed to convert 50% of the hive's convert total plus 15 times the bee's convert amount. The amount of pollen converted scales up to x10 with Flame Heat.<br><br>• If the bee is gifted, 1 of the targets are highlighted in purple. Activating this target but not all 3 will summon a Precise Mark for 12s(+0.2 per bee lvl) with a radius of 6.5 flowers. Standing in the Precise Mark grants +7% critical and super-crit chance, stacking up to 3x, for a maximum of +21% critical and super-crit chance.<br><br>Super-crit chance increases the chance of a super-crit happening if the hit is a critical hit, multiplying pollen collected or damage dealt by your critical power and super-crit power(x2 super-crit power without any extra buffs, x4 in total).",
         trialCooldown:22.5,trialRate:0.25,
         statsToAddTo:['redAbilityTokens','battleTokens'],
         u:128*4/2048,v:256*2/2048,
@@ -9126,7 +9117,7 @@ let effects={
     
     redPulse:{
         
-        desc:"Activates a red pulse, hopping to every red bee twice, collecting 4(+0.75 for every hop) pollen from 25 flowers. Pollen collection increases with each hop. If the player owns a Cobalt Bee, a blue pulse is fired as well.",
+        desc:"Activates a red pulse, hopping to every red bee twice, collecting 4(+0.5 for every hop) pollen from 25 flowers. Pollen collection increases with each hop. If the player owns a Cobalt Bee, a blue pulse is fired as well.",
         trialCooldown:25,trialRate:0.6,
         statsToAddTo:['redAbilityTokens'],
         u:128*1/2048,v:128*6/2048,
@@ -9145,7 +9136,7 @@ let effects={
     
     bluePulse:{
         
-        desc:"Activates a blue pulse, hopping to every red bee twice, collecting 4(+0.75 for every hop) pollen from 25 flowers. Pollen collection increases with each hop. If the player owns a Crimson Bee, a red pulse is fired as well.",
+        desc:"Activates a blue pulse, hopping to every red bee twice, collecting 4(+0.5 for every hop) pollen from 25 flowers. Pollen collection increases with each hop. If the player owns a Crimson Bee, a red pulse is fired as well.",
         trialCooldown:25,trialRate:0.6,
         statsToAddTo:['blueAbilityTokens'],
         u:128*2/2048,v:128*6/2048,
@@ -14313,7 +14304,8 @@ class Mark {
                 }
             }
         }
-        
+
+        this.honeyMarkConvert=0
     }
     
     surge(time=0){
@@ -14337,6 +14329,23 @@ class Mark {
             player.addEffect(this.type)
             
             meshes.explosions.instanceData.push(this.pos[0],this.pos[1]+3.6,this.pos[2],0,1,0,1,0.45,1)
+
+            if(this.type==='honeyMark'){
+
+                this.honeyMarkConvert-=dt
+
+                if(this.honeyMarkConvert<=0){
+                    
+                    this.honeyMarkConvert=1
+                    
+                    let a=Math.min(Math.round(player.convertTotal/(objects.bees.length||1)),player.pollen)
+                    player.pollen-=a
+                    player.honey+=Math.ceil(a*player.honeyPerPollen)
+                    
+                    if(player.setting_enablePollenText)
+                        textRenderer.add(a,[player.body.position.x,player.body.position.y+2,player.body.position.z],COLORS.honey,0,'+')
+                }
+            }
             
         } else {
             
@@ -14723,7 +14732,7 @@ class Target {
         
         if(vec3.sqrDist(this.pos,[player.body.position.x,player.body.position.y,player.body.position.z])<=4.5){
             
-            let amountToConvert=Math.min((player.convertTotal*0.5)+(10*this.bee.convertAmount*player.convertRate*player[beeInfo[this.bee.type].color+'ConvertRate'])*(player.flameHeatStack*10),player.pollen)
+            let amountToConvert=Math.min((player.convertTotal*0.5)+(15*this.bee.convertAmount*player.convertRate*player[beeInfo[this.bee.type].color+'ConvertRate'])*(player.flameHeatStack*10),player.pollen)
             
             player.pollen-=amountToConvert
             
@@ -17829,8 +17838,6 @@ class Pulse {
             }
         }
         
-        this.path.push(...this.path)
-        
         this.t=0
         this.spliceTimer=3
         this.lastPoint=0
@@ -17846,7 +17853,7 @@ class Pulse {
     
     update(){
         
-        this.t+=dt*20
+        this.t+=dt*5
         
         if(this.spliceTimer<=0){
             
@@ -17871,7 +17878,7 @@ class Pulse {
             
             this.lastPoint=this.t|0
             
-            let am=this.lastPoint*0.75+4,x=Math.round(p[0]-fieldInfo[player.fieldIn].x),z=Math.round(p[2]-fieldInfo[player.fieldIn].z)
+            let am=this.lastPoint*0.5+4,x=Math.round(p[0]-fieldInfo[player.fieldIn].x),z=Math.round(p[2]-fieldInfo[player.fieldIn].z)
             
             collectPollen({x:x,z:z,pattern:[[0,0],[1,1],[1,-1],[-1,1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1],[2,0],[-2,0],[0,-2],[0,2],[2,1],[2,-1],[-2,1],[-2,-1],[1,-2],[1,2],[-1,2],[-1,-2],[-3,0],[3,0],[0,-3],[0,3]],amount:am,stackOffset:0.4+Math.random()*(0.3+((am*0.05)-2))})
             
@@ -22406,7 +22413,8 @@ player=(function(out){
 
         let g=['bronze','silver','gold','diamond','supreme'].indexOf(t)
 
-        amulet.push('*'+MATH.random(1.05+g*0.15,1.15+g*0.15).toFixed(2)+' convertRate')
+
+        amulet.push('*1.'+(g+1)+' capacityMultiplier','*'+MATH.random(1.05+g*0.15,1.15+g*0.15).toFixed(2)+' convertRate')
 
         amulet.push(...MATH.selectFromArray(['*'+MATH.random(1.03+g*0.05,1.1+g*0.05).toFixed(2)+' redPollen','*'+MATH.random(1.03+g*0.05,1.1+g*0.05).toFixed(2)+' whitePollen','*'+MATH.random(1.03+g*0.05,1.1+g*0.05).toFixed(2)+' bluePollen','*'+MATH.random(1.01+g*0.01,1.03+g*0.01).toFixed(2)+' POLLEN','*'+MATH.random(1.02+g*0.015,1.06+g*0.015).toFixed(2)+' walkSpeed','+'+MATH.random(0.01+g*0.0075,0.03+g*0.0075).toFixed(2)+' criticalChance','*'+MATH.random(1.03+g*0.05,1.1+g*0.05).toFixed(2)+' pollenFromTools','*'+MATH.random(1.03+g*0.05,1.1+g*0.05).toFixed(2)+' pollenFromBees'],g+1))
 
@@ -22515,9 +22523,9 @@ player=(function(out){
             textRenderer.addSingle(out.antChallenge.spawnDelay.toFixed(1)+'s',[-21,8,-61],COLORS.whiteArr,-3,false,false)
         }
 
-        textRenderer.addSingle('Time: '+MATH.doTime(out.antChallenge.timer),[-15,9,-63],COLORS.whiteArr,-3,false,false,0,0.5)
-        textRenderer.addSingle('Round: '+out.antChallenge.round,[-15,9,-63],COLORS.whiteArr,-3,false,false,0,0)
-        textRenderer.addSingle('Score: '+out.antChallenge.score,[-15,9,-63],COLORS.whiteArr,-3,false,false,0,-0.5)
+        textRenderer.addSingle('Time: '+MATH.doTime(out.antChallenge.timer),[-15,9,-61],COLORS.whiteArr,-3,false,false,0,0.5)
+        textRenderer.addSingle('Round: '+out.antChallenge.round,[-15,9,-61],COLORS.whiteArr,-3,false,false,0,0)
+        textRenderer.addSingle('Score: '+out.antChallenge.score,[-15,9,-61],COLORS.whiteArr,-3,false,false,0,-0.5)
     }
     
     out.showGeneratedAmulet=function(type,amulet){
