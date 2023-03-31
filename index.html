@@ -7540,7 +7540,7 @@ let effects={
     
     honeyMarkToken:{
         
-        desc:"Marks a random spot on the field with a radius of 4.5 flowers for 7s(+0.2s per bee lvl).<br><br>Standing in the mark converts 3x the average convert amount of all your bees. Stacks up to 3x.",
+        desc:"Marks a random spot on the field with a radius of 4.5 flowers for 7s(+0.2s per bee lvl).<br><br>Standing in the mark converts 3x the average convert amount of all your bees, and grants x1.25 convert rate. Stacks up to 3x.",
         trialCooldown:17.5,trialRate:0.5,
         statsToAddTo:['markTokens','markOrBoostTokens'],
         u:128*7/2048,v:128/2048,
@@ -7616,7 +7616,7 @@ let effects={
         
         getMessage:(amount)=>{
             
-            return 'Honey Mark\nConverts the average of all your bee\'s convert amount of pollen.\nx'+(amount*0.25+1)+' convert rate'
+            return 'Honey Mark\nConverts 3x the average of all your bee\'s convert amount of pollen.\nx'+(amount*0.25+1)+' convert rate'
         }
     },
     
