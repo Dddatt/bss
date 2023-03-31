@@ -8078,13 +8078,13 @@ let effects={
         
         update:(amount,player)=>{
             
-            player.walkSpeed*=1.1
+            player.walkSpeed*=1.05
             player.beeSpeed*=1.2
         },
         
         getMessage:(amount)=>{
             
-            return 'Oil\nx1.2 bee speed\nx1.1 movespeed'
+            return 'Oil\nx1.2 bee speed\nx1.05 movespeed'
         }
     },
     
@@ -8224,7 +8224,7 @@ let effects={
             player.instantRedConversion=MATH.applyPercentage(player.instantRedConversion,0.17)
             player.instantWhiteConversion=MATH.applyPercentage(player.instantWhiteConversion,0.17)
             player.instantBlueConversion=MATH.applyPercentage(player.instantBlueConversion,0.17)
-            player.walkSpeed*=1.15
+            player.walkSpeed*=1.05
             player.beeSpeed*=1.25
             player.criticalChance+=0.07
             player.superCritChance+=0.01
@@ -8232,7 +8232,7 @@ let effects={
         
         getMessage:(amount)=>{
             
-            return 'Super Smoothie\nx1.5 capacity\nx1.6 pollen\nx1.4 pollen from bees\nx1.4 pollen from tools\nx2 convert rate\nx1.1 honey at hive\n+17% instant conversion\n+7% critical chance\nx1.15 walkspeed\nx1.25 bee movespeed\n+1% super-crit chance'
+            return 'Super Smoothie\nx1.5 capacity\nx1.6 pollen\nx1.4 pollen from bees\nx1.4 pollen from tools\nx2 convert rate\nx1.1 honey at hive\n+17% instant conversion\n+7% critical chance\nx1.05 walkspeed\nx1.25 bee movespeed\n+1% super-crit chance'
         }
     },
     
@@ -22773,7 +22773,7 @@ player=(function(out){
         hasteStacks:0,
         gliderSpeed:0,
         gliderFall:0,
-        walkSpeed:120,
+        walkSpeed:150,
         jumpPower:10,
         criticalChance:0,
         criticalPower:2,
@@ -29902,6 +29902,7 @@ function GENERATE_SAVE_CODE(){
             
             passives.push(save.effects[i].type)
             save.effects.splice(i,1)
+            continue
         }
 
         if(save.effects[i].type.indexOf('Aura')>-1){

@@ -1045,7 +1045,7 @@ window.playerGear={
             applyStats:function(stats,player){
                 
                 stats.movementCollection+=15
-                stats.walkSpeed*=1.25
+                stats.walkSpeed*=1.15
                 stats.jumpPower*=1.4
                 stats.pollenFromCoconuts*=2
                 stats.goo*=1.25
@@ -1057,7 +1057,7 @@ window.playerGear={
                 stats.beeAttack*=1.1
                 stats.convertRateAtHive*=2
             },
-            desc:'Squishy boots that leave a trail of Goo wherever you go.<br><br>+15 movement collection<br>x1.25 goo<br>x1.5 bee speed<br>x1.25 honey from tokens<br>x1.1 pollen<br>x1.1 bee attack<br>x2 pollen from coconuts<br>x2 convert rate at hive<br>x1.25 movespeed<br>x1.4 jump power<br>+Passive: Goo Trail<br>+Passive: Coconut Haste',
+            desc:'Squishy boots that leave a trail of Goo wherever you go.<br><br>+15 movement collection<br>x1.25 goo<br>x1.5 bee speed<br>x1.25 honey from tokens<br>x1.1 pollen<br>x1.1 bee attack<br>x2 pollen from coconuts<br>x2 convert rate at hive<br>x1.15 movespeed<br>x1.4 jump power<br>+Passive: Goo Trail<br>+Passive: Coconut Haste',
             cost:['100000000000 honey','500 glue','250 glitter','250 redExtract','250 blueExtract'],
         },
 
@@ -1088,7 +1088,7 @@ window.playerGear={
             applyStats:function(stats,player){
                 
                 stats.movementCollection+=12
-                stats.walkSpeed*=1.225
+                stats.walkSpeed*=1.125
                 stats.jumpPower*=1.375
                 stats.pollenFromCoconuts*=2
                 stats.redPollen*=1.1
@@ -1099,7 +1099,7 @@ window.playerGear={
                 stats.convertRateAtHive*=1.5
                 stats.beeSpeed*=1.5
             },
-            desc:'Kick around coconuts with this pair of clunky kicks for a surge of speed.<br><br>+12 movement collection<br>x1.25 honey from tokens<br>x1.1 pollen<br>x1.5 bee speed<br>x1.05 bee attack<br>x2 pollen from coconuts<br>x1.5 convert rate at hive<br>x1.225 movespeed<br>x1.375 jump power<br>+Passive: Coconut Haste',
+            desc:'Kick around coconuts with this pair of clunky kicks for a surge of speed.<br><br>+12 movement collection<br>x1.25 honey from tokens<br>x1.1 pollen<br>x1.5 bee speed<br>x1.05 bee attack<br>x2 pollen from coconuts<br>x1.5 convert rate at hive<br>x1.125 movespeed<br>x1.375 jump power<br>+Passive: Coconut Haste',
             cost:['10000000000 honey','100 coconut','25 tropicalDrink','50 glue','50 oil'],
         },
         
@@ -1118,12 +1118,12 @@ window.playerGear={
             applyStats:function(stats,player){
                 
                 stats.movementCollection+=10
-                stats.walkSpeed*=1.2
+                stats.walkSpeed*=1.1
                 stats.jumpPower*=1.35
                 stats.pollenFromBees*=1.25
                 stats.beeSpeed*=1.4
             },
-            desc:'Practical and stylish boots that aid in the beekeeping process.<br><br>+10 movement collection<br>x1.25 pollen from bees<br>x1.4 bee speed<br>x1.2 movespeed<br>x1.35 jump power',
+            desc:'Practical and stylish boots that aid in the beekeeping process.<br><br>+10 movement collection<br>x1.25 pollen from bees<br>x1.4 bee speed<br>x1.1 movespeed<br>x1.35 jump power',
             cost:['15000000 honey','5 oil','3 redExtract','3 blueExtract'],
         },
 
@@ -1140,10 +1140,10 @@ window.playerGear={
             applyStats:function(stats,player){
                 
                 stats.movementCollection+=1
-                stats.walkSpeed*=1.1
+                stats.walkSpeed*=1.05
                 stats.beeSpeed*=1.1
             },
-            desc:'Collect pollen as you walk through flowers!<br><br>+1 movement collection<br>x1.1 bee speed<br>x1.1 movespeed',
+            desc:'Collect pollen as you walk through flowers!<br><br>+1 movement collection<br>x1.1 bee speed<br>x1.05 movespeed',
             cost:['5000 honey','3 sunflowerSeed','3 blueberry','3 strawberry'],
         },
 
@@ -1160,11 +1160,11 @@ window.playerGear={
             applyStats:function(stats,player){
                 
                 stats.movementCollection+=5
-                stats.walkSpeed*=1.1
+                stats.walkSpeed*=1.075
                 stats.jumpPower*=1.3
                 stats.beeSpeed*=1.3
             },
-            desc:'Collect pollen as you walk through flowers!<br><br>+5 movement collection<br>x1.3 bee speed<br>x1.1 movespeed<br>x1.3 jump power',
+            desc:'Collect pollen as you walk through flowers!<br><br>+5 movement collection<br>x1.3 bee speed<br>x1.075 movespeed<br>x1.3 jump power',
             cost:['2000000 honey','20 pineapple','20 blueberry','20 strawberry'],
         },
     },
