@@ -5291,6 +5291,7 @@ let triggers={
                 leftGuard:'rileyGuard',
                 rightGuard:'buckoGuard',
                 glider:'glider',
+                sprinkler:'supremeSaturator',
                 beequips:[],
             }
             
@@ -5360,6 +5361,7 @@ let triggers={
                 rightGuard:'cobaltGuard',
                 glider:'glider',
                 supremeStarAmulet:'*2.5 capacityMultiplier,*1.5 convertRate,*1.1 redPollen,*1.1 bluePollen,*1.1 whitePollen,*1.6 redPollen,+0.1 instantBlueConversion,+0.1 instantWhiteConversion,+0.1 instantRedConversion,+0.05 criticalChance,P scorchingStarPassive,P starSawPassive',
+                sprinkler:'supremeSaturator',
                 beequips:[],
             }
             
@@ -5440,6 +5442,7 @@ let triggers={
                 rightGuard:'cobaltGuard',
                 glider:'glider',
                 supremeStarAmulet:'*2.5 capacityMultiplier,*1.5 convertRate,*1.1 redPollen,*1.1 bluePollen,*1.1 whitePollen,*1.6 bluePollen,+0.1 instantBlueConversion,+0.1 instantWhiteConversion,+0.1 instantRedConversion,+0.05 criticalChance,P popStarPassive,P starShowerPassive',
+                sprinkler:'supremeSaturator',
                 beequips:[],
             }
             
@@ -5522,6 +5525,7 @@ let triggers={
                 rightGuard:'cobaltGuard',
                 glider:'glider',
                 supremeStarAmulet:'*2.5 capacityMultiplier,*1.5 convertRate,*1.1 redPollen,*1.1 bluePollen,*1.1 whitePollen,*1.6 whitePollen,+0.1 instantBlueConversion,+0.1 instantWhiteConversion,+0.1 instantRedConversion,+0.05 criticalChance,P gummyStarPassive,P starSawPassive',
+                sprinkler:'supremeSaturator',
                 beequips:[],
             }
             
@@ -14223,12 +14227,13 @@ class Sprinkler {
         this.field=null
         this.x=null
         this.z=null
-        this.timer=TIME
         
-        this.power=0.5
-        this.rate=1
-        this.diameter=15
+        this.power=gear.sprinkler[player.currentGear.sprinkler].power
+        this.rate=gear.sprinkler[player.currentGear.sprinkler].rate
+        this.diameter=gear.sprinkler[player.currentGear.sprinkler].diameter
         
+        this.timer=this.rate
+
         let p=this.power
         this.func=function(f){
             
@@ -14243,7 +14248,7 @@ class Sprinkler {
         this.field=f
         this.x=x
         this.z=z
-        this.timeOffset=TIME
+        this.timer=this.rate
         
         this.flowers=[]
         
@@ -14264,17 +14269,19 @@ class Sprinkler {
     }
     
     update(){
+
+        this.timer-=dt
         
-        if(this.field&&TIME+this.timeOffset-this.timer>this.rate){
+        if(this.field&&this.timer<=0){
             
-            this.timer=TIME+this.timeOffset
+            this.timer=this.rate
             
             for(let i in this.flowers){
                 
                 updateFlower(this.field,this.flowers[i][0],this.flowers[i][1],this.func,true,false,false)
             }
             
-            objects.explosions.push(new Explosion({col:[0.1,0.4,1],pos:[this.x+fieldInfo[this.field].x,fieldInfo[this.field].y+0.5,this.z+fieldInfo[this.field].z],life:1,size:this.diameter,speed:0.15,aftershock:0.01,height:0.1}))
+            objects.explosions.push(new Explosion({col:[0.1,0.4,1],pos:[this.x+fieldInfo[this.field].x,fieldInfo[this.field].y+0.5,this.z+fieldInfo[this.field].z],life:1,size:this.diameter,speed:0.15,aftershock:0.01,height:0.075}))
             
         }
         
@@ -18917,7 +18924,7 @@ class Planter {
 
             window.setTimeout(function(){
 
-                objects.tokens.push(new LootToken(45,[DIS.pos[0]+f[0],DIS.pos[1]+0.5,DIS.pos[2]+f[1]],it,MATH.random(1,(({paper:5,plastic:6,candy:7,redClay:8,blueClay:8,tacky:9,pesticide:9.5,petal:13,plenty:15}[DIS.type]*(perc*0.5+0.5))/items[it].value)+1)|0,true,'Planter',['tokensFromPlanters','tokensFromPlantersInThe'+DIS.field]))
+                objects.tokens.push(new LootToken(45,[DIS.pos[0]+f[0],DIS.pos[1]+0.5,DIS.pos[2]+f[1]],it,MATH.random(1,(({paper:5,plastic:6,candy:7,redClay:8,blueClay:8,tacky:9,pesticide:9.5,petal:13,plenty:15}[DIS.type]*(perc*0.5+0.5))/items[it].value)+1)|0,true,'Planter',['tokensFromPlanters']))
 
             },225*i)
             
@@ -19164,7 +19171,7 @@ class GlitchEffect {
         this.field=field
         this.blocks=[]
 
-        for(let i=0;i<MATH.random(6,10)|0;i++){
+        for(let i=0;i<4;i++){
 
             this.blocks.push({pos:[fieldInfo[this.field].x+((MATH.random(0.1,0.9)*fieldInfo[this.field].width)|0),fieldInfo[this.field].y+MATH.random(1,4),fieldInfo[this.field].z+((MATH.random(0.1,0.9)*fieldInfo[this.field].length)|0)],col:[Math.round(Math.random()),Math.round(Math.random()),Math.round(Math.random())],timer:0})
         }
@@ -21873,7 +21880,7 @@ player=(function(out){
         '12%':{stats:'*0.12 goo,*1.55 whitePollen',rarity:'legendary',maxStacks:1},
         'Plus Minus':{stats:'+6% criticalChance,-2% superCritChance',rarity:'legendary',maxStacks:2},
         '8.2':{stats:'*1.8 pollenFromCoconuts,*1.2 capacity',rarity:'legendary',maxStacks:1},
-        'Friend Credits':{stats:'+7 cogsPerRound,*1.1 honeyFromTokens',rarity:'legendary',maxStacks:3},
+        'Friend Credits':{stats:'+5 cogsPerRound,*1.1 honeyFromTokens',rarity:'legendary',maxStacks:3},
         Technoblade:{stats:'+25% defense',rarity:'legendary',maxStacks:4},
         'A-List':{stats:'*1.25 beeSpeed,+4 movementCollection,-2 cogsPerRound',rarity:'legendary',maxStacks:2},
         
@@ -23215,11 +23222,6 @@ player=(function(out){
     out.toolUses=0
     out.toolCooldown=0
     
-    out.sprinklers=[new Sprinkler()]
-    out.sprinklerMesh=new Mesh(true)
-    out.sprinklerMesh.setBuffers()
-    out.currentSprinkler=0
-    
     out.hive=[[]]
     out.hivePos=[-1.625+10,1.5,-7.5]
     
@@ -23462,7 +23464,7 @@ player=(function(out){
         
         for(let i in out.currentGear){
             
-            if(i==='tool') continue
+            if(i==='tool'||i==='sprinkler') continue
             
             if(i.indexOf('Amulet')>-1){
                 
@@ -23511,6 +23513,7 @@ player=(function(out){
         leftGuard:'none',
         rightGuard:'none',
         glider:'glider',
+        sprinkler:'none',
         beequips:[]
     }
     
@@ -23793,6 +23796,16 @@ player=(function(out){
     }
     
     out.updateGear=function(){
+
+        out.sprinklers=[]
+        out.sprinklerMesh=new Mesh(true)
+        out.sprinklerMesh.setBuffers()
+        out.currentSprinkler=0
+
+        for(let i=0;i<gear.sprinkler[out.currentGear.sprinkler].count;i++){
+
+            out.sprinklers.push(new Sprinkler())
+        }
         
         out.computeStats()
 
@@ -23809,7 +23822,7 @@ player=(function(out){
             
             for(let i in out.currentGear){
                 
-                if(i==='tool') continue
+                if(i==='tool'||i==='sprinkler') continue
 
                 if(i.indexOf('Amulet')<0&&i!=='beequips'){
                     
@@ -23825,11 +23838,9 @@ player=(function(out){
                     
                 } else if(i!=='beequips'){
                     
-                    gear[i].mesh(box,cylinder,sphere,star)
-                    
+                    gear[i].mesh(box,cylinder,sphere,star)   
                 }
             }
-            
         })
         
         playerMesh.setBuffers()
@@ -24005,9 +24016,9 @@ player=(function(out){
         
         healthBar.setAttribute('width',out.health*0.72)
         healthBar.style.fill='rgb('+(100-out.health)*3.75+','+out.health*3.75+',0)'
-        
-        if(user.clickedKeys.r){
-            
+
+        if(user.clickedKeys.r&&out.sprinklers.length){
+
             out.sprinklers[out.currentSprinkler].set(player.fieldIn,player.flowerIn.x,player.flowerIn.z)
             out.currentSprinkler=(out.currentSprinkler+1)%(out.sprinklers.length)
             
@@ -24023,14 +24034,7 @@ player=(function(out){
                             y=fieldInfo[s.field].y+0.5,
                             z=s.z+fieldInfo[s.field].z
                         
-                        cylinder(x,y+0.25,z,0.15,2.5,10,0.9,0.9,0.5,1,90,0,0)
-                        cylinder(x,y+1.5,z,0.2,0.15,10,1,1,0.5,1,90,0,0)
-                        box(x,y+0.7,z,0.9,0.9,0.35,false,[0.2,10,10],false,false)
-                        cylinder(x+0.4,y+1.1,z,0.25,0.35,10,0.2,10,10,1,0,0,0,0.25,false)
-                        cylinder(x-0.4,y+1.1,z,0.25,0.35,10,0.2,10,10,1,0,0,0,0.25,false)
-                        cylinder(x,y+0.7,z,0.3,0.375,10,0.5,0.5,0.5,1,0,0,0,0.25,false)
-                        cylinder(x,y+0.7,z,0.1,0.5,10,0.2,10,10,1,0,0,0,0.1,false)
-                        
+                        gear.sprinkler[out.currentGear.sprinkler].mesh(x,y,z,box,cylinder)
                     }
                 }
             })
@@ -29345,12 +29349,6 @@ function collectPollen(params){
 function createField(name,x,y,z,w,l,c,_l,generalColorComp,nectarType){
     
     player.stats['pollenFrom'+name]=0
-    player.stats['tokensFromPlantersInThe'+name]=0
-    player.stats['puffshroomsInThe'+name]=0
-    player.stats['rarePuffshroomsInThe'+name]=0
-    player.stats['epicPuffshroomsInThe'+name]=0
-    player.stats['legendaryPuffshroomsInThe'+name]=0
-    player.stats['mythicPuffshroomsInThe'+name]=0
     
     fieldInfo[name]={x:x,y:y,z:z,width:w,length:l,getColor:c,getLevel:_l,haze:{},generalColorComp:generalColorComp,nectarType:nectarType+'Nectar',degration:0,corruption:0}
     

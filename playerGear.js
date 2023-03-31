@@ -4,6 +4,81 @@ window.applyPercentage=function(x,m){
 }
 
 window.playerGear={
+
+    sprinkler:{
+
+        none:{count:0},
+
+        basicSprinkler:{
+
+            count:1,
+            diameter:10,
+            power:0.2,
+            rate:4,
+            mesh:function(x,y,z,box,cylinder){
+
+                cylinder(x,y,z,0.125,1.25,10,0.3,0.3,0.3,1,90,0,0)
+                cylinder(x,y+1.25*0.5,z,0.16,0.15,10,0.3,0.3,0.3,1,90,0,0)
+            }
+        },
+
+        silverSoakers:{
+
+            count:2,
+            diameter:10,
+            power:0.2,
+            rate:3.5,
+            mesh:function(x,y,z,box,cylinder){
+
+                cylinder(x,y,z,0.125,1.25,10,0.7,0.7,0.7,1,90,0,0)
+                cylinder(x,y+1.25*0.5,z,0.16,0.15,10,0.7,0.7,0.7,1,90,0,0)
+            }
+        },
+
+        goldenGushers:{
+
+            count:3,
+            diameter:11,
+            power:0.25,
+            rate:3.5,
+            mesh:function(x,y,z,box,cylinder){
+
+                cylinder(x,y,z,0.125,1.25,10,0.9,0.9,0.2,1,90,0,0)
+                cylinder(x,y+1.25*0.5,z,0.16,0.15,10,0.9,0.9,0.2,1,90,0,0)
+            }
+        },
+
+        diamondDrenchers:{
+
+            count:4,
+            diameter:11,
+            power:0.25,
+            rate:3,
+            mesh:function(x,y,z,box,cylinder){
+
+                cylinder(x,y,z,0.125,1.25,10,0,0.9,0.9,1,90,0,0)
+                cylinder(x,y+1.25*0.5,z,0.16,0.15,10,0,0.9,0.9,1,90,0,0)
+            }
+        },
+        
+        supremeSaturator:{
+
+            count:1,
+            diameter:15,
+            power:0.5,
+            rate:1,
+            mesh:function(x,y,z,box,cylinder){
+
+                cylinder(x,y+0.25,z,0.15,2.5,10,0.9,0.9,0.5,1,90,0,0)
+                cylinder(x,y+1.5,z,0.2,0.15,10,1,1,0.5,1,90,0,0)
+                box(x,y+0.7,z,0.9,0.9,0.35,false,[0.2,10,10],false,false)
+                cylinder(x+0.4,y+1.1,z,0.25,0.35,10,0.2,10,10,1,0,0,0,0.25,false)
+                cylinder(x-0.4,y+1.1,z,0.25,0.35,10,0.2,10,10,1,0,0,0,0.25,false)
+                cylinder(x,y+0.7,z,0.3,0.375,10,0.5,0.5,0.5,1,0,0,0,0.25,false)
+                cylinder(x,y+0.7,z,0.1,0.5,10,0.2,10,10,1,0,0,0,0.1,false)
+            }
+        }
+    },
     
     bronzeStarAmulet:{
         
