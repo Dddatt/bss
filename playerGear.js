@@ -366,7 +366,7 @@ window.playerGear={
 
             },
             desc:'This handsome mask is guaranteed to bring satisfaction into your life.<br><br>x1.75 capacity<br>x1.3 pollen<br>x1.25 pollen from bees<br>x1.15 bee ability rate<br>x1.5 honey from tokens<br>x1.8 convert rate<br>+30% defense<br>+Passive: Coin Scatter',
-            cost:['100000000 honey','35 oil','15 enzymes','1 goldEgg','999 treats'],
+            cost:['100000000 honey','35 oil','15 enzymes','1 goldEgg','999 treat'],
         },
 
         fireMask:{
@@ -398,7 +398,7 @@ window.playerGear={
                 player.addEffect('ignitePassive')
 
             },
-            desc:'Ignite your mind to enhance your red Bees.<br><br>x1.75 capacity<br>x1.5 red pollen<br>+20% instant red conversion<br>+50% instant flame conversion<br>+1 bee attack<br>+1 red bee attack<br>x1.15 bee ability rate<br>+35% defense<br>+Passive: Ignite',
+            desc:'Ignite your mind to enhance your red bees.<br><br>x1.75 capacity<br>x1.5 red pollen<br>+20% instant red conversion<br>+50% instant flame conversion<br>+1 bee attack<br>+1 red bee attack<br>x1.15 bee ability rate<br>+35% defense<br>+Passive: Ignite',
             cost:['100000000 honey','30 redExtract','15 enzymes','5 glue','300 strawberry'],
         },
 
@@ -428,7 +428,7 @@ window.playerGear={
                 player.addEffect('bubbleBombsPassive')
 
             },
-            desc:'Ignite your mind to enhance your red Bees.<br><br>x2 capacity<br>x1.5 blue pollen<br>+20% instant blue conversion<br>x2 bubble pollen<br>x1.15 bee ability rate<br>+30% defense<br>+Passive: Bubble Bombs',
+            desc:'Harness the power of the sea to enhance your blue pollen gathering.<br><br>x2 capacity<br>x1.5 blue pollen<br>+20% instant blue conversion<br>x2 bubble pollen<br>x1.15 bee ability rate<br>+30% defense<br>+Passive: Bubble Bombs',
             cost:['100000000 honey','30 blueExtract','15 enzymes','5 glue','300 blueberry'],
         },
         

@@ -5267,6 +5267,11 @@ let triggers={
         minX:36,maxX:46,minY:-2,maxY:7,minZ:10,maxZ:30
     },
 
+    ace_shop:{
+        
+        minX:64,maxX:75,minY:8,maxY:16,minZ:30,maxZ:70
+    },
+
     robo_shop:{
 
         minX:55.5,maxX:62,minY:7,maxY:13,minZ:36.5,maxZ:45
@@ -25438,6 +25443,44 @@ let shops={
             displayRot:[30,180,15],
         }],
         currentIndex:0,message:'Explore Red HQ Shop'
+    },
+    // minX:64,maxX:75,minY:8,maxY:16,minZ:30,maxZ:70
+    ace:{
+
+        items:[{
+
+            name:'honeyMask',
+            slot:'mask',
+            viewMatrix:[74.5-3,16.5,58.5,MATH.HALF_PI,0.15],
+            displayPos:[74.5,16.5,58.5],
+            displayRot:[0,-90,10],
+            displayScale:[1.4,1.4,1.4],
+        },{
+
+            name:'cobaltGuard',
+            slot:'rightGuard',
+            viewMatrix:[74.5-2.5,16.5-1,58.5+1.6,MATH.HALF_PI,0],
+            displayPos:[74.25,16.5-1,58.5+1],
+            displayRot:[0,90,0],
+            displayScale:[1.6,1.6,1.6],
+        },{
+
+            name:'honeycombBelt',
+            slot:'belt',
+            viewMatrix:[74.75-2.5,16.5-2.5,58.5,MATH.HALF_PI,0],
+            displayPos:[74.75,16.5-2.5,58.5],
+            displayRot:[0,-90,0],
+            displayScale:[2,2,2],
+        },{
+
+            name:'crimsonGuard',
+            slot:'leftGuard',
+            viewMatrix:[74.25-2.5,16.5-1,58.5-1.6,MATH.HALF_PI,0],
+            displayPos:[74.25,16.5-1,58.5-1],
+            displayRot:[0,90,0],
+            displayScale:[1.6,1.6,1.6],
+        }],
+        currentIndex:0,message:'Explore Ace Shop'
     },
     
 }
