@@ -184,7 +184,7 @@ window.glsl_flower_geometry_fsh = `#version 300 es
             
         } else {
             
-            fragColor=vec4(mix(mix(c,vec3(0.1,1,0.5),goo),vec3(1,1,0.7),pixFog)*isNight,1.0);
+            fragColor=vec4(mix(mix(c,vec3(1,0.2,1),goo),vec3(1,1,0.7),pixFog)*isNight,1.0);
         }
     }
 `

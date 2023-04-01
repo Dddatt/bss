@@ -8358,8 +8358,11 @@ let effects={
             player.gummyBallSize*=amount*1.5+1
             player.whitePollen*=amount*0.15+1
             
-            if(amount>=0.99||user.keys[' ']&&player.grounded&&amount>=0.3){
+            if(amount>=0.99||user.keys[' ']&&player.grounded&&amount>=0.03){
+
                 if(player.fieldIn){
+                    
+                    window.setTimeout(function(){player.body.velocity.y*=0.4},0)
                     
                     player.addEffect('gummyBall',-amount)
                     objects.mobs.push(new GummyBall())
@@ -17964,8 +17967,29 @@ class GummyBall {
     
     constructor(){
         
-        this.size=(player.gummyBallSize-1)/1.5
         this.field=player.fieldIn
+        this.size=(player.gummyBallSize-1)/1.5
+        this.size=this.size*this.size*this.size
+
+        this.flowers=[]
+
+        let rad=(this.size*2.5+2)|0
+        
+        for(let x=-rad;x<=rad;x++){
+            
+            for(let z=-rad;z<=rad;z++){
+                
+                let _x=x,_z=z
+                
+                if(x*x+z*z<=rad*rad){
+                    
+                    this.flowers.push([_x,_z])
+                }
+            }
+        }
+
+        console.error(this.flowers)
+
         this.vel=player.bodyDir.slice()
         vec3.scale(this.vel,this.vel,17.5)
         this.life=this.size*15+0.5
@@ -18065,14 +18089,14 @@ class GummyBall {
         
         this.collectTimer-=dt
         
-        if(this.collectTimer<=0&&player.fieldIn){
+        if(this.collectTimer<=0){
             
             this.collectTimer=0.15
             
-            let x=Math.round(this.pos[0]-fieldInfo[player.fieldIn].x),
-                z=Math.round(this.pos[2]-fieldInfo[player.fieldIn].z)
+            let x=Math.round(this.pos[0]-fieldInfo[this.field].x),
+                z=Math.round(this.pos[2]-fieldInfo[this.field].z)
             
-            collectPollen({x:x,z:z,pattern:[[-2,-1],[-2,0],[-2,1],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[0,-2],[0,-1],[0,0],[0,1],[0,2],[1,-2],[1,-1],[1,0],[1,1],[1,2],[2,-1],[2,0],[2,1]],amount:{r:3,w:10,b:3},stackHeight:0.75,field:this.field,gooTrail:true,multiplier:this.size+1})
+            collectPollen({x:x,z:z,pattern:this.flowers,amount:{r:3,w:10,b:3},stackHeight:0.75,field:this.field,gooTrail:true,multiplier:this.size+1})
             
         }
         
@@ -24066,7 +24090,7 @@ player=(function(out){
             
             for(let i in out.quests){
                 
-                pages[1].innerHTML+=`<div style='background-color:${out.quests[i].completed?"rgb(0,"+(Math.sin(TIME*5)*20+215)+",0)":"rgb(240,240,240)"};font-size:17px;text-align:center;margin-top:-16px;border-radius:3px;'><p style='margin-bottom:5px'>${out.quests[i].name}</p>${(function(){
+                pages[1].innerHTML+=`<div style='background-color:${out.quests[i].completed?"rgb(0,"+(Math.sin(TIME*5)*20+215)+",0)":"rgb(240,240,240)"};font-size:17px;text-align:center;margin-top:-16px;border-radius:3px;margin-bottom:20px'><p style='margin-bottom:5px'>${out.quests[i].name}</p>${(function(){
                     
                     let s='',isCompleted=true
                     
@@ -24099,7 +24123,7 @@ player=(function(out){
         if(currentPage===3&&TIME-player.statsStringLastUpdate>0.5){
 
             player.statsStringLastUpdate=TIME
-            player.statString='<br>FPS: '+(1/dt).toFixed(2)+'<br>Delta Time: '+dt.toFixed(4)+'<br><br>Convert Rate: '+Math.round(player.convertRate*100)+'%<br>Red Pollen: '+Math.round(player.redPollen*100)+'%<br>Blue Pollen: '+Math.round(player.bluePollen*100)+'%<br>White Pollen: '+Math.round(player.whitePollen*100)+'%<br>Walk Speed: '+player.walkSpeed.toFixed(1)+'<br>Jump Power: '+player.jumpPower.toFixed(1)+'<br>Instant Red Conversion: '+Math.round(player.instantRedConversion*100)+'%<br>Instant Blue Conversion: '+Math.round(player.instantBlueConversion*100)+'%<br>Instant White Conversion: '+Math.round(player.instantWhiteConversion*100)+'%<br>Instant Flame Conversion: '+Math.round(player.instantFlameConversion*100)+'%<br>Critical Chance: '+Math.round(player.criticalChance*100)+'%<br>Critical Power: '+Math.round(player.criticalPower*100)+'%<br>Super-Crit Chance: '+Math.round(player.superCritChance*100)+'%<br>Super-Crit Power: '+Math.round(player.superCritPower*100)+'%<br>Goo: '+Math.round(player.goo*100)+'%<br>Flame Pollen: '+Math.round(player.flamePollen*100)+'%<br>Bubble Pollen: '+Math.round(player.bubblePollen*100)+'%<br>Pollen From Tools: '+Math.round(player.pollenFromTools*100)+'%<br>Pollen From Bees: '+Math.round(player.pollenFromBees*100)+'%<br>White Bomb Pollen: '+Math.round(player.whiteBombPollen*100)+'%<br>Red Bomb Pollen: '+Math.round(player.redBombPollen*100)+'%<br>Blue Bomb Pollen: '+Math.round(player.blueBombPollen*100)+'%<br>White Bee Attack: '+player.whiteBeeAttack+'<br>Blue Bee Attack: '+player.blueBeeAttack+'<br>Red Bee Attack: '+player.redBeeAttack+'<br>Bee Attack Multiplier: '+Math.round(player.beeAttack*100)+'%<br>Honey From Tokens: '+Math.round(player.honeyFromTokens*100)+'%<br>Red Bee Ability Rate: '+Math.round(player.redBeeAbilityRate*100)+'%<br>Blue Bee Ability Rate: '+Math.round(player.blueBeeAbilityRate*100)+'%<br>White Bee Ability Rate: '+Math.round(player.whiteBeeAbilityRate*100)+'%<br>Bee Movespeed: '+Math.round(player.beeSpeed*100)+'%<br>Bee Energy: '+Math.round(player.beeEnergy*100)+'%<br>Honey At Hive: '+Math.round(player.honeyAtHive*100)+'%<br>Honey Per Pollen: '+Math.round(player.honeyPerPollen*100)+'%<br>Loot Luck: '+Math.round(player.lootLuck*100)+'%<br>Red Field Capacity: '+Math.round(player.redFieldCapacity*100)+'%<br>White Field Capacity: '+Math.round(player.whiteFieldCapacity*100)+'%<br>Blue Field Capacity: '+Math.round(player.blueFieldCapacity*100)+'%<br>Ability Duplication Chance: '+Math.round(player.abilityDuplicationChance*100+(player.hasDigitalBee&&player.drives.maxed?1:0))+'%<br>Bond From Treats: '+Math.round(player.bondFromTreats*100)+'%<br>Nectar Multiplier: '+Math.round(player.nectarMultiplier*100)+'%<br><br>Convert Total: '+Math.round(player.convertTotal)+'<br>Attack Total: '+Math.round(player.attackTotal)
+            player.statString='<br>FPS: '+(1/dt).toFixed(2)+'<br>Delta Time: '+dt.toFixed(4)+'<br><br>Convert Rate: '+Math.round(player.convertRate*100)+'%<br>Red Pollen: '+Math.round(player.redPollen*100)+'%<br>Blue Pollen: '+Math.round(player.bluePollen*100)+'%<br>White Pollen: '+Math.round(player.whitePollen*100)+'%<br>Walk Speed: '+player.walkSpeed.toFixed(1)+'<br>Jump Power: '+player.jumpPower.toFixed(1)+'<br>Instant Red Conversion: '+Math.round(player.instantRedConversion*100)+'%<br>Instant Blue Conversion: '+Math.round(player.instantBlueConversion*100)+'%<br>Instant White Conversion: '+Math.round(player.instantWhiteConversion*100)+'%<br>Instant Flame Conversion: '+Math.round(player.instantFlameConversion*100)+'%<br>Critical Chance: '+Math.round(player.criticalChance*100)+'%<br>Critical Power: '+Math.round(player.criticalPower*100)+'%<br>Super-Crit Chance: '+Math.round(player.superCritChance*100)+'%<br>Super-Crit Power: '+Math.round(player.superCritPower*100)+'%<br>Goo: '+Math.round(player.goo*100)+'%<br>Flame Pollen: '+Math.round(player.flamePollen*100)+'%<br>Bubble Pollen: '+Math.round(player.bubblePollen*100)+'%<br>Pollen From Tools: '+Math.round(player.pollenFromTools*100)+'%<br>Pollen From Bees: '+Math.round(player.pollenFromBees*100)+'%<br>White Bomb Pollen: '+Math.round(player.whiteBombPollen*100)+'%<br>Red Bomb Pollen: '+Math.round(player.redBombPollen*100)+'%<br>Blue Bomb Pollen: '+Math.round(player.blueBombPollen*100)+'%<br>White Bee Attack: '+player.whiteBeeAttack+'<br>Blue Bee Attack: '+player.blueBeeAttack+'<br>Red Bee Attack: '+player.redBeeAttack+'<br>Bee Attack Multiplier: '+Math.round(player.beeAttack*100)+'%<br>Honey From Tokens: '+Math.round(player.honeyFromTokens*100)+'%<br>Red Bee Ability Rate: '+Math.round(player.redBeeAbilityRate*100)+'%<br>Blue Bee Ability Rate: '+Math.round(player.blueBeeAbilityRate*100)+'%<br>White Bee Ability Rate: '+Math.round(player.whiteBeeAbilityRate*100)+'%<br>Bee Movespeed: '+Math.round(player.beeSpeed*100)+'%<br>Bee Energy: '+Math.round(player.beeEnergy*100)+'%<br>Honey At Hive: '+Math.round(player.honeyAtHive*100)+'%<br>Honey Per Pollen: '+Math.round(player.honeyPerPollen*100)+'%<br>Loot Luck: '+Math.round(player.lootLuck*100)+'%<br>Red Field Capacity: '+Math.round(player.redFieldCapacity*100)+'%<br>White Field Capacity: '+Math.round(player.whiteFieldCapacity*100)+'%<br>Blue Field Capacity: '+Math.round(player.blueFieldCapacity*100)+'%<br>Ability Duplication Chance: '+Math.round(player.abilityDuplicationChance*100+(player.hasDigitalBee&&player.drives.maxed?1:0))+'%<br>Bond From Treats: '+Math.round(player.bondFromTreats*100)+'%<br>Nectar Multiplier: '+Math.round(player.nectarMultiplier*100)+'%<br>Defense: '+Math.round(player.defense*100)+'%<br><br>Convert Total: '+Math.round(player.convertTotal)+'<br>Attack Total: '+Math.round(player.attackTotal)
             
             pages[3].innerHTML='<div style="cursor:pointer;margin-top:5px;background-color:rgb(170,170,170);font-size:23px;border-radius:3px;color:rgb(0,0,0);text-align:center" id="saveGame">Save & Exit</div><div style="cursor:pointer;margin-top:10px;background-color:rgb(170,170,170);font-size:15px;border-radius:3px;color:'+(player.setting_enablePollenText?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenText">Pollen Text: '+(player.setting_enablePollenText?'On':'Off')+'</div>'+'<div style="cursor:pointer;margin-top:5px;background-color:rgb(170,170,170);font-size:15px;border-radius:3px;color:'+(player.setting_enablePollenAbv?'rgb(0,170,0)':'rgb(220,0,0)')+'" id="togglePollenAbv">Abbreviate Pollen: '+(player.setting_enablePollenAbv?'On':'Off')+'</div>'+player.statString
             
@@ -25004,7 +25028,7 @@ player=(function(out){
                 let x=(Math.round(player.body.position.x-fieldInfo[i].x)),
                     z=(Math.round(player.body.position.z-fieldInfo[i].z))
                 
-                if(x>=0&&x<fieldInfo[i].width&&z>=0&&z<fieldInfo[i].length&&Math.abs(player.body.position.y-fieldInfo[i].y)<2){
+                if(x>=0&&x<fieldInfo[i].width&&z>=0&&z<fieldInfo[i].length&&Math.abs(player.body.position.y-fieldInfo[i].y)<6){
                     
                     player.fieldIn=i
                     player.flowerIn.x=x
@@ -29114,7 +29138,7 @@ function addFlower(field,x,z){
         id:id++,
         y:y,
         goo:0,
-        gooColor:noise(x*0.2+fieldInfo[field].x*10,z*0.2+fieldInfo[field].z*10)<0.499?-1:1,
+        gooColor:noise(x*0.2+fieldInfo[field].x*10,z*0.2+fieldInfo[field].z*10)<0.49?-1:1,
         pollinationTimer:1
     }
     
@@ -29386,7 +29410,7 @@ createField('PepperPatch',61,20.5,-44,15,15,function(){
     return 3
 },{b:0,r:0.9,w:0.1},'invigorating')
 
-createField('RoseField',31,2,31.5,19,13,function(){
+createField('RoseField',31,2,31.5,18,13,function(){
     
     let c=Math.random()
     
@@ -29397,7 +29421,7 @@ createField('RoseField',31,2,31.5,19,13,function(){
     return Math.random()<0.5?3:Math.random()<0.12?1:2
 },{r:0.88,w:0.12,b:0},'motivating')
 
-createField('PineTreeForest',31,12.5,74,15,19,function(){
+createField('PineTreeForest',31,12.5,74,14,19,function(){
     
     let c=Math.random()
     
@@ -29463,7 +29487,7 @@ createField('MushroomField',-6,-1.5,29,19,13,function(){
     return Math.random()<0.9?1:2
 },{w:0.31,b:0,r:0.69},'motivating')
 
-createField('StrawberryField',7.5,2,47,15,15,function(){
+createField('StrawberryField',6,2,47.5,15,15,function(){
     
     let c=Math.random()
     
@@ -29474,7 +29498,7 @@ createField('StrawberryField',7.5,2,47,15,15,function(){
     return Math.random()<0.04?3:Math.random()<0.8?2:1
 },{w:0.31,b:0,r:0.69},'refreshing')
 
-createField('SpiderField',-20,2,47.5,19,14,function(){
+createField('SpiderField',-18.5,2,48.5,17,13,function(){
     
     let c=Math.random()
     
@@ -29485,7 +29509,7 @@ createField('SpiderField',-20,2,47.5,19,14,function(){
     return Math.random()<0.8?2:Math.random()<0.5?3:1
 },{w:1,b:0,r:0},'motivating')
 
-createField('BambooField',-52,2,50,21,13,function(){
+createField('BambooField',-52,2,50.375,21,12,function(){
     
     let c=Math.random()
     
@@ -29496,7 +29520,7 @@ createField('BambooField',-52,2,50,21,13,function(){
     return Math.random()<0.75?2:Math.random()<0.25?3:1
 },{w:0.25,b:0.75,r:0}),'comforting'
 
-createField('PineapplePatch',-71.5,12.5,78,19,15,function(){
+createField('PineapplePatch',-71.5,12.5,79,19,14,function(){
     
     let c=Math.random()
     
