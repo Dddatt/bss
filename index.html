@@ -19537,6 +19537,82 @@ class Sprout {
     }
 }
 
+class Puffshroom {
+    
+    constructor(field,x,z,life,level){//@
+        
+        this.life=life
+        this.field=field
+        this.x=x
+        this.z=z
+        this.pos=[fieldInfo[this.field].x+this.x,fieldInfo[this.field].y+2,fieldInfo[this.field].z+this.z]
+        this.level=level
+        this.pollen=0
+        this.cap=10*this.level*this.level*this.level*this.level*this.level*this.level+1000
+        this.invCap=1/this.cap
+        this.displaySize=this.level*0.15+0.5
+        
+        this.flowers=[[-3,0],[-2,-2],[-2,-1],[-2,0],[-2,1],[-2,2],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[0,-3],[0,-2],[0,-1],[0,0],[0,1],[0,2],[0,3],[1,-2],[1,-1],[1,0],[1,1],[1,2],[2,-2],[2,-1],[2,0],[2,1],[2,2],[3,0]]
+
+        for(let i=this.flowers.length;i--;){
+
+            this.flowers[i][0]+=this.x
+            this.flowers[i][1]+=this.z
+
+            if(this.flowers[i][0]>=0&&this.flowers[i][0]<fieldInfo[this.field].width&&this.flowers[i][1]>=0&&this.flowers[i][1]<fieldInfo[this.field].length){
+
+                flowers[this.field][this.flowers[i][1]][this.flowers[i][0]].puffshrooms.push(this)
+
+            } else {
+
+                this.flowers.splice(i,1)
+            }
+        }
+    }
+    
+    die(index){
+        
+        for(let i=this.flowers.length;i--;){
+
+            for(let j in flowers[this.field][this.flowers[i][1]][this.flowers[i][0]].puffshrooms){
+
+                if(flowers[this.field][this.flowers[i][1]][this.flowers[i][0]].puffshrooms[j]===this){
+
+                    flowers[this.field][this.flowers[i][1]][this.flowers[i][0]].puffshrooms.splice(j,1)
+                    break
+                }
+            }
+        }
+
+        objects.mobs.splice(index,1)
+    }
+    
+    update(){
+        
+        this.life-=dt
+
+        this.pollen=Math.round(this.pollen)
+        
+        meshes.cylinder_explosions.instanceData.push(this.pos[0],this.pos[1],this.pos[2],player.isNight,player.isNight,player.isNight,0.5,0.03,67)
+        
+        meshes.explosions.instanceData.push(this.pos[0],this.pos[1],this.pos[2],0,0.7,0,1,this.displaySize,1.05)
+        
+        textRenderer.addCTX('Puffshroom (Level '+this.level+')',[this.pos[0],this.pos[1]+1.25,this.pos[2]],COLORS.whiteArr,150)
+        
+        textRenderer.addSingle('Time: '+MATH.doTime(this.life),this.pos,COLORS.whiteArr,-1.25,false,false,0,0.7)
+        textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,1.25,...textRenderer.decalUV['rect'],0.61*0.5,0.42*0.5,0.27*0.5,3,0.7,0)
+        textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.life*0.00555556)*0.5)/(this.life*0.00555556),1.25,...textRenderer.decalUV['rect'],0.61,0.42,0.27,this.life*0.00555556*3,0.7,0)
+
+        textRenderer.addSingle(this.pollen+'/'+this.cap,this.pos,COLORS.whiteArr,-1.25,true,true,0.175)
+        textRenderer.addDecalRaw(...this.pos,0,0,...textRenderer.decalUV['rect'],0,0.4,0,3,0.7,0)
+        textRenderer.addDecalRaw(...this.pos,(-0.5+(this.pollen*this.invCap)*0.5)/(this.pollen*this.invCap),0,...textRenderer.decalUV['rect'],0.1,0.85,0.1,this.pollen*this.invCap*3,0.7,0)
+        textRenderer.addDecalRaw(...this.pos,1.1,-0.1,...textRenderer.decalUV['flower'],1,1,1,-1.25,-1.25,0)
+            
+        return this.pollen>=this.cap||this.life<=0
+    }
+}
+
+
 let lightDir=[1,5,1.5]
 
 let m=1/(lightDir[0]*lightDir[0]+lightDir[1]*lightDir[1]+lightDir[2]*lightDir[2])
@@ -29139,7 +29215,8 @@ function addFlower(field,x,z){
         y:y,
         goo:0,
         gooColor:noise(x*0.2+fieldInfo[field].x*10,z*0.2+fieldInfo[field].z*10)<0.49?-1:1,
-        pollinationTimer:1
+        pollinationTimer:1,
+        puffshrooms:[],
     }
     
     let vl=verts.length/8
@@ -29239,7 +29316,7 @@ function collectPollen(params){
     
     if(player.pollen>=player.capacity||params.pattern.length<1){return 0}
     
-    let f=fieldInfo[params.field||player.fieldIn],x=params.x,z=params.z,total={r:0,b:0,w:0},stackHeight=params.stackHeight||0.425,crit={r:params.alwaysCrit||Math.random()<player.criticalChance?(Math.random()<player.superCritChance?2:1):0,b:params.alwaysCrit||Math.random()<player.criticalChance?(Math.random()<player.superCritChance?2:1):0,w:params.alwaysCrit||Math.random()<player.criticalChance?(Math.random()<player.superCritChance?2:1):0},amount=typeof params.amount==='number'?{r:params.amount,b:params.amount,w:params.amount}:params.amount,pattern=params.pattern,balloon={r:0,b:0,w:0},multiplier=params.multiplier?typeof params.multiplier==='number'?{r:params.multiplier,b:params.multiplier,w:params.multiplier}:params.multiplier:{r:1,b:1,w:1},totalHoney=0,totalGoo=0,yOffset=params.yOffset||2
+    let f=fieldInfo[params.field||player.fieldIn],x=params.x,z=params.z,total={r:0,b:0,w:0},stackHeight=params.stackHeight||0.425,crit={r:params.alwaysCrit||Math.random()<player.criticalChance?(Math.random()<player.superCritChance?2:1):0,b:params.alwaysCrit||Math.random()<player.criticalChance?(Math.random()<player.superCritChance?2:1):0,w:params.alwaysCrit||Math.random()<player.criticalChance?(Math.random()<player.superCritChance?2:1):0},amount=typeof params.amount==='number'?{r:params.amount,b:params.amount,w:params.amount}:params.amount,pattern=params.pattern,otherAccum={r:0,b:0,w:0},multiplier=params.multiplier?typeof params.multiplier==='number'?{r:params.multiplier,b:params.multiplier,w:params.multiplier}:params.multiplier:{r:1,b:1,w:1},totalHoney=0,totalGoo=0,yOffset=params.yOffset||2
     
     multiplier.r*=player.redPollen*(crit.r===0?1:crit.r===1?player.criticalPower:player.criticalPower*player.superCritPower)
     multiplier.b*=player.bluePollen*(crit.b===0?1:crit.b===1?player.criticalPower:player.criticalPower*player.superCritPower)
@@ -29289,7 +29366,16 @@ function collectPollen(params){
                     amountToCollect*=f.balloon.golden?1.05:1
 
                     f.balloon.pollen+=amountToCollect
-                    balloon[f.color[0]]+=amountToCollect*(1-instantConversion[f.color[0]])
+                    otherAccum[f.color[0]]+=amountToCollect*(1-instantConversion[f.color[0]])
+                    
+                } if(f.puffshrooms.length){
+                    
+                    for(let j in f.puffshrooms){
+
+                        f.puffshrooms[j].pollen+=amountToCollect
+                    }
+                    
+                    otherAccum[f.color[0]]+=amountToCollect*(1-instantConversion[f.color[0]])
                     
                 } else {
                     
@@ -29303,18 +29389,18 @@ function collectPollen(params){
     total.r=Math.round(total.r)
     total.b=Math.round(total.b)
     total.w=Math.round(total.w)
-    balloon.r=Math.round(balloon.r)
-    balloon.b=Math.round(balloon.b)
-    balloon.w=Math.round(balloon.w)
+    otherAccum.r=Math.round(otherAccum.r)
+    otherAccum.b=Math.round(otherAccum.b)
+    otherAccum.w=Math.round(otherAccum.w)
     totalGoo=Math.round(totalGoo)
     
     if(player.setting_enablePollenText){
         
         let stack=[]
         
-        if(total.w||balloon.w)stack.push({c:'white',v:total.w+balloon.w})
-        if(total.r||balloon.r)stack.push({c:'red',v:total.r+balloon.r})
-        if(total.b||balloon.b)stack.push({c:'blue',v:total.b+balloon.b})
+        if(total.w||otherAccum.w)stack.push({c:'white',v:total.w+otherAccum.w})
+        if(total.r||otherAccum.r)stack.push({c:'red',v:total.r+otherAccum.r})
+        if(total.b||otherAccum.b)stack.push({c:'blue',v:total.b+otherAccum.b})
 
         if(stack[1]&&stack[0].v>stack[1].v){
             
@@ -29357,12 +29443,12 @@ function collectPollen(params){
         textRenderer.add(totalHoney,[player.body.position.x,player.body.position.y+yOffset*0.8+0.4+Math.random()*0.75,player.body.position.z],COLORS.honey,0,'+',0.85)
     }
     
-    player.stats.redPollen+=total.r+balloon.r
-    player.stats.bluePollen+=total.b+balloon.b
-    player.stats.whitePollen+=total.w+balloon.w
+    player.stats.redPollen+=total.r+otherAccum.r
+    player.stats.bluePollen+=total.b+otherAccum.b
+    player.stats.whitePollen+=total.w+otherAccum.w
     player.stats.goo+=totalGoo
     
-    let totalCollected=total.r+total.b+total.w+balloon.r+balloon.b+balloon.w
+    let totalCollected=total.r+total.b+total.w+otherAccum.r+otherAccum.b+otherAccum.w
     
     player.stats['pollenFrom'+(params.field||player.fieldIn)]+=totalCollected
     player.stats.pollen+=totalCollected
@@ -30023,6 +30109,8 @@ window.addEventListener('beforeunload',function(e){
 
 
 player.updateGear()
+
+objects.mobs.push(new Puffshroom('DandelionField',5,5,3*60,1))
 
 
 function loop(now){
