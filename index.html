@@ -17988,8 +17988,6 @@ class GummyBall {
             }
         }
 
-        console.error(this.flowers)
-
         this.vel=player.bodyDir.slice()
         vec3.scale(this.vel,this.vel,17.5)
         this.life=this.size*15+0.5
@@ -19539,18 +19537,20 @@ class Sprout {
 
 class Puffshroom {
     
-    constructor(field,x,z,life,level){//@
+    constructor(field,x,z,life,level,type){//@
         
+        this.type=type
         this.life=life
         this.field=field
         this.x=x
         this.z=z
-        this.pos=[fieldInfo[this.field].x+this.x,fieldInfo[this.field].y+2,fieldInfo[this.field].z+this.z]
+        this.pos=[fieldInfo[this.field].x+this.x,fieldInfo[this.field].y,fieldInfo[this.field].z+this.z,Math.random()*MATH.TWO_PI]
         this.level=level
         this.pollen=0
-        this.cap=10*this.level*this.level*this.level*this.level*this.level*this.level+1000
+        this.cap=(40*(this.level*this.level*this.level*this.level*this.level-1)+1000)*(['puffshroom','rarePuffshroom','epicPuffshroom','legendaryPuffshroom',0,'mythicPuffshroom'].indexOf(type)*0.5+1)
+
         this.invCap=1/this.cap
-        this.displaySize=this.level*0.15+0.5
+        this.displayScale=(this.level-1)*0.125+1
         
         this.flowers=[[-3,0],[-2,-2],[-2,-1],[-2,0],[-2,1],[-2,2],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[0,-3],[0,-2],[0,-1],[0,0],[0,1],[0,2],[0,3],[1,-2],[1,-1],[1,0],[1,1],[1,2],[2,-2],[2,-1],[2,0],[2,1],[2,2],[3,0]]
 
@@ -19584,6 +19584,10 @@ class Puffshroom {
             }
         }
 
+        player.stats.puffshrooms++
+
+        if(this.type!=='puffshroom') player.stats[this.type+'Puffshrooms']++
+
         objects.mobs.splice(index,1)
     }
     
@@ -19593,20 +19597,28 @@ class Puffshroom {
 
         this.pollen=Math.round(this.pollen)
         
-        meshes.cylinder_explosions.instanceData.push(this.pos[0],this.pos[1],this.pos[2],player.isNight,player.isNight,player.isNight,0.5,0.03,67)
-        
-        meshes.explosions.instanceData.push(this.pos[0],this.pos[1],this.pos[2],0,0.7,0,1,this.displaySize,1.05)
-        
-        textRenderer.addCTX('Puffshroom (Level '+this.level+')',[this.pos[0],this.pos[1]+1.25,this.pos[2]],COLORS.whiteArr,150)
-        
-        textRenderer.addSingle('Time: '+MATH.doTime(this.life),this.pos,COLORS.whiteArr,-1.25,false,false,0,0.7)
-        textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,1.25,...textRenderer.decalUV['rect'],0.61*0.5,0.42*0.5,0.27*0.5,3,0.7,0)
-        textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.life*0.00555556)*0.5)/(this.life*0.00555556),1.25,...textRenderer.decalUV['rect'],0.61,0.42,0.27,this.life*0.00555556*3,0.7,0)
+        this.pos[1]+=this.displayScale*1.75+0.25
+
+        textRenderer.addCTX(MATH.doGrammar(this.type)+' (Level '+this.level+')',[this.pos[0],this.pos[1]+1,this.pos[2]],COLORS.whiteArr,150)
+        textRenderer.addSingle('Time: '+MATH.doTime(this.life),this.pos,COLORS.whiteArr,-1.25,false,false,0,0.6)
+        textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,1.25,...textRenderer.decalUV['rect'],0.61*0.5,0.42*0.5,0.27*0.5,3,0.6,0)
+        textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.life*0.00555556)*0.5)/(this.life*0.00555556),1.25,...textRenderer.decalUV['rect'],0.61,0.42,0.27,this.life*0.00555556*3,0.6,0)
 
         textRenderer.addSingle(this.pollen+'/'+this.cap,this.pos,COLORS.whiteArr,-1.25,true,true,0.175)
-        textRenderer.addDecalRaw(...this.pos,0,0,...textRenderer.decalUV['rect'],0,0.4,0,3,0.7,0)
-        textRenderer.addDecalRaw(...this.pos,(-0.5+(this.pollen*this.invCap)*0.5)/(this.pollen*this.invCap),0,...textRenderer.decalUV['rect'],0.1,0.85,0.1,this.pollen*this.invCap*3,0.7,0)
-        textRenderer.addDecalRaw(...this.pos,1.1,-0.1,...textRenderer.decalUV['flower'],1,1,1,-1.25,-1.25,0)
+        textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV['rect'],0,0.4,0,3,0.6,0)
+        textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.pollen*this.invCap)*0.5)/(this.pollen*this.invCap),0,...textRenderer.decalUV['rect'],0.1,0.85,0.1,this.pollen*this.invCap*3,0.6,0)
+        textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],1.1,-0.1,...textRenderer.decalUV['flower'],1,1,1,-1.25,-1.25,0)
+
+        this.pos[1]-=this.displayScale*1.75+0.25
+
+        gl.bindBuffer(gl.ARRAY_BUFFER,meshes[this.type].vertBuffer)
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes[this.type].indexBuffer)
+        gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
+        gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
+
+        gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
+        gl.uniform2f(glCache.mob_instanceInfo2,this.displayScale,1)
+        gl.drawElements(gl.TRIANGLES,meshes[this.type].indexAmount,gl.UNSIGNED_SHORT,0)
             
         return this.pollen>=this.cap||this.life<=0
     }
@@ -25972,6 +25984,7 @@ let textRenderer=(function(out){
     }
     
     out.addSingle=function(message,pos,color,scale=1,splitCommas=true,addCommas=true,offx=0,offy=0){
+
         let m=message
         
         if(splitCommas){
@@ -28259,6 +28272,114 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
 
 meshes.cog.indexAmount=index.length
 
+meshes.puffshroom={}
+meshes.puffshroom.vertBuffer=gl.createBuffer()
+meshes.puffshroom.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+c(0,0.2,0-0.2,0.3,0.4,8,0.8,0.7,0.5,-90,0,0,0.33)
+c(0,0.4+0.125,0.02-0.2,0.27,0.3,8,0.8,0.7,0.5,-90+6,0,0,0.3)
+c(0,0.4+0.3+0.09,0.07-0.2,0.21,0.3,8,0.8,0.7,0.5,-90+14,0,0,0.27)
+
+c(0,0.4+0.3+0.09+0.225,0.12-0.2,0.65,0.45,8,0.5,0.4,0.2,-90+10,0,0,0.75)
+c(0,0.4+0.3+0.09+0.24+0.37,0.19-0.2,0.4,0.35,8,0.5,0.4,0.2,-90+10,0,0,0.65)
+c(0,0.4+0.3+0.09+0.237+0.37+0.225,0.23-0.2,0.15,0.1,8,0.5,0.4,0.2,-90+10,0,0,0.4)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.puffshroom.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.puffshroom.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.puffshroom.indexAmount=index.length
+
+meshes.rarePuffshroom={}
+meshes.rarePuffshroom.vertBuffer=gl.createBuffer()
+meshes.rarePuffshroom.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+c(0,0.2,0-0.2,0.3,0.4,8,0.9,0.9,0.95,-90,0,0,0.33)
+c(0,0.4+0.125,0.02-0.2,0.27,0.3,8,0.9,0.9,0.95,-90+6,0,0,0.3)
+c(0,0.4+0.3+0.09,0.07-0.2,0.21,0.3,8,0.9,0.9,0.95,-90+14,0,0,0.27)
+
+c(0,0.4+0.3+0.09+0.225,0.12-0.2,0.65,0.45,8,0.75,0.75,0.8,-90+10,0,0,0.75)
+c(0,0.4+0.3+0.09+0.24+0.37,0.19-0.2,0.4,0.35,8,0.75,0.75,0.8,-90+10,0,0,0.65)
+c(0,0.4+0.3+0.09+0.237+0.37+0.225,0.23-0.2,0.15,0.1,8,0.75,0.75,0.8,-90+10,0,0,0.4)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.rarePuffshroom.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.rarePuffshroom.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.rarePuffshroom.indexAmount=index.length
+
+meshes.epicPuffshroom={}
+meshes.epicPuffshroom.vertBuffer=gl.createBuffer()
+meshes.epicPuffshroom.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+c(0,0.2,0-0.2,0.3,0.4,8,1,0.9,0.5,-90,0,0,0.33)
+c(0,0.4+0.125,0.02-0.2,0.27,0.3,8,1,0.9,0.5,-90+6,0,0,0.3)
+c(0,0.4+0.3+0.09,0.07-0.2,0.21,0.3,8,1,0.9,0.5,-90+14,0,0,0.27)
+
+c(0,0.4+0.3+0.09+0.225,0.12-0.2,0.65,0.45,8,1,0.9,0.1,-90+10,0,0,0.75)
+c(0,0.4+0.3+0.09+0.24+0.37,0.19-0.2,0.4,0.35,8,1,0.9,0.1,-90+10,0,0,0.65)
+c(0,0.4+0.3+0.09+0.237+0.37+0.225,0.23-0.2,0.15,0.1,8,1,0.9,0.1,-90+10,0,0,0.4)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.epicPuffshroom.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.epicPuffshroom.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.epicPuffshroom.indexAmount=index.length
+
+meshes.legendaryPuffshroom={}
+meshes.legendaryPuffshroom.vertBuffer=gl.createBuffer()
+meshes.legendaryPuffshroom.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+c(0,0.2,0-0.2,0.3,0.4,8,0.8,1,1,-90,0,0,0.33)
+c(0,0.4+0.125,0.02-0.2,0.27,0.3,8,0.8,1,1,-90+6,0,0,0.3)
+c(0,0.4+0.3+0.09,0.07-0.2,0.21,0.3,8,0.8,1,1,-90+14,0,0,0.27)
+
+c(0,0.4+0.3+0.09+0.225,0.12-0.2,0.65,0.45,8,0.2,1,1,-90+10,0,0,0.75)
+c(0,0.4+0.3+0.09+0.24+0.37,0.19-0.2,0.4,0.35,8,0.2,1,1,-90+10,0,0,0.65)
+c(0,0.4+0.3+0.09+0.237+0.37+0.225,0.23-0.2,0.15,0.1,8,0.2,1,1,-90+10,0,0,0.4)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.legendaryPuffshroom.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.legendaryPuffshroom.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.legendaryPuffshroom.indexAmount=index.length
+
+meshes.mythicPuffshroom={}
+meshes.mythicPuffshroom.vertBuffer=gl.createBuffer()
+meshes.mythicPuffshroom.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+c(0,0.2,0-0.2,0.3,0.4,8,0.9,0.7,1,-90,0,0,0.33)
+c(0,0.4+0.125,0.02-0.2,0.27,0.3,8,0.9,0.7,1,-90+6,0,0,0.3)
+c(0,0.4+0.3+0.09,0.07-0.2,0.21,0.3,8,0.9,0.7,1,-90+14,0,0,0.27)
+
+c(0,0.4+0.3+0.09+0.225,0.12-0.2,0.65,0.45,8,0.8,0.6,1,-90+10,0,0,0.75)
+c(0,0.4+0.3+0.09+0.24+0.37,0.19-0.2,0.4,0.35,8,0.8,0.6,1,-90+10,0,0,0.65)
+c(0,0.4+0.3+0.09+0.237+0.37+0.225,0.23-0.2,0.15,0.1,8,0.8,0.6,1,-90+10,0,0,0.4)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.mythicPuffshroom.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.mythicPuffshroom.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.mythicPuffshroom.indexAmount=index.length
+
+
+//@
+
 meshes.mondoChick={}
 meshes.mondoChick.vertBuffer=gl.createBuffer()
 meshes.mondoChick.indexBuffer=gl.createBuffer()
@@ -30110,7 +30231,11 @@ window.addEventListener('beforeunload',function(e){
 
 player.updateGear()
 
-objects.mobs.push(new Puffshroom('DandelionField',5,5,3*60,1))
+objects.mobs.push(new Puffshroom('DandelionField',5,2,3*60,15,'mythicPuffshroom'))
+objects.mobs.push(new Puffshroom('DandelionField',10,2,3*60,15,'puffshroom'))
+
+objects.mobs.push(new Puffshroom('DandelionField',5,8,3*60,1,'mythicPuffshroom'))
+objects.mobs.push(new Puffshroom('DandelionField',10,8,3*60,1,'puffshroom'))
 
 
 function loop(now){
