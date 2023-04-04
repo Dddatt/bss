@@ -19550,7 +19550,7 @@ class Puffshroom {
         this.pos=[fieldInfo[this.field].x+this.x,fieldInfo[this.field].y,fieldInfo[this.field].z+this.z,Math.random()*MATH.TWO_PI]
         this.level=level
         this.pollen=0
-        this.cap=(40*(this.level*this.level*this.level*this.level*this.level-1)+1000)*(['puffshroom','rarePuffshroom','epicPuffshroom','legendaryPuffshroom',0,'mythicPuffshroom'].indexOf(type)*0.5+1)
+        this.cap=(20*(this.level*this.level*this.level*this.level*this.level-1)+1000)*(['puffshroom','rarePuffshroom','epicPuffshroom','legendaryPuffshroom',0,'mythicPuffshroom'].indexOf(type)*0.5+1)
 
         this.invCap=1/this.cap
         this.displayScale=(this.level-1)*0.125+1
@@ -19605,15 +19605,30 @@ class Puffshroom {
                         
                         let x=Math.random()*fieldInfo[j].width|0,z=Math.random()*fieldInfo[j].length|0
 
-                        _f.push([j,vec3.sqrDist(this.pos,[fieldInfo[j].x+x,fieldInfo[j].y,fieldInfo[j].z+z]),x,z])
+                        _f.push([j,vec2.sqrDist([this.pos[0],this.pos[2]],[fieldInfo[j].x+x,fieldInfo[j].z+z]),x,z])
                     }
                 }
 
                 _f.sort((a,b)=>a[1]-b[1])
 
-                _f=_f[(Math.random()*4)|0]
+                _f=_f[(Math.random()*9)|0]
 
-                objects.mobs.push(new Spore(this.pos,_f[0],_f[2],_f[3],this.level,this.life,this.prevFields,this.type))
+                let lvl=this.level,rep=this.prevFields.slice(this.prevFields.length-6).indexOf(_f[0]),type=25
+
+                if(rep<0){
+
+                    lvl+=MATH.random(0.75,3)|0
+                    type-=MATH.random(3,10)
+
+                } else {
+
+                    lvl-=(rep*MATH.random(0,2))|0
+                    type+=5
+                }
+
+                type-=lvl*0.5
+
+                objects.mobs.push(new Spore(this.pos,_f[0],_f[2],_f[3],lvl,this.life,this.prevFields,['puffshroom','rarePuffshroom','epicPuffshroom','legendaryPuffshroom','mythicPuffshroom'][Math.pow(Math.random(),type)*6|0]))
             }
         }
 
@@ -19628,14 +19643,15 @@ class Puffshroom {
         
         this.pos[1]+=this.displayScale*1.75+0.25
 
-        textRenderer.addCTX(MATH.doGrammar(this.type)+' (Level '+this.level+')',[this.pos[0],this.pos[1]+1,this.pos[2]],COLORS.whiteArr,150)
+        textRenderer.addSingle(MATH.doGrammar(this.type)+' (Level '+this.level+')',this.pos,COLORS.whiteArr,-2,false,false,0,0.7)
+
         textRenderer.addSingle('Time: '+MATH.doTime(this.life),this.pos,COLORS.whiteArr,-1.25,false,false,0,0.6)
         textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,1.25,...textRenderer.decalUV['rect'],0.61*0.5,0.42*0.5,0.27*0.5,3,0.6,0)
         textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.life*0.00555556)*0.5)/(this.life*0.00555556),1.25,...textRenderer.decalUV['rect'],0.61,0.42,0.27,this.life*0.00555556*3,0.6,0)
 
         textRenderer.addSingle(this.pollen+'/'+this.cap,this.pos,COLORS.whiteArr,-1.25,true,true,0.175)
         textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV['rect'],0,0.4,0,3,0.6,0)
-        textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.pollen*this.invCap)*0.5)/(this.pollen*this.invCap),0,...textRenderer.decalUV['rect'],0.1,0.85,0.1,this.pollen*this.invCap*3,0.6,0)
+        textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.pollen*this.invCap)*0.5)/(this.pollen*this.invCap),0,...textRenderer.decalUV['rect'],0.1,0.85,0.1,Math.min(this.pollen*this.invCap,1)*3,0.6,0)
         textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],1.1,-0.1,...textRenderer.decalUV['flower'],1,1,1,-1.25,-1.25,0)
 
         this.pos[1]-=this.displayScale*1.75+0.25
@@ -19663,19 +19679,15 @@ class Spore {
         this.field=field
         this.x=x
         this.z=z
-        this.pos=pos
+        this.pos=pos.slice()
+        this.startPos=pos.slice()
         this.endPos=[fieldInfo[this.field].x+this.x,fieldInfo[this.field].y,fieldInfo[this.field].z+this.z]
+        this.controlPos=[(this.startPos[0]+this.endPos[0])*0.5,Math.max(this.startPos[1],this.endPos[1])+15,(this.startPos[2]+this.endPos[2])*0.5]
         this.level=level
-        this.displayScale=(this.level-1)*0.08+1
+        this.displayScale=(this.level-1)*0.1+1.15
 
-        let dx=this.endPos[0]-this.pos[0],
-            dy=this.endPos[1]-this.pos[1],
-            dz=this.endPos[2]-this.pos[2],
-            h=6,
-            g=-8
+        this.t=0
 
-        this.vel=[dx/(Math.sqrt(-2*h/g)+Math.sqrt(2*(dy-h)/g)),Math.sqrt(-2*h*g),dz/(Math.sqrt(-2*h/g)+Math.sqrt(2*(dy-h)/g))]
-        this.life=-2*this.vel[1]/g
     }
     
     die(index){
@@ -19688,15 +19700,14 @@ class Spore {
     }
     
     update(){
-        
-        this.life-=dt
 
-        this.vel[1]-=dt*8
-        vec3.scaleAndAdd(this.pos,this.pos,this.vel,dt)
+        this.t+=dt*0.333
+
+        vec3.lerp(this.pos,vec3.lerp([],this.startPos,this.controlPos,this.t),vec3.lerp([],this.controlPos,this.endPos,this.t),this.t)
 
         meshes.explosions.instanceData.push(this.pos[0],this.pos[1],this.pos[2],0.6,0.5,0.1,0.85,this.displayScale,1)
 
-        return this.pollen>=this.cap||this.life<=0
+        return this.t>=1
     }
 }
 
