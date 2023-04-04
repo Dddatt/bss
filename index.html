@@ -19591,10 +19591,31 @@ class Puffshroom {
 
         if(this.type!=='puffshroom') player.stats[this.type+'Puffshrooms']++
 
-        objects.explosions.push(new Explosion({col:[0.4,0.35,0.25],pos:[this.pos[0],this.pos[1]+(this.displayScale*1.75+0.25)*0.5,this.pos[2]],life:1.5,size:this.displayScale*2,speed:0.2,aftershock:0.05}))
+        objects.explosions.push(new Explosion({col:[0.6,0.5,0.1],pos:[this.pos[0],this.pos[1]+(this.displayScale*1.75+0.25)*0.5,this.pos[2]],life:1,size:this.displayScale*2,speed:0.2,aftershock:0.05}))
 
-        if(this.life>0)
-            objects.mobs.push(new Spore(this.pos,'MushroomField',5,5,this.level,this.life,this.prevFields))
+        if(this.life>0){
+
+            for(let i=0,c=Math.random()*Math.random()*4;i<c;i++){
+
+                let _f=[]
+
+                for(let j in fieldInfo){
+
+                    if(j!=='AntField'){
+                        
+                        let x=Math.random()*fieldInfo[j].width|0,z=Math.random()*fieldInfo[j].length|0
+
+                        _f.push([j,vec3.sqrDist(this.pos,[fieldInfo[j].x+x,fieldInfo[j].y,fieldInfo[j].z+z]),x,z])
+                    }
+                }
+
+                _f.sort((a,b)=>a[1]-b[1])
+
+                _f=_f[(Math.random()*4)|0]
+
+                objects.mobs.push(new Spore(this.pos,_f[0],_f[2],_f[3],this.level,this.life,this.prevFields,this.type))
+            }
+        }
 
         objects.mobs.splice(index,1)
     }
@@ -19634,8 +19655,9 @@ class Puffshroom {
 
 class Spore {
     
-    constructor(pos,field,x,z,level,plife,prevFields){
+    constructor(pos,field,x,z,level,plife,prevFields,type){
         
+        this.type=type
         this.plife=plife
         this.prevFields=prevFields
         this.field=field
@@ -19658,7 +19680,9 @@ class Spore {
     
     die(index){
 
-        objects.mobs.push(new Puffshroom(this.field,this.x,this.z,this.plife,this.level,'epicPuffshroom'))
+        objects.mobs.push(new Puffshroom(this.field,this.x,this.z,this.plife,this.level,this.type))
+        
+        objects.explosions.push(new Explosion({col:[0.6,0.5,0.1],pos:[this.endPos[0],this.endPos[1]+(((this.level-1)*0.125+1)*1.75+0.25)*0.5,this.endPos[2]],life:1,size:this.displayScale*2,speed:0.2,aftershock:0.05}))
 
         objects.mobs.splice(index,1)
     }
@@ -22426,7 +22450,7 @@ player=(function(out){
                         q.push([re[j],am])
                     }
                     
-                    q.sort(function(b,a){return a[1]-b[1]})
+                    q.sort((b,a)=>a[1]-b[1])
 
                     for(let j in q){
 
