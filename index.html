@@ -8358,11 +8358,11 @@ let effects={
             player.gummyBallSize*=amount*1.5+1
             player.whitePollen*=amount*0.15+1
             
-            if(amount>=0.99||user.keys[' ']&&player.grounded&&amount>=0.03){
+            if(amount>=0.99||user.keys[' ']&&player.grounded&&amount>=0.3){
 
                 if(player.fieldIn){
                     
-                    window.setTimeout(function(){player.body.velocity.y*=0.4},0)
+                    window.setTimeout(function(){player.body.velocity.y*=0.75},0)
                     
                     player.addEffect('gummyBall',-amount)
                     objects.mobs.push(new GummyBall())
@@ -9496,7 +9496,6 @@ let effects={
 
     corruption:{
 
-        desc:"Corrupts a random field 15x(+0.5x per bee lvl)(+ up to 15x depending on the bee's drives). Corruption stacks up to 100x, and standing in corrupted fields grant 5% to 15% ability dupication chance.<br><br>Ability dupication chance allows ability tokens to be duped, being reposition somewhere else on the field, lasting for x2(+0.1x per bee lvl) the original token's lifespan.<br><br>Standing under duped tokens for 1s will activate them. There is a 10%(+0.1% per glitched drive) that the duped token will become a ☺ token. ☺ tokens activate all duped tokens, add 3x corruption to the field, and collect x3 the bee's gather amount of pollen, instantly converting 50%. The pollen is multiplied by 25% for each duped token collected.",
         u:0,v:0,
         svg:document.getElementById('corruption'),
         cooldown:document.getElementById('corruption_cooldown'),
@@ -9518,20 +9517,16 @@ let effects={
     
     glitch:{
         
-        desc:"Corrupts a random field you're not in by 30x(+2x per bee lvl)(+ up to 15x depending on the bee's drives).",
+        desc:"Corrupts a random field 15x(+0.5x per bee lvl)(+ up to 15x depending on the bee's drives). Corruption stacks up to 100x, and standing in corrupted fields grant 5% to 15% ability dupication chance.<br><br>Ability dupication chance allows ability tokens to be duped, being reposition somewhere else on the field, lasting for x2(+0.1x per bee lvl) the original token's lifespan.<br><br>Standing under duped tokens for 1s will activate them. There is a 10%(+0.1% per glitched drive) that the duped token will become a ☺ token. ☺ tokens activate all duped tokens, add 3x corruption to the field, and collect x3 the bee's gather amount of pollen, instantly converting 50%. The pollen is multiplied by 25% for each duped token collected.",
         trialCooldown:120,trialRate:0.35,
         u:128*7/2048,v:128*9/2048,
         tokenLife:8,
         
         func:function(params){
             
-            if(player.fieldIn){
-
-                fieldInfo[player.fieldIn].corruption=Math.min(fieldInfo[player.fieldIn].corruption+15+params.bee.level*0.5+(((fieldInfo[player.fieldIn].generalColorComp.r*player.drives.red/50)+(fieldInfo[player.fieldIn].generalColorComp.w*player.drives.white/50)+(fieldInfo[player.fieldIn].generalColorComp.b*player.drives.blue/50)+(player.drives.glitched/50))*15/4),100)
-                
-                objects.mobs.push(new GlitchEffect(player.fieldIn,5))
-                15+10+15
-            }
+            fieldInfo[params.field].corruption=Math.min(fieldInfo[params.field].corruption+15+params.bee.level*0.5+(((fieldInfo[params.field].generalColorComp.r*player.drives.red/50)+(fieldInfo[params.field].generalColorComp.w*player.drives.white/50)+(fieldInfo[params.field].generalColorComp.b*player.drives.blue/50)+(player.drives.glitched/50))*15/4),100)
+            
+            objects.mobs.push(new GlitchEffect(params.field,5))
         },
     },
 
@@ -9563,7 +9558,7 @@ let effects={
     
     mapCorruption:{
         
-        desc:"Corrupts a random field you're not in by 30x(+2x per bee lvl)(+ up to 15x depending on the bee's drives).",
+        desc:"Corrupts a random field you're not in by 30x(+2x per bee lvl)(+ up to 15x depending on the bee's drives and the field's color).",
         trialCooldown:100,trialRate:0.25,
         u:128*1/2048,v:128*10/2048,
         tokenLife:8,
@@ -9576,15 +9571,12 @@ let effects={
                 
                 f.push(i)
             }
-            
-            if(params.field){
-                
-                f.splice(f.indexOf(params.field),1)
-            }
+
+            f.splice(f.indexOf(params.field),1)
             
             f=f[(Math.random()*f.length)|0]
             
-            fieldInfo[f].corruption=Math.min(fieldInfo[f].corruption+30+params.bee.level*2+(((fieldInfo[player.fieldIn].generalColorComp.r*player.drives.red/50)+(fieldInfo[player.fieldIn].generalColorComp.w*player.drives.white/50)+(fieldInfo[player.fieldIn].generalColorComp.b*player.drives.blue/50)+(player.drives.glitched/50))*15/4),100)
+            fieldInfo[f].corruption=Math.min(fieldInfo[f].corruption+30+params.bee.level*2+(((fieldInfo[f].generalColorComp.r*player.drives.red/50)+(fieldInfo[f].generalColorComp.w*player.drives.white/50)+(fieldInfo[f].generalColorComp.b*player.drives.blue/50)+(player.drives.glitched/50))*15/4),100)
             
             objects.mobs.push(new GlitchEffect(f,5))
             
@@ -9612,13 +9604,13 @@ let effects={
                 }
             }
             
-            if(player.fieldIn){
+            if(params.field){
                 
-                fieldInfo[player.fieldIn].corruption=Math.min(fieldInfo[player.fieldIn].corruption+3,100)
+                fieldInfo[params.field].corruption=Math.min(fieldInfo[params.field].corruption+3,100)
                 
-                collectPollen({x:params.x,z:params.z,pattern:[[-4,0],[-4,1],[-4,2],[-3,3],[-2,4],[-1,4],[0,4],[1,4],[2,4],[3,3],[4,2],[4,1],[4,0],[4,-1],[4,-2],[3,-3],[2,-4],[1,-4],[0,-4],[-1,-4],[-2,-4],[-3,-3],[-4,-2],[-4,-1],[-1,-1],[1,-1],[2,1],[1,2],[0,2],[-1,2],[-2,1]],amount:params.bee.gatherAmount*3,stackOffset:0.4+Math.random()*0.5,multiplier:tokensCollected*0.25+1,instantConversion:0.5})
+                collectPollen({x:params.x,z:params.z,pattern:[[-4,0],[-4,1],[-4,2],[-3,3],[-2,4],[-1,4],[0,4],[1,4],[2,4],[3,3],[4,2],[4,1],[4,0],[4,-1],[4,-2],[3,-3],[2,-4],[1,-4],[0,-4],[-1,-4],[-2,-4],[-3,-3],[-4,-2],[-4,-1],[-1,-1],[1,-1],[2,1],[1,2],[0,2],[-1,2],[-2,1]],amount:params.bee.gatherAmount*3,stackOffset:0.4+Math.random()*0.5,multiplier:tokensCollected*0.25+1,instantConversion:0.5,field:params.field})
                 
-                objects.mobs.push(new GlitchEffect(player.fieldIn,3))
+                objects.mobs.push(new GlitchEffect(params.field,3))
                 
             }
         },
@@ -19550,12 +19542,12 @@ class Puffshroom {
         this.pos=[fieldInfo[this.field].x+this.x,fieldInfo[this.field].y,fieldInfo[this.field].z+this.z,Math.random()*MATH.TWO_PI]
         this.level=level
         this.pollen=0
-        this.cap=(20*(this.level*this.level*this.level*this.level*this.level-1)+1000)*(['puffshroom','rarePuffshroom','epicPuffshroom','legendaryPuffshroom',0,'mythicPuffshroom'].indexOf(type)*0.5+1)
+        this.cap=(55*(this.level*this.level*this.level*this.level-1)+1000)*(['puffshroom','rarePuffshroom','epicPuffshroom','legendaryPuffshroom',0,'mythicPuffshroom'].indexOf(type)*0.25+1)
 
         this.invCap=1/this.cap
         this.displayScale=(this.level-1)*0.125+1
         
-        this.flowers=[[-3,0],[-2,-2],[-2,-1],[-2,0],[-2,1],[-2,2],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[0,-3],[0,-2],[0,-1],[0,0],[0,1],[0,2],[0,3],[1,-2],[1,-1],[1,0],[1,1],[1,2],[2,-2],[2,-1],[2,0],[2,1],[2,2],[3,0]]
+        this.flowers=[[-4,-1],[-4,0],[-4,1],[-3,-3],[-3,-2],[-3,-1],[-3,0],[-3,1],[-3,2],[-3,3],[-2,-3],[-2,-2],[-2,-1],[-2,0],[-2,1],[-2,2],[-2,3],[-1,-4],[-1,-3],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[-1,3],[-1,4],[0,-4],[0,-3],[0,-2],[0,-1],[0,0],[0,1],[0,2],[0,3],[0,4],[1,-4],[1,-3],[1,-2],[1,-1],[1,0],[1,1],[1,2],[1,3],[1,4],[2,-3],[2,-2],[2,-1],[2,0],[2,1],[2,2],[2,3],[3,-3],[3,-2],[3,-1],[3,0],[3,1],[3,2],[3,3],[4,-1],[4,0],[4,1]]
 
         for(let i=this.flowers.length;i--;){
 
@@ -19574,6 +19566,102 @@ class Puffshroom {
     }
     
     die(index){
+
+        let tokenChances={
+
+            honey:4,
+            treat:3,
+            sunflowerSeed:fieldInfo[this.field].generalColorComp.w*0.4,
+            pineapple:fieldInfo[this.field].generalColorComp.w*0.4,
+            strawberry:fieldInfo[this.field].generalColorComp.r*1.25,
+            blueberry:fieldInfo[this.field].generalColorComp.b*1.25,
+        },DIS=this,rarity={puffshroom:0.2,rarePuffshroom:0.65,epicPuffshroom:0.75,legendaryPuffshroom:0.85,mythicPuffshroom:1}[this.type]
+
+
+        if(this.field==='SunflowerField') tokenChances.sunflowerSeed+=1
+        if(this.field==='PineapplePatch') tokenChances.pineapple+=1
+        if(this.field==='PepperPatch') tokenChances.sunflowerSeed+=0.6
+        if(this.field==='CoconutField') tokenChances.coconut+=1.5
+
+
+        if(this.level>=3){
+
+            tokenChances.softWax=(this.level*0.05+0.05)*rarity
+            tokenChances.gumdrops=(this.level*0.06+0.1)*rarity
+            tokenChances.neonberry=(this.level*0.02+0.1)*rarity
+            tokenChances.bitterberry=(this.level*0.035+0.1)*rarity
+        }
+
+        if(this.level>=5){
+
+            tokenChances.fieldDice=(this.level*0.05+0.08)*rarity
+            tokenChances.royalJelly=(this.level*0.04+0.09)*rarity
+        }
+
+        if(this.level>=6) tokenChances.hardWax=(this.level*0.05+0.02)*rarity
+
+        if(this.level>=7){
+
+            tokenChances.smoothDice=(this.level*0.05+0.05)*rarity
+        }
+
+        if(this.level>=11){
+
+            tokenChances.glitter=(this.level*0.07+0.06)*rarity
+            tokenChances.glue=(this.level*0.07+0.06)*rarity
+        }
+
+        if(this.level>=13){
+
+            tokenChances.loadedDice=(this.level*0.05)*rarity
+            tokenChances.swirledWax=(this.level*0.075+0.04)*rarity
+        }
+
+        if(this.level>=14){
+            
+            tokenChances.causticWax=(this.level*0.075)*rarity
+            tokenChances.starJelly=(this.level*0.03)*rarity
+        }
+
+        if(this.type==='mythicPuffshroom'){
+
+            tokenChances.turpentine=0.1
+        }
+
+        let totalChance=0
+
+        for(let i in tokenChances){
+
+            totalChance+=tokenChances[i]
+        }
+
+        for(let i in tokenChances){
+
+            tokenChances[i]/=totalChance
+        }
+
+        for(let i=0,c=MATH.random(2,6)+this.level*0.5+(['puffshroom','rarePuffshroom','epicPuffshroom','legendaryPuffshroom','mythicPuffshroom'].indexOf(this.type)*2);i<c;i++){
+
+            window.setTimeout(function(){
+
+                let c=0,it,r=Math.random(),rad=Math.random()*(DIS.level*0.15+4),the=Math.random()*MATH.TWO_PI
+
+                for(let j in tokenChances){
+
+                    if(r<=tokenChances[j]+c){
+
+                        it=j
+                        break
+                    }
+
+                    c+=tokenChances[j]
+                }
+
+                objects.tokens.push(new LootToken(30,[DIS.pos[0]+Math.cos(the)*rad,DIS.pos[1]+1,DIS.pos[2]+Math.sin(the)*rad],it,1,true,'Puffshroom'))
+
+            },150*i)
+        }
+
         
         for(let i=this.flowers.length;i--;){
 
@@ -19603,7 +19691,7 @@ class Puffshroom {
 
                     if(j!=='AntField'){
                         
-                        let x=Math.random()*fieldInfo[j].width|0,z=Math.random()*fieldInfo[j].length|0
+                        let x=MATH.random(0.25,0.75)*fieldInfo[j].width|0,z=MATH.random(0.25,0.75)*fieldInfo[j].length|0
 
                         _f.push([j,vec2.sqrDist([this.pos[0],this.pos[2]],[fieldInfo[j].x+x,fieldInfo[j].z+z]),x,z])
                     }
@@ -19611,14 +19699,14 @@ class Puffshroom {
 
                 _f.sort((a,b)=>a[1]-b[1])
 
-                _f=_f[(Math.random()*9)|0]
+                _f=_f[(Math.random()*12)|0]
 
                 let lvl=this.level,rep=this.prevFields.slice(this.prevFields.length-6).indexOf(_f[0]),type=25
 
                 if(rep<0){
 
                     lvl+=MATH.random(0.75,3)|0
-                    type-=MATH.random(3,10)
+                    type-=MATH.random(4,7)
 
                 } else {
 
@@ -19626,9 +19714,12 @@ class Puffshroom {
                     type+=5
                 }
 
-                type-=lvl*0.5
+                type-=lvl*0.9
+                type=Math.pow(Math.random(),Math.max(type,5))*5|0
 
-                objects.mobs.push(new Spore(this.pos,_f[0],_f[2],_f[3],lvl,this.life,this.prevFields,['puffshroom','rarePuffshroom','epicPuffshroom','legendaryPuffshroom','mythicPuffshroom'][Math.pow(Math.random(),type)*6|0]))
+                if(type===1&&lvl<5||type===2&&lvl<9||type===3&&lvl<12||type===4&&lvl<15) type=0
+
+                objects.mobs.push(new Spore(this.pos,_f[0],_f[2],_f[3],lvl,this.life,this.prevFields,['puffshroom','rarePuffshroom','epicPuffshroom','legendaryPuffshroom','mythicPuffshroom'][type]))
             }
         }
 
@@ -19643,11 +19734,17 @@ class Puffshroom {
         
         this.pos[1]+=this.displayScale*1.75+0.25
 
+        try {
         textRenderer.addSingle(MATH.doGrammar(this.type)+' (Level '+this.level+')',this.pos,COLORS.whiteArr,-2,false,false,0,0.7)
+
+        } catch(e){
+
+            console.error(this.type,this.level)
+        }
 
         textRenderer.addSingle('Time: '+MATH.doTime(this.life),this.pos,COLORS.whiteArr,-1.25,false,false,0,0.6)
         textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,1.25,...textRenderer.decalUV['rect'],0.61*0.5,0.42*0.5,0.27*0.5,3,0.6,0)
-        textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.life*0.00555556)*0.5)/(this.life*0.00555556),1.25,...textRenderer.decalUV['rect'],0.61,0.42,0.27,this.life*0.00555556*3,0.6,0)
+        textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.life*0.0033333333)*0.5)/(this.life*0.0033333333),1.25,...textRenderer.decalUV['rect'],0.61,0.42,0.27,this.life*0.0033333333*3,0.6,0)
 
         textRenderer.addSingle(this.pollen+'/'+this.cap,this.pos,COLORS.whiteArr,-1.25,true,true,0.175)
         textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV['rect'],0,0.4,0,3,0.6,0)
@@ -28450,13 +28547,13 @@ meshes.mythicPuffshroom.indexBuffer=gl.createBuffer()
 verts=[]
 index=[]
 
-c(0,0.2,0-0.2,0.3,0.4,8,0.9,0.7,1,-90,0,0,0.33)
-c(0,0.4+0.125,0.02-0.2,0.27,0.3,8,0.9,0.7,1,-90+6,0,0,0.3)
-c(0,0.4+0.3+0.09,0.07-0.2,0.21,0.3,8,0.9,0.7,1,-90+14,0,0,0.27)
+c(0,0.2,0-0.2,0.3,0.4,8,0.9,0.6,1,-90,0,0,0.33)
+c(0,0.4+0.125,0.02-0.2,0.27,0.3,8,0.9,0.6,1,-90+6,0,0,0.3)
+c(0,0.4+0.3+0.09,0.07-0.2,0.21,0.3,8,0.9,0.6,1,-90+14,0,0,0.27)
 
-c(0,0.4+0.3+0.09+0.225,0.12-0.2,0.65,0.45,8,0.8,0.6,1,-90+10,0,0,0.75)
-c(0,0.4+0.3+0.09+0.24+0.37,0.19-0.2,0.4,0.35,8,0.8,0.6,1,-90+10,0,0,0.65)
-c(0,0.4+0.3+0.09+0.237+0.37+0.225,0.23-0.2,0.15,0.1,8,0.8,0.6,1,-90+10,0,0,0.4)
+c(0,0.4+0.3+0.09+0.225,0.12-0.2,0.65,0.45,8,0.8,0.4,1,-90+10,0,0,0.75)
+c(0,0.4+0.3+0.09+0.24+0.37,0.19-0.2,0.4,0.35,8,0.8,0.4,1,-90+10,0,0,0.65)
+c(0,0.4+0.3+0.09+0.237+0.37+0.225,0.23-0.2,0.15,0.1,8,0.8,0.4,1,-90+10,0,0,0.4)
 
 gl.bindBuffer(gl.ARRAY_BUFFER,meshes.mythicPuffshroom.vertBuffer)
 gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
@@ -29933,42 +30030,42 @@ ctx.textAlign='center'
 ctx.textBaseline='middle'
 
 //bamb
-objects.mobs.push(new BugMob([-50,3,61],{minX:-52,maxX:-52+21,minZ:50,maxZ:50+13,minY:1,maxY:7},2,15,'rhinoBeetle'))
-objects.mobs.push(new BugMob([-33,3,61],{minX:-52,maxX:-52+21,minZ:50,maxZ:50+13,minY:1,maxY:7},3,18,'rhinoBeetle'))
+// objects.mobs.push(new BugMob([-50,3,61],{minX:-52,maxX:-52+21,minZ:50,maxZ:50+13,minY:1,maxY:7},2,15,'rhinoBeetle'))
+// objects.mobs.push(new BugMob([-33,3,61],{minX:-52,maxX:-52+21,minZ:50,maxZ:50+13,minY:1,maxY:7},3,18,'rhinoBeetle'))
 
-//bluf
-objects.mobs.push(new BugMob([-55+22,-0.5,29+11],{minX:-55,maxX:-55+24,minZ:29,maxZ:29+13,minY:-2,maxY:5},1,8,'rhinoBeetle'))
+// //bluf
+// objects.mobs.push(new BugMob([-55+22,-0.5,29+11],{minX:-55,maxX:-55+24,minZ:29,maxZ:29+13,minY:-2,maxY:5},1,8,'rhinoBeetle'))
 
-//clov
-objects.mobs.push(new BugMob([-50+17,5,9.5],{minX:-50,maxX:-50+18,minZ:8.5,maxZ:8.5+18,minY:3,maxY:8},2,12,'rhinoBeetle'))
-objects.mobs.push(new BugMob([-53,5,9.5+15],{minX:-50,maxX:-50+18,minZ:8.5,maxZ:8.5+18,minY:3,maxY:8},2,10,'ladybug'))
+// //clov
+// objects.mobs.push(new BugMob([-50+17,5,9.5],{minX:-50,maxX:-50+18,minZ:8.5,maxZ:8.5+18,minY:3,maxY:8},2,12,'rhinoBeetle'))
+// objects.mobs.push(new BugMob([-53,5,9.5+15],{minX:-50,maxX:-50+18,minZ:8.5,maxZ:8.5+18,minY:3,maxY:8},2,10,'ladybug'))
 
-//pineap
-objects.mobs.push(new BugMob([-71.5+17,13.5,78+9],{minX:-71.5,maxX:-71.5+19,minZ:78,maxZ:78+15,minY:11.5,maxY:18},5,20,'rhinoBeetle'))
-objects.mobs.push(new BugMob([-71.5+19*0.5,13.5,78+14],{minX:-71.5,maxX:-71.5+19,minZ:78,maxZ:78+15,minY:11.5,maxY:18},4,25,'mantis'))
+// //pineap
+// objects.mobs.push(new BugMob([-71.5+17,13.5,78+9],{minX:-71.5,maxX:-71.5+19,minZ:78,maxZ:78+15,minY:11.5,maxY:18},5,20,'rhinoBeetle'))
+// objects.mobs.push(new BugMob([-71.5+19*0.5,13.5,78+14],{minX:-71.5,maxX:-71.5+19,minZ:78,maxZ:78+15,minY:11.5,maxY:18},4,25,'mantis'))
 
-//straw
-objects.mobs.push(new BugMob([7.5+1,3,47+14],{minX:7.5,maxX:7.5+15,minZ:47,maxZ:47+15,minY:1,maxY:6},2,10,'ladybug'))
-objects.mobs.push(new BugMob([7.5+14,3,47+1],{minX:7.5,maxX:7.5+15,minZ:47,maxZ:47+15,minY:1,maxY:6},3,12,'ladybug'))
+// //straw
+// objects.mobs.push(new BugMob([7.5+1,3,47+14],{minX:7.5,maxX:7.5+15,minZ:47,maxZ:47+15,minY:1,maxY:6},2,10,'ladybug'))
+// objects.mobs.push(new BugMob([7.5+14,3,47+1],{minX:7.5,maxX:7.5+15,minZ:47,maxZ:47+15,minY:1,maxY:6},3,12,'ladybug'))
 
-//mush
-objects.mobs.push(new BugMob([-6+11,-0.5,29+12],{minX:-6,maxX:-6+19,minZ:29,maxZ:29+13,minY:-2,maxY:4},1,6,'ladybug'))
+// //mush
+// objects.mobs.push(new BugMob([-6+11,-0.5,29+12],{minX:-6,maxX:-6+19,minZ:29,maxZ:29+13,minY:-2,maxY:4},1,6,'ladybug'))
 
-//spi
-objects.mobs.push(new BugMob([-20+19*0.5,2.75,47.5+15],{minX:-20,maxX:-20+19,minZ:47.5,maxZ:47.5+14,minY:-0,maxY:6},4,25,'spider'))
+// //spi
+// objects.mobs.push(new BugMob([-20+19*0.5,2.75,47.5+15],{minX:-20,maxX:-20+19,minZ:47.5,maxZ:47.5+14,minY:-0,maxY:6},4,25,'spider'))
 
 
-objects.mobs.push(new BugMob([4,12.5+1,(63.5+76.5+12)*0.5],{minX:4,maxX:4+31+15,minZ:63.5,maxZ:76.5+12,minY:11,maxY:15},6,75,'werewolf'))
+// objects.mobs.push(new BugMob([4,12.5+1,(63.5+76.5+12)*0.5],{minX:4,maxX:4+31+15,minZ:63.5,maxZ:76.5+12,minY:11,maxY:15},6,75,'werewolf'))
 
-//pine
-objects.mobs.push(new BugMob([31+14,13.5,75],{minX:31,maxX:31+15,minZ:74,maxZ:74+19,minY:11,maxY:15},5,35,'mantis'))
-objects.mobs.push(new BugMob([31+14,13.5,74+18],{minX:31,maxX:31+15,minZ:74,maxZ:74+19,minY:11,maxY:15},6,45,'mantis'))
+// //pine
+// objects.mobs.push(new BugMob([31+14,13.5,75],{minX:31,maxX:31+15,minZ:74,maxZ:74+19,minY:11,maxY:15},5,35,'mantis'))
+// objects.mobs.push(new BugMob([31+14,13.5,74+18],{minX:31,maxX:31+15,minZ:74,maxZ:74+19,minY:11,maxY:15},6,45,'mantis'))
 
-//rose
-objects.mobs.push(new BugMob([30+19,2.75,32.5],{minX:31,maxX:31+19,minZ:31.5,maxZ:31.5+13,minY:0,maxY:6},5,35,'scorpion'))
-objects.mobs.push(new BugMob([32,2.75,30.5+13],{minX:31,maxX:31+19,minZ:31.5,maxZ:31.5+13,minY:0,maxY:6},5,35,'scorpion'))
+// //rose
+// objects.mobs.push(new BugMob([30+19,2.75,32.5],{minX:31,maxX:31+19,minZ:31.5,maxZ:31.5+13,minY:0,maxY:6},5,35,'scorpion'))
+// objects.mobs.push(new BugMob([32,2.75,30.5+13],{minX:31,maxX:31+19,minZ:31.5,maxZ:31.5+13,minY:0,maxY:6},5,35,'scorpion'))
 
-objects.mobs.push(new BugMob([-53+25*0.5,-0.75,8.5],{minX:-55,maxX:-53+25,minZ:6.5,maxZ:6.5+20,minY:-10,maxY:3.5},7,2500,'kingBeetle'))
+// objects.mobs.push(new BugMob([-53+25*0.5,-0.75,8.5],{minX:-55,maxX:-53+25,minZ:6.5,maxZ:6.5+20,minY:-10,maxY:3.5},7,2500,'kingBeetle'))
 
 
 if(window.thisProgramIsInFullScreen){
@@ -30316,11 +30413,15 @@ window.addEventListener('beforeunload',function(e){
 
 player.updateGear()
 
-objects.mobs.push(new Puffshroom('DandelionField',5,2,3*60,15,'mythicPuffshroom'))
-objects.mobs.push(new Puffshroom('DandelionField',10,2,3*60,15,'puffshroom'))
+for(let i=0;i<7;i++){
 
-objects.mobs.push(new Puffshroom('DandelionField',5,8,3*60,1,'mythicPuffshroom'))
-objects.mobs.push(new Puffshroom('DandelionField',10,8,3*60,1,'puffshroom'))
+
+    objects.mobs.push(new Puffshroom('DandelionField',i*3,0,5*60,1+i*2,'puffshroom'))
+    objects.mobs.push(new Puffshroom('DandelionField',i*3,3,5*60,1+i*2,'rarePuffshroom'))
+    objects.mobs.push(new Puffshroom('DandelionField',i*3,6,5*60,1+i*2,'epicPuffshroom'))
+    objects.mobs.push(new Puffshroom('DandelionField',i*3,9,5*60,1+i*2,'legendaryPuffshroom'))
+    objects.mobs.push(new Puffshroom('DandelionField',i*3,12,5*60,1+i*2,'mythicPuffshroom'))
+}
 
 
 function loop(now){
