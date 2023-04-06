@@ -19542,7 +19542,7 @@ class Puffshroom {
         this.pos=[fieldInfo[this.field].x+this.x,fieldInfo[this.field].y,fieldInfo[this.field].z+this.z,Math.random()*MATH.TWO_PI]
         this.level=level
         this.pollen=0
-        this.cap=(55*(this.level*this.level*this.level*this.level-1)+1000)*(['puffshroom','rarePuffshroom','epicPuffshroom','legendaryPuffshroom',0,'mythicPuffshroom'].indexOf(type)*0.25+1)
+        this.cap=(55*(this.level*this.level*this.level*this.level-1)+1000)*(['puffshroom','rarePuffshroom','epicPuffshroom','legendaryPuffshroom',0,'mythicPuffshroom'].indexOf(type)*0.25+1)|0
 
         this.invCap=1/this.cap
         this.displayScale=(this.level-1)*0.125+1
@@ -19569,63 +19569,63 @@ class Puffshroom {
 
         let tokenChances={
 
-            honey:4,
-            treat:3,
-            sunflowerSeed:fieldInfo[this.field].generalColorComp.w*0.4,
-            pineapple:fieldInfo[this.field].generalColorComp.w*0.4,
-            strawberry:fieldInfo[this.field].generalColorComp.r*1.25,
-            blueberry:fieldInfo[this.field].generalColorComp.b*1.25,
-        },DIS=this,rarity={puffshroom:0.2,rarePuffshroom:0.65,epicPuffshroom:0.75,legendaryPuffshroom:0.85,mythicPuffshroom:1}[this.type]
+            honey:7,
+            treat:5,
+            sunflowerSeed:fieldInfo[this.field].generalColorComp.w*0.9,
+            pineapple:fieldInfo[this.field].generalColorComp.w*0.9,
+            strawberry:fieldInfo[this.field].generalColorComp.r*2.2,
+            blueberry:fieldInfo[this.field].generalColorComp.b*2.2,
+        },DIS=this,rarity={puffshroom:0.3,rarePuffshroom:0.65,epicPuffshroom:0.75,legendaryPuffshroom:0.85,mythicPuffshroom:1}[this.type]
 
 
-        if(this.field==='SunflowerField') tokenChances.sunflowerSeed+=1
-        if(this.field==='PineapplePatch') tokenChances.pineapple+=1
-        if(this.field==='PepperPatch') tokenChances.sunflowerSeed+=0.6
-        if(this.field==='CoconutField') tokenChances.coconut+=1.5
+        if(this.field==='SunflowerField') tokenChances.sunflowerSeed+=1.25
+        if(this.field==='PineapplePatch') tokenChances.pineapple+=1.25
+        if(this.field==='PepperPatch') tokenChances.sunflowerSeed+=0.7
+        if(this.field==='CoconutField') tokenChances.coconut+=2
 
 
         if(this.level>=3){
 
-            tokenChances.softWax=(this.level*0.05+0.05)*rarity
+            tokenChances.softWax=(this.level*0.05+0.05)*rarity*0.25
             tokenChances.gumdrops=(this.level*0.06+0.1)*rarity
-            tokenChances.neonberry=(this.level*0.02+0.1)*rarity
-            tokenChances.bitterberry=(this.level*0.035+0.1)*rarity
+            tokenChances.neonberry=(this.level*0.02+0.1)*rarity*0.8
+            tokenChances.bitterberry=(this.level*0.035+0.1)*rarity*0.9
         }
 
         if(this.level>=5){
 
-            tokenChances.fieldDice=(this.level*0.05+0.08)*rarity
+            tokenChances.fieldDice=(this.level*0.05+0.08)*rarity*0.175
             tokenChances.royalJelly=(this.level*0.04+0.09)*rarity
         }
 
-        if(this.level>=6) tokenChances.hardWax=(this.level*0.05+0.02)*rarity
+        if(this.level>=6) tokenChances.hardWax=(this.level*0.05+0.02)*rarity*0.1
 
         if(this.level>=7){
 
-            tokenChances.smoothDice=(this.level*0.05+0.05)*rarity
+            tokenChances.smoothDice=(this.level*0.05+0.05)*rarity*0.08
         }
 
         if(this.level>=11){
 
-            tokenChances.glitter=(this.level*0.07+0.06)*rarity
-            tokenChances.glue=(this.level*0.07+0.06)*rarity
+            tokenChances.glitter=(this.level*0.07+0.06)*rarity*0.1
+            tokenChances.glue=(this.level*0.07+0.06)*rarity*0.1
         }
 
         if(this.level>=13){
 
-            tokenChances.loadedDice=(this.level*0.05)*rarity
-            tokenChances.swirledWax=(this.level*0.075+0.04)*rarity
+            tokenChances.loadedDice=(this.level*0.05)*rarity*0.03
+            tokenChances.swirledWax=(this.level*0.075+0.04)*rarity*0.06
         }
 
         if(this.level>=14){
             
-            tokenChances.causticWax=(this.level*0.075)*rarity
-            tokenChances.starJelly=(this.level*0.03)*rarity
+            tokenChances.causticWax=(this.level*0.075)*rarity*0.06
+            tokenChances.starJelly=(this.level*0.03)*rarity*0.1
         }
 
         if(this.type==='mythicPuffshroom'){
 
-            tokenChances.turpentine=0.1
+            objects.tokens.push(new LootToken(30,[DIS.pos[0],DIS.pos[1]+1,DIS.pos[2]],'turpentine',1,true,'Puffshroom'))
         }
 
         let totalChance=0
@@ -19644,7 +19644,7 @@ class Puffshroom {
 
             window.setTimeout(function(){
 
-                let c=0,it,r=Math.random(),rad=Math.random()*(DIS.level*0.15+4),the=Math.random()*MATH.TWO_PI
+                let c=0,it='honey',r=Math.random(),rad=Math.random()*(DIS.level*0.15+4),the=Math.random()*MATH.TWO_PI
 
                 for(let j in tokenChances){
 
@@ -19657,7 +19657,19 @@ class Puffshroom {
                     c+=tokenChances[j]
                 }
 
-                objects.tokens.push(new LootToken(30,[DIS.pos[0]+Math.cos(the)*rad,DIS.pos[1]+1,DIS.pos[2]+Math.sin(the)*rad],it,1,true,'Puffshroom'))
+                let am=1
+
+                switch(it){
+
+                    case 'honey': am=(DIS.cap*0.15*MATH.random(0.75,1.33333))|0
+                    break
+                    case 'treat': am=MATH.random(1,DIS.level*0.35+1)|0
+                    break
+                    case 'gumdrops': am=MATH.random(1,3)|0
+                    break
+                }
+
+                objects.tokens.push(new LootToken(30,[DIS.pos[0]+Math.cos(the)*rad,DIS.pos[1]+1,DIS.pos[2]+Math.sin(the)*rad],it,am,true,'Puffshroom'))
 
             },150*i)
         }
@@ -19683,7 +19695,7 @@ class Puffshroom {
 
         if(this.life>0){
 
-            for(let i=0,c=Math.random()*Math.random()*4;i<c;i++){
+            for(let i=0,c=Math.random()*Math.random()*4+(this.level<3?2:this.level<5?0.5:0);i<c;i++){
 
                 let _f=[]
 
@@ -19697,29 +19709,32 @@ class Puffshroom {
                     }
                 }
 
-                _f.sort((a,b)=>a[1]-b[1])
+                _f=_f[(Math.random()*_f.length)|0]
 
-                _f=_f[(Math.random()*12)|0]
+                let lvl=this.level,rep=this.prevFields.slice(this.prevFields.length-6).indexOf(_f[0]),type=10,types=(('puffshroom,'.repeat(6))+('rarePuffshroom,'.repeat(8))+('epicPuffshroom,'.repeat(7))+('legendaryPuffshroom,'.repeat(6))+('mythicPuffshroom,'.repeat(5))).split(',')
 
-                let lvl=this.level,rep=this.prevFields.slice(this.prevFields.length-6).indexOf(_f[0]),type=25
+                types.pop()
 
                 if(rep<0){
 
                     lvl+=MATH.random(0.75,3)|0
-                    type-=MATH.random(4,7)
+                    type-=MATH.random(2,6)
 
                 } else {
 
                     lvl-=(rep*MATH.random(0,2))|0
-                    type+=5
+                    type+=3
                 }
 
-                type-=lvl*0.9
-                type=Math.pow(Math.random(),Math.max(type,5))*5|0
+                type-=lvl*0.7
+                type=types[Math.pow(Math.random(),Math.max(type,2))*types.length|0]
 
-                if(type===1&&lvl<5||type===2&&lvl<9||type===3&&lvl<12||type===4&&lvl<15) type=0
+                if(type[0]==='r'&&lvl<5||type[0]==='e'&&lvl<9||type[0]==='l'&&lvl<11||type[0]==='m'&&lvl<14){
 
-                objects.mobs.push(new Spore(this.pos,_f[0],_f[2],_f[3],lvl,this.life,this.prevFields,['puffshroom','rarePuffshroom','epicPuffshroom','legendaryPuffshroom','mythicPuffshroom'][type]))
+                    type='puffshroom'
+                }
+
+                objects.mobs.push(new Spore(this.pos,_f[0],_f[2],_f[3],lvl,this.life,this.prevFields,type))
             }
         }
 
@@ -19734,13 +19749,7 @@ class Puffshroom {
         
         this.pos[1]+=this.displayScale*1.75+0.25
 
-        try {
         textRenderer.addSingle(MATH.doGrammar(this.type)+' (Level '+this.level+')',this.pos,COLORS.whiteArr,-2,false,false,0,0.7)
-
-        } catch(e){
-
-            console.error(this.type,this.level)
-        }
 
         textRenderer.addSingle('Time: '+MATH.doTime(this.life),this.pos,COLORS.whiteArr,-1.25,false,false,0,0.6)
         textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,1.25,...textRenderer.decalUV['rect'],0.61*0.5,0.42*0.5,0.27*0.5,3,0.6,0)
@@ -28547,13 +28556,13 @@ meshes.mythicPuffshroom.indexBuffer=gl.createBuffer()
 verts=[]
 index=[]
 
-c(0,0.2,0-0.2,0.3,0.4,8,0.9,0.6,1,-90,0,0,0.33)
-c(0,0.4+0.125,0.02-0.2,0.27,0.3,8,0.9,0.6,1,-90+6,0,0,0.3)
-c(0,0.4+0.3+0.09,0.07-0.2,0.21,0.3,8,0.9,0.6,1,-90+14,0,0,0.27)
+c(0,0.2,0-0.2,0.3,0.4,8,0.9,0.5,1,-90,0,0,0.33)
+c(0,0.4+0.125,0.02-0.2,0.27,0.3,8,0.9,0.5,1,-90+6,0,0,0.3)
+c(0,0.4+0.3+0.09,0.07-0.2,0.21,0.3,8,0.9,0.5,1,-90+14,0,0,0.27)
 
-c(0,0.4+0.3+0.09+0.225,0.12-0.2,0.65,0.45,8,0.8,0.4,1,-90+10,0,0,0.75)
-c(0,0.4+0.3+0.09+0.24+0.37,0.19-0.2,0.4,0.35,8,0.8,0.4,1,-90+10,0,0,0.65)
-c(0,0.4+0.3+0.09+0.237+0.37+0.225,0.23-0.2,0.15,0.1,8,0.8,0.4,1,-90+10,0,0,0.4)
+c(0,0.4+0.3+0.09+0.225,0.12-0.2,0.65,0.45,8,0.8,0.3,1,-90+10,0,0,0.75)
+c(0,0.4+0.3+0.09+0.24+0.37,0.19-0.2,0.4,0.35,8,0.8,0.3,1,-90+10,0,0,0.65)
+c(0,0.4+0.3+0.09+0.237+0.37+0.225,0.23-0.2,0.15,0.1,8,0.8,0.3,1,-90+10,0,0,0.4)
 
 gl.bindBuffer(gl.ARRAY_BUFFER,meshes.mythicPuffshroom.vertBuffer)
 gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
@@ -30416,11 +30425,11 @@ player.updateGear()
 for(let i=0;i<7;i++){
 
 
-    objects.mobs.push(new Puffshroom('DandelionField',i*3,0,5*60,1+i*2,'puffshroom'))
-    objects.mobs.push(new Puffshroom('DandelionField',i*3,3,5*60,1+i*2,'rarePuffshroom'))
-    objects.mobs.push(new Puffshroom('DandelionField',i*3,6,5*60,1+i*2,'epicPuffshroom'))
-    objects.mobs.push(new Puffshroom('DandelionField',i*3,9,5*60,1+i*2,'legendaryPuffshroom'))
-    objects.mobs.push(new Puffshroom('DandelionField',i*3,12,5*60,1+i*2,'mythicPuffshroom'))
+    objects.mobs.push(new Puffshroom('DandelionField',i*3,0,5*60,1+i*3,'puffshroom'))
+    objects.mobs.push(new Puffshroom('DandelionField',i*3,3,5*60,1+i*3,'rarePuffshroom'))
+    objects.mobs.push(new Puffshroom('DandelionField',i*3,6,5*60,1+i*3,'epicPuffshroom'))
+    objects.mobs.push(new Puffshroom('DandelionField',i*3,9,5*60,1+i*3,'legendaryPuffshroom'))
+    objects.mobs.push(new Puffshroom('DandelionField',i*3,12,5*60,1+i*3,'mythicPuffshroom'))
 }
 
 
@@ -30880,6 +30889,7 @@ function loop(now){
     if(user.keys.o){
 
         player.body.position.set(0,1005,1010)
+        player.body.velocity.set(0,0,0)
 
         for(let i in objects.planters){
 
