@@ -266,6 +266,28 @@ window.playerGear={
         
         none:{mesh:function(){},applyStats:function(){}},
         
+        parachute:{
+            
+            mesh:function(box,cylinder,sphere,star,applyFinalRotation){
+                
+                cylinder(0,1.55,0,1,0.4,13,1.2,1.2,1.2,-90,0,0,1.15)
+                cylinder(0,1.55+0.2+0.15,0,0.6,0.3,13,1.2,1.2,1.2,-90,0,0,1)
+
+                box(-0.5,0.65,0.3,0.06,1.8,0.06,[12,0,25],[1.4,1.4,1.4])
+                box(-0.5,0.65,-0.3,0.06,1.8,0.06,[-12,0,25],[1.4,1.4,1.4])
+                box(0.5,0.65,0.3,0.06,1.8,0.06,[12,0,-25],[1.4,1.4,1.4])
+                box(0.5,0.55,-0.3,0.06,1.8,0.06,[-12,0,-25],[1.4,1.4,1.4])
+            },
+            
+            applyStats:function(stats,player){
+                
+                stats.gliderSpeed=18*0.7
+                stats.gliderFall=-5*0.75
+            }
+        },
+        desc:'A parachute you can use to glide down the mountain and reach new places! Press jump while in the air to open.<br><br>Press jump while in the air to open. ',
+        cost:['500000 honey'],
+
         glider:{
             
             mesh:function(box,cylinder,sphere,star,applyFinalRotation){
@@ -275,6 +297,11 @@ window.playerGear={
                 box(0.9,1.85,0,1,0.2,1.5,[0,0,-20],[0.15,0.15,0.15])
                 box(-1.675,1.3,0,1,0.2,1.501,[0,0,50],[1.4,1.4,0])
                 box(1.675,1.3,0,1,0.2,1.501,[0,0,-50],[1.4,1.4,0])
+                
+                box(-0.8,0.55,0.3,0.06,2.2,0.06,[12,0,40],[1.4,1.4,1.4])
+                box(-0.8,0.55,-0.3,0.06,2.2,0.06,[-12,0,40],[1.4,1.4,1.4])
+                box(0.8,0.55,0.3,0.06,2.2,0.06,[12,0,-40],[1.4,1.4,1.4])
+                box(0.8,0.55,-0.3,0.06,2.2,0.06,[-12,0,-40],[1.4,1.4,1.4])
             },
             
             applyStats:function(stats,player){
@@ -303,12 +330,15 @@ window.playerGear={
 
         helmet:{
             
-            mesh:function(box,cylinder,sphere){
+            mesh:function(box,cylinder,sphere,a,b,putFace=true){
                 
-                box(-0.1,0.3,0.225,0.05,0.1,0.1,false,[0,0,0])
-                box(0.1,0.3,0.225,0.05,0.1,0.1,false,[0,0,0])
-                box(0,0.15,0.225,0.2,0.05,0.1,false,[0,0,0])
-                box(0,0.5,0,0.55,0.1,0.55,false,[0,0,0])
+                if(putFace){
+
+                    box(-0.1,0.3,0.225,0.05,0.1,0.1,false,[0,0,0])
+                    box(0.1,0.3,0.225,0.05,0.1,0.1,false,[0,0,0])
+                    box(0,0.15,0.225,0.2,0.05,0.1,false,[0,0,0])
+                    box(0,0.5,0,0.55,0.1,0.55,false,[0,0,0])
+                }
 
                 cylinder(0,0.625,0.045,0.26*1.414,0.15,10,1.3,1.3,0,90,0,0,0.26*1.414*0.9)
                 cylinder(0,0.625+0.15,0.045,0.26*1.414*0.9,0.15,10,1.3,1.3,0,90,0,0,0.26*1.414*0.6)
@@ -765,7 +795,7 @@ window.playerGear={
                 stats.capacity+=200
             },
             desc:'A small bag.<br><br>+200 capacity',
-            cost:['0 honey'],
+            cost:['0 honey','1 oil'],
         },
 
         jar:{
@@ -1143,7 +1173,7 @@ window.playerGear={
                 stats.walkSpeed*=1.05
                 stats.beeSpeed*=1.1
             },
-            desc:'Collect pollen as you walk through flowers!<br><br>+1 movement collection<br>x1.1 bee speed<br>x1.05 movespeed',
+            desc:'Move faster and collect pollen as you walk through flowers!<br><br>+1 movement collection<br>x1.1 bee speed<br>x1.05 movespeed',
             cost:['5000 honey','3 sunflowerSeed','3 blueberry','3 strawberry'],
         },
 

@@ -4926,7 +4926,7 @@ for(let i in _svgs){
     itemSVGCode[name+'_description']=itemSVGCode[name+'_description'].join(' ')
     
     itemSVGCode[name]=_svgs[i].split('</text>')
-    itemSVGCode[name]='<svg style="transform:translate(0px,7px);width:150px;height:36px;"><g transform="scale(0.77,0.77) translate(0,-5)"><text x="70" y="45" stroke="rgb(0,0,0)" stroke-width="3" style="font-family:cursive;font-size:20px;">AMOUNTOFITEMREQUIREDTOCRAFT</text><text x="70" y="45" fill="TEXTCOLORDEPENDINGONIFENOUGHITEMS" style="font-family:cursive;font-size:20px;">AMOUNTOFITEMREQUIREDTOCRAFT</text>'+(itemSVGCode[name][itemSVGCode[name].length-1]).substr(0,itemSVGCode[name][itemSVGCode[name].length-1].indexOf('</svg>'))+'</g><title>'+MATH.doGrammar(name)+'</title><text x="36" y="34" fill="rgb(0,0,0)" style="font-family:cursive;font-size:10px;" text-anchor="end">AMOUNTININVENTORY</text></svg>'
+    itemSVGCode[name]='<svg style="width:70px;height:70px;transform:SCALE">'+(itemSVGCode[name][itemSVGCode[name].length-1]).substr(0,itemSVGCode[name][itemSVGCode[name].length-1].indexOf('</svg>'))+'<title>'+MATH.doGrammar(name)+'</title></svg>'
 }
 
 for(let i in hotbarSlots){
@@ -12916,10 +12916,9 @@ class Bee {
                 vec3.sub(this.moveDir,this.moveTo,this.pos)
                 vec3.normalize(this.moveDir,this.moveDir)
                 vec3.scaleAndAdd(this.pos,this.pos,this.moveDir,dt*this.speed*player.beeSpeed*(this.type==='spicy'?player.flameHeatStackApplied:1))
-                if(vec3.sqrDist(this.moveTo,this.pos)<0.8){
-                    
-                    this.moveOffset=[MATH.random(-4,4),0,MATH.random(-4,4)]
-                }
+
+                if(vec3.sqrDist(this.moveTo,this.pos)<0.8)
+                    this.moveOffset=[MATH.random(-5,5),0,MATH.random(-5,5)]
                 
                 meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
                 
@@ -13653,10 +13652,9 @@ class TempBee {
                 vec3.sub(this.moveDir,this.moveTo,this.pos)
                 vec3.normalize(this.moveDir,this.moveDir)
                 vec3.scaleAndAdd(this.pos,this.pos,this.moveDir,dt*this.speed*player.beeSpeed*(this.type==='spicy'?player.flameHeatStackApplied:1))
-                if(vec3.sqrDist(this.moveTo,this.pos)<0.8){
-                    
-                    this.moveOffset=[MATH.random(-4,4),0,MATH.random(-4,4)]
-                }
+                
+                if(vec3.sqrDist(this.moveTo,this.pos)<0.8)
+                    this.moveOffset=[MATH.random(-5,5),0,MATH.random(-5,5)]
                 
                 meshes.bees.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.meshScale,this.moveDir[0],this.moveDir[1],this.moveDir[2],BEE_FLY,beeInfo[this.type].u,this.GIFTED_BEE_TEXTURE_OFFSET,beeInfo[this.type].meshPartId)
                 
@@ -19526,7 +19524,7 @@ class Sprout {
 
 class Puffshroom {
     
-    constructor(field,x,z,life,level,type,prevFields){//@
+    constructor(field,x,z,life,level,type,prevFields){
         
         this.prevFields=prevFields||[]
         this.prevFields.push(field)
@@ -23254,9 +23252,9 @@ player=(function(out){
         
         for(let i in cost){
             
-            let c=cost[i].split(' ')
-            
-            itemCostSVG.innerHTML+=itemSVGCode[c[1]].replaceAll('AMOUNTININVENTORY','').replaceAll('AMOUNTOFITEMREQUIREDTOCRAFT','x'+(c[0].length<6?MATH.addCommas(c[0]):MATH.abvNumber(c[0]))).replaceAll('TEXTCOLORDEPENDINGONIFENOUGHITEMS',c[1]==='honey'&&player.honey<Number(c[0])||c[1]!=='honey'&&items[c[1]].amount<Number(c[0])?'rgb(255,0,0)':'rgb(255,255,255)')
+            let c=cost[i].split(' '),col=(c[1]==='honey'&&player.honey<Number(c[0])||c[1]!=='honey'&&items[c[1]].amount<Number(c[0])?'rgb(255,0,0)':'rgb(255,255,255)'),text='x'+(c[0].length<4?MATH.addCommas(c[0]):MATH.abvNumber(c[0]))
+
+            itemCostSVG.innerHTML+="<div style='position:absolute;top:"+i*70*0.7+"px'>"+itemSVGCode[c[1]].replace('SCALE','scale(0.7,0.7);margin-top:-10px;margin-bottom:0px;margin-left:-10px')+"<div style='position:absolute;top:15px;left:50px;font-size:16px;'><svg style='position:absolute;'><text x='3' y='20' stroke='black' stroke-width='3' style='font-size:15px'>"+text+"</text><text x='3' y='20' fill='"+col+"' style='font-size:15px'>"+text+"</text></svg></div></div>"
         }
         
         leftShopButton.onclick=function(){
@@ -23283,9 +23281,9 @@ player=(function(out){
             
             for(let i in cost){
                 
-                let c=cost[i].split(' ')
-                
-                itemCostSVG.innerHTML+=itemSVGCode[c[1]].replaceAll('AMOUNTININVENTORY','').replaceAll('AMOUNTOFITEMREQUIREDTOCRAFT','x'+(c[0].length<6?MATH.addCommas(c[0]):MATH.abvNumber(c[0]))).replaceAll('TEXTCOLORDEPENDINGONIFENOUGHITEMS',c[1]==='honey'&&player.honey<Number(c[0])||c[1]!=='honey'&&items[c[1]].amount<Number(c[0])?'rgb(255,0,0)':'rgb(255,255,255)')
+                let c=cost[i].split(' '),col=(c[1]==='honey'&&player.honey<Number(c[0])||c[1]!=='honey'&&items[c[1]].amount<Number(c[0])?'rgb(255,0,0)':'rgb(255,255,255)'),text='x'+(c[0].length<4?MATH.addCommas(c[0]):MATH.abvNumber(c[0]))
+
+                itemCostSVG.innerHTML+="<div style='position:absolute;top:"+i*70*0.7+"px'>"+itemSVGCode[c[1]].replace('SCALE','scale(0.7,0.7);margin-top:-10px;margin-bottom:0px;margin-left:-10px')+"<div style='position:absolute;top:15px;left:50px;font-size:16px;'><svg style='position:absolute;'><text x='3' y='20' stroke='black' stroke-width='3' style='font-size:15px'>"+text+"</text><text x='3' y='20' fill='"+col+"' style='font-size:15px'>"+text+"</text></svg></div></div>"
             }
         
         }
@@ -23313,9 +23311,9 @@ player=(function(out){
 
             for(let i in cost){
                 
-                let c=cost[i].split(' ')
-                
-                itemCostSVG.innerHTML+=itemSVGCode[c[1]].replaceAll('AMOUNTININVENTORY','').replaceAll('AMOUNTOFITEMREQUIREDTOCRAFT','x'+(c[0].length<6?MATH.addCommas(c[0]):MATH.abvNumber(c[0]))).replaceAll('TEXTCOLORDEPENDINGONIFENOUGHITEMS',c[1]==='honey'&&player.honey<Number(c[0])||c[1]!=='honey'&&items[c[1]].amount<Number(c[0])?'rgb(255,0,0)':'rgb(255,255,255)')
+                let c=cost[i].split(' '),col=(c[1]==='honey'&&player.honey<Number(c[0])||c[1]!=='honey'&&items[c[1]].amount<Number(c[0])?'rgb(255,0,0)':'rgb(255,255,255)'),text='x'+(c[0].length<4?MATH.addCommas(c[0]):MATH.abvNumber(c[0]))
+
+                itemCostSVG.innerHTML+="<div style='position:absolute;top:"+i*70*0.7+"px'>"+itemSVGCode[c[1]].replace('SCALE','scale(0.7,0.7);margin-top:-10px;margin-bottom:0px;margin-left:-10px')+"<div style='position:absolute;top:15px;left:50px;font-size:16px;'><svg style='position:absolute;'><text x='3' y='20' stroke='black' stroke-width='3' style='font-size:15px'>"+text+"</text><text x='3' y='20' fill='"+col+"' style='font-size:15px'>"+text+"</text></svg></div></div>"
             }
             
         }
@@ -23819,7 +23817,7 @@ player=(function(out){
         mask:'none',
         leftGuard:'none',
         rightGuard:'none',
-        glider:'glider',
+        glider:'parachute',
         sprinkler:'none',
         beequips:[]
     }
@@ -25621,6 +25619,30 @@ let shops={
             displayRot:[-10,8,0],
             displayPos:[-34.5+2.5*4,0.5,-7.5],
             displayScale:[1.3,1.3,1.3],
+        },{
+
+            name:'helmet',
+            slot:'mask',
+            viewMatrix:[-26,-0.6+3,4.5-4,Math.PI,-0.5],
+            displayRot:[-30,188,0],
+            displayPos:[-26,-0.6,4.5],
+            displayScale:[1.5,1.5,1.5],
+        },{
+
+            name:'beltPocket',
+            slot:'belt',
+            viewMatrix:[-29,0.7+1,4.7-4,Math.PI,-0.4],
+            displayRot:[0,172,0],
+            displayPos:[-29,0.7,4.7],
+            displayScale:[1.9,1.9,1.9],
+        },{
+
+            name:'basicBoots',
+            slot:'boots',
+            viewMatrix:[-32,0.7+1,4.7-4,Math.PI,-0.4],
+            displayRot:[0,182,0],
+            displayPos:[-32,0.5,4.7],
+            displayScale:[1.1,1.1,1.1],
         }],
         currentIndex:0,message:'Explore Noob Shop'
     },
@@ -25812,7 +25834,7 @@ shopGearMesh.setMeshFromFunction(function(box,a,cylinder,sphere,applyFinalRotati
 
                 mat4.fromRotationTranslationScale(shopGearMesh.matrix,quat.fromEuler([],...(si.displayRot||[0,0,0])),si.displayPos,si.displayScale||[1,1,1])
             
-                gear[si.slot][si.name].mesh(box,cylinder,sphere,star,applyFinalRotation)
+                gear[si.slot][si.name].mesh(box,cylinder,sphere,star,applyFinalRotation,false)
             }
         }
     }
