@@ -6,7 +6,7 @@ window.glsl_static_geometry_vsh = `#version 300 es
     in vec4 vertColor;
     in vec3 vertUV;
     
-    out vec3 pixPos;
+    out float pixFog;
     out vec4 pixColor;
     out vec3 pixUV;
     
@@ -17,7 +17,7 @@ window.glsl_static_geometry_vsh = `#version 300 es
         vec4 pos=viewMatrix*vec4(vertPos,1);
         pixColor=vertColor;
         pixUV=vertUV;
-        pixPos=pos.xyz;
+        pixFog=pos.z;
         gl_Position=pos;
     }
 `
@@ -25,7 +25,7 @@ window.glsl_static_geometry_fsh = `#version 300 es
     
     precision lowp float;
     
-    in vec3 pixPos;
+    in float pixFog;
     in vec4 pixColor;
     in vec3 pixUV;
     
@@ -38,7 +38,7 @@ window.glsl_static_geometry_fsh = `#version 300 es
         
         vec4 t=texture(tex,pixUV.xy);
         
-        fragColor=vec4(mix(mix(mix(pixColor.rgb,t.rgb,t.a),pixColor.rgb,pixUV.z),vec3(1,1,0.7),smoothstep(20.0,120.0,pixPos.z)*0.7)*isNight,pixColor.w);
+        fragColor=vec4(mix(mix(mix(pixColor.rgb,t.rgb,t.a),pixColor.rgb,pixUV.z),vec3(1,1,0.7),smoothstep(20.0,120.0,pixFog)*0.7)*isNight,pixColor.w);
         
     }
 `
@@ -90,7 +90,6 @@ window.glsl_token_geometry_vsh = `#version 300 es
     in vec2 vertUV;
     
     in vec4 instance_pos;
-    //pos.w = rot
     in vec4 instance_uv;
     
     out vec3 pixUV;
@@ -105,12 +104,7 @@ window.glsl_token_geometry_vsh = `#version 300 es
         float s=sin(instance_pos.w);
         float c=cos(instance_pos.w);
         
-        vp=vec3(
-            
-            vp.x*s-vp.z*c,
-            vp.y,
-            vp.x*c+vp.z*s
-        );
+        vp=vec3(vp.x*s-vp.z*c,vp.y,vp.x*c+vp.z*s);
         
         gl_Position=viewMatrix*vec4(vp+instance_pos.xyz,1);
     }
@@ -173,19 +167,9 @@ window.glsl_flower_geometry_fsh = `#version 300 es
         
         vec3 c=mix(vec3(0,0.6,0),texture(tex,pixUV.xy).rgb*min(pixUV.w,1.0),pixUV.z);
         
-        if(c.r+c.g<=0.1){
-            
-            c=vec3(0,0.35,0);
-        }
-        
-        if(goo<0.0){
-            
-            fragColor=vec4(mix(mix(c,vec3(0.1,1,0.5),-goo),vec3(1,1,0.7),pixFog)*isNight,1.0);
-            
-        } else {
-            
-            fragColor=vec4(mix(mix(c,vec3(1,0.2,1),goo),vec3(1,1,0.7),pixFog)*isNight,1.0);
-        }
+        c=c.g<=0.1?vec3(0,0.35,0):c;
+
+        fragColor=vec4(mix(goo<0.0?mix(c,vec3(0.1,1,0.5),-goo):mix(c,vec3(1,0.2,1),goo),vec3(1,1,0.7),pixFog)*isNight,1.0);
     }
 `
 window.glsl_bee_geometry_vsh = `#version 300 es
@@ -200,41 +184,42 @@ window.glsl_bee_geometry_vsh = `#version 300 es
     in vec3 instance_uv;
     
     out vec3 pixUV;
+    out float pixFog;
     
     uniform mat4 viewMatrix;
+
+    vec4 computePos(){
+
+        vec3 vp=vertPos*instance_pos.w;
+
+        vec3 del=normalize(instance_rotation.xyz);
+        
+        float pitch=asin(-del.y)*0.5;
+        float yaw=atan(del.x,del.z)*0.5;
+        float roll=instance_rotation.w*0.5;
+        
+        vec3 s=vec3(sin(pitch),sin(yaw),sin(roll));
+        vec3 c=vec3(cos(pitch),cos(yaw),cos(roll));
+        
+        vec4 quaternion=vec4(s.x*c.y,c.x*s.y,-s.x*s.y,c.x*c.y);
+        
+        quaternion=vec4(quaternion.x*c.z+quaternion.y*s.z,quaternion.y*c.z-quaternion.x*s.z,quaternion.z*c.z+quaternion.w*s.z,(quaternion.w*c.z-quaternion.z*s.z)*2.0);
+        
+        vec3 u=vec3(quaternion.y*vp.z-quaternion.z*vp.y,quaternion.z*vp.x-quaternion.x*vp.z,quaternion.x*vp.y-quaternion.y*vp.x);
+        
+        vec3 uu=vec3(quaternion.y*u.z-quaternion.z*u.y,quaternion.z*u.x-quaternion.x*u.z,quaternion.x*u.y-quaternion.y*u.x);
+        
+        vec4 pos=viewMatrix*vec4(vp+u*quaternion.w+uu*2.0+instance_pos.xyz,1);
+        pixFog=smoothstep(20.0,120.0,pos.z)*0.7;
+
+        return pos;
+    }
     
     void main(){
-        
-        pixUV=vertUV.xyz+vec3(instance_uv.xy,0);
-        
-        if(instance_uv.z!=vertUV.w&&vertUV.w!=0.0){
-            
-            gl_Position=vec4(0,0,0,1);
-            
-        } else {
-            
-            vec3 vp=vertPos*instance_pos.w;
 
-            vec3 del=normalize(instance_rotation.xyz);
-            
-            float pitch=asin(-del.y)*0.5;
-            float yaw=atan(del.x,del.z)*0.5;
-            float roll=instance_rotation.w*0.5;
-            
-            vec3 s=vec3(sin(pitch),sin(yaw),sin(roll));
-            vec3 c=vec3(cos(pitch),cos(yaw),cos(roll));
-            
-            vec4 quaternion=vec4(s.x*c.y,c.x*s.y,-s.x*s.y,c.x*c.y);
-            
-            quaternion=vec4(quaternion.x*c.z+quaternion.y*s.z,quaternion.y*c.z-quaternion.x*s.z,quaternion.z*c.z+quaternion.w*s.z,(quaternion.w*c.z-quaternion.z*s.z)*2.0);
-            
-            vec3 u=vec3(quaternion.y*vp.z-quaternion.z*vp.y,quaternion.z*vp.x-quaternion.x*vp.z,quaternion.x*vp.y-quaternion.y*vp.x);
-            
-            vec3 uu=vec3(quaternion.y*u.z-quaternion.z*u.y,quaternion.z*u.x-quaternion.x*u.z,quaternion.x*u.y-quaternion.y*u.x);
-            
-            gl_Position=viewMatrix*vec4(vp+u*quaternion.w+uu*2.0+instance_pos.xyz,1);
-            
-        }
+        pixUV=vertUV.xyz+vec3(instance_uv.xy,0);
+
+        gl_Position=instance_uv.z!=vertUV.w&&vertUV.w!=0.0?vec4(9999999,9999999,9999999,1):computePos();
     }
 `
 window.glsl_bee_geometry_fsh = `#version 300 es
@@ -242,6 +227,7 @@ window.glsl_bee_geometry_fsh = `#version 300 es
     precision lowp float;
     
     in vec3 pixUV;
+    in float pixFog;
     
     out vec4 fragColor;
     
@@ -250,14 +236,7 @@ window.glsl_bee_geometry_fsh = `#version 300 es
     
     void main(){
         
-        if(pixUV.z>0.1){
-            
-            fragColor=vec4(texture(tex,pixUV.xy).rgb*pixUV.z*isNight,1);
-            
-        } else {
-            
-            fragColor=vec4(vec3(0.1,0.4,1)*isNight,0.4);
-        }
+        fragColor=pixUV.z>0.1?vec4(mix(texture(tex,pixUV.xy).rgb*pixUV.z,vec3(1,1,0.7),pixFog)*isNight,1):vec4(mix(vec3(0.1,0.4,1),vec3(1,1,0.7),pixFog)*isNight,0.4);
     }
 `
 
@@ -283,7 +262,7 @@ window.glsl_particle_renderer_vsh = `#version 300 es
         pixColor=vertColor;
         particlePos=pos.xy/pos.w;
         gl_Position=pos;
-        float projSize=(vertSize/pos.z)*1.5*SCREEN_CHANGE;
+        float projSize=(vertSize/pos.z)*SCREEN_CHANGE;
         gl_PointSize=projSize;
         particleSize=projSize*0.5;
         particleRot=vec2(sin(vertRot),cos(vertRot));
@@ -317,9 +296,8 @@ window.glsl_particle_renderer_fsh = `#version 300 es
             
         );
         
-        if(abs(del.x)+abs(del.y)>particleSize*INV_AVG_HALF_WIDTH_HEIGHT){
+        if(abs(del.x)+abs(del.y)>particleSize*INV_AVG_HALF_WIDTH_HEIGHT)
             discard;
-        }
         
         fragColor=pixColor;
     }
@@ -388,20 +366,11 @@ window.glsl_text_renderer_vsh = `#version 300 es
         
         vec2 vp=(vertPos+instance_offset)*instance_info.xy;
         
-        vp=vec2(
-            
-            (vp.x*c-vp.y*s)*INV_ASPECT,
-            vp.x*s+vp.y*c
-        );
+        vp=vec2((vp.x*c-vp.y*s)*INV_ASPECT,vp.x*s+vp.y*c);
         
         vec4 pos=originPos+vec4(vp,0,0);
         
-        if(pos.w<2.0&&pos.w>0.0){
-            
-            pos.w=2.0;
-        }
-        
-        gl_Position=pos;
+        gl_Position=pos.w<1.0&&pos.w>0.0?vec4(pos.xyz,1.0):pos;
     }
 `
 window.glsl_text_renderer_fsh = `#version 300 es
@@ -419,11 +388,9 @@ window.glsl_text_renderer_fsh = `#version 300 es
         
         vec4 c=texture(tex,pixUV)*vec4(pixColor,1);
         
-        if(c.a<0.01){
-            
+        if(c.a<0.01)
             discard;
-        }
-        
+
         fragColor=c;
     }
 `
@@ -444,20 +411,11 @@ window.glsl_mob_renderer_vsh = `#version 300 es
     void main(){
         
         pixColor=vec4(vertColor*isNight,instance_info2.y);
-        vec3 vp=vertPos*instance_info2.x;
         
         float s=sin(instance_info1.w);
         float c=cos(instance_info1.w);
         
-        vp=vec3(
-            
-            vp.x*c-vp.z*s,
-            vp.y,
-            vp.x*s+vp.z*c
-        );
-        
-        vec4 pos=viewMatrix*vec4(vp+instance_info1.xyz,1);
-        gl_Position=pos;
+        gl_Position=viewMatrix*vec4(vec3(vertPos.x*c-vertPos.z*s,vertPos.y,vertPos.x*s+vertPos.z*c)*instance_info2.x+instance_info1.xyz,1);
     }
 `
 window.glsl_mob_renderer_fsh = `#version 300 es

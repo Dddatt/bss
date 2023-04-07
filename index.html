@@ -4818,7 +4818,7 @@ window.onresize=()=>{
     half_height=height*0.5
     aspect=width/height
     
-    player.setProjectionMatrix(player.fov,aspect,0.1,500)
+    player.setProjectionMatrix(player.fov,aspect,0.1,250)
     
     staticGeometryProgram=createProgram('static_geometry_vsh','static_geometry_fsh')
     dynamicGeometryProgram=createProgram('dynamic_geometry_vsh','dynamic_geometry_fsh')
@@ -19988,8 +19988,8 @@ let noise = function(x, y, z) {
 
 function createProgram(vsh,fsh){
     
-    let vshText=window['glsl_'+vsh].trim().replaceAll('INV_AVG_HALF_WIDTH_HEIGHT',2/((width+height)*0.5)).replaceAll('INV_HALF_WIDTH',1/(width*0.5)).replaceAll('INV_HALF_HEIGHT',1/(height*0.5)).replaceAll('INV_WIDTH',1/width).replaceAll('INV_HEIGHT',1/height).replaceAll('HALF_WIDTH',width*0.5+0.0000001).replaceAll('HALF_HEIGHT',height*0.5+0.0000001).replaceAll('INV_ASPECT',1/(aspect)+0.00001).replaceAll('ASPECT',aspect+0.000001).replaceAll('SCREEN_CHANGE',(((width+height)*0.5)/600)+0.00001)
-    let fshText=window['glsl_'+fsh].trim().replaceAll('LIGHT_DIR','vec3('+lightDir[0]+','+lightDir[1]+','+lightDir[2]+')').replaceAll('INV_AVG_HALF_WIDTH_HEIGHT',2/((width+height)*0.5)).replaceAll('INV_HALF_WIDTH',1/(width*0.5)).replaceAll('INV_HALF_HEIGHT',1/(height*0.5)).replaceAll('INV_WIDTH',1/width).replaceAll('INV_HEIGHT',1/height).replaceAll('HALF_WIDTH',width*0.5+0.0000001).replaceAll('HALF_HEIGHT',height*0.5+0.0000001).replaceAll('INV_ASPECT',1/(aspect)+0.00001).replaceAll('ASPECT',aspect+0.00001).replaceAll('SCREEN_CHANGE',(((width+height)*0.5)/600)+0.00001)
+    let vshText=window['glsl_'+vsh].trim().replaceAll('INV_AVG_HALF_WIDTH_HEIGHT',2/((width+height)*0.5)).replaceAll('INV_HALF_WIDTH',1/(width*0.5)).replaceAll('INV_HALF_HEIGHT',1/(height*0.5)).replaceAll('INV_WIDTH',1/width).replaceAll('INV_HEIGHT',1/height).replaceAll('HALF_WIDTH',width*0.5+0.0000001).replaceAll('HALF_HEIGHT',height*0.5+0.0000001).replaceAll('INV_ASPECT',1/(aspect)+0.00001).replaceAll('ASPECT',aspect+0.000001).replaceAll('SCREEN_CHANGE',(((width+height)*0.5)/600)*1.5+0.00001)
+    let fshText=window['glsl_'+fsh].trim().replaceAll('LIGHT_DIR','vec3('+lightDir[0]+','+lightDir[1]+','+lightDir[2]+')').replaceAll('INV_AVG_HALF_WIDTH_HEIGHT',2/((width+height)*0.5)).replaceAll('INV_HALF_WIDTH',1/(width*0.5)).replaceAll('INV_HALF_HEIGHT',1/(height*0.5)).replaceAll('INV_WIDTH',1/width).replaceAll('INV_HEIGHT',1/height).replaceAll('HALF_WIDTH',width*0.5+0.0000001).replaceAll('HALF_HEIGHT',height*0.5+0.0000001).replaceAll('INV_ASPECT',1/(aspect)+0.00001).replaceAll('ASPECT',aspect+0.00001).replaceAll('SCREEN_CHANGE',(((width+height)*0.5)/600)*1.5+0.00001)
     
     vsh=gl.createShader(gl.VERTEX_SHADER)
     fsh=gl.createShader(gl.FRAGMENT_SHADER)
@@ -24272,7 +24272,7 @@ player=(function(out){
     }
     
     out.fov=75
-    out.setProjectionMatrix(out.fov,aspect,0.1,500)
+    out.setProjectionMatrix(out.fov,aspect,0.1,250)
     
     out.updateUI=function(){
         
@@ -30041,42 +30041,42 @@ ctx.textAlign='center'
 ctx.textBaseline='middle'
 
 //bamb
-// objects.mobs.push(new BugMob([-50,3,61],{minX:-52,maxX:-52+21,minZ:50,maxZ:50+13,minY:1,maxY:7},2,15,'rhinoBeetle'))
-// objects.mobs.push(new BugMob([-33,3,61],{minX:-52,maxX:-52+21,minZ:50,maxZ:50+13,minY:1,maxY:7},3,18,'rhinoBeetle'))
+objects.mobs.push(new BugMob([-50,3,61],{minX:-52,maxX:-52+21,minZ:50,maxZ:50+13,minY:1,maxY:7},2,15,'rhinoBeetle'))
+objects.mobs.push(new BugMob([-33,3,61],{minX:-52,maxX:-52+21,minZ:50,maxZ:50+13,minY:1,maxY:7},3,18,'rhinoBeetle'))
 
-// //bluf
-// objects.mobs.push(new BugMob([-55+22,-0.5,29+11],{minX:-55,maxX:-55+24,minZ:29,maxZ:29+13,minY:-2,maxY:5},1,8,'rhinoBeetle'))
+//bluf
+objects.mobs.push(new BugMob([-55+22,-0.5,29+11],{minX:-55,maxX:-55+24,minZ:29,maxZ:29+13,minY:-2,maxY:5},1,8,'rhinoBeetle'))
 
-// //clov
-// objects.mobs.push(new BugMob([-50+17,5,9.5],{minX:-50,maxX:-50+18,minZ:8.5,maxZ:8.5+18,minY:3,maxY:8},2,12,'rhinoBeetle'))
-// objects.mobs.push(new BugMob([-53,5,9.5+15],{minX:-50,maxX:-50+18,minZ:8.5,maxZ:8.5+18,minY:3,maxY:8},2,10,'ladybug'))
+//clov
+objects.mobs.push(new BugMob([-50+17,5,9.5],{minX:-50,maxX:-50+18,minZ:8.5,maxZ:8.5+18,minY:3,maxY:8},2,12,'rhinoBeetle'))
+objects.mobs.push(new BugMob([-53,5,9.5+15],{minX:-50,maxX:-50+18,minZ:8.5,maxZ:8.5+18,minY:3,maxY:8},2,10,'ladybug'))
 
-// //pineap
-// objects.mobs.push(new BugMob([-71.5+17,13.5,78+9],{minX:-71.5,maxX:-71.5+19,minZ:78,maxZ:78+15,minY:11.5,maxY:18},5,20,'rhinoBeetle'))
-// objects.mobs.push(new BugMob([-71.5+19*0.5,13.5,78+14],{minX:-71.5,maxX:-71.5+19,minZ:78,maxZ:78+15,minY:11.5,maxY:18},4,25,'mantis'))
+//pineap
+objects.mobs.push(new BugMob([-71.5+17,13.5,78+9],{minX:-71.5,maxX:-71.5+19,minZ:78,maxZ:78+15,minY:11.5,maxY:18},5,20,'rhinoBeetle'))
+objects.mobs.push(new BugMob([-71.5+19*0.5,13.5,78+14],{minX:-71.5,maxX:-71.5+19,minZ:78,maxZ:78+15,minY:11.5,maxY:18},4,25,'mantis'))
 
-// //straw
-// objects.mobs.push(new BugMob([7.5+1,3,47+14],{minX:7.5,maxX:7.5+15,minZ:47,maxZ:47+15,minY:1,maxY:6},2,10,'ladybug'))
-// objects.mobs.push(new BugMob([7.5+14,3,47+1],{minX:7.5,maxX:7.5+15,minZ:47,maxZ:47+15,minY:1,maxY:6},3,12,'ladybug'))
+//straw
+objects.mobs.push(new BugMob([7.5+1,3,47+14],{minX:7.5,maxX:7.5+15,minZ:47,maxZ:47+15,minY:1,maxY:6},2,10,'ladybug'))
+objects.mobs.push(new BugMob([7.5+14,3,47+1],{minX:7.5,maxX:7.5+15,minZ:47,maxZ:47+15,minY:1,maxY:6},3,12,'ladybug'))
 
-// //mush
-// objects.mobs.push(new BugMob([-6+11,-0.5,29+12],{minX:-6,maxX:-6+19,minZ:29,maxZ:29+13,minY:-2,maxY:4},1,6,'ladybug'))
+//mush
+objects.mobs.push(new BugMob([-6+11,-0.5,29+12],{minX:-6,maxX:-6+19,minZ:29,maxZ:29+13,minY:-2,maxY:4},1,6,'ladybug'))
 
-// //spi
-// objects.mobs.push(new BugMob([-20+19*0.5,2.75,47.5+15],{minX:-20,maxX:-20+19,minZ:47.5,maxZ:47.5+14,minY:-0,maxY:6},4,25,'spider'))
+//spi
+objects.mobs.push(new BugMob([-20+19*0.5,2.75,47.5+15],{minX:-20,maxX:-20+19,minZ:47.5,maxZ:47.5+14,minY:-0,maxY:6},4,25,'spider'))
 
 
-// objects.mobs.push(new BugMob([4,12.5+1,(63.5+76.5+12)*0.5],{minX:4,maxX:4+31+15,minZ:63.5,maxZ:76.5+12,minY:11,maxY:15},6,75,'werewolf'))
+objects.mobs.push(new BugMob([4,12.5+1,(63.5+76.5+12)*0.5],{minX:4,maxX:4+31+15,minZ:63.5,maxZ:76.5+12,minY:11,maxY:15},6,75,'werewolf'))
 
-// //pine
-// objects.mobs.push(new BugMob([31+14,13.5,75],{minX:31,maxX:31+15,minZ:74,maxZ:74+19,minY:11,maxY:15},5,35,'mantis'))
-// objects.mobs.push(new BugMob([31+14,13.5,74+18],{minX:31,maxX:31+15,minZ:74,maxZ:74+19,minY:11,maxY:15},6,45,'mantis'))
+//pine
+objects.mobs.push(new BugMob([31+14,13.5,75],{minX:31,maxX:31+15,minZ:74,maxZ:74+19,minY:11,maxY:15},5,35,'mantis'))
+objects.mobs.push(new BugMob([31+14,13.5,74+18],{minX:31,maxX:31+15,minZ:74,maxZ:74+19,minY:11,maxY:15},6,45,'mantis'))
 
-// //rose
-// objects.mobs.push(new BugMob([30+19,2.75,32.5],{minX:31,maxX:31+19,minZ:31.5,maxZ:31.5+13,minY:0,maxY:6},5,35,'scorpion'))
-// objects.mobs.push(new BugMob([32,2.75,30.5+13],{minX:31,maxX:31+19,minZ:31.5,maxZ:31.5+13,minY:0,maxY:6},5,35,'scorpion'))
+//rose
+objects.mobs.push(new BugMob([30+19,2.75,32.5],{minX:31,maxX:31+19,minZ:31.5,maxZ:31.5+13,minY:0,maxY:6},5,35,'scorpion'))
+objects.mobs.push(new BugMob([32,2.75,30.5+13],{minX:31,maxX:31+19,minZ:31.5,maxZ:31.5+13,minY:0,maxY:6},5,35,'scorpion'))
 
-// objects.mobs.push(new BugMob([-53+25*0.5,-0.75,8.5],{minX:-55,maxX:-53+25,minZ:6.5,maxZ:6.5+20,minY:-10,maxY:3.5},7,2500,'kingBeetle'))
+objects.mobs.push(new BugMob([-53+25*0.5,-0.75,8.5],{minX:-55,maxX:-53+25,minZ:6.5,maxZ:6.5+20,minY:-10,maxY:3.5},7,2500,'kingBeetle'))
 
 
 if(window.thisProgramIsInFullScreen){
@@ -30831,7 +30831,14 @@ function loop(now){
     gl.vertexAttribDivisor(glCache.bee_instanceRotation,0)
     gl.vertexAttribDivisor(glCache.bee_instanceUV,0)
 
-    meshes.bees.instanceData=[]
+    meshes.bees.instanceData=[
+
+        -11,10.5,43,6,0.2,-0.2,-1,0.1,beeInfo.basic.u,beeInfo.basic.v,beeInfo.basic.meshPartId,
+        -58,20.5,63,6,0.1,-0.3,-1,0.1,beeInfo.brave.u,beeInfo.brave.v,beeInfo.brave.meshPartId,
+        24,20.3,63,6,-0.45,-0.1,-1,0,beeInfo.honey.u,beeInfo.honey.v,beeInfo.honey.meshPartId,
+        -31,40.8,68.25,6,-0.2,-0.2,-1,0,beeInfo.lion.u,beeInfo.lion.v,beeInfo.lion.meshPartId,
+        51.5,17,-19,6,-0.5,-0.1,0.5,0.2,beeInfo.windy.u,beeInfo.windy.v,beeInfo.windy.meshPartId
+    ]
     
     gl.useProgram(tokenGeometryProgram)
     
