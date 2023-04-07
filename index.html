@@ -4849,7 +4849,7 @@ window.onresize=()=>{
     gl.uniform1f(glCache.trail_isNight,player.isNight)
 }
 
-let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,BEE_COLLECT=0,BEE_FLY=0,then=0,dt,frameCount=0,TIME=0,player,NIGHT_DARKNESS=0.6,NPCs
+let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,BEE_COLLECT=0,BEE_FLY=0,then=0,dt,frameCount=0,TIME=0,player,NIGHT_DARKNESS=0.6,NPCs,STATS_TICK=false
 
 gl.enable(gl.BLEND)
 gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)
@@ -7695,7 +7695,7 @@ let effects={
     
     flameFuel:{
         
-        desc:"For 15s, tosses oil onto new flames, increasing it's lifespan by x1.5 and makes it convert 3% of your hive's convert total of pollen into honey.",
+        desc:"For 15s, tosses oil onto new flames, increasing it's lifespan by x1.5 and makes it convert 2% of your hive's convert total of pollen into honey.",
         trialCooldown:30,trialRate:0.3,
         u:128/2048,v:256/2048,
         svg:document.getElementById('flameFuel'),
@@ -12598,8 +12598,7 @@ class Bee {
         this.moveOffset=[MATH.random(-5,5),0,MATH.random(-5,5)]
         this.moveDir=[]
         
-        // this.computeLevel(lvl||1)
-        this.computeLevel(8)
+        this.computeLevel(lvl||1)
         
         this.convertTimer=0
         this.flowerCollecting=[]
@@ -14027,10 +14026,10 @@ class Flame {
             this.oilPos=[player.body.position.x,player.body.position.y+0.3,player.body.position.z]
             this.oilTrail=new TrailRenderer.Trail({length:10,size:0.75,triangle:true,color:[0.1,0,0,1]})
             
-            player.pollen-=Math.min(Math.ceil(player.convertTotal*0.03),player.pollen)
-            player.honey+=Math.ceil(Math.min(Math.ceil(player.convertTotal*0.03),player.pollen)*player.honeyPerPollen)
+            player.pollen-=Math.min(Math.ceil(player.convertTotal*0.02),player.pollen)
+            player.honey+=Math.ceil(Math.min(Math.ceil(player.convertTotal*0.02),player.pollen)*player.honeyPerPollen)
             if(player.setting_enablePollenText)
-                textRenderer.add(Math.ceil(Math.min(Math.ceil(player.convertTotal*0.03),player.pollen)*player.honeyPerPollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
+                textRenderer.add(Math.ceil(Math.min(Math.ceil(player.convertTotal*0.02),player.pollen)*player.honeyPerPollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
         }
     }
     
@@ -14053,10 +14052,10 @@ class Flame {
             if(player.flameFuel){
                 
                 this.life*=1.5
-                player.pollen-=Math.min(Math.ceil(player.convertTotal*0.03),player.pollen)
-                player.honey+=Math.ceil(Math.min(Math.ceil(player.convertTotal*0.03),player.pollen)*player.honeyPerPollen)
+                player.pollen-=Math.min(Math.ceil(player.convertTotal*0.02),player.pollen)
+                player.honey+=Math.ceil(Math.min(Math.ceil(player.convertTotal*0.02),player.pollen)*player.honeyPerPollen)
                 if(player.setting_enablePollenText)
-                    textRenderer.add(Math.ceil(Math.min(Math.ceil(player.convertTotal*0.03),player.pollen)*player.honeyPerPollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
+                    textRenderer.add(Math.ceil(Math.min(Math.ceil(player.convertTotal*0.02),player.pollen)*player.honeyPerPollen),[player.body.position.x,player.body.position.y+Math.random()*2+0.5,player.body.position.z],COLORS.honey,0,'+')
                 this.getRidOfOilTrailTimer=2
                 this.oilT=0
                 this.oilPos=[player.body.position.x,player.body.position.y+0.3,player.body.position.z]
@@ -14339,7 +14338,8 @@ class Mark {
         
         if(vec3.sqrDist(this.pos,[player.body.position.x,player.body.position.y,player.body.position.z])<=this.sqSize){
             
-            player.addEffect(this.type)
+            if(STATS_TICK)
+                player.addEffect(this.type)
             
             meshes.explosions.instanceData.push(this.pos[0],this.pos[1]+3.6,this.pos[2],0,1,0,1,0.45,1)
 
@@ -14637,11 +14637,8 @@ class Balloon {
             textRenderer.addDecalRaw(...this.pos,(-0.5+(this.pollen*this.invCap)*0.5)/(this.pollen*this.invCap),0,...textRenderer.decalUV['rect'],0.1,0.85,0.1,this.pollen*this.invCap,0.25,0)
             textRenderer.addDecalRaw(...this.pos,1.1,-0.1,...textRenderer.decalUV['flower'],1,1,1,-0.44,-0.44,0)
             
-            if(vec3.sqrDist(this.pos,[player.body.position.x,player.body.position.y+4,player.body.position.z])<=6.25){
-                
+            if(STATS_TICK&&vec3.sqrDist(this.pos,[player.body.position.x,player.body.position.y+4,player.body.position.z])<=6.25)
                 player.addEffect('balloonAura')
-                
-            }
             
             if(Math.abs(this.pos[0]-this.moveTo[0])+Math.abs(this.pos[2]-this.moveTo[1])<1){
                 
@@ -19567,6 +19564,14 @@ class Puffshroom {
     
     die(index){
 
+        objects.explosions.push(new Explosion({col:[0.6,0.5,0.1],pos:[this.pos[0],this.pos[1]+(this.displayScale*1.75+0.25)*0.5,this.pos[2]],life:1,size:this.displayScale*2,speed:0.2,aftershock:0.05}))
+
+        if(this.life<=0){
+
+            objects.mobs.splice(index,1)
+            return
+        }
+
         let tokenChances={
 
             honey:7,
@@ -19673,7 +19678,6 @@ class Puffshroom {
 
             },150*i)
         }
-
         
         for(let i=this.flowers.length;i--;){
 
@@ -19690,8 +19694,6 @@ class Puffshroom {
         player.stats.puffshrooms++
 
         if(this.type!=='puffshroom') player.stats[this.type+'Puffshrooms']++
-
-        objects.explosions.push(new Explosion({col:[0.6,0.5,0.1],pos:[this.pos[0],this.pos[1]+(this.displayScale*1.75+0.25)*0.5,this.pos[2]],life:1,size:this.displayScale*2,speed:0.2,aftershock:0.05}))
 
         if(this.life>0){
 
@@ -30441,115 +30443,105 @@ function loop(now){
     frameCount++
     BEE_COLLECT=Math.sin(TIME*15)*0.25
     BEE_FLY=Math.sin(TIME*35)*0.1
+    STATS_TICK=frameCount%10===1
     
     actionWarning.style.display='none'
     
-    player.resetStats()
-    
-    for(let k in effects){
+    if(STATS_TICK){
+
+        player.resetStats()
         
-        let playerHas
-        
-        for(let j in player.effects){
+        for(let i in player.effects){
             
-            if(player.effects[j].type===k){
+            if(effects[player.effects[i].type].isPassive){
                 
-                playerHas=j
-                break
-            }
-        }
-        
-        if(!playerHas) continue
-        
-        let i=playerHas
-        
-        if(effects[player.effects[i].type].isPassive){
-            
-            let e=effects[player.effects[i].type]
-            
-            e.currentCooldown-=dt
-            
-            if(e.currentCooldown>0){
+                let e=effects[player.effects[i].type]
                 
-                e.amount.textContent=(e.currentCooldown|0)+'s'
-                effects[player.effects[i].type].cooldown.setAttribute('height',30)
-                e.currentVal=0
-                e.startVal=player.stats[e.triggerType]
+                e.currentCooldown-=dt*10
+                
+                if(e.currentCooldown>0){
+                    
+                    e.amount.textContent=(e.currentCooldown|0)+'s'
+                    effects[player.effects[i].type].cooldown.setAttribute('height',30)
+                    e.currentVal=0
+                    e.startVal=player.stats[e.triggerType]
+                    
+                } else {
+                    
+                    effects[player.effects[i].type].cooldown.setAttribute('height',0)
+                    e.currentVal=player.stats[e.triggerType]-e.startVal
+                    e.amount.textContent=e.currentVal
+                    
+                    if(e.currentVal>=e.triggerVal){
+                        
+                        e.currentCooldown=e.maxCooldown
+                        e.activate()
+                        passiveActivationPopup.style.display='block'
+                        player.passivePopupTimer=2
+                        
+                        let s=document.getElementById('abilityUI').innerHTML
+                        s=s.split('</svg>')
+                        
+                        for(let e in s){
+                            
+                            if(s[e].indexOf(player.effects[i].type)>-1){
+                                
+                                s=s[e]
+                                break
+                            }
+                        }
+                        
+                        let tb=s.indexOf('<text'),te=s.indexOf('</text>')
+                        
+                        passiveActivationPopup.innerHTML=s.substr(0,tb)+s.substr(te+5,s.length)+'</svg>'
+                    }
+                }
                 
             } else {
                 
-                effects[player.effects[i].type].cooldown.setAttribute('height',0)
-                e.currentVal=player.stats[e.triggerType]-e.startVal
-                e.amount.textContent=e.currentVal
+                player.effects[i].cooldown-=dt*10
                 
-                if(e.currentVal>=e.triggerVal){
-                    
-                    e.currentCooldown=e.maxCooldown
-                    e.activate()
-                    passiveActivationPopup.style.display='block'
-                    player.passivePopupTimer=2
-                    
-                    let s=document.getElementById('abilityUI').innerHTML
-                    s=s.split('</svg>')
-                    
-                    for(let e in s){
-                        
-                        if(s[e].indexOf(player.effects[i].type)>-1){
-                            
-                            s=s[e]
-                            break
-                        }
-                    }
-                    
-                    let tb=s.indexOf('<text'),te=s.indexOf('</text>')
-                    
-                    passiveActivationPopup.innerHTML=s.substr(0,tb)+s.substr(te+5,s.length)+'</svg>'
-                }
-            }
-            
-        } else {
-            
-            player.effects[i].cooldown-=dt
-            
-            if(effects[player.effects[i].type].hideAmount!==true){
+                if(effects[player.effects[i].type].hideAmount!==true){
 
-                effects[player.effects[i].type].amount.textContent=player.effects[i].amount>1?'x'+player.effects[i].amount:''
-                
-                if(effects[player.effects[i].type].amountFromCooldown){
+                    effects[player.effects[i].type].amount.textContent=player.effects[i].amount>1?'x'+player.effects[i].amount:''
+                    
+                    if(effects[player.effects[i].type].amountFromCooldown){
+                        
+                        player.effects[i].amount=player.effects[i].cooldown/effects[player.effects[i].type].maxCooldown
+                        
+                        effects[player.effects[i].type].amount.textContent=((player.effects[i].amount*100+1)|0)+'%'
+                        
+                    }
+
+                } else if(effects[player.effects[i].type].amountFromCooldown){
                     
                     player.effects[i].amount=player.effects[i].cooldown/effects[player.effects[i].type].maxCooldown
                     
-                    effects[player.effects[i].type].amount.textContent=((player.effects[i].amount*100+1)|0)+'%'
-                    
                 }
-
-            } else if(effects[player.effects[i].type].amountFromCooldown){
                 
-                player.effects[i].amount=player.effects[i].cooldown/effects[player.effects[i].type].maxCooldown
+                effects[player.effects[i].type].cooldown.setAttribute('height',(30-player.effects[i].cooldown*30/effects[player.effects[i].type].maxCooldown)||30)
                 
-            }
-            
-            effects[player.effects[i].type].cooldown.setAttribute('height',(30-player.effects[i].cooldown*30/effects[player.effects[i].type].maxCooldown)||30)
-            
-            effects[player.effects[i].type].update(player.effects[i].amount,player)
-            
-            if(player.effects[i].cooldown<=0){
+                effects[player.effects[i].type].update(player.effects[i].amount,player)
                 
-                effects[player.effects[i].type].svg.style.display='none'
-                
-                player.effects.splice(i,1)
+                if(player.effects[i].cooldown<=0){
+                    
+                    effects[player.effects[i].type].svg.style.display='none'
+                    
+                    player.effects.splice(i,1)
+                }
             }
         }
-    }
-    
-    player.convertTotal*=player.convertRate
-    player.attackTotal=(player.attackTotal+(player.beeColorAmounts.r*player.redBeeAttack)+(player.beeColorAmounts.b*player.blueBeeAttack)+(player.beeColorAmounts.w*player.whiteBeeAttack))*player.beeAttack
-    
-    if(player.fieldIn){
         
-        player.capacity*=(player.redFieldCapacity-1)*fieldInfo[player.fieldIn].generalColorComp.r+1
-        player.capacity*=(player.blueFieldCapacity-1)*fieldInfo[player.fieldIn].generalColorComp.b+1
-        player.capacity*=(player.whiteFieldCapacity-1)*fieldInfo[player.fieldIn].generalColorComp.w+1
+        player.convertTotal*=player.convertRate
+        player.attackTotal=(player.attackTotal+(player.beeColorAmounts.r*player.redBeeAttack)+(player.beeColorAmounts.b*player.blueBeeAttack)+(player.beeColorAmounts.w*player.whiteBeeAttack))*player.beeAttack
+        
+        if(player.fieldIn){
+            
+            player.capacity*=(player.redFieldCapacity-1)*fieldInfo[player.fieldIn].generalColorComp.r+1
+            player.capacity*=(player.blueFieldCapacity-1)*fieldInfo[player.fieldIn].generalColorComp.b+1
+            player.capacity*=(player.whiteFieldCapacity-1)*fieldInfo[player.fieldIn].generalColorComp.w+1
+        }
+
     }
     
     for(let i=objects.marks.length;i--;){
@@ -30747,7 +30739,7 @@ function loop(now){
             textRenderer.addDecalRaw(...NPCs[minNPC].exclaimPos,0,0,...textRenderer.decalUV['exclaim'],1,1,1,5,4,Math.PI)
         }
         
-        if((frameCount%2||minDist<0)&&!NPCs[minNPC].doesntHaveMesh&&!player.fieldIn){
+        if((!(frameCount%3)||minDist<0)&&!NPCs[minNPC].doesntHaveMesh&&!player.fieldIn){
             
             NPCs[minNPC].mesh.setMeshFromFunction(function(box,a,cylinder,sphere,d,e,star,limbBox,limbCylinder){
                 
