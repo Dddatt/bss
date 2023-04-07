@@ -23407,9 +23407,9 @@ player=(function(out){
         
         out.health=100
         out.dead=false
-        out.body.position.x=10
+        out.body.position.x=8
         out.body.position.y=0
-        out.body.position.z=0
+        out.body.position.z=7
         out.endAntChallenge()
     }
     
@@ -23530,7 +23530,7 @@ player=(function(out){
     out.toolCooldown=0
     
     out.hive=[[]]
-    out.hivePos=[-1.625+10,1.5,-7.5]
+    out.hivePos=[-1.625+9,1.5,-7.5]
     
     triggers.hive={
         
@@ -24221,7 +24221,7 @@ player=(function(out){
     
     out.sensitivity=0.005
     out.yaw=0
-    out.pitch=0
+    out.pitch=-0.9
     out.friction=20
     out.grounded=false
     out.cameraDir=[]
@@ -24245,7 +24245,7 @@ player=(function(out){
     out.body=new CANNON.Body({
         
         shape:new CANNON.Box(new CANNON.Vec3(0.25,0.5,0.25)),
-        position:new CANNON.Vec3(10,0,0),
+        position:new CANNON.Vec3(8,0,7),
         mass:5,
         fixedRotation:true,
         collisionFilterGroup:PLAYER_PHYSICS_GROUP,
