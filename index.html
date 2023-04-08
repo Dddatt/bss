@@ -525,6 +525,24 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         
     </svg>
 
+    <svg id='scienceEnhancement' style='width:30;height:30;display:none'>
+        
+        <rect width='30' height='30' fill='rgb(252, 186, 3)'></rect>
+        <rect id='scienceEnhancement_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0'></rect>
+
+        <text id='scienceEnhancement_amount' x='28' y='28' style='font-family:calibri;font-size:11px;' text-anchor='end'></text>
+        
+    </svg>
+
+    <svg id='polarPower' style='width:30;height:30;display:none'>
+        
+        <rect width='30' height='30' fill='rgb(100,200,255)'></rect>
+        <rect id='polarPower_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0'></rect>
+
+        <text id='polarPower_amount' x='28' y='28' style='font-family:calibri;font-size:11px;' text-anchor='end'></text>
+        
+    </svg>
+
     <svg id='comfortingNectar' style='width:30;height:30;display:none'>
         
         <rect width='30' height='30' fill='rgb(122,153,174)'></rect>
@@ -6005,6 +6023,48 @@ let beeInfo={
 
 let effects={
 
+    scienceEnhancement:{
+        
+        u:0,v:0,
+        svg:document.getElementById('scienceEnhancement'),
+        cooldown:document.getElementById('scienceEnhancement_cooldown'),
+        amount:document.getElementById('scienceEnhancement_amount'),
+        maxCooldown:Infinity,
+        maxAmount:1000,
+        tokenLife:16,
+        
+        update:(amount,player)=>{
+            
+            player.convertRate*=amount*0.1+1
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Science Enhancement\nx'+(amount*0.1+1)+' convert rate'
+        }
+    },
+
+    polarPower:{
+        
+        u:0,v:0,
+        svg:document.getElementById('polarPower'),
+        cooldown:document.getElementById('polarPower_cooldown'),
+        amount:document.getElementById('polarPower_amount'),
+        maxCooldown:Infinity,
+        maxAmount:Infinity,
+        tokenLife:16,
+        
+        update:(amount,player)=>{
+            
+            player.beeEnergy*=amount*0.05+1
+        },
+        
+        getMessage:(amount)=>{
+            
+            return 'Polar Power\nx'+(amount*0.05+1)+' bee energy'
+        }
+    },
+
     dandelionFieldBoost:{
         
         u:0,v:0,
@@ -9721,9 +9781,8 @@ let effects={
         tokenLife:4,
         maxAmount:1,
         
-        update:'thisIsPointlessAndWillBeReplacedByAFunctionLaterCuzTheFunctionThatAppliesStatsForThisEffectChangesSoIDKThisIsTHeBestWayIGSoOK',
-        
-        getMessage:'thisIsAlsoPointlessTooAndWillBeReplacedByAFunctionLaterCuzTheFunctionThatAppliesStatsForThisEffectChangesSoIDKThisIsTHeBestWayIGSoOK'
+        update:'',
+        getMessage:''
     },
     
     redDriveBuff:{
@@ -15400,7 +15459,7 @@ class MondoChick {
                 
                 if(this.health<=0||this.timeLimit<=0){
                     
-                    player.stats.mondoChicken++
+                    player.stats.mondoChick++
                     this.state='dead'
                     
                     return
@@ -16185,7 +16244,7 @@ class Mechsquito {
         this.state='attack'
         this.starSawHitTimer=0
         this.level=level
-        this.health=(level-1)*(level-1)*50+50
+        this.health=((level-1)*(level-1)*50+50)*0.5
 
         if(isMega) this.health=this.health*1.5
 
@@ -16395,7 +16454,7 @@ class Cogmower {
         this.state='attack'
         this.starSawHitTimer=0
         this.level=level
-        this.health=(level-1)*(level-1)*70+100
+        this.health=((level-1)*(level-1)*70+100)*0.5
 
         if(isGold) this.health=this.health*1.65
 
@@ -16559,7 +16618,7 @@ class CogTurret {
         this.state='attack'
         this.starSawHitTimer=0
         this.level=level
-        this.health=(level-1)*(level-1)*75+250
+        this.health=((level-1)*(level-1)*75+250)*0.5
         this.maxHealth=this.health
 
         switch(this.side){
@@ -22123,7 +22182,7 @@ player=(function(out){
         out.roboChallenge.timer=3*60
         document.getElementById('roboMenu').style.display='none'
 
-        let amp=0.1,ef='player.capacity*='+amp+';player.pollenFromTools*='+amp+';player.pollenFromCoconuts*='+amp+';player.movementCollection*='+amp
+        let amp=Math.max(0.1,0.6-out.roboChallenge.round*0.1),ef='player.capacity*='+amp+';player.pollenFromTools*='+amp+';player.pollenFromCoconuts*='+amp+';player.movementCollection*='+amp
 
         let upgradeStacks={}
 
@@ -22161,7 +22220,9 @@ player=(function(out){
 
         effects.roboChallengeBuff.getMessage=function(){
 
-            return 'Robo Challenge\nx'+amp+' capacity\nx'+amp+' pollen from tools\nx'+amp+' pollen from coconuts\nx'+amp+' movement collection\n\n------Upgrades------\n\n'+JSON.stringify(upgradeStacks).replaceAll('":','"#').replaceAll('"','').replaceAll(',',')\n').replaceAll('#',' (x').replace('{','').replace('}',')')+'\n'
+            let m='Robo Challenge\nx'+amp+' capacity\nx'+amp+' pollen from tools\nx'+amp+' pollen from coconuts\nx'+amp+' movement collection\n\n------Upgrades------\n\n'+JSON.stringify(upgradeStacks).replaceAll('":','"#').replaceAll('"','').replaceAll(',',')\n').replaceAll('#',' (x').replace('{','').replace('}',')')+'\n'
+
+            return m.split(')').length===2?m.substring(0,m.indexOf('\n\n---')):m
         }
 
         player.addEffect('roboChallengeBuff')
@@ -22213,18 +22274,18 @@ player=(function(out){
 
             if(q[0].indexOf('From')>-1){
 
-                for(let i=0,c=MATH.random(1,4)|0;i<c;i++){
+                for(let i=0,c=MATH.random(1,3);i<c;i++){
 
                     let m=[Mechsquito,Mechsquito,Mechsquito,Mechsquito,Mechsquito,Cogmower,Cogmower,Cogmower,Cogmower,CogTurret,CogTurret,CogTurret]
 
                     m=m[(Math.random()*m.length)|0]
 
-                    objects.mobs.push(new m(q[0].replace('pollenFrom',''),(out.roboChallenge.round*MATH.random(0.55,0.65)+1)|0,m===CogTurret?MATH.random(0,4)|0:Math.random()<0.8))
+                    objects.mobs.push(new m(q[0].replace('pollenFrom',''),(out.roboChallenge.round*MATH.random(0.5,0.6)+1)|0,m===CogTurret?MATH.random(0,4)|0:Math.random()<0.8))
                 }
 
             } else {
 
-                for(let i=0;i<2;i++){
+                for(let i=0;i<MATH.random(1,4);i++){
 
                     let m=[Mechsquito,Mechsquito,Mechsquito,Mechsquito,Mechsquito,Cogmower,Cogmower,Cogmower,Cogmower,CogTurret,CogTurret,CogTurret]
 
@@ -22238,7 +22299,7 @@ player=(function(out){
                             f.push(i)
                     }
                     
-                    objects.mobs.push(new m(f[(Math.random()*f.length)|0],(out.roboChallenge.round*MATH.random(0.55,0.65)+1)|0,m===CogTurret?MATH.random(0,4)|0:Math.random()<0.8))
+                    objects.mobs.push(new m(f[(Math.random()*f.length)|0],(out.roboChallenge.round*MATH.random(0.5,0.6)+1)|0,m===CogTurret?MATH.random(0,4)|0:Math.random()<0.8))
                 }
             }
         }
@@ -23120,6 +23181,8 @@ player=(function(out){
     }
     
     out.onStartChat=function(i){
+
+        console.error(NPCs[i].dialogue,NPCs[i].dialogueIndex)
         
         out.eKeyDialoguePress=TIME
 
@@ -25349,7 +25412,7 @@ NPCs={
         viewMatrix:[24,2,0.5,MATH.HALF_PI,-0.25],
         exclaimPos:[29,0.5,0.5],
         dialogueIndex:0,
-        dialogue:['a',()=>player.addQuest(' aa',[['treat',10]],'blackBear')]||window.dialogue_blackBear(player,items,NPCs),
+        dialogue:window.dialogue_blackBear(player,items,NPCs),
         mesh:new Mesh(),
         meshParams:{x:0.5,y:0,z:-31.5,r:1,s:1.2,texture:{face:{u:0,v:0},torso:{texture:false,u:0,v:0.5},extremities:{u:0,v:0},ears:{u:0,v:0}}}
     },
@@ -30267,7 +30330,7 @@ function GENERATE_SAVE_CODE(){
             continue
         }
 
-        if(save.effects[i].type.indexOf('Aura')>-1){
+        if(save.effects[i].type.indexOf('Aura')>-1||save.effects[i].type==='roboChallengeBuff'||save.effects[i].type==='antChallenge'){
 
             save.effects.splice(i,1)
         }
