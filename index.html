@@ -2315,13 +2315,10 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
 
 <div class='uiPage' style='position:absolute;margin:0px;z-index:-2;overflow-y:auto;overflow-x:hidden;width:200px;height:455px;background-color:rgba(195,195,195,0.9);margin-top:140px;display:none;padding:3px;'>
     
-    <!--not an item, only used for item cost ui here-->
     <svg id='honey' style='width:200;height:70;cursor:pointer'>
         
         <text></text>
-        
         <path fill='rgb(255, 207, 13)' stroke='rgb(0,0,0)' stroke-width='2' d='M32 20C 54 38 50 59 33 54C 20 44 41 34 32 20' transform='scale(1.06,1.06) translate(-6,-7)'></path>
-        
     </svg>
     
     <svg id='ticket' style='width:200;height:70;cursor:pointer;border-radius:5px;'>
@@ -2367,16 +2364,6 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
     
     <svg id='stinger' style='width:200;height:70;cursor:pointer;border-radius:5px'>
         
-        <defs>
-            
-            <linearGradient id='stingerShade' x1='-2.3' y1='0' x2='1.0' y2='0.7'>
-                <stop offset='40%' stop-color='black'/>
-                <stop offset='90%' stop-color='white'/>
-                
-            </linearGradient>
-            
-        </defs>
-        
         <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
         <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
         <text x='130' y='18' style='font-family:trebuchet ms;font-size:17px;' fill='rgb(0,0,0)' text-anchor='middle'>Stinger</text>
@@ -2384,7 +2371,9 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         <text x='133' y='56' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'> attack for 30 seconds.</text>
         <text id='stinger_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
         <g transform='translate(0,-2) scale(0.9,0.9)'>
-        <path stroke='black' stroke-width='2' fill='url(#stingerShade)' d='M30 20L50 50C 73 53 13 71 30 54z'></path><path stroke='black' stroke-width='1' fill='rgb(0,0,0,0)' d='M 48 51 C 42 56 39 55 33 56'></path></g>
+        <path stroke='black' stroke-width='2' fill='rgb(255,255,255)' d='M30 20L50 50C 73 53 13 71 30 54z'></path><path stroke='black' stroke-width='1' fill='rgb(0,0,0,0)' d='M 48 51 C 42 56 39 55 33 56'></path>
+        <path stroke='rgb(0,0,0,0.1)' stroke-width='6' fill='rgb(255,255,255,0)' d='M 31 24L33 55L26 60'></path><path stroke='black' stroke-width='1' fill='rgb(0,0,0,0)' d='M 48 51 C 42 56 39 55 33 56'></path>
+        </g>
     </svg>
 
     <svg id='microConverter' style='width:200;height:70;cursor:pointer;border-radius:5px'>
@@ -2784,10 +2773,11 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         <text x='130' y='50' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>pollen for 10</text>
         <text x='130' y='65' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>minutes.</text>
         <text id='redExtract_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        <g transform='translate(0,4)'>
         <path d='M 47 17L 45 42L 37 47L 23 40L 29 16' fill='rgb(0,0,0,0.1)' stroke='rgb(0,0,0)' stroke-width='1.5'></path>
         <path d='M 45 34L 45 42L 37 47L 23 40L 26 30' fill='rgb(200,0,0)'></path>
-        <rect x='30' y='3' width='20' height='12' fill='rgb(100,100,100' rx='4' transform='rotate(10)'></rect>
-        <path d='M 47 12L 45 42L 37 47L 39 10' fill='rgb(0,0,0,0.5)'></path>
+        <rect x='31' y='2' width='19' height='10' fill='rgb(100,100,100' rx='2' transform='rotate(11)'></rect>
+        <path d='M 48 12L 45 42L 37 47L 39 10' fill='rgb(0,0,0,0.5)'></path></g>
         
     </svg>
     
@@ -2800,10 +2790,12 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         <text x='130' y='50' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>pollen for 10</text>
         <text x='130' y='65' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>minutes.</text>
         <text id='blueExtract_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
+        
+        <g transform='translate(0,4)'>
         <path d='M 47 17L 45 42L 37 47L 23 40L 29 16' fill='rgb(0,0,0,0.1)' stroke='rgb(0,0,0)' stroke-width='1.5'></path>
-        <path d='M 45 34L 45 42L 37 47L 23 40L 26 30' fill='rgb(0,0,200)'></path>
-        <rect x='30' y='3' width='20' height='12' fill='rgb(100,100,100' rx='4' transform='rotate(10)'></rect>
-        <path d='M 47 12L 45 42L 37 47L 39 10' fill='rgb(0,0,0,0.5)'></path>
+        <path d='M 45 34L 45 42L 37 47L 23 40L 26 30' fill='rgb(0,0,255)'></path>
+        <rect x='31' y='2' width='19' height='10' fill='rgb(100,100,100' rx='2' transform='rotate(11)'></rect>
+        <path d='M 48 12L 45 42L 37 47L 39 10' fill='rgb(0,0,0,0.5)'></path></g>
         
     </svg>
     
@@ -2852,12 +2844,12 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         <text x='130' y='50' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>and player speed</text>
         <text x='130' y='65' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>for 10 minutes.</text>
         <text id='oil_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
-        <path fill='rgb(255,255,120)' stroke='rgb(0,0,0)' stroke-width='1.5' d='M35 55C17 54 17 36 28 30C 31 28 31 21 30 20' transform='translate(0,-5)'></path>
-        <path fill='rgb(255,255,120)' stroke='rgb(0,0,0)' stroke-width='1.5' d='M35 55C17 54 17 36 28 30C 31 28 31 21 30 20' transform='scale(-1,1) translate(-70,-5)'></path>
-        <path fill='rgb(255,255,120)' d='M35 55L31 27L40 27Z' transform='translate(0,-5)'></path>
-        <rect x='30.5' y='11' width='9' height='10' stroke='rgb(0,0,0)' stroke-width='1.5' rx='3' fill='rgb(200,150,0)' transform='translate(0,-5)'></rect>
-        <rect x='21' y='38' width='28' height='6'rx='3' fill='rgb(150,70,0)' transform='translate(0,-5)'></rect>
-        <circle cx='35' cy='36' r='5' fill='rgb(255,255,255)'></circle>
+        <path fill='rgb(255,255,120)' stroke='rgb(0,0,0)' stroke-width='1.5' d='M35 55C17 54 17 36 28 30C 31 28 31 21 30 20' transform='translate(0,0)'></path>
+        <path fill='rgb(255,255,120)' stroke='rgb(0,0,0)' stroke-width='1.5' d='M35 55C17 54 17 36 28 30C 31 28 31 21 30 20' transform='scale(-1,1) translate(-70,0)'></path>
+        <path fill='rgb(255,255,120)' d='M35 55L31 27L40 27Z' transform='translate(0,0)'></path>
+        <rect x='30.5' y='11' width='9' height='10' stroke='rgb(0,0,0)' stroke-width='1.5' rx='3' fill='rgb(200,150,0)' transform='translate(0,0)'></rect>
+        <rect x='21' y='38' width='28' height='6'rx='3' fill='rgb(150,70,0)' transform='translate(0,0)'></rect>
+        <circle cx='35' cy='40' r='5' fill='rgb(255,255,255)'></circle>
         
     </svg>
     
@@ -2883,30 +2875,6 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
     
     <svg id='tropicalDrink' style='width:200;height:70;cursor:pointer;border-radius:5px'>
         
-        <defs>
-            <linearGradient id='strawStripes' x1='0' x2='0' y1='0' y2='1'>
-                <stop offset='10%' stop-color='rgb(235, 112, 235)'/>
-                <stop offset='10%' stop-color='rgb(240, 56, 194)'/>
-                <stop offset='20%' stop-color='rgb(240, 56, 194)'/>
-                <stop offset='20%' stop-color='rgb(235, 112, 235)'/>
-                <stop offset='30%' stop-color='rgb(235, 112, 235)'/>
-                <stop offset='30%' stop-color='rgb(240, 56, 194)'/>
-                <stop offset='40%' stop-color='rgb(240, 56, 194)'/>
-                <stop offset='40%' stop-color='rgb(235, 112, 235)'/>
-                <stop offset='50%' stop-color='rgb(235, 112, 235)'/>
-                <stop offset='50%' stop-color='rgb(240, 56, 194)'/>
-                <stop offset='60%' stop-color='rgb(240, 56, 194)'/>
-                <stop offset='60%' stop-color='rgb(235, 112, 235)'/>
-                <stop offset='70%' stop-color='rgb(235, 112, 235)'/>
-                <stop offset='70%' stop-color='rgb(240, 56, 194)'/>
-                <stop offset='80%' stop-color='rgb(240, 56, 194)'/>
-                <stop offset='80%' stop-color='rgb(235, 112, 235)'/>
-                <stop offset='90%' stop-color='rgb(235, 112, 235)'/>
-                <stop offset='90%' stop-color='rgb(240, 56, 194)'/>
-                
-            </linearGradient>
-        </defs>
-        
         <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
         <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
         <text x='130' y='18' style='font-family:trebuchet ms;font-size:17px;' fill='rgb(0,0,0)' text-anchor='middle'>Tropical Drink</text>
@@ -2916,7 +2884,7 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         <text id='tropicalDrink_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
         <path d='M15 30C15 60 60 60 60 30C 60 15 15 15 15 30' fill='rgb(163, 90, 18)' stroke='rgb(0,0,0)'stroke-width='1.5'></path>
         <path d='M20 30C20 42 55 42 55 30C 55 20 20 20 20 30' fill='rgb(255,255,210)' stroke='rgb(0,0,0)'stroke-width='1.5'></path>
-        <path d='M 44 37L 39 38L 48 12L 60 7L 61 11L 52 15Z' fill='url(#strawStripes)' stroke='rgb(0,0,0)'stroke-width='1.5'></path>
+        <path d='M 44 37L 39 38L 48 12L 60 7L 61 11L 52 15Z' fill='rgb(235, 112, 235)' stroke='rgb(0,0,0)'stroke-width='1.5'></path>
         
     </svg>
     
@@ -2930,36 +2898,12 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         <text x='130' y='65' style='font-family:trebuchet ms;font-size:10.5px;' fill='rgb(0,0,0)' text-anchor='middle'>extracts for 10 minutes.</text>
         <text id='purplePotion_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
         <path d='M50 50L 20 50L 32 25L32 15L37 15L37 25Z' fill='rgb(0,0,0,0.3)' stroke='rgb(0,0,0)' strokeWeight='1.5' transform='rotate(15) translate(10,-8)'></path>
-        <path d='M50 50L 20 50L 27 38L42.2 38Z' fill='rgb(200,0,200)' transform='rotate(15) translate(10,-8)'></path>
+        <path d='M50 50L 20 50L 27 38L43 38Z' fill='rgb(200,0,200)' transform='rotate(15) translate(10,-8)'></path>
         <rect x='30.5' y='10' width='8' height='6' transform='rotate(15) translate(10,-8)'></rect>
         
     </svg>
     
-    <svg id='superSmoothie' style='width:200;height:70;cursor:pointer;border-radius:5px'>
-        
-        <defs>
-            <linearGradient id='greenSmoothie_' x1='0' x2='0' y1='0' y2='1'>
-                <stop offset='46%' stop-color='rgb(0,0,0,0.2)'/>
-                
-                <stop offset='50%' stop-color='rgb(255,0,50)'/>
-                
-                <stop offset='60%' stop-color='rgb(255,0,50)'/>
-                <stop offset='60%' stop-color='rgb(50,255,50)'/>
-                
-            </linearGradient>
-            
-            <linearGradient id='smoothieStraw_' x1='0' x2='0' y1='0' y2='1'>
-                <stop offset='20%' stop-color='rgb(255,0,0)'/>
-                <stop offset='20%' stop-color='rgb(255,255,225)'/>
-                <stop offset='40%' stop-color='rgb(255,255,225)'/>
-                <stop offset='40%' stop-color='rgb(255,0,0)'/>
-                <stop offset='60%' stop-color='rgb(255,0,0)'/>
-                <stop offset='60%' stop-color='rgb(255,255,225)'/>
-                <stop offset='80%' stop-color='rgb(255,255,225)'/>
-                <stop offset='80%' stop-color='rgb(255,0,0)'/>
-                
-            </linearGradient>
-        </defs>
+    <svg id='superSmoothie' style='width:200;height:70;cursor:pointer;border-radius:5px;'>
         
         <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
         <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
@@ -2968,9 +2912,11 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         <text x='130' y='50' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>of all items for 10 </text>
         <text x='130' y='65' style='font-family:trebuchet ms;font-size:10.5px;' fill='rgb(0,0,0)' text-anchor='middle'>minutes.</text>
         <text id='superSmoothie_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
-        <path d='M20 45C20 55 50 55 50 45C65 45 65 20 50 20C50 10 20 10 20 20Z' fill='url(#greenSmoothie_)' stroke='rgb(0,0,0)' stroke-width='1.5' transform='translate(0,3)'></path>
-        <path d='M50 40 C 60 40 60 25 50 25M50 40 L 50 25' fill='rgb(225,225,225)' stroke='rgb(0,0,0)' stroke-width='1.5' transform='translate(0,3)'></path>
-        <rect transform='translate(0,3) rotate(-17)' x='19' y='11' width='5' height='30' stroke='rgb(0,0,0)' stroke-width='1.5' fill='url(#smoothieStraw_)'></rect>
+        <path d='M 20 45C20 55 50 55 50 45L 50 35 L20 35' fill='rgb(50,255,50)' transform='translate(0,3)'></path>
+        <path d='M 50 43C 56 40 57 41 59 35' stroke-width='5' fill='rgb(0,0,0,0)' stroke='rgb(50,255,50)' transform='translate(0,3)'></path>
+        <path d='M20 45C20 55 50 55 50 45C65 45 65 20 50 20C50 10 20 10 20 20Z' fill='rgb(0,0,0,0)' stroke='rgb(0,0,0)' stroke-width='1.5' transform='translate(0,3)'></path>
+        <path d='M50 40 C 60 40 60 25 50 25M50 40.6 L 50 24.4' fill='rgb(225,225,225,0)' stroke='rgb(0,0,0)' stroke-width='1.5' transform='translate(0,3)'></path>
+        <rect transform='translate(0,3) rotate(-17)' x='19' y='11' width='5' height='30' stroke='rgb(0,0,0)' stroke-width='1.5' fill='rgb(255,80,80)'></rect>
         <path d='M50 20C50 25 20 25 20 20' fill='rgb(0,0,0,0)' stroke='rgb(0,0,0)' stroke-width='1.5' transform='translate(0,3)'></path>
         <circle cx='35' cy='37.4' r='6' fill='rgb(255,0,50)'></circle>
         <path d='M36 32C 30 30 30 35 35 35C 37 35 37 39 32 38' stroke='rgb(255,255,255)' stroke-width='2' fill='rgb(0,0,0,0)' transform='translate(0,3)'></path>
@@ -3224,8 +3170,8 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         <text x='130' y='54' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>bond by 25.</text>
         <text id='blueberry_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
         
-        <circle cx='19' cy='46' r='17' stroke='rgb(0,0,0)' strokeWeight='1.5' fill='rgb(88, 88, 219)' transform='scale(1,0.9) rotate(-26)'></circle>
-        <circle cx='19' cy='46' r='7' fill='rgb(32, 32, 150)' transform='scale(1,0.7) rotate(-26)'></circle>
+        <circle cx='16' cy='47' r='17' stroke='rgb(0,0,0)' strokeWeight='1.5' fill='rgb(88, 88, 219)' transform='scale(1,0.9) rotate(-26)'></circle>
+        <circle cx='16' cy='47' r='7' fill='rgb(32, 32, 150)' transform='scale(1,0.7) rotate(-26)'></circle>
         
     </svg>
     
@@ -3251,7 +3197,7 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         <text x='130' y='39' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>Improves your bee's</text>
         <text x='130' y='54' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>bond by 25.</text>
         <text id='pineapple_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
-        <path transform='scale(1.1,1.1) translate(-10,0)'stroke='rgb(0,0,0)' stroke-width='1.5' fill='rgb(255,255,25)' d='M37 20L50 25L60 45C 56 52 43 53 34 49L 22 43Z' ></path><path fill='rgb(0,0,0,0.1)' d='M50 25L60 45C 56 52 43 53 34 49Z' transform='scale(1.1,1.1) translate(-10,0)'></path><path stroke='white' stroke-width='3' d='M38 22L30 35'transform='scale(1.1,1.1) translate(-10,0)'></path><path stroke='rgb(0,0,0,0.3)' stroke-width='2' d='M35 35 L 38 30M 45 52 L 46 45M 51 51 L 50 45M 58 48 L 54 44' transform='scale(1.1,1.1) translate(-10,0)'></path>
+        <path transform='scale(1.1,1.1) translate(-10,-5)'stroke='rgb(0,0,0)' stroke-width='1.5' fill='rgb(255,255,25)' d='M37 20L50 25L60 45C 56 52 43 53 34 49L 22 43Z' ></path><path fill='rgb(0,0,0,0.1)' d='M50 25L60 45C 56 52 43 53 34 49Z' transform='scale(1.1,1.1) translate(-10,-5)'></path><path stroke='white' stroke-width='3' d='M38 22L30 35'transform='scale(1.1,1.1) translate(-10,-5)'></path><path stroke='rgb(0,0,0,0.3)' stroke-width='2' d='M35 35 L 38 30M 45 52 L 46 45M 51 51 L 50 45M 58 48 L 54 44' transform='scale(1.1,1.1) translate(-10,-5)'></path>
         
     </svg>
     
@@ -3271,17 +3217,6 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
 	
     <svg id='bitterberry' style='width:200;height:70;cursor:pointer;border-radius:5px'>
         
-        <defs>
-            
-            <radialGradient id='bitterberryShade' cx='39%' cy='39%'>
-                
-                <stop offset="10%" stop-color="rgb(235, 225, 138)" />
-                <stop offset="100%" stop-color="rgb(179, 162, 34)" />
-                
-            </radialGradient>
-            
-        </defs>
-        
         <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
         <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
         <text x='130' y='18' style='font-family:trebuchet ms;font-size:17px;' fill='rgb(0,0,0)' text-anchor='middle'>Bitterberry</text>
@@ -3292,34 +3227,19 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         
         <g transform='scale(0.85,0.85) translate(6,7)'>
         
-        <path fill='url(#bitterberryShade)' stroke='black' stroke-width='2' d='M35 16C 66 23 45 50 24 50C 12 57 19 55 18 48C 9 15 27 15 35 16'></path>
+        <path fill='rgb(204, 189, 88)' stroke='black' stroke-width='2' d='M35 16C 66 23 45 50 24 50C 12 57 19 55 18 48C 9 15 27 15 35 16'></path>
         
         <path fill='rgb(129, 57, 82)' stroke='black' stroke-width='2' d='M 35 12C 64 13 49 27 36 16C -2 11 38 3 36 12' transform='translate(4,1)'></path>
         
         <path fill='rgb(138, 78, 18)' stroke='black' stroke-width='2' d='M 37 13C 39 12 43 7 48 5C 50 12 48 7 43 13' transform='translate(2,0)'></path>
         
-        <circle cx='39' cy='37' r='1.5' fill='rgb(171, 119, 36,0.5)'></circle><circle cx='41' cy='28' r='1.5' fill='rgb(171, 119, 36,0.5)'></circle><circle cx='31' cy='41' r='1.5' fill='rgb(171, 119, 36,0.5)'></circle><circle cx='25' cy='43' r='1.5' fill='rgb(171, 119, 36,0.5)'></circle><circle cx='46' cy='33' r='1.5' fill='rgb(171, 119, 36,0.5)'></circle>
+        <circle cx='39' cy='37' r='1.5' fill='rgb(138, 89, 15,0.5)'></circle><circle cx='41' cy='28' r='1.5' fill='rgb(138, 89, 15,0.5)'></circle><circle cx='31' cy='41' r='1.5' fill='rgb(138, 89, 15,0.5)'></circle><circle cx='25' cy='43' r='1.5' fill='rgb(171, 119, 36,0.5)'></circle><circle cx='46' cy='33' r='1.5' fill='rgb(138, 89, 15,0.5)'></circle>
         
         </g>
         
     </svg>
     
     <svg id='neonberry' style='width:200;height:70;cursor:pointer;border-radius:5px'>
-        
-        <defs>
-            
-            <radialGradient id='neonberryShade'>
-                
-                
-                <stop offset="0%" stop-color="rgb(0,0,0)" />
-                <stop offset="7%" stop-color="rgb(225,255,225)" />
-                <stop offset="20%" stop-color="rgb(225,255,225)" />
-                <stop offset="75%" stop-color="rgb(88, 227, 88)" />
-                <stop offset="100%" stop-color="rgb(26, 102, 26)" />
-                
-            </radialGradient>
-            
-        </defs>
         
         <rect width='200' height='70' fill='rgb(255,255,255)'></rect>
         <rect width='70' height='70' fill='rgb(225,225,225)'></rect>
@@ -3331,7 +3251,9 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         
         <g transform='scale(0.825,0.825) translate(8,8)'>
         
-        <circle fill='url(#neonberryShade)' cx='35' cy='35' stroke='black' stroke-width='2' r='22'></circle>
+        <circle fill='rgb(88, 227, 88)' cx='35' cy='35' stroke='black' stroke-width='2' r='22'></circle>
+        
+        <circle fill='rgb(255,255,255,0.4)' cx='35' cy='35' r='10'></circle><circle fill='rgb(255,255,255,0.4)' cx='35' cy='35' r='4'></circle>
         
         <path fill='rgb(0,0,0,0)' stroke='black' stroke-width='1' d='M 24 30C 28 12 41 22 40 20M 24 41C 24 49 37 50 36 48M 42 30C 47 28 46 43 39 43'></path>
         
@@ -3879,7 +3801,8 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         
         <g transform='scale(1.1,1.1) translate(-6,-6)'>
         <rect x='25' y='30' width='25' height='25' rx='6' fill='rgb(94, 235, 214)' stroke='black' stroke-width='2'></rect>
-        <text x='32' y='46' style='font-family:Brush Script MT' fill='rgb(168, 50, 201)'>R</text>
+        
+        <path stroke='rgb(168, 50, 201)' stroke-width='2' fill='rgb(0,0,0,0)' d='M 33 49L 35 36C 45 39 39 44 34 43L40 48'></path>
         <path stroke='black' stroke-width='2' fill='rgb(245, 202, 12)' d='M 26 30L 25 22L 33 27L 37 17L 41 27L 48 22L 48 30'></path>
         <circle cx='25' cy='23' r='3' fill='rgb(245, 229, 12)' stroke='black' stroke-width='1.5'></circle>
         <circle cx='48' cy='23' r='3' fill='rgb(245, 229, 12)' stroke='black' stroke-width='1.5'></circle>
@@ -10417,7 +10340,7 @@ let items={
 
             items.softWax.amount--
 
-            player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.waxes.push('softWax')
+            player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.waxes.push('1softWax')
 
             let beeStats=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee.split(','),numStatsToAdd=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.potential>=3?2:1,statsToAdd=[],permBeeStats=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee.split(',')
 
@@ -10473,7 +10396,7 @@ let items={
             if(Math.random()>0.6){
 
                 player.addMessage('The wax failed to improve the beequip!',COLORS.redArr)
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.waxes.push('hardWax')
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.waxes.push('0hardWax')
                 player.updateBeequipPage()
                 player.updateHive()
                 return
@@ -10481,7 +10404,7 @@ let items={
 
             player.addMessage('The wax improved the beequip!')
 
-            player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.waxes.push('hardWax')
+            player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.waxes.push('1hardWax')
 
             let beeStats=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee.split(','),numStatsToAdd=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.potential>=3&&Math.random()<0.5?3:2,statsToAdd=[],permBeeStats=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee.split(',')
 
@@ -10543,7 +10466,7 @@ let items={
 
             player.addMessage('The wax improved the beequip!')
 
-            player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.waxes.push('causticWax')
+            player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.waxes.push('1causticWax')
 
             let beeStats=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee.split(','),numStatsToAdd=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.potential>=4&&Math.random()<0.75?4:3,statsToAdd=[],permBeeStats=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee.split(',')
 
@@ -10597,7 +10520,7 @@ let items={
 
             player.addMessage('The wax rerolled the beequip stats!')
 
-            player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.waxes.push('swirledWax')
+            player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.waxes.push('1swirledWax')
 
             let stats=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee.split(',')
 
@@ -23909,10 +23832,10 @@ player=(function(out){
             let waxesCode=[]
 
             for(let i=0;i<5;i++){
-
+                
                 let w=out.currentGear.beequips[out.beequipLookingAt].waxes[i]
 
-                waxesCode.push(w?itemSVGCode[w].replaceAll('AMOUNTININVENTORY','').replaceAll('AMOUNTOFITEMREQUIREDTOCRAFT','').replace('translate(0px,7px)','translate(-9px,-1px)').replace('scale(0.77,0.77)','scale(0.6,0.6)'):'')
+                waxesCode.push(w?itemSVGCode[w.substring(1)].replace('SCALE','translate(-24px,-22px) scale(0.5,0.5)')+"<div style='font-size:14px;margin-top:-55px;margin-left:10px'>"+(Number(w[0])?'✔️':'❌')+"</div>":'')
             }
 
             
@@ -24853,16 +24776,7 @@ player=(function(out){
         document.getElementById('blenderName').innerHTML=MATH.doGrammar(item)+'<p style="position:fixed;font-size:13px;left:50%;top:120%;transform:translate(-50%,-50%)">'+itemSVGCode[item+'_description']
         +'</p></div>'
 
-        document.getElementById('blenderItem').innerHTML=itemSVGCode[item].replaceAll('AMOUNTININVENTORY','').replaceAll('AMOUNTOFITEMREQUIREDTOCRAFT','').replace('translate(0px,7px)','translate(-2px,2px)').replace('scale(0.77,0.77)','scale(0.5,0.5)')
-
-        document.getElementById('blenderReq').innerHTML=''
-
-        for(let i in blenderRecipes[player.blenderIndex].req){
-
-            let r=blenderRecipes[player.blenderIndex].req[i]
-
-            document.getElementById('blenderReq').innerHTML+="<div style='position:fixed;left:75%;top:20px;transform:translate(-50%,-50%) translate("+((i-blenderRecipes[player.blenderIndex].req.length*0.5+0.5)*90)+"px,0px) scale(1.75,1.75)'>"+itemSVGCode[r[0]].replaceAll('AMOUNTININVENTORY','').replaceAll('AMOUNTOFITEMREQUIREDTOCRAFT','').replace('translate(0px,7px)','translate(-2px,2px)').replace('scale(0.77,0.77)','scale(0.5,0.5)')+'<p style="position:fixed;font-size:8px;left:20px;top:20px">x'+r[1]+'</p></div>'
-        }
+        document.getElementById('blenderItem').innerHTML=itemSVGCode[item].replace('SCALE','translate(-47px,-17px) scale(0.64,0.64)')
 
         let f=function(){
             
@@ -24918,11 +24832,13 @@ player=(function(out){
 
             for(let i in blenderRecipes[player.blenderIndex].req){
 
-                let r=blenderRecipes[player.blenderIndex].req[i]
+                let r=blenderRecipes[player.blenderIndex].req[i],h=itemSVGCode[r[0]].replace('SCALE','translate(-20px,-10px) scale(0.5,0.5)')
 
-                document.getElementById('blenderReq').innerHTML+="<div style='position:fixed;left:75%;top:20px;transform:translate(-50%,-50%) translate("+((i-blenderRecipes[player.blenderIndex].req.length*0.5+0.5)*90)+"px,0px) scale(1.75,1.75)'>"+itemSVGCode[r[0]].replaceAll('AMOUNTININVENTORY','').replaceAll('AMOUNTOFITEMREQUIREDTOCRAFT','').replace('translate(0px,7px)','translate(-2px,2px)').replace('scale(0.77,0.77)','scale(0.5,0.5)')+'<p style="position:fixed;font-size:8px;left:20px;top:20px">x'+MATH.addCommas((r[1]*(num?num:1))+'')+'</p></div>'
+
+                document.getElementById('blenderReq').innerHTML+="<div style='position:fixed;left:75%;top:20px;transform:translate(-50%,-50%) translate("+((i-blenderRecipes[player.blenderIndex].req.length*0.5)*90)+"px,20px) scale(1.75,1.75)'>"+h+"<p style='position:fixed;font-size:8px;left:20px;top:20px'>x"+r[1]+"</p></div>"
             }
         }
+
         f()
         document.getElementById('blenderMenu').onmousemove=document.getElementById('blenderCraftAmount').onchange=f
 
