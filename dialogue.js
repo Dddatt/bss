@@ -1,3 +1,14 @@
+let mulberry32=function(a){
+
+    return function(){
+      let t=a+=0x6D2B79F5
+      t=Math.imul(t^t>>>15,t|1)
+      t^=t+Math.imul(t^t>>>7,t|61)
+      return ((t^t>>>14)>>>0)/4294967296
+    }
+}
+
+
 window.dialogue_blackBear=function(player,items){
     
     let addCommas=(s)=>{for(let i=s.length-3;i>0;i-=3){s=s.substring(0,i)+','+s.substr(i,s.length)}return s},doGrammar=(s)=>{let str=s.slice(),_s='';for(let i in str){if(str[i].toUpperCase()===str[i]){_s=_s+' '+str[i]}else{_s=_s+str[i]}}return _s[0].toUpperCase()+_s.substring(1,_s.length)},addReward=(arr)=>{
@@ -32,7 +43,6 @@ window.dialogue_blackBear=function(player,items){
 
 window.dialogue_polarBear=function(player,items,NPCs){
 
-
     let addCommas=(s)=>{for(let i=s.length-3;i>0;i-=3){s=s.substring(0,i)+','+s.substr(i,s.length)}return s},doGrammar=(s)=>{let str=s.slice(),_s='';for(let i in str){if(str[i].toUpperCase()===str[i]){_s=_s+' '+str[i]}else{_s=_s+str[i]}}return _s[0].toUpperCase()+_s.substring(1,_s.length)},addReward=(arr)=>{
         
         player.addEffect('polarPower')
@@ -58,18 +68,82 @@ window.dialogue_polarBear=function(player,items,NPCs){
         }
         
         player.updateInventory()
+        NPCs.polarBear.portionsDone++
     }
-    
-    let rew=[['honey',100000+(MATH.random(-2,10)|0)*10000],['treat',10+(MATH.random(0,4)|0)*5]]
-    
-    if(Math.random()<0.5) rew.push(['ticket',1])
-    if(Math.random()<0.2) rew.push([['glitter','magicBean','oil','enzymes','glue'][(Math.random()*5)|0],1])
 
-    let seed=NPCs.polarBear.seed
+    return function(index,tIndex){
 
-    return function(index){
+        let rand=mulberry32(NPCs.polarBear.seed+NPCs.polarBear.portionsDone*12-12957)
 
-        return ['a',function(){player.addQuest('ไม่เข้าใจ',[['pollen',0]],'polarBear')},'b',function(){addReward([['ticket',1]])}]
+
+        let rew=[['honey',100000+((rand()*12-2)|0)*10000],['treat',10+(rand()*4|0)*5]]
+        
+        if(rand()<0.5) rew.push(['ticket',1])
+        if(rand()<0.2) rew.push([['glitter','magicBean','oil','enzymes','glue'][(Math.random()*5)|0],1])
+
+        return ["Hey there! You hungry? If you collect the ingredients, I'll cook us up something good.","So good it'll permanently increase the maximum energy of your bees by 5%! I'll even throw in some honey for dessert!","Check the Quest menu to see our next recipe.",
+
+            function(){
+
+                switch(    3||    (Math.random()*8)|0){
+
+                    case 0:
+
+                        player.addQuest('Keep Calm and Eat Chicken',[['mondoChick',1],['moonCharmTokens',3],['moonCharm',5]],'polarBear')
+                        rew.push(['moonCharm',5])
+                        rew.push(['neonberry',1])
+                        
+                    break;
+                    
+                    case 1:
+
+                        player.addQuest('Choco Milk Shake',[['pollenFromSpiderField',160000],['werewolf',1]],'polarBear')
+                        rew.push(['gumdrops',3])
+                        
+                    break;
+                    
+                    case 2:
+                        
+                        player.addQuest('Microwaved Sweets',[['redPollen',120000],['pollenFromPineTreeForest',80000],['werewolf',1],['spider',1],['gumdropsTokens',3]],'polarBear')
+                        rew.push(['jellyBeans',3])
+                        
+                    break;
+                    
+                    case 3:
+
+                        player.addQuest('Spiky Stew',[['pollenFromCactusField',100000+NPCs.polarBear.portionsDone],['whitePollen',75000]],'polarBear')
+                        
+                    break;
+                    
+                    case 4:
+
+                        player.addQuest('Pumpkin Pie',[['pollenFromPumpkinPatch',150000],['pollenFromSunflowerField',60000],['ladybug',2]],'polarBear')
+                        
+                    break;
+                    
+                    case 5:
+
+                        player.addQuest('Beetle Brew',[['pollenFromPineapplePatch',120000],['pollenFromDandelionField',50000],['ladybug',5],['rhinoBeetle',5]],'polarBear')
+                        
+                    break;
+                    
+                    case 6:
+
+                        player.addQuest('Candied Beetles',[['pollenFromStrawberryField',150000],['pollenFromBlueFlowerField',25000],['rhinoBeetle',6]],'polarBear')
+                        
+                    break;
+                    
+                    case 7:
+
+                        player.addQuest('Scorpion Salad',[['pollenFromRoseField',300000],['scorpion',4]],'polarBear')
+                        
+                    break;
+                }
+            }
+
+        ,"That's all the ingredients I need! Ok, let me whip something up...","...(chop)...(chop)... ...(sizzle)...","A dash of honey... ...(stir)...","All done! Enjoy!","Well, I'm always ready to eat. I'll be waiting when you're ready for more cooking!",function(){addReward(rew)}
+        
+        ]
     }
     
     
@@ -77,69 +151,7 @@ window.dialogue_polarBear=function(player,items,NPCs){
     // {diaglogueAmount:4,dialogue:['a',function(){player.addQuest('name',[['pollen',0]])},'b',function(){addReward([['ticket',1]])}]}
 
 
-    return ["Hey there! You hungry? If you collect the ingredients, I'll cook us up something good.","So good it'll permanently increase the maximum energy of your bees by 5%! I'll even throw in some honey for dessert!","Check the Quest menu to see our next recipe.",
-
-        function(){
-
-            switch(    3||    (Math.random()*8)|0){
-
-                case 0:
-
-                    player.addQuest('Keep Calm and Eat Chicken',[['mondoChick',1],['moonCharmTokens',3],['moonCharm',5]],'polarBear')
-                    rew.push(['moonCharm',5])
-                    rew.push(['neonberry',1])
-                    
-                break;
-                
-                case 1:
-
-                    player.addQuest('Choco Milk Shake',[['pollenFromSpiderField',160000],['werewolf',1]],'polarBear')
-                    rew.push(['gumdrops',3])
-                    
-                break;
-                
-                case 2:
-                    
-                    player.addQuest('Microwaved Sweets',[['redPollen',120000],['pollenFromPineTreeForest',80000],['werewolf',1],['spider',1],['gumdropsTokens',3]],'polarBear')
-                    rew.push(['jellyBeans',3])
-                    
-                break;
-                
-                case 3:
-
-                    player.addQuest('Spiky Stew',[['pollenFromCactusField',100000],['whitePollen',75000]],'polarBear')
-                    
-                break;
-                
-                case 4:
-
-                    player.addQuest('Pumpkin Pie',[['pollenFromPumpkinPatch',150000],['pollenFromSunflowerField',60000],['ladybug',2]],'polarBear')
-                    
-                break;
-                
-                case 5:
-
-                    player.addQuest('Beetle Brew',[['pollenFromPineapplePatch',120000],['pollenFromDandelionField',50000],['ladybug',5],['rhinoBeetle',5]],'polarBear')
-                    
-                break;
-                
-                case 6:
-
-                    player.addQuest('Candied Beetles',[['pollenFromStrawberryField',150000],['pollenFromBlueFlowerField',25000],['rhinoBeetle',6]],'polarBear')
-                    
-                break;
-                
-                case 7:
-
-                    player.addQuest('Scorpion Salad',[['pollenFromRoseField',300000],['scorpion',4]],'polarBear')
-                    
-                break;
-            }
-        }
-
-    ,"That's all the ingredients I need! Ok, let me whip something up...","...(chop)...(chop)... ...(sizzle)...","A dash of honey... ...(stir)...","All done! Enjoy!","Well, I'm always ready to eat. I'll be waiting when you're ready for more cooking!",function(){addReward(rew)}
-    
-    ]
+    return 
 }
 
 window.brownBearQuestDifficulty=0

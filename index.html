@@ -25450,8 +25450,9 @@ NPCs={
     
     polarBear:{
         
-        portionLength:4,
-        seed:Math.random()*4294967296|0,
+        portionLength:10,
+        portionsDone:0,
+        seed:(Math.random()*100000*(Math.random()<0.5?-1:1))|0,
         repeatable:true,
         viewMatrix:[-1.5,24.5,60,Math.PI,-0.25],
         exclaimPos:[-1.5,22.5,66],
@@ -25463,7 +25464,8 @@ NPCs={
 
     roboBear:{
         
-        seed:Math.random()*4294967296|0,
+        portionsDone:0,
+        seed:0,
         repeatable:true,
         viewMatrix:[53.5-5,7,40,MATH.HALF_PI,-0.25],
         exclaimPos:[53.5,5.5,40],
@@ -30280,6 +30282,8 @@ function RUN_SAVE_CODE(string){
         
         NPCs[i].dialogueIndex=save.NPCs[i].index
         NPCs[i].seed=save.NPCs[i].seed
+        NPCs[i].portionsDone=save.NPCs[i].portionsDone
+
         NPCs[i].activeQuest=activeQuests[i]
     }
 }
@@ -30366,7 +30370,7 @@ function GENERATE_SAVE_CODE(){
 
     for(let i in NPCs){
         
-        save.NPCs[i]={index:NPCs[i].dialogueIndex,seed:NPCs[i].seed}
+        save.NPCs[i]={index:NPCs[i].dialogueIndex,seed:NPCs[i].seed,portionsDone:NPCs[i].portionsDone}
     }
 
     let string=JSON.stringify(save)
