@@ -21918,180 +21918,184 @@ player=(function(out){
         if(out.roboChallenge.round>=20) t='diamond'
         if(out.roboChallenge.round>=25) t='supreme'
 
-        switch(t){
+        if(t){
 
-            case 'bronze':
+            switch(t){
 
-                amulet.push('*'+MATH.random(1.05,1.12).toFixed(2)+' capacityMultiplier')
-                amulet.push('*'+MATH.random(1.03,1.05).toFixed(2)+' beeAttack')
+                case 'bronze':
 
-                if(Math.random()<0.25){
-                    amulet.push('*'+MATH.random(1.01,1.05).toFixed(2)+' POLLEN')
-                } else {
-                    amulet.push('*'+MATH.random(1.05,1.1).toFixed(2)+' '+['red','blue','white'][(Math.random()*3)|0]+'Pollen')
-                }
+                    amulet.push('*'+MATH.random(1.05,1.12).toFixed(2)+' capacityMultiplier')
+                    amulet.push('*'+MATH.random(1.03,1.05).toFixed(2)+' beeAttack')
 
-                if(Math.random()<0.333){
-                    amulet.push('+'+MATH.random(0.01,0.03).toFixed(2)+' instantRedConversion')
-                } else if(Math.random()<0.5){
-                    amulet.push('+'+MATH.random(0.01,0.03).toFixed(2)+' instantWhiteConversion')
-                } else {
-                    amulet.push('+'+MATH.random(0.01,0.03).toFixed(2)+' instantBlueConversion')
-                }
+                    if(Math.random()<0.25){
+                        amulet.push('*'+MATH.random(1.01,1.05).toFixed(2)+' POLLEN')
+                    } else {
+                        amulet.push('*'+MATH.random(1.05,1.1).toFixed(2)+' '+['red','blue','white'][(Math.random()*3)|0]+'Pollen')
+                    }
+
+                    if(Math.random()<0.333){
+                        amulet.push('+'+MATH.random(0.01,0.03).toFixed(2)+' instantRedConversion')
+                    } else if(Math.random()<0.5){
+                        amulet.push('+'+MATH.random(0.01,0.03).toFixed(2)+' instantWhiteConversion')
+                    } else {
+                        amulet.push('+'+MATH.random(0.01,0.03).toFixed(2)+' instantBlueConversion')
+                    }
+
+                    break
+
+                    case 'silver':
+
+                    amulet.push('*'+MATH.random(1.12,1.17).toFixed(2)+' capacityMultiplier')
+                    amulet.push('*'+MATH.random(1.05,1.08).toFixed(2)+' beeAttack')
+
+                    if(Math.random()<0.25){
+                        amulet.push('*'+MATH.random(1.02,1.06).toFixed(2)+' POLLEN')
+                    } else {
+                        amulet.push('*'+MATH.random(1.07,1.15).toFixed(2)+' '+['red','blue','white'][(Math.random()*3)|0]+'Pollen')
+                    }
+
+                    if(Math.random()<0.333){
+                        amulet.push('+'+MATH.random(0.02,0.03).toFixed(2)+' instantRedConversion')
+                    } else if(Math.random()<0.5){
+                        amulet.push('+'+MATH.random(0.02,0.03).toFixed(2)+' instantWhiteConversion')
+                    } else {
+                        amulet.push('+'+MATH.random(0.02,0.03).toFixed(2)+' instantBlueConversion')
+                    }
+
+                    if(Math.random()<0.333){
+                        amulet.push('*'+MATH.random(1.02,1.06).toFixed(2)+' flamePollen')
+                    } else if(Math.random()<0.5){
+                        amulet.push('*'+MATH.random(1.02,1.06).toFixed(2)+' bubblePollen')
+                    } else {
+                        amulet.push('*'+MATH.random(1.02,1.06).toFixed(2)+' markDuration')
+                    }
 
                 break
 
-                case 'silver':
+                case 'gold':
 
-                amulet.push('*'+MATH.random(1.12,1.17).toFixed(2)+' capacityMultiplier')
-                amulet.push('*'+MATH.random(1.05,1.08).toFixed(2)+' beeAttack')
+                    amulet.push('*'+MATH.random(1.17,1.27).toFixed(2)+' capacityMultiplier')
+                    amulet.push('*'+MATH.random(1.06,1.1).toFixed(2)+' beeAttack')
 
-                if(Math.random()<0.25){
-                    amulet.push('*'+MATH.random(1.02,1.06).toFixed(2)+' POLLEN')
-                } else {
-                    amulet.push('*'+MATH.random(1.07,1.15).toFixed(2)+' '+['red','blue','white'][(Math.random()*3)|0]+'Pollen')
-                }
+                    if(Math.random()<0.25){
+                        amulet.push('*'+MATH.random(1.03,1.07).toFixed(2)+' POLLEN')
+                    } else {
+                        amulet.push('*'+MATH.random(1.15,1.2).toFixed(2)+' '+['red','blue','white'][(Math.random()*3)|0]+'Pollen')
+                    }
 
-                if(Math.random()<0.333){
-                    amulet.push('+'+MATH.random(0.02,0.03).toFixed(2)+' instantRedConversion')
-                } else if(Math.random()<0.5){
-                    amulet.push('+'+MATH.random(0.02,0.03).toFixed(2)+' instantWhiteConversion')
-                } else {
-                    amulet.push('+'+MATH.random(0.02,0.03).toFixed(2)+' instantBlueConversion')
-                }
+                    if(Math.random()<0.333){
+                        amulet.push('+'+MATH.random(0.02,0.05).toFixed(2)+' instantRedConversion')
+                    } else if(Math.random()<0.5){
+                        amulet.push('+'+MATH.random(0.02,0.05).toFixed(2)+' instantWhiteConversion')
+                    } else {
+                        amulet.push('+'+MATH.random(0.02,0.05).toFixed(2)+' instantBlueConversion')
+                    }
 
-                if(Math.random()<0.333){
-                    amulet.push('*'+MATH.random(1.02,1.06).toFixed(2)+' flamePollen')
-                } else if(Math.random()<0.5){
-                    amulet.push('*'+MATH.random(1.02,1.06).toFixed(2)+' bubblePollen')
-                } else {
-                    amulet.push('*'+MATH.random(1.02,1.06).toFixed(2)+' markDuration')
-                }
+                    if(Math.random()<0.333){
+                        amulet.push('*'+MATH.random(1.04,1.08).toFixed(2)+' flamePollen')
+                    } else if(Math.random()<0.5){
+                        amulet.push('*'+MATH.random(1.04,1.08).toFixed(2)+' bubblePollen')
+                    } else {
+                        amulet.push('*'+MATH.random(1.04,1.08).toFixed(2)+' markDuration')
+                    }
 
-            break
+                break
 
-            case 'gold':
+                case 'diamond':
 
-                amulet.push('*'+MATH.random(1.17,1.27).toFixed(2)+' capacityMultiplier')
-                amulet.push('*'+MATH.random(1.06,1.1).toFixed(2)+' beeAttack')
+                    amulet.push('*'+MATH.random(1.27,1.34).toFixed(2)+' capacityMultiplier')
+                    amulet.push('*'+MATH.random(1.07,1.12).toFixed(2)+' beeAttack')
 
-                if(Math.random()<0.25){
-                    amulet.push('*'+MATH.random(1.03,1.07).toFixed(2)+' POLLEN')
-                } else {
-                    amulet.push('*'+MATH.random(1.15,1.2).toFixed(2)+' '+['red','blue','white'][(Math.random()*3)|0]+'Pollen')
-                }
+                    if(Math.random()<0.25){
+                        amulet.push('*'+MATH.random(1.04,1.08).toFixed(2)+' POLLEN')
+                    } else {
+                        amulet.push('*'+MATH.random(1.2,1.25).toFixed(2)+' '+['red','blue','white'][(Math.random()*3)|0]+'Pollen')
+                    }
 
-                if(Math.random()<0.333){
-                    amulet.push('+'+MATH.random(0.02,0.05).toFixed(2)+' instantRedConversion')
-                } else if(Math.random()<0.5){
-                    amulet.push('+'+MATH.random(0.02,0.05).toFixed(2)+' instantWhiteConversion')
-                } else {
-                    amulet.push('+'+MATH.random(0.02,0.05).toFixed(2)+' instantBlueConversion')
-                }
+                    if(Math.random()<0.333){
+                        amulet.push('+'+MATH.random(0.04,0.09).toFixed(2)+' instantRedConversion')
+                    } else if(Math.random()<0.5){
+                        amulet.push('+'+MATH.random(0.04,0.09).toFixed(2)+' instantWhiteConversion')
+                    } else {
+                        amulet.push('+'+MATH.random(0.04,0.09).toFixed(2)+' instantBlueConversion')
+                    }
 
-                if(Math.random()<0.333){
-                    amulet.push('*'+MATH.random(1.04,1.08).toFixed(2)+' flamePollen')
-                } else if(Math.random()<0.5){
-                    amulet.push('*'+MATH.random(1.04,1.08).toFixed(2)+' bubblePollen')
-                } else {
-                    amulet.push('*'+MATH.random(1.04,1.08).toFixed(2)+' markDuration')
-                }
-
-            break
-
-            case 'diamond':
-
-                amulet.push('*'+MATH.random(1.27,1.34).toFixed(2)+' capacityMultiplier')
-                amulet.push('*'+MATH.random(1.07,1.12).toFixed(2)+' beeAttack')
-
-                if(Math.random()<0.25){
-                    amulet.push('*'+MATH.random(1.04,1.08).toFixed(2)+' POLLEN')
-                } else {
-                    amulet.push('*'+MATH.random(1.2,1.25).toFixed(2)+' '+['red','blue','white'][(Math.random()*3)|0]+'Pollen')
-                }
-
-                if(Math.random()<0.333){
-                    amulet.push('+'+MATH.random(0.04,0.09).toFixed(2)+' instantRedConversion')
-                } else if(Math.random()<0.5){
-                    amulet.push('+'+MATH.random(0.04,0.09).toFixed(2)+' instantWhiteConversion')
-                } else {
-                    amulet.push('+'+MATH.random(0.04,0.09).toFixed(2)+' instantBlueConversion')
-                }
-
-                if(Math.random()<0.333){
-                    amulet.push('*'+MATH.random(1.05,1.12).toFixed(2)+' flamePollen')
-                } else if(Math.random()<0.5){
-                    amulet.push('*'+MATH.random(1.05,1.12).toFixed(2)+' bubblePollen')
-                } else {
-                    amulet.push('*'+MATH.random(1.04,1.08).toFixed(2)+' markDuration')
-                }
-
-                if(Math.random()<0.5){
+                    if(Math.random()<0.333){
+                        amulet.push('*'+MATH.random(1.05,1.12).toFixed(2)+' flamePollen')
+                    } else if(Math.random()<0.5){
+                        amulet.push('*'+MATH.random(1.05,1.12).toFixed(2)+' bubblePollen')
+                    } else {
+                        amulet.push('*'+MATH.random(1.04,1.08).toFixed(2)+' markDuration')
+                    }
 
                     if(Math.random()<0.5){
-                        amulet.push('*1.05 nectarMultiplier')
-                    } else {
-                        amulet.push('*'+MATH.random(1.15,1.35).toFixed(2)+' honeyFromTokens')
+
+                        if(Math.random()<0.5){
+                            amulet.push('*1.05 nectarMultiplier')
+                        } else {
+                            amulet.push('*'+MATH.random(1.15,1.35).toFixed(2)+' honeyFromTokens')
+                        }
+                        } else {
+
+                        if(Math.random()<0.5){
+                        amulet.push('*'+MATH.random(1.05,1.11).toFixed(2)+' superCritPower')
+                        } else {
+                            amulet.push('*'+MATH.random(1.1,1.2).toFixed(2)+' tokenLifespan')
+                        }
                     }
+
+                break
+
+                case 'supreme':
+
+                    amulet.push('*'+MATH.random(1.35,1.5).toFixed(2)+' capacityMultiplier')
+                    amulet.push('*'+MATH.random(1.1,1.15).toFixed(2)+' beeAttack')
+
+                    if(Math.random()<0.25){
+                        amulet.push('*'+MATH.random(1.05,1.1).toFixed(2)+' POLLEN')
                     } else {
+                        amulet.push('*'+MATH.random(1.2,1.3).toFixed(2)+' '+['red','blue','white'][(Math.random()*3)|0]+'Pollen')
+                    }
+
+                    if(Math.random()<0.333){
+                        amulet.push('+'+MATH.random(0.07,0.13).toFixed(2)+' instantRedConversion')
+                    } else if(Math.random()<0.5){
+                        amulet.push('+'+MATH.random(0.07,0.13).toFixed(2)+' instantWhiteConversion')
+                    } else {
+                        amulet.push('+'+MATH.random(0.07,0.13).toFixed(2)+' instantBlueConversion')
+                    }
+
+                    if(Math.random()<0.333){
+                        amulet.push('*'+MATH.random(1.07,1.15).toFixed(2)+' flamePollen')
+                    } else if(Math.random()<0.5){
+                        amulet.push('*'+MATH.random(1.07,1.15).toFixed(2)+' bubblePollen')
+                    } else {
+                        amulet.push('*'+MATH.random(1.04,1.08).toFixed(2)+' markDuration')
+                    }
 
                     if(Math.random()<0.5){
-                    amulet.push('*'+MATH.random(1.05,1.11).toFixed(2)+' superCritPower')
-                    } else {
-                        amulet.push('*'+MATH.random(1.1,1.2).toFixed(2)+' tokenLifespan')
+
+                        if(Math.random()<0.5){
+                            amulet.push('*1.05 nectarMultiplier')
+                        } else {
+                            amulet.push('*'+MATH.random(1.35,1.6).toFixed(2)+' honeyFromTokens')
+                        }
+                        } else {
+
+                        if(Math.random()<0.5){
+                        amulet.push('*'+MATH.random(1.08,1.15).toFixed(2)+' superCritPower')
+                        } else {
+                            amulet.push('*'+MATH.random(1.2,1.3).toFixed(2)+' tokenLifespan')
+                        }
                     }
-                }
 
-            break
+                break
 
-            case 'supreme':
+            }
 
-                amulet.push('*'+MATH.random(1.35,1.5).toFixed(2)+' capacityMultiplier')
-                amulet.push('*'+MATH.random(1.1,1.15).toFixed(2)+' beeAttack')
-
-                if(Math.random()<0.25){
-                    amulet.push('*'+MATH.random(1.05,1.1).toFixed(2)+' POLLEN')
-                } else {
-                    amulet.push('*'+MATH.random(1.2,1.3).toFixed(2)+' '+['red','blue','white'][(Math.random()*3)|0]+'Pollen')
-                }
-
-                if(Math.random()<0.333){
-                    amulet.push('+'+MATH.random(0.07,0.13).toFixed(2)+' instantRedConversion')
-                } else if(Math.random()<0.5){
-                    amulet.push('+'+MATH.random(0.07,0.13).toFixed(2)+' instantWhiteConversion')
-                } else {
-                    amulet.push('+'+MATH.random(0.07,0.13).toFixed(2)+' instantBlueConversion')
-                }
-
-                if(Math.random()<0.333){
-                    amulet.push('*'+MATH.random(1.07,1.15).toFixed(2)+' flamePollen')
-                } else if(Math.random()<0.5){
-                    amulet.push('*'+MATH.random(1.07,1.15).toFixed(2)+' bubblePollen')
-                } else {
-                    amulet.push('*'+MATH.random(1.04,1.08).toFixed(2)+' markDuration')
-                }
-
-                if(Math.random()<0.5){
-
-                    if(Math.random()<0.5){
-                        amulet.push('*1.05 nectarMultiplier')
-                    } else {
-                        amulet.push('*'+MATH.random(1.35,1.6).toFixed(2)+' honeyFromTokens')
-                    }
-                    } else {
-
-                    if(Math.random()<0.5){
-                    amulet.push('*'+MATH.random(1.08,1.15).toFixed(2)+' superCritPower')
-                    } else {
-                        amulet.push('*'+MATH.random(1.2,1.3).toFixed(2)+' tokenLifespan')
-                    }
-                }
-
-            break
+            out.showGeneratedAmulet(t+'CogAmulet',amulet)
 
         }
-
-        out.showGeneratedAmulet(t+'CogAmulet',amulet)
 
         if(out.roboChallenge.mobSpawnIntervalID!==undefined)
             window.clearInterval(out.roboChallenge.mobSpawnIntervalID)
@@ -24792,7 +24796,7 @@ player=(function(out){
             }
         }
     
-        if(out.roboChallenge&&out.roboChallenge.isPlaying){
+        if(out.roboChallenge&&out.roboChallenge.isPlaying&&!(frameCount%30)){
 
             roboQuestMenu.innerHTML="<div style='font-size:21px;margin-top:5px'>Robo Challenge</div><div style='font-size:13px;margin-left:12px;margin-top:5px;margin-bottom:10px'>"+(out.roboChallenge.questCompleted?"<b style='font-size:17px'>DONE!</b><br>Talk to Robo Bear!":"Round: "+out.roboChallenge.round+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Time: "+MATH.doTime(out.roboChallenge.timer))+"</div>"
 
@@ -24809,7 +24813,10 @@ player=(function(out){
                     out.roboChallenge.questCompleted=false
                 }
             }
-            
+
+            roboQuestMenu.innerHTML+="<div id='endRoboChallenge' style='position:absolute;left:50%;top:100%;width:150px;border-radius:10px;border:3px solid black;color:black;background-color:rgb(255,30,30);cursor:pointer;font-size:20px;transform:translate(-50%,-50%);padding:3px' onclick='window.endRoboChallenge()'>End Challenge</div>"
+
+            window.endRoboChallenge=out.endRoboChallenge
         }
     }
 
