@@ -30,8 +30,9 @@ window.dialogue_blackBear=function(player,items){
   
 }
 
-window.dialogue_polarBear=function(player,items){
-    
+window.dialogue_polarBear=function(player,items,NPCs){
+
+
     let addCommas=(s)=>{for(let i=s.length-3;i>0;i-=3){s=s.substring(0,i)+','+s.substr(i,s.length)}return s},doGrammar=(s)=>{let str=s.slice(),_s='';for(let i in str){if(str[i].toUpperCase()===str[i]){_s=_s+' '+str[i]}else{_s=_s+str[i]}}return _s[0].toUpperCase()+_s.substring(1,_s.length)},addReward=(arr)=>{
         
         player.addEffect('polarPower')
@@ -63,6 +64,18 @@ window.dialogue_polarBear=function(player,items){
     
     if(Math.random()<0.5) rew.push(['ticket',1])
     if(Math.random()<0.2) rew.push([['glitter','magicBean','oil','enzymes','glue'][(Math.random()*5)|0],1])
+
+    let seed=NPCs.polarBear.seed
+
+    return function(index){
+
+        return ['a',function(){player.addQuest('ไม่เข้าใจ',[['pollen',0]],'polarBear')},'b',function(){addReward([['ticket',1]])}]
+    }
+    
+    
+    
+    // {diaglogueAmount:4,dialogue:['a',function(){player.addQuest('name',[['pollen',0]])},'b',function(){addReward([['ticket',1]])}]}
+
 
     return ["Hey there! You hungry? If you collect the ingredients, I'll cook us up something good.","So good it'll permanently increase the maximum energy of your bees by 5%! I'll even throw in some honey for dessert!","Check the Quest menu to see our next recipe.",
 

@@ -23218,8 +23218,10 @@ player=(function(out){
         if(NPCs[i].dialogue[NPCs[i].dialogueIndex]===undefined){
             
             if(NPCs[i].repeatable){
+
+                NPCs[i].dialogueIndex=NPCs[i].dialogueIndex%NPCs[i].portionLength
                 
-                NPCs[i].dialogue.push(...window['dialogue_'+i](out,items,NPCs))
+                NPCs[i].dialogue.push(...window['dialogue_'+i](out,items,NPCs)(NPCs[i].dialogueIndex))
 
             } else {
 
@@ -25448,6 +25450,8 @@ NPCs={
     
     polarBear:{
         
+        portionLength:4,
+        seed:Math.random()*4294967296|0,
         repeatable:true,
         viewMatrix:[-1.5,24.5,60,Math.PI,-0.25],
         exclaimPos:[-1.5,22.5,66],
@@ -25459,6 +25463,7 @@ NPCs={
 
     roboBear:{
         
+        seed:Math.random()*4294967296|0,
         repeatable:true,
         viewMatrix:[53.5-5,7,40,MATH.HALF_PI,-0.25],
         exclaimPos:[53.5,5.5,40],
@@ -30273,7 +30278,8 @@ function RUN_SAVE_CODE(string){
 
     for(let i in NPCs){
         
-        NPCs[i].dialogueIndex=save.NPCs[i]
+        NPCs[i].dialogueIndex=save.NPCs[i].index
+        NPCs[i].seed=save.NPCs[i].seed
         NPCs[i].activeQuest=activeQuests[i]
     }
 }
@@ -30360,7 +30366,7 @@ function GENERATE_SAVE_CODE(){
 
     for(let i in NPCs){
         
-        save.NPCs[i]=NPCs[i].dialogueIndex
+        save.NPCs[i]={index:NPCs[i].dialogueIndex,seed:NPCs[i].seed}
     }
 
     let string=JSON.stringify(save)
