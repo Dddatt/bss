@@ -68,7 +68,7 @@ window.dialogue_polarBear=function(player,items){
 
         function(){
 
-            switch((Math.random()*8)|0){
+            switch(    3||    (Math.random()*8)|0){
 
                 case 0:
 

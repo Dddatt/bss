@@ -1,52 +1,8 @@
 <!DOCTYPE html>
 <!--
 
-
-lalalalalalalalalalalalalalalalalalala
-
-
-
-
-
-whoops the deadline is gone
-
-
-
 sound is currently disabled to stop my computer from becoming a waffle cooker
 
-
-
-
-        let amulet=[]
-
-        player.stats.moonAmulets++
-
-        amulet.push(('*'+Math.min(1.05+player.stats.moonAmulets*0.05,1.5).toFixed(2)+' capacityMultiplier').replace('0 ',' '))
-
-        let g=Math.min(player.stats.moonAmulets,25)
-
-        if(Math.random()<0.2+g*0.01){
-
-            amulet.push('*'+MATH.random(1.01+g*0.001,1.02+g*0.002).toFixed(2)+' nectarMultiplier')
-        }
-
-        if(Math.random()<0.25+g*0.0125){
-
-            amulet.push('+'+MATH.random(0.08+g*0.01,0.15+g*0.02).toFixed(2)+' lootLuck')
-        }
-
-        if(Math.random()<0.5){
-
-            amulet.push('*'+MATH.random(1.05+25*0.007,1.15+g*0.014).toFixed(2)+' whitePollen')
-
-        } else {
-
-            amulet.push('*'+MATH.random(1.03,1.1).toFixed(2)+' bondFromTreats')
-        }
-        
-        amulet.push(...MATH.selectFromArray(['*'+MATH.random(1.01+g*0.001,1.04+g*0.001).toFixed(2)+' POLLEN','*'+MATH.random(1.07+g*0.005,1.15+g*0.005).toFixed(2)+' pollenFromTools','*'+MATH.random(1.07+g*0.006,1.15+g*0.006).toFixed(2)+' pollenFromBees','+'+MATH.random(0.01+g*0.003,0.04+g*0.0036).toFixed(2)+' INSTANT_CONVERSION','*'+MATH.random(1.01+g*0.001,1.02+g*0.001).toFixed(2)+' honeyPerPollen',],g===25&&Math.random()<0.333?2:1))
-
-        player.showGeneratedAmulet('moonAmulet',amulet)
 
 
 -->
@@ -3818,10 +3774,10 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         <text id='royalJelly_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
         
         <g transform='scale(1.1,1.1) translate(-6,-6)'>
-        <rect x='25' y='30' width='25' height='25' rx='6' fill='rgb(94, 235, 214)' stroke='black' stroke-width='2'></rect>
+        <rect x='25' y='30' width='25' height='25' rx='6' fill='rgb(94, 235, 214)' stroke='black' stroke-width='1.5'></rect>
         
         <path stroke='rgb(168, 50, 201)' stroke-width='2' fill='rgb(0,0,0,0)' d='M 33 49L 35 36C 45 39 39 44 34 43L40 48'></path>
-        <path stroke='black' stroke-width='2' fill='rgb(245, 202, 12)' d='M 26 30L 25 22L 33 27L 37 17L 41 27L 48 22L 48 30'></path>
+        <path stroke='black' stroke-width='1.5' fill='rgb(245, 202, 12)' d='M 26 32L 25 22L 33 27L 37 17L 41 27L 48 22L 48 32z'></path>
         <circle cx='25' cy='23' r='3' fill='rgb(245, 229, 12)' stroke='black' stroke-width='1.5'></circle>
         <circle cx='48' cy='23' r='3' fill='rgb(245, 229, 12)' stroke='black' stroke-width='1.5'></circle>
         <circle cx='37' cy='15' r='3.5' fill='rgb(245, 229, 12)' stroke='black' stroke-width='1.5'></circle>
@@ -3839,8 +3795,8 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         <text id='starJelly_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text>
         
         <g transform='scale(1.1,1.1) translate(-6,-6)'>
-        <rect x='25' y='30' width='25' height='25' rx='6' fill='rgb(94, 235, 214)' stroke='black' stroke-width='2'></rect>
-        <path stroke='black' stroke-width='2' fill='rgb(245, 202, 12)' d='M 26 30L 25 22L 33 27L 37 17L 41 27L 48 22L 48 30'></path>
+        <rect x='25' y='30' width='25' height='25' rx='6' fill='rgb(94, 235, 214)' stroke='black' stroke-width='1.5'></rect>
+        <path stroke='black' stroke-width='2' fill='rgb(245, 202, 12)' d='M 26 32L 25 22L 33 27L 37 17L 41 27L 48 22L 48 32z'></path>
         <circle cx='25' cy='23' r='3' fill='rgb(245, 229, 12)' stroke='black' stroke-width='1.5'></circle>
         <circle cx='48' cy='23' r='3' fill='rgb(245, 229, 12)' stroke='black' stroke-width='1.5'></circle>
         <circle cx='37' cy='15' r='3.5' fill='rgb(245, 229, 12)' stroke='black' stroke-width='1.5'></circle>
@@ -4219,8 +4175,10 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
 
 <div id='actionWarning' style='position:fixed;margin-left:50%;margin-top:5px;width:360px;height:60px;z-index:2;transform:translate(-50%,0px);display:none'>
     
-    <div style='position:fixed;margin-left:60px;margin-top:0px;width:300px;height:50px;background-color:rgb(30,70,255,0.8);border-radius:3px;padding:0px;font-size:18px;color:white;text-align:center;padding-top:0px' id='actionName'></div>
+    <div style='position:fixed;margin-left:60px;margin-top:5.5px;width:300px;height:50px;background-color:rgb(30,70,255,0.8);border-radius:3px;padding:0px;font-size:18px;color:white;text-align:center;padding-top:0px' id='actionNameBox'><div id='actionName' style='position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) translate(0,-2px);width:300px;'></div></div>
+
     <div style='position:fixed;margin-left:0px;margin-top:0px;width:45px;height:55px;background-color:rgb(200,200,200);border-radius:3px;font-size:40px;color:white;padding-left:15px;padding-top:0px;border:3px solid rgb(50,50,50)' id='actionEButton'>E</div>
+
     <div style='position:fixed;margin-left:0px;margin-top:0px;width:360px;height:50px;padding-left:0px;padding-top:10px' id='actionHoverDarken'></div>
     
 </div>
@@ -5609,8 +5567,8 @@ let triggers={
         
         isMachine:true,requirements:function(player){
             
-            if(player.pollen<1) return 'You must have pollen to use the instant converter'
-            if(items.ticket.amount<1) return 'You need 1 ticket to use the instant converter'
+            if(player.pollen<1) return 'You must have pollen to use the instant converter!'
+            if(items.ticket.amount<1) return 'You need 1 ticket to use the instant converter!'
         
         },minX:-39-4,maxX:-39+4,minY:30,maxY:37,minZ:88-4,maxZ:88+4,message:'Use Instant Converter<br>(1 Ticket)',func:function(player){
             
@@ -5627,8 +5585,8 @@ let triggers={
         
         isMachine:true,requirements:function(player){
             
-            if(player.pollen<1) return 'You must have pollen to use the instant converter'
-            if(items.ticket.amount<1) return 'You need 1 ticket to use the instant converter'
+            if(player.pollen<1) return 'You must have pollen to use the instant converter!'
+            if(items.ticket.amount<1) return 'You need 1 ticket to use the instant converter!'
         
         },minX:-69-3,maxX:-69+3,minY:11,maxY:17,minZ:62.5-2.5,maxZ:62.5+2.5,message:'Use Instant Converter<br>(1 Ticket)',func:function(player){
             
@@ -5638,6 +5596,59 @@ let triggers={
             items.ticket.amount--
             player.updateInventory()
             
+        }
+    },
+
+    moon_amulet_generator:{
+        
+        isMachine:true,requirements:function(player){
+            
+            if(items.moonCharm.amount<50) return 'You need 50 moon charms to create a moon amulet!'
+
+        },minX:-15-4.5*0.5,maxX:-15+4.5*0.5,minY:11,maxY:18,minZ:60.5-2,maxZ:60.5+2,message:'Generate Moon Amulet<br>(50 Moon Charms)',func:function(player){
+            
+            items.moonCharm.amount-=50
+            player.updateInventory()
+
+            let amulet=[]
+
+            player.stats.moonAmulets++
+
+            if(player.stats.moonAmulets<25){
+
+                player.addMessage('🌙 The moon seems to grow brighter... 🌙')
+
+            } else {
+
+                player.addMessage('🌙 The moon seems happy! 🌙')
+            }
+
+            amulet.push(('*'+Math.min(1+player.stats.moonAmulets*0.02,1.5).toFixed(2)+' capacityMultiplier').replace('0 ',' '))
+
+            let g=Math.min(player.stats.moonAmulets,25)
+
+            if(Math.random()<0.2+g*0.01){
+
+                amulet.push('*'+MATH.random(1.01+g*0.001,1.02+g*0.002).toFixed(2)+' nectarMultiplier')
+            }
+
+            if(Math.random()<0.25+g*0.0125){
+
+                amulet.push('+'+MATH.random(0.08+g*0.01,0.15+g*0.02).toFixed(2)+' lootLuck')
+            }
+
+            if(Math.random()<0.6){
+
+                amulet.push('*'+MATH.random(1.05+25*0.007,1.15+g*0.014).toFixed(2)+' whitePollen')
+
+            } else {
+
+                amulet.push('*'+MATH.random(1.03,1.1).toFixed(2)+' bondFromTreats')
+            }
+            
+            amulet.push(...MATH.selectFromArray(['*'+MATH.random(1.01+g*0.001,1.04+g*0.001).toFixed(2)+' POLLEN','*'+MATH.random(1.07+g*0.005,1.15+g*0.005).toFixed(2)+' pollenFromTools','*'+MATH.random(1.07+g*0.006,1.15+g*0.006).toFixed(2)+' pollenFromBees','+'+MATH.random(0.01+g*0.003,0.04+g*0.0036).toFixed(2)+' INSTANT_CONVERSION','*'+MATH.random(1.01+g*0.001,1.02+g*0.001).toFixed(2)+' honeyPerPollen',],g===25&&Math.random()<0.333?2:1))
+
+            player.showGeneratedAmulet('moonAmulet',amulet)
         }
     },
 
@@ -15064,8 +15075,9 @@ class PetalShuriken {
 
 class BugMob {
     
-    constructor(spawnPos,bounds,level,health,type){
+    constructor(spawnPos,bounds,level,health,type,id){
         
+        this.id=id
         this.type=type
         this.starSawHitTimer=0
         this.level=level
@@ -15073,6 +15085,7 @@ class BugMob {
         this.maxHealth=this.health
         this.spawnPos=spawnPos
         this.pos=spawnPos
+        this.resMessPos=[spawnPos[0],spawnPos[1]+3,spawnPos[2]]
         this.state='hide'
         this.bounds=bounds
         this.checkTimer=TIME
@@ -15080,6 +15093,14 @@ class BugMob {
         this.flameTimer=0
         this.damageTimer=0
         this.mindHacked=0
+
+        this.grammaredName=MATH.doGrammar(type)
+
+        if(player.extraInfo[this.id]>0){
+
+            this.state='dead'
+            this.respawnTimer=player.extraInfo[this.id]
+        }
     }
     
     die(index){
@@ -15128,7 +15149,7 @@ class BugMob {
                     
                     player.stats[this.type]++
                     this.state='dead'
-                    this.respawnTimer={rhinoBeetle:2*60,ladybug:2*60,spider:8*60,werewolf:13*60,mantis:7*60,scropion:7*60,kingBeetle:35*60,tunnelBear:50*60}[this.type]/player.monsterRespawnTime
+                    this.respawnTimer={rhinoBeetle:2*60,ladybug:2*60,spider:10*60,werewolf:15*60,mantis:7*60,scorpion:7*60,kingBeetle:50*60,tunnelBear:75*60}[this.type]/player.monsterRespawnTime
                     
                     let amountOfTokens=((player.lootLuck-1)|0)
                     
@@ -15391,6 +15412,11 @@ class BugMob {
             case 'dead':
                 
                 this.respawnTimer-=dt
+
+                textRenderer.addSingle(this.grammaredName,this.resMessPos,COLORS.whiteArr,-1.5,false,false,0,0.2)
+                textRenderer.addSingle(MATH.doTime(this.respawnTimer),this.resMessPos,COLORS.whiteArr,-1.5,false,false,0,-0.2)
+
+                player.extraInfo[this.id]=this.respawnTimer
                 
                 if(this.respawnTimer<=0&&!player.fieldIn){
                     
@@ -21216,6 +21242,7 @@ let dialogueBox=document.getElementById('dialogueBox'),
     NPCDialogue=document.getElementById('NPCDialogue'),
     actionWarning=document.getElementById('actionWarning'),
     actionName=document.getElementById('actionName'),
+    actionNameBox=document.getElementById('actionNameBox'),
     shopUI=document.getElementById('shopUI'),
     leftShopButton=document.getElementById('leftShopButton'),
     rightShopButton=document.getElementById('rightShopButton'),
@@ -21867,6 +21894,8 @@ gear.tool={
 
 player=(function(out){
     
+    out.extraInfo={}
+
     out.drives={
         
         red:50,
@@ -30041,45 +30070,6 @@ document.addEventListener('pointerlockchange',function(e){
 ctx.textAlign='center'
 ctx.textBaseline='middle'
 
-//bamb
-objects.mobs.push(new BugMob([-50,3,61],{minX:-52,maxX:-52+21,minZ:50,maxZ:50+13,minY:1,maxY:7},2,15,'rhinoBeetle'))
-objects.mobs.push(new BugMob([-33,3,61],{minX:-52,maxX:-52+21,minZ:50,maxZ:50+13,minY:1,maxY:7},3,18,'rhinoBeetle'))
-
-//bluf
-objects.mobs.push(new BugMob([-55+22,-0.5,29+11],{minX:-55,maxX:-55+24,minZ:29,maxZ:29+13,minY:-2,maxY:5},1,8,'rhinoBeetle'))
-
-//clov
-objects.mobs.push(new BugMob([-50+17,5,9.5],{minX:-50,maxX:-50+18,minZ:8.5,maxZ:8.5+18,minY:3,maxY:8},2,12,'rhinoBeetle'))
-objects.mobs.push(new BugMob([-53,5,9.5+15],{minX:-50,maxX:-50+18,minZ:8.5,maxZ:8.5+18,minY:3,maxY:8},2,10,'ladybug'))
-
-//pineap
-objects.mobs.push(new BugMob([-71.5+17,13.5,78+9],{minX:-71.5,maxX:-71.5+19,minZ:78,maxZ:78+15,minY:11.5,maxY:18},5,20,'rhinoBeetle'))
-objects.mobs.push(new BugMob([-71.5+19*0.5,13.5,78+14],{minX:-71.5,maxX:-71.5+19,minZ:78,maxZ:78+15,minY:11.5,maxY:18},4,25,'mantis'))
-
-//straw
-objects.mobs.push(new BugMob([7.5+1,3,47+14],{minX:7.5,maxX:7.5+15,minZ:47,maxZ:47+15,minY:1,maxY:6},2,10,'ladybug'))
-objects.mobs.push(new BugMob([7.5+14,3,47+1],{minX:7.5,maxX:7.5+15,minZ:47,maxZ:47+15,minY:1,maxY:6},3,12,'ladybug'))
-
-//mush
-objects.mobs.push(new BugMob([-6+11,-0.5,29+12],{minX:-6,maxX:-6+19,minZ:29,maxZ:29+13,minY:-2,maxY:4},1,6,'ladybug'))
-
-//spi
-objects.mobs.push(new BugMob([-20+19*0.5,2.75,47.5+15],{minX:-20,maxX:-20+19,minZ:47.5,maxZ:47.5+14,minY:-0,maxY:6},4,25,'spider'))
-
-
-objects.mobs.push(new BugMob([4,12.5+1,(63.5+76.5+12)*0.5],{minX:4,maxX:4+31+15,minZ:63.5,maxZ:76.5+12,minY:11,maxY:15},6,75,'werewolf'))
-
-//pine
-objects.mobs.push(new BugMob([31+14,13.5,75],{minX:31,maxX:31+15,minZ:74,maxZ:74+19,minY:11,maxY:15},5,35,'mantis'))
-objects.mobs.push(new BugMob([31+14,13.5,74+18],{minX:31,maxX:31+15,minZ:74,maxZ:74+19,minY:11,maxY:15},6,45,'mantis'))
-
-//rose
-objects.mobs.push(new BugMob([30+19,2.75,32.5],{minX:31,maxX:31+19,minZ:31.5,maxZ:31.5+13,minY:0,maxY:6},5,35,'scorpion'))
-objects.mobs.push(new BugMob([32,2.75,30.5+13],{minX:31,maxX:31+19,minZ:31.5,maxZ:31.5+13,minY:0,maxY:6},5,35,'scorpion'))
-
-objects.mobs.push(new BugMob([-53+25*0.5,-0.75,8.5],{minX:-55,maxX:-53+25,minZ:6.5,maxZ:6.5+20,minY:-10,maxY:3.5},7,2500,'kingBeetle'))
-
-
 if(window.thisProgramIsInFullScreen){
     
     document.getElementById('UIBar').style.display='none'
@@ -30172,11 +30162,6 @@ window.deleteBeequip=function(){
     player.updateHive()
 }
 
-objects.mobs.push(new MondoChick('MountainTopField',7))
-
-// objects.mobs.push(new RogueViciousBee('DandelionField',MATH.random(1,13)|0))
-// objects.mobs.push(new Cloud('DandelionField',2,2,60,true))
-
 
 ctx.textAlign='center'
 ctx.textBaseline='middle'
@@ -30215,6 +30200,7 @@ function RUN_SAVE_CODE(string){
         return
     }
 
+    player.extraInfo=save.extraInfo
     player.honey=save.honey
     player.pollen=save.pollen
     player.currentGear=save.currentGear
@@ -30296,6 +30282,7 @@ function GENERATE_SAVE_CODE(){
 
     let save={}
 
+    save.extraInfo=player.extraInfo
     save.honey=player.honey
     save.pollen=player.pollen
     save.hive=[]
@@ -30425,6 +30412,7 @@ window.addEventListener('beforeunload',function(e){
 
 player.updateGear()
 
+
 for(let i=0;i<7;i++){
 
 
@@ -30435,6 +30423,48 @@ for(let i=0;i<7;i++){
     objects.mobs.push(new Puffshroom('DandelionField',i*3,12,5*60,1+i*3,'mythicPuffshroom'))
 }
 
+objects.mobs.push(new MondoChick('MountainTopField',7))
+
+// objects.mobs.push(new RogueViciousBee('DandelionField',MATH.random(1,13)|0))
+// objects.mobs.push(new Cloud('DandelionField',2,2,60,true))
+
+//bamb
+objects.mobs.push(new BugMob([-50,3,61],{minX:-52,maxX:-52+21,minZ:50,maxZ:50+13,minY:1,maxY:7},2,15,'rhinoBeetle','mob_bamb1'))
+objects.mobs.push(new BugMob([-33,3,61],{minX:-52,maxX:-52+21,minZ:50,maxZ:50+13,minY:1,maxY:7},3,18,'rhinoBeetle','mob_bamb2'))
+
+//bluf
+objects.mobs.push(new BugMob([-55+22,-0.5,29+11],{minX:-55,maxX:-55+24,minZ:29,maxZ:29+13,minY:-2,maxY:5},1,8,'rhinoBeetle','mob_bluf1'))
+
+//clov
+objects.mobs.push(new BugMob([-50+17,5,9.5],{minX:-50,maxX:-50+18,minZ:8.5,maxZ:8.5+18,minY:3,maxY:8},2,12,'rhinoBeetle','mob_clov1'))
+objects.mobs.push(new BugMob([-53,5,9.5+15],{minX:-50,maxX:-50+18,minZ:8.5,maxZ:8.5+18,minY:3,maxY:8},2,10,'ladybug','mob_clov2'))
+
+//pineap
+objects.mobs.push(new BugMob([-71.5+17,13.5,78+9],{minX:-71.5,maxX:-71.5+19,minZ:78,maxZ:78+15,minY:11.5,maxY:18},5,20,'rhinoBeetle','mob_pinea1'))
+objects.mobs.push(new BugMob([-71.5+19*0.5,13.5,78+14],{minX:-71.5,maxX:-71.5+19,minZ:78,maxZ:78+15,minY:11.5,maxY:18},4,25,'mantis','mob_pinea2'))
+
+//straw
+objects.mobs.push(new BugMob([6.5,3,47+14],{minX:5.5,maxX:7.5+15,minZ:47,maxZ:47+16,minY:1,maxY:6},2,10,'ladybug','mob_straw1'))
+objects.mobs.push(new BugMob([7.5+13,3,47+1],{minX:5.5,maxX:7.5+15,minZ:47,maxZ:47+16,minY:1,maxY:6},3,12,'ladybug','mob_straw2'))
+
+//mush
+objects.mobs.push(new BugMob([-6+11,-0.5,29+12],{minX:-6,maxX:-6+19,minZ:29,maxZ:29+13,minY:-2,maxY:4},1,6,'ladybug','mob_mush1'))
+
+//spi
+objects.mobs.push(new BugMob([-20+19*0.5,2.75,47.5+15],{minX:-20,maxX:-20+19,minZ:47.5,maxZ:47.5+14,minY:-0,maxY:6},4,25,'spider','mob_spi1'))
+
+
+objects.mobs.push(new BugMob([4,12.5+1,(63.5+76.5+12)*0.5],{minX:4,maxX:4+31+15,minZ:63.5,maxZ:76.5+12,minY:11,maxY:15},6,75,'werewolf','mob_were1'))
+
+//pine
+objects.mobs.push(new BugMob([31+14,13.5,75],{minX:31,maxX:31+15,minZ:74,maxZ:74+19,minY:11,maxY:15},5,35,'mantis','mob_pine1'))
+objects.mobs.push(new BugMob([31+14,13.5,74+18],{minX:31,maxX:31+15,minZ:74,maxZ:74+19,minY:11,maxY:15},6,45,'mantis','mob_pine2'))
+
+//rose
+objects.mobs.push(new BugMob([30+19,2.75,32.5],{minX:31,maxX:31+19,minZ:31.5,maxZ:31.5+13,minY:0,maxY:6},5,35,'scorpion','mob_rose1'))
+objects.mobs.push(new BugMob([32,2.75,30.5+13],{minX:31,maxX:31+19,minZ:31.5,maxZ:31.5+13,minY:0,maxY:6},5,35,'scorpion','mob_rose2'))
+
+objects.mobs.push(new BugMob([-53+25*0.5,-0.75,8.5],{minX:-55,maxX:-53+25,minZ:6.5,maxZ:6.5+20,minY:-10,maxY:3.5},7,2500,'kingBeetle','mob_king1'))
 
 function loop(now){
 
@@ -30574,7 +30604,7 @@ function loop(now){
                 if(!useReq){
 
                     actionName.innerHTML=triggers[i].message
-                    actionName.style.backgroundColor='rgb(30,70,255,0.8)'
+                    actionNameBox.style.backgroundColor='rgb(30,70,255,0.8)'
                     document.getElementById('actionEButton').style.display='block'
                     
                     if(user.clickedKeys.e){
@@ -30585,7 +30615,7 @@ function loop(now){
                 } else {
                     
                     actionName.innerHTML=useReq
-                    actionName.style.backgroundColor='rgb(255,0,0,0.6)'
+                    actionNameBox.style.backgroundColor='rgb(255,0,0,0.6)'
                     document.getElementById('actionEButton').style.display='none'
                 }
 
@@ -30840,7 +30870,12 @@ function loop(now){
         -31,40.8,68.25,6,-0.2,-0.2,-1,0,beeInfo.lion.u,beeInfo.lion.v,beeInfo.lion.meshPartId,
         51.5,17,-19,6,-0.5,-0.1,0.5,0.2,beeInfo.windy.u,beeInfo.windy.v,beeInfo.windy.meshPartId,
         -7,15,-41,3,-0.7,0,0.3,BEE_FLY,beeInfo.gummy.u,beeInfo.gummy.v,beeInfo.gummy.meshPartId,
-        61,12,34,1.5,-1,0,0,BEE_FLY,beeInfo.digital.u,beeInfo.digital.v,beeInfo.digital.meshPartId
+        61,12,34,1.5,-1,0,0,BEE_FLY,beeInfo.digital.u,beeInfo.digital.v,beeInfo.digital.meshPartId,
+        35,8.5,22,6,-1,-0.2,-0.2,-0.08,beeInfo.riley.u,beeInfo.riley.v,beeInfo.riley.meshPartId,
+        51.75,16,22,3,-1,0,0,BEE_FLY,beeInfo.riley.u,beeInfo.riley.v+0.375,beeInfo.riley.meshPartId,
+        -61,5.5,35,6,1,-0.25,0.2,0.1,beeInfo.bucko.u,beeInfo.bucko.v,beeInfo.bucko.meshPartId,
+        -78.5,11,34,3,1,0,0,BEE_FLY,beeInfo.bucko.u,beeInfo.bucko.v+0.375,beeInfo.bucko.meshPartId,
+        53,20,91,3,-0.6,0,-1,BEE_FLY,beeInfo.honey.u,beeInfo.honey.v,beeInfo.honey.meshPartId,
     ]
     
     gl.useProgram(tokenGeometryProgram)
