@@ -6017,7 +6017,7 @@ let beeInfo={
     
     tabby:{
         
-        u:128*13/2048,v:256/2048,meshPartId:10,gatherSpeed:4,gatherAmount:10,speed:16.1,convertSpeed:3,convertAmount:160,attack:4,energy:28,tokens:['scratch','tabbyLove'],rarity:'event',color:'white',description:"This affectionate bee was raised by cats. It becomes a better worker as it warms up to you",giftedHiveBonus:{oper:'+',stat:'criticalPower',num:0.5}
+        u:128*13/2048,v:256/2048,meshPartId:10,gatherSpeed:4,gatherAmount:10,speed:16.1,convertSpeed:3,convertAmount:160,attack:4,energy:28,tokens:['scratch','tabbyLove'],attackTokens:['tabbyLove'],rarity:'event',color:'white',description:"This affectionate bee was raised by cats. It becomes a better worker as it warms up to you",giftedHiveBonus:{oper:'+',stat:'criticalPower',num:0.5}
     },
     
     diamond:{
@@ -6087,7 +6087,7 @@ let beeInfo={
 
     puppy:{
         
-        u:128*11/2048,v:256*2/2048,meshPartId:17,gatherSpeed:4,gatherAmount:25,speed:16.1,convertSpeed:4,convertAmount:280,attack:2,energy:40,tokens:['fetch'],attackTokens:[],rarity:'event',color:'white',description:"A playful bee that tries to behave its best, but is SOOO bad for its price that you shouldn't even buy it. Seriously.",giftedHiveBonus:{oper:'*',stat:'bondFromTreats',num:1.2}
+        u:128*11/2048,v:256*2/2048,meshPartId:17,gatherSpeed:4,gatherAmount:25,speed:16.1,convertSpeed:4,convertAmount:280,attack:2,energy:40,tokens:['fetch','puppyLove'],attackTokens:['puppyLove'],rarity:'event',color:'white',description:"A playful bee that tries to behave its best, but is SOOO bad for its price that you shouldn't even buy it. Seriously.",giftedHiveBonus:{oper:'*',stat:'bondFromTreats',num:1.2}
     },
 
     festive:{
@@ -9398,20 +9398,25 @@ let effects={
     
     tabbyLove:{
         
-        desc:"Grants x1.01 Tabby Bee convert rate, Tabby Bee gather amount, and pollen from Scratch. Stacks up to 1,000x, for a maximum of x100 Tabby Bee convert rate, Tabby Bee gather amount, and pollen from Scratch.",
-        trialCooldown:90,trialRate:1,
+        desc:"Grants x1.04 Tabby Bee convert rate, Tabby Bee gather amount, and pollen from \"Scratch\". Stacks up to 250x, for a maximum of x11 Tabby Bee convert rate, Tabby Bee gather amount, and pollen from Scratch.",
+        trialCooldown:65,trialRate:0.9,
         statsToAddTo:[],
         u:128*5/2048,v:128*7/2048,
         svg:document.getElementById('tabbyLove'),
         cooldown:document.getElementById('tabbyLove_cooldown'),
         amount:document.getElementById('tabbyLove_amount'),
         maxCooldown:Infinity,
-        maxAmount:1000,
+        maxAmount:500,
         tokenLife:16,
         
         update:(amount,player)=>{
             
-            player.tabbyLoveStacks=amount*0.01+1
+            player.tabbyLoveStacks=amount*0.04+1
+
+            if(user.keys.t){
+
+                console.error(player.effects)
+            }
         },
         
         getMessage:(amount)=>{
@@ -10040,7 +10045,7 @@ let effects={
         desc:"Grants x1.5 pollen, x1.1 walkspeed, and x1.2 jump power for 10s. If the bee is gifted, this has a 20%(+1% per lvl) to grant an additional x1.5 convert rate, x1.5 pollen from bees, and x1.5 pollen from tools.",
         trialCooldown:120,trialRate:0.25,
         u:128*3/2048,v:128*13/2048,
-        tokenLife:8,
+        tokenLife:16,
         
         func:function(params){
             
@@ -10057,7 +10062,7 @@ let effects={
 
     fetch:{
         
-        desc:"Summons a ball and starts a game of fetch. When you kick the ball, puppy bee will kick it back. The ball collects 5(+0.5 per lvl) pollen from 1 flower, picks up tokens, and more while it rolls. Every 5th hit will reward treats, with the amount of treats doubling every time. Treat rewards are stopped at 128.",
+        desc:"Summons a ball and starts a game of fetch. When you kick the ball, puppy bee will kick it back. The ball collects 5(+0.5 per lvl) pollen from 1 flower, picks up tokens, and more while it rolls. Every 4th hit will reward treats, with the amount of treats doubling every time. Treat rewards are stopped at 128.",
         trialCooldown:80,trialRate:0.25,
         u:128*4/2048,v:128*13/2048,
         tokenLife:8,
@@ -10073,17 +10078,29 @@ let effects={
 
     puppyLove:{
         
-        desc:"wip",
-        trialCooldown:80,trialRate:0.25,
-        u:128*4/2048,v:128*13/2048,
+        desc:"Grants all bees in the hive 75(+20 per lvl) bond.",
+        trialCooldown:25,trialRate:0.5,
+        u:128*5/2048,v:128*13/2048,
         tokenLife:8,
         
         func:function(params){
-            
-            let f=fieldInfo[params.field],ball=new FetchBall([f.x+params.x,f.y+1,f.z+params.z],params.bee)
-            objects.mobs.push(ball)
 
-            params.bee.fetchBall=ball
+            objects.explosions.push(new Explosion({col:[1,1,1],pos:[fieldInfo[params.field].x+params.x,fieldInfo[params.field].y+0.5,fieldInfo[params.field].z+params.z],life:0.5,size:6,speed:0.25,aftershock:0.05}))
+
+            for(let y in player.hive){
+                
+                for(let x in player.hive[y]){
+
+                    if(player.hive[y][x].type){
+
+                        let bond=75+params.bee.level*20,beePee=player.hive[y][x].bee.pos.slice()
+
+                        player.hive[y][x].bond+=bond
+                        
+                        textRenderer.add(bond+'',[beePee[0],beePee[1]+1,beePee[2]],COLORS.bondArr,0,'+',1.5)
+                    }
+                }
+            }
         }
     },
 
@@ -19873,7 +19890,7 @@ class FetchBall {
         this.turn=0
         this.timer=0
         this.playerDelay=0
-        this.treat={hits:5,amount:1}
+        this.treat={hits:4,amount:1}
         
         this.body=new CANNON.Body({
             
@@ -19910,7 +19927,7 @@ class FetchBall {
 
         if(this.treat.hits<=0&&this.treat.amount<128){
 
-            this.treat.hits=5
+            this.treat.hits=4
             objects.tokens.push(new LootToken(30,[this.body.position.x,this.body.position.y,this.body.position.z],'treat',this.treat.amount))
 
             this.treat.amount=this.treat.amount*2
@@ -23757,7 +23774,6 @@ player=(function(out){
             if(found!==undefined){
                 
                 out.effects[found].cooldown=Math.min(effects[type].maxCooldown,effects[type].maxCooldown*amplify+out.effects[found].cooldown+dt)
-                
                 
                 return
             }
@@ -30297,7 +30313,6 @@ document.getElementById('runMeshStr').onclick=function(){
 document.getElementById('meshStr').value=player.createdMesh
 
 player.updateHive()
-player.addEffect('tabbyLove',false,false,1000)
 
 window.functionToRunOnBeequipClick=function(id){
     
@@ -30456,6 +30471,8 @@ function RUN_SAVE_CODE(string){
 
     for(let i in save.effects){
         
+        if(save.effects[i].cooldown===null) save.effects[i].cooldown=Infinity
+
         player.effects.push(save.effects[i])
         effects[save.effects[i].type].svg.style.display='inline'
     }
@@ -30606,7 +30623,6 @@ player.updateGear()
 
 
 for(let i=0;i<7;i++){
-
 
     objects.mobs.push(new Puffshroom('DandelionField',i*3,0,5*60,1+i*3,'puffshroom'))
     objects.mobs.push(new Puffshroom('DandelionField',i*3,3,5*60,1+i*3,'rarePuffshroom'))
