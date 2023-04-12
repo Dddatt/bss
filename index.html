@@ -9673,7 +9673,7 @@ let effects={
                 
                 collectPollen({x:params.x,z:params.z,pattern:[[-4,0],[-4,1],[-4,2],[-3,3],[-2,4],[-1,4],[0,4],[1,4],[2,4],[3,3],[4,2],[4,1],[4,0],[4,-1],[4,-2],[3,-3],[2,-4],[1,-4],[0,-4],[-1,-4],[-2,-4],[-3,-3],[-4,-2],[-4,-1],[-1,-1],[1,-1],[2,1],[1,2],[0,2],[-1,2],[-2,1]],amount:params.bee.gatherAmount*3,stackOffset:0.4+Math.random()*0.5,multiplier:tokensCollected*0.25+1,instantConversion:0.5,field:params.field})
                 
-                objects.mobs.push(new GlitchEffect(params.field,3))
+                objects.mobs.push(new GlitchEffect(params.field,2))
                 
             }
         },
@@ -9990,7 +9990,7 @@ let effects={
         svg:document.getElementById('bearMorph'),
         cooldown:document.getElementById('bearMorph_cooldown'),
         amount:document.getElementById('bearMorph_amount'),
-        maxCooldown:10,
+        maxCooldown:30,
         maxAmount:1,
         
         update:(amount,player)=>{
@@ -10014,7 +10014,7 @@ let effects={
         svg:document.getElementById('bearMorph_'),
         cooldown:document.getElementById('bearMorph__cooldown'),
         amount:document.getElementById('bearMorph__amount'),
-        maxCooldown:10,
+        maxCooldown:30,
         maxAmount:1,
         
         update:(amount,player)=>{
@@ -10038,7 +10038,7 @@ let effects={
     bearMorphToken:{
         
         desc:"Grants x1.5 pollen, x1.1 walkspeed, and x1.2 jump power for 10s. If the bee is gifted, this has a 20%(+1% per lvl) to grant an additional x1.5 convert rate, x1.5 pollen from bees, and x1.5 pollen from tools.",
-        trialCooldown:120,trialRate:0.2,
+        trialCooldown:120,trialRate:0.25,
         u:128*3/2048,v:128*13/2048,
         tokenLife:8,
         
@@ -10112,7 +10112,7 @@ let effects={
 
     festiveGifts:{
         
-        desc:"@ write this",
+        desc:"Creates a ring of 7(+1 per 4 lvls) gifts and grants Festive Cheer. Festive Cheer applies +100% instant conversion and x2 convert rate for 10s. Gifts given can include<br><br>• Common Gifts: honey, red boost tokens, treats, fruits, royal jelly, gumdrops.<br><br>• Rare Gifts: tickets, extracts, micro-converters, and magic beans.<br><br>• If the bee is gifted, these additional gifts maybe rewarded: glitter, oil, enzymes, and field dice.",
         trialCooldown:200,trialRate:10.1,
         u:128*6/2048,v:128*13/2048,
         tokenLife:8,
@@ -10122,7 +10122,7 @@ let effects={
             player.addEffect('festiveCheer')
             player.addMessage('🎁 Festive Bee created festive gifts! 🎁',COLORS.redArr)
 
-            let amountOfTokens=(7+params.bee.level*0.25)|0,radius=amountOfTokens*0.2+2.5
+            let amountOfTokens=(7+params.bee.level*0.25)|0,radius=amountOfTokens*0.2+1.75
 
             let dropTable=['redBoost','redBoost','redBoost','treat','treat','strawberry','blueberry','sunflowerSeed','pineapple','honey','honey','gumdrops','royalJelly']
 
@@ -18325,7 +18325,7 @@ class GummyBall {
             
             let b=objects.bubbles[i]
             
-            if(vec3.sqrDist(arr,b.pos)<=5.5){
+            if(vec3.sqrDist(this.pos,b.pos)<=5.5){
                 
                 b.pop()
             }
@@ -27409,7 +27409,7 @@ class Token {
             
             objects.tokens.push(new DupedToken(life*((funcParams.bee.level-1)*0.1+2),p,type,fp))
             
-            objects.mobs.push(new GlitchEffect(player.fieldIn,3))
+            objects.mobs.push(new GlitchEffect(player.fieldIn,1))
             
         }
     }
