@@ -10071,7 +10071,7 @@ let effects={
         }
     },
 
-    puppyLove:{//@
+    puppyLove:{
         
         desc:"wip",
         trialCooldown:80,trialRate:0.25,
@@ -11302,37 +11302,16 @@ let items={
                     
                 }
                 
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond+=amount*100*player.bondFromTreats|0
+                let addedBond=amount*100*player.bondFromTreats|0
                 
-                let l,r=[0,10,50,250,1000,5000,20000,80000,350000,800000,2000000,4000000,8000000,15000000,30000000,150000000,600000000,2500000000,10000000000,25000000000]
-                
-                for(let i in r){
-                    
-                    if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond>=r[i]){
-                        
-                        l=i
-                    }
-                }
-                
-                if(l<20){
-                    
-                    l++
-                }
-                
-                let leveled
-                
-                if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level!==l){
-                    
-                    leveled=true
-                }
-                
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level=l
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.computeLevel(l)
-                textRenderer.add((amount*100*player.bondFromTreats|0)+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.2)
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond+=addedBond
+
+                textRenderer.add(addedBond+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.5)
                 
                 player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
-                player.addMessage('by '+MATH.addCommas((amount*100*player.bondFromTreats|0)+'')+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
-                player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
+                player.addMessage('by '+MATH.addCommas(addedBond+'')+'!',COLORS.bondArr)
+
+                player.updateHive()
                 
             }
         }
@@ -11374,37 +11353,16 @@ let items={
                 
                 player.addMessage('☢️ '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' bee became radioactive for '+MATH.doTime(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].radioactive)+' ☢️',[50,225,90])
                 
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond+=amount*500*player.bondFromTreats|0
+                let addedBond=amount*500*player.bondFromTreats|0
                 
-                let l,r=[0,10,50,250,1000,5000,20000,80000,350000,800000,2000000,4000000,8000000,15000000,30000000,150000000,600000000,2500000000,10000000000,25000000000]
-                
-                for(let i in r){
-                    
-                    if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond>=r[i]){
-                        
-                        l=i
-                    }
-                }
-                
-                if(l<20){
-                    
-                    l++
-                }
-                
-                let leveled
-                
-                if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level!==l){
-                    
-                    leveled=true
-                }
-                
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level=l
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.computeLevel(l)
-                textRenderer.add((amount*500*player.bondFromTreats|0)+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.2)
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond+=addedBond
+
+                textRenderer.add(addedBond+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.5)
                 
                 player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
-                player.addMessage('by '+MATH.addCommas((amount*500*player.bondFromTreats|0)+'')+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
-                player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
+                player.addMessage('by '+MATH.addCommas(addedBond+'')+'!',COLORS.bondArr)
+
+                player.updateHive()
                 
             }
         }
@@ -11442,38 +11400,16 @@ let items={
                 player.stats.moonCharm+=Number(amount)
                 player.updateInventory()
                 
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond+=amount*250*player.bondFromTreats|0
+                let addedBond=amount*250*player.bondFromTreats|0
                 
-                let l,r=[0,10,50,250,1000,5000,20000,80000,350000,800000,2000000,4000000,8000000,15000000,30000000,150000000,600000000,2500000000,10000000000,25000000000]
-                
-                for(let i in r){
-                    
-                    if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond>=r[i]){
-                        
-                        l=i
-                    }
-                }
-                
-                if(l<20){
-                    
-                    l++
-                }
-                
-                let leveled
-                
-                if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level!==l){
-                    
-                    leveled=true
-                }
-                
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level=l
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.computeLevel(l)
-                textRenderer.add((amount*250*player.bondFromTreats|0)+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.2)
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond+=addedBond
+
+                textRenderer.add(addedBond+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.5)
                 
                 player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
-                player.addMessage('by '+MATH.addCommas((amount*250*player.bondFromTreats|0)+'')+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
-                player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
-                
+                player.addMessage('by '+MATH.addCommas(addedBond+'')+'!',COLORS.bondArr)
+
+                player.updateHive()
             }
         }
     },
@@ -11511,38 +11447,16 @@ let items={
 
                 player.updateInventory()
                 
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond+=amount*10*player.bondFromTreats|0
+                let addedBond=amount*10*player.bondFromTreats|0
                 
-                let l,r=[0,10,50,250,1000,5000,20000,80000,350000,800000,2000000,4000000,8000000,15000000,30000000,150000000,600000000,2500000000,10000000000,25000000000]
-                
-                for(let i in r){
-                    
-                    if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond>=r[i]){
-                        
-                        l=i
-                    }
-                }
-                
-                if(l<20){
-                    
-                    l++
-                }
-                
-                let leveled
-                
-                if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level!==l){
-                    
-                    leveled=true
-                }
-                
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level=l
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.computeLevel(l)
-                textRenderer.add((amount*10*player.bondFromTreats|0)+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.2)
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond+=addedBond
+
+                textRenderer.add(addedBond+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.5)
                 
                 player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
-                player.addMessage('by '+MATH.addCommas((amount*10*player.bondFromTreats|0)+'')+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
-                player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
-                
+                player.addMessage('by '+MATH.addCommas(addedBond+'')+'!',COLORS.bondArr)
+
+                player.updateHive()
             }
         }
     },
@@ -11579,40 +11493,18 @@ let items={
                 player.stats.starTreat+=Number(amount)
                 player.updateInventory()
                 
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond+=amount*1000*player.bondFromTreats|0
+                let addedBond=amount*1000*player.bondFromTreats|0
                 
-                let l,r=[0,10,50,250,1000,5000,20000,80000,350000,800000,2000000,4000000,8000000,15000000,30000000,150000000,600000000,2500000000,10000000000,25000000000]
-                
-                for(let i in r){
-                    
-                    if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond>=r[i]){
-                        
-                        l=i
-                    }
-                }
-                
-                if(l<20){
-                    
-                    l++
-                }
-                
-                let leveled
-                
-                if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level!==l){
-                    
-                    leveled=true
-                }
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond+=addedBond
 
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted=true
                 player.addMessage('⭐ The treat made the bee gifted! ⭐',COLORS.honey)
-                
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level=l
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.computeLevel(l)
-                textRenderer.add((amount*1000*player.bondFromTreats|0)+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.2)
+
+                textRenderer.add(addedBond+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.5)
                 
                 player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
-                player.addMessage('by '+MATH.addCommas((amount*1000*player.bondFromTreats|0)+'')+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
-                player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
+                player.addMessage('by '+MATH.addCommas(addedBond+'')+'!',COLORS.bondArr)
+
 
                 player.updateHive()
                 
@@ -11652,29 +11544,9 @@ let items={
                 player.stats.atomicTreat+=Number(amount)
                 player.updateInventory()
                 
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond+=amount*1000*player.bondFromTreats|0
+                let addedBond=amount*1000*player.bondFromTreats|0
                 
-                let l,r=[0,10,50,250,1000,5000,20000,80000,350000,800000,2000000,4000000,8000000,15000000,30000000,150000000,600000000,2500000000,10000000000,25000000000]
-                
-                for(let i in r){
-                    
-                    if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond>=r[i]){
-                        
-                        l=i
-                    }
-                }
-                
-                if(l<20){
-                    
-                    l++
-                }
-                
-                let leveled
-                
-                if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level!==l){
-                    
-                    leveled=true
-                }
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond+=addedBond
 
                 player.addMessage('☢️ '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' bee gained a mutation! ☢️',[50,225,90])
                 
@@ -11700,13 +11572,10 @@ let items={
                 
                 player.addMessage('☢️ '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' got '+oper.replace('*','x')+num+' '+MATH.doGrammar(stat.replace('max','')).toLowerCase()+'! ☢️',[50,225,90])
                 
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level=l
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.computeLevel(l)
-                textRenderer.add((amount*1000*player.bondFromTreats|0)+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.2)
+                textRenderer.add(addedBond+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.5)
                 
                 player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
-                player.addMessage('by '+MATH.addCommas((amount*1000*player.bondFromTreats|0)+'')+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
-                player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
+                player.addMessage('by '+MATH.addCommas(addedBond+'')+'!',COLORS.bondArr)
 
                 player.updateHive()
                 
@@ -11750,41 +11619,17 @@ let items={
                 let isFavorite=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='blueberry',bondToAdd=amount*25*(isFavorite?2:1)*player.bondFromTreats|0
                 
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond+=bondToAdd
-                
-                let l,r=[0,10,50,250,1000,5000,20000,80000,350000,800000,2000000,4000000,8000000,15000000,30000000,150000000,600000000,2500000000,10000000000,25000000000]
-                
-                for(let i in r){
-                    
-                    if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond>=r[i]){
-                        
-                        l=i
-                    }
-                }
-                
-                if(l<20){
-                    
-                    l++
-                }
-                
-                let leveled
-                
-                if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level!==l){
-                    
-                    leveled=true
-                }
-                
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level=l
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.computeLevel(l)
-                textRenderer.add(bondToAdd+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.2)
-                
-                if(isFavorite){
-                    
+
+                if(isFavorite)
                     player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee loves blueberries! ╰(*°▽°*)╯",COLORS.bondArr)
-                }
+
+                textRenderer.add(bondToAdd+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.5)
                 
                 player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
-                player.addMessage('by '+MATH.addCommas(bondToAdd+'')+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
-                player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
+                player.addMessage('by '+MATH.addCommas(bondToAdd+'')+'!',COLORS.bondArr)
+
+                player.updateHive()
+                
                 
             }
             
@@ -11800,7 +11645,6 @@ let items={
                     player.addMessage('After '+MATH.abvNumber(am+'')+' treats.....',COLORS.honey)
                     player.addMessage('⭐ The treat made the bee gifted! ⭐',COLORS.honey)
                     feed(am)
-                    player.updateHive()
                     
                 } else {
                     
@@ -11848,41 +11692,16 @@ let items={
                 let isFavorite=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='strawberry',bondToAdd=amount*25*(isFavorite?2:1)*player.bondFromTreats|0
                 
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond+=bondToAdd
-                
-                let l,r=[0,10,50,250,1000,5000,20000,80000,350000,800000,2000000,4000000,8000000,15000000,30000000,150000000,600000000,2500000000,10000000000,25000000000]
-                
-                for(let i in r){
-                    
-                    if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond>=r[i]){
-                        
-                        l=i
-                    }
-                }
-                
-                if(l<20){
-                    
-                    l++
-                }
-                
-                let leveled
-                
-                if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level!==l){
-                    
-                    leveled=true
-                }
-                
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level=l
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.computeLevel(l)
-                textRenderer.add(bondToAdd+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.2)
-                
-                if(isFavorite){
-                    
+
+                if(isFavorite)
                     player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee loves strawberries! ╰(*°▽°*)╯",COLORS.bondArr)
-                }
+
+                textRenderer.add(bondToAdd+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.5)
                 
                 player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
-                player.addMessage('by '+MATH.addCommas(bondToAdd+'')+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
-                player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
+                player.addMessage('by '+MATH.addCommas(bondToAdd+'')+'!',COLORS.bondArr)
+
+                player.updateHive()
                 
             }
             
@@ -11898,7 +11717,6 @@ let items={
                     player.addMessage('After '+MATH.abvNumber(am+'')+' treats.....',COLORS.honey)
                     player.addMessage('⭐ The treat made the bee gifted! ⭐',COLORS.honey)
                     feed(am)
-                    player.updateHive()
                     
                 } else {
                     
@@ -11946,41 +11764,16 @@ let items={
                 let isFavorite=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='pineapple',bondToAdd=amount*25*(isFavorite?2:1)*player.bondFromTreats|0
                 
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond+=bondToAdd
-                
-                let l,r=[0,10,50,250,1000,5000,20000,80000,350000,800000,2000000,4000000,8000000,15000000,30000000,150000000,600000000,2500000000,10000000000,25000000000]
-                
-                for(let i in r){
-                    
-                    if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond>=r[i]){
-                        
-                        l=i
-                    }
-                }
-                
-                if(l<20){
-                    
-                    l++
-                }
-                
-                let leveled
-                
-                if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level!==l){
-                    
-                    leveled=true
-                }
-                
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level=l
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.computeLevel(l)
-                textRenderer.add(bondToAdd+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.2)
-                
-                if(isFavorite){
-                    
-                    player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee loves pineapple! ╰(*°▽°*)╯",COLORS.bondArr)
-                }
+
+                if(isFavorite)
+                    player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee loves pineapples! ╰(*°▽°*)╯",COLORS.bondArr)
+
+                textRenderer.add(bondToAdd+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.5)
                 
                 player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
-                player.addMessage('by '+MATH.addCommas(bondToAdd+'')+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
-                player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
+                player.addMessage('by '+MATH.addCommas(bondToAdd+'')+'!',COLORS.bondArr)
+
+                player.updateHive()
                 
             }
             
@@ -11996,7 +11789,6 @@ let items={
                     player.addMessage('After '+MATH.abvNumber(am+'')+' treats.....',COLORS.honey)
                     player.addMessage('⭐ The treat made the bee gifted! ⭐',COLORS.honey)
                     feed(am)
-                    player.updateHive()
                     
                 } else {
                     
@@ -12044,41 +11836,16 @@ let items={
                 let isFavorite=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='sunflowerSeed',bondToAdd=amount*25*(isFavorite?2:1)*player.bondFromTreats|0
                 
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond+=bondToAdd
-                
-                let l,r=[0,10,50,250,1000,5000,20000,80000,350000,800000,2000000,4000000,8000000,15000000,30000000,150000000,600000000,2500000000,10000000000,25000000000]
-                
-                for(let i in r){
-                    
-                    if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond>=r[i]){
-                        
-                        l=i
-                    }
-                }
-                
-                if(l<20){
-                    
-                    l++
-                }
-                
-                let leveled
-                
-                if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level!==l){
-                    
-                    leveled=true
-                }
-                
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level=l
-                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.computeLevel(l)
-                textRenderer.add(bondToAdd+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.2)
-                
-                if(isFavorite){
-                    
+
+                if(isFavorite)
                     player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee loves sunflower seeds! ╰(*°▽°*)╯",COLORS.bondArr)
-                }
+
+                textRenderer.add(bondToAdd+'',[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[0],player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[1]+1,player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.pos[2]],COLORS.bondArr,0,'+',1.5)
                 
                 player.addMessage(MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+" Bee's bond improved",COLORS.bondArr)
-                player.addMessage('by '+MATH.addCommas(bondToAdd+'')+(leveled?' and advanced to level '+l+'!':'!'),COLORS.bondArr)
-                player.addMessage('('+MATH.addCommas((player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bond-r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level-1])+'')+'/'+MATH.addCommas(r[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].level]+'')+') to level up',COLORS.bondArr)
+                player.addMessage('by '+MATH.addCommas(bondToAdd+'')+'!',COLORS.bondArr)
+
+                player.updateHive()
                 
             }
             
@@ -12094,7 +11861,6 @@ let items={
                     player.addMessage('After '+MATH.abvNumber(am+'')+' treats.....',COLORS.honey)
                     player.addMessage('⭐ The treat made the bee gifted! ⭐',COLORS.honey)
                     feed(am)
-                    player.updateHive()
                     
                 } else {
                     
@@ -12120,7 +11886,6 @@ let items={
             player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted=Math.random()<1/100
             
             player.beePopup={type:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type,message:'You hatched a...',time:TIME,gifted:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted}
-            
             
             player.updateHive()
         }
@@ -12165,7 +11930,6 @@ let items={
             player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted=Math.random()<1/100
             
             player.beePopup={type:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type,message:'You hatched a...',time:TIME,gifted:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted}
-            
             
             player.updateHive()
         }
@@ -24590,6 +24354,21 @@ player=(function(out){
             for(let y=0;y<out.hive.length;y++){
                 
                 for(let x=0;x<out.hive[y].length;x++){
+
+                    let bond=out.hive[y][x].bond
+
+                    let l,r=[0,10,50,250,1000,5000,20000,80000,350000,800000,2000000,4000000,8000000,15000000,30000000,150000000,600000000,2500000000,10000000000,25000000000]
+                    
+                    for(let i in r){
+                        
+                        if(bond>=r[i]) l=i
+                    }
+                    
+                    if(l<20) l++
+
+                    if(!l||l>20) l=20
+                    
+                    out.hive[y][x].level=l
                     
                     hiveSlot(out.hivePos[0]+x*0.8,out.hivePos[1]+y*0.8-2.25,out.hivePos[2],0.35,0.35,out.hive[y][x].type,out.hive[y][x].gifted)
                     
