@@ -24589,7 +24589,7 @@ player=(function(out){
                     
                     for(let j in out.quests[i].req){
                         
-                        if((out.stats[out.quests[i].req[j][0]]-out.quests[i].req[j][2])/out.quests[i].req[j][1]>=1){
+                        if((out.stats[out.quests[i].req[j][0]]-out.quests[i].req[j][2])/out.quests[i].req[j][1]>=1         /*@*/||1){
                             
                             out.quests[i].req[j][3]=true
                             
@@ -30573,6 +30573,8 @@ function GENERATE_SAVE_CODE(){
     }
 
     let string=JSON.stringify(save)
+
+    console.error(string)
 
     string=string.replaceAll('},{','!').replaceAll('":0,"','~').replaceAll('":','\u0040').replaceAll(',"','#').replaceAll('Puffshrooms','$').replaceAll('Tokens','^').replaceAll('ToTheWindShrine','&').replaceAll('"type":','?').replaceAll('Field','|')
 
