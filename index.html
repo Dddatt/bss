@@ -161,7 +161,7 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         background-color:rgb(0,170,0);
     }
     
-    #feedAmount,#blenderCraftAmount{
+    #feedAmount,#blenderCraftAmount,#shrineAmount{
         
         margin-top:50px;
         margin-left:75px;
@@ -240,7 +240,34 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         
         transition-duration:0s;
     }
+    
+    #shrineX:hover{
+        
+        background-color:rgb(200,0,0);
+    }
 
+    #shrineX{
+        
+        background-color:rgb(255,0,0);
+    }
+    
+    #shrineDonate{
+        
+        background-color:rgb(0,190,0);
+    }
+    
+    #shrineDonate:hover{
+        
+        cursor:pointer;
+        background-color:rgb(0,140,0);
+    }
+    
+    #shrineLeft:hover,#shrineRight:hover{
+        
+        cursor:pointer;
+        background:rgb(0,0,0,0.1);
+    }
+    
 </style>
 
 <div id='abilityUI' style='margin:5px;padding:0px;margin-top:35px;position:fixed'>
@@ -4194,6 +4221,27 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
 
 </div>
 
+<div id='shrineMenu' style='position:fixed;width:400px;height:300px;z-index:1;left:50%;top:50%;transform:translate(-50%,-50%);background-color:rgb(22, 54, 196);border-radius:4px;color:rgb(255,255,255);font-size:17px;text-align:center;display:none'>
+    
+    <button id='shrineX' style='border-radius:3px;margin-left:-365px;margin-top:3px;width:30px;height:30px;font-family:comic sans ms;padding-bottom:5px;transition-duration:0s'>X</button>
+    
+    <p style='margin-left:15px;margin-top:-27px;font-size:22px'>What would you like to donate<br>to the Wind Shrine?</p>
+    
+    <p id='shrineItemName' style='margin-left:-180px;margin-top:29px;font-size:18px'>itemname</p>
+    
+    <div id='shrineItem' style='margin-left:170px;margin-top:-38px;'>a</div>
+    
+    <div id='shrineLeft' style='margin-top:-31px;margin-left:208px;font-size:25px;width:40px;border-radius:5px;'>◄</div>
+    <div id='shrineRight' style='margin-top:-35px;margin-left:320px;font-size:25px;width:40px;border-radius:5px'>►</div>
+    
+    <p style='margin-left:0px;margin-top:21px;font-size:22px'>How many?</p>
+    
+    <input id='shrineAmount' value='1' type='number' min='1' style='margin-left:-60px;margin-top:-11px;width:100px;font-size:20px;height:19px;'>
+    
+    <div id='shrineDonate' style='margin-top:64px;margin-left:148px;font-size:22px;width:100px;border-radius:4px;padding-top:2px;padding-bottom:5px;'>Donate</div>
+    
+</div>
+
 <div id='roboMenu' style='position:fixed;width:500px;height:500px;z-index:1;left:50%;top:50%;transform:translate(-50%,-50%);background-color:rgb(0,140,0);color:rgb(255,255,255);font-size:17px;text-align:center;border-radius:5px;display:none'>
     
     <div id='roboCogsAmount' style='position:fixed;left:22%;top:3%;transform:translate(-50%,-50%);font-size:20px;color:black;width:200px;text-align:left'></div>
@@ -5112,11 +5160,25 @@ world.defaultContactMaterial.restitution=0
 
 let triggers={
 
+    windShrine:{
+
+        minX:65,maxX:71,minY:18,maxY:26,minZ:-24,maxZ:-18,isMachine:true,message:'Inspect Wind Shrine',requirements:function(player){
+            
+            if(document.getElementById('shrineMenu').style.display==='block') return "You're looking at Wind Shrine"
+        },
+        func:function(player){
+            
+            document.exitPointerLock()
+            player.shrineIndex=0
+            player.updateShrineMenu()
+        }
+    },
+
     blender:{
 
         minX:59-3-1,maxX:59+3,minY:10,maxY:19,minZ:50.5-3,maxZ:50.5+3+1,isMachine:true,message:'Use Blender',requirements:function(player){
             
-            if(document.getElementById('blenderMenu').style.display==='block') return "You're using the Blender"        
+            if(document.getElementById('blenderMenu').style.display==='block') return "You're using the Blender"
         },
         func:function(player){
             
@@ -8425,7 +8487,7 @@ let effects={
 
                 if(player.fieldIn){
                     
-                    window.setTimeout(function(){player.body.velocity.y*=0.75},0)
+                    window.setTimeout(function(){player.body.velocity.y*=0.5},0)
                     
                     player.addEffect('gummyBall',-amount)
                     objects.mobs.push(new GummyBall())
@@ -25011,6 +25073,16 @@ player=(function(out){
         }
     }
 
+    out.updateShrineMenu=function(){
+        
+        document.getElementById('shrineX').onclick=function(){
+
+            document.getElementById('shrineMenu').style.display='none'
+        }
+        
+        document.getElementById('shrineMenu').style.display='block'
+    }
+
     out.updateBlenderMenu=function(){
 
         document.getElementById('blenderX').onclick=function(){
@@ -25517,7 +25589,7 @@ player=(function(out){
                 let x=(Math.round(player.body.position.x-fieldInfo[i].x)),
                     z=(Math.round(player.body.position.z-fieldInfo[i].z))
                 
-                if(x>=0&&x<fieldInfo[i].width&&z>=0&&z<fieldInfo[i].length&&Math.abs(player.body.position.y-fieldInfo[i].y)<6){
+                if(x>=0&&x<fieldInfo[i].width&&z>=0&&z<fieldInfo[i].length&&Math.abs(player.body.position.y-fieldInfo[i].y)<3){
                     
                     player.fieldIn=i
                     player.flowerIn.x=x
