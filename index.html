@@ -2385,6 +2385,8 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
 
 <div class='uiPage' style='position:absolute;margin:0px;z-index:-2;overflow-y:auto;overflow-x:hidden;width:200px;height:455px;background-color:rgba(195,195,195,0.9);margin-top:140px;display:none;padding:3px;'>
     
+    <div id='noItemsMessage' style='text-align:center;font-size:17px;color:rgb(0,0,0,0.5)'><br>(You have no items)</div>
+
     <svg id='honey' style='width:200;height:70;cursor:pointer'>
         
         <text></text>
@@ -4231,8 +4233,8 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
     
     <div id='shrineItem' style='margin-left:170px;margin-top:-38px;'>a</div>
     
-    <div id='shrineLeft' style='margin-top:-31px;margin-left:208px;font-size:25px;width:40px;border-radius:5px;'>◄</div>
-    <div id='shrineRight' style='margin-top:-35px;margin-left:320px;font-size:25px;width:40px;border-radius:5px'>►</div>
+    <div id='shrineLeft' style='margin-top:-85px;margin-left:195px;font-size:25px;width:40px;border-radius:5px;'>◄</div>
+    <div id='shrineRight' style='margin-top:-35px;margin-left:330px;font-size:25px;width:40px;border-radius:5px'>►</div>
     
     <p style='margin-left:0px;margin-top:21px;font-size:22px'>How many?</p>
     
@@ -4898,6 +4900,61 @@ let blenderRecipes=[
     {item:'causticWax',req:[['hardWax',3],['neonberry',5],['gumdrops',10],['royalJelly',175]]},
     {item:'turpentine',req:[['superSmoothie',3],['causticWax',3],['starJelly',5],['honeysuckle',50]]},
 
+],windShrineDonations=[
+
+    {item:'treat',rewardType:'honey',rewardAmount:1},
+    {item:'strawberry',rewardType:'honey',rewardAmount:2},
+    {item:'blueberry',rewardType:'honey',rewardAmount:2},
+    {item:'pineapple',rewardType:'honey',rewardAmount:2},
+    {item:'sunflowerSeed',rewardType:'honey',rewardAmount:2},
+    {item:'bitterberry',rewardType:'winds',rewardAmount:1},
+    {item:'neonberry',rewardType:'winds',rewardAmount:1},
+    {item:'moonCharm',rewardType:'winds',rewardAmount:1},
+    {item:'royalJelly',rewardType:'honey',rewardAmount:3},
+    {item:'starJelly',rewardType:'loot',rewardAmount:5},
+    {item:'moonCharm',rewardType:'winds',rewardAmount:1},
+    {item:'starTreat',rewardType:'winds',rewardAmount:23},
+    {item:'atomicTreat',rewardType:'winds',rewardAmount:13},
+    {item:'ticket',rewardType:'winds',rewardAmount:1.1},
+    {item:'gumdrops',rewardType:'winds',rewardAmount:0.7},
+    {item:'coconut',rewardType:'winds',rewardAmount:1},
+    {item:'stinger',rewardType:'loot',rewardAmount:1},
+    {item:'microConverter',rewardType:'honey',rewardAmount:3},
+    {item:'honeysuckle',rewardType:'honey',rewardAmount:3},
+    {item:'whirligig',rewardType:'honey',rewardAmount:4},
+    {item:'fieldDice',rewardType:'winds',rewardAmount:2},
+    {item:'smoothDice',rewardType:'winds',rewardAmount:6},
+    {item:'loadedDice',rewardType:'winds',rewardAmount:13},
+    {item:'jellyBeans',rewardType:'honey',rewardAmount:6},
+    {item:'redExtract',rewardType:'winds',rewardAmount:4},
+    {item:'blueExtract',rewardType:'winds',rewardAmount:4},
+    {item:'glitter',rewardType:'honey',rewardAmount:10},
+    {item:'glue',rewardType:'winds',rewardAmount:4.5},
+    {item:'oil',rewardType:'winds',rewardAmount:4},
+    {item:'enzymes',rewardType:'winds',rewardAmount:4},
+    {item:'tropicalDrink',rewardType:'winds',rewardAmount:5.5},
+    {item:'purplePotion',rewardType:'winds',rewardAmount:15},
+    {item:'magicBean',rewardType:'loot',rewardAmount:2.5},
+    {item:'cloudVial',rewardType:'honey',rewardAmount:9},
+    {item:'antPass',rewardType:'loot',rewardAmount:2.5},
+    {item:'roboPass',rewardType:'loot',rewardAmount:3.25},
+    {item:'spiritPetal',rewardType:'loot',rewardAmount:1},
+    {item:'softWax',rewardType:'honey',rewardAmount:6},
+    {item:'hardWax',rewardType:'winds',rewardAmount:5},
+    {item:'causticWax',rewardType:'loot',rewardAmount:5},
+    {item:'swirledWax',rewardType:'loot',rewardAmount:5},
+    {item:'turpentine',rewardType:'winds',rewardAmount:18},
+    {item:'basicEgg',rewardType:'winds',rewardAmount:5},
+    {item:'silverEgg',rewardType:'winds',rewardAmount:13},
+    {item:'goldEgg',rewardType:'winds',rewardAmount:17},
+    {item:'diamondEgg',rewardType:'winds',rewardAmount:23},
+    {item:'mythicEgg',rewardType:'winds',rewardAmount:28},
+    {item:'giftedSilverEgg',rewardType:'winds',rewardAmount:23},
+    {item:'giftedGoldEgg',rewardType:'winds',rewardAmount:29},
+    {item:'giftedDiamondEgg',rewardType:'winds',rewardAmount:34},
+    {item:'giftedMythicEgg',rewardType:'winds',rewardAmount:39},
+    {item:'starEgg',rewardType:'winds',rewardAmount:25},
+
 ]
 
 let passiveActivationPopup=document.getElementById('passiveActivationPopup')
@@ -5162,9 +5219,9 @@ let triggers={
 
     windShrine:{
 
-        minX:65,maxX:71,minY:18,maxY:26,minZ:-24,maxZ:-18,isMachine:true,message:'Inspect Wind Shrine',requirements:function(player){
+        minX:65,maxX:71,minY:18,maxY:28,minZ:-24,maxZ:-18,isMachine:true,message:'Inspect Wind Shrine',requirements:function(player){
             
-            if(document.getElementById('shrineMenu').style.display==='block') return "You're looking at Wind Shrine"
+            if(document.getElementById('shrineMenu').style.display==='block') return "You're looking at the Wind Shrine"
         },
         func:function(player){
             
@@ -11335,7 +11392,7 @@ let items={
             howManyMessage.innerHTML='How many bitterberries will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
             document.getElementById('feedUntilGifted').style.display='none'
 
-            howManyToFeed.onmousemove=feedAmount.onchange=function(){
+            howManyToFeed.onmousemove=feedAmount.oninput=function(){
                 
                 let a=feedAmount.value
                 feedAmount.value=MATH.constrain(a,1,items.bitterberry.amount)
@@ -11410,7 +11467,7 @@ let items={
             howManyMessage.innerHTML='How many neonberries will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
             document.getElementById('feedUntilGifted').style.display='none'
 
-            howManyToFeed.onmousemove=feedAmount.onchange=function(){
+            howManyToFeed.onmousemove=feedAmount.oninput=function(){
                 
                 let a=feedAmount.value
                 feedAmount.value=MATH.constrain(a,1,items.neonberry.amount)
@@ -11461,7 +11518,7 @@ let items={
             howManyMessage.innerHTML='How many moon charms will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
             document.getElementById('feedUntilGifted').style.display='none'
 
-            howManyToFeed.onmousemove=feedAmount.onchange=function(){
+            howManyToFeed.onmousemove=feedAmount.oninput=function(){
                 
                 let a=feedAmount.value
                 feedAmount.value=MATH.constrain(a,1,items.moonCharm.amount)
@@ -11507,7 +11564,7 @@ let items={
             howManyMessage.innerHTML='How many treats will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
             document.getElementById('feedUntilGifted').style.display='none'
             
-            howManyToFeed.onmousemove=feedAmount.onchange=function(){
+            howManyToFeed.onmousemove=feedAmount.oninput=function(){
                 
                 let a=feedAmount.value
                 feedAmount.value=MATH.constrain(a,1,items.treat.amount)
@@ -11554,7 +11611,7 @@ let items={
             howManyMessage.innerHTML='How many star treats will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
             document.getElementById('feedUntilGifted').style.display='none'
             
-            howManyToFeed.onmousemove=feedAmount.onchange=function(){
+            howManyToFeed.onmousemove=feedAmount.oninput=function(){
                 
                 let a=feedAmount.value
                 feedAmount.value=MATH.constrain(a,1,items.starTreat.amount)
@@ -11605,7 +11662,7 @@ let items={
             howManyMessage.innerHTML='How many atomic treats will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
             document.getElementById('feedUntilGifted').style.display='none'
             
-            howManyToFeed.onmousemove=feedAmount.onchange=function(){
+            howManyToFeed.onmousemove=feedAmount.oninput=function(){
                 
                 let a=feedAmount.value
                 feedAmount.value=MATH.constrain(a,1,items.atomicTreat.amount)
@@ -11677,7 +11734,7 @@ let items={
             
             document.getElementById('feedUntilGifted').style.display=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='blueberry'&&!player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted?'block':'none'
             
-            howManyToFeed.onmousemove=feedAmount.onchange=function(){
+            howManyToFeed.onmousemove=feedAmount.oninput=function(){
                 
                 let a=feedAmount.value
                 feedAmount.value=MATH.constrain(a,1,items.blueberry.amount)
@@ -11750,7 +11807,7 @@ let items={
             
             document.getElementById('feedUntilGifted').style.display=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='strawberry'&&!player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted?'block':'none'
             
-            howManyToFeed.onmousemove=feedAmount.onchange=function(){
+            howManyToFeed.onmousemove=feedAmount.oninput=function(){
                 
                 let a=feedAmount.value
                 feedAmount.value=MATH.constrain(a,1,items.strawberry.amount)
@@ -11822,7 +11879,7 @@ let items={
             
             document.getElementById('feedUntilGifted').style.display=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='pineapple'&&!player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted?'block':'none'
             
-            howManyToFeed.onmousemove=feedAmount.onchange=function(){
+            howManyToFeed.onmousemove=feedAmount.oninput=function(){
                 
                 let a=feedAmount.value
                 feedAmount.value=MATH.constrain(a,1,items.pineapple.amount)
@@ -11894,7 +11951,7 @@ let items={
             
             document.getElementById('feedUntilGifted').style.display=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='sunflowerSeed'&&!player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted?'block':'none'
             
-            howManyToFeed.onmousemove=feedAmount.onchange=function(){
+            howManyToFeed.onmousemove=feedAmount.oninput=function(){
                 
                 let a=feedAmount.value
                 feedAmount.value=MATH.constrain(a,1,items.sunflowerSeed.amount)
@@ -23685,6 +23742,8 @@ player=(function(out){
     
     out.updateInventory=function(){
 
+        noItemsMessage.style.display='block'
+
         for(let i in items){
             
             if(items[i].amount===0){
@@ -23695,6 +23754,8 @@ player=(function(out){
 
                 items[i].svg.style.display='inline'
                 items[i].amountText.textContent='x'+items[i].amount
+                
+                noItemsMessage.style.display='none'
             }
             
             for(let j in hotbarSlots){
@@ -24098,6 +24159,8 @@ player=(function(out){
         
         if(out.beequipLookingAt===false){
             
+            if(!out.currentGear.beequips.length) out.beequipPageHTML="<div style='text-align:center;font-size:17px;color:rgb(0,0,0,0.5)'><br>(You have no beequips)</div>"
+
             for(let i in out.currentGear.beequips){
                 
                 out.beequipPageHTML+=beequips[out.currentGear.beequips[i].type].svgCode.replaceAll('#ID',out.currentGear.beequips[i].id)
@@ -24641,7 +24704,7 @@ player=(function(out){
         
         if(currentPage===1){
             
-            pages[1].innerHTML=``
+            pages[1].innerHTML=out.quests.length?'':"<div style='text-align:center;font-size:17px;color:rgb(0,0,0,0.5)'><br>(You have no quests)</div>"
             
             for(let i in out.quests){
                 
@@ -24651,7 +24714,7 @@ player=(function(out){
                     
                     for(let j in out.quests[i].req){
                         
-                        if((out.stats[out.quests[i].req[j][0]]-out.quests[i].req[j][2])/out.quests[i].req[j][1]>=1         /*@*/||1){
+                        if((out.stats[out.quests[i].req[j][0]]-out.quests[i].req[j][2])/out.quests[i].req[j][1]>=1         /*ไ*/||1){
                             
                             out.quests[i].req[j][3]=true
                             
@@ -25079,8 +25142,58 @@ player=(function(out){
 
             document.getElementById('shrineMenu').style.display='none'
         }
+
+        let hasAnItem
+
+        for(let i in windShrineDonations){
+
+            if(items[windShrineDonations[i].item].amount>0){
+
+                hasAnItem=true
+                break
+            }
+        }
+
+        if(!hasAnItem){
+
+            document.getElementById('shrineX').onclick()
+            out.addMessage('You\'re supposed to donate, not get donations here lol',COLORS.redArr)
+            out.addMessage('Stop being poor(haha) and get an item that you can donate',COLORS.redArr)
+            return
+        }
         
         document.getElementById('shrineMenu').style.display='block'
+        document.getElementById('shrineItemName').innerHTML=MATH.doGrammar(windShrineDonations[out.shrineIndex].item)
+        document.getElementById('shrineItem').innerHTML=itemSVGCode[windShrineDonations[out.shrineIndex].item].replace('SCALE','translate(0px,-30px)')//@
+
+        document.getElementById('shrineLeft').onclick=function(){
+            
+            out.shrineIndex=(out.shrineIndex+windShrineDonations.length-1)%windShrineDonations.length
+
+            while(items[windShrineDonations[out.shrineIndex].item].amount<=0){
+
+                out.shrineIndex=(out.shrineIndex+windShrineDonations.length-1)%windShrineDonations.length
+            }
+            
+            out.updateShrineMenu()
+        }
+
+        document.getElementById('shrineRight').onclick=function(){
+
+            out.shrineIndex=(out.shrineIndex+1)%windShrineDonations.length
+
+            while(items[windShrineDonations[out.shrineIndex].item].amount<=0){
+
+                out.shrineIndex=(out.shrineIndex+1)%windShrineDonations.length
+            }
+
+            out.updateShrineMenu()
+        }
+
+        document.getElementById('shrineDonate').onclick=function(){
+
+            out.addMessage('this is a wip so pretend this does something')
+        }
     }
 
     out.updateBlenderMenu=function(){
@@ -25204,7 +25317,7 @@ player=(function(out){
         }
 
         f()
-        document.getElementById('blenderMenu').onmousemove=document.getElementById('blenderCraftAmount').onchange=f
+        document.getElementById('blenderMenu').onmousemove=document.getElementById('blenderCraftAmount').oninput=f
 
     }
     
@@ -31356,7 +31469,7 @@ loop(0)
 
 }
 
-//<script>
+//<script>  คาร์ลสันดี่มาก
 
 console.log=0
 
