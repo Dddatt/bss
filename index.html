@@ -27519,9 +27519,15 @@ class Token {
                 
             } else {
                 
-                player.addEffect(this.type,false,false,this.amplify)
+                if(this.type.indexOf('Winds')>-1){
+                
+                    player.addMessage('x'+this.amplify+' "'+MATH.doGrammar(this.type)+'"')
+                    player.addEffect(this.type,false,false,this.amplify)
 
-                if(this.type.indexOf('Winds')>-1) player.addMessage('x'+this.amplify+' "'+MATH.doGrammar(this.type)+'"')
+                } else {
+
+                    player.addEffect(this.type)
+                }
             }
             
             if(effects[this.type].sound){
