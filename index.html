@@ -4911,7 +4911,7 @@ let blenderRecipes=[
     {item:'neonberry',rewardType:'winds',rewardAmount:1},
     {item:'moonCharm',rewardType:'winds',rewardAmount:1},
     {item:'royalJelly',rewardType:'honey',rewardAmount:2},
-    {item:'starJelly',rewardType:'loot',rewardAmount:5},
+    {item:'starJelly',rewardType:'winds',rewardAmount:6},
     {item:'moonCharm',rewardType:'winds',rewardAmount:1},
     {item:'starTreat',rewardType:'winds',rewardAmount:12},
     {item:'atomicTreat',rewardType:'winds',rewardAmount:6},
@@ -4934,15 +4934,15 @@ let blenderRecipes=[
     {item:'enzymes',rewardType:'winds',rewardAmount:4},
     {item:'tropicalDrink',rewardType:'winds',rewardAmount:5},
     {item:'purplePotion',rewardType:'winds',rewardAmount:9},
-    {item:'magicBean',rewardType:'loot',rewardAmount:2.5},
+    {item:'magicBean',rewardType:'winds',rewardAmount:3.5},
     {item:'cloudVial',rewardType:'honey',rewardAmount:7},
-    {item:'antPass',rewardType:'loot',rewardAmount:2.5},
-    {item:'roboPass',rewardType:'loot',rewardAmount:3.25},
-    {item:'spiritPetal',rewardType:'loot',rewardAmount:1},
+    {item:'antPass',rewardType:'honey',rewardAmount:5},
+    {item:'roboPass',rewardType:'honey',rewardAmount:8},
+    {item:'spiritPetal',rewardType:'honey',rewardAmount:15},
     {item:'softWax',rewardType:'honey',rewardAmount:3.5},
     {item:'hardWax',rewardType:'winds',rewardAmount:6},
-    {item:'causticWax',rewardType:'loot',rewardAmount:5},
-    {item:'swirledWax',rewardType:'loot',rewardAmount:5},
+    {item:'causticWax',rewardType:'winds',rewardAmount:8},
+    {item:'swirledWax',rewardType:'honey',rewardAmount:10},
     {item:'turpentine',rewardType:'winds',rewardAmount:8},
     {item:'basicEgg',rewardType:'honey',rewardAmount:9},
     {item:'silverEgg',rewardType:'winds',rewardAmount:6},
@@ -4953,7 +4953,7 @@ let blenderRecipes=[
     {item:'giftedGoldEgg',rewardType:'winds',rewardAmount:12},
     {item:'giftedDiamondEgg',rewardType:'winds',rewardAmount:13},
     {item:'giftedMythicEgg',rewardType:'winds',rewardAmount:14},
-    {item:'starEgg',rewardType:'winds',rewardAmount:13},
+    {item:'starEgg',rewardType:'winds',rewardAmount:14},
 
 ]
 
@@ -25168,6 +25168,11 @@ player=(function(out){
             out.addMessage('Stop being poor(haha) and get an item that you can donate',COLORS.redArr)
             return
         }
+
+        while(items[windShrineDonations[out.shrineIndex].item].amount<=0){
+
+            out.shrineIndex=(out.shrineIndex+1)%windShrineDonations.length
+        }
         
         document.getElementById('shrineMenu').style.display='block'
         document.getElementById('shrineItemName').innerHTML=MATH.doGrammar(windShrineDonations[out.shrineIndex].item)
@@ -25211,13 +25216,15 @@ player=(function(out){
             let mess=[
 
                 ['The time has stopped...','It\'s as if the items has changed its color...','The items follow the light of the sun...','The items feel confused and lonely inside...','The items are playing games of the wrong kind...','The items are crimsonly burned down...','The items fly away like a blue butterfly...','The items fly away like a white petal...','The items are drawn by a gently wind...','It\'s all on you that you couldn\'t hold on...'],
-                ['You can\'t shake the emptyness inside...','You feel so lost...','You don\'t know how to go on...','You let nights and days past...','But questions race through your mind...','It\'s weird, it\'s really wierd...','A soft breeze passes by...','Are you really this calm or were you electrocuted...?','Is it a sky, mountain, sea, or a kind of splendor?','You feel the wind blows...','It\'s precious, something you can\'t lose...','A cool breeze when you\'re burning...','You want to scream out loud...','All you feel now is regret...','You stay still admiring the stunning view...','You count on the stars to tell you...'],
-                ['Sometimes the sky is overcast...','You\'ve found the light that leads the way...','A dream that comes to life...','Is it what you\'re meant to find?','Everything beatifully glows...','Your heart skips a beat when it\'s near...','Don\'t rush to find out, don\'t go anywhere...','Something rings gently in your heart...','You must be the luckiest guy on earth...','100 seasons pass by...','It\'s not far from your heart...']
+
+                ['You can\'t shake the emptyness inside...','You feel so lost...','You don\'t know how to go on...','You let nights and days pass...','But questions race through your mind...','It\'s weird, it\'s really weird...','Are you really this calm or were you electrocuted?','Is it a sky, mountain, sea, or a kind of splendor?','You feel the wind blows...','It\'s precious, something you can\'t lose...','A cool breeze when you\'re burning...','You want to scream out loud...','All you feel now is regret...','You stay still admiring the stunning view...','You count on the stars to tell you...','You fall into the abyss of one-sided feelings...'],
+
+                ['Sometimes the sky is overcast...','You\'ve found the light that leads the way...','A dream that comes to life...','Is it what you\'re meant to find?','Everything beatifully glows...','Your heart skips a beat when it\'s near...','Don\'t rush to find out, don\'t go anywhere...','Something rings gently in your heart...','You must be the luckiest guy on earth...','100 seasons pass by...','It\'s not far from your heart...','A soft breeze passes by...']
             ]
 
             for(let i in mess){
 
-                window.setTimeout(function(){out.addMessage(mess[i][(Math.random()*mess[i].length)|0],[160*0.7,255*0.7,255*0.7])},i*3000+1000)
+                window.setTimeout(function(){out.addMessage(mess[i][(Math.random()*mess[i].length)|0],[160*0.6,235*0.6,255*0.6])},i*3250+750)
             }
 
             
@@ -25242,6 +25249,14 @@ player=(function(out){
                                 window.setTimeout(function(){objects.tokens.push(new LootToken(60,[68+x,23.75,-21.5+z],'honey',((info.rewardAmount*info.rewardAmount*info.rewardAmount*40*(amountDonated*0.01+1)-20)*MATH.random(0.8,1/0.8))|0,false,'Wind Shrine'))},i*150)
                         }
 
+                        let _fields=[]
+
+                        for(let i in fieldInfo) if(i!=='AntField') _fields.push(i)
+
+                        _fields=_fields[(Math.random()*_fields.length)|0]
+
+                        objects.mobs.push(new Cloud(_fields,(Math.random()*fieldInfo[_fields].width)|0,(Math.random()*fieldInfo[_fields].length)|0,5*60,true))
+
                     break
 
                     case 'winds':
@@ -25256,19 +25271,21 @@ player=(function(out){
 
                             let theta=(i-(amountOfTokens-1)*0.5)*0.5,x=-Math.cos(theta)*4.5,z=Math.sin(theta)*4.5
 
-                            if(Math.random()<0.1){
+                            if(Math.random()<0.2){
 
-                                window.setTimeout(function(){objects.tokens.push(new LootToken(60,[68+x,23.75,-21.5+z],'honey',(info.rewardAmount*info.rewardAmount*1500*MATH.random(0.8,1/0.8))|0,false,'Wind Shrine'))},i*150)
+                                window.setTimeout(function(){objects.tokens.push(new LootToken(60,[68+x,23.75,-21.5+z],'honey',(info.rewardAmount*info.rewardAmount*2500*(amountDonated*0.02+1)*MATH.random(0.8,1/0.8))|0,false,'Wind Shrine'))},i*150)
 
                             } else {
 
-                                let field=(Math.random()*fields.length)|0,eff=fields[field]+'Winds'
+                                let field=(Math.random()*fields.length)|0,eff=fields[field]
                                 
                                 fields.splice(field,1)
+                                
+                                for(let j=0,_j=Math.random()*2.5;j<_j;j++)
+                                    objects.mobs.push(new Cloud(eff,(Math.random()*fieldInfo[eff].width)|0,(Math.random()*fieldInfo[eff].length)|0,5*60))
 
+                                eff+='Winds'
                                 eff=eff[0].toLowerCase()+eff.substring(1)
-
-                                console.error(eff)
 
                                 window.setTimeout(function(){objects.tokens.push(new Token(60,[68+x,23.75,-21.5+z],eff,{},false,Math.max(Math.ceil(info.rewardAmount+Math.round(MATH.random(-1.25,1.25))),1)))},i*150)
 
@@ -25278,7 +25295,7 @@ player=(function(out){
                     break
                 }
 
-            },3*2750)
+            },2*3250+1750)
         }
     }
 
