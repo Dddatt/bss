@@ -5359,6 +5359,11 @@ let triggers={
         minX:64,maxX:75,minY:8,maxY:16,minZ:30,maxZ:70
     },
 
+    petal_shop:{
+        
+        minX:61,maxX:75,minY:0,maxY:15,minZ:-50,maxZ:-32
+    },
+
     robo_shop:{
 
         minX:55.5,maxX:62,minY:7,maxY:13,minZ:36.5,maxZ:45
@@ -7712,7 +7717,7 @@ let effects={
             
             if(player.fieldIn===params.field){
                 
-                objects.marks.push(new Mark(params.field,(Math.random()*fieldInfo[params.field].width)|0,(Math.random()*fieldInfo[params.field].length)|0,'pollenMark',params.bee.level))
+                objects.marks.push(new Mark(params.field,(MATH.random(0.2,0.8)*fieldInfo[params.field].width)|0,(MATH.random(0.2,0.8)*fieldInfo[params.field].length)|0,'pollenMark',params.bee.level))
                 
             }
             
@@ -7732,7 +7737,7 @@ let effects={
             
             if(player.fieldIn===params.field){
                 
-                objects.marks.push(new Mark(params.field,(Math.random()*fieldInfo[params.field].width)|0,(Math.random()*fieldInfo[params.field].length)|0,'honeyMark',params.bee.level))
+                objects.marks.push(new Mark(params.field,(MATH.random(0.2,0.8)*fieldInfo[params.field].width)|0,(MATH.random(0.2,0.8)*fieldInfo[params.field].length)|0,'honeyMark',params.bee.level))
                 
             }
             
@@ -7747,14 +7752,7 @@ let effects={
         u:128*0/2048,v:128*8/2048,
         tokenLife:8,
         
-        func:function(params){
-            
-            if(player.fieldIn===params.field){
-                
-                objects.marks.push(new Mark(params.field,(Math.random()*fieldInfo[params.field].width)|0,(Math.random()*fieldInfo[params.field].length)|0,'preciseMark',params.bee.level))
-                
-            }
-        }
+        func:function(params){}
     },
     
     pollenMark:{
@@ -7901,7 +7899,7 @@ let effects={
     
     markSurge:{
         
-        desc:"Makes all active marks surge, collecting pollen and increasing it's lifespan by +1s(+0.1s per bee lvl). Marks can only surge 5 times.<br><br>Marks collect 7(12 is the mark is a Precise Mark) pollen from all flowers inside their radius. Pollen collected is multiplied by +10% per bee lvl.<br><br>• If the mark is a Honey Mark, it instantly converts all collected pollen.<br><br>• If the mark is a Precise Mark, it will always critical hit.",
+        desc:"Makes all active marks surge, collecting pollen and increasing it's lifespan by +1s(+0.1s per bee lvl). Marks can only surge 5 times.<br><br>Marks collect 7(13 if the mark is a Precise Mark) pollen from all flowers inside their radius. Pollen collected is multiplied by +10% per bee lvl.<br><br>• If the mark is a Honey Mark, it instantly converts all collected pollen.<br><br>• If the mark is a Precise Mark, it will always critical hit.",
         trialCooldown:20,trialRate:0.25,
         u:256/2048,v:256/2048,
         tokenLife:4,
@@ -8203,7 +8201,7 @@ let effects={
     
     targetPractice:{
         
-        desc:"Causes the bee to fly up, projecting 3 targets onto the field for 4s. Running over a target activates it. After 4s, the bee shoots the targets.<br><br>• Unactivated targets create a red boost token when shot<br><br>• If an activated target is shot, it will create a focus token and collect 50%(+5% per bee lvl) of the bee's attack from 49 flowers. The shot can gain up to 50% instant conversion and x3 pollen based on your Flame Heat.<br><br>• If all 3 targets are shot, all ability tokens will be collected and 1 of the targets will summon a red boost, focus, and precision token. Precision grants +2% super-crit chance and stacks up to 10x, giving a maximum of +20% super-crit chance.<br><br>• If the player stands under a target as it is shot, all ability tokens are collected and Flame Heat is consumed to convert 50% of the hive's convert total plus 15 times the bee's convert amount. The amount of pollen converted scales up to x10 with Flame Heat.<br><br>• If the bee is gifted, 1 of the targets are highlighted in purple. Activating this target but not all 3 will summon a Precise Mark for 12s(+0.2 per bee lvl) with a radius of 6.5 flowers. Standing in the Precise Mark grants +7% critical and super-crit chance, stacking up to 3x, for a maximum of +21% critical and super-crit chance.<br><br>Super-crit chance increases the chance of a super-crit happening if the hit is a critical hit, multiplying pollen collected or damage dealt by your critical power and super-crit power(x2 super-crit power without any extra buffs, x4 in total).",
+        desc:"Causes the bee to fly up, projecting 3 targets onto the field for 4s. Running over a target activates it. After 4s, the bee shoots the targets.<br><br>• Unactivated targets create a red boost token when shot<br><br>• If an activated target is shot, it will create a focus token and collect 50%(+5% per bee lvl) of the bee's attack from 49 flowers. The shot can gain up to 50% instant conversion and x3 pollen based on your Flame Heat.<br><br>• If all 3 targets are shot, all ability tokens will be collected and 1 of the targets will summon a red boost, focus, and precision token. Precision grants +2% super-crit chance and stacks up to 10x, giving a maximum of +20% super-crit chance.<br><br>• If the player stands under a target as it is shot, all ability tokens are collected and Flame Heat is consumed to convert 50% of the hive's convert total plus 15 times the bee's convert amount. The amount of pollen converted scales up to x10 with Flame Heat.<br><br>• If the bee is gifted, 1 of the targets are highlighted in purple. Activating this target but not all 3 will summon a Precise Mark for 13s(+0.2 per bee lvl) with a radius of 6.5 flowers. Standing in the Precise Mark grants +7% critical and super-crit chance, stacking up to 3x, for a maximum of +21% critical and super-crit chance.<br><br>Super-crit chance increases the chance of a super-crit happening if the hit is a critical hit, multiplying pollen collected or damage dealt by your critical power and super-crit power(x2 super-crit power without any extra buffs, x4 in total).",
         trialCooldown:22.5,trialRate:0.25,
         statsToAddTo:['redAbilityTokens','battleTokens'],
         u:128*4/2048,v:256*2/2048,
@@ -14590,7 +14588,7 @@ class Mark {
         
         this.gummyBallHitTimer=0
         this.beeLevel=beeLevel
-        this.life=((type==='precise'?12:7)+(beeLevel-1)*0.2)*player.markDuration
+        this.life=((type==='precise'?13:7)+(beeLevel-1)*0.2)*player.markDuration
         this.field=field
         this.x=x
         this.z=z
@@ -14598,7 +14596,7 @@ class Mark {
         this.surgeLimit=5
         this.rot=Math.random()*6.12
         
-        this.diameter=(type==='precise'?13:9)
+        this.diameter=(type==='precise'?14:10)
         this.sqSize=(this.diameter*0.5)*(this.diameter*0.5)
         
         this.type=type
@@ -18924,7 +18922,7 @@ class Planter {
 
     beeSipped(bee){
 
-        this.growth+=bee.gatherAmount*0.025+2
+        this.growth+=bee.gatherAmount*0.01+2
         player.addEffect(fieldInfo[this.field].nectarType,(bee.planterSipTime*4*player.nectarMultiplier)/(6*60*60))
     }
     
@@ -26425,7 +26423,7 @@ let shops={
         }],
         currentIndex:0,message:'Explore Red HQ Shop'
     },
-    // minX:64,maxX:75,minY:8,maxY:16,minZ:30,maxZ:70
+    
     ace:{
 
         items:[{
@@ -26462,6 +26460,36 @@ let shops={
             displayScale:[1.6,1.6,1.6],
         }],
         currentIndex:0,message:'Explore Ace Shop'
+    },
+
+    petal:{
+
+        items:[{
+
+            name:'petalWand',
+            slot:'tool',
+            viewMatrix:[66,10.75,-39,0,0],
+            displayPos:[65.5,10,-43.6],
+            displayRot:[30,50,-10],
+            displayScale:[1,1,1],
+        },{
+
+            amountPurchased:0,maxPurchasedAmount:1,
+            name:'petalPlanter',
+            slot:'item',
+            viewMatrix:[67.5,13.5,-39,0,0],
+            cost:['5000000000000 honey','75 magicBean','75 glitter','150 softWax','25 swirledWax'],
+            desc:'Alone, grows in about 33m. Grants bonus jellies, glitter, field dice, and white items.<br><br>• Grows x1.5 faster in fields with white flowers.<br><br>• Grants x1.5 Comforting and Satisfying nectar.<br><br>• White bees are 1.75x more likely to sip from this planter.'
+        },{
+
+            name:'petalBelt',
+            slot:'belt',
+            viewMatrix:[69,10.75,-39,0,0],
+            displayPos:[69.15,10.7,-44],
+            displayRot:[0,0,0],
+            displayScale:[3,3,3],
+        }],
+        currentIndex:0,message:'Explore Petal Shop'
     },
     
 }
@@ -31135,7 +31163,7 @@ function loop(now){
 
         if(frameCount%200===1){
 
-            let t=(Date.now()*0.001)%(60*15)
+            let t=(Date.now()*0.001)%(60*20)
 
             if(t<globalTimer_puffshroom){
 
