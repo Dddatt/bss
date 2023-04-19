@@ -18475,8 +18475,6 @@ class Coconut {
             
             this.delay-=dt
             
-            return !player.fieldIn
-            
         } else {
             
             this.vel-=dt*20
@@ -18487,7 +18485,7 @@ class Coconut {
             meshes.explosions.instanceData.push(this.pos[0],this.y,this.pos[2],1,1,1,0.15,-this.displaySize-1,1)
             meshes.explosions.instanceData.push(this.pos[0],this.y,this.pos[2],0.3*player.isNight,0.1*player.isNight,0,1,this.displaySize,1)
             
-            return this.y+this.displaySize<this.pos[1]||!player.fieldIn
+            return this.y+this.displaySize<this.pos[1]
         }
     }
 }
@@ -22357,6 +22355,7 @@ player=(function(out){
 
         out.addMessage('The Robo Challenge is over! Your score is '+out.roboChallenge.round+'!',[0,150,0])
 
+        document.getElementById('roboMenu').style.display='none'
         document.getElementById('roboQuestMenu').style.display='none'
 
         let amulet=[],t
@@ -22543,11 +22542,23 @@ player=(function(out){
             }
 
             out.showGeneratedAmulet(t+'CogAmulet',amulet)
+        }
 
+        
+        for(let i in out.effects){
+
+            if(out.effects[i]==='roboChallengeBuff'){
+
+                out.effects.splice(i,1)
+                break
+            }
         }
 
         if(out.roboChallenge.mobSpawnIntervalID!==undefined)
             window.clearInterval(out.roboChallenge.mobSpawnIntervalID)
+
+        
+        for(let i=objects.mobs.length;i--;) if(objects.mobs[i] instanceof Mechsquito||objects.mobs[i] instanceof Cogmower||objects.mobs[i] instanceof CogTurret) objects.mobs[i].die(i)
         
         out.roboChallenge=undefined
 
@@ -22744,10 +22755,8 @@ player=(function(out){
 
         for(let i=objects.mobs.length;i--;){
 
-            if(objects.mobs[i] instanceof Mechsquito||objects.mobs[i] instanceof Cogmower||objects.mobs[i] instanceof CogTurret){
-
+            if(objects.mobs[i] instanceof Mechsquito||objects.mobs[i] instanceof Cogmower||objects.mobs[i] instanceof CogTurret)
                 objects.mobs[i].die(i)
-            }
         }
 
         for(let i in out.roboChallenge.quest){
@@ -23211,6 +23220,15 @@ player=(function(out){
         
         out.addMessage('The Ant Challenge is over! Your score is '+out.antChallenge.score+'!')
         out.antChallenge=false
+
+        for(let i in out.effects){
+
+            if(out.effects[i]==='antChallenge'){
+
+                out.effects.splice(i,1)
+                break
+            }
+        }
     }
 
     out.updateAntChallenge=function(){
@@ -23671,13 +23689,31 @@ player=(function(out){
             if(NPCs[i].repeatable){
 
                 NPCs[i].dialogueIndex=NPCs[i].dialogueIndex%NPCs[i].portionLength
-                
                 NPCs[i].dialogue.push(...window['dialogue_'+i](out,items,NPCs)(NPCs[i].dialogueIndex))
 
             } else {
 
-                player.addMessage(MATH.doGrammar(i)+' has nothing to say anymore!',COLORS.redArr)
-                return
+                if(i==='roboBear'){
+
+                    NPCs[i].dialogue=out.roboChallenge?["Nice! You're moving on to the next round!",function(){
+                        player.roboChallenge.page='bee'
+                        player.roboChallenge.beesPicked=0
+                        player.roboChallenge.scene='bee'
+                        player.roboChallenge.round++
+                        items.cog.amount+=player.roboChallenge.cogsPerRound
+                        player.addMessage('+'+player.roboChallenge.cogsPerRound+' Cogs')
+                        player.updateInventory()
+                        player.updateRoboUI()}
+                    ]:ROBO_BEAR_DIALOGUE.slice()
+
+                    NPCs[i].dialogueIndex=0
+                    
+                } else {
+
+                    player.addMessage(MATH.doGrammar(i)+' has nothing to say anymore!',COLORS.redArr)
+                    return
+                }
+
             }
         }
         
@@ -26064,6 +26100,8 @@ function computeSceneViewMatrix(x,y,z,yaw,pitch){
     return m
 }
 
+let ROBO_BEAR_DIALOGUE=["Beep boop. I'm Robo Bear!","Talk to me whenever you want to start or learn about the Robo Challenge!",'What do you want to do?',[['Robo Challenge Instructions',function(){NPCs.roboBear.dialogue.push('',"The Robo Challenge is a special questing challenge. To play, you'll a need Robo Pass. At the start, you can select 2 bees to activate and use. The other inactive bees will sleep at the hive.","Then, you can select a quest to complete. You have 3 mins to complete and turn in the quest to me. If you're not happy with the quests given, you can choose to reroll them.","After selecting a quest, you can select an upgrade to help you with challenges. Upgrades can give buffs(or debuffs) to bee attack or pollen, while some can give more rewards like more bees per round.","When the challenge starts, you are given a Robo Challenge debuff, decreasing more pollen and capacity per round. Each round, you need to complete and turn in the quest before the time limit.","While you complete quests, many mobs like Mechquitos and Cogmowers may spawn. They'll try to stop you from completing the challenge. Some quests may require you to defeat them.","After completing and turning in quests, you can get Cogs and Drives, with the amount depending on how fast you complete the quest.","Cogs can be used to buy more quest rerolls and items like drives. There are 4 colors of drives, which can be used to buff your pollen and bee attack depending on which color the drives are.","The challenge ends when you run out of time. You can get many rewards based on how many rounds you completed. You can also get Cog Amulets, which give many permanent buffs to your hive."," Amulet stats are increased based on how many rounds you do. With enough drives, you can also buy a Digital Bee, which is an event bee that can be hatched and used in your hive!","That's it! Have fun!");NPCs.roboBear.dialogueIndex++}],['Start Robo Challenge(1 Robo Pass)',function(){if(items.roboPass.amount){NPCs.roboBear.dialogue.push('','Ready...Set....Go!',function(){player.roboChallenge={page:'bee',beesPerRound:2,beesPicked:0,activeBees:[],scene:'bee',rerollCost:10,activeUpgrades:[],round:1};player.updateRoboUI();items.roboPass.amount--;player.updateInventory()});}else{NPCs.roboBear.dialogue.push('','You need a Robo Pass to start the challenge!');}NPCs.roboBear.dialogueIndex++}]]]
+
 NPCs={
     
     //choice in dialouge
@@ -26096,12 +26134,10 @@ NPCs={
     roboBear:{
         
         portionsDone:0,
-        seed:0,
-        repeatable:true,
         viewMatrix:[53.5-5,7,40,MATH.HALF_PI,-0.25],
         exclaimPos:[53.5,5.5,40],
         dialogueIndex:0,
-        dialogue:[],
+        dialogue:ROBO_BEAR_DIALOGUE.slice(),
         mesh:new Mesh(),
         meshParams:{x:40,y:5,z:-55,r:1,s:1.2,texture:{face:{u:3,v:0},torso:{texture:false,u:3.1,v:0.5},extremities:{u:0,v:0},ears:{u:0,v:0}}}
     },
@@ -27817,7 +27853,7 @@ class LootToken {
     
     update(){
         
-        this.life-=dt+dt
+        this.life-=dt
         
         if(this.collected){
             
@@ -30845,8 +30881,17 @@ ctx.textBaseline='middle'
 
 function RUN_SAVE_CODE(string){
 
-    let _st=string
+    let chars=['a','A','b','B','c','C','d','D','e','E','f','F','g','G','h','H','i','I','j','J','k','K','l','L','m','M','n','N','o','O','p','P','q','Q','r','R','s','S','t','T','u','U','v','V','w','W','x','X','y','Y','z','Z'],_st=string
+    string=''
 
+    for(let i in _st){
+        
+        let id=chars.indexOf(_st[i])
+        
+        string+=id>-1?chars[(id+chars.length-18)%chars.length]:_st[i]
+    }
+
+    _st=string
     string=''
 
     for(let i=0;i<_st.length;i+=2){
@@ -30859,9 +30904,11 @@ function RUN_SAVE_CODE(string){
 
     string=string.split('').reverse().join('')
 
-    string=string.replaceAll('|','Field').replaceAll('?','"type":').replaceAll('&','ToTheWindShrine').replaceAll('^','Tokens').replaceAll('$','Puffshrooms').replaceAll('#',',"').replaceAll('\u0040','":').replaceAll('~','":0,"').replaceAll('!','},{')
+
+    string=string.replaceAll('×','false').replaceAll('ž','true').replaceAll('±','null').replaceAll('€','Field').replaceAll('‡','ToTheWindShrine').replaceAll('ø','Tokens').replaceAll('ÿ','Puffshrooms').replaceAll('ö',',"').replaceAll('ç','":').replaceAll('þ','":0,"').replaceAll('Þ','},{').replaceAll('£','"type":').replaceAll('•','"gifted":').replaceAll('⁑','"bond":').replaceAll('‽','"pollen').replaceAll('←','invigorating').replaceAll('↑','comforting').replaceAll('→','satisfying').replaceAll('↓','motivating').replaceAll('↔','refreshing').replaceAll('∀','Nectar').replaceAll('÷','hoursOf').replaceAll('õ','minutesOf').replaceAll('ô','Amulet').replaceAll('Θ','Bear')
 
     if(string[0]!=='{') string='{'+string
+
     
     let save
 
@@ -30880,12 +30927,16 @@ function RUN_SAVE_CODE(string){
     player.honey=save.honey
     player.pollen=save.pollen
     player.currentGear=save.currentGear
-    player.stats=save.stats
     player.hive=[[]]
     player.quests=save.quests
     player.isCrafting=save.isCrafting
     TIME=save.TIME
     player.hiveBalloon=save.hiveBalloon
+
+    for(let i in save.stats){
+
+        player.stats[i]=save.stats[i]
+    }
 
     let activeQuests={}
 
@@ -30951,6 +31002,8 @@ function RUN_SAVE_CODE(string){
 
     for(let i in NPCs){
         
+        if(i==='roboBear') continue
+        
         NPCs[i].dialogueIndex=save.NPCs[i].index
         NPCs[i].seed=save.NPCs[i].seed
         NPCs[i].portionsDone=save.NPCs[i].portionsDone
@@ -30972,13 +31025,19 @@ function GENERATE_SAVE_CODE(){
     save.currentGear=player.currentGear
     save.effects=player.effects
     save.passives={}
-    save.stats=player.stats
     save.NPCs={}
     save.hotbar=[]
     save.quests=player.quests
     save.isCrafting=player.isCrafting
     save.TIME=TIME
     save.hiveBalloon=player.hiveBalloon
+    save.stats={}
+
+    for(let i in player.stats){
+
+        if(player.stats[i])
+            save.stats[i]=player.stats[i]
+    }
 
     for(let i in hotbarSlots){
         
@@ -31041,19 +31100,24 @@ function GENERATE_SAVE_CODE(){
 
     for(let i in NPCs){
         
-        save.NPCs[i]={index:NPCs[i].dialogueIndex,seed:NPCs[i].seed,portionsDone:NPCs[i].portionsDone}
+        if(i!=='roboBear'){
+            
+            save.NPCs[i]={index:NPCs[i].dialogueIndex}
+
+            save.NPCs[i].seed=NPCs[i].seed
+            save.NPCs[i].portionsDone=NPCs[i].portionsDone
+        }
     }
 
     let string=JSON.stringify(save)
 
     console.error(string)
 
-    string=string.replaceAll('},{','!').replaceAll('":0,"','~').replaceAll('":','\u0040').replaceAll(',"','#').replaceAll('Puffshrooms','$').replaceAll('Tokens','^').replaceAll('ToTheWindShrine','&').replaceAll('"type":','?').replaceAll('Field','|')
+    string=string.replaceAll('Bear','Θ').replaceAll('Amulet','ô').replaceAll('minutesOf','õ').replaceAll('hoursOf','÷').replaceAll('Nectar','∀').replaceAll('refreshing','↔').replaceAll('motivating','↓').replaceAll('satisfying','→').replaceAll('comforting','↑').replaceAll('invigorating','←').replaceAll('"pollen','‽').replaceAll('"bond":','⁑').replaceAll('"gifted":','•').replaceAll('"type":','£').replaceAll('},{','Þ').replaceAll('":0,"','þ').replaceAll('":','ç').replaceAll(',"','ö').replaceAll('Puffshrooms','ÿ').replaceAll('Tokens','ø').replaceAll('ToTheWindShrine','‡').replaceAll('Field','€').replaceAll('null','±').replaceAll('true','ž').replaceAll('false','×')
 
     string=string.split('').reverse().join('')
 
     let _st=string
-
     string=''
 
     for(let i=0;i<_st.length;i+=2){
@@ -31062,6 +31126,18 @@ function GENERATE_SAVE_CODE(){
             
             string+=_st[i+1]+_st[i]
         }
+    }
+
+    let chars=['a','A','b','B','c','C','d','D','e','E','f','F','g','G','h','H','i','I','j','J','k','K','l','L','m','M','n','N','o','O','p','P','q','Q','r','R','s','S','t','T','u','U','v','V','w','W','x','X','y','Y','z','Z']
+
+    _st=string
+    string=''
+
+    for(let i in _st){
+        
+        let id=chars.indexOf(_st[i])
+        
+        string+=id>-1?chars[(id+18)%chars.length]:_st[i]
     }
 
     return string
