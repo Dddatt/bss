@@ -81,7 +81,7 @@ window.dialogue_polarBear=function(player,items,NPCs){
         if(rand()<0.5) rew.push(['ticket',1])
         if(rand()<0.2) rew.push([['glitter','magicBean','oil','enzymes','glue'][(Math.random()*5)|0],1])
 
-        return ["Hey there! You hungry? If you collect the ingredients, I'll cook us up something good.","So good it'll permanently increase the maximum energy of your bees by 5%! I'll even throw in some honey for dessert!","Check the Quest menu to see our next recipe.",
+        return ["Hey there! You hungry? If you collect the ingredients, I'll cook us up something good.","So good it'll permanently increase the maximum energy of your bees by 5%! I'll even throw in some honey for dessert!","Now, if you'll excuse me, I'm going back to coding. I don't do this in the real game, but I heard polar bears are nerds at coding.",
 
             function(){
 

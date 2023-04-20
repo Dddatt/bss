@@ -9,11 +9,11 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
 <html>
 
     <head>
-        <meta charset="utf-8">
+        <meta charset='utf-8'>
         <title>bss</title>
-        <link rel="icon" type="image/x-icon" href="icon-image.png">
+        <link rel='icon' type='image/x-icon' href='icon-image.png'>
     </head>
-    <body onload="main()">
+    <body onload='main()'>
 <canvas id='gl-canvas'></canvas>
 <canvas id='ui-canvas'></canvas>
 <canvas id='tex-canvas' width='2048' height='2048'></canvas>
@@ -4503,11 +4503,7 @@ document.getElementById('mainPlay').onclick=function(){
         document.getElementById('mainSelectMenu').style.display='none'
         document.getElementById('mainMenu').style.display='none'
 
-        let date=new Date(Date.now())
-
-        let lastSavedDate=`${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getDate().toString().padStart(2,'0')}/${date.getFullYear()}  ${date.getHours().toString().padStart(2,'0')}:${date.getMinutes().toString().padStart(2,'0')}:${date.getSeconds().toString().padStart(2,'0')}`
-
-        BeeSwarmSimulator({id:'Untitled: '+lastSavedDate})
+        BeeSwarmSimulator({id:'Untitled Save'})
     }
 
     document.getElementById('createImportedGame').onclick=function(){
@@ -4526,19 +4522,10 @@ document.getElementById('mainPlay').onclick=function(){
         document.getElementById('mainSelectMenu').style.display='none'
         document.getElementById('mainMenu').style.display='none'
 
-        let date=new Date(Date.now())
-
-        let lastSavedDate=`${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getDate().toString().padStart(2,'0')}/${date.getFullYear()}  ${date.getHours().toString().padStart(2,'0')}:${date.getMinutes().toString().padStart(2,'0')}:${date.getSeconds().toString().padStart(2,'0')}`
-
-        BeeSwarmSimulator({id:'Imported: '+lastSavedDate,saveCode:text})
+        BeeSwarmSimulator({id:'Imported Save',saveCode:text})
     }
 
     loadFromDB().then(res=>{
-
-        // document.getElementById('mainSelectMenu').style.display='none'
-        // document.getElementById('mainInfoMenu').style.display='none'
-        // document.getElementById('mainMenu').style.display='none'
-        // BeeSwarmSimulator()
 
         window.initSave=function(index){
 
@@ -4548,18 +4535,18 @@ document.getElementById('mainPlay').onclick=function(){
             BeeSwarmSimulator({id:res[index].id,saveCode:res[index].data.saveCode})
         }
 
-        let deleteSaveConfirmation=true
+        let deleteSaveConfirmation=false
 
         window.deleteSave=function(index){
 
-            if(deleteSaveConfirmation){
+            if(deleteSaveConfirmation!==index){
 
                 alert('\nDo you really want to delete save "'+res[index].id+'"? To permanently delete this save, click the delete button again after closing this message.')
-                deleteSaveConfirmation=false
+                deleteSaveConfirmation=index
 
             } else {
 
-                deleteSaveConfirmation=true
+                deleteSaveConfirmation=false
                 deleteFromDB(res[index].id)
                 document.getElementById('mainPlay').onclick()
             }
@@ -4619,9 +4606,9 @@ document.getElementById('mainPlay').onclick=function(){
 
             addedDivsToSplice.push(div)
 
-            let date=new Date(res[i].data.lastSaved)
+            let date=new Date(res[i].data.lastSaved),dgh=date.getHours()
 
-            let lastSavedDate=`${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getDate().toString().padStart(2,'0')}/${date.getFullYear()}&nbsp;&nbsp;${date.getHours().toString().padStart(2,'0')}:${date.getMinutes().toString().padStart(2,'0')}:${date.getSeconds().toString().padStart(2,'0')}`
+            let lastSavedDate=`${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getDate().toString().padStart(2,'0')}/${date.getFullYear()}&nbsp;&nbsp;${(dgh>=12?dgh-12:dgh).toString().padStart(2,'0')}:${date.getMinutes().toString().padStart(2,'0')}:${date.getSeconds().toString().padStart(2,'0')} ${dgh>=12?'PM':'AM'}`
 
             div.innerHTML="<input id='saveName"+i+"' style='margin-top:3px;margin-left:3px;font-size:22px;background-color:rgb(0,0,0,0);border:none;font-family:comic sans ms;padding-left:4px;padding-bottom:5px;background-color:rgb(0,0,0,0.1)' spellcheck='false' size='17' value='"+res[i].id+"' onchange='window.renameSave("+i+")'><div style='margin-top:7px;margin-left:5px;font-size:14px;color:rgb(60,60,60)'>Last Saved: "+lastSavedDate+"</div><div style='margin-left:460px;margin-top:-25px;width:52px;height:27px;transform:translate(-50%,-50%);background-color:rgb(210,50,50);border-radius:4px;border:2px solid black;text-align:center;font-size:16px;cursor:pointer' onclick='window.deleteSave("+i+")'>Delete</div><div style='margin-left:395px;margin-top:-31px;width:52px;height:27px;transform:translate(-50%,-50%);background-color:rgb(195,100,255);border-radius:4px;border:2px solid black;text-align:center;font-size:16px;cursor:pointer' onclick='window.getSave("+i+")'>Export</div><div style='margin-left:330px;margin-top:-31px;width:52px;height:27px;transform:translate(-50%,-50%);background-color:rgb(50,210,50);border-radius:4px;border:2px solid black;text-align:center;font-size:16px;cursor:pointer' onclick='window.initSave("+i+")'>Play</div>"
 
@@ -5770,7 +5757,6 @@ let triggers={
             player.pollen=0
             items.ticket.amount--
             player.updateInventory()
-            
         }
     },
     
@@ -5788,7 +5774,23 @@ let triggers={
             player.pollen=0
             items.ticket.amount--
             player.updateInventory()
+        }
+    },
+
+    sunflower_instant_converter:{
+        
+        isMachine:true,requirements:function(player){
             
+            if(player.pollen<1) return 'You must have pollen to use the instant converter!'
+            if(items.ticket.amount<1) return 'You need 1 ticket to use the instant converter!'
+        
+        },minX:8,maxX:13.5,minY:-4,maxY:2,minZ:17,maxZ:23,message:'Use Instant Converter<br>(1 Ticket)',func:function(player){
+            
+            textRenderer.add(player.pollen,[player.body.position.x,player.body.position.y+1,player.body.position.z],COLORS.honey,1,'⇆')
+            player.honey+=Math.ceil(player.pollen*player.honeyPerPollen)
+            player.pollen=0
+            items.ticket.amount--
+            player.updateInventory()
         }
     },
 
@@ -15458,7 +15460,7 @@ class BugMob {
                     
                     player.stats[this.type]++
                     this.state='dead'
-                    this.respawnTimer={rhinoBeetle:2*60,ladybug:2*60,spider:10*60,werewolf:15*60,mantis:7*60,scorpion:7*60,kingBeetle:50*60,tunnelBear:75*60}[this.type]/player.monsterRespawnTime
+                    this.respawnTimer={rhinoBeetle:4*60,ladybug:4*60,spider:10*60,werewolf:15*60,mantis:7*60,scorpion:7*60,kingBeetle:60*60,tunnelBear:120*60}[this.type]/player.monsterRespawnTime
                     
                     let amountOfTokens=((player.lootLuck-1)|0)
                     
@@ -23657,7 +23659,6 @@ player=(function(out){
             out.currentNPC=null
             dialogueBox.style.display='none'
             out.viewMatrixToChange=undefined
-            uiCanvas.requestPointerLock()
             
         } else if(typeof NPCs[out.currentNPC].dialogue[NPCs[out.currentNPC].dialogueIndex]==='object'){
             
@@ -25105,7 +25106,6 @@ player=(function(out){
         if(player.beePopup){
             
             document.exitPointerLock()
-            player.pointerLocked=false
             
             let bee=player.beePopup.type
             
@@ -26764,7 +26764,7 @@ let textRenderer=(function(out){
         
         -w,-h,fx,fy,
         w,-h,w+fx,fy,
-        w,h,w+fx,-h/(600/512)+fy,
+        w,h,w+fx,-h/(600/512)+fy,//@
         -w,h,fx,-h/(600/512)+fy
         
     ],i=[0,1,2,2,3,0],eps=2/1024
@@ -26778,10 +26778,10 @@ let textRenderer=(function(out){
     
     v=[
         
-        -0.5,-0.5,0+eps,0+eps,
-        0.5,-0.5,(128/1024)-eps,0+eps,
-        0.5,0.5,(128/1024)-eps,(128/1024)-eps,
-        -0.5,0.5,0+eps,(128/1024)-eps
+        -0.5,-0.5,(128/1024)-eps,0+eps,
+        0.5,-0.5,0+eps,0+eps,
+        0.5,0.5,0+eps,(128/1024)-eps,
+        -0.5,0.5,(128/1024)-eps,(128/1024)-eps
     ]
     
     gl.bindBuffer(gl.ARRAY_BUFFER,out.decal_vertBuffer)
@@ -26955,13 +26955,11 @@ let textRenderer=(function(out){
     
     out.addDecal=function(pos,type,size,rot=0){
         
-        out.drawDecals=true
         out.decal_instanceData.push(...pos,0,0,...out.decalUV[type],1,1,1,...size,rot)
     }
     
     out.addDecalRaw=function(){
         
-        out.drawDecals=true
         out.decal_instanceData.push(...arguments)
     }
     
@@ -26970,59 +26968,45 @@ let textRenderer=(function(out){
         gl.useProgram(textRendererProgram)
         gl.uniformMatrix4fv(glCache.text_viewMatrix,gl.FALSE,player.viewMatrix)
 
-        if(out.drawDecals){
-            
-            gl.bindTexture(gl.TEXTURE_2D,textures.decals)
-            
-            gl.bindBuffer(gl.ARRAY_BUFFER,out.decal_vertBuffer)
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,out.decal_indexBuffer)
-            gl.vertexAttribPointer(glCache.text_vertPos,2,gl.FLOAT,gl.FALSE,16,0)
-            gl.vertexAttribPointer(glCache.text_vertUV,2,gl.FLOAT,gl.FALSE,16,8)
-            gl.bindBuffer(gl.ARRAY_BUFFER,out.instanceBuffer)
-            gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(out.decal_instanceData),gl.DYNAMIC_DRAW)
-            gl.vertexAttribPointer(glCache.text_instanceOrigin,3,gl.FLOAT,gl.FALSE,52,0)
-            gl.vertexAttribDivisor(glCache.text_instanceOrigin,1)
-            gl.vertexAttribPointer(glCache.text_instanceOffset,2,gl.FLOAT,gl.FALSE,52,12)
-            gl.vertexAttribDivisor(glCache.text_instanceOffset,1)
-            gl.vertexAttribPointer(glCache.text_instanceUV,2,gl.FLOAT,gl.FALSE,52,20)
-            gl.vertexAttribDivisor(glCache.text_instanceUV,1)
-            gl.vertexAttribPointer(glCache.text_instanceColor,3,gl.FLOAT,gl.FALSE,52,28)
-            gl.vertexAttribDivisor(glCache.text_instanceColor,1)
-            gl.vertexAttribPointer(glCache.text_instanceInfo,3,gl.FLOAT,gl.FALSE,52,40)
-            gl.vertexAttribDivisor(glCache.text_instanceInfo,1)
-            gl.drawElementsInstanced(gl.TRIANGLES,out.decal_indexAmount,gl.UNSIGNED_SHORT,0,out.decal_instanceData.length*MATH.INV_13)
-            
-            out.decal_instanceData=[
+        gl.bindTexture(gl.TEXTURE_2D,textures.decals)
+        
+        gl.bindBuffer(gl.ARRAY_BUFFER,out.decal_vertBuffer)
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,out.decal_indexBuffer)
+        gl.vertexAttribPointer(glCache.text_vertPos,2,gl.FLOAT,gl.FALSE,16,0)
+        gl.vertexAttribPointer(glCache.text_vertUV,2,gl.FLOAT,gl.FALSE,16,8)
+        gl.bindBuffer(gl.ARRAY_BUFFER,out.instanceBuffer)
+        gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(out.decal_instanceData),gl.DYNAMIC_DRAW)
+        gl.vertexAttribPointer(glCache.text_instanceOrigin,3,gl.FLOAT,gl.FALSE,52,0)
+        gl.vertexAttribDivisor(glCache.text_instanceOrigin,1)
+        gl.vertexAttribPointer(glCache.text_instanceOffset,2,gl.FLOAT,gl.FALSE,52,12)
+        gl.vertexAttribDivisor(glCache.text_instanceOffset,1)
+        gl.vertexAttribPointer(glCache.text_instanceUV,2,gl.FLOAT,gl.FALSE,52,20)
+        gl.vertexAttribDivisor(glCache.text_instanceUV,1)
+        gl.vertexAttribPointer(glCache.text_instanceColor,3,gl.FLOAT,gl.FALSE,52,28)
+        gl.vertexAttribDivisor(glCache.text_instanceColor,1)
+        gl.vertexAttribPointer(glCache.text_instanceInfo,3,gl.FLOAT,gl.FALSE,52,40)
+        gl.vertexAttribDivisor(glCache.text_instanceInfo,1)
+        gl.drawElementsInstanced(gl.TRIANGLES,out.decal_indexAmount,gl.UNSIGNED_SHORT,0,out.decal_instanceData.length*MATH.INV_13)
+        
+        out.decal_instanceData=[
 
-                61,10.25,43.5,0,0,0.875,0.125,1,1,1,-1.75,-1.75,0,
-                61,10.25,41.663,0,0,0.625,0.125,1,1,1,-1.75,-1.75,0,
-                61,10.25,39.8315,0,0,0.75,0.125,1,1,1,-1.75,-1.75,0,
-                61,10.25,38,0,0,0.5,0.125,1,1,1,-1.75,-1.75,0,
+            61,10.25,43.5,0,0,0.875,0.125,player.isNight,player.isNight,player.isNight,-1.75,-1.75,0,
+            61,10.25,41.663,0,0,0.625,0.125,player.isNight,player.isNight,player.isNight,-1.75,-1.75,0,
+            61,10.25,39.8315,0,0,0.75,0.125,player.isNight,player.isNight,player.isNight,-1.75,-1.75,0,
+            61,10.25,38,0,0,0.5,0.125,player.isNight,player.isNight,player.isNight,-1.75,-1.75,0,
 
-                -98,23,106.5,0,0,0.125,0.25,1,1,1,-2,-2,0,
-                -98-2.25,23,106.5,0,0,0.25,0.25,1,1,1,-2,-2,0,
-                -98-2.25*2,23.07,106.5,0,0,0.625,0.25,1,1,1,-2,-2,0,
-                -98-2.25*3,23.1,106.5,0,0,0.75,0.25,1,1,1,-2,-2,0,
-                -98-2.25*4,23,106.5,0,0,0,0.375,1,1,1,-2,-2,0,
+            -98,23,106.5,0,0,0.125,0.25,player.isNight,player.isNight,player.isNight,-2,-2,0,
+            -98-2.25,23,106.5,0,0,0.25,0.25,player.isNight,player.isNight,player.isNight,-2,-2,0,
+            -98-2.25*2,23.07,106.5,0,0,0.625,0.25,player.isNight,player.isNight,player.isNight,-2,-2,0,
+            -98-2.25*3,23.1,106.5,0,0,0.75,0.25,player.isNight,player.isNight,player.isNight,-2,-2,0,
+            -98-2.25*4,23,106.5,0,0,0,0.375,player.isNight,player.isNight,player.isNight,-2,-2,0,
 
-                -63.5,5,41,0,0,0.5,0.25,1,1,1,-2.5,-2.5,0,
+            -63.5,5,41,0,0,0.5,0.25,player.isNight,player.isNight,player.isNight,-2.5,-2.5,0,
+            37.5,8,28,0,0,0.375,0.25,player.isNight,player.isNight,player.isNight,-2.5,-2.5,0,
+            67.5,13.5,-42.6,0,0,0.875,0.25,player.isNight,player.isNight,player.isNight,-2.5,-2.5,0,
 
-                37.5,8,28,0,0,0.375,0.25,1,1,1,-2.5,-2.5,0,
-                
-                67.5,13.5,-42.6,0,0,0.875,0.25,1,1,1,-2.5,-2.5,0,
-
-            ]
-            
-            out.drawDecals=false
-            
-        } else {
-            
-            gl.vertexAttribDivisor(glCache.text_instanceOrigin,1)
-            gl.vertexAttribDivisor(glCache.text_instanceOffset,1)
-            gl.vertexAttribDivisor(glCache.text_instanceUV,1)
-            gl.vertexAttribDivisor(glCache.text_instanceColor,1)
-            gl.vertexAttribDivisor(glCache.text_instanceInfo,1)
-        }
+            11.25,3.5,14.75,0,0,0.125,0.375,player.isNight,player.isNight,player.isNight,-4,-4,0,
+        ]
         
         let t=SIN_TIME*0.5+0.5,_t=t
         
@@ -30772,14 +30756,6 @@ for(let i in items){
 
 objects.tokens.push(new LootToken(10000,[0,1,0],'honey',100000000000000))
 
-player.pointerLocked=false
-
-document.addEventListener('pointerlockchange',function(e){
-    
-    player.pointerLocked=!player.pointerLocked
-    
-},false)
-
 ctx.textAlign='center'
 ctx.textBaseline='middle'
 
@@ -30881,7 +30857,30 @@ ctx.textBaseline='middle'
 
 function RUN_SAVE_CODE(string){
 
-    let chars=['a','A','b','B','c','C','d','D','e','E','f','F','g','G','h','H','i','I','j','J','k','K','l','L','m','M','n','N','o','O','p','P','q','Q','r','R','s','S','t','T','u','U','v','V','w','W','x','X','y','Y','z','Z'],_st=string
+    let _st=string
+    string=''
+
+    for(let i=0;i<_st.length;i++){
+        
+        let int=['','','ะ','๐','๑','๒','๓','๔','๕','๖','๗','๘','๙','ก','ง','ข','น','า','ว','อ','ล','ค','ย','ๆ','ม','จ','ธ','ฐ','ฎ','ฮ','พ','ถ','เ','ใ','บ','ป','ศ','ห','ฉ','โ','฿','ร'].indexOf(_st[i+1])
+        
+        if(int<2){
+            
+            int=1
+            string+=_st[i].repeat(int)
+            
+        } else {
+            
+            string+=_st[i].repeat(int)
+            i++
+        }
+        
+    }
+
+
+    let chars=['a','A','b','B','c','C','d','D','e','E','f','F','g','G','h','H','i','I','j','J','k','K','l','L','m','M','n','N','o','O','p','P','q','Q','r','R','s','S','t','T','u','U','v','V','w','W','x','X','y','Y','z','Z']
+
+    _st=string
     string=''
 
     for(let i in _st){
@@ -30905,7 +30904,8 @@ function RUN_SAVE_CODE(string){
     string=string.split('').reverse().join('')
 
 
-    string=string.replaceAll('×','false').replaceAll('ž','true').replaceAll('±','null').replaceAll('€','Field').replaceAll('‡','ToTheWindShrine').replaceAll('ø','Tokens').replaceAll('ÿ','Puffshrooms').replaceAll('ö',',"').replaceAll('ç','":').replaceAll('þ','":0,"').replaceAll('Þ','},{').replaceAll('£','"type":').replaceAll('•','"gifted":').replaceAll('⁑','"bond":').replaceAll('‽','"pollen').replaceAll('←','invigorating').replaceAll('↑','comforting').replaceAll('→','satisfying').replaceAll('↓','motivating').replaceAll('↔','refreshing').replaceAll('∀','Nectar').replaceAll('÷','hoursOf').replaceAll('õ','minutesOf').replaceAll('ô','Amulet').replaceAll('Θ','Bear')
+    string=string.replaceAll('Φ','.').replaceAll('δ','-').replaceAll('∂','"').replaceAll('∩',']').replaceAll('⩒','}').replaceAll('π',' ').replaceAll('ω',',').replaceAll('×','false').replaceAll('ž','true').replaceAll('±','null').replaceAll('€','Field').replaceAll('‡','ToTheWindShrine').replaceAll('ø','Tokens').replaceAll('ÿ','Puffshrooms').replaceAll('ö',',"').replaceAll('ç','":').replaceAll('þ','":0,"').replaceAll('Þ','},{').replaceAll('£','"type":').replaceAll('•','"gifted":').replaceAll('⁑','"bond":').replaceAll('ξ','"pollen').replaceAll('←','invigorating').replaceAll('↑','comforting').replaceAll('→','satisfying').replaceAll('↓','motivating').replaceAll('↔','refreshing').replaceAll('∀','Nectar').replaceAll('÷','hoursOf').replaceAll('õ','minutesOf').replaceAll('ô','Amulet').replaceAll('Θ','Bear')
+
 
     if(string[0]!=='{') string='{'+string
 
@@ -31029,7 +31029,7 @@ function GENERATE_SAVE_CODE(){
     save.hotbar=[]
     save.quests=player.quests
     save.isCrafting=player.isCrafting
-    save.TIME=TIME
+    save.TIME=Math.ceil(TIME)
     save.hiveBalloon=player.hiveBalloon
     save.stats={}
 
@@ -31067,7 +31067,7 @@ function GENERATE_SAVE_CODE(){
         
         if(passives.indexOf(i)>-1){
             
-            save.passives[i]={startVal:effects[i].startVal,currentCooldown:effects[i].currentCooldown}
+            save.passives[i]={startVal:effects[i].startVal,currentCooldown:Math.ceil(effects[i].currentCooldown)}
         }
     }
 
@@ -31113,7 +31113,7 @@ function GENERATE_SAVE_CODE(){
 
     console.error(string)
 
-    string=string.replaceAll('Bear','Θ').replaceAll('Amulet','ô').replaceAll('minutesOf','õ').replaceAll('hoursOf','÷').replaceAll('Nectar','∀').replaceAll('refreshing','↔').replaceAll('motivating','↓').replaceAll('satisfying','→').replaceAll('comforting','↑').replaceAll('invigorating','←').replaceAll('"pollen','‽').replaceAll('"bond":','⁑').replaceAll('"gifted":','•').replaceAll('"type":','£').replaceAll('},{','Þ').replaceAll('":0,"','þ').replaceAll('":','ç').replaceAll(',"','ö').replaceAll('Puffshrooms','ÿ').replaceAll('Tokens','ø').replaceAll('ToTheWindShrine','‡').replaceAll('Field','€').replaceAll('null','±').replaceAll('true','ž').replaceAll('false','×')
+    string=string.replaceAll('Bear','Θ').replaceAll('Amulet','ô').replaceAll('minutesOf','õ').replaceAll('hoursOf','÷').replaceAll('Nectar','∀').replaceAll('refreshing','↔').replaceAll('motivating','↓').replaceAll('satisfying','→').replaceAll('comforting','↑').replaceAll('invigorating','←').replaceAll('"pollen','ξ').replaceAll('"bond":','⁑').replaceAll('"gifted":','•').replaceAll('"type":','£').replaceAll('},{','Þ').replaceAll('":0,"','þ').replaceAll('":','ç').replaceAll(',"','ö').replaceAll('Puffshrooms','ÿ').replaceAll('Tokens','ø').replaceAll('ToTheWindShrine','‡').replaceAll('Field','€').replaceAll('null','±').replaceAll('true','ž').replaceAll('false','×').replaceAll(' ','π').replaceAll(',','ω').replaceAll('}','⩒').replaceAll(']','∩').replaceAll('"','∂').replaceAll('-','δ').replaceAll('.','Φ')
 
     string=string.split('').reverse().join('')
 
@@ -31138,6 +31138,23 @@ function GENERATE_SAVE_CODE(){
         let id=chars.indexOf(_st[i])
         
         string+=id>-1?chars[(id+18)%chars.length]:_st[i]
+    }
+
+    _st=string
+    string=''
+
+    for(let i=0;i<_st.length;i++){
+        
+        let rep=0
+        
+        for(let j=i+1;j<_st.length;j++){
+            
+            if(_st[j]===_st[i]){rep++} else {break}
+        }
+        
+        string+=_st[i]+['','ะ','๐','๑','๒','๓','๔','๕','๖','๗','๘','๙','ก','ง','ข','น','า','ว','อ','ล','ค','ย','ๆ','ม','จ','ธ','ฐ','ฎ','ฮ','พ','ถ','เ','ใ','บ','ป','ศ','ห','ฉ','โ','฿','ร'][rep]
+        
+        i+=rep
     }
 
     return string
@@ -31221,6 +31238,15 @@ objects.mobs.push(new BugMob([30+19,2.75,32.5],{minX:31,maxX:31+19,minZ:31.5,max
 objects.mobs.push(new BugMob([32,2.75,30.5+13],{minX:31,maxX:31+19,minZ:31.5,maxZ:31.5+13,minY:0,maxY:6},5,35,'scorpion','mob_rose2'))
 
 objects.mobs.push(new BugMob([-53+25*0.5,-0.75,8.5],{minX:-55,maxX:-53+25,minZ:6.5,maxZ:6.5+20,minY:-10,maxY:3.5},7,2500,'kingBeetle','mob_king1'))
+
+
+document.addEventListener('pointerlockchange',function(e){
+    
+    player.pointerLocked=document.pointerLockElement===uiCanvas
+    
+},false)
+
+uiCanvas.requestPointerLock()
 
 
 function loop(now){
