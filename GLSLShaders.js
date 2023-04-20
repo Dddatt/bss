@@ -353,10 +353,10 @@ window.glsl_text_renderer_vsh = `#version 300 es
     
     out vec3 pixColor;
     out vec2 pixUV;
+    out float fogAmount;
     
     void main(){
         
-        pixColor=instance_color;
         pixUV=vertUV+instance_uv;
         
         vec4 originPos=viewMatrix*vec4(instance_origin,1);
@@ -371,6 +371,9 @@ window.glsl_text_renderer_vsh = `#version 300 es
         vec4 pos=originPos+vec4(vp,0,0);
         
         gl_Position=pos.w<1.0&&pos.w>0.0?vec4(pos.xyz,1.0):pos;
+
+        pixColor=instance_color;
+        fogAmount=smoothstep(20.0,120.0,originPos.z)*0.7;
     }
 `
 window.glsl_text_renderer_fsh = `#version 300 es
@@ -381,17 +384,20 @@ window.glsl_text_renderer_fsh = `#version 300 es
     
     in vec2 pixUV;
     in vec3 pixColor;
+    in float fogAmount;
     
     out vec4 fragColor;
     
     void main(){
-        
-        vec4 c=texture(tex,pixUV)*vec4(pixColor,1);
-        
+
+        vec4 c=texture(tex,pixUV);
+
+        vec3 col=mix(c.xyz,vec3(1,1,0.7),fogAmount)*pixColor;
+
         if(c.a<0.01)
             discard;
 
-        fragColor=c;
+        fragColor=vec4(col,c.a);
     }
 `
 window.glsl_mob_renderer_vsh = `#version 300 es

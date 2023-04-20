@@ -8755,6 +8755,16 @@ window.textures_decals=function(tex_ctx){
     tex_ctx.translate(128*3-5,128*3)
     tex_ctx.scale(2,2)
     canvg(tex_ctx.canvas,"<svg><path fill='rgb(255,100,255)' stroke='black' stroke-width='2' d='M30 60C 26 25 64 25 60 60C55 67 35 67 30 60' transform='translate(10,-6) scale(0.75,0.75)'></path><path fill='rgb(0,255,100)' stroke='black' stroke-width='2' d='M30 60C 26 25 64 25 60 60C55 67 35 67 30 60' transform='translate(-7,3) scale(0.75,0.75)'></path>")
+    tex_ctx.fillStyle='white'
+    e(41,33,1,1)
+    e(49,38,1,1)
+    e(50,28,1,1)
+    e(44,25,1,1)
+    e(26,33,1,1)
+    e(21,40,1,1)
+    e(24,47,1,1)
+    e(31,39,1,1)
+    e(34,47,1,1)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*4-5,128*3)
@@ -8805,6 +8815,11 @@ window.textures_decals=function(tex_ctx){
     tex_ctx.translate(128*5+2,128*4+9)
     tex_ctx.scale(1.75,1.75)
     canvg(tex_ctx.canvas,"<svg><g transform='translate(36,31) scale(0.85,0.85) rotate(-31)'><path stroke='black' stroke-width='2' fill='rgb(0,0,0,0.25)' d='M-6 -15L5 -15C 5 9 13 -1 15 11C 16 15 13 20 13 20C10 30 -10 30 -13 20C -13 20 -16 15 -15 11C -13 -1 -5 9 -5 -15'></path><rect stroke='black' stroke-width='2' fill='rgb(181, 120, 60)' x='-7' y='-22' width='14' height='9' rx='4'></rect><path fill='rgb(255, 135, 185)' d='M 7 2C 34 34 -34 34 -7 2'></path><circle cx='0' cy='3' r='6' transform='scale(1,0.55)' fill='rgb(199, 105, 144)'></circle><path stroke='black' stroke-width='2.5' fill='rgb(255, 135, 185)' d='M 15 9 C -6 36 37 34 15 9' transform='scale(0.5,0.7) translate(-22,-38) rotate(48)'></path><path stroke='black' stroke-width='2.5' fill='rgb(255, 135, 185)' d='M 15 9 C -6 36 37 34 15 9' transform='scale(0.5,0.6) translate(-43,-16) rotate(39)'></path><g transform='scale(0.65,0.65) translate(-14,7)'><circle cx='15' cy='15' r='10' fill='rgb(30,30,30)'></circle><path stroke='rgb(255, 135, 185)' stroke-width='3' fill='rgb(0,0,0,0)' d='M 19 4 C 4 25 26 3 11 27'></path></g></g>")
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*6+-4,128*4+-9)
+    tex_ctx.scale(2,2.2)
+    canvg(tex_ctx.canvas,"<svg><g transform='translate(35,35) scale(1,0.6)'> <path fill='rgb(255, 200, 5)' stroke='black' stroke-width='2' d='M -15 -20L 15 -20C16 -15 15 -15 20 -15L20 15C15 15 15 15 15 20L-15 20C-15 15 -15 15 -20 15L-20 -15C-15 -15 -15 -15 -15 -20'></path> <path stroke='rgb(255,0,0)' fill='rgb(0,0,0,0)' stroke-width='1' d='M-15 -11L15 -11L15 11L-15 11L-15 -11M11 -11L11 11M-11 -11L-11 11'></path> <path stroke='rgb(255,0,0)' fill='rgb(0,0,0,0)' stroke-width='2' d='M-3 -7L-3 -0M3 -7L3 -0M-3 3L0 7L3 3'></path> </g>")
     tex_ctx.setTransform(1,0,0,1,0,0)
 }
 
