@@ -5321,6 +5321,11 @@ let triggers={
         minX:-74-2.5,maxX:-74+2.5,minY:20,maxY:30,minZ:49.5-2.5,maxZ:49.5+2.5
     },
 
+    brownBear_NPC:{
+        
+        minX:-71.5-2.5,maxX:-71.5+2.5,minY:5,maxY:10,minZ:9.5-2.5,maxZ:9.5+2.5
+    },
+
     datsocool_NPC:{
 
         minX:-74-2.5,maxX:-74+2.5,minY:30,maxY:30,minZ:49.5-2.5,maxZ:49.5+2.5
@@ -15934,12 +15939,12 @@ class RogueViciousBee {
         this.level=level
         this.health=1000+(level-1)*2000
         this.maxHealth=this.health
-        this.pos=[fieldInfo[this.field].x+((Math.random()*fieldInfo[this.field].width)|0),fieldInfo[this.field].y+3,fieldInfo[this.field].z+((Math.random()*fieldInfo[this.field].length)|0)]
+        this.pos=[fieldInfo[this.field].x+((MATH.random(0.2,0.8)*fieldInfo[this.field].width)|0),fieldInfo[this.field].y+3,fieldInfo[this.field].z+((MATH.random(0.2,0.8)*fieldInfo[this.field].length)|0)]
         this.flameTimer=0
         this.waitTimer=0
         this.target=[this.pos[0],this.pos[2]]
         this.bodySize=1.5
-        this.timeLimit=10*60
+        this.timeLimit=5*60
         this.maxTimeLimit=this.timeLimit
 
         this.addSpikeAttackTimer=0
@@ -15990,7 +15995,7 @@ class RogueViciousBee {
                 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.spike.indexBuffer)
                 gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
                 gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
-                gl.uniform2f(glCache.mob_instanceInfo2,0.5,1)
+                gl.uniform2f(glCache.mob_instanceInfo2,0.55,1)
                 gl.uniform4fv(glCache.mob_instanceInfo1,[this.pos[0],this.pos[1]-4,this.pos[2],0])
                 gl.drawElements(gl.TRIANGLES,meshes.spike.indexAmount,gl.UNSIGNED_SHORT,0)
 
@@ -16002,6 +16007,17 @@ class RogueViciousBee {
                     
                     player.stats.rogueViciousBee++
                     this.state='dead'
+
+                    let am=Math.floor(this.level*this.level*this.level*1000+2500),sm=((this.level*0.5)|0)+3
+
+                    player.honey+=am
+                    items.stinger.amount+=sm
+
+                    textRenderer.add(am+'',[player.body.position.x,player.body.position.y+2,player.body.position.z],COLORS.honey,0,'+')
+                    player.addMessage('+'+MATH.addCommas(am+'')+' Honey (from Rogue Vicious Bee)')
+                    player.addMessage('+'+MATH.addCommas(sm+'')+' Stingers (from Rogue Vicious Bee)')
+                    
+                    player.updateInventory()
                     
                     return
                 }
@@ -23470,7 +23486,7 @@ player=(function(out){
     
     out.eKeyDialoguePress=0
 
-    out.sunSwitchTimer=60
+    out.sunSwitchTimer=4
     out.skyColor=[0.4,0.6,1]
     out.isNight=0.999
     
@@ -23702,7 +23718,7 @@ player=(function(out){
             if(NPCs[i].repeatable){
 
                 NPCs[i].dialogueIndex=NPCs[i].dialogueIndex%NPCs[i].portionLength
-                NPCs[i].dialogue.push(...window['dialogue_'+i](out,items,NPCs)(NPCs[i].dialogueIndex))
+                NPCs[i].dialogue=[...window['dialogue_'+i](out,items,NPCs)(NPCs[i].portionsDone)]
 
             } else {
 
@@ -25212,6 +25228,10 @@ player=(function(out){
                 
                 out.targetLight=NIGHT_DARKNESS
                 out.sunSwitchTimer=1.5*60
+
+                let f=['CloverField','SpiderField','CactusField','RoseField','MountainTopField','PepperPatch'][(Math.random()*6)|0]
+                
+                objects.mobs.push(new RogueViciousBee(f,MATH.random(...({Cl:[1,4],Sp:[2,5],Ca:[4,8],Ro:[5,8],Mo:[6,9],Pe:[9,12]}[f.substring(0,2)]))|0))
             }
 
             UPDATE_MAP_MESH()
@@ -25219,7 +25239,7 @@ player=(function(out){
         
         if(out.isNight!==out.targetLight){
             
-            out.isNight=MATH.constrain(out.isNight+(dt/15)*Math.sign(out.targetLight-out.isNight),NIGHT_DARKNESS,1)
+            out.isNight=MATH.constrain(out.isNight+(dt*0.0666667)*Math.sign(out.targetLight-out.isNight),NIGHT_DARKNESS,1)
             
             vec3.scale(out.skyColor,[0.4,0.6,1],MATH.map(out.isNight,NIGHT_DARKNESS,1,0,1))
             
@@ -26145,7 +26165,6 @@ NPCs={
 
     roboBear:{
         
-        portionsDone:0,
         viewMatrix:[53.5-5,7,40,MATH.HALF_PI,-0.25],
         exclaimPos:[53.5,5.5,40],
         dialogueIndex:0,
@@ -26182,6 +26201,20 @@ NPCs={
         dialogue:window.dialogue_scienceBear(player,items,NPCs),
         mesh:new Mesh(),
         meshParams:{x:-49.5,y:23.5,z:-76,r:3,s:1.2,texture:{face:{u:0,v:1},torso:{texture:false,u:1,v:2},extremities:{u:0,v:0},ears:{u:0,v:0.1}}}
+    },
+
+    brownBear:{
+        
+        portionLength:7,
+        portionsDone:0,
+        seed:(Math.random()*100000*(Math.random()<0.5?-1:1))|0,
+        repeatable:true,
+        viewMatrix:[-65.5,9.5,9.5,-MATH.HALF_PI,-0.25],
+        exclaimPos:[-71.5,8.5,9.5],
+        dialogueIndex:0,
+        dialogue:[],
+        mesh:new Mesh(),
+        meshParams:{x:-10,y:8,z:-73.5,r:3,s:1.2,texture:{face:{u:2,v:0},torso:{texture:false,u:2.1,v:0.7},extremities:{u:0,v:0},ears:{u:0,v:0}}}
     },
 
     datsocool:{
@@ -30171,7 +30204,7 @@ meshes.spike.indexBuffer=gl.createBuffer()
 verts=[]
 index=[]
 
-c(0,0,0,0,5*2,10,0.8,0.8,0.8,-90,0,0,0.35*2,true,true,true)
+c(0,0,0,0,5*2,10,1.2,1.2,1.2,-90,0,0,0.35*2,true,true,true)
 
 gl.bindBuffer(gl.ARRAY_BUFFER,meshes.spike.vertBuffer)
 gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
@@ -31282,6 +31315,7 @@ window.addEventListener('beforeunload',function(e){
 player.updateGear()
 
 
+
 // for(let i=0;i<7;i++){
 
 //     objects.mobs.push(new Puffshroom('DandelionField',i*3,0,5*60,1+i*3,'puffshroom'))
@@ -31293,6 +31327,8 @@ player.updateGear()
 
 // objects.mobs.push(new RogueViciousBee('DandelionField',MATH.random(1,13)|0))
 // objects.mobs.push(new Cloud('DandelionField',2,2,60,true))
+
+
 
 //bamb
 objects.mobs.push(new BugMob([-50,3,61],{minX:-52,maxX:-52+21,minZ:50,maxZ:50+13,minY:1,maxY:7},2,15,'rhinoBeetle','mob_bamb1'))

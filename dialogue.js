@@ -71,10 +71,9 @@ window.dialogue_polarBear=function(player,items,NPCs){
         NPCs.polarBear.portionsDone++
     }
 
-    return function(index,tIndex){
+    return function(diff){
 
-        let rand=mulberry32(NPCs.polarBear.seed+NPCs.polarBear.portionsDone*12-12957)
-
+        let rand=mulberry32(NPCs.polarBear.seed+diff)
 
         let rew=[['honey',100000+((rand()*12-2)|0)*10000],['treat',10+(rand()*4|0)*5]]
         
@@ -111,7 +110,7 @@ window.dialogue_polarBear=function(player,items,NPCs){
                     
                     case 3:
 
-                        player.addQuest('Spiky Stew',[['pollenFromCactusField',100000+NPCs.polarBear.portionsDone],['whitePollen',75000]],'polarBear')
+                        player.addQuest('Spiky Stew',[['pollenFromCactusField',100000+diff],['whitePollen',75000]],'polarBear')
                         
                     break;
                     
@@ -154,9 +153,7 @@ window.dialogue_polarBear=function(player,items,NPCs){
     return 
 }
 
-window.brownBearQuestDifficulty=0
-
-window.dialogue_brownBear=function(player,items){
+window.dialogue_brownBear=function(player,items,NPCs){
     
     let addCommas=(s)=>{for(let i=s.length-3;i>0;i-=3){s=s.substring(0,i)+','+s.substr(i,s.length)}return s},doGrammar=(s)=>{let str=s.slice(),_s='';for(let i in str){if(str[i].toUpperCase()===str[i]){_s=_s+' '+str[i]}else{_s=_s+str[i]}}return _s[0].toUpperCase()+_s.substring(1,_s.length)},addReward=(arr)=>{
         
@@ -181,109 +178,88 @@ window.dialogue_brownBear=function(player,items){
         }
         
         player.updateInventory()
+        NPCs.brownBear.portionsDone++
     }
+    
+    return function(diff){
 
-    let diff=window.brownBearQuestDifficulty++
+        let rand=mulberry32(NPCs.brownBear.seed+diff)
+        
+        let am=Math.floor(4.75*diff*diff*diff*diff+500)
+        
+        let rew=[['honey',Math.floor(am*1.35)]]
+        
+        if(!diff%2) rew.push(['royalJelly',1])
+        
+        if(diff){
+            
+            if(!diff%3) rew.push(['treat',3])
+            
+            if(!diff%4) rew.push(['ticket',1])
+            
+            if(!diff%5) rew.push(['fieldDice',1])
+            
+            if(!diff%6) rew.push(['gumdrop',2])
+            
+            if(!diff%7) rew.push(['enzymes',1])
+            
+            if(!diff%8) rew.push(['oil',1])
+            
+            if(diff===15) rew.push(['silverEgg',1])
+            
+            if(diff===30) rew.push(['goldEgg',1])
+            
+            if(diff===50) rew.push(['diamondEgg',1])
+            
+            if(!diff%75) rew.push(['mythicEgg',1])
+            
+            if(!diff%100) rew.push(['starEgg',1])
+        }
+        
+        return ["Welcome! Ready for one of my repeatable quests?","I'll give honey and rewards for every quest, but special prizes at certain milestones!","Check your quest menu to see what you need.",
     
-    let rew=[['honey',750+diff*2500]]
-    
-    if(!diff%2){
-        
-        rew.push(['royalJelly',1])
-    }
-    
-    if(diff){
-        
-        if(!diff%3){
-            
-            rew.push(['treat',3])
-        }
-        
-        if(!diff%4){
-            
-            rew.push(['ticket',1])
-        }
-        
-        if(!diff%6){
-            
-            rew.push(['gumdrop',2])
-        }
-        
-        if(!diff%7){
-            
-            rew.push(['enzymes',1])
-        }
-        
-        if(!diff%8){
-            
-            rew.push(['oil',1])
-        }
-        
-        if(diff===15){
-            
-            rew.push(['silverEgg',1])
-        }
-        
-        if(diff===30){
-            
-            rew.push(['goldEgg',1])
-        }
-        
-        if(diff===50){
-            
-            rew.push(['diamondEgg',1])
-        }
-        
-        if(!diff%75){
-            
-            rew.push(['mythicEgg',1])
-        }
-        
-        if(!diff%100){
-            
-            rew.push(['starEgg',1])
-        }
-    }
-    
-    return ["Welcome! Ready for one of my repeatable quests?","I'll give honey and rewards for every quest, but special prizes at certain milestones!","Check your quest menu to see what you need.",
+            function(){
+                
+                let name='',req=[]
+                
+                let types=['pollenFromSunflowerField','pollenFromDandelionField','pollenFromMushroomField','pollenFromBlueFlowerField','pollenFromCloverField','pollenFromSpiderField','pollenFromStrawberryField','pollenFromBambooField','pollenFromPineapplePatch','pollenFromStumpField','pollenFromCactusField','pollenFromPumpkinPatch','pollenFromPineTreeForest','pollenFromRoseField','pollenFromMountainTopField','pollenFromPepperPatch','pollenFromCoconutField']
+                
+                if(rand()<0.5){
+                    
+                    let n=['redPollen','bluePollen','whitePollen'][(Math.random()*3)|0]
+                    req.push([n,Math.floor(am*(Math.random()*0.25+0.8))])
+                    
+                    n=n[0].toUpperCase()+n.substring(1)
 
-        function(){
-            
-            let name='',req=[]
-            
-            let types=['pollenFromSunflowerField','pollenFromDandelionField','pollenFromMushroomField','pollenFromBlueFlowerField','pollenFromCloverField','pollenFromSpiderField','pollenFromStrawberryField','pollenFromBambooField','pollenFromPineapplePatch','pollenFromStumpField','pollenFromCactusField','pollenFromPumpkinPatch','pollenFromPineTreeForest','pollenFromRoseField','pollenFromMountainTopField','pollenFromPepperPatch','pollenFromCoconutField']
-            
-            if(Math.random()<0.35){
+                    name+=n.replace('Pollen','')+'-'
+                    
+                }
                 
-                let n=['redPollen','bluePollen','whitePollen'][(Math.random()*3)|0]
-                req.push([n,500+diff*2000])
+                for(let i=0,r=Math.round(rand())+2;i<r;i++){
+                    
+                    let n=types[(rand()*types.length)|0]
+                    
+                    types.splice(types.indexOf(n),1)
+                    
+                    req.push([n,Math.floor(am*0.5*(Math.random()*0.25+0.8)*(1/((r-1)*0.25+1)))])
+                    
+                    n=n.replace('pollenFrom','').replace('Field','').replace('Patch','').replace('Field','').replace('Forest','').toLowerCase()
+                    
+                    n={sunflower:'Sun',dandelion:'Dand',mushroom:'Mush',blueflower:'Bluf',clover:'Clov',spider:'Spide',strawberry:'Straw',bamboo:'Bamb',pineapple:'Pinap',stump:'Stump',cactus:'Cact',pumpkin:'Pump',pinetree:'Pine',rose:'Rose',mountaintop:'Mount',pepper:'Pepp',coconut:'Coco'}[n]
+                    
+                    name+=n+'-'
+                }
                 
-                name+=n.replace('Pollen','')+'-'
+                player.addQuest(name[name.length-1]==='-'?name.substring(0,name.length-1):name,req,'brownBear')
                 
             }
             
-            for(let i=0,r=Math.round(Math.random())+2;i<r;i++){
-                
-                let n=types[(Math.random()*types.length)|0]
-                
-                types.splice(types.indexOf(n))
-                
-                req.push([n,500+diff*(i===2?1600:1500)])
-                
-                n=n.replace('pollenFrom','').replace('Field','').replace('Patch','').replace('Field','').replace('Forest','').toLowerCase()
-                
-                n={sunflower:'Sunf',dandelion:'Dand',mushroom:'Mush',blueflower:'Bluf',spider:'spi',strawberry:'Straw',bamboo:'Bamb',pineapple:'Pineap',stump:'Stump',cactus:'Cac',pumpkin:'Pump',pinetree:'Pine',rose:'Rose',mountaintop:'Moun',pepper:'Pep',coconut:'Coco'}[n]
-                
-                name+=n+'-'
-            }
-            
-            player.addQuest(name[name.length-1]==='-'?name.substring(0,name.length-1):name,req,'brownBear')
-            
-        }
+        ,"Great! Here are some rewards!","Come back to me for a new quest!",function(){addReward(rew)}
+        
+        ]
+    }
 
-    ,"Great! Here are some rewards!","Come back to me every 5 minutes for a new quest!",function(){addReward(rew)}
     
-    ]
 
 }
 
@@ -367,7 +343,7 @@ window.dialogue_pandaBear=function(player,items){
         player.updateInventory()
     }
 
-    return ["Poof! I'm panda bear!","I stay safe in this dAnEGrOuS mountain by learning to defeat the evil creatures!","I'll show you how to do the same with your bees by giving you quests. I'll give you rewards like treats and some rare items.","After you complete my training, you'll be rewarded with a special Star Treat! It makes any bee gifted when you feed it, and is very good!","Here's the start of your training!",function(){player.addQuest('Ladybug Learning',[['ladybug',1]],'pandaBear');},"Cool! As you go through my questline, you'll need to defeat lots of monsters and learn how to properly fight bugs!",function(){addReward([['honey',400]])},"Whenever you defeat a mob, it'll respawn within a couple minutes. Ladybugs and rhino beetles respawn every 3 minutes, but spiders respawn every 10 minutes!","However, mobs won't respawn when you're in their field. They'll wait for you to leave then wake up.","As you complete my quests, I'll tell you more info about the creatures here. Here's another quest:",function(){player.addQuest('8 Legged Dreams',[['spider',1]],'pandaBear');},"Did you have trouble defeating the spider?(and more importantly realize the cool song reference)?","Here are your rewards:",function(){addReward([['honey',700],['treat',5],['stinger',1]])},"As you progress and unlock more zones, you'll see higher level mobs.","Your bees may miss their attack when the mob's level is higher than their's.","That's why it's important to level up your bees. You can use the treats I give you or go through Mother Bear's quests about bee bonding.","Here's another quest:",function(){player.addQuest('Rhino Rumble',[['rhinoBeetle',3]],'pandaBear');},"Nice! I'll keep giving you some stuffs for bee leveing:",function(){addReward([['honey',1000],['blueberry',3]])},"Another good tool for defeating monsters are...stingers!","You can use them to boost your bee's attack for 45 seconds!","There are quite rare though. You can often get them from defeating Rogue Vicous Bees hiding in fields, but they are quite powerful.","Instead, you can also get them from me, since I have lots!","Get started!!!",function(){player.addQuest('Icebound Battleground',[['rhinoBeetle',2],['ladybug',2]],'pandaBear');},"Awesome! Rememeber, be wise with your items! You might need them later on, so it's best to save them for when you need them.",function(){addReward([['honey',1750],['royalJelly',1],['stinger',3],['strawberry',3],['blueberry',3]])},"Have you unlocked the 10 bee zone? You'll need to have 10 bees in your hive to enter.","In the pineapple patch, you'll find the dangerous mantis you need to defeat for this quest:",function(){player.addQuest('Preying Mantis',[['mantis',1]],'pandaBear');},"Good! Was it hard?",function(){addReward([['honey',2500],['treat',10]])},"Keep going through these quests to hatch and level up your bees!",function(){player.addQuest('Spider Spawner',[['spider',1],['ladybug',3],['rhinoBeetle',3]],'pandaBear');},"Great!",function(){addReward([['honey',4000],['treat',20],['sunflowerSeed',5],['ticket',1],['royalJelly',1]])},"If you haven't, now is a good time to buy the Helmet from the Noob Shop.","It improves pollen collection, and your defense!","With a higher defense percentage, you'll take less damage from mob hits.","Try doing this quest:",function(){player.addQuest('Rhino Rumble 2U',[['rhinoBeetle',5]],'pandaBear');},"Cool!",function(){addReward([['honey',7500],['treat',20],['pineapple',5],['royalJelly',1]])},"Here's another quest to help you get ready. I'll give you a Silver Egg to help you unlock the 15 bee zone!",function(){player.addQuest('Peaceful Place',[['ladybug',6]],'pandaBear');},"Great! Get ready for the next quest!",function(){addReward([['honey',9000],['stinger',1],['treat',25],['gumdrops',3],['moonCharm',3],['silverEgg',1]])},"Now, defeat the scary werewolf in the 15 bee zone!",function(){player.addQuest('Weirdwolf',[['werewolf',1]],'pandaBear');},"Amazing! Here are extra rewards:",function(){addReward([['honey',12500],['moonCharm',3],['gumdrops',3],['ticket',2],['royalJelly',1]])},"Great! Level up your bees to defeat creatures in new zones faster!","Here's the next quest:",function(){player.addQuest('Rainbow Connection',[['scorpion',2],['mantis',2],['ladybug',4],['rhinoBeetle',4]],'pandaBear');},"Awesome!",function(){addReward([['honey',16000],['redExtract',1],['blueExtract',1],['gumdrops',5],['ticket',2]])},"Keep expanding your hive! Soon you'll reach the 20 bee zone, where I like to have lots of fun!","Meanwhile, do another quest:",function(){player.addQuest('Bug Exterminator',[['ladybug',3],['rhinoBeetle',3],['spider',1],['mantis',1]],'pandaBear');},"Great!",function(){addReward([['honey',27500],['oil',1],['treat',30]])},"Ok, get ready for this hard quest!",function(){player.addQuest('Hunter X Mobs',[['werewolf',1],['spider',2],['scorpion',2],['mantis',2]],'pandaBear');},"Cool!",function(){addReward([['honey',35000],['ticket',2],['royalJelly',2],['gumdrops',5]])},"Have you been getting more bees for your hive? In a few quests, you'll need to get ready for the 20 bee zone!","Here's the next quest:",function(){player.addQuest('Rhino Rumble 3',[['rhinoBeetle',12],['ladybug',5]],'pandaBear');},"Nice job!",function(){addReward([['honey',70000],['treat',150],['royalJelly',3]])},"Ok, this is the last quest before you need to enter the 20 bee zone!","To help, I'll reward you with a Gold Egg!",function(){player.addQuest('Ready Or Not',[['werewolf',2],['spider',3],['mantis',2],['ladybug',7]],'pandaBear');},"Yay! Here are some good rewards!",function(){addReward([['honey',100000],['stinger',3],['oil',1],['jellyBeans',3],['goldEgg',1],['antPass',3]])},"In the 20 bee zone, you can complete the Ant Challenge for many rewards!","Collect pollen to fill up the meter and spawn ants.","Defeat ants to get points and rewards based on how well you did!","Get started!",function(){player.addQuest('Bad Buddies',[['ant',15],['giantAnt',1]],'pandaBear');},"Great! That was so easy!",function(){addReward([['honey',125000],['treat',100],['ticket',2],['gumdrops',5],['stinger',5]])},"You're getting the hang of this!","Did you know there's a secret lair underneath the clover field?","The scary king beetle lives there!","If your bees are strong enough, have a go at it!",function(){player.addQuest('A King Without His Crown',[['kingBeetle',1]],'pandaBear');},"Excellent!",function(){addReward([['honey',150000],['royalJelly',1],['glue',3],['antPass',1]])},
+    return ["Poof! I'm panda bear!","I stay safe in this dAnEGrOuS mountain by learning to defeat the evil creatures!","I'll show you how to do the same with your bees by giving you quests. I'll give you rewards like treats and some rare items.","After you complete my training, you'll be rewarded with a special Star Treat! It makes any bee gifted when you feed it, and is very good!","Here's the start of your training!",function(){player.addQuest('Ladybug Learning',[['ladybug',1]],'pandaBear');},"Cool! As you go through my questline, you'll need to defeat lots of monsters and learn how to properly fight bugs!",function(){addReward([['honey',400]])},"Whenever you defeat a mob, it'll respawn within a couple minutes. Ladybugs and rhino beetles respawn every 3 minutes, but spiders respawn every 10 minutes!","However, mobs won't respawn when you're in their field. They'll wait for you to leave then wake up.","As you complete my quests, I'll tell you more info about the creatures here. Here's another quest:",function(){player.addQuest('8 Legged Dreams',[['spider',1]],'pandaBear');},"Did you have trouble defeating the spider?(and more importantly realize the cool song reference)?","Here are your rewards:",function(){addReward([['honey',700],['treat',5],['stinger',1]])},"As you progress and unlock more zones, you'll see higher level mobs.","Your bees may miss their attack when the mob's level is higher than their's.","That's why it's important to level up your bees. You can use the treats I give you or go through Mother Bear's quests about bee bonding.","Here's another quest:",function(){player.addQuest('Rhino Rumble',[['rhinoBeetle',3]],'pandaBear');},"Nice! I'll keep giving you some stuffs for bee leveing:",function(){addReward([['honey',1000],['blueberry',3]])},"Another good tool for defeating monsters are...stingers!","You can use them to boost your bee's attack for 45 seconds!","There are quite rare though. You can often get them from defeating Rogue Vicous Bees hiding in fields *at night*, but they are quite powerful.","Instead, you can also get them from me, since I have lots!","Get started!!!",function(){player.addQuest('Icebound Battleground',[['rhinoBeetle',2],['ladybug',2]],'pandaBear');},"Awesome! Rememeber, be wise with your items! You might need them later on, so it's best to save them for when you need them.",function(){addReward([['honey',1750],['royalJelly',1],['stinger',3],['strawberry',3],['blueberry',3]])},"Have you unlocked the 10 bee zone? You'll need to have 10 bees in your hive to enter.","In the pineapple patch, you'll find the dangerous mantis you need to defeat for this quest:",function(){player.addQuest('Preying Mantis',[['mantis',1]],'pandaBear');},"Good! Was it hard?",function(){addReward([['honey',2500],['treat',10]])},"Keep going through these quests to hatch and level up your bees!",function(){player.addQuest('Spider Spawner',[['spider',1],['ladybug',3],['rhinoBeetle',3]],'pandaBear');},"Great!",function(){addReward([['honey',4000],['treat',20],['sunflowerSeed',5],['ticket',1],['royalJelly',1]])},"If you haven't, now is a good time to buy the Helmet from the Noob Shop.","It improves pollen collection, and your defense!","With a higher defense percentage, you'll take less damage from mob hits.","Try doing this quest:",function(){player.addQuest('Rhino Rumble 2U',[['rhinoBeetle',5]],'pandaBear');},"Cool!",function(){addReward([['honey',7500],['treat',20],['pineapple',5],['royalJelly',1]])},"Here's another quest to help you get ready. I'll give you a Silver Egg to help you unlock the 15 bee zone!",function(){player.addQuest('Peaceful Place',[['ladybug',6]],'pandaBear');},"Great! Get ready for the next quest!",function(){addReward([['honey',9000],['stinger',1],['treat',25],['gumdrops',3],['moonCharm',3],['silverEgg',1]])},"Now, defeat the scary werewolf in the 15 bee zone!",function(){player.addQuest('Weirdwolf',[['werewolf',1]],'pandaBear');},"Amazing! Here are extra rewards:",function(){addReward([['honey',12500],['moonCharm',3],['gumdrops',3],['ticket',2],['royalJelly',1]])},"Great! Level up your bees to defeat creatures in new zones faster!","Here's the next quest:",function(){player.addQuest('Rainbow Connection',[['scorpion',2],['mantis',2],['ladybug',4],['rhinoBeetle',4]],'pandaBear');},"Awesome!",function(){addReward([['honey',16000],['redExtract',1],['blueExtract',1],['gumdrops',5],['ticket',2]])},"Keep expanding your hive! Soon you'll reach the 20 bee zone, where I like to have lots of fun!","Meanwhile, do another quest:",function(){player.addQuest('Bug Exterminator',[['ladybug',3],['rhinoBeetle',3],['spider',1],['mantis',1]],'pandaBear');},"Great!",function(){addReward([['honey',27500],['oil',1],['treat',30]])},"Ok, get ready for this hard quest!",function(){player.addQuest('Hunter X Mobs',[['werewolf',1],['spider',2],['scorpion',2],['mantis',2]],'pandaBear');},"Cool!",function(){addReward([['honey',35000],['ticket',2],['royalJelly',2],['gumdrops',5]])},"Have you been getting more bees for your hive? In a few quests, you'll need to get ready for the 20 bee zone!","Here's the next quest:",function(){player.addQuest('Rhino Rumble 3',[['rhinoBeetle',12],['ladybug',5]],'pandaBear');},"Nice job!",function(){addReward([['honey',70000],['treat',150],['royalJelly',3]])},"Ok, this is the last quest before you need to enter the 20 bee zone!","To help, I'll reward you with a Gold Egg!",function(){player.addQuest('Ready Or Not',[['werewolf',2],['spider',3],['mantis',2],['ladybug',7]],'pandaBear');},"Yay! Here are some good rewards!",function(){addReward([['honey',100000],['stinger',3],['oil',1],['jellyBeans',3],['goldEgg',1],['antPass',3]])},"In the 20 bee zone, you can complete the Ant Challenge for many rewards!","Collect pollen to fill up the meter and spawn ants.","Defeat ants to get points and rewards based on how well you did!","Get started!",function(){player.addQuest('Bad Buddies',[['ant',15],['giantAnt',1]],'pandaBear');},"Great! That was so easy!",function(){addReward([['honey',125000],['treat',100],['ticket',2],['gumdrops',5],['stinger',5]])},"You're getting the hang of this!","Did you know there's a secret lair underneath the clover field?","The scary king beetle lives there!","If your bees are strong enough, have a go at it!",function(){player.addQuest('A King Without His Crown',[['kingBeetle',1]],'pandaBear');},"Excellent!",function(){addReward([['honey',150000],['royalJelly',1],['glue',3],['antPass',1]])},
     "Since I loveeeeee the ant challenge, many quests from now on will require you to defeat ants!","Here's one of them:",function(){player.addQuest('Microwaved',[['fireAnt',5]],'pandaBear');},"Good!",function(){addReward([['honey',175000],['royalJelly',5],['stinger',3],['antPass',1]])},"Since I haven't given you a special reward in a while, I'll do it now!","Complete this next quest for a special Star Jelly!",function(){player.addQuest('Green Ants',[['armyAnt',10],['ant',25],['werewolf',1],['stinger',1]],'pandaBear');},"Cool! Here's the Star Jelly!",function(){addReward([['honey',200000],['starJelly',1],['ticket',3]])},"Now, defeat a Rogue Vicious Bee!","They can spawn at night time, and hide in fields. They can be found in the Cactus, Rose, Clover, Spider, and the Mountain Top field or the Pepper Patch.","Look for a little spike poking out of a flower, and step on it to find the Rogue Vicious Bee!","Go go go!",function(){player.addQuest('Impaling',[['rogueViciousBee',1]],'pandaBear');},"Nice! Rogue Vicious Bees give lots of stingers and honey!",function(){addReward([['honey',250000],['ticket',3],['royalJelly',3],['treat',150]])},"Here's your next quest:",function(){player.addQuest('Just Being Friendly',[['flyingAnt',4],['giantAnt',4],['mantis',4],['scorpion',4],['spider',4]],'pandaBear');},"Coooool!",function(){addReward([['honey',400000],['treat',100],['pineapple',25],['sunflowerSeed',25]])},"Since I'm a great beekeeper, I'll give you a tip:","One of the best bees in the game are the legendary Music Bees!","They produce many great ability tokens that are good for collecting and attacking, so try to get 3 in your hive.","Ok, this next hard quest requires you to defeat the big Mondo Chicken in the 25 bee zone...twice! and collect a melody token!",function(){player.addQuest('Yolk Yolk',[['mondoChick',2],['melodyToken',1]],'pandaBear');},"Great! It was so easy!",function(){addReward([['honey',750000],['oil',1],['royalJelly',5],['strawberry',25],['blueberry',25]])},"You're getting closer to the Star Treat! Here's another quest:",function(){player.addQuest('Rhino Rumble 4',[['rhinoBeetle',25]],'pandaBear');},"Amazing! Did it take long???",function(){addReward([['honey',800000],['blueExtract',1],['magicBean',1]])},"You're one of the best beekeppers I've ever meet! Keep going!",function(){player.addQuest('Road Trip',[['ant',30],['fireAnt',10],['flyingAnt',10],['armyAnt',10],['werewolf',2]],'pandaBear');},"Excellent! Here are very good rewards(totally not a subtle reference when combined with the name of the quest)",function(){addReward([['honey',1000000],['comfortingVial',1],['satisfyingVial',1],['motivatingVial',1],['refreshingVial',1]])},"Did you know there's a secret tunnel in the converter machine by Science Bear?","It's home to the big Tunnel Bear, one of the most dangerous mobs!","Defeat it to earn lots of loot!",function(){player.addQuest('Big Bosses',[['tunnelBear',1],['rogueViciousBee',1],['mondoChick',1],['kingBeetle',1]],'pandaBear');},"Epic!",function(){addReward([['honey',200000],['glitter',1],['glue',3],['jellyBeans',3],['antPass',1]])},"I'm soooo proud! You're getting close to the end of my questline!","Just 3 more quests and you'll get a Star Treat!","Back to work!!!",function(){player.addQuest('Ant-nihilation',[['ant',100],['fireAnt',25],['flyingAnt',25],['armyAnt',25],['giantAnt',5]],'pandaBear');},"Greatttt!",function(){addReward([['honey',2750000],['royalJelly',3],['ticket',3],['antPass',1]])},"Just 2 more quests to go!",function(){player.addQuest('Paradox',[['rhinoBeetle',15],['ladybug',15],['mantis',5],['scorpion',5],['kingBeetle',1],['ant',50]],'pandaBear');},"Cool! Here are extra rewards for your last quest!",function(){addReward([['honey',350000],['gumdrops',15],['jellyBeans',3],['strawberry',25],['blueberry',25],['pineapple',25],['redExtract',1],['blueExtract',1]])},"This is my very last quest! You'll be reward a Star Treat and more!","Good luck!",function(){player.addQuest('No One Else Like Me',[['tunnelBear',1],['rogueViciousBee',2],['kingBeetle',3],['werewolf',4],['spider',5],['mantis',10],['scorpion',10],['rhinoBeetle',25],['ladybug',25],['ant',100]],'pandaBear');},"Cool!",function(){addReward([['honey',5000334],['starTreat',1],['antPass',3],['ticket',3],['atomicTreat',4],['neonberry',3],['glitter',3]])},"You completed all my quests!!!","But you know what else you didn't complete? a list of all my references!","like half my quests, requirements, and rewards reference something in a veryyyyy subtle way","hehehehehe no one realized any"]
   
 }
