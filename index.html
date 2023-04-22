@@ -9734,7 +9734,7 @@ let effects={
         desc:"Stuns 3(+1 every 4 bee lvls) random nearby enemies for 3s(+0.1s per bee lvl). Stunned enemies take x1.25 damage.",
         trialCooldown:25,trialRate:0.4,
         u:128*0/2048,v:128*10/2048,
-        tokenLife:8,
+        tokenLife:16,
         
         func:function(params){
             
@@ -10194,7 +10194,7 @@ let effects={
     fetch:{
         
         desc:"Summons a ball and starts a game of fetch. When you kick the ball, puppy bee will kick it back. The ball collects 5(+0.5 per lvl) pollen from 1 flower, picks up tokens, and more while it rolls. Every 4th hit will reward treats, with the amount of treats doubling every time. Treat rewards are stopped at 128.",
-        trialCooldown:80,trialRate:0.25,
+        trialCooldown:70,trialRate:0.15,
         u:128*4/2048,v:128*13/2048,
         tokenLife:8,
         
@@ -10210,7 +10210,7 @@ let effects={
     puppyLove:{
         
         desc:"Grants all bees in the hive 75(+20 per lvl) bond.",
-        trialCooldown:25,trialRate:0.5,
+        trialCooldown:30,trialRate:0.2,
         u:128*5/2048,v:128*13/2048,
         tokenLife:8,
         
@@ -10261,7 +10261,7 @@ let effects={
     festiveGifts:{
         
         desc:"Creates a ring of 7(+1 per 4 lvls) gifts and grants Festive Cheer. Festive Cheer applies +100% instant conversion and x2 convert rate for 10s. Gifts given can include<br><br>• Common Gifts: honey, red boost tokens, treats, fruits, royal jelly, gumdrops.<br><br>• Rare Gifts: tickets, extracts, micro-converters, and magic beans.<br><br>• If the bee is gifted, these additional gifts maybe rewarded: glitter, oil, enzymes, and field dice.",
-        trialCooldown:200,trialRate:10.1,
+        trialCooldown:100,trialRate:0.05,
         u:128*6/2048,v:128*13/2048,
         tokenLife:8,
         
@@ -12890,7 +12890,9 @@ class Bee {
         this.moveOffset=[MATH.random(-5,5),0,MATH.random(-5,5)]
         this.moveDir=[]
         
-        this.computeLevel(lvl||1)
+        
+        this.computeLevel(20)
+        // this.computeLevel(lvl||1)
         
         this.convertTimer=0
         this.flowerCollecting=[]
@@ -20653,13 +20655,15 @@ class Mesh {
                 }
             }
             
-            addBox=function(x,y,z,w,h,l,rot,col,physics=true,textures=true,mesh=true){
+            addBox=function(x,y,z,w,h,l,rot,_col,physics=true,textures=true,mesh=true){
                 
+                let col=(_col===true?[0,0.8,0,0.6]:typeof _col==='string'?[1,0,0,0.6]:_col).slice()
+
                 rot=rot||[0,0,0]
                 
                 let rotation=quat.fromEuler([],rot[0],rot[1],rot[2])
                 let model=mat4.fromRotationTranslation([],rotation,[x,y,z,1]),a=col[3]||1
-                
+
                 col[0]*=1.2
                 col[1]*=1.2
                 col[2]*=1.2
@@ -20676,9 +20680,12 @@ class Mesh {
                         collisionFilterMask:PLAYER_PHYSICS_GROUP|DYNAMIC_PHYSICS_GROUP,
                         
                     })
+
+                    if(typeof _col==='string') B.isBannedGate=_col
                     
                     B.parentMeshGlobalID=DIS.meshGlobalID
                     world.addBody(B)
+
                 }
                 
                 let v=[
@@ -22147,7 +22154,6 @@ gear.tool={
             for(let i=0;i<MATH.TWO_PI;i+=MATH.TWO_PI/3){
                 
                 box(-0.3+Math.sin(i)*0.5-0.1,1.35,0.3+0.1+Math.cos(i)*0.5,0.7,0.1,0.7,[Math.sin(i)*-30,0,Math.cos(i)*-30],[1.2,1.2,1.2])
-                
             }
             
             for(let i=MATH.QUATER_PI;i<MATH.TWO_PI+MATH.QUATER_PI;i+=MATH.TWO_PI/3){
@@ -22160,7 +22166,6 @@ gear.tool={
                 
                 box(-0.3-0.1+Math.sin(i)*0.5,1.2,0.3+0.1+Math.cos(i)*0.5,0.7,0.1,0.7,[60,i*MATH.TO_DEG,0],[1.2,1.2,1.2])
                 box(-0.3-0.1+Math.sin(i)*0.25,1.2,0.3+0.1+Math.cos(i)*0.25,0.7,0.1,0.7,[-60,i*MATH.TO_DEG,0],[1.2,1.2,1.2])
-                
             }
         },
         ability:function(){
@@ -22275,7 +22280,7 @@ gear.tool={
             ParticleRenderer.add({x:player.body.position.x+x,y:player.body.position.y+y,z:player.body.position.z+z,vx:-player.bodyDir[2]*2,vy:1.75,vz:player.bodyDir[0]*2,grav:0,size:MATH.random(70,120),col:[1,0,Math.random()],life:1,rotVel:MATH.random(-3,3),alpha:4.5})
         },
         desc:'Swipe through flames to unlock their dark potential. Ensue dark chaos in fields and refuel burning flames, collecting more pollen and dealing more damage. Tend a destructive field of violet fire to enhance your Super-Crit power and Instant Red Conversion.',
-        cost:['2500000000000 honey','1500 redExtract','200 stinger','50 hardWax','25 superSmoothie']
+        cost:['2500000000000 honey','1000 redExtract','200 stinger','50 hardWax','15 superSmoothie']
     },
     
     tidePopper:{
@@ -22325,7 +22330,7 @@ gear.tool={
             
         },
         desc:'Pierce through flowers and bubbles with torriental waves, washing away tokens and converting pollen from bees. Swings faster and ramps up the more you pop, then unleashes tidal waves in a violent surge at 500 bubbles. Splash Balloons with tall waves to earn Tide Blessing and re-energize tidal waves with the destruction of bubbles.',
-        cost:['2500000000000 honey','1500 blueExtract','200 stinger','25 swirledWax','25 superSmoothie']
+        cost:['2500000000000 honey','1000 blueExtract','200 stinger','25 swirledWax','15 superSmoothie']
     },
     
     gummyBaller:{
@@ -22364,12 +22369,54 @@ gear.tool={
             ParticleRenderer.add({x:player.lagPos[0]+x,y:player.lagPos[1]+2+player.gummyBallSize*0.3,z:player.lagPos[2]+z,vx:MATH.random(-player.gummyBallSize,player.gummyBallSize),vy:MATH.random(-player.gummyBallSize,player.gummyBallSize),vz:MATH.random(-player.gummyBallSize,player.gummyBallSize),grav:0,size:MATH.random(20,50)*player.gummyBallSize,col:[0.1,0.8,1],life:0.75,rotVel:MATH.random(-3,3),alpha:player.gummyBallSize-0.5})
             
         },
-        desc:'Absorb goo to conjure up a delectable arsenal of gummy wrecking balls. Cover the field in goo and collect pollen with a giant gummyball. Release your gummyball early by jumping. Ricochet off Marks and Honey Tokens to build up your gummyball combo for massive gooey gains.',
-        cost:['10000000000000 honey','1500 glue','2500 gumdrops','50 causticWax','3 turpentine']
+        desc:'Absorb goo to conjure up a delectable arsenal of gummy wrecking balls. Cover the field in goo and collect pollen with a giant gummyball. Ricochet off Marks and Honey Tokens to build up your gummyball combo for massive gooey gains.',
+        cost:['10000000000000 honey','1000 glue','2500 gumdrops','50 causticWax','3 turpentine']
     },
 }
 
 player=(function(out){
+
+    out.restrictionInfo={}
+
+    out.computeRestrictionInfo=function(){
+
+        out.restrictionInfo.wall=[0.3*(out.targetLight<0.9?0:1),0.7*(out.targetLight<0.9?0:1),1.2*(out.targetLight<0.9?0:1)]
+
+        out.restrictionInfo.nectarPot={amount:1,col:[0,1,0]}
+
+        let amountOfBees=0,redTypes=0,blueTypes=0,epicTypes=0,legendaryTypes=0
+
+        for(let y in out.hive){
+            
+            for(let x in out.hive[y]){
+                
+                let h=out.hive[y][x]
+                
+                if(h.type!==null) amountOfBees++
+            }
+        }
+
+        for(let i in out.discoveredBees){
+
+            if(beeInfo[out.discoveredBees[i]].color==='red') redTypes++
+            if(beeInfo[out.discoveredBees[i]].color==='blue') blueTypes++
+            if(beeInfo[out.discoveredBees[i]].rarity==='epic') epicTypes++
+            if(beeInfo[out.discoveredBees[i]].rarity==='legendary') legendaryTypes++
+        }
+
+        out.restrictionInfo.allowed_5=amountOfBees>=5?true:'You need 5 bees to enter the 5 Bee Zone!'
+        out.restrictionInfo.allowed_10=amountOfBees>=10?true:'You need 10 bees to enter the 10 Bee Zone!'
+        out.restrictionInfo.allowed_15=amountOfBees>=15?true:'You need 15 bees to enter the 15 Bee Zone!'
+        out.restrictionInfo.allowed_20=amountOfBees>=20?true:'You need 20 bees to enter the 20 Bee Zone!'
+        out.restrictionInfo.allowed_25=amountOfBees>=25?true:'You need 25 bees to enter the 25 Bee Zone!'
+        out.restrictionInfo.allowed_30=amountOfBees>=30?true:'You need 30 bees to enter the 30 Bee Zone!'
+        out.restrictionInfo.allowed_35=amountOfBees>=35?true:'You need 35 bees to enter the 35 Bee Zone!'
+        out.restrictionInfo.allowed_redHQ=redTypes>=4?true:'Discover 4 red bee types to enter the Red HQ!'
+        out.restrictionInfo.allowed_blueHQ=blueTypes>=4?true:'Discover 4 blue bee types to enter the Blue HQ!'
+        out.restrictionInfo.allowed_sprinkler=legendaryTypes>=1?true:'Discover 1 legendary bee type to enter the Sprinkler Shop!'
+        out.restrictionInfo.allowed_ace=epicTypes>=5?true:'Discover 5 epic bee types to enter the Ace Shop!'
+        out.restrictionInfo.allowed_dapper=out.currentGear.mask!=='helmet'&&out.currentGear.mask!=='none'&&out.currentGear.boots!=='basicBoots'&&out.currentGear.boots!=='none'?true:'You must wear a nice hat and cool boots to enter the Dapper Shop!'
+    }
     
     out.extraInfo={}
 
@@ -23486,7 +23533,7 @@ player=(function(out){
     
     out.eKeyDialoguePress=0
 
-    out.sunSwitchTimer=4
+    out.sunSwitchTimer=4*60
     out.skyColor=[0.4,0.6,1]
     out.isNight=0.999
     
@@ -24165,7 +24212,7 @@ player=(function(out){
         effects[type].svg.style.display='inline'
     }
     
-    out.computeStats=function(){
+    out.computeStats=function(merelyAGliderStateChange){
         
         for(let i=out.effects.length;i--;){
             
@@ -24342,6 +24389,22 @@ player=(function(out){
         }
         
         out.defaultStats.capacity*=out.defaultStats.capacityMultiplier
+
+        if(!merelyAGliderStateChange){
+
+            let prevInfo={...player.restrictionInfo}
+
+            out.computeRestrictionInfo()
+
+            for(let i in prevInfo){
+
+                if(prevInfo[i]!==player.restrictionInfo[i]&&i!=='wall'&&i!=='nectarPot'){
+
+                    window.setTimeout(()=>UPDATE_MAP_MESH(),500)
+                    break
+                }
+            }
+        }
     }
     
     out.currentGear={
@@ -24638,7 +24701,7 @@ player=(function(out){
         }
     }
     
-    out.updateGear=function(){
+    out.updateGear=function(merelyAGliderStateChange){
 
         out.sprinklers=[]
         out.sprinklerMesh=new Mesh(true)
@@ -24650,7 +24713,7 @@ player=(function(out){
             out.sprinklers.push(new Sprinkler())
         }
         
-        out.computeStats()
+        out.computeStats(merelyAGliderStateChange)
 
         out.toolMesh.setMeshFromFunction(function(box,a,cylinder,sphere,applyFinalRotation,c,star){
             
@@ -24805,9 +24868,13 @@ player=(function(out){
     
     out.body.addEventListener('collide',function(e){
         
-        if(Math.abs(e.contact.ni.y)>0.2){
-            
-            out.grounded=true
+        if(e.contact.ni.y<-0.5) out.grounded=true
+
+        if(e.body.isBannedGate){
+
+            out.bannedGateMessage=e.body.isBannedGate
+
+            window.setTimeout(()=>{out.bannedGateMessage=undefined},3000)
         }
     })
     
@@ -25871,7 +25938,7 @@ player=(function(out){
             if(out.isGliding){
                 
                 out.isGliding=false
-                out.updateGear()
+                out.updateGear(true)
             }
             
             out.removeAirFrictionUntilGrounded=false
@@ -25906,7 +25973,7 @@ player=(function(out){
                 out.isGliding=false
             }
             
-            out.updateGear()
+            out.updateGear(true)
         }
         
         if(out.pollen||out.hiveBalloon.pollen){
@@ -26112,6 +26179,8 @@ player=(function(out){
             }
         }
     }
+
+    out.computeRestrictionInfo()
     
     return out
     
@@ -30348,9 +30417,9 @@ function UPDATE_MAP_MESH(){
     
     mesh.setMeshFromFunction(function(box,a,cylinder,sphere,d,e,star){
         
-        let f=Object.constructor('box','a','cylinder','sphere','d','e','star',player.createdMesh.replaceAll('WALL','['+(0.3*(player.targetLight<0.9?0:1)+','+(0.7*(player.targetLight<0.9?0:1))+','+(1.2*(player.targetLight<0.9?0:1))+']')))
+        let f=Object.constructor('box','a','cylinder','sphere','d','e','star','INFO',player.createdMesh)
         
-        f(box,a,cylinder,sphere,d,e,star)
+        f(box,a,cylinder,sphere,d,e,star,player.restrictionInfo)
     })
 
     mesh.setBuffers()
@@ -31212,7 +31281,6 @@ function GENERATE_SAVE_CODE(){
             let h=player.hive[y][x]
             
             save.hive[y][x]={type:h.type,gifted:h.gifted,bond:h.bond,mutation:h.mutation,radioactive:h.radioactive,beequip:h.beequip}
-            
         }
     }
 
@@ -31389,6 +31457,14 @@ function loop(now){
     STATS_TICK=frameCount%10===1
     
     actionWarning.style.display='none'
+
+    if(player.bannedGateMessage){
+
+        actionName.innerHTML=player.bannedGateMessage
+        actionWarning.style.display='block'
+        actionNameBox.style.backgroundColor='rgb(255,0,0,0.6)'
+        document.getElementById('actionEButton').style.display='none'
+    }
     
     if(STATS_TICK){
 
@@ -31559,8 +31635,8 @@ function loop(now){
                 }
 
             } else if(actionName.innerHTML===triggers[i].message){
+
                 actionName.style.display='block'
-                
             }
         }
     }
@@ -31857,11 +31933,6 @@ function loop(now){
     gl.useProgram(mobRendererProgram)
     gl.uniformMatrix4fv(glCache.mob_viewMatrix,gl.FALSE,player.viewMatrix)
     
-    if(user.clickedKeys.p){
-
-        SAVE_GAME()
-    }
-
     if(user.keys.o){
 
         player.body.position.set(0,1005,1010)

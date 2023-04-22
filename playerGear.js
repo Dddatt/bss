@@ -358,7 +358,7 @@ window.playerGear={
 
             },
             desc:'A hard hat that grants bonus pollen and helps prevent head injuries.<br><br>x1.1 pollen<br>+10% defense',
-            cost:['30000 honey','3 pineapple'],
+            cost:['30000 honey','1 pineapple'],
         },
 
         propellerHat:{
@@ -534,7 +534,7 @@ window.playerGear={
 
             },
             desc:'Harness the power of the sea to enhance your blue pollen gathering.<br><br>x2 capacity<br>x1.5 blue pollen<br>+20% instant blue conversion<br>x2 bubble pollen<br>x1.15 bee ability rate<br>+30% defense<br>+Passive: Bubble Bombs',
-            cost:['100000000 honey','30 blueExtract','15 enzymes','5 glue','300 blueberry'],
+            cost:['100000000 honey','30 blueExtract','15 oil','5 glue','300 blueberry'],
         },
         
         gummyMask:{
@@ -572,7 +572,7 @@ window.playerGear={
 
             },
             desc:'The offical mask of a gummy soldier.<br><br>x1.75 goo<br>x2 capacity<br>x1.75 white field capacity<br>x1.5 white pollen<br>x1.35 pollen<br>+25% instant white conversion<br>x1.5 honey from tokens<br>x1.75 convert rate<br>+30% defense<br>x1.2 bee ability rate<br>+Passive: Gummy Morph<br>+Passive: Coin Scatter',
-            cost:['5000000000 honey','250 glue','100 enzymes','100 oil','100 glitter'],
+            cost:['5000000000 honey','150 glue','75 enzymes','75 oil','75 glitter'],
         },
         
         diamondMask:{
@@ -612,7 +612,7 @@ window.playerGear={
                 player.addEffect('bubbleBombsPassive')
             },
             desc:'Proudly show off your extreme wealth to the world. Shine so brightly that others will complain.<br><br>x3 capacity<br>x1.75 blue field capacity<br>x1.5 blue pollen<br>x1.25 pollen<br>+25% instant blue conversion<br>x2 convert rate<br>x2 bubble pollen<br>+35% defense<br>x1.2 bee ability rate<br>+Passive: Diamond Drain<br>+Passive: Bubble Bombs',
-            cost:['5000000000 honey','250 blueExtract','1 diamondEgg','100 glitter','150 oil'],
+            cost:['5000000000 honey','250 blueExtract','1 diamondEgg','75 glitter','100 oil'],
         },
         
         demonMask:{
@@ -646,7 +646,7 @@ window.playerGear={
                 player.addEffect('ignitePassive')
             },
             desc:'Embrace hate to take on the form of a Demon Bee. Become both extremely unpleasant and powerful.<br><br>x2 capacity<br>x1.75 red field capacity<br>x1.75 red pollen<br>+50% instant flame conversion<br>x2 flame pollen<br>x1.25 bee attack<br>+35% defense<br>+20% bee ability rate<br>+Passive: X Flame<br>+Passive: Ignite',
-            cost:['5000000000 honey','500 stinger','250 redExtract','150 enzymes','100 glue'],
+            cost:['5000000000 honey','350 stinger','250 redExtract','100 enzymes','75 glue'],
         },
     },
     
@@ -792,7 +792,7 @@ window.playerGear={
                 stats.capacity+=200
             },
             desc:'A small bag.<br><br>+200 capacity',
-            cost:['0 honey','1 oil'],
+            cost:['0 honey'],
         },
 
         jar:{
