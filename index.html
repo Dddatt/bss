@@ -5363,12 +5363,17 @@ let triggers={
 
     beequip_shop:{
         
-        minX:-107-2,maxX:-98+2,minY:0,maxY:30,minZ:117,maxZ:122
+        minX:-107-2,maxX:-98+2,minY:0,maxY:30,minZ:115.5,maxZ:122
     },
 
     robo_shop:{
 
         minX:55.5,maxX:62,minY:7,maxY:13,minZ:36.5,maxZ:45
+    },
+
+    treat_shop:{
+        
+        minX:23.5-3,maxX:23.5+3,minY:-2,maxY:2,minZ:41-2-3,maxZ:41-2+3
     },
     
     become_mid_hive:{
@@ -23806,6 +23811,9 @@ player=(function(out){
     }
     
     out.onStartShop=function(){
+
+        if(shops[out.currentShop].increments)
+            shops[out.currentShop].currentIncrement=0
         
         document.exitPointerLock()
         shopUI.style.display='block'
@@ -23821,7 +23829,7 @@ player=(function(out){
 
         if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'){
 
-            cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost
+            cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost.slice()
             itemDesc.innerHTML=shops[out.currentShop].items[shops[out.currentShop].currentIndex].desc
             
         } else {
@@ -23831,6 +23839,11 @@ player=(function(out){
         }
         
         for(let i in cost){
+
+            if(typeof cost[i]==='function'){
+                
+                cost[i]=cost[i](shops[out.currentShop].items[shops[out.currentShop].currentIndex].amountPurchased)
+            }
             
             let c=cost[i].split(' '),col=(c[1]==='honey'&&player.honey<Number(c[0])||c[1]!=='honey'&&items[c[1]].amount<Number(c[0])?'rgb(255,0,0)':'rgb(255,255,255)'),text='x'+(c[0].length<4?MATH.addCommas(c[0]):MATH.abvNumber(c[0]))
 
@@ -23838,11 +23851,19 @@ player=(function(out){
         }
         
         leftShopButton.onclick=function(){
+
+            let incre=1
+            
+            if(shops[out.currentShop].increments){
+                
+                shops[out.currentShop].currentIncrement=(shops[out.currentShop].currentIncrement+shops[out.currentShop].increments.length-1)%shops[out.currentShop].increments.length
+                incre=shops[out.currentShop].increments[shops[out.currentShop].currentIncrement]
+            }
             
             shops[out.currentShop].currentIndex=(shops[out.currentShop].currentIndex+shops[out.currentShop].items.length-1)%shops[out.currentShop].items.length
             out.viewMatrixToChange=shops[out.currentShop].items[shops[out.currentShop].currentIndex].viewMatrix
             out.easeAmount=0
-            itemName.innerHTML=MATH.doGrammar(shops[out.currentShop].items[shops[out.currentShop].currentIndex].name)
+            itemName.innerHTML=MATH.doGrammar(shops[out.currentShop].items[shops[out.currentShop].currentIndex].name)+(incre>1?' x'+MATH.abvNumber(incre+''):'')
             
             itemCostSVG.innerHTML=''
             
@@ -23850,7 +23871,7 @@ player=(function(out){
 
             if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'){
 
-                cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost
+                cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost.slice()
                 itemDesc.innerHTML=shops[out.currentShop].items[shops[out.currentShop].currentIndex].desc
                 
             } else {
@@ -23861,6 +23882,11 @@ player=(function(out){
             
             for(let i in cost){
                 
+                if(typeof cost[i]==='function'){
+                    
+                    cost[i]=cost[i](shops[out.currentShop].items[shops[out.currentShop].currentIndex].amountPurchased,incre)
+                }
+
                 let c=cost[i].split(' '),col=(c[1]==='honey'&&player.honey<Number(c[0])||c[1]!=='honey'&&items[c[1]].amount<Number(c[0])?'rgb(255,0,0)':'rgb(255,255,255)'),text='x'+(c[0].length<4?MATH.addCommas(c[0]):MATH.abvNumber(c[0]))
 
                 itemCostSVG.innerHTML+="<div style='position:absolute;top:"+i*70*0.7+"px'>"+itemSVGCode[c[1]].replace('SCALE','scale(0.7,0.7);margin-top:-10px;margin-bottom:0px;margin-left:-10px')+"<div style='position:absolute;top:15px;left:50px;font-size:16px;'><svg style='position:absolute;'><text x='3' y='20' stroke='black' stroke-width='3' style='font-size:15px'>"+text+"</text><text x='3' y='20' fill='"+col+"' style='font-size:15px'>"+text+"</text></svg></div></div>"
@@ -23869,10 +23895,18 @@ player=(function(out){
         }
         rightShopButton.onclick=function(){
             
+            let incre=1
+            
+            if(shops[out.currentShop].increments){
+                
+                shops[out.currentShop].currentIncrement=(shops[out.currentShop].currentIncrement+1)%shops[out.currentShop].increments.length
+                incre=shops[out.currentShop].increments[shops[out.currentShop].currentIncrement]
+            }
+
             shops[out.currentShop].currentIndex=(shops[out.currentShop].currentIndex+1)%shops[out.currentShop].items.length
             out.viewMatrixToChange=shops[out.currentShop].items[shops[out.currentShop].currentIndex].viewMatrix
             out.easeAmount=0
-            itemName.innerHTML=MATH.doGrammar(shops[out.currentShop].items[shops[out.currentShop].currentIndex].name)
+            itemName.innerHTML=MATH.doGrammar(shops[out.currentShop].items[shops[out.currentShop].currentIndex].name)+(incre>1?' x'+MATH.abvNumber(incre+''):'')
 
             itemCostSVG.innerHTML=''
 
@@ -23880,7 +23914,7 @@ player=(function(out){
 
             if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'){
 
-                cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost
+                cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost.slice()
                 itemDesc.innerHTML=shops[out.currentShop].items[shops[out.currentShop].currentIndex].desc
                 
             } else {
@@ -23890,6 +23924,11 @@ player=(function(out){
             }
 
             for(let i in cost){
+
+                if(typeof cost[i]==='function'){
+                    
+                    cost[i]=cost[i](shops[out.currentShop].items[shops[out.currentShop].currentIndex].amountPurchased,incre)
+                }
                 
                 let c=cost[i].split(' '),col=(c[1]==='honey'&&player.honey<Number(c[0])||c[1]!=='honey'&&items[c[1]].amount<Number(c[0])?'rgb(255,0,0)':'rgb(255,255,255)'),text='x'+(c[0].length<4?MATH.addCommas(c[0]):MATH.abvNumber(c[0]))
 
@@ -23905,6 +23944,13 @@ player=(function(out){
         }
         
         purchaseButton.onclick=function(){
+
+            let incre=1
+            
+            if(shops[out.currentShop].increments){
+                
+                incre=shops[out.currentShop].increments[shops[out.currentShop].currentIncrement]
+            }
             
             if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].owned){
                 
@@ -23922,7 +23968,7 @@ player=(function(out){
 
             if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'){
 
-                cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost
+                cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost.slice()
 
             } else {
 
@@ -23930,6 +23976,11 @@ player=(function(out){
             }
             
             for(let i in cost){
+
+                if(typeof cost[i]==='function'){
+                
+                    cost[i]=cost[i](shops[out.currentShop].items[shops[out.currentShop].currentIndex].amountPurchased,incre)
+                }
                 
                 let c=cost[i].split(' ')
                 
@@ -23938,6 +23989,8 @@ player=(function(out){
                     return
                 }
             }
+
+            itemCostSVG.innerHTML=''
             
             for(let i in cost){
                 
@@ -23951,13 +24004,22 @@ player=(function(out){
                     
                     items[c[1]].amount-=Number(c[0])
                 }
+
+                if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'&&typeof shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost[i]==='function'){
+
+                    c=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost[i](shops[out.currentShop].items[shops[out.currentShop].currentIndex].amountPurchased+1,incre).split(' ')
+                }
+
+                let col=(c[1]==='honey'&&player.honey<Number(c[0])||c[1]!=='honey'&&items[c[1]].amount<Number(c[0])?'rgb(255,0,0)':'rgb(255,255,255)'),text='x'+(c[0].length<4?MATH.addCommas(c[0]):MATH.abvNumber(c[0]))
+
+                itemCostSVG.innerHTML+="<div style='position:absolute;top:"+i*70*0.7+"px'>"+itemSVGCode[c[1]].replace('SCALE','scale(0.7,0.7);margin-top:-10px;margin-bottom:0px;margin-left:-10px')+"<div style='position:absolute;top:15px;left:50px;font-size:16px;'><svg style='position:absolute;'><text x='3' y='20' stroke='black' stroke-width='3' style='font-size:15px'>"+text+"</text><text x='3' y='20' fill='"+col+"' style='font-size:15px'>"+text+"</text></svg></div></div>"
             }
 
             if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'){
 
-                shops[out.currentShop].items[shops[out.currentShop].currentIndex].amountPurchased++
-                items[shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].amount++
-                player.addMessage('+1 '+MATH.doGrammar(shops[out.currentShop].items[shops[out.currentShop].currentIndex].name))
+                shops[out.currentShop].items[shops[out.currentShop].currentIndex].amountPurchased+=incre
+                items[shops[out.currentShop].items[shops[out.currentShop].currentIndex].name].amount+=incre
+                player.addMessage('+'+MATH.addCommas(incre+'')+' '+MATH.doGrammar(incre>1?MATH.doPlural(shops[out.currentShop].items[shops[out.currentShop].currentIndex].name):shops[out.currentShop].items[shops[out.currentShop].currentIndex].name))
 
                 if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].amountPurchased>=shops[out.currentShop].items[shops[out.currentShop].currentIndex].maxPurchasedAmount){
 
@@ -25133,7 +25195,7 @@ player=(function(out){
 
                 if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'){
 
-                    cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost
+                    cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost.slice()
                     
                 } else {
 
@@ -25141,6 +25203,11 @@ player=(function(out){
                 }
                 
                 for(let j in cost){
+                    
+                    if(typeof cost[j]==='function'){
+
+                        cost[j]=cost[j](shops[out.currentShop].items[shops[out.currentShop].currentIndex].amountPurchased,shops[out.currentShop].increments?shops[out.currentShop].increments[shops[out.currentShop].currentIncrement]:1)
+                    }
                     
                     let c=cost[j].split(' ')
                     
@@ -26647,6 +26714,14 @@ let shops={
         items:[{
 
             amountPurchased:0,maxPurchasedAmount:1,
+            name:'plasticPlanter',
+            slot:'item',
+            viewMatrix:[-98,23,106.5+2,0,0],
+            cost:['750000 honey','1 magicBean','1 softWax'],
+            desc:'A reusable planter that grows in about 17m. Grow and harvest to collect random items and Nectar boosts!<br><br>• Bees can speed up the growth of planters by sipping on them while collecting pollen.<br><br>• Using Glitter on a planter will make it glister, increasing its growth rate by x1.25'
+        },{
+
+            amountPurchased:0,maxPurchasedAmount:1,
             name:'plentyPlanter',
             slot:'item',
             viewMatrix:[-107,23,106.5+2,0,0],
@@ -26676,14 +26751,6 @@ let shops={
             viewMatrix:[-100.25,23,106.5+2,0,0],
             cost:['5000000 honey','3 magicBean','30 gumdrops','3 softWax'],
             desc:'Alone, grows in about 25m. Grants bonus gumdrops, glue, and jelly beans!<br><br>• Grows x1.25 faster in the Strawberry, Pineapple, and Coconut fields.<br><br>• Grants x1.2 Motivating nectar.'
-        },{
-
-            amountPurchased:0,maxPurchasedAmount:1,
-            name:'plasticPlanter',
-            slot:'item',
-            viewMatrix:[-98,23,106.5+2,0,0],
-            cost:['750000 honey','1 magicBean','1 softWax'],
-            desc:'A reusable planter that grows in about 17m. Grow and harvest to collect random items and Nectar boosts!<br><br>• Bees can speed up the growth of planters by sipping on them while collecting pollen.<br><br>• Using Glitter on a planter will make it glister, increasing its growth rate by x1.25'
         }],
         currentIndex:0,message:'Explore Planter Shop'
     },
@@ -26696,12 +26763,57 @@ let shops={
             name:'comfortingVial',
             slot:'item',
             viewMatrix:[-98,23,121-2,Math.PI,0],
-            cost:['1000000 honey','10 ticket'],
+            cost:[n=>Math.floor(Math.min(Math.pow(1.2,n)*1000000,1000000000000))+' honey','10 ticket','4 moonCharm'],
             desc:'Instantly grants 1h of Comforting nectar.'
+        },{
+
+            amountPurchased:0,maxPurchasedAmount:Infinity,
+            name:'invigoratingVial',
+            slot:'item',
+            viewMatrix:[-100.25,23,121-2,Math.PI,0],
+            cost:[n=>Math.floor(Math.min(Math.pow(1.2,n)*1000000,1000000000000))+' honey','10 ticket','1 redExtract'],
+            desc:'Instantly grants 1h of Invigoration nectar.'
+        },{
+
+            amountPurchased:0,maxPurchasedAmount:Infinity,
+            name:'motivatingVial',
+            slot:'item',
+            viewMatrix:[-102.5,23,121-2,Math.PI,0],
+            cost:[n=>Math.floor(Math.min(Math.pow(1.2,n)*1000000,1000000000000))+' honey','10 ticket','12 sunflowerSeed'],
+            desc:'Instantly grants 1h of Motivating nectar.'
+        },{
+
+            amountPurchased:0,maxPurchasedAmount:Infinity,
+            name:'refreshingVial',
+            slot:'item',
+            viewMatrix:[-104.75,23,121-2,Math.PI,0],
+            cost:[n=>Math.floor(Math.min(Math.pow(1.2,n)*1000000,1000000000000))+' honey','10 ticket','1 enzymes'],
+            desc:'Instantly grants 1h of Refreshing nectar.'
+        },{
+
+            amountPurchased:0,maxPurchasedAmount:Infinity,
+            name:'satisfyingVial',
+            slot:'item',
+            viewMatrix:[-107,23,121-2,Math.PI,0],
+            cost:[n=>Math.floor(Math.min(Math.pow(1.2,n)*1000000,1000000000000))+' honey','10 ticket','7 gumdrops'],
+            desc:'Instantly grants 1h of Satisfying nectar.'
         }],
         currentIndex:0,message:'Explore Beequip Shop'
     },
-    
+
+    treat:{
+
+        items:[{
+
+            amountPurchased:0,maxPurchasedAmount:Infinity,
+            name:'treat',
+            slot:'item',
+            viewMatrix:[23.5,1,41-7,Math.PI,0.04],
+            cost:[(n,i=1)=>Math.floor(Math.min(n*50+100,10000)*i)+' honey'],
+            desc:'Can be fed to a bee to increase its bond by 10!'
+        }],
+        currentIndex:0,message:'Explore Treat Shop',currentIncrement:0,increments:[1,10,10e1,10e2,10e3,10e4,10e5,10e6,10e7,10e8]
+    },
 }
 
 shopGearMesh.setMeshFromFunction(function(box,a,cylinder,sphere,applyFinalRotation,c,star){
@@ -31150,6 +31262,8 @@ function RUN_SAVE_CODE(string){
         for(let j in shops[i].items){
             
             shops[i].items[j].owned=save.owned[shops[i].items[j].name]
+
+            if(shops[i].items[j].slot==='item'&&!shops[i].items[j].owned) shops[i].items[j].amountPurchased=save.amountPurchased[shops[i].items[j].name]|0
         }
     }
 
@@ -31217,6 +31331,7 @@ function GENERATE_SAVE_CODE(){
     save.hive=[]
     save.items={}
     save.owned={}
+    save.amountPurchased={}
     save.currentGear=player.currentGear
     save.effects=player.effects
     save.passives={}
@@ -31289,6 +31404,8 @@ function GENERATE_SAVE_CODE(){
         for(let j in shops[i].items){
             
             save.owned[shops[i].items[j].name]=shops[i].items[j].owned
+
+            if(shops[i].items[j].amountPurchased&&!shops[i].items[j].owned) save.amountPurchased[shops[i].items[j].name]=shops[i].items[j].amountPurchased
         }
     }
 
