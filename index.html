@@ -5687,7 +5687,6 @@ let triggers={
             player.addSlot('precise')
             player.addSlot('digital')
             player.updateHive()
-            
         }
     },
     
@@ -5706,6 +5705,9 @@ let triggers={
             player.isGliding=false
             player.grounded=false
             player.updateGear()
+        },requirements:function(player){
+            
+            if(player.discoveredBees.length<25) return 'Discover 25 bee types to use the Red Cannon!'
         }
     },
     
@@ -5724,6 +5726,9 @@ let triggers={
             player.isGliding=false
             player.grounded=false
             player.updateGear()
+        },requirements:function(player){
+            
+            if(player.discoveredBees.length<12) return 'Discover 12 bee types to use the Yellow Cannon!'
         }
     },
 
@@ -5742,6 +5747,9 @@ let triggers={
             player.isGliding=false
             player.grounded=false
             player.updateGear()
+        },requirements:function(player){
+            
+            if(player.discoveredBees.length<16) return 'Discover 16 bee types to use the Blue Cannon!'
         }
     },
     
@@ -5760,6 +5768,9 @@ let triggers={
             player.isGliding=false
             player.grounded=false
             player.updateGear()
+        },requirements:function(player){
+            
+            if(player.discoveredBees.length<10) return 'Discover 10 bee types to use the Slingshot!'
         }
     },
     
@@ -5871,7 +5882,7 @@ let triggers={
         
         isMachine:true,requirements:function(player){
             
-            
+            if(player.discoveredGifteds.length<5) return "Discover 5 gifted bee types to generate a Bronze Star Amulet!"
 
         },minX:-35.5-Math.sin(45.6*0.0174533)*3-Math.cos(45.6*0.0174533)*12.5-3,maxX:-35.5-Math.sin(45.6*0.0174533)*3-Math.cos(45.6*0.0174533)*12.5+3,minY:11,maxY:50,minZ:-2.75+Math.cos(45.6*0.0174533)*3-Math.sin(45.6*0.0174533)*12.5-3,maxZ:-2.75+Math.cos(45.6*0.0174533)*3-Math.sin(45.6*0.0174533)*12.5+3,message:'Generate a Bronze Star Amulet',func:function(player){
             
@@ -5887,6 +5898,8 @@ let triggers={
         
         isMachine:true,requirements:function(player){
 
+            if(player.discoveredGifteds.length<10) return "Discover 10 gifted bee types to generate a Silver Star Amulet!"
+
         },minX:-35.5+Math.sin(45.6*0.0174533)*6-Math.cos(45.6*0.0174533)*19.5-3,maxX:-35.5+Math.sin(45.6*0.0174533)*6-Math.cos(45.6*0.0174533)*19.5+3,minY:11,maxY:50,minZ:-2.75-Math.cos(45.6*0.0174533)*6-Math.sin(45.6*0.0174533)*19.5-3,maxZ:-2.75-Math.cos(45.6*0.0174533)*6-Math.sin(45.6*0.0174533)*19.5+3,message:'Generate a Silver Star Amulet',func:function(player){
             
             let amulet=['*1.5 capacityMultiplier']
@@ -5901,7 +5914,7 @@ let triggers={
         
         isMachine:true,requirements:function(player){
             
-            
+            if(player.discoveredGifteds.length<20) return "Discover 20 gifted bee types to generate a Gold Star Amulet!"
 
         },minX:-35.5-Math.sin(45.6*0.0174533)*3-Math.cos(45.6*0.0174533)*26.5-3,maxX:-35.5-Math.sin(45.6*0.0174533)*3-Math.cos(45.6*0.0174533)*26.5+3,minY:11,maxY:50,minZ:-2.75+Math.cos(45.6*0.0174533)*3-Math.sin(45.6*0.0174533)*26.5-3,maxZ:-2.75+Math.cos(45.6*0.0174533)*3-Math.sin(45.6*0.0174533)*26.5+3,message:'Generate a Gold Star Amulet',func:function(player){
             
@@ -5917,6 +5930,8 @@ let triggers={
         
         isMachine:true,requirements:function(player){
             
+            if(player.discoveredGifteds.length<30) return "Discover 30 gifted bee types to generate a Diamond Star Amulet!"
+
         },minX:-35.5+Math.sin(45.6*0.0174533)*6-Math.cos(45.6*0.0174533)*33.5-3,maxX:-35.5+Math.sin(45.6*0.0174533)*6-Math.cos(45.6*0.0174533)*33.5+3,minY:11,maxY:50,minZ:-2.75-Math.cos(45.6*0.0174533)*6-Math.sin(45.6*0.0174533)*33.5-3,maxZ:-2.75-Math.cos(45.6*0.0174533)*6-Math.sin(45.6*0.0174533)*33.5+3,message:'Generate a Diamond Star Amulet',func:function(player){
             
             let amulet=['*2 capacityMultiplier']
@@ -5937,6 +5952,7 @@ let triggers={
         
         isMachine:true,requirements:function(player){
             
+            if(player.discoveredGifteds.length<40) return "Discover 40 gifted bee types to generate a Supreme Star Amulet!"
 
         },minX:-35.5+Math.sin(45.6*0.0174533)*1.5-Math.cos(45.6*0.0174533)*43-3,maxX:-35.5+Math.sin(45.6*0.0174533)*1.5-Math.cos(45.6*0.0174533)*43+3,minY:11,maxY:50,minZ:-2.75-Math.cos(45.6*0.0174533)*1.5-Math.sin(45.6*0.0174533)*43-3,maxZ:-2.75-Math.cos(45.6*0.0174533)*1.5-Math.sin(45.6*0.0174533)*43+3,message:'Generate a Supreme Star Amulet',func:function(player){
             
@@ -6233,7 +6249,7 @@ let beeInfo={
 
     puppy:{
         
-        u:128*11/2048,v:256*2/2048,meshPartId:17,gatherSpeed:4,gatherAmount:25,speed:16.1,convertSpeed:4,convertAmount:280,attack:2,energy:40,tokens:['fetch','puppyLove'],attackTokens:['puppyLove'],rarity:'event',color:'white',description:"A playful bee that tries to behave its best, but is SOOO bad for its price that you shouldn't even buy it. Seriously.",giftedHiveBonus:{oper:'*',stat:'bondFromTreats',num:1.2}
+        u:128*11/2048,v:256*2/2048,meshPartId:17,gatherSpeed:4,gatherAmount:25,speed:16.1,convertSpeed:4,convertAmount:280,attack:2,energy:40,tokens:['fetch','puppyLove'],attackTokens:['puppyLove'],rarity:'event',color:'white',description:"A playful bee who tries to be his best, but still is so bad for its price that you shouldn't buy it. Seriously.",giftedHiveBonus:{oper:'*',stat:'bondFromTreats',num:1.2}
     },
 
     festive:{
@@ -20653,7 +20669,7 @@ class Mesh {
         
         if(this.isStatic){
             
-            for(let i in world.bodies){
+            for(let i=world.bodies.length;i--;){
                 
                 if(world.bodies[i].collisionFilterGroup===STATIC_PHYSICS_GROUP&&world.bodies[i].parentMeshGlobalID===this.meshGlobalID){
                     world.removeBody(world.bodies[i])
@@ -21594,7 +21610,23 @@ let textures=(function(out){
         
         tex_ctx.fillStyle='rgba(0,0,0,'+Math.random()*0.2+')'
         tex_ctx.fillRect(MATH.random(12,500),MATH.random(12,500),MATH.random(25,45),MATH.random(25,45))
+
+        tex_ctx.fillStyle='rgba(0,0,0,0.015)'
+
+        tex_ctx.translate(MATH.random(12,500),MATH.random(12,500))
+        tex_ctx.scale((Math.random()+0.5)*3,(Math.random()+0.5)*3)
+        tex_ctx.rotate(Math.random()*6.28)
+        tex_ctx.fillText('คาร์ลสันไม่เคยตาย',0,0)
+        tex_ctx.setTransform(1,0,0,1,0,0)
+
+        
+        tex_ctx.translate(MATH.random(12,500),MATH.random(12,500))
+        tex_ctx.scale((Math.random()+0.5)*3,(Math.random()+0.5)*3)
+        tex_ctx.rotate(Math.random()*6.28)
+        tex_ctx.fillText('ดาท เป็นเจ๋งคนมาก',0,0)
+        tex_ctx.setTransform(1,0,0,1,0,0)
     }
+
     
     out.default=gl.createTexture()
     
@@ -23557,6 +23589,7 @@ player=(function(out){
     out.lagPos=[0,0,0]
 
     out.discoveredBees=[]
+    out.discoveredGifteds=[]
 
     out.stats={
         
@@ -24310,6 +24343,13 @@ player=(function(out){
 
                 out.discoveredBees.push(objects.bees[i].type)
                 out.stats.beeTypes++
+
+                if(objects.bees[i].gifted) out.discoveredGifteds.push(objects.bees[i].type)
+            }
+
+            if(out.discoveredGifteds.indexOf(objects.bees[i].type)<0){
+
+                out.discoveredGifteds.push(objects.bees[i].type)
             }
 
             if(player.hive[objects.bees[i].hiveY][objects.bees[i].hiveX].roboDisabled) continue
@@ -24597,6 +24637,7 @@ player=(function(out){
     }
 
     out.updateBeesPage=function(){
+
         pages[2].scrollTop=0
         pages[2].innerHTML=''
         pages[2].style.backgroundColor='rgba(195,195,195,0.9)'
@@ -24727,6 +24768,8 @@ player=(function(out){
 
         } else {
 
+            pages[2].innerHTML='<div style="margin-top:3px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">You have '+objects.bees.length+' bees</div><div style="margin-top:3px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">Discovered '+out.discoveredBees.length+' bee types</div><div style="margin-top:2px;margin-bottom:5px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">Discovered '+out.discoveredGifteds.length+' gifted types</div>'
+
             for(let i in beeInfo){
 
                 let div=document.createElement('div'),img=document.createElement('canvas'),text=document.createElement('div')
@@ -24747,7 +24790,7 @@ player=(function(out){
 
                 img_ctx.drawImage(beeCanvas,beeInfo[i].u*2048,beeInfo[i].v*2048,128,128,0,0,70,70)
 
-                text.innerHTML="<p style='margin-left:70px;margin-top:-70px;font-family:trebuchet ms;font-size:17px;text-align:center'>"+MATH.doGrammar(i)+" Bee</p>"+"<p style='margin-left:73px;margin-top:-10px;font-family:trebuchet ms;font-size:9px;text-align:center;width:122px'>"+(out.discoveredBees.indexOf(i)>-1?beeInfo[i].description:'<br>(Undiscovered)')+"</p>"
+                text.innerHTML="<p style='margin-left:70px;margin-top:-70px;font-family:trebuchet ms;font-size:17px;text-align:center'>"+MATH.doGrammar(i)+" Bee</p>"+"<p style='margin-left:73px;margin-top:-13px;font-family:trebuchet ms;font-size:9px;text-align:center;width:122px'>"+(out.discoveredBees.indexOf(i)>-1?beeInfo[i].description:'<br>(Undiscovered)')+"</p>"
 
                 div.appendChild(img)
                 div.appendChild(text)
@@ -31243,6 +31286,8 @@ function RUN_SAVE_CODE(string){
     player.isCrafting=save.isCrafting
     TIME=save.TIME
     player.hiveBalloon=save.hiveBalloon
+    player.discoveredBees=save.discoveredBees
+    player.discoveredGifteds=save.discoveredGifteds
 
     for(let i in save.stats){
 
@@ -31346,6 +31391,8 @@ function GENERATE_SAVE_CODE(){
     save.TIME=Math.ceil(TIME)
     save.hiveBalloon=player.hiveBalloon
     save.stats={}
+    save.discoveredBees=player.discoveredBees
+    save.discoveredGifteds=player.discoveredGifteds
 
     for(let i in player.stats){
 
