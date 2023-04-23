@@ -13073,7 +13073,7 @@ class Bee {
             
             case 'moveToAttack':
                 
-                if(!player.attacked.length||!this.attackMob||this.attackMob.state!=='attack'){
+                if(!player.attacked.length||!this.attackMob||this.attackMob.state!=='attack'&&!(this.attackMob instanceof CoconutCrab)){
                     
                     this.state='moveToPlayer'
                     return
@@ -13098,7 +13098,7 @@ class Bee {
             
             case 'attack':
                 
-                if(!player.attacked.length||!this.attackMob||this.attackMob.state!=='attack'){
+                if(!player.attacked.length||!this.attackMob||this.attackMob.state!=='attack'&&!(this.attackMob instanceof CoconutCrab)){
                     
                     this.state='moveToPlayer'
                     return
@@ -13147,7 +13147,7 @@ class Bee {
                         
                         let g=this.attackTokens[i]
                         
-                        if((TIME-g.timer)*player[beeInfo[this.type].color+'BeeAbilityRate']*this.abilityRate>=g.cooldown&&Math.random()<=g.rate&&(g.requireGifted&&this.gifted||!g.requireGifted)){
+                        if((TIME-g.timer)*player[beeInfo[this.type].color+'BeeAbilityRate']*this.abilityRate>=g.cooldown&&Math.random()<g.rate*0.35&&(g.requireGifted&&this.gifted||!g.requireGifted)){
                             
                             openTokens.push(i)
                         }
@@ -13602,7 +13602,7 @@ class Bee {
                 
                 vec3.sub(this.moveDir,this.moveTo,this.pos)
                 vec3.normalize(this.moveDir,this.moveDir)
-                vec3.scaleAndAdd(this.pos,this.pos,this.moveDir,dt*this.speed*player.beeSpeed*3)
+                vec3.scaleAndAdd(this.pos,this.pos,this.moveDir,dt*this.speed*player.beeSpeed*1.5)
                 if(vec3.sqrDist(this.moveTo,this.pos)<0.7){
                     
                     this.pos=this.moveTo.slice()
@@ -13898,7 +13898,7 @@ class TempBee {
             
             case 'moveToAttack':
                 
-                if(!player.attacked.length||!this.attackMob||this.attackMob.state!=='attack'){
+                if(!player.attacked.length||!this.attackMob||this.attackMob.state!=='attack'&&!(this.attackMob instanceof CoconutCrab)){
                     
                     this.state='moveToPlayer'
                     return
@@ -13923,7 +13923,7 @@ class TempBee {
             
             case 'attack':
                 
-                if(!player.attacked.length||!this.attackMob||this.attackMob.state!=='attack'){
+                if(!player.attacked.length||!this.attackMob||this.attackMob.state!=='attack'&&!(this.attackMob instanceof CoconutCrab)){
                     
                     this.state='moveToPlayer'
                     return
@@ -13962,7 +13962,7 @@ class TempBee {
                         
                         let g=this.attackTokens[i]
                         
-                        if((TIME-g.timer)*player[beeInfo[this.type].color+'BeeAbilityRate']>=g.cooldown&&Math.random()<=g.rate){
+                        if((TIME-g.timer)*player[beeInfo[this.type].color+'BeeAbilityRate']>=g.cooldown&&Math.random()<=g.rate*0.35){
                             
                             openTokens.push(i)
                         }
@@ -14111,7 +14111,7 @@ class TempBee {
                 
                 vec3.sub(this.moveDir,this.moveTo,this.pos)
                 vec3.normalize(this.moveDir,this.moveDir)
-                vec3.scaleAndAdd(this.pos,this.pos,this.moveDir,dt*this.speed*player.beeSpeed*3)
+                vec3.scaleAndAdd(this.pos,this.pos,this.moveDir,dt*this.speed*player.beeSpeed*1.5)
                 if(vec3.sqrDist(this.moveTo,this.pos)<0.7){
                     
                     this.pos=this.moveTo.slice()
@@ -16624,6 +16624,254 @@ class WildWindyBee {
     }
 }
 
+class CoconutCrab {
+    
+    constructor(){
+        
+        this.field='CoconutField'
+        this.state='alignClaws'
+        this.starSawHitTimer=0
+        this.level=12
+        this.health=250000
+        this.maxHealth=this.health
+        this.pos=[fieldInfo[this.field].x,fieldInfo[this.field].y+0.3,fieldInfo[this.field].z+2.5,0]
+        this.flameTimer=0
+        this.waitTimer=0
+        this.damageTimer=0
+        this.bodySize=3
+        this.runningAmount=0
+        this.mindHacked=0
+        this.stateAlternate=2
+    }
+    
+    die(index){
+        
+        objects.mobs.splice(index,1)
+    }
+    
+    damage(am){
+        
+        let crit=Math.random()<player.criticalChance,superCrit=Math.random()<player.superCritChance,d=am*(crit?superCrit?player.superCritPower*player.criticalPower:player.criticalPower:1)
+        
+        if(this.mindHacked>0)
+            d*=1.25
+
+        this.health-=d|0
+        textRenderer.add((d|0)+'',[this.pos[0],this.pos[1]+Math.random()*2.75+5,this.pos[2]],[255,0,0],crit?superCrit?2:1:0,'',[0,1.25,1.275,1.3,1.65,1.75][Math.min(d.toString().length),5])
+        
+    }
+    
+    update(){
+        
+        if(this.health<=0){
+            
+            return true
+        }
+        
+        this.mindHacked-=dt
+        this.starSawHitTimer-=dt
+        this.flameTimer-=dt
+        
+        if(this.flameTimer<=0){
+            
+            this.flameTimer=1
+            
+            for(let f in objects.flames){
+                
+                if(Math.abs(this.pos[0]-objects.flames[f].pos[0])+Math.abs(this.pos[2]-objects.flames[f].pos[2])<this.bodySize){
+                    
+                    this.damage(objects.flames[f].dark?25:15)
+                }
+            }
+        }
+        
+        if(player.fieldIn===this.field){
+            
+            player.attacked.push(this)
+        }
+        
+        if(this.mindHacked<=0){
+
+            this.damageTimer-=dt
+            
+            if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1]+1)+Math.abs(player.body.position.z-this.pos[2])<this.bodySize&&this.damageTimer<=0){
+                
+                player.damage(150)
+                this.damageTimer=1.5
+            }
+
+            switch(this.state){
+
+                case 'alignClaws':
+
+                    this.pos[0]=MATH.constrain(this.pos[0]+dt*Math.sign(player.body.position.x-this.pos[0])*6.5,fieldInfo[this.field].x,fieldInfo[this.field].x+fieldInfo[this.field].width)
+
+                    this.clawA=[this.pos[0]-1.5,this.pos[1]+1,this.pos[2]+2,0]
+                    this.clawB=[this.pos[0]+1.5,this.pos[1]+1,this.pos[2]+2,0]
+
+                    if(Math.abs(player.body.position.x-this.pos[0])<0.5&&player.fieldIn===this.field){
+
+                        this.state=''
+
+                        let DIS=this
+
+                        window.setTimeout(function(){
+
+                            DIS.state='clawAttack'
+                            DIS.cm=0
+                            DIS._cm=6.5
+                            
+                            window.setTimeout(function(){
+
+                                DIS.state=''
+                                DIS.clawA=[DIS.pos[0]-1.5,DIS.pos[1]+1,DIS.pos[2]+2,0]
+                                DIS.clawB=[DIS.pos[0]+1.5,DIS.pos[1]+1,DIS.pos[2]+2,0]
+
+                            },1750)
+
+                            window.setTimeout(function(){
+
+                                DIS.stateAlternate--
+
+                                if(DIS.stateAlternate<0){
+
+                                    DIS.state='alignMiddle'
+                                    DIS.stateAlternate=3
+                                    return
+                                }
+                                
+                                DIS.state='alignClaws'
+
+                            },1750+500)
+
+                        },250)
+                        
+                    }
+
+                break
+
+                case 'clawAttack':
+
+                    if(this.cm<0||this.cm>1){
+
+                        this.cm=MATH.constrain(this.cm,0,1)
+                        this._cm*=-1
+
+                        if(player.body.position.x>this.pos[0]-2.25&&player.body.position.x<this.pos[0]+2.25&&player.body.position.y>this.pos[1]-1&&player.body.position.y<this.pos[1]+3){
+
+                            player.damage(12)
+                        }
+                    }
+
+                    this.cm+=this._cm*dt
+
+                    this.clawA=[this.pos[0]-1.5,this.pos[1]+1,this.pos[2]+2+this.cm*7,0]
+                    this.clawB=[this.pos[0]+1.5,this.pos[1]+1,this.pos[2]+2+(1-this.cm)*7,0]
+
+                break
+
+                case 'alignMiddle':
+
+                    this.pos[0]=MATH.constrain(this.pos[0]+dt*Math.sign((fieldInfo[this.field].x+fieldInfo[this.field].width*0.5)-this.pos[0])*6.5,fieldInfo[this.field].x,fieldInfo[this.field].x+fieldInfo[this.field].width)
+
+                    this.clawA=[this.pos[0]-1.5,this.pos[1]+1,this.pos[2]+2,0]
+                    this.clawB=[this.pos[0]+1.5,this.pos[1]+1,this.pos[2]+2,0]
+
+                    if(Math.abs(fieldInfo[this.field].x+fieldInfo[this.field].width*0.5-this.pos[0])<0.5&&player.fieldIn===this.field){
+
+                        this.state='cocoAttack'
+                        this.cm=0
+                        this._cm=0
+
+                        let DIS=this
+
+                        window.setTimeout(function(){
+
+                            DIS.state='alignClaws'
+
+                        },1000*7+2000)
+
+                        for(let i=0;i<7;i++){
+
+                            window.setTimeout(function(){
+
+                                DIS._cm=14
+                                
+                                objects.mobs.push(new Coconut(i?(MATH.random(0.1,0.9)*fieldInfo[DIS.field].width)|0:player.flowerIn.x,i?(MATH.random(0.5,0.9)*fieldInfo[DIS.field].length)|0:player.flowerIn.z,0,true))
+
+                                window.setTimeout(function(){
+
+                                    objects.explosions.push(new Explosion({col:[0.8,0.8,0.8],pos:DIS.pos.slice(),life:0.5,size:11,speed:0.2,aftershock:0.03,maxAlpha:0.15,primitive:'cylinder_explosions',height:0.1}))
+
+                                },500)
+
+                            },1000*i+1000)
+                        }
+                    }
+
+                break
+
+                case 'cocoAttack':
+
+                    this._cm-=45*dt
+                    this.cm+=this._cm*dt
+
+                    if(this.cm<0){
+
+                        this._cm*=-0.3
+                        this.cm=0
+                    }
+
+                    this.pos[1]=fieldInfo[this.field].y+0.3+this.cm
+
+                    this.clawA=[this.pos[0]-1.5,this.pos[1]+1,this.pos[2]+2,0]
+                    this.clawB=[this.pos[0]+1.5,this.pos[1]+1,this.pos[2]+2,0]
+
+                break
+            }
+
+        } else {
+
+            textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV.smiley,0.75,0,0,-2,-2,0)
+        }
+        
+        this.pos[1]+=4.3
+        textRenderer.addCTX('Coconut Crab (Level '+this.level+')',[this.pos[0],this.pos[1]+0.4,this.pos[2]],COLORS.whiteArr,100)
+        
+        textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV['rect'],0.6,0,0,2.5,0.4,0)
+        textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.health/this.maxHealth)*0.5)/(this.health/this.maxHealth),0,...textRenderer.decalUV['rect'],0.2,0.85,0.2,this.health*2.5/this.maxHealth,0.4,0)
+        
+        textRenderer.addSingle('HP: '+MATH.addCommas((this.health|0)+''),this.pos,COLORS.whiteArr,-1,false,false)
+    
+        this.pos[1]-=4.3
+        
+        gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
+        gl.uniform2f(glCache.mob_instanceInfo2,1.3,1)
+        gl.bindBuffer(gl.ARRAY_BUFFER,meshes.coconutCrab.vertBuffer)
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.coconutCrab.indexBuffer)
+        gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
+        gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
+        gl.drawElements(gl.TRIANGLES,meshes.coconutCrab.indexAmount,gl.UNSIGNED_SHORT,0)
+
+        gl.uniform4fv(glCache.mob_instanceInfo1,this.clawA)
+        gl.uniform2f(glCache.mob_instanceInfo2,1,1)
+        gl.bindBuffer(gl.ARRAY_BUFFER,meshes.crabClaw.vertBuffer)
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.crabClaw.indexBuffer)
+        gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
+        gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
+        gl.drawElements(gl.TRIANGLES,meshes.crabClaw.indexAmount,gl.UNSIGNED_SHORT,0)
+
+        gl.uniform4fv(glCache.mob_instanceInfo1,this.clawB)
+        gl.uniform2f(glCache.mob_instanceInfo2,1,1)
+        gl.bindBuffer(gl.ARRAY_BUFFER,meshes.crabClaw.vertBuffer)
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.crabClaw.indexBuffer)
+        gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
+        gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
+        gl.drawElements(gl.TRIANGLES,meshes.crabClaw.indexAmount,gl.UNSIGNED_SHORT,0)
+        
+    }
+}
+
 class Mechsquito {
     
     constructor(field,level,isMega){
@@ -18473,8 +18721,9 @@ class GummyBall {
 
 class Coconut {
     
-    constructor(x=player.flowerIn.x,z=player.flowerIn.z,delay=0){
+    constructor(x=player.flowerIn.x,z=player.flowerIn.z,delay=0,isBigFatBully){
         
+        this.isBigFatBully=isBigFatBully
         this.delay=delay
         this.field=player.fieldIn
         this.x=x
@@ -18483,40 +18732,51 @@ class Coconut {
         this.y=this.pos[1]+25
         this.glow=0
         this.vel=0
-        this.displaySize=4.5
+        this.displaySize=isBigFatBully?6:4.5
     }
     
     die(index){
-        
-        collectPollen({x:this.x,z:this.z,pattern:[[-2,-1],[-2,0],[-2,1],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[0,-2],[0,-1],[0,0],[0,1],[0,2],[1,-2],[1,-1],[1,0],[1,1],[1,2],[2,-1],[2,0],[2,1]],amount:50,yOffset:2.25,stackHeight:0.75+Math.random()*0.25,field:this.field,multiplier:player.pollenFromCoconuts})
-        
-        let hpt=Math.ceil(Math.min(player.convertTotal,player.pollen)/5)
-        
-        if(vec3.sqrDist(this.pos,[player.body.position.x,player.body.position.y,player.body.position.z])<=this.displaySize){
 
-            player.stats.fallingCoconuts++
+        player.stats.fallingCoconuts++
+        
+        if(this.isBigFatBully){
 
-            if(hpt){
+            if(vec3.sqrDist(this.pos,[player.body.position.x,player.body.position.y,player.body.position.z])<=this.displaySize){
 
-                player.pollen-=Math.ceil(Math.min(player.convertTotal,player.pollen))
-                
-                for(let i=0;i<MATH.TWO_PI;i+=MATH.TWO_PI/5){
+                player.damage(100)
+            }
+
+        } else {
+
+            collectPollen({x:this.x,z:this.z,pattern:[[-2,-1],[-2,0],[-2,1],[-1,-2],[-1,-1],[-1,0],[-1,1],[-1,2],[0,-2],[0,-1],[0,0],[0,1],[0,2],[1,-2],[1,-1],[1,0],[1,1],[1,2],[2,-1],[2,0],[2,1]],amount:50,yOffset:2.25,stackHeight:0.75+Math.random()*0.25,field:this.field,multiplier:player.pollenFromCoconuts})
+            
+            let hpt=Math.ceil(Math.min(player.convertTotal,player.pollen)/5)
+            
+            if(vec3.sqrDist(this.pos,[player.body.position.x,player.body.position.y,player.body.position.z])<=this.displaySize){
+
+                if(hpt){
+
+                    player.pollen-=Math.ceil(Math.min(player.convertTotal,player.pollen))
                     
-                    objects.tokens.push(new LootToken(30,[this.pos[0]+Math.cos(i)*this.displaySize*0.6,fieldInfo[this.field].y+1,this.pos[2]+Math.sin(i)*this.displaySize*0.6],'honey',Math.ceil(hpt),true,'Coconut'))
+                    for(let i=0;i<MATH.TWO_PI;i+=MATH.TWO_PI/5){
+                        
+                        objects.tokens.push(new LootToken(30,[this.pos[0]+Math.cos(i)*this.displaySize*0.6,fieldInfo[this.field].y+1,this.pos[2]+Math.sin(i)*this.displaySize*0.6],'honey',Math.ceil(hpt),true,'Coconut'))
+                    }
                 }
             }
-        }
 
-        let d=this.displaySize+1
+            let d=this.displaySize+1
 
-        d*=d
+            d*=d
 
-        for(let i in objects.mobs){
+            for(let i in objects.mobs){
 
-            if(objects.mobs[i].state==='attack'&&vec3.sqrDist(this.pos,objects.mobs[i].pos)<d){
+                if(objects.mobs[i].state==='attack'&&vec3.sqrDist(this.pos,objects.mobs[i].pos)<d){
 
-                objects.mobs[i].damage(2500)
+                    objects.mobs[i].damage(2500)
+                }
             }
+
         }
         
         objects.mobs.splice(index,1)
@@ -18534,7 +18794,7 @@ class Coconut {
             this.glow+=dt
             this.y+=this.vel*dt
             
-            meshes.cylinder_explosions.instanceData.push(this.pos[0],this.pos[1],this.pos[2],0,1,0,this.glow,this.displaySize,0.001)
+            meshes.cylinder_explosions.instanceData.push(this.pos[0],this.pos[1],this.pos[2],this.isBigFatBully?1:0,this.isBigFatBully?0:1,0,this.glow*0.75,this.displaySize,0.001)
             meshes.explosions.instanceData.push(this.pos[0],this.y,this.pos[2],1,1,1,0.15,-this.displaySize-1,1)
             meshes.explosions.instanceData.push(this.pos[0],this.y,this.pos[2],0.3*player.isNight,0.1*player.isNight,0,1,this.displaySize,1)
             
@@ -23583,7 +23843,7 @@ player=(function(out){
         
         out.health-=am-am*out.defense
         out.stats.coconutShield++
-        textRenderer.add((am|0)+'',[out.body.position.x,out.body.position.y+Math.random()*1.5+1.5,out.body.position.z],[255,0,0],0,'',1.25)
+        textRenderer.add(((am-am*out.defense)|0)+'',[out.body.position.x,out.body.position.y+Math.random()*1.5+2.5,out.body.position.z],[255,0,0],0,'',2)
     }
     
     out.lagPos=[0,0,0]
@@ -29740,6 +30000,76 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
 
 meshes.mondoChick.indexAmount=index.length
 
+meshes.coconutCrab={}
+meshes.coconutCrab.vertBuffer=gl.createBuffer()
+meshes.coconutCrab.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,1,0,1.75,1.75,1.75,0.8,0.7,0.55,-8,0,0)
+b(0,1.6,0.3,1.25,1.5,1.5,0.6,0.6,0.65,13,0,0)
+b(0.4,2.4,0.7,0.25,1,0.25,0.8,0.7,0.55,14,0,-8)
+b(-0.4,2.4,0.7,0.25,1,0.25,0.8,0.7,0.55,14,0,8)
+b(-0.475,2.9,0.825,0.3,0.45,0.3,10,0,0,14,0,8)
+b(0.475,2.9,0.825,0.3,0.45,0.3,10,0,0,14,0,-8)
+
+b(-1.2,1,0.1,0.5,1.75,0.5,0.6,0.6,0.65,0.001,0,60)
+b(-2.5,1,0.1,0.5,1.75,0.5,0.6,0.6,0.65,0.001,0,-60)
+b(-1.2,1,0.5,0.5,1.75,0.5,0.6,0.6,0.65,30,0,40)
+b(-2,1,1.3,0.5,1.75,0.5,0.6,0.6,0.65,-30,0,-40)
+b(-1.2,1,-0.2,0.5,1.75,0.5,0.6,0.6,0.65,-30,0,50)
+b(-2.1,1,-1,0.5,1.75,0.5,0.6,0.6,0.65,30,0,-50)
+
+b(1.2,1,0.1,0.5,1.75,0.5,0.6,0.6,0.65,0.001,0,-60)
+b(2.5,1,0.1,0.5,1.75,0.5,0.6,0.6,0.65,0.001,0,60)
+b(1.2,1,0.5,0.5,1.75,0.5,0.6,0.6,0.65,30,0,-40)
+b(2,1,1.3,0.5,1.75,0.5,0.6,0.6,0.65,-30,0,40)
+b(1.2,1,-0.2,0.5,1.75,0.5,0.6,0.6,0.65,-30,0,-50)
+b(2.1,1,-1,0.5,1.75,0.5,0.6,0.6,0.65,30,0,50)
+
+_s=MATH.icosphere(2)
+_vl=verts.length/6
+
+for(let i=0;i<_s.verts.length;i+=3){
+    
+    _s.verts[i]*=3.5
+    _s.verts[i+1]*=3.5
+    _s.verts[i+2]*=3.5
+    _s.verts[i+1]+=1.5
+    _s.verts[i+2]-=2
+    
+    verts.push(_s.verts[i],_s.verts[i+1],_s.verts[i+2],0.48,0.41,0.19)
+}
+
+for(let i in _s.index){
+    
+    index.push(_s.index[i]+_vl)
+}
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.coconutCrab.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.coconutCrab.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.coconutCrab.indexAmount=index.length
+
+meshes.crabClaw={}
+meshes.crabClaw.vertBuffer=gl.createBuffer()
+meshes.crabClaw.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+b(0,0,-3.5,1,1,9,0.8,0.7,0.55)
+b(0.4,0,1,1.1,1.1,1,0.6,0.6,0.65,0.01,45,0)
+b(-0.4,0,1,1.1,1.1,1,0.6,0.6,0.65,0.01,-45,0)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.crabClaw.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.crabClaw.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.crabClaw.indexAmount=index.length
+
 meshes.ant={}
 meshes.ant.vertBuffer=gl.createBuffer()
 meshes.ant.indexBuffer=gl.createBuffer()
@@ -31603,6 +31933,9 @@ objects.mobs.push(new BugMob([30+19,2.75,32.5],{minX:31,maxX:31+19,minZ:31.5,max
 objects.mobs.push(new BugMob([32,2.75,30.5+13],{minX:31,maxX:31+19,minZ:31.5,maxZ:31.5+13,minY:0,maxY:6},5,35,'scorpion','mob_rose2'))
 
 objects.mobs.push(new BugMob([-53+25*0.5,-0.75,8.5],{minX:-55,maxX:-53+25,minZ:6.5,maxZ:6.5+20,minY:-10,maxY:3.5},7,2500,'kingBeetle','mob_king1'))
+
+
+objects.mobs.push(new CoconutCrab())
 
 
 document.addEventListener('pointerlockchange',function(e){
