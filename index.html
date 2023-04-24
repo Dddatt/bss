@@ -5375,6 +5375,86 @@ let triggers={
         
         minX:23.5-3,maxX:23.5+3,minY:-2,maxY:2,minZ:41-2-3,maxZ:41-2+3
     },
+
+    become_attack_hive:{
+        
+        isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:2-1,maxZ:2+1,message:'become super op attack hive',func:function(player){
+            player.currentGear={
+                
+                tool:'darkScythe',
+                boots:'gummyBoots',
+                belt:'petalBelt',
+                backpack:'coconutCanister',
+                mask:'demonMask',
+                leftGuard:'crimsonGuard',
+                rightGuard:'cobaltGuard',
+                glider:'glider',
+                supremeStarAmulet:'*2.5 capacityMultiplier,*1.5 convertRate,*1.1 redPollen,*1.1 bluePollen,*1.1 whitePollen,*1.6 redPollen,+0.1 instantBlueConversion,+0.1 instantWhiteConversion,+0.1 instantRedConversion,+0.05 criticalChance,P scorchingStarPassive,P starSawPassive',
+                sprinkler:'supremeSaturator',
+                beequips:[],
+            }
+            
+            player.updateGear()
+            player.addEffect('superSmoothieBuff')
+            player.addEffect('comfortingNectar',1)
+            player.addEffect('refreshingNectar',1)
+            player.addEffect('invigoratingNectar',1)
+            player.addEffect('motivatingNectar',1)
+            player.addEffect('satisfyingNectar',1)
+            player.hive=[[]]
+            player.addSlot('basic')
+            player.addSlot('looker')
+            player.addSlot('rage')
+            player.addSlot('commander')
+            player.addSlot('brave')
+            player.addSlot('ninja')
+            player.addSlot('shy')
+            player.addSlot('music')
+            player.addSlot('music')
+            player.addSlot('music')
+            player.addSlot('music')
+            player.addSlot('vicious')
+            player.addSlot('precise')
+            player.addSlot('precise')
+            player.addSlot('precise')
+            player.addSlot('precise')
+            player.addSlot('precise')
+            player.addSlot('precise')
+            player.addSlot('precise')
+            player.addSlot('precise')
+            player.addSlot('precise')
+            player.addSlot('precise')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('spicy')
+            player.addSlot('digital')
+            player.updateHive()
+        }
+    },
     
     become_mid_hive:{
         
