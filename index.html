@@ -4318,12 +4318,12 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
 <div class='hotbarSlot' style='position:fixed;top:93%;left:55%;width:36px;height:36px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;border:6px solid rgb(200,200,200)'></div>
 <div class='hotbarSlot' style='position:fixed;top:93%;left:65%;width:36px;height:36px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;border:6px solid rgb(200,200,200)'></div>
 <div class='hotbarSlot' style='position:fixed;top:93%;left:75%;width:36px;height:36px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;border:6px solid rgb(200,200,200)'></div>
-<div class='autoHotbarButton' style='position:fixed;top:98.5%;left:25%;width:37px;height:9px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;padding-top:1px;font-family:trebuchet ms;font-size:7px;text-align:center'></div>
-<div class='autoHotbarButton' style='position:fixed;top:98.5%;left:35%;width:35px;height:14px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;padding-top:1px;font-family:trebuchet ms;font-size:7px;text-align:center'></div>
-<div class='autoHotbarButton' style='position:fixed;top:98.5%;left:45%;width:35px;height:14px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;padding-top:1px;font-family:trebuchet ms;font-size:7px;text-align:center'></div>
-<div class='autoHotbarButton' style='position:fixed;top:98.5%;left:55%;width:35px;height:14px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;padding-top:1px;font-family:trebuchet ms;font-size:7px;text-align:center'></div>
-<div class='autoHotbarButton' style='position:fixed;top:98.5%;left:65%;width:35px;height:14px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;padding-top:1px;font-family:trebuchet ms;font-size:7px;text-align:center'></div>
-<div class='autoHotbarButton' style='position:fixed;top:98.5%;left:75%;width:35px;height:14px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;padding-top:1px;font-family:trebuchet ms;font-size:7px;text-align:center'></div>
+<div class='autoHotbarButton' style='position:fixed;top:98.5%;left:25%;width:39px;height:11px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;padding-top:1px;font-family:trebuchet ms;font-size:7px;text-align:center'></div>
+<div class='autoHotbarButton' style='position:fixed;top:98.5%;left:35%;width:39px;height:11px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;padding-top:1px;font-family:trebuchet ms;font-size:7px;text-align:center'></div>
+<div class='autoHotbarButton' style='position:fixed;top:98.5%;left:45%;width:39px;height:11px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;padding-top:1px;font-family:trebuchet ms;font-size:7px;text-align:center'></div>
+<div class='autoHotbarButton' style='position:fixed;top:98.5%;left:55%;width:39px;height:11px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;padding-top:1px;font-family:trebuchet ms;font-size:7px;text-align:center'></div>
+<div class='autoHotbarButton' style='position:fixed;top:98.5%;left:65%;width:39px;height:11px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;padding-top:1px;font-family:trebuchet ms;font-size:7px;text-align:center'></div>
+<div class='autoHotbarButton' style='position:fixed;top:98.5%;left:75%;width:39px;height:11px;z-index:-1;transform:translate(-50%,-50%);border-radius:10px;padding-top:1px;font-family:trebuchet ms;font-size:7px;text-align:center'></div>
 
 <div id='amuletUI' style='position:fixed;left:50%;top:50%;width:250px;height:350px;z-index:2;transform:translate(-50%,-50%) scale(1.25,1.25);background-color:rgb(255,255,100);border-radius:4px;display:none'>
     
@@ -5003,13 +5003,17 @@ for(let i in hotbarSlots){
             
             hotbarSlots[i].innerHTML=itemSVGCode[player.itemDragging].replace('SCALE','scale(0.512,0.512);margin-left:-18px;margin-top:-19px')+"<div style='font-size:9px;text-align:right;margin-top:-30px'>x"+items[player.itemDragging].amount+"</div>"
             
-            hotbarSlots[i].style.backgroundColor='rgb(235,235,235)'
+            hotbarSlots[i].style.backgroundColor=items[player.itemDragging].amount>0?'rgb(235,235,235)':'rgb(190,190,190)'
             hotbarSlots[i].itemType=player.itemDragging
+            hotbarSlots[i].style.filter=items[player.itemDragging].amount>0?'none':'grayscale(1)'
             
             autoHotbarButtons[i].style.display=items[player.itemDragging].autoUse?'block':'none'
             autoHotbarButtons[i].autoEnabled=false
             autoHotbarButtons[i].style.backgroundColor='rgb(255,0,0,0.85)'
             autoHotbarButtons[i].innerHTML='AUTO: OFF'
+
+            window.clearInterval(autoHotbarButtons[i].interval)
+
             autoHotbarButtons[i].onmousedown=function(){
                 
                 autoHotbarButtons[i].autoEnabled=!autoHotbarButtons[i].autoEnabled
@@ -5020,11 +5024,14 @@ for(let i in hotbarSlots){
                     
                     autoHotbarButtons[i].interval=window.setInterval(function(){
 
-                        player.stats[hotbarSlots[i].itemType]++
-                        items[hotbarSlots[i].itemType].use()
-                        items[hotbarSlots[i].itemType].cooldown=TIME
-                        player.updateInventory()
-                        
+                        if(items[hotbarSlots[i].itemType].amount>0){
+
+                            player.stats[hotbarSlots[i].itemType]++
+                            items[hotbarSlots[i].itemType].use()
+                            items[hotbarSlots[i].itemType].cooldown=TIME
+                            player.updateInventory()
+                        }
+
                     },1000*items[hotbarSlots[i].itemType].maxCooldown)
                     
                 } else {
@@ -5036,25 +5043,31 @@ for(let i in hotbarSlots){
             for(let j in hotbarSlots){
                 
                 if(hotbarSlots[j].itemType===player.itemDragging&&i!==j){
+
                     hotbarSlots[j].innerHTML=''
                     hotbarSlots[j].style.backgroundColor='rgb(0,0,0,0)'
                     hotbarSlots[j].itemType=false
                     autoHotbarButtons[j].style.display='none'
                     autoHotbarButtons[j].autoEnabled=false
+                    window.clearInterval(autoHotbarButtons[j].interval)
                 }
             }
             
             player.itemDragging=false
             
         } else if(player.itemDragging===hotbarSlots[i].itemType){
+
             hotbarSlots[i].innerHTML=''
             hotbarSlots[i].style.backgroundColor='rgb(0,0,0,0)'
             hotbarSlots[i].itemType=false
             autoHotbarButtons[i].style.display='none'
             autoHotbarButtons[i].autoEnabled=false
             player.itemDragging=false
+
+            window.clearInterval(autoHotbarButtons[i].interval)
             
         } else if(!player.itemDragging&&hotbarSlots[i].itemType){
+
             if(items[hotbarSlots[i].itemType].canUseOnSlot){
                 
                 player.itemDragging=hotbarSlots[i].itemType
@@ -5063,10 +5076,13 @@ for(let i in hotbarSlots){
                 
                 if(TIME-items[hotbarSlots[i].itemType].cooldown>items[hotbarSlots[i].itemType].maxCooldown){
                     
-                    player.stats[hotbarSlots[i].itemType]++
-                    items[hotbarSlots[i].itemType].use()
-                    items[hotbarSlots[i].itemType].cooldown=TIME
-                    player.updateInventory()
+                    if(items[hotbarSlots[i].itemType].amount>0){
+
+                        player.stats[hotbarSlots[i].itemType]++
+                        items[hotbarSlots[i].itemType].use()
+                        items[hotbarSlots[i].itemType].cooldown=TIME
+                        player.updateInventory()
+                    }
                     
                 } else {
                     
@@ -16722,6 +16738,7 @@ class CoconutCrab {
         this.runningAmount=0
         this.mindHacked=0
         this.stateAlternate=2
+        this.timeToDefeat=0
     }
     
     die(index){
@@ -16758,7 +16775,35 @@ class CoconutCrab {
         
         if(this.health<=0||player.extraInfo.mob_coco>0){
             
-            this.isDead=15||240*60
+            this.isDead=180*60/player.monsterRespawnTime
+
+            let loots='',decay=MATH.constrain(Math.pow(2,-0.001*this.timeToDefeat),0.1,1)
+
+            loots+='coconut,'.repeat(((MATH.random(60,110)*0.5*decay))|0)
+            loots+='tropicalDrink,'.repeat(((MATH.random(4,10)*decay))|0)
+            loots+='microConverter,'.repeat(((MATH.random(4,12)*decay))|0)
+            loots+='starJelly,'.repeat(((MATH.random(2,5)*decay))|0)
+            loots+='glitter,'.repeat(((MATH.random(3,7)*decay))|0)
+            loots+='magicBean,'.repeat(((MATH.random(3,7)*decay))|0)
+            loots+='oil,'.repeat(((MATH.random(3,7)*decay))|0)
+            loots+='glue,'.repeat(((MATH.random(3,7)*decay))|0)
+
+            loots=loots.substring(0,loots.length-1).split(',')
+
+            for(let i=loots.length;i--;){
+                
+                let DIS=this
+
+                window.setTimeout(function(){
+
+                    let it=(Math.random()*loots.length)|0
+
+                    console.error(loots[it])
+                    objects.tokens.push(new LootToken(30,[fieldInfo[DIS.field].x+((fieldInfo[DIS.field].width*Math.random())|0),fieldInfo[DIS.field].y+1,fieldInfo[DIS.field].z+((fieldInfo[DIS.field].length*Math.random())|0),0],loots[it],loots[it]==='coconut'?MATH.random(1,4)|0:1,true,'Coconut Crab'))
+                    loots.splice(i,1)
+
+                },i*300)
+            }
         }
 
         let isInZone=player.body.position.x>fieldInfo[this.field].x&&player.body.position.x<fieldInfo[this.field].x+fieldInfo[this.field].width&&player.body.position.z>fieldInfo[this.field].z&&player.body.position.z<fieldInfo[this.field].z+fieldInfo[this.field].length
@@ -16782,6 +16827,7 @@ class CoconutCrab {
             }
         }
         
+        this.timeToDefeat+=dt
         this.mindHacked-=dt
         this.starSawHitTimer-=dt
         this.flameTimer-=dt
@@ -24493,6 +24539,10 @@ player=(function(out){
                 if(hotbarSlots[j].itemType===i){
 
                     hotbarSlots[j].innerHTML=itemSVGCode[i].replace('SCALE','scale(0.512,0.512);margin-left:-18px;margin-top:-19px')+"<div style='font-size:9px;text-align:right;margin-top:-30px'>x"+items[i].amount+"</div>"
+
+                    hotbarSlots[j].style.backgroundColor=items[i].amount>0?'rgb(235,235,235)':'rgb(190,190,190)'
+
+                    hotbarSlots[j].style.filter=items[i].amount>0?'none':'grayscale(1)'
                 }
             }
         }
@@ -27372,6 +27422,20 @@ let user=(function(out){
         
         out.keys[e.key.toLowerCase()]=true
         out.clickedKeys[e.key.toLowerCase()]=true
+
+        if(e.key==='e'){
+            
+            if(player.currentNPC&&TIME-player.eKeyDialoguePress>0.15){
+
+                dialogueBox.onclick()
+
+            } else {
+
+                inventoryButton.onclick()
+            }
+        }
+
+        if(e.key==='q') questButton.onclick()
     }
     
     document.onkeyup=function(e){
@@ -27386,21 +27450,19 @@ let user=(function(out){
                 
                 if(TIME-items[hotbarSlots[n].itemType].cooldown>items[hotbarSlots[n].itemType].maxCooldown){
                     
-                    player.stats[hotbarSlots[n].itemType]++
-                    items[hotbarSlots[n].itemType].use()
-                    items[hotbarSlots[n].itemType].cooldown=TIME
-                    player.updateInventory()
+                    if(items[hotbarSlots[n].itemType].amount>0){
+
+                        player.stats[hotbarSlots[n].itemType]++
+                        items[hotbarSlots[n].itemType].use()
+                        items[hotbarSlots[n].itemType].cooldown=TIME
+                        player.updateInventory()
+                    }
                     
                 } else {
                     
                     player.addMessage('Item is on a cooldown of '+MATH.doTime(items[hotbarSlots[n].itemType].maxCooldown-(TIME-items[hotbarSlots[n].itemType].cooldown))+'!',COLORS.redArr)
                 }
             }
-        }
-
-        if(e.key==='e'&&player.currentNPC&&TIME-player.eKeyDialoguePress>0.75){
-            
-            dialogueBox.onclick()
         }
     }
     
@@ -31545,7 +31607,7 @@ for(let i in items){
     
     if(i.indexOf('Planter')>-1) continue
 
-    objects.tokens.push(new LootToken(10000,[(ct%9)-2,-1,(-7+((ct/9)|0))],i,1000000))
+    objects.tokens.push(new LootToken(10000,[(ct%9)-2,-1,(-7+((ct/9)|0))],i,2))
     
     ct++
 }
@@ -32548,8 +32610,16 @@ function loop(now){
     
     if(user.keys.o){
 
-        player.body.position.set(0,1005,1010)
-        player.body.velocity.set(0,0,0)
+        // player.body.position.set(0,1005,1010)
+        // player.body.velocity.set(0,0,0)
+
+        for(let i in items){
+
+            if(i!=='stinger'&&i!=='jellyBeans')
+            items[i].amount=0
+        }
+
+        player.updateInventory()
 
         for(let i in objects.planters){
 
