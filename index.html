@@ -16727,6 +16727,8 @@ class CoconutCrab {
     die(index){
         
         objects.mobs.splice(index,1)
+        
+        objects.mobs.push(new CoconutCrab())
     }
     
     damage(am){
@@ -16742,10 +16744,42 @@ class CoconutCrab {
     }
     
     update(){
-        
-        if(this.health<=0){
+
+        if(this.isDead>0){
+
+            this.isDead-=dt
+            player.extraInfo.mob_coco=this.isDead
             
-            return true
+            textRenderer.addSingle('Coconut Crab',[26,17,-40],COLORS.whiteArr,-1.5,false,false,0,0.2)
+            textRenderer.addSingle(MATH.doTime(this.isDead),[26,17,-40],COLORS.whiteArr,-1.5,false,false,0,-0.2)
+
+            return this.isDead<=0
+        }
+        
+        if(this.health<=0||player.extraInfo.mob_coco>0){
+            
+            this.isDead=15||240*60
+        }
+
+        let isInZone=player.body.position.x>fieldInfo[this.field].x&&player.body.position.x<fieldInfo[this.field].x+fieldInfo[this.field].width&&player.body.position.z>fieldInfo[this.field].z&&player.body.position.z<fieldInfo[this.field].z+fieldInfo[this.field].length
+
+        if(isInZone){
+            
+            player.attacked.push(this)
+
+        } else {
+
+            if(this.pos[0]>fieldInfo[this.field].x-8){
+
+                this.pos[0]-=dt*6.5
+                
+                this.clawA=[this.pos[0]-1.5,this.pos[1]+1,this.pos[2]+2,0]
+                this.clawB=[this.pos[0]+1.5,this.pos[1]+1,this.pos[2]+2,0]
+
+            } else {
+
+                return
+            }
         }
         
         this.mindHacked-=dt
@@ -16765,11 +16799,6 @@ class CoconutCrab {
             }
         }
         
-        if(player.fieldIn===this.field){
-            
-            player.attacked.push(this)
-        }
-        
         if(this.mindHacked<=0){
 
             this.damageTimer-=dt
@@ -16780,142 +16809,146 @@ class CoconutCrab {
                 this.damageTimer=1.5
             }
 
-            switch(this.state){
+            if(isInZone){
 
-                case 'alignClaws':
+                switch(this.state){
 
-                    this.pos[0]=MATH.constrain(this.pos[0]+dt*Math.sign(player.body.position.x-this.pos[0])*6.5,fieldInfo[this.field].x,fieldInfo[this.field].x+fieldInfo[this.field].width)
+                    case 'alignClaws':
 
-                    this.clawA=[this.pos[0]-1.5,this.pos[1]+1,this.pos[2]+2,0]
-                    this.clawB=[this.pos[0]+1.5,this.pos[1]+1,this.pos[2]+2,0]
+                        this.pos[0]=this.pos[0]+dt*Math.sign(player.body.position.x-this.pos[0])*6.5
 
-                    if(Math.abs(player.body.position.x-this.pos[0])<0.5&&player.fieldIn===this.field){
+                        this.clawA=[this.pos[0]-1.5,this.pos[1]+1,this.pos[2]+2,0]
+                        this.clawB=[this.pos[0]+1.5,this.pos[1]+1,this.pos[2]+2,0]
 
-                        this.state=''
+                        if(Math.abs(player.body.position.x-this.pos[0])<0.5){
 
-                        let DIS=this
+                            this.state=''
 
-                        window.setTimeout(function(){
-
-                            DIS.state='clawAttack'
-                            DIS.cm=0
-                            DIS._cm=6.5
-                            
-                            window.setTimeout(function(){
-
-                                DIS.state=''
-                                DIS.clawA=[DIS.pos[0]-1.5,DIS.pos[1]+1,DIS.pos[2]+2,0]
-                                DIS.clawB=[DIS.pos[0]+1.5,DIS.pos[1]+1,DIS.pos[2]+2,0]
-
-                            },1750)
+                            let DIS=this
 
                             window.setTimeout(function(){
 
-                                DIS.stateAlternate--
-
-                                if(DIS.stateAlternate<0){
-
-                                    DIS.state='alignMiddle'
-                                    DIS.stateAlternate=3
-                                    return
-                                }
+                                DIS.state='clawAttack'
+                                DIS.cm=0
+                                DIS._cm=6.5
                                 
-                                DIS.state='alignClaws'
+                                window.setTimeout(function(){
 
-                            },1750+500)
+                                    DIS.state=''
+                                    DIS.clawA=[DIS.pos[0]-1.5,DIS.pos[1]+1,DIS.pos[2]+2,0]
+                                    DIS.clawB=[DIS.pos[0]+1.5,DIS.pos[1]+1,DIS.pos[2]+2,0]
 
-                        },250)
-                        
-                    }
-
-                break
-
-                case 'clawAttack':
-
-                    if(this.cm<0||this.cm>1){
-
-                        this.cm=MATH.constrain(this.cm,0,1)
-                        this._cm*=-1
-
-                        if(player.body.position.x>this.pos[0]-2.25&&player.body.position.x<this.pos[0]+2.25&&player.body.position.y>this.pos[1]-1&&player.body.position.y<this.pos[1]+3){
-
-                            player.damage(12)
-                        }
-                    }
-
-                    this.cm+=this._cm*dt
-
-                    this.clawA=[this.pos[0]-1.5,this.pos[1]+1,this.pos[2]+2+this.cm*7,0]
-                    this.clawB=[this.pos[0]+1.5,this.pos[1]+1,this.pos[2]+2+(1-this.cm)*7,0]
-
-                break
-
-                case 'alignMiddle':
-
-                    this.pos[0]=MATH.constrain(this.pos[0]+dt*Math.sign((fieldInfo[this.field].x+fieldInfo[this.field].width*0.5)-this.pos[0])*6.5,fieldInfo[this.field].x,fieldInfo[this.field].x+fieldInfo[this.field].width)
-
-                    this.clawA=[this.pos[0]-1.5,this.pos[1]+1,this.pos[2]+2,0]
-                    this.clawB=[this.pos[0]+1.5,this.pos[1]+1,this.pos[2]+2,0]
-
-                    if(Math.abs(fieldInfo[this.field].x+fieldInfo[this.field].width*0.5-this.pos[0])<0.5&&player.fieldIn===this.field){
-
-                        this.state='cocoAttack'
-                        this.cm=0
-                        this._cm=0
-
-                        let DIS=this
-
-                        window.setTimeout(function(){
-
-                            DIS.state='alignClaws'
-
-                        },1000*7+2000)
-
-                        for(let i=0;i<7;i++){
-
-                            window.setTimeout(function(){
-
-                                DIS._cm=14
-                                
-                                objects.mobs.push(new Coconut(i?(MATH.random(0.1,0.9)*fieldInfo[DIS.field].width)|0:player.flowerIn.x,i?(MATH.random(0.5,0.9)*fieldInfo[DIS.field].length)|0:player.flowerIn.z,0,true))
+                                },1750)
 
                                 window.setTimeout(function(){
 
-                                    objects.explosions.push(new Explosion({col:[0.8,0.8,0.8],pos:DIS.pos.slice(),life:0.5,size:11,speed:0.2,aftershock:0.03,maxAlpha:0.15,primitive:'cylinder_explosions',height:0.1}))
+                                    DIS.stateAlternate--
 
-                                },500)
+                                    if(DIS.stateAlternate<0){
 
-                            },1000*i+1000)
+                                        DIS.state='alignMiddle'
+                                        DIS.stateAlternate=3
+                                        return
+                                    }
+                                    
+                                    DIS.state='alignClaws'
+
+                                },1750+500)
+
+                            },250)
+                            
                         }
-                    }
 
-                break
+                    break
 
-                case 'cocoAttack':
+                    case 'clawAttack':
 
-                    this._cm-=45*dt
-                    this.cm+=this._cm*dt
+                        if(this.cm<0||this.cm>1){
 
-                    if(this.cm<0){
+                            this.cm=MATH.constrain(this.cm,0,1)
+                            this._cm*=-1
 
-                        this._cm*=-0.3
-                        this.cm=0
-                    }
+                            if(player.body.position.x>this.pos[0]-2.25&&player.body.position.x<this.pos[0]+2.25&&player.body.position.y>this.pos[1]-1&&player.body.position.y<this.pos[1]+3){
 
-                    this.pos[1]=fieldInfo[this.field].y+0.3+this.cm
+                                player.damage(12)
+                            }
+                        }
 
-                    this.clawA=[this.pos[0]-1.5,this.pos[1]+1,this.pos[2]+2,0]
-                    this.clawB=[this.pos[0]+1.5,this.pos[1]+1,this.pos[2]+2,0]
+                        this.cm+=this._cm*dt
 
-                break
+                        this.clawA=[this.pos[0]-1.5,this.pos[1]+1,this.pos[2]+2+this.cm*7,0]
+                        this.clawB=[this.pos[0]+1.5,this.pos[1]+1,this.pos[2]+2+(1-this.cm)*7,0]
+
+                    break
+
+                    case 'alignMiddle':
+
+                        this.pos[0]=MATH.constrain(this.pos[0]+dt*Math.sign((fieldInfo[this.field].x+fieldInfo[this.field].width*0.5)-this.pos[0])*6.5,fieldInfo[this.field].x,fieldInfo[this.field].x+fieldInfo[this.field].width)
+
+                        this.clawA=[this.pos[0]-1.5,this.pos[1]+1,this.pos[2]+2,0]
+                        this.clawB=[this.pos[0]+1.5,this.pos[1]+1,this.pos[2]+2,0]
+
+                        if(Math.abs(fieldInfo[this.field].x+fieldInfo[this.field].width*0.5-this.pos[0])<0.5&&player.fieldIn===this.field){
+
+                            this.state='cocoAttack'
+                            this.cm=0
+                            this._cm=0
+
+                            let DIS=this
+
+                            window.setTimeout(function(){
+
+                                DIS.state='alignClaws'
+
+                            },1000*7+2000)
+
+                            for(let i=0;i<7;i++){
+
+                                window.setTimeout(function(){
+
+                                    DIS._cm=14
+                                    
+                                    objects.mobs.push(new Coconut(i?(MATH.random(0.1,0.9)*fieldInfo[DIS.field].width)|0:player.flowerIn.x,i?(MATH.random(0.5,0.9)*fieldInfo[DIS.field].length)|0:player.flowerIn.z,0,true))
+
+                                    window.setTimeout(function(){
+
+                                        objects.explosions.push(new Explosion({col:[0.8,0.8,0.8],pos:DIS.pos.slice(),life:0.5,size:11,speed:0.2,aftershock:0.03,maxAlpha:0.15,primitive:'cylinder_explosions',height:0.1}))
+
+                                    },500)
+
+                                },1000*i+1000)
+                            }
+                        }
+
+                    break
+
+                    case 'cocoAttack':
+
+                        this._cm-=45*dt
+                        this.cm+=this._cm*dt
+
+                        if(this.cm<0){
+
+                            this._cm*=-0.3
+                            this.cm=0
+                        }
+
+                        this.pos[1]=fieldInfo[this.field].y+0.3+this.cm
+
+                        this.clawA=[this.pos[0]-1.5,this.pos[1]+1,this.pos[2]+2,0]
+                        this.clawB=[this.pos[0]+1.5,this.pos[1]+1,this.pos[2]+2,0]
+
+                    break
+                }
             }
 
         } else {
 
             textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV.smiley,0.75,0,0,-2,-2,0)
         }
-        
+
         this.pos[1]+=4.3
+
         textRenderer.addCTX('Coconut Crab (Level '+this.level+')',[this.pos[0],this.pos[1]+0.4,this.pos[2]],COLORS.whiteArr,100)
         
         textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV['rect'],0.6,0,0,2.5,0.4,0)
@@ -16948,7 +16981,6 @@ class CoconutCrab {
         gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
         gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
         gl.drawElements(gl.TRIANGLES,meshes.crabClaw.indexAmount,gl.UNSIGNED_SHORT,0)
-        
     }
 }
 
