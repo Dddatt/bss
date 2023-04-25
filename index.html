@@ -5392,6 +5392,11 @@ let triggers={
         minX:23.5-3,maxX:23.5+3,minY:-2,maxY:2,minZ:41-2-3,maxZ:41-2+3
     },
 
+    royalJelly_shop:{
+        
+        minX:33.5-3,maxX:33.5+3,minY:7,maxY:13,minZ:49.75-3,maxZ:49.75+3
+    },
+
     become_attack_hive:{
         
         isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:2-1,maxZ:2+1,message:'become super op attack hive',func:function(player){
@@ -7841,7 +7846,7 @@ let effects={
     
     pollenMarkToken:{
         
-        desc:"Marks a random spot on the field with a radius of 4.5 flowers for 7s(+0.2s per bee lvl).<br><br>Standing in the mark grants x1.5 pollen. Stacks up to 3x, for a maximum of x2.5 pollen.",
+        desc:"Marks a random spot on the field with a radius of 5 flowers for 7s(+0.2s per bee lvl).<br><br>Standing in the mark grants x1.5 pollen. Stacks up to 3x, for a maximum of x2.5 pollen.",
         trialCooldown:20,trialRate:0.4,
         statsToAddTo:['markTokens','markOrBoostTokens'],
         u:128*6/2048,v:128/2048,
@@ -7861,7 +7866,7 @@ let effects={
     
     honeyMarkToken:{
         
-        desc:"Marks a random spot on the field with a radius of 4.5 flowers for 7s(+0.2s per bee lvl).<br><br>Standing in the mark converts 3x the average convert amount of all your bees, and grants x1.25 convert rate. Stacks up to 3x.",
+        desc:"Marks a random spot on the field with a radius of 5 flowers for 7s(+0.2s per bee lvl).<br><br>Standing in the mark converts 3x the average convert amount of all your bees, and grants x1.25 convert rate. Stacks up to 3x.",
         trialCooldown:17.5,trialRate:0.5,
         statsToAddTo:['markTokens','markOrBoostTokens'],
         u:128*7/2048,v:128/2048,
@@ -8335,7 +8340,7 @@ let effects={
     
     targetPractice:{
         
-        desc:"Causes the bee to fly up, projecting 3 targets onto the field for 4s. Running over a target activates it. After 4s, the bee shoots the targets.<br><br>• Unactivated targets create a red boost token when shot<br><br>• If an activated target is shot, it will create a focus token and collect 50%(+5% per bee lvl) of the bee's attack from 49 flowers. The shot can gain up to 50% instant conversion and x3 pollen based on your Flame Heat.<br><br>• If all 3 targets are shot, all ability tokens will be collected and 1 of the targets will summon a red boost, focus, and precision token. Precision grants +2% super-crit chance and stacks up to 10x, giving a maximum of +20% super-crit chance.<br><br>• If the player stands under a target as it is shot, all ability tokens are collected and Flame Heat is consumed to convert 50% of the hive's convert total plus 15 times the bee's convert amount. The amount of pollen converted scales up to x10 with Flame Heat.<br><br>• If the bee is gifted, 1 of the targets are highlighted in purple. Activating this target but not all 3 will summon a Precise Mark for 13s(+0.2 per bee lvl) with a radius of 6.5 flowers. Standing in the Precise Mark grants +7% critical and super-crit chance, stacking up to 3x, for a maximum of +21% critical and super-crit chance.<br><br>Super-crit chance increases the chance of a super-crit happening if the hit is a critical hit, multiplying pollen collected or damage dealt by your critical power and super-crit power(x2 super-crit power without any extra buffs, x4 in total).",
+        desc:"Causes the bee to fly up, projecting 3 targets onto the field for 4s. Running over a target activates it. After 4s, the bee shoots the targets.<br><br>• Unactivated targets create a red boost token when shot<br><br>• If an activated target is shot, it will create a focus token and collect 50%(+5% per bee lvl) of the bee's attack from 49 flowers. The shot can gain up to 50% instant conversion and x3 pollen based on your Flame Heat.<br><br>• If all 3 targets are shot, all ability tokens will be collected and 1 of the targets will summon a red boost, focus, and precision token. Precision grants +2% super-crit chance and stacks up to 10x, giving a maximum of +20% super-crit chance.<br><br>• If the player stands under a target as it is shot, all ability tokens are collected and Flame Heat is consumed to convert 50% of the hive's convert total plus 15 times the bee's convert amount. The amount of pollen converted scales up to x10 with Flame Heat.<br><br>• If the bee is gifted, 1 of the targets are highlighted in purple. Activating this target but not all 3 will summon a Precise Mark for 15s(+0.2 per bee lvl) with a radius of 7 flowers. Standing in the Precise Mark grants +7% critical and super-crit chance, stacking up to 3x, for a maximum of +21% critical and super-crit chance.<br><br>Super-crit chance increases the chance of a super-crit happening if the hit is a critical hit, multiplying pollen collected or damage dealt by your critical power and super-crit power(x2 super-crit power without any extra buffs, x4 in total).",
         trialCooldown:22.5,trialRate:0.25,
         statsToAddTo:['redAbilityTokens','battleTokens'],
         u:128*4/2048,v:256*2/2048,
@@ -9036,15 +9041,13 @@ let effects={
         
         update:(amount,player)=>{
             
-            player.beeAttack*=1.5
+            player.beeAttack*=1.25
             player.defense=1
-            
-            meshes.explosions.instanceData.push(player.body.position.x+player.body.velocity.x*dt,player.body.position.y+player.body.velocity.y*dt,player.body.position.z+player.body.velocity.z*dt,0.1,0.05,0,Math.sin(TIME*10)*0.1+0.5,2,1)
         },
         
         getMessage:(amount)=>{
             
-            return 'Coconut Shield\n+100% defense\nx1.5 bee attack'
+            return 'Coconut Shield\n+100% defense\nx1.25 bee attack'
         }
     },
     
@@ -9179,7 +9182,7 @@ let effects={
         
         getMessage:(amount)=>{
             
-            return 'Emergency Coconut Shield\nTaking damage from a monster will activate a shield, granting 100% defense, x1.5 bee attack and will drop 5 falling coconuts if in a field. Cooldown: 1m'
+            return 'Emergency Coconut Shield\nTaking damage from a monster will activate a shield, granting 100% defense, x1.25 bee attack and will drop 5 falling coconuts if in a field. Cooldown: 1m'
         }
     },
     
@@ -13169,7 +13172,7 @@ class Bee {
             
             case 'moveToAttack':
                 
-                if(!player.attacked.length||!this.attackMob||this.attackMob.state!=='attack'&&!(this.attackMob instanceof CoconutCrab)){
+                if(!player.attacked.length||!this.attackMob||this.attackMob.state!=='attack'&&!(this.attackMob instanceof CoconutCrab)&&!(this.attackMob instanceof StumpSnail)){
                     
                     this.state='moveToPlayer'
                     return
@@ -13194,7 +13197,7 @@ class Bee {
             
             case 'attack':
                 
-                if(!player.attacked.length||!this.attackMob||this.attackMob.state!=='attack'&&!(this.attackMob instanceof CoconutCrab)){
+                if(!player.attacked.length||!this.attackMob||this.attackMob.state!=='attack'&&!(this.attackMob instanceof CoconutCrab)&&!(this.attackMob instanceof StumpSnail)){
                     
                     this.state='moveToPlayer'
                     return
@@ -13994,7 +13997,7 @@ class TempBee {
             
             case 'moveToAttack':
                 
-                if(!player.attacked.length||!this.attackMob||this.attackMob.state!=='attack'&&!(this.attackMob instanceof CoconutCrab)){
+                if(!player.attacked.length||!this.attackMob||this.attackMob.state!=='attack'&&!(this.attackMob instanceof CoconutCrab)&&!(this.attackMob instanceof StumpSnail)){
                     
                     this.state='moveToPlayer'
                     return
@@ -14019,7 +14022,7 @@ class TempBee {
             
             case 'attack':
                 
-                if(!player.attacked.length||!this.attackMob||this.attackMob.state!=='attack'&&!(this.attackMob instanceof CoconutCrab)){
+                if(!player.attacked.length||!this.attackMob||this.attackMob.state!=='attack'&&!(this.attackMob instanceof CoconutCrab)&&!(this.attackMob instanceof StumpSnail)){
                     
                     this.state='moveToPlayer'
                     return
@@ -14726,7 +14729,7 @@ class Mark {
         
         this.gummyBallHitTimer=0
         this.beeLevel=beeLevel
-        this.life=((type==='precise'?13:7)+(beeLevel-1)*0.2)*player.markDuration
+        this.life=((type==='precise'?15:7)+(beeLevel-1)*0.2)*player.markDuration
         this.field=field
         this.x=x
         this.z=z
@@ -16777,6 +16780,8 @@ class CoconutCrab {
             
             this.isDead=180*60/player.monsterRespawnTime
 
+            if(player.extraInfo.mob_coco>0) return
+
             let loots='',decay=MATH.constrain(Math.pow(2,-0.001*this.timeToDefeat),0.1,1)
 
             loots+='coconut,'.repeat(((MATH.random(60,110)*0.5*decay))|0)
@@ -17027,6 +17032,206 @@ class CoconutCrab {
         gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
         gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
         gl.drawElements(gl.TRIANGLES,meshes.crabClaw.indexAmount,gl.UNSIGNED_SHORT,0)
+    }
+}
+
+class StumpSnail {
+    
+    constructor(){
+        
+        this.field='StumpField'
+        this.moveToAngle=0
+        this.moveTo=[]
+        this.starSawHitTimer=0
+        this.level=6
+        this.health=player.extraInfo.mob_snail_health||15000000
+        this.maxHealth=15000000
+        this.pos=[fieldInfo[this.field].x+fieldInfo[this.field].width*0.5-19,fieldInfo[this.field].y+0.3,fieldInfo[this.field].z+fieldInfo[this.field].length*0.5,0]
+        this.central=[fieldInfo[this.field].x+fieldInfo[this.field].width*0.5,fieldInfo[this.field].z+fieldInfo[this.field].length*0.5]
+        this.flameTimer=0
+        this.waitTimer=0
+        this.damageTimer=0
+        this.bodySize=2.5
+        this.runningAmount=0
+        this.mindHacked=0
+    }
+    
+    die(index){
+        
+        objects.mobs.splice(index,1)
+        
+        objects.mobs.push(new CoconutCrab())
+    }
+    
+    damage(am){
+        
+        let crit=Math.random()<player.criticalChance,superCrit=Math.random()<player.superCritChance,d=am*(crit?superCrit?player.superCritPower*player.criticalPower:player.criticalPower:1)
+        
+        if(this.mindHacked>0)
+            d*=1.25
+
+        this.health-=d|0
+        textRenderer.add((d|0)+'',[this.pos[0],this.pos[1]+Math.random()*2.75+3,this.pos[2]],[255,0,0],crit?superCrit?2:1:0,'',[0,1.25,1.275,1.3,1.65,1.75][Math.min(d.toString().length),5])
+        
+    }
+    
+    update(){
+
+        if(this.isDead>0){
+
+            this.isDead-=dt
+            player.extraInfo.mob_snail=this.isDead
+            
+            textRenderer.addSingle('Stump Snail',[26,17,-40],COLORS.whiteArr,-1.5,false,false,0,0.2)
+            textRenderer.addSingle(MATH.doTime(this.isDead),[26,17,-40],COLORS.whiteArr,-1.5,false,false,0,-0.2)
+
+            return this.isDead<=0
+        }
+        
+        if(this.health<=0||player.extraInfo.mob_snail>0){
+            
+            player.extraInfo.mob_snail_health=15000000
+            this.isDead=300*60/player.monsterRespawnTime
+
+            if(player.extraInfo.mob_snail>0) return
+
+            player.stats.stumpSnail++
+
+            let loots='',decay=Math.min(player.stats.stumpSnail*0.2,1)
+
+            loots+='coconut,'.repeat(((MATH.random(60,110)*0.5*decay))|0)
+            loots+='tropicalDrink,'.repeat(((MATH.random(4,10)*decay))|0)
+            loots+='microConverter,'.repeat(((MATH.random(4,12)*decay))|0)
+            loots+='starJelly,'.repeat(((MATH.random(2,5)*decay))|0)
+            loots+='glitter,'.repeat(((MATH.random(3,7)*decay))|0)
+            loots+='magicBean,'.repeat(((MATH.random(3,7)*decay))|0)
+            loots+='oil,'.repeat(((MATH.random(3,7)*decay))|0)
+            loots+='glue,'.repeat(((MATH.random(3,7)*decay))|0)
+
+            loots=loots.substring(0,loots.length-1).split(',')
+
+            for(let i=loots.length;i--;){
+                
+                let DIS=this
+
+                window.setTimeout(function(){
+
+                    let it=(Math.random()*loots.length)|0
+
+                    console.error(loots[it])
+                    objects.tokens.push(new LootToken(30,[fieldInfo[DIS.field].x+((fieldInfo[DIS.field].width*Math.random())|0),fieldInfo[DIS.field].y+1,fieldInfo[DIS.field].z+((fieldInfo[DIS.field].length*Math.random())|0),0],loots[it],loots[it]==='coconut'?MATH.random(1,4)|0:1,true,'Stump Snail'))
+                    loots.splice(i,1)
+
+                },i*300)
+            }
+        }
+
+        let isInZone=player.body.position.x>fieldInfo[this.field].x-4&&player.body.position.x<fieldInfo[this.field].x+fieldInfo[this.field].width+4&&player.body.position.z>fieldInfo[this.field].z-4&&player.body.position.z<fieldInfo[this.field].z+fieldInfo[this.field].length+4
+
+        let wiggleScalar=Math.cos(TIME*1.5)
+        wiggleScalar*=wiggleScalar
+        wiggleScalar*=wiggleScalar
+        wiggleScalar=(wiggleScalar*0.9+0.1)*1.5
+
+        if(isInZone){
+            
+            player.attacked.push(this)
+
+        } else {
+
+            if(this.pos[0]>this.central[0]-19){
+
+                let dir=[this.central[0]-19-this.pos[0],this.central[1]-this.pos[2]]
+
+                vec2.normalize(dir,dir)
+                
+                this.pos[0]+=dir[0]*dt*wiggleScalar
+                this.pos[2]+=dir[1]*dt*wiggleScalar
+                this.pos[3]=Math.atan2(dir[1],dir[0])-MATH.HALF_PI
+                 
+            } else {
+
+                this.moveToAngle=0
+                return
+            }
+        }
+        
+        this.mindHacked-=dt
+        this.starSawHitTimer-=dt
+        this.flameTimer-=dt
+        
+        player.extraInfo.mob_snail_health=this.health
+        
+        if(this.flameTimer<=0){
+            
+            this.flameTimer=1
+            
+            for(let f in objects.flames){
+                
+                if(Math.abs(this.pos[0]-objects.flames[f].pos[0])+Math.abs(this.pos[2]-objects.flames[f].pos[2])<this.bodySize){
+                    
+                    this.damage(objects.flames[f].dark?25:15)
+                }
+            }
+        }
+        
+        if(this.mindHacked<=0){
+
+            this.damageTimer-=dt
+            
+            if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1]+1)+Math.abs(player.body.position.z-this.pos[2])<this.bodySize&&this.damageTimer<=0){
+                
+                player.damage(25)
+                this.damageTimer=1.5
+            }
+
+            if(isInZone){
+
+                let x=-Math.cos(this.moveToAngle)*9+this.central[0],z=-Math.sin(this.moveToAngle)*9+this.central[1]
+
+                if(Math.abs(this.pos[0]-x)+Math.abs(this.pos[2]-z)<0.1){
+
+                    this.moveToAngle+=dt*0.1*wiggleScalar
+
+                    this.pos[0]=x
+                    this.pos[2]=z
+                    this.pos[3]=this.moveToAngle+Math.PI
+
+                } else {
+                        
+                    let dir=[x-this.pos[0],z-this.pos[2]]
+
+                    vec2.normalize(dir,dir)
+
+                    this.pos[0]+=dir[0]*dt*wiggleScalar
+                    this.pos[2]+=dir[1]*dt*wiggleScalar
+                    this.pos[3]=Math.atan2(dir[1],dir[0])-MATH.HALF_PI
+                }
+            }
+
+        } else {
+
+            textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV.smiley,0.75,0,0,-2,-2,0)
+        }
+
+        this.pos[1]+=2.5
+
+        textRenderer.addCTX('Stump Snail (Level '+this.level+')',[this.pos[0],this.pos[1]+0.4,this.pos[2]],COLORS.whiteArr,100)
+        
+        textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV['rect'],0.6,0,0,2.5,0.4,0)
+        textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.health/this.maxHealth)*0.5)/(this.health/this.maxHealth),0,...textRenderer.decalUV['rect'],0.2,0.85,0.2,this.health*2.5/this.maxHealth,0.4,0)
+        
+        textRenderer.addSingle('HP: '+MATH.addCommas((this.health|0)+''),this.pos,COLORS.whiteArr,-1,false,false)
+    
+        this.pos[1]-=2.5
+        
+        gl.uniform4fv(glCache.mob_instanceInfo1,this.pos)
+        gl.uniform2f(glCache.mob_instanceInfo2,1,1)
+        gl.bindBuffer(gl.ARRAY_BUFFER,meshes.stumpSnail.vertBuffer)
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.stumpSnail.indexBuffer)
+        gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
+        gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
+        gl.drawElements(gl.TRIANGLES,meshes.stumpSnail.indexAmount,gl.UNSIGNED_SHORT,0)
     }
 }
 
@@ -19940,7 +20145,7 @@ class Spike {
 
                 if(d>1000){
 
-                    d=(d-1000)*0.05+1000
+                    d=Math.sqrt((d-1000)*0.1)*10+1000
                 }
 
                 if(!this.target.lastTimeImpaled||TIME-this.target.lastTimeImpaled>5){
@@ -23985,8 +24190,6 @@ player=(function(out){
             out.updateGear()
         }
     }
-    
-    out.eKeyDialoguePress=0
 
     out.sunSwitchTimer=4*60
     out.skyColor=[0.4,0.6,1]
@@ -24055,6 +24258,7 @@ player=(function(out){
         scorpion:0,
         kingBeetle:0,
         tunnelBear:0,
+        stumpSnail:0,
         ant:0,
         fireAnt:0,
         armyAnt:0,
@@ -24213,8 +24417,6 @@ player=(function(out){
     }
     
     out.onStartChat=function(i){
-        
-        out.eKeyDialoguePress=TIME
 
         if(NPCs[i].dialogue[NPCs[i].dialogueIndex]===undefined){
             
@@ -24458,7 +24660,7 @@ player=(function(out){
 
                 if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'&&typeof shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost[i]==='function'){
 
-                    c=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost[i](shops[out.currentShop].items[shops[out.currentShop].currentIndex].amountPurchased+1,incre).split(' ')
+                    c=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost[i](shops[out.currentShop].items[shops[out.currentShop].currentIndex].amountPurchased+incre,incre).split(' ')
                 }
 
                 let col=(c[1]==='honey'&&player.honey<Number(c[0])||c[1]!=='honey'&&items[c[1]].amount<Number(c[0])?'rgb(255,0,0)':'rgb(255,255,255)'),text='x'+(c[0].length<4?MATH.addCommas(c[0]):MATH.abvNumber(c[0]))
@@ -25271,6 +25473,7 @@ player=(function(out){
                     
                 } else if(i!=='beequips'){
                     
+                    window.amuletOffset=[0,0]
                     gear[i].mesh(box,cylinder,sphere,star)   
                 }
             }
@@ -25628,6 +25831,10 @@ player=(function(out){
                         }
                     }
                 }
+
+            } else {
+
+                if(user.clickedKeys.e) dialogueBox.onclick()
             }
             
             if(!player.currentShop){
@@ -25836,7 +26043,8 @@ player=(function(out){
                 
                 objects.mobs.push(new RogueViciousBee(f,MATH.random(...({Cl:[1,4],Sp:[2,5],Ca:[4,8],Ro:[5,8],Mo:[6,9],Pe:[9,12]}[f.substring(0,2)]))|0))
             }
-
+            
+            out.computeRestrictionInfo()
             UPDATE_MAP_MESH()
         }
         
@@ -27283,6 +27491,20 @@ let shops={
         }],
         currentIndex:0,message:'Explore Treat Shop',currentIncrement:0,increments:[1,10,10e1,10e2,10e3,10e4,10e5,10e6,10e7,10e8]
     },
+
+    royalJelly:{
+
+        items:[{
+
+            amountPurchased:0,maxPurchasedAmount:Infinity,
+            name:'royalJelly',
+            slot:'item',
+            viewMatrix:[32+4.5,12,50.25-4.5,-MATH.HALF_PI-MATH.QUATER_PI,0.02],
+            cost:[(n,i=1)=>Math.floor(Math.min(n*2500+25000,1000000)*i)+' honey'],
+            desc:'Can be fed to a bee to transform it into a different type!'
+        }],
+        currentIndex:0,message:'Explore Royal Jelly Shop',currentIncrement:0,increments:[1,10,10e1,10e2,10e3,10e4]
+    },
 }
 
 shopGearMesh.setMeshFromFunction(function(box,a,cylinder,sphere,applyFinalRotation,c,star){
@@ -27422,19 +27644,8 @@ let user=(function(out){
         
         out.keys[e.key.toLowerCase()]=true
         out.clickedKeys[e.key.toLowerCase()]=true
-
-        if(e.key==='e'){
-            
-            if(player.currentNPC&&TIME-player.eKeyDialoguePress>0.15){
-
-                dialogueBox.onclick()
-
-            } else {
-
-                inventoryButton.onclick()
-            }
-        }
-
+        
+        if(e.key==='i') inventoryButton.onclick()
         if(e.key==='q') questButton.onclick()
     }
     
@@ -30244,6 +30455,47 @@ gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
 
 meshes.crabClaw.indexAmount=index.length
 
+meshes.stumpSnail={}
+meshes.stumpSnail.vertBuffer=gl.createBuffer()
+meshes.stumpSnail.indexBuffer=gl.createBuffer()
+verts=[]
+index=[]
+
+_s=MATH.icosphere(2)
+_vl=verts.length/6
+
+for(let i=0;i<_s.verts.length;i+=3){
+    
+    _s.verts[i]*=2.5
+    _s.verts[i+1]*=4
+    _s.verts[i+2]*=6
+    
+    verts.push(_s.verts[i],_s.verts[i+1],_s.verts[i+2]-2.5,0.3,0.7,0.4)
+}
+
+for(let i in _s.index){
+    
+    index.push(_s.index[i]+_vl)
+}
+
+c(0,2.75,-3.5,2,2,15,0.4,0.3,0.1,0.001,90,0)
+c(0,2.75,-3.5,1.5,2.1,15,0.4*0.9,0.3*0.9,0.1*0.9,0.001,90,0)
+c(0,2.75,-3.5,1.35,2.2,15,0.4,0.3,0.1,0.001,90,0)
+c(0,2.75,-3.5,0.8,2.3,15,0.4*0.9,0.3*0.9,0.1*0.9,0.001,90,0)
+c(0,2.75,-3.5,0.65,2.4,15,0.4,0.3,0.1,0.001,90,0)
+
+b(-0.475,2,2.5-2.5,0.2,0.25,0.2,1,0,0,24,0,8)
+b(0.475,2,2.5-2.5,0.2,0.25,0.2,1,0,0,24,0,-8)
+b(-0.4,1.5,2.275-2.5,0.15,1,0.15,0.3,0.7,0.4,24,0,8)
+b(0.4,1.5,2.275-2.5,0.15,1,0.15,0.3,0.7,0.4,24,0,-8)
+
+gl.bindBuffer(gl.ARRAY_BUFFER,meshes.stumpSnail.vertBuffer)
+gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.stumpSnail.indexBuffer)
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+meshes.stumpSnail.indexAmount=index.length
+
 meshes.ant={}
 meshes.ant.vertBuffer=gl.createBuffer()
 meshes.ant.indexBuffer=gl.createBuffer()
@@ -31516,7 +31768,7 @@ createField('PineapplePatch',-71.5,12.5,79,19,14,function(){
     return Math.random()<0.5?2:Math.random()<0.38?1:3
 },{w:0.89,b:0.05,r:0.06},'satisfying')
 
-createField('StumpField',-102,16,75,15,15,function(){
+createField('StumpField',-102.5,16,74.5,16,16,function(){
     
     let c=Math.random()
     
@@ -31607,7 +31859,7 @@ for(let i in items){
     
     if(i.indexOf('Planter')>-1) continue
 
-    objects.tokens.push(new LootToken(10000,[(ct%9)-2,-1,(-7+((ct/9)|0))],i,2))
+    objects.tokens.push(new LootToken(10000,[(ct%9)-2,-1,(-7+((ct/9)|0))],i,100000))
     
     ct++
 }
@@ -32110,6 +32362,7 @@ objects.mobs.push(new BugMob([-53+25*0.5,-0.75,8.5],{minX:-55,maxX:-53+25,minZ:6
 
 
 objects.mobs.push(new CoconutCrab())
+objects.mobs.push(new StumpSnail())
 
 
 document.addEventListener('pointerlockchange',function(e){
@@ -32613,11 +32866,8 @@ function loop(now){
         // player.body.position.set(0,1005,1010)
         // player.body.velocity.set(0,0,0)
 
-        for(let i in items){
-
-            if(i!=='stinger'&&i!=='jellyBeans')
-            items[i].amount=0
-        }
+        
+        player.body.position.set(-70,25,80)
 
         player.updateInventory()
 
@@ -32641,6 +32891,15 @@ function loop(now){
             objects.mobs[i].die(i)
         }
     }
+
+    
+    gl.uniform4fv(glCache.mob_instanceInfo1,[15,1,10,0])
+        gl.uniform2f(glCache.mob_instanceInfo2,1,1)
+        gl.bindBuffer(gl.ARRAY_BUFFER,meshes.stumpSnail.vertBuffer)
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.stumpSnail.indexBuffer)
+        gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
+        gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
+        gl.drawElements(gl.TRIANGLES,meshes.stumpSnail.indexAmount,gl.UNSIGNED_SHORT,0)
 
     for(let i=objects.planters.length;i--;){
         
@@ -32731,7 +32990,7 @@ function loop(now){
     gl.vertexAttribDivisor(glCache.explosion_instanceColor,0)
     gl.vertexAttribDivisor(glCache.explosion_instanceScale,0)
     
-    meshes.explosions.instanceData=[]
+    meshes.explosions.instanceData=player.defense>=1?[player.body.position.x+player.body.velocity.x*dt,player.body.position.y+player.body.velocity.y*dt,player.body.position.z+player.body.velocity.z*dt,0.1,0.05,0,Math.sin(TIME*10)*0.15+0.5,2,1]:[]
     meshes.cylinder_explosions.instanceData=[]
     
     textRenderer.render(dt,Math.sin(TIME*20))

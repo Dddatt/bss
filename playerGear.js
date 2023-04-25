@@ -84,7 +84,7 @@ window.playerGear={
         
         mesh:function(box,cylinder,sphere,star){
             
-            star(0,1.5,0,0.075,0.15,0.025,0.05,0.5*6.5,0.25*6.5,0.07*6.5)
+            star(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.075,0.15,0.025,0.05,0.5*6.5,0.25*6.5,0.07*6.5)
         }
     },
 
@@ -92,7 +92,7 @@ window.playerGear={
         
         mesh:function(box,cylinder,sphere,star){
             
-            star(0,1.5,0,0.075,0.15,0.025,0.05,5.5,5.5,5.5)
+            star(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.075,0.15,0.025,0.05,5.5,5.5,5.5)
         }
     },
 
@@ -100,7 +100,7 @@ window.playerGear={
         
         mesh:function(box,cylinder,sphere,star){
             
-            star(0,1.5,0,0.075,0.15,0.025,0.05,9,8,0)
+            star(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.075,0.15,0.025,0.05,9,8,0)
         }
     },
 
@@ -108,7 +108,7 @@ window.playerGear={
         
         mesh:function(box,cylinder,sphere,star){
             
-            star(0,1.5,0,0.075,0.15,0.025,0.05,0,10,10)
+            star(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.075,0.15,0.025,0.05,0,10,10)
         }
     },
 
@@ -116,7 +116,7 @@ window.playerGear={
         
         mesh:function(box,cylinder,sphere,star){
             
-            star(0,1.5,0,0.075,0.15,0.025,0.05,0,10,0)
+            star(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.075,0.15,0.025,0.05,0,10,0)
         }
     },
 
@@ -124,10 +124,10 @@ window.playerGear={
         
         mesh:function(box,cylinder,sphere,star){
             
-            cylinder(0,1.5,0,0.14,0.075,10,0.7,0.35,0.12)
-            box(0,1.5,0,0.09,0.37,0.075,false,[0.7,0.35,0.12])
-            box(0,1.5,0,0.09,0.37,0.075,[0,0,60],[0.7,0.35,0.12])
-            box(0,1.5,0,0.09,0.37,0.075,[0,0,120],[0.7,0.35,0.12])
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.14,0.075,10,0.7,0.35,0.12)
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.09,0.37,0.075,false,[0.7,0.35,0.12])
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.09,0.37,0.075,[0,0,60],[0.7,0.35,0.12])
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.09,0.37,0.075,[0,0,120],[0.7,0.35,0.12])
         }
     },
 
@@ -135,10 +135,10 @@ window.playerGear={
         
         mesh:function(box,cylinder,sphere,star){
             
-            cylinder(0,1.5,0,0.14,0.075,10,0.9,0.9,0.9)
-            box(0,1.5,0,0.09,0.37,0.075,false,[0.9,0.9,0.9])
-            box(0,1.5,0,0.09,0.37,0.075,[0,0,60],[0.9,0.9,0.9])
-            box(0,1.5,0,0.09,0.37,0.075,[0,0,120],[0.9,0.9,0.9])
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.14,0.075,10,0.9,0.9,0.9)
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.09,0.37,0.075,false,[0.9,0.9,0.9])
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.09,0.37,0.075,[0,0,60],[0.9,0.9,0.9])
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.09,0.37,0.075,[0,0,120],[0.9,0.9,0.9])
         }
     },
 
@@ -146,10 +146,10 @@ window.playerGear={
         
         mesh:function(box,cylinder,sphere,star){
             
-            cylinder(0,1.5,0,0.14,0.075,10,1.7,1.6,0)
-            box(0,1.5,0,0.09,0.37,0.075,false,[1.7,1.6,0])
-            box(0,1.5,0,0.09,0.37,0.075,[0,0,60],[1.7,1.6,0])
-            box(0,1.5,0,0.09,0.37,0.075,[0,0,120],[1.7,1.6,0])
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.14,0.075,10,1.7,1.6,0)
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.09,0.37,0.075,false,[1.7,1.6,0])
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.09,0.37,0.075,[0,0,60],[1.7,1.6,0])
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.09,0.37,0.075,[0,0,120],[1.7,1.6,0])
         }
     },
 
@@ -157,10 +157,10 @@ window.playerGear={
         
         mesh:function(box,cylinder,sphere,star){
             
-            cylinder(0,1.5,0,0.14,0.075,10,0,1.6,1.7)
-            box(0,1.5,0,0.09,0.37,0.075,false,[0,1.6,1.7])
-            box(0,1.5,0,0.09,0.37,0.075,[0,0,60],[0,1.6,1.7])
-            box(0,1.5,0,0.09,0.37,0.075,[0,0,120],[0,1.6,1.7])
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.14,0.075,10,0,1.6,1.7)
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.09,0.37,0.075,false,[0,1.6,1.7])
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.09,0.37,0.075,[0,0,60],[0,1.6,1.7])
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.09,0.37,0.075,[0,0,120],[0,1.6,1.7])
         }
     },
 
@@ -168,10 +168,10 @@ window.playerGear={
         
         mesh:function(box,cylinder,sphere,star){
 
-            cylinder(0,1.5,0,0.14,0.075,10,0,1.5,0.3)
-            box(0,1.5,0,0.09,0.37,0.075,false,[0,1.5,0.3])
-            box(0,1.5,0,0.09,0.37,0.075,[0,0,60],[0,1.5,0.3])
-            box(0,1.5,0,0.09,0.37,0.075,[0,0,120],[0,1.5,0.3])
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.14,0.075,10,0,1.5,0.3)
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.09,0.37,0.075,false,[0,1.5,0.3])
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.09,0.37,0.075,[0,0,60],[0,1.5,0.3])
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.09,0.37,0.075,[0,0,120],[0,1.5,0.3])
         }
     },
 
@@ -179,14 +179,14 @@ window.playerGear={
         
         mesh:function(box,cylinder,sphere,star){
 
-            box(0,1.525,0.075,0.13,0.13,0.13,false,[0.7,0.35,0.12])
-            box(0,1.475,-0.06,0.12,0.12,0.2,false,[0.7,0.35,0.12])
-            box(0.05,1.585,0.12,0.15,0.035,0.035,[0,-30,45],[0.7,0.35,0.12])
-            box(-0.05,1.585,0.12,0.15,0.035,0.035,[0,30,-45],[0.7,0.35,0.12])
-            box(-0.05,1.43,-0.01,0.15,0.035,0.035,[0,0,55],[0.7,0.35,0.12])
-            box(-0.05,1.43,-0.11,0.15,0.035,0.035,[0,0,55],[0.7,0.35,0.12])
-            box(0.05,1.43,-0.01,0.15,0.035,0.035,[0,0,-55],[0.7,0.35,0.12])
-            box(0.05,1.43,-0.11,0.15,0.035,0.035,[0,0,-55],[0.7,0.35,0.12])
+            box(window.amuletOffset[0],1.525+window.amuletOffset[1],0.075,0.13,0.13,0.13,false,[0.7,0.35,0.12])
+            box(window.amuletOffset[0],1.475+window.amuletOffset[1],-0.06,0.12,0.12,0.2,false,[0.7,0.35,0.12])
+            box(0.05+window.amuletOffset[0],1.585+window.amuletOffset[1],0.12,0.15,0.035,0.035,[0,-30,45],[0.7,0.35,0.12])
+            box(-0.05+window.amuletOffset[0],1.585+window.amuletOffset[1],0.12,0.15,0.035,0.035,[0,30,-45],[0.7,0.35,0.12])
+            box(-0.05+window.amuletOffset[0],1.43+window.amuletOffset[1],-0.01,0.15,0.035,0.035,[0,0,55],[0.7,0.35,0.12])
+            box(-0.05+window.amuletOffset[0],1.43+window.amuletOffset[1],-0.11,0.15,0.035,0.035,[0,0,55],[0.7,0.35,0.12])
+            box(0.05+window.amuletOffset[0],1.43+window.amuletOffset[1],-0.01,0.15,0.035,0.035,[0,0,-55],[0.7,0.35,0.12])
+            box(0.05+window.amuletOffset[0],1.43+window.amuletOffset[1],-0.11,0.15,0.035,0.035,[0,0,-55],[0.7,0.35,0.12])
         }
     },
 
@@ -194,14 +194,14 @@ window.playerGear={
         
         mesh:function(box,cylinder,sphere,star){
 
-            box(0,1.525,0.075,0.13,0.13,0.13,false,[0.9,0.9,0.9])
-            box(0,1.475,-0.06,0.12,0.12,0.2,false,[0.9,0.9,0.9])
-            box(0.05,1.585,0.12,0.15,0.035,0.035,[0,-30,45],[0.9,0.9,0.9])
-            box(-0.05,1.585,0.12,0.15,0.035,0.035,[0,30,-45],[0.9,0.9,0.9])
-            box(-0.05,1.43,-0.01,0.15,0.035,0.035,[0,0,55],[0.9,0.9,0.9])
-            box(-0.05,1.43,-0.11,0.15,0.035,0.035,[0,0,55],[0.9,0.9,0.9])
-            box(0.05,1.43,-0.01,0.15,0.035,0.035,[0,0,-55],[0.9,0.9,0.9])
-            box(0.05,1.43,-0.11,0.15,0.035,0.035,[0,0,-55],[0.9,0.9,0.9])
+            box(window.amuletOffset[0],1.525+window.amuletOffset[1],0.075,0.13,0.13,0.13,false,[0.9,0.9,0.9])
+            box(window.amuletOffset[0],1.475+window.amuletOffset[1],-0.06,0.12,0.12,0.2,false,[0.9,0.9,0.9])
+            box(0.05+window.amuletOffset[0],1.585+window.amuletOffset[1],0.12,0.15,0.035,0.035,[0,-30,45],[0.9,0.9,0.9])
+            box(-0.05+window.amuletOffset[0],1.585+window.amuletOffset[1],0.12,0.15,0.035,0.035,[0,30,-45],[0.9,0.9,0.9])
+            box(-0.05+window.amuletOffset[0],1.43+window.amuletOffset[1],-0.01,0.15,0.035,0.035,[0,0,55],[0.9,0.9,0.9])
+            box(-0.05+window.amuletOffset[0],1.43+window.amuletOffset[1],-0.11,0.15,0.035,0.035,[0,0,55],[0.9,0.9,0.9])
+            box(0.05+window.amuletOffset[0],1.43+window.amuletOffset[1],-0.01,0.15,0.035,0.035,[0,0,-55],[0.9,0.9,0.9])
+            box(0.05+window.amuletOffset[0],1.43+window.amuletOffset[1],-0.11,0.15,0.035,0.035,[0,0,-55],[0.9,0.9,0.9])
         }
     },
 
@@ -209,14 +209,14 @@ window.playerGear={
         
         mesh:function(box,cylinder,sphere,star){
 
-            box(0,1.525,0.075,0.13,0.13,0.13,false,[1.7,1.6,0])
-            box(0,1.475,-0.06,0.12,0.12,0.2,false,[1.7,1.6,0])
-            box(0.05,1.585,0.12,0.15,0.035,0.035,[0,-30,45],[1.7,1.6,0])
-            box(-0.05,1.585,0.12,0.15,0.035,0.035,[0,30,-45],[1.7,1.6,0])
-            box(-0.05,1.43,-0.01,0.15,0.035,0.035,[0,0,55],[1.7,1.6,0])
-            box(-0.05,1.43,-0.11,0.15,0.035,0.035,[0,0,55],[1.7,1.6,0])
-            box(0.05,1.43,-0.01,0.15,0.035,0.035,[0,0,-55],[1.7,1.6,0])
-            box(0.05,1.43,-0.11,0.15,0.035,0.035,[0,0,-55],[1.7,1.6,0])
+            box(window.amuletOffset[0],1.525+window.amuletOffset[1],0.075,0.13,0.13,0.13,false,[1.7,1.6,0])
+            box(window.amuletOffset[0],1.475+window.amuletOffset[1],-0.06,0.12,0.12,0.2,false,[1.7,1.6,0])
+            box(0.05+window.amuletOffset[0],1.585+window.amuletOffset[1],0.12,0.15,0.035,0.035,[0,-30,45],[1.7,1.6,0])
+            box(-0.05+window.amuletOffset[0],1.585+window.amuletOffset[1],0.12,0.15,0.035,0.035,[0,30,-45],[1.7,1.6,0])
+            box(-0.05+window.amuletOffset[0],1.43+window.amuletOffset[1],-0.01,0.15,0.035,0.035,[0,0,55],[1.7,1.6,0])
+            box(-0.05+window.amuletOffset[0],1.43+window.amuletOffset[1],-0.11,0.15,0.035,0.035,[0,0,55],[1.7,1.6,0])
+            box(0.05+window.amuletOffset[0],1.43+window.amuletOffset[1],-0.01,0.15,0.035,0.035,[0,0,-55],[1.7,1.6,0])
+            box(0.05+window.amuletOffset[0],1.43+window.amuletOffset[1],-0.11,0.15,0.035,0.035,[0,0,-55],[1.7,1.6,0])
         }
     },
 
@@ -224,14 +224,14 @@ window.playerGear={
         
         mesh:function(box,cylinder,sphere,star){
 
-            box(0,1.525,0.075,0.13,0.13,0.13,false,[0,1.6,1.7])
-            box(0,1.475,-0.06,0.12,0.12,0.2,false,[0,1.6,1.7])
-            box(0.05,1.585,0.12,0.15,0.035,0.035,[0,-30,45],[0,1.6,1.7])
-            box(-0.05,1.585,0.12,0.15,0.035,0.035,[0,30,-45],[0,1.6,1.7])
-            box(-0.05,1.43,-0.01,0.15,0.035,0.035,[0,0,55],[0,1.6,1.7])
-            box(-0.05,1.43,-0.11,0.15,0.035,0.035,[0,0,55],[0,1.6,1.7])
-            box(0.05,1.43,-0.01,0.15,0.035,0.035,[0,0,-55],[0,1.6,1.7])
-            box(0.05,1.43,-0.11,0.15,0.035,0.035,[0,0,-55],[0,1.6,1.7])
+            box(window.amuletOffset[0],1.525+window.amuletOffset[1],0.075,0.13,0.13,0.13,false,[0,1.6,1.7])
+            box(window.amuletOffset[0],1.475+window.amuletOffset[1],-0.06,0.12,0.12,0.2,false,[0,1.6,1.7])
+            box(0.05+window.amuletOffset[0],1.585+window.amuletOffset[1],0.12,0.15,0.035,0.035,[0,-30,45],[0,1.6,1.7])
+            box(-0.05+window.amuletOffset[0],1.585+window.amuletOffset[1],0.12,0.15,0.035,0.035,[0,30,-45],[0,1.6,1.7])
+            box(-0.05+window.amuletOffset[0],1.43+window.amuletOffset[1],-0.01,0.15,0.035,0.035,[0,0,55],[0,1.6,1.7])
+            box(-0.05+window.amuletOffset[0],1.43+window.amuletOffset[1],-0.11,0.15,0.035,0.035,[0,0,55],[0,1.6,1.7])
+            box(0.05+window.amuletOffset[0],1.43+window.amuletOffset[1],-0.01,0.15,0.035,0.035,[0,0,-55],[0,1.6,1.7])
+            box(0.05+window.amuletOffset[0],1.43+window.amuletOffset[1],-0.11,0.15,0.035,0.035,[0,0,-55],[0,1.6,1.7])
         }
     },
 
@@ -239,14 +239,14 @@ window.playerGear={
         
         mesh:function(box,cylinder,sphere,star){
 
-            box(0,1.525,0.075,0.13,0.13,0.13,false,[0,1.5,0.3])
-            box(0,1.475,-0.06,0.12,0.12,0.2,false,[0,1.5,0.3])
-            box(0.05,1.585,0.12,0.15,0.035,0.035,[0,-30,45],[0,1.5,0.3])
-            box(-0.05,1.585,0.12,0.15,0.035,0.035,[0,30,-45],[0,1.5,0.3])
-            box(-0.05,1.43,-0.01,0.15,0.035,0.035,[0,0,55],[0,1.5,0.3])
-            box(-0.05,1.43,-0.11,0.15,0.035,0.035,[0,0,55],[0,1.5,0.3])
-            box(0.05,1.43,-0.01,0.15,0.035,0.035,[0,0,-55],[0,1.5,0.3])
-            box(0.05,1.43,-0.11,0.15,0.035,0.035,[0,0,-55],[0,1.5,0.3])
+            box(window.amuletOffset[0],1.525+window.amuletOffset[1],0.075,0.13,0.13,0.13,false,[0,1.5,0.3])
+            box(window.amuletOffset[0],1.475+window.amuletOffset[1],-0.06,0.12,0.12,0.2,false,[0,1.5,0.3])
+            box(0.05+window.amuletOffset[0],1.585+window.amuletOffset[1],0.12,0.15,0.035,0.035,[0,-30,45],[0,1.5,0.3])
+            box(-0.05+window.amuletOffset[0],1.585+window.amuletOffset[1],0.12,0.15,0.035,0.035,[0,30,-45],[0,1.5,0.3])
+            box(-0.05+window.amuletOffset[0],1.43+window.amuletOffset[1],-0.01,0.15,0.035,0.035,[0,0,55],[0,1.5,0.3])
+            box(-0.05+window.amuletOffset[0],1.43+window.amuletOffset[1],-0.11,0.15,0.035,0.035,[0,0,55],[0,1.5,0.3])
+            box(0.05+window.amuletOffset[0],1.43+window.amuletOffset[1],-0.01,0.15,0.035,0.035,[0,0,-55],[0,1.5,0.3])
+            box(0.05+window.amuletOffset[0],1.43+window.amuletOffset[1],-0.11,0.15,0.035,0.035,[0,0,-55],[0,1.5,0.3])
         }
     },
 
@@ -254,11 +254,11 @@ window.playerGear={
         
         mesh:function(box,cylinder,sphere,star){
 
-            box(-0.08,1.5,0.075,0.12,0.19,0.07,false,[1.5,1.5,0.4])
-            box(-0.06,1.6,0.075,0.09,0.16,0.07,[0,0,-35],[1.5,1.5,0.4])
-            box(-0.06,1.4,0.075,0.09,0.16,0.07,[0,0,35],[1.5,1.5,0.4])
-            box(0,1.35,0.075,0.1,0.08,0.07,[0,0,80],[1.5,1.5,0.4])
-            box(0,1.65,0.075,0.1,0.08,0.07,[0,0,100],[1.5,1.5,0.4])
+            box(-0.08+window.amuletOffset[0],1.5+window.amuletOffset[1],0.075,0.12,0.19,0.07,false,[1.5,1.5,0.4])
+            box(-0.06+window.amuletOffset[0],1.6+window.amuletOffset[1],0.075,0.09,0.16,0.07,[0,0,-35],[1.5,1.5,0.4])
+            box(-0.06+window.amuletOffset[0],1.4+window.amuletOffset[1],0.075,0.09,0.16,0.07,[0,0,35],[1.5,1.5,0.4])
+            box(window.amuletOffset[0],1.35+window.amuletOffset[1],0.075,0.1,0.08,0.07,[0,0,80],[1.5,1.5,0.4])
+            box(window.amuletOffset[0],1.65+window.amuletOffset[1],0.075,0.1,0.08,0.07,[0,0,100],[1.5,1.5,0.4])
         }
     },
     
