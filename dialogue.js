@@ -258,9 +258,6 @@ window.dialogue_brownBear=function(player,items,NPCs){
         
         ]
     }
-
-    
-
 }
 
 window.dialogue_roboBear=function(player,items,NPCs){
@@ -344,7 +341,7 @@ window.dialogue_pandaBear=function(player,items){
     }
 
     return ["Poof! I'm panda bear!","I stay safe in this dAnEGrOuS mountain by learning to defeat the evil creatures!","I'll show you how to do the same with your bees by giving you quests. I'll give you rewards like treats and some rare items.","After you complete my training, you'll be rewarded with a special Star Treat! It makes any bee gifted when you feed it, and is very good!","Here's the start of your training!",function(){player.addQuest('Ladybug Learning',[['ladybug',1]],'pandaBear');},"Cool! As you go through my questline, you'll need to defeat lots of monsters and learn how to properly fight bugs!",function(){addReward([['honey',400]])},"Whenever you defeat a mob, it'll respawn within a couple minutes. Ladybugs and rhino beetles respawn every 3 minutes, but spiders respawn every 10 minutes!","However, mobs won't respawn when you're in their field. They'll wait for you to leave then wake up.","As you complete my quests, I'll tell you more info about the creatures here. Here's another quest:",function(){player.addQuest('8 Legged Dreams',[['spider',1]],'pandaBear');},"Did you have trouble defeating the spider?(and more importantly realize the cool song reference)?","Here are your rewards:",function(){addReward([['honey',700],['treat',5],['stinger',1]])},"As you progress and unlock more zones, you'll see higher level mobs.","Your bees may miss their attack when the mob's level is higher than their's.","That's why it's important to level up your bees. You can use the treats I give you or go through Mother Bear's quests about bee bonding.","Here's another quest:",function(){player.addQuest('Rhino Rumble',[['rhinoBeetle',3]],'pandaBear');},"Nice! I'll keep giving you some stuffs for bee leveing:",function(){addReward([['honey',1000],['blueberry',3]])},"Another good tool for defeating monsters are...stingers!","You can use them to boost your bee's attack for 45 seconds!","There are quite rare though. You can often get them from defeating Rogue Vicous Bees hiding in fields *at night*, but they are quite powerful.","Instead, you can also get them from me, since I have lots!","Get started!!!",function(){player.addQuest('Icebound Battleground',[['rhinoBeetle',2],['ladybug',2]],'pandaBear');},"Awesome! Rememeber, be wise with your items! You might need them later on, so it's best to save them for when you need them.",function(){addReward([['honey',1750],['royalJelly',1],['stinger',3],['strawberry',3],['blueberry',3]])},"Have you unlocked the 10 bee zone? You'll need to have 10 bees in your hive to enter.","In the pineapple patch, you'll find the dangerous mantis you need to defeat for this quest:",function(){player.addQuest('Preying Mantis',[['mantis',1]],'pandaBear');},"Good! Was it hard?",function(){addReward([['honey',2500],['treat',10]])},"Keep going through these quests to hatch and level up your bees!",function(){player.addQuest('Spider Spawner',[['spider',1],['ladybug',3],['rhinoBeetle',3]],'pandaBear');},"Great!",function(){addReward([['honey',4000],['treat',20],['sunflowerSeed',5],['ticket',1],['royalJelly',1]])},"If you haven't, now is a good time to buy the Helmet from the Noob Shop.","It improves pollen collection, and your defense!","With a higher defense percentage, you'll take less damage from mob hits.","Try doing this quest:",function(){player.addQuest('Rhino Rumble 2U',[['rhinoBeetle',5]],'pandaBear');},"Cool!",function(){addReward([['honey',7500],['treat',20],['pineapple',5],['royalJelly',1]])},"Here's another quest to help you get ready. I'll give you a Silver Egg to help you unlock the 15 bee zone!",function(){player.addQuest('Peaceful Place',[['ladybug',6]],'pandaBear');},"Great! Get ready for the next quest!",function(){addReward([['honey',9000],['stinger',1],['treat',25],['gumdrops',3],['moonCharm',3],['silverEgg',1]])},"Now, defeat the scary werewolf in the 15 bee zone!",function(){player.addQuest('Weirdwolf',[['werewolf',1]],'pandaBear');},"Amazing! Here are extra rewards:",function(){addReward([['honey',12500],['moonCharm',3],['gumdrops',3],['ticket',2],['royalJelly',1]])},"Great! Level up your bees to defeat creatures in new zones faster!","Here's the next quest:",function(){player.addQuest('Rainbow Connection',[['scorpion',2],['mantis',2],['ladybug',4],['rhinoBeetle',4]],'pandaBear');},"Awesome!",function(){addReward([['honey',16000],['redExtract',1],['blueExtract',1],['gumdrops',5],['ticket',2]])},"Keep expanding your hive! Soon you'll reach the 20 bee zone, where I like to have lots of fun!","Meanwhile, do another quest:",function(){player.addQuest('Bug Exterminator',[['ladybug',3],['rhinoBeetle',3],['spider',1],['mantis',1]],'pandaBear');},"Great!",function(){addReward([['honey',27500],['oil',1],['treat',30]])},"Ok, get ready for this hard quest!",function(){player.addQuest('Hunter X Mobs',[['werewolf',1],['spider',2],['scorpion',2],['mantis',2]],'pandaBear');},"Cool!",function(){addReward([['honey',35000],['ticket',2],['royalJelly',2],['gumdrops',5]])},"Have you been getting more bees for your hive? In a few quests, you'll need to get ready for the 20 bee zone!","Here's the next quest:",function(){player.addQuest('Rhino Rumble 3',[['rhinoBeetle',12],['ladybug',5]],'pandaBear');},"Nice job!",function(){addReward([['honey',70000],['treat',150],['royalJelly',3]])},"Ok, this is the last quest before you need to enter the 20 bee zone!","To help, I'll reward you with a Gold Egg!",function(){player.addQuest('Ready Or Not',[['werewolf',2],['spider',3],['mantis',2],['ladybug',7]],'pandaBear');},"Yay! Here are some good rewards!",function(){addReward([['honey',100000],['stinger',3],['oil',1],['jellyBeans',3],['goldEgg',1],['antPass',3]])},"In the 20 bee zone, you can complete the Ant Challenge for many rewards!","Collect pollen to fill up the meter and spawn ants.","Defeat ants to get points and rewards based on how well you did!","Get started!",function(){player.addQuest('Bad Buddies',[['ant',15],['giantAnt',1]],'pandaBear');},"Great! That was so easy!",function(){addReward([['honey',125000],['treat',100],['ticket',2],['gumdrops',5],['stinger',5]])},"You're getting the hang of this!","Did you know there's a secret lair underneath the clover field?","The scary king beetle lives there!","If your bees are strong enough, have a go at it!",function(){player.addQuest('A King Without His Crown',[['kingBeetle',1]],'pandaBear');},"Excellent!",function(){addReward([['honey',150000],['royalJelly',1],['glue',3],['antPass',1]])},
-    "Since I loveeeeee the ant challenge, many quests from now on will require you to defeat ants!","Here's one of them:",function(){player.addQuest('Microwaved',[['fireAnt',5]],'pandaBear');},"Good!",function(){addReward([['honey',175000],['royalJelly',5],['stinger',3],['antPass',1]])},"Since I haven't given you a special reward in a while, I'll do it now!","Complete this next quest for a special Star Jelly!",function(){player.addQuest('Green Ants',[['armyAnt',10],['ant',25],['werewolf',1],['stinger',1]],'pandaBear');},"Cool! Here's the Star Jelly!",function(){addReward([['honey',200000],['starJelly',1],['ticket',3]])},"Now, defeat a Rogue Vicious Bee!","They can spawn at night time, and hide in fields. They can be found in the Cactus, Rose, Clover, Spider, and the Mountain Top field or the Pepper Patch.","Look for a little spike poking out of a flower, and step on it to find the Rogue Vicious Bee!","Go go go!",function(){player.addQuest('Impaling',[['rogueViciousBee',1]],'pandaBear');},"Nice! Rogue Vicious Bees give lots of stingers and honey!",function(){addReward([['honey',250000],['ticket',3],['royalJelly',3],['treat',150]])},"Here's your next quest:",function(){player.addQuest('Just Being Friendly',[['flyingAnt',4],['giantAnt',4],['mantis',4],['scorpion',4],['spider',4]],'pandaBear');},"Coooool!",function(){addReward([['honey',400000],['treat',100],['pineapple',25],['sunflowerSeed',25]])},"Since I'm a great beekeeper, I'll give you a tip:","One of the best bees in the game are the legendary Music Bees!","They produce many great ability tokens that are good for collecting and attacking, so try to get 3 in your hive.","Ok, this next hard quest requires you to defeat the big Mondo Chicken in the 25 bee zone...twice! and collect a melody token!",function(){player.addQuest('Yolk Yolk',[['mondoChick',2],['melodyToken',1]],'pandaBear');},"Great! It was so easy!",function(){addReward([['honey',750000],['oil',1],['royalJelly',5],['strawberry',25],['blueberry',25]])},"You're getting closer to the Star Treat! Here's another quest:",function(){player.addQuest('Rhino Rumble 4',[['rhinoBeetle',25]],'pandaBear');},"Amazing! Did it take long???",function(){addReward([['honey',800000],['blueExtract',1],['magicBean',1]])},"You're one of the best beekeppers I've ever meet! Keep going!",function(){player.addQuest('Road Trip',[['ant',30],['fireAnt',10],['flyingAnt',10],['armyAnt',10],['werewolf',2]],'pandaBear');},"Excellent! Here are very good rewards(totally not a subtle reference when combined with the name of the quest)",function(){addReward([['honey',1000000],['comfortingVial',1],['satisfyingVial',1],['motivatingVial',1],['refreshingVial',1]])},"Did you know there's a secret tunnel in the converter machine by Science Bear?","It's home to the big Tunnel Bear, one of the most dangerous mobs!","Defeat it to earn lots of loot!",function(){player.addQuest('Big Bosses',[['tunnelBear',1],['rogueViciousBee',1],['mondoChick',1],['kingBeetle',1]],'pandaBear');},"Epic!",function(){addReward([['honey',200000],['glitter',1],['glue',3],['jellyBeans',3],['antPass',1]])},"I'm soooo proud! You're getting close to the end of my questline!","Just 3 more quests and you'll get a Star Treat!","Back to work!!!",function(){player.addQuest('Ant-nihilation',[['ant',100],['fireAnt',25],['flyingAnt',25],['armyAnt',25],['giantAnt',5]],'pandaBear');},"Greatttt!",function(){addReward([['honey',2750000],['royalJelly',3],['ticket',3],['antPass',1]])},"Just 2 more quests to go!",function(){player.addQuest('Paradox',[['rhinoBeetle',15],['ladybug',15],['mantis',5],['scorpion',5],['kingBeetle',1],['ant',50]],'pandaBear');},"Cool! Here are extra rewards for your last quest!",function(){addReward([['honey',350000],['gumdrops',15],['jellyBeans',3],['strawberry',25],['blueberry',25],['pineapple',25],['redExtract',1],['blueExtract',1]])},"This is my very last quest! You'll be reward a Star Treat and more!","Good luck!",function(){player.addQuest('No One Else Like Me',[['tunnelBear',1],['rogueViciousBee',2],['kingBeetle',3],['werewolf',4],['spider',5],['mantis',10],['scorpion',10],['rhinoBeetle',25],['ladybug',25],['ant',100]],'pandaBear');},"Cool!",function(){addReward([['honey',5000334],['starTreat',1],['antPass',3],['ticket',3],['atomicTreat',4],['neonberry',3],['glitter',3]])},"You completed all my quests!!!","But you know what else you didn't complete? a list of all my references!","like half my quests, requirements, and rewards reference something in a veryyyyy subtle way","hehehehehe no one realized any"]
+    "Since I loveeeeee the ant challenge, many quests from now on will require you to defeat ants!","Here's one of them:",function(){player.addQuest('Microwaved',[['fireAnt',5]],'pandaBear');},"Good!",function(){addReward([['honey',175000],['royalJelly',5],['stinger',3],['antPass',1]])},"Since I haven't given you a special reward in a while, I'll do it now!","Complete this next quest for a special Star Jelly!",function(){player.addQuest('Green Ants',[['armyAnt',10],['ant',25],['werewolf',1],['stinger',1]],'pandaBear');},"Cool! Here's the Star Jelly!",function(){addReward([['honey',200000],['starJelly',1],['ticket',3]])},"Now, defeat a Rogue Vicious Bee!","They can spawn at night time, and hide in fields. They can be found in the Cactus, Rose, Clover, Spider, and the Mountain Top field or the Pepper Patch.","Look for a little spike poking out of a flower, and step on it to find the Rogue Vicious Bee!","Go go go!",function(){player.addQuest('Impaling',[['rogueViciousBee',1]],'pandaBear');},"Nice! Rogue Vicious Bees give lots of stingers and honey!",function(){addReward([['honey',250000],['ticket',3],['royalJelly',3],['treat',150]])},"Here's your next quest:",function(){player.addQuest('Just Being Friendly',[['flyingAnt',4],['giantAnt',4],['mantis',4],['scorpion',4],['spider',4]],'pandaBear');},"Coooool!",function(){addReward([['honey',400000],['treat',100],['pineapple',25],['sunflowerSeed',25]])},"Since I'm a great beekeeper, I'll give you a tip:","One of the best bees in the game are the legendary Music Bees!","They produce many great ability tokens that are good for collecting and attacking, so try to get 3 in your hive.","Ok, this next hard quest requires you to defeat the big Mondo Chicken in the 25 bee zone...twice! and collect a melody token!",function(){player.addQuest('Yolk Yolk',[['mondoChick',2],['melodyTokens',1]],'pandaBear');},"Great! It was so easy!",function(){addReward([['honey',750000],['oil',1],['royalJelly',5],['strawberry',25],['blueberry',25]])},"You're getting closer to the Star Treat! Here's another quest:",function(){player.addQuest('Rhino Rumble 4',[['rhinoBeetle',25]],'pandaBear');},"Amazing! Did it take long???",function(){addReward([['honey',800000],['blueExtract',1],['magicBean',1]])},"You're one of the best beekeppers I've ever meet! Keep going!",function(){player.addQuest('Road Trip',[['ant',30],['fireAnt',10],['flyingAnt',10],['armyAnt',10],['werewolf',2]],'pandaBear');},"Excellent! Here are very good rewards(totally not a subtle reference when combined with the name of the quest)",function(){addReward([['honey',1000000],['comfortingVial',1],['satisfyingVial',1],['motivatingVial',1],['refreshingVial',1]])},"Did you know there's a secret tunnel in the converter machine by Science Bear?","It's home to the big Tunnel Bear, one of the most dangerous mobs!","Defeat it to earn lots of loot!",function(){player.addQuest('Big Bosses',[['tunnelBear',1],['rogueViciousBee',1],['mondoChick',1],['kingBeetle',1]],'pandaBear');},"Epic!",function(){addReward([['honey',200000],['glitter',1],['glue',3],['jellyBeans',3],['antPass',1]])},"I'm soooo proud! You're getting close to the end of my questline!","Just 3 more quests and you'll get a Star Treat!","Back to work!!!",function(){player.addQuest('Ant-nihilation',[['ant',100],['fireAnt',25],['flyingAnt',25],['armyAnt',25],['giantAnt',5]],'pandaBear');},"Greatttt!",function(){addReward([['honey',2750000],['royalJelly',3],['ticket',3],['antPass',1]])},"Just 2 more quests to go!",function(){player.addQuest('Paradox',[['rhinoBeetle',15],['ladybug',15],['mantis',5],['scorpion',5],['kingBeetle',1],['ant',50]],'pandaBear');},"Cool! Here are extra rewards for your last quest!",function(){addReward([['honey',350000],['gumdrops',15],['jellyBeans',3],['strawberry',25],['blueberry',25],['pineapple',25],['redExtract',1],['blueExtract',1]])},"This is my very last quest! You'll be reward a Star Treat and more!","Good luck!",function(){player.addQuest('No One Else Like Me',[['tunnelBear',1],['rogueViciousBee',2],['kingBeetle',3],['werewolf',4],['spider',5],['mantis',10],['scorpion',10],['rhinoBeetle',25],['ladybug',25],['ant',100]],'pandaBear');},"Cool!",function(){addReward([['honey',5000334],['starTreat',1],['antPass',3],['ticket',3],['atomicTreat',4],['neonberry',3],['glitter',3]])},"You completed all my quests!!!","But you know what else you didn't complete? a list of all my references!","like half my quests, requirements, and rewards reference something in a veryyyyy subtle way","hehehehehe no one realized any"]
   
 }
 
@@ -410,148 +407,15 @@ window.dialogue_spiritBear=function(player,items){
         player.updateInventory()
     }
 
-    return ["Hi! I'm the almighty Spirit Bear!","I'm a calm bear that constantly sleeps and meditates and stuffs.","I'll teach you everything you need to know about this place, like the wind shrine and items!","And also, unlike in the real game, my dialogue will be straight foward and not just repeated spam of *sleeping* *snores*","Most of my quests will be wind/sky/star/moon/cloud themed cuz the 35 bee zone is all about the wind shrine and me and stuffs!","Since Dat made Star Eggs but he didn't want to make the player rely on luck to get them, he forced me to give them to you. So yes every few quests you'll get a star egg(very rare) or some star jellies(more common)!","The real game makes me give you 30 quests(and plus a 30 page essay of dialogue) but I'll shorten that to 15(with actual helpful dialogue)","At the very end, I'll have 5 *extra* very advanced quests that are extra rewarding. (totally not cuz i realized more good references to put in after already writing all quests)","Every 5th quest, you'll get a Spirit Petal, which can be used to craft the Petal Wand, the Petal Belt, or you can use one to tame a powerful Windy Bee.","By the end of my adventurous quests, you'll get all 3 petals and become one with the wind!","Your first quest starts now!",function(){player.addQuest('Bongcloud Opening',[['pollen',30000000],['pollenFromSunflowerField',7000000],['pollenFromCactusField',9000000],['sunflowerSeedTokens',35],['kingBeetle',1]],'spiritBear');},"How's that for your first quest? (PS did you get the chess reference lol opening = bongcloud)",function(){addReward([['honey',20000000],['glitter',1],['microConverter',1],['royalJelly',15]])},"Here's your next quest! It requires you to donate to the cool Wind Shrine!","Donating items to the Wind Shrine can give you field wind buffs, or sometimes special items!",function(){player.addQuest('Feel The Wind Blows',[['whitePollen',35000000],['pollenFromMountainTopField',20000000],['pollenFromSunflowerField',10000338],['pollenFromDandelionField',10000338],['pineapple',25],['treatToTheWindShrine',250]],'spiritBear');},"Cool! You should often donate items to the wind shrine for field winds before collecting to boost your pollen!",function(){addReward([['honey',30000000],['glitter',1],['fieldDice',3],['moonCharm',5]])},"Have you ever seen a Wild Windy Bee?","It's the powerful creature behind the myth and lore of the Wind Shrine.","You can summon it by donating rare items to the Wind Shrine, such as star jellies or glitter.","You can fight it by finding it's cloud in a field, and touching it. After it's defeated, it'll upgrade to a higher level and move somewhere else.","Get lots of loot by chasing it around before the timer ends! Try to defeat one in this quest:",function(){player.addQuest('Blame It On The Wind',[['redPollen',50200311],['bluePollen',50200311],['pollenFromSpiderField',20000000],['pollenFromBambooField',10000332],['abilityTokens',502],['starJellyToTheWindShrine',1],['tokensFromWildWindyBee',10],['cloudVialTokens',1],['oilTokens',1]],'spiritBear');},"Nice! Here's a star jelly!",function(){addReward([['honey',75000000],['glitter',1],['starEgg',1],['oil',1],['magicBean',3],['pineapple',50]])},"This is your 4th quest so far! They're going to get wayyy harder!",function(){player.addQuest('Empire Stood Through The Clouds',[['goo',7500000],['pollenFromRoseField',24600000],['pollenFromBlueFlowerField',24600000],['pollenFromPineapplePatch',24600000],['pollenFromSpiderPatch',10000000],['markTokens',246],['magicBeanToTheWindShrine',1],['tokensFromSprouts',75]],'spiritBear');},"Great! Your next quest will be special!",function(){addReward([['honey',90000000],['glitter',1],['royalJelly',50],['jellyBeans',3],['microConverter',3]])},"This is your first milestone! I'll give you a Star Jelly and Spirir Petal after this intense quest!",function(){player.addQuest('Star In My Mind',[['whitePollen',150000000],['pollenFromCactusField',3000000],['pollenFromMountainTopField',3000000],['pollenFromDandelionField',2000000],['tokensFromWildWindyBee',100],['redExtractToTheWindShrine',3],['blueExtractToTheWindShrine',3],['bubbles',25]],'spiritBear');},"You did it! Here are your rewards!",function(){addReward([['honey',12500000],['spiritPetal',1],['starEgg',1],['purplePotion',1]])},"It's part 2 of my questline! You now have 5 more quests until the next Spirit Petal and Star Egg!",function(){player.addQuest('Hurrikane',[['bluePollen',125000000],['pollenFromBambooField',50000000],['pollenFromPineTreeForest',40000000],['pollenFromCloverField',35000000],['blueberryTokens',25],['blueberryToTheWindShrine',100],['tokensFromWildWindyBee',50]],'spiritBear');},"Great!",function(){addReward([['honey',175000000],['glitter',2],['coconut',10],['whirligig',5],['cloudVial',1]])},"I'm feeling generous, I'll give you some star jellies after this quest!","*spirit bear falls asleep, dreaming about how clouds are similar to ghosts...*",function(){player.addQuest('Our Untold Stories',[['pollen',750000000],['pollenFromStrawberryField',70000000],['pollenFromPepperPatch',50000000],['enzymesTokens',3],['fieldDice',5],['cloudVial',3],['tokensFromWildWindyBee',75]],'spiritBear');},"Awesome!",function(){addReward([['honey',500000000],['starJelly',2],['glitter',2],['magicBean',3],['royalJelly',50],['smoothDice',1]])},"3 more quests until your next milestone!",function(){player.addQuest('Windfall',[['redPollen',500000351],['pollenFromMushroomField',100000351],['pollenFromSpiderField',50000351],['pollenFromBlueFlowerField',30000351],['pollenFromStumpField',3510000],['honeyTokens',25],['redAbilityTokens',351],['cloudVialToTheWindShrine',3],['fallingCoconuts',5]],'spiritBear');},"Great!",function(){addReward([['honey',500000000],['glitter',2],['jellyBeans',3],['gumdrops',35],['microConverter',3]])},"2 more quests! This one will be harder!",function(){player.addQuest('The Moon Represents My Heart',[['bluePollen',750000329],['redPollen',500000329],['pollenFromPineapplePatch',125000323],['pollenFromStrawberryField',50242424],['moonCharmTokens',50],['moonCharm',100],['mondoChick',1],['purplePotionToTheWindShrine',1]],'spiritBear');},"Cool!",function(){addReward([['honey',750000000],['glitter',3],['moonCharm',125],['strawberry',100],['loadedDice',1],['neonberry',15],['microConverter',3],['purplePotion',1]])},"This is your 2nd very special quest! More Star Eggs and Spirit Petals!","It's really harddddddd! I'm warning you, it's so hard you wish a star can hear your prayers lol",function(){player.addQuest('Counting 1,000 Stars',[['pollen',1500000443],['pollenFromMountaintopField',750000458],['pollenFromPineTreeForest',120000000],['pollenFromCoconutField',5000000],['abilityTokens',1000],['starJellyTokens',1],['treatToTheWindShrine',1000],['tokensFromWildWindyBee',250],['armyAnt',50]],'spiritBear');},"Amazing! That was so difficult!",function(){addReward([['honey',1000000000],['spiritPetal',1],['starEgg',1],['glitter',3],['microConverter',3],['cloudVial',5],['royalJelly',100]])},
-    "These are your finale quests! Only 5 remaining!",function(){player.addQuest('The Eclipse',[['whitePollen',2000000000],['redPollen',1111111111],['pollenFromSunflowerField',250000000],['pollenFromCloverField',200000000],['pollenFromSpiderField',200000000],['pollenFromPumpkinPatch',200000000],['moonCharmToTheWindShrine',357],['tokensFromWildWindyBee',200]],'spiritBear');},"Excellent!",function(){addReward([['honey',3000000000],['glitter',3],['whirligig',5],['glue',15],['tropicalDrink',15],['coconut',50],['sunflowerSeed',500]])},"Here's your next quest! You might need to defeat the big scary Coconut Crab!",function(){player.addQuest('Field Upon The Sky',[['whitePollen',4000000000],['goo',50000000],['pollenFromMountainTopField',1000000000],['pollenFromPepperPatch',250000000],['pollenFromCoconutField',100000000],['tokensFromSprouts',100],['tokensFromPlanters',25],['fallingCoconuts',50],['tokensFromWildWindyBee',250],['tropicalDrinkToTheWindShrine',10]],'spiritBear');},"Cool!",function(){addReward([['honey',6000000000],['glitter',3],['tropicalDrink',5],['microConverter',5],['enzymes',15],['oil',15],['redExtract',15],['blueExtract',15]])},"Next quest! Only 3 more!",function(){player.addQuest('Sky In Your Heart',[['pollen',15000000000],['redPollen',5000000000],['bluePollen',2500000000],['starJellyTokens',1],['pollenFromBlueFlowerField',200000000],['pollenFromMushroomField',200000000],['pollenFromDandelionField',200000000],['tokensFromWildWindyBee',250],['blueberryToTheWindShrine',750]],'spiritBear');},"Terrific!",function(){addReward([['honey',12500000000],['glitter',3],['starJelly',3],['fieldDice',15],['microConverter',5],['magicBean',5],['whirligig',10],['jellyBeans',3]])},"This is the 2nd last quest in my questline!",function(){player.addQuest('Our Sky',[['whitePollen',9000000000],['bluePollen',5000000000],['pollenFromPineTreeForest',1000000000],['pollenFromCactusField',600000000],['pollenFromRoseField',500000000],['pollenFromStumpField',100000000],['flames',75],['timesUsingTheSlingshot',100],['cloudVialTokens',15],['gumdropsTokens',25]],'spiritBear');},"Nice! Get ready for the finale quest!",function(){addReward([['honey',17500000000],['glitter',3],['starJelly',5],['loadedDice',1],['microConverter',5],['glue',5],['superSmoothie',1]])},"This is the ultimate finale of the petal questlines! It'll be the hardest quest yet!",function(){player.addQuest('My Starlight',[['whitePollen',15000000000],['redPollen',15000000000],['bluePollen',15000000000],['goo',1000000000],['pollenFromMountainTopField',5000000000],['pollenFromRoseField',3000000000],['pollenFromSpiderField',1000000000],['bubbles',150],['moonCharmTokens',75],['starJellyTokens',5],['tokensFromSprouts',500],['neonberry',25],['tokensFromWildWindyBee',300],['starJellyToTheWindShrine',15]],'spiritBear');},"Nice job! You did it! Here's your last Sprit Petal and a Star Egg!",function(){addReward([['honey',25000000000],['glitter',15],['spiritPetal',1],['starEgg',1],['starJelly',10],['superSmoothie',1],['fieldDice',5],['tropicalDrink',15],['cloudVial',3]])},"Now it's time for the 5 extra quests!","There will be 4 very hard but rewarding quests, and a star-related quest rewarding another Star Egg at the end!","(i had so many fun references to put so i had to make extra quests lol)","It begins now!",function(){player.addQuest('Hear You in the Breeze',[['bluePollen',20000000000],['whitePollen',20000000450],['whitePollen',20000000450],['pollenFromSunflowerField',750000000],['pollenFromDandelionField',500000000],['hasteTokens',450],['timesUsingTheYellowCannon',45],['fieldDice',10],['timesUsingTheSlingshot',35],['pollenFromMountainTopField',2500000000],['bubbles',250],['pollenFromPineTreeForest',1500000000],['whirligig',5],['giantAnt',45],['melodyTokens',45],['pollenFromStumpField',500000000],['glue',5]],'spiritBear');},"Nice! That's your first advanced quest done!",function(){addReward([['honey',3500000000],['glitter',3],['cloudVial',1],['jellyBeans',5],['tropicalDrink',3],['glue',3]])},"From now on, I'll give you lots of Star Jellies!","Start this next quest:",function(){player.addQuest('Second Win-d',[['redPollen',4400000440],['pollenFromPineTreeForest',4400000024],['redExtract',2],['magicBeanTokens',4],['cloudVialTokens',24],['timesUsingTheRedCannon',24],['tokensFromWildWindyBee',440],['glueToTheWindShrine',2],['flames',24],['loadedDice',1]],'spiritBear');},"Cool!",function(){addReward([['honey',50000000000],['glitter',5],['starJelly',3],['enzymes',5],['smoothDice',2],['softWax',5],['spuerSmoothie',1]])},
+    return ["Hi! I'm the almighty Spirit Bear!","I'm a calm bear that constantly sleeps and meditates and stuffs.","I'll teach you everything you need to know about this place, like the wind shrine and items!","And also, unlike in the real game, my dialogue will be straight foward and not just repeated spam of *sleeping* *snores*","Most of my quests will be wind/sky/star/moon/cloud themed cuz the 35 bee zone is all about the wind shrine and me and stuffs!","Since Dat made Star Eggs but he didn't want to make the player rely on luck to get them, he forced me to give them to you. So yes every few quests you'll get a star egg(very rare) or some star jellies(more common)!","The real game makes me give you 30 quests(and plus a 30 page essay of dialogue) but I'll shorten that to 15(with actual helpful dialogue)","At the very end, I'll have 5 *extra* very advanced quests that are extra rewarding. (totally not cuz i realized more good references to put in after already writing all quests)","Every 5th quest, you'll get a Spirit Petal, which can be used to craft the Petal Wand, the Petal Belt, or you can use one to tame a powerful Windy Bee.","By the end of my adventurous quests, you'll get all 3 petals and become one with the wind!","Your first quest starts now!",function(){player.addQuest('Openings',[['pollen',30000000],['pollenFromSunflowerField',7000000],['pollenFromCactusField',9000000],['sunflowerSeedTokens',35],['kingBeetle',1]],'spiritBear');},"How's that for your first quest? (PS did you get the chess reference lol opening = bongcloud)",function(){addReward([['honey',20000000],['glitter',1],['microConverter',1],['royalJelly',15]])},"Here's your next quest! It requires you to donate to the cool Wind Shrine!","Donating items to the Wind Shrine can give you field wind buffs, or sometimes special items!",function(){player.addQuest('Feel The Wind Blows',[['whitePollen',35000000],['pollenFromMountainTopField',20000000],['pollenFromSunflowerField',10000338],['pollenFromDandelionField',10000338],['pineapple',25],['treatToTheWindShrine',250]],'spiritBear');},"Cool! You should often donate items to the wind shrine for field winds before collecting to boost your pollen!",function(){addReward([['honey',30000000],['glitter',1],['fieldDice',3],['moonCharm',5]])},"Have you ever seen a Wild Windy Bee?","It's the powerful creature behind the myth and lore of the Wind Shrine.","You can summon it by donating rare items to the Wind Shrine, such as star jellies or glitter.","You can fight it by finding it's cloud in a field, and touching it. After it's defeated, it'll upgrade to a higher level and move somewhere else.","Get lots of loot by chasing it around before the timer ends! Try to defeat one in this quest:",function(){player.addQuest('Blame It On The Wind',[['redPollen',50200311],['bluePollen',50200311],['pollenFromSpiderField',20000000],['pollenFromBambooField',10000332],['abilityTokens',502],['starJellyToTheWindShrine',1],['tokensFromWildWindyBee',10],['cloudVialTokens',1],['oilTokens',1]],'spiritBear');},"Nice! Here's a star jelly!",function(){addReward([['honey',75000000],['glitter',1],['starEgg',1],['oil',1],['magicBean',3],['pineapple',50]])},"This is your 4th quest so far! They're going to get wayyy harder!",function(){player.addQuest('Empire Stood Through The Clouds',[['goo',7500000],['pollenFromRoseField',24600000],['pollenFromBlueFlowerField',24600000],['pollenFromPineapplePatch',24600000],['pollenFromSpiderField',10000512],['markTokens',246],['magicBeanToTheWindShrine',1],['tokensFromSprouts',75]],'spiritBear');},"Great! Your next quest will be special!",function(){addReward([['honey',90000000],['glitter',1],['royalJelly',50],['jellyBeans',3],['microConverter',3]])},"This is your first milestone! I'll give you a Star Jelly and Spirir Petal after this intense quest!",function(){player.addQuest('Star In My Mind',[['whitePollen',150000000],['pollenFromCactusField',3000000],['pollenFromMountainTopField',3000000],['pollenFromDandelionField',2000000],['tokensFromWildWindyBee',100],['redExtractToTheWindShrine',3],['blueExtractToTheWindShrine',3],['bubbles',25]],'spiritBear');},"You did it! Here are your rewards!",function(){addReward([['honey',12500000],['spiritPetal',1],['starEgg',1],['purplePotion',1]])},"It's part 2 of my questline! You now have 5 more quests until the next Spirit Petal and Star Egg!",function(){player.addQuest('Hurrikane',[['bluePollen',125000000],['pollenFromBambooField',50000000],['pollenFromPineTreeForest',40000000],['pollenFromCloverField',35000000],['blueberryTokens',25],['blueberryToTheWindShrine',100],['tokensFromWildWindyBee',50]],'spiritBear');},"Great!",function(){addReward([['honey',175000000],['glitter',2],['coconut',10],['whirligig',5],['cloudVial',1]])},"I'm feeling generous, I'll give you some star jellies after this quest!","*spirit bear falls asleep, dreaming about how clouds are similar to ghosts...*",function(){player.addQuest('Our Untold Stories',[['pollen',750000000],['pollenFromStrawberryField',70000000],['pollenFromPepperPatch',50000000],['enzymesTokens',3],['fieldDice',5],['cloudVial',3],['tokensFromWildWindyBee',75]],'spiritBear');},"Awesome!",function(){addReward([['honey',500000000],['starJelly',2],['glitter',2],['magicBean',3],['royalJelly',50],['smoothDice',1]])},"3 more quests until your next milestone!",function(){player.addQuest('Windfall',[['redPollen',500000351],['pollenFromMushroomField',100000351],['pollenFromSpiderField',50000351],['pollenFromBlueFlowerField',30000351],['pollenFromStumpField',3510000],['honeyTokens',25],['redAbilityTokens',351],['cloudVialToTheWindShrine',3],['fallingCoconuts',5]],'spiritBear');},"Great!",function(){addReward([['honey',500000000],['glitter',2],['jellyBeans',3],['gumdrops',35],['microConverter',3]])},"2 more quests! This one will be harder!",function(){player.addQuest('The Moon Represents My Heart',[['bluePollen',750000329],['redPollen',500000329],['pollenFromPineapplePatch',125000323],['pollenFromStrawberryField',50242424],['moonCharmTokens',50],['moonCharm',100],['mondoChick',1],['purplePotionToTheWindShrine',1]],'spiritBear');},"Cool!",function(){addReward([['honey',750000000],['glitter',3],['moonCharm',125],['strawberry',100],['loadedDice',1],['neonberry',15],['microConverter',3],['purplePotion',1]])},"This is your 2nd very special quest! More Star Eggs and Spirit Petals!","It's really harddddddd! I'm warning you, it's so hard you wish a star can hear your prayers lol",function(){player.addQuest('Counting 1,000 Stars',[['pollen',1500000443],['pollenFromMountainTopField',750000458],['pollenFromPineTreeForest',120000000],['pollenFromCoconutField',5000000],['abilityTokens',1000],['starJellyTokens',1],['treatToTheWindShrine',1000],['tokensFromWildWindyBee',250],['armyAnt',50]],'spiritBear');},"Amazing! That was so difficult!",function(){addReward([['honey',1000000000],['spiritPetal',1],['starEgg',1],['glitter',3],['microConverter',3],['cloudVial',5],['royalJelly',100]])},
+    "These are your finale quests! Only 5 remaining!",function(){player.addQuest('The Eclipse',[['whitePollen',2000000000],['redPollen',1111111111],['pollenFromSunflowerField',250000000],['pollenFromCloverField',200000000],['pollenFromSpiderField',200000000],['pollenFromPumpkinPatch',200000000],['moonCharmToTheWindShrine',357],['tokensFromWildWindyBee',200]],'spiritBear');},"Excellent!",function(){addReward([['honey',3000000000],['glitter',3],['whirligig',5],['glue',15],['tropicalDrink',15],['coconut',50],['sunflowerSeed',500]])},"Here's your next quest! You might need to defeat the big scary Coconut Crab!",function(){player.addQuest('Field Upon The Sky',[['whitePollen',4000000000],['goo',50000000],['pollenFromMountainTopField',1000000000],['pollenFromPepperPatch',250000000],['pollenFromCoconutField',100000000],['tokensFromSprouts',100],['tokensFromPlanters',25],['fallingCoconuts',50],['tokensFromWildWindyBee',250],['tropicalDrinkToTheWindShrine',10]],'spiritBear');},"Cool!",function(){addReward([['honey',6000000000],['glitter',3],['tropicalDrink',5],['microConverter',5],['enzymes',15],['oil',15],['redExtract',15],['blueExtract',15]])},"Next quest! Only 3 more!",function(){player.addQuest('Sky In Your Heart',[['pollen',15000000000],['redPollen',5000000000],['bluePollen',2500000000],['starJellyTokens',1],['pollenFromBlueFlowerField',200000000],['pollenFromMushroomField',200000000],['pollenFromDandelionField',200000000],['tokensFromWildWindyBee',250],['blueberryToTheWindShrine',750],['kingBeetle',1]],'spiritBear');},"Terrific!",function(){addReward([['honey',12500000000],['glitter',3],['starJelly',3],['fieldDice',15],['microConverter',5],['magicBean',5],['whirligig',10],['jellyBeans',3]])},"This is the 2nd last quest in my questline!",function(){player.addQuest('Our Sky',[['whitePollen',9000000000],['bluePollen',5000000000],['pollenFromPineTreeForest',1000000000],['pollenFromCactusField',600000000],['pollenFromRoseField',500000000],['pollenFromStumpField',100000000],['flames',75],['timesUsingTheSlingshot',100],['cloudVialTokens',15],['gumdropsTokens',25]],'spiritBear');},"Nice! Get ready for the finale quest!",function(){addReward([['honey',17500000000],['glitter',3],['starJelly',5],['loadedDice',1],['microConverter',5],['glue',5],['superSmoothie',1]])},"This is the ultimate finale of the petal questlines! It'll be the hardest quest yet!",function(){player.addQuest('My Starlight',[['whitePollen',15000000000],['redPollen',15000000000],['bluePollen',15000000000],['goo',1000000000],['pollenFromMountainTopField',5000000000],['pollenFromRoseField',3000000000],['pollenFromSpiderField',1000000000],['bubbles',150],['moonCharmTokens',75],['starJellyTokens',5],['tokensFromSprouts',500],['neonberry',25],['tokensFromWildWindyBee',300],['starJellyToTheWindShrine',15]],'spiritBear');},"Nice job! You did it! Here's your last Sprit Petal and a Star Egg!",function(){addReward([['honey',25000000000],['glitter',15],['spiritPetal',1],['starEgg',1],['starJelly',10],['superSmoothie',1],['fieldDice',5],['tropicalDrink',15],['cloudVial',3]])},"Now it's time for the 5 extra quests!","There will be 4 very hard but rewarding quests, and a star-related quest rewarding another Star Egg at the end!","(i had so many fun references to put so i had to make extra quests lol)","It begins now!",function(){player.addQuest('Hear You in the Breeze',[['bluePollen',20000000000],['whitePollen',20000000450],['whitePollen',20000000450],['pollenFromSunflowerField',750000000],['pollenFromDandelionField',500000000],['hasteTokens',450],['timesUsingTheYellowCannon',45],['fieldDice',10],['timesUsingTheSlingshot',35],['pollenFromMountainTopField',2500000000],['bubbles',250],['pollenFromPineTreeForest',1500000000],['whirligig',5],['giantAnt',45],['melodyTokens',45],['pollenFromStumpField',500000000],['glue',5]],'spiritBear');},"Nice! That's your first advanced quest done!",function(){addReward([['honey',3500000000],['glitter',3],['cloudVial',1],['jellyBeans',5],['tropicalDrink',3],['glue',3]])},"From now on, I'll give you lots of Star Jellies!","Start this next quest:",function(){player.addQuest('Doubled Winds',[['redPollen',4400000440],['pollenFromPineTreeForest',4400000024],['redExtract',2],['magicBeanTokens',4],['cloudVialTokens',24],['timesUsingTheRedCannon',24],['tokensFromWildWindyBee',440],['glueToTheWindShrine',3],['flames',33],['loadedDice',1]],'spiritBear');},"Cool!",function(){addReward([['honey',50000000000],['glitter',5],['starJelly',3],['enzymes',5],['smoothDice',2],['softWax',5],['spuerSmoothie',1]])},
     "Keep going!",function(){player.addQuest('Everlasting Bright Blue Sky',[['pollen',100040900409],['whitePollen',70040900409],['goo',300000409],['satisfyingVial',1],['pollenFromSunflowerField',8000000000],['pollenFromCoconutField',6000000000],['pollenFromPepperPatch',3000000000],['pollenFromStumpField',1000000000],['boostTokens',1000],['itemsUsingTheBlender',50],['hardWaxToTheWindShrine',3]],'spiritBear');},"Awesome!",function(){addReward([['honey',125000000000],['glitter',10],['magicBean',5],['redExtract',5],['blueExtract',5],['oil',3],['treat',10000]])},"This is your 2nd last quest from me!",function(){player.addQuest('Looking at the Same Star/Sky',[['bluePollen',125000000436],['pollenFromBambooField',4360000327],['pollenFromBlueFlowerField',4360000327],['pollenFromPineTreeForestField',3270000436],['pollenFromPineapplePatch',3270000436],['moonCharmTokens',147],['tokensFromSprouts',147],['starJelly',14],['bubbles',147]],'spiritBear');},"Cool!",function(){addReward([['honey',175000000000],['glitter',10],['purplePotion',1],['starJelly',5],['enzymes',3],['pineapple',763],['cloudVial',3],['comfortingVial',1]])},"This is your last quest from me! It's not gonna be easy!",function(){player.addQuest('Rock & Star',[['pollen',744444444444],['whitePollen',205320000532],['bluePollen',124242424242],['redPollen',124242424242],['pollenFromMountainTopField',22424242424],['pollenFromSunflowerField',15222222222],['pollenFromStumpField',1444444444],['pollenFromPumpkinPatch',5656565656560],['inspireTokens',242],['timesUsingTheYellowCannon',56],['goldEgg',1],['honeysuckle',24],['honeyTokens',532],['moonCharm',44],['pineappleTokens',242],['ticketToTheWindShrine',22],['cloudVialTokens',4],['mythicPuffshroom',1]],'spiritBear');},"My my, you've done very well.",function(){addReward([['honey',1000000000000],['glitter',15],['starEgg',1],['starJelly',15],['coconut',125],['superSmoothie',1],['magicBean',12],['swirledWax',12],['pineapple',1212]])},"That's all for now!","You're such a great beekeeper!","(and also just like everyone else i snuck references in my quests heheh im very wise)","(in fact i hid references in ALL my quests)","ok then byeeeeeeeeeeeeeee"]
     
   
 }
 
 
-
-window.giftedRileyBeeQuestDifficulty=0
-
-window.dialogue_giftedRileyBee=function(player,items){
-    
-    let addCommas=(s)=>{for(let i=s.length-3;i>0;i-=3){s=s.substring(0,i)+','+s.substr(i,s.length)}return s},doGrammar=(s)=>{let str=s.slice(),_s='';for(let i in str){if(str[i].toUpperCase()===str[i]){_s=_s+' '+str[i]}else{_s=_s+str[i]}}return _s[0].toUpperCase()+_s.substring(1,_s.length)},addReward=(arr)=>{
-        
-        for(let i in player.quests){
-            
-            if(player.quests[i].NPC==='giftedRileyBee') player.quests.splice(i,1)
-            
-        }
-        
-        for(let i in arr){
-            
-            if(arr[i][0]==='honey'){
-                
-                player.honey+=arr[i][1]
-                
-            } else {
-                
-                items[arr[i][0]].amount+=arr[i][1]
-            }
-            
-            player.addMessage('+'+addCommas(arr[i][1]+'')+' '+doGrammar(arr[i][0])+' (from Gifted Riley Bee)')
-        }
-        
-        player.updateInventory()
-    }
-
-    let diff=window.giftedRileyBeeQuestDifficulty++
-    
-    let rew=[['honey',diff*diff*150000],['redExtract',1]]
-    
-    if(!diff%3){
-        
-        rew.push(['royalJelly',1])
-    }
-    
-    if(!diff%2){
-        
-        rew.push(['strawberry',10])
-    }
-    
-    if(diff===10){
-        
-        rew.push(['giftedSilverEgg',1])
-        
-    } else if(diff===20){
-        
-        rew.push(['giftedGoldEgg',1])
-        
-    } else if(diff===35){
-        
-        rew.push(['giftedDiamondEgg',1])
-        
-    } else if(diff===50){
-        
-        rew.push(['giftedMythicEgg',1])
-    }
-    
-    if(!window.talkedToGiftedRileyBee1stTime){
-        
-        window.talkedToGiftedRileyBee1stTime=true
-        return ["Huzzah! Welcome to Red HQ! I'm the Gifted Riley Bee!","You veteran players might recognize that my dialogue is different from the original game.","That's because the plan we had then couldn't destroy Blue HQ, so we've come up with an even stronger plan! (maybe idk lol)","Every quest milestone(10, 20, 35, 50), I give you a special egg reward.","Come back and buzz to me when you're ready for some quests!"]
-        
-    }
-    
-    return ["Buzz buzz...","Here's your quest! Make sure to spy on the blue bees while you're at it!",
-
-        function(){
-            
-            switch((Math.random()*8)|0){
-                
-                case 0:
-                    
-                    player.addQuest('Riley Bee: Pollen',[['redPollen',diff*diff*160000]],'giftedRileyBee')
-                    
-                break;
-                
-                case 1:
-                    
-                    player.addQuest('Riley Bee: Picnic',[['pollenFromMushroomField',diff*diff*55000],['strawberry',15],['ant',20]],'giftedRileyBee')
-                    
-                break;
-                
-                case 2:
-                    
-                    player.addQuest('Riley Bee: Cleanup',[['pollenFromStrawberryField',diff*diff*62500],['goo',diff*diff*5000],['gumdropsTokens',3]],'giftedRileyBee')
-                    
-                break;
-                
-                case 3:
-                    
-                    player.addQuest('Riley Bee: Roses',[['pollenFromRoseField',diff*diff*100000]],'giftedRileyBee')
-                    
-                break;
-                
-                case 4:
-                    
-                    player.addQuest('Riley Bee: Abilities',[['redAbilityTokens',diff*5+25],['redBoostTokens',diff*2+20],['redBombTokens',diff*2+20]],'giftedRileyBee')
-                    
-                break;
-                
-                case 5:
-                    
-                    player.addQuest('Riley Bee: Attack',[['attackTokens',(diff*0.5|0)+5],['rageTokens',5],['ladybug',Math.min(((diff*0.1)|0)+2,10)],['scorpion',Math.min(((diff*0.1)|0)+1,6)]],'giftedRileyBee')
-                    
-                break;
-                
-                case 6:
-                    
-                    player.addQuest('Riley Bee: Burning Bad',[['flames',((diff*diff*0.015)|0)+3],['redPollen',diff*diff*150000+329],['fireAnt',5]],'giftedRileyBee')
-                    
-                break;
-                
-                case 7:
-                    
-                    player.addQuest('Riley Bee: Variety',[['pollenFromRoseField',diff*diff*45000],['pollenFromStrawberryField',diff*diff*45000],['pollenFromMushroomField',diff*diff*45000]],'giftedRileyBee')
-                    
-                break;
-            }
-        }
-
-    ,"Buzz!","Here buzz are some buzzy buzz rewards!","Come back to buzz me for another quest!","Buzz...buzz...",function(){addReward(rew)}
-    
-    ]
-}
-
-
-
-window.giftedBuckoBeeQuestDifficulty=0
-
-window.dialogue_giftedBuckoBee=function(player,items){
+window.dialogue_giftedBuckoBee=function(player,items,NPCs){
     
     let addCommas=(s)=>{for(let i=s.length-3;i>0;i-=3){s=s.substring(0,i)+','+s.substr(i,s.length)}return s},doGrammar=(s)=>{let str=s.slice(),_s='';for(let i in str){if(str[i].toUpperCase()===str[i]){_s=_s+' '+str[i]}else{_s=_s+str[i]}}return _s[0].toUpperCase()+_s.substring(1,_s.length)},addReward=(arr)=>{
         
@@ -576,107 +440,230 @@ window.dialogue_giftedBuckoBee=function(player,items){
         }
         
         player.updateInventory()
+        NPCs.giftedRileyBee.portionsDone++
     }
+    
+    return function(diff){
 
-    let diff=window.giftedBuckoBeeQuestDifficulty++
-    
-    let rew=[['honey',diff*diff*150000],['blueExtract',1]]
-    
-    if(!diff%3){
+        let rand=mulberry32(NPCs.giftedBuckoBee.seed+diff)
         
-        rew.push(['royalJelly',1])
-    }
-    
-    if(!diff%2){
+        let am=Math.floor(4.75*diff*diff*diff*diff+500)
         
-        rew.push(['blueberry',10])
-    }
-    
-    if(diff===10){
+        let rew=[['honey',diff*diff*150000],['blueExtract',1]]
         
-        rew.push(['giftedSilverEgg',1])
-        
-    } else if(diff===20){
-        
-        rew.push(['giftedGoldEgg',1])
-        
-    } else if(diff===35){
-        
-        rew.push(['giftedDiamondEgg',1])
-        
-    } else if(diff===50){
-        
-        rew.push(['giftedMythicEgg',1])
-    }
-    
-    if(!window.talkedToGiftedBuckoBee1stTime){
-        
-        window.talkedToGiftedBuckoBee1stTime=true
-        return ["Hoo hah hah! Welcome to Blue HQ! I be the Gifted Bucko Bee!","Veteran players among ye may recognize me speech as different from the original.","That be because the plan we used then couldn't beat them Reds, so we been a-thinkin' and come up with an even stronger plan! (maybe idk lol)","Every quest milestone(10, 20, 35, 50), I give ye ah' special eggo reward.","Come back and buzz to ze when ya're ready f'r some quests!"]
-        
-    }
-    
-    return ["Buzz buzz...","Here' be yar quest! Make sure ye spy on the red bees while ye at it!",
-
-        function(){
+        if(!diff%3){
             
-            switch((Math.random()*8)|0){
-                
-                case 0:
-                    
-                    player.addQuest('Bucko Bee: Pollen',[['bluePollen',diff*diff*160000]],'giftedBuckoBee')
-                    
-                break;
-                
-                case 1:
-                    
-                    player.addQuest('Bucko Bee: Picnic',[['pollenFromBlueFlowerField',diff*diff*55000],['blueberry',15],['ant',20]],'giftedBuckoBee')
-                    
-                break;
-                
-                case 2:
-                    
-                    player.addQuest('Bucko Bee: Cleanup',[['pollenFromBambooField',diff*diff*62500],['goo',diff*diff*5000],['gumdropsTokens',3]],'giftedBuckoBee')
-                    
-                break;
-                
-                case 3:
-                    
-                    player.addQuest('Bucko Bee: Pinecones',[['pollenFromPineTreeForest',diff*diff*100000]],'giftedBuckoBee')
-                    
-                break;
-                
-                case 4:
-                    
-                    player.addQuest('Bucko Bee: Abilities',[['blueAbilityTokens',diff*5+25],['blueBoostTokens',diff*2+20],['blueBombTokens',diff*2+20]],'giftedBuckoBee')
-                    
-                break;
-                
-                case 5:
-                    
-                    player.addQuest('Bucko Bee: Attack',[['attackTokens',(diff*0.5|0)+5],['hasteTokens',15],['rhinoBettle',Math.min(((diff*0.1)|0)+2,10)],['mantis',Math.min(((diff*0.1)|0)+1,6)]],'giftedBuckoBee')
-                    
-                break;
-                
-                case 6:
-                    
-                    player.addQuest('Bucko Bee: Scrubb',[['bubbles',((diff*diff*0.015)|0)+3],['bluePollen',diff*diff*150000+417],['flyingAnt',5]],'giftedBuckoBee')
-                    
-                break;
-                
-                case 7:
-                    
-                    player.addQuest('Bucko Bee: Variety',[['pollenFromPineTreeForest',diff*diff*45000],['pollenFromBambooField',diff*diff*45000],['pollenFromBlueFlowerField',diff*diff*45000]],'giftedBuckoBee')
-                    
-                break;
-            }
+            rew.push(['royalJelly',1])
         }
-
-    ,"Buzz!","Here buzz ar' some buzzy buzz rewards!","Come back an' buzz ze for ano'er quest!","Buzz...buzz...",function(){addReward(rew)}
+        
+        if(!diff%2){
+            
+            rew.push(['blueberry',10])
+        }
+        
+        if(diff===10){
+            
+            rew.push(['giftedSilverEgg',1])
+            
+        } else if(diff===20){
+            
+            rew.push(['giftedGoldEgg',1])
+            
+        } else if(diff===35){
+            
+            rew.push(['giftedDiamondEgg',1])
+            
+        } else if(diff===50){
+            
+            rew.push(['giftedMythicEgg',1])
+        }
+        
+        return ["Hoo hah hah! Welcom' back to ze Blue HQ!","B' sure ya complete me quest often! I' give out lots o' rewards!","Buzz buzz...","Her' be yar quest! Make 'ure to spy o' the red bees while ye a' it!",
     
-    ]
+            function(){
+                
+                switch((Math.random()*8)|0){
+                    
+                    case 0:
+                        
+                        player.addQuest('Bucko Bee: Pollen',[['bluePollen',diff*diff*160000]],'giftedBuckoBee')
+                        
+                    break;
+                    
+                    case 1:
+                        
+                        player.addQuest('Bucko Bee: Picnic',[['pollenFromBlueFlowerField',diff*diff*55000],['blueberry',15],['ant',20]],'giftedBuckoBee')
+                        
+                    break;
+                    
+                    case 2:
+                        
+                        player.addQuest('Bucko Bee: Cleanup',[['pollenFromBambooField',diff*diff*62500],['goo',diff*diff*5000],['gumdropsTokens',3]],'giftedBuckoBee')
+                        
+                    break;
+                    
+                    case 3:
+                        
+                        player.addQuest('Bucko Bee: Pinecones',[['pollenFromPineTreeForest',diff*diff*100000]],'giftedBuckoBee')
+                        
+                    break;
+                    
+                    case 4:
+                        
+                        player.addQuest('Bucko Bee: Abilities',[['blueAbilityTokens',diff*5+25],['blueBoostTokens',diff*2+20],['blueBombTokens',diff*2+20]],'giftedBuckoBee')
+                        
+                    break;
+                    
+                    case 5:
+                        
+                        player.addQuest('Bucko Bee: Attack',[['attackTokens',(diff*0.5|0)+5],['hasteTokens',15],['rhinoBettle',Math.min(((diff*0.1)|0)+2,10)],['mantis',Math.min(((diff*0.1)|0)+1,6)]],'giftedBuckoBee')
+                        
+                    break;
+                    
+                    case 6:
+                        
+                        player.addQuest('Bucko Bee: Scrubb',[['bubbles',((diff*diff*0.015)|0)+3],['bluePollen',diff*diff*150000+414],['flyingAnt',5]],'giftedBuckoBee')
+                        
+                    break;
+                    
+                    case 7:
+                        
+                        player.addQuest('Bucko Bee: Variety',[['pollenFromPineTreeForest',diff*diff*45000],['pollenFromBambooField',diff*diff*45000],['pollenFromBlueFlowerField',diff*diff*45000]],'giftedBuckoBee')
+                        
+                    break;
+                }
+            }
+    
+        ,"Buzz!","Here be some buzzy buzz rewards!","Com' back to buzz me 'or another quest!","Buzz...buzz...",function(){addReward(rew)}
+        
+        ]
+    }
 }
 
+window.dialogue_giftedRileyBee=function(player,items,NPCs){
+    
+    let addCommas=(s)=>{for(let i=s.length-3;i>0;i-=3){s=s.substring(0,i)+','+s.substr(i,s.length)}return s},doGrammar=(s)=>{let str=s.slice(),_s='';for(let i in str){if(str[i].toUpperCase()===str[i]){_s=_s+' '+str[i]}else{_s=_s+str[i]}}return _s[0].toUpperCase()+_s.substring(1,_s.length)},addReward=(arr)=>{
+        
+        for(let i in player.quests){
+            
+            if(player.quests[i].NPC==='giftedRileyBee') player.quests.splice(i,1)
+            
+        }
+        
+        for(let i in arr){
+            
+            if(arr[i][0]==='honey'){
+                
+                player.honey+=arr[i][1]
+                
+            } else {
+                
+                items[arr[i][0]].amount+=arr[i][1]
+            }
+            
+            player.addMessage('+'+addCommas(arr[i][1]+'')+' '+doGrammar(arr[i][0])+' (from Gifted Riley Bee)')
+        }
+        
+        player.updateInventory()
+        NPCs.giftedRileyBee.portionsDone++
+    }
+    
+    return function(diff){
+
+        let rand=mulberry32(NPCs.giftedRileyBee.seed+diff)
+        
+        let am=Math.floor(4.75*diff*diff*diff*diff+500)
+        
+        let rew=[['honey',diff*diff*150000],['redExtract',1]]
+        
+        if(!diff%3){
+            
+            rew.push(['royalJelly',1])
+        }
+        
+        if(!diff%2){
+            
+            rew.push(['strawberry',10])
+        }
+        
+        if(diff===10){
+            
+            rew.push(['giftedSilverEgg',1])
+            
+        } else if(diff===20){
+            
+            rew.push(['giftedGoldEgg',1])
+            
+        } else if(diff===35){
+            
+            rew.push(['giftedDiamondEgg',1])
+            
+        } else if(diff===50){
+            
+            rew.push(['giftedMythicEgg',1])
+        }
+        
+        return ["Huzzah! Welcome back to Red HQ!","Make sure to complete my quests often! I'll give out lots of rewards!","Buzz buzz...","Here's your quest! Make sure to spy on the blue bees while you're at it!",
+    
+            function(){
+                
+                switch((Math.random()*8)|0){
+                    
+                    case 0:
+                        
+                        player.addQuest('Riley Bee: Pollen',[['redPollen',diff*diff*160000]],'giftedRileyBee')
+                        
+                    break;
+                    
+                    case 1:
+                        
+                        player.addQuest('Riley Bee: Picnic',[['pollenFromMushroomField',diff*diff*55000],['strawberry',15],['ant',20]],'giftedRileyBee')
+                        
+                    break;
+                    
+                    case 2:
+                        
+                        player.addQuest('Riley Bee: Cleanup',[['pollenFromStrawberryField',diff*diff*62500],['goo',diff*diff*5000],['gumdropsTokens',3]],'giftedRileyBee')
+                        
+                    break;
+                    
+                    case 3:
+                        
+                        player.addQuest('Riley Bee: Roses',[['pollenFromRoseField',diff*diff*100000]],'giftedRileyBee')
+                        
+                    break;
+                    
+                    case 4:
+                        
+                        player.addQuest('Riley Bee: Abilities',[['redAbilityTokens',diff*5+25],['redBoostTokens',diff*2+20],['redBombTokens',diff*2+20]],'giftedRileyBee')
+                        
+                    break;
+                    
+                    case 5:
+                        
+                        player.addQuest('Riley Bee: Attack',[['attackTokens',(diff*0.5|0)+5],['rageTokens',5],['ladybug',Math.min(((diff*0.1)|0)+2,10)],['scorpion',Math.min(((diff*0.1)|0)+1,6)]],'giftedRileyBee')
+                        
+                    break;
+                    
+                    case 6:
+                        
+                        player.addQuest('Riley Bee: Burning Bad',[['flames',((diff*diff*0.015)|0)+3],['redPollen',diff*diff*150000+329],['fireAnt',5]],'giftedRileyBee')
+                        
+                    break;
+                    
+                    case 7:
+                        
+                        player.addQuest('Riley Bee: Variety',[['pollenFromRoseField',diff*diff*45000],['pollenFromStrawberryField',diff*diff*45000],['pollenFromMushroomField',diff*diff*45000]],'giftedRileyBee')
+                        
+                    break;
+                }
+            }
+    
+        ,"Buzz!","Here buzz are some buzzy buzz rewards!","Come back to buzz me for another quest!","Buzz...buzz...",function(){addReward(rew)}
+        
+        ]
+    }
+}
 
 
 window.dialogue_motherBear=function(player,items){
@@ -739,8 +726,8 @@ window.dialogue_dapperBear=function(player,items){
         player.updateInventory()
     }
 
-    return ["*snickers in his throat* Grrrrreetings, I am... the dapper bear!","I own the finest planters in the land, which you can purchase from my shop. My planters are much higher quality than the puny clay and paper planters sold in the nearby shops.","You can plant a planter in a field, and it'll grow! Harvest it to get GREAT rewards and nectar buffs!","Just plant a planter, wait a few minutes, and I'll be done! Make sure to harvest it after it's done 100% to get the maximun rewards.","Nectars boost your bees and give extra benefits, so they're great to have.","If you don't have any planters yet, you can buy a Paper Planter from the shop by the pineapple field. First quest!",function(){player.addQuest('Once Upon A Time',[['minutesOfNectar',10],['redPollen',500000],['pollenFromPineapplePatch',500424],['boostTokens',10],['tokensFromPlanters',5]],'dapperBear');},"My, my... you've done very well, haven't you? *simpering chuckle*","When harvesting planters, it can give you 1 of 5 types of nectar! The type of nectar and also rewards depends on the field it grew in.","I guess I can give this to you, I don't need it anymore...",function(){addReward([['honey',2500000],['honeysuckle',20],['whirligig',5],['royalJelly',5]])},"I, the almighty dapper bear, will give you 10 quests in total. They will be quite diffucult, but will guide you all the way through to the end game.","At the end of my quests, I'll reward you with an expensive Star Egg","As you progress, make sure to buy manny planters and use them, as they are very good(at least in this version of the game)!","Also, if you see little puffshrooms, make sure to chase them around and pop them! They'll give many waxes and multiply!","Puffshrooms grow in random fields every few minutes.","You'll need many waxes to craft planters, so stock up on them!","In this quest, you'll need to collect Motivating Nectar! It can be obtained from planters that grew in the spider, rose, mushroom, and stump fields!",function(){player.addQuest('Seeing Puffs & Fumes',[['puffshrooms',3],['minutesOfMotivatingNectar',10],['pollen',6000000],['pollenFromSpiderField',750000],['werewolf',1]],'dapperBear');},"Splendid job, chap.","Puffshrooms can level up to require more pollen to pop and give much better rewards!","High leveled puffshrooms can also gain rare, epic, legendary, and mythic rarity! These also give much better rewards!","Have a star jelly and this random junk:",function(){addReward([['honey',10000000],['magicBean',1],['royalJelly',10],['jellyBeans',5],['starJelly',1]])},"How many waxes do you have? Try to buy my plastic planter!","It's a *reuseable* planter, meaning you can plant it again after you harvest it!","The plastic planter takes longer to grow, but will give MUCH more nectar and loot!","Refreshing nectar can be obtained from the strawberry and blue flower fields.","Satisfying nectar can be obtained from the pineapple, pumpkin, and sunflower fields.","Now just take this quest and be done with it:",function(){player.addQuest('My Luck',[['minutesOfSatisfyingNectar',15],['minutesOfRefreshingNectar',10],['bluePollen',10000000],['pollenFromCloverField',2000305],['pollenFromPineapplePatch',2000000],['fieldDiceTokens',1],['tokensFromPlanters',25],['puffshrooms',10]],'dapperBear');},"*gasp* You've done it... I didn't expect you to actually complete it...",function(){addReward([['honey',25000000],['smoothDice',1],['honeysuckle',25],['royalJelly',10],['softWax',3],['oil',1],['cloadVial',1],['tickets',5]])},"I also own a Beequip shop! I sell many beequips you can purchase.","Beequips can be put onto bees to improve them. Some beequips can also apply bonuses to your player.","Each beequip has a potential, color, and level. It can only be put on bees with the same color, and an equal or higher level.","The potenial measures how good it is and much more it will be improved when waxes are used.","You can only hold a certain number of beequips, though. However, from now on, I will reward you with extra beequip slots!","Invigorating nectar can be obtained from the clover, cactus, and mountain top fields. Think you can take this quest as well?",function(){player.addQuest('Healing',[['hoursOfNectar',1],['minutesOfRefreshingNectar',20],['minutesOfInvigoratingNectar',20],['pollen',30240240],['pollenFromMountaintopField',5000459],['melodyTokens',24],['tokensFromPlanters',35],['puffshrooms',15]],'dapperBear');},"Great! If you didn't know, another great way to get waxes is to craft them!","You can use the blender in that weird yellow building in the 15 bee zone.","Anyways, y-you did it... ponduberous, excellent, splendaculous, whatever... have some things.",function(){addReward([['honey',50000000],['hardWax',1],['softWax',3],['honeysuckle',30],['whirligig',10],['magicBean',5]])},"*aHeM* Anyways, on to the next quest...","I suppose you've bought my colorful Candy Planter by now. It'll help lots with collecting gumdrops and jelly beans!","Comforting nectar can be obtained from planters in the dandelion, pine tree, and bamboo fields.","Think you can take this quest as well?",function(){player.addQuest('Goo Raccoon',[['hoursOfComfortingNectar',1],['hoursOfInvigoratingNectar',1],['whitePollen',55555555],['pollenFromPumpkinPatch',10000331],['goo',555555],['gumdrops',25],['gumdropTokens',30],['glueTokens',3],['rarePuffshrooms',1],['moonAmulets',1]],'dapperBear');},"Oh my... I didn't expect you to actually be able to do that...",function(){addReward([['honey',90000000],['loadedDice',1],['glitter',3],['redExtract',1],['blueExtract',1],['tickets',10]])},"A tip on puffshroom farming: Puffshrooms level up when they spread to new fields!","That means that you should follow them around the map instead of staying in 1 field. They might level down when they move back and forth between the same fields.","Also, higher rarity puffshrooms tend to spawn with more higher level puffshrooms and in new fields.","Welp... another chore- er, job for you to complete before the store opens...","I fancy some spices from the pepper patch this time. How about you go in the 35 bee zone and fetch some?",function(){player.addQuest('Enchantéd',[['hoursOfNectar',2],['pollenFromPepperPatch',50000447],['pollenFromBambooField',38000331],['pollenFromRoseField',24000447],['pollenFromSunflowerField',9000331],['pollenFromStumpField',1500447],['focusTokens',150],['glitterTokens',1],['puffshrooms',35],['rarePuffshrooms',3]],'dapperBear');},"Yes, yes, well done and all that. I suppose you need another reward now.",function(){addReward([['honey',150000000],['royalJelly',25],['honeysuckle',25],['swirledWax',1],['magicBean',3],['tickets',10]])},"Maybe if you can complete the next quest as well, I can give you even more tchotchkes... I certainly don't need them, I have everything I need *simpering chuckle*",function(){player.addQuest('Blooming',[['hoursOfComfortingNectar',1],['hoursOfMotivatingNectar',1],['bluePollen',150000000],['pollenFromSunflowerField',25000000],['pollenFromRoseField',25000000],['tokensFromSprouts',100],['blueExtractTokens',3],['magicBeanTokens',3],['magicBeans',5],['glitter',3],['itemsUsingTheBlender',15],['rarePuffshrooms',10]],'dapperBear');},"Here, m'lad, take this garbágee...",function(){addReward([['honey',200000000],['oil',3],['enzymes',5],['glitter',5],['magicBean',3],['jellyBeans',5],['causticWax',1]])},"Muahahahwaahahahaw, you're on my 8th quest now, just 3 more torturous quests left! heheheh",function(){player.addQuest('Oblivion',[['epicPuffshroom',1],['hoursOfRefreshingNectar',2],['pollen',600000000],['abilityTokens',1750],['boostTokens',332],['bombTokens',332],['molodyTokens',83],['tokensFromPlanters',50]],'dapperBear');},"Did you like that quest???",function(){addReward([['honey',90000000],['glitter',5],['starJelly',3],['tropicalDrink',5],['tickets',15],['purplePotion',1]])},"Ano'er painful quest comin yar way!",function(){player.addQuest('Color Rush',[['loadedDice',1],['invigoratingVial',1],['satisfyingVial',1],['refreshingVial',1],['comfortingVial',1],['motivatingVial',1],['redPollen',750000000],['bluePollen',750000000],['goo',25000000],['superSmoothie',1],['epicPuffshroom',1]],'dapperBear');},
-    "Ah yes, you did it. I'm not really impressed but have this stuff:",function(){addReward([['honey',1250000000],['superSmoothie',1],['redExtract',5],['blueExtract',5],['glue',5],['glitter',5],['oil',5],['enzymes',5],['tropicalDrink',5]])},"This is your last quest!!!","I'll give you a star egg after this!","...","...Erm, what's that, Mother?","...","...terribly sorry, I will have you scrub it for me after all. Mother says she won't be doing my laundry anymore :(","...oh, Mother, why must you be like this....","I have a new addition to your quest! Now you must help me wash my tuxedo! muawhahaha jk(or am i)",function(){player.addQuest('Scary Gloomy Hypnotizing Doom Shrooms',[['hoursOfNectar',10],['whitePollen',2500000000],['goo',5000000],['abilityTokens',3000],['bitterberryTokens',15],['tokensFromPlanters',100],['tokensFromSprouts',250],['puffshrooms',150],['rarePuffshrooms',15],['epicPuffshrooms',5],['legendaryPuffshroom',1]],'dapperBear');},"Woah! Ya did it!",function(){addReward([['honey',10000000000],['starEgg',1],['causticWax',3],['swirledWax',3],['hardWax',5],['softWax',15],['whirligig',10],['honeysuckle',100],['superSmoothie',1]])},"I have no more quests for you!","Bye!","buttt wait did ya notice all the references in my quests?? all my quests have a reference in them!","*gasp* oh noes my puffshroom was eaten by a zombie!!","excuse me while i go back to playing PvZ, it's a great game and it even has all the mushrooms!","NOooooOOooOOoo!! The zombies ate my brains! I rage quit!","[Dapper Bear now changes to playing PvZ2]","yay the hypno shroom worked and the zombie did an uno reverse card muahahahaw","[Dapper Bear wins, for the first time in his life]",'oki bye']
+    return ["*snickers in his throat* Grrrrreetings, I am... the dapper bear!","I own the finest planters in the land, which you can purchase from my shop. My planters are much higher quality than the puny clay and paper planters sold in the nearby shops.","You can plant a planter in a field, and it'll grow! Harvest it to get GREAT rewards and nectar buffs!","Just plant a planter, wait a few minutes, and I'll be done! Make sure to harvest it after it's done 100% to get the maximun rewards.","Nectars boost your bees and give extra benefits, so they're great to have.","If you don't have any planters yet, you can buy a Paper Planter from the shop by the pineapple field. First quest!",function(){player.addQuest('Once Upon A Time',[['minutesOfNectar',10],['redPollen',500000],['pollenFromPineapplePatch',500424],['boostTokens',10],['tokensFromPlanters',5]],'dapperBear');},"My, my... you've done very well, haven't you? *simpering chuckle*","When harvesting planters, it can give you 1 of 5 types of nectar! The type of nectar and also rewards depends on the field it grew in.","I guess I can give this to you, I don't need it anymore...",function(){addReward([['honey',2500000],['honeysuckle',20],['whirligig',5],['royalJelly',5]])},"I, the almighty dapper bear, will give you 10 quests in total. They will be quite diffucult, but will guide you all the way through to the end game.","At the end of my quests, I'll reward you with an expensive Star Egg","As you progress, make sure to buy manny planters and use them, as they are very good(at least in this version of the game)!","Also, if you see little puffshrooms, make sure to chase them around and pop them! They'll give many waxes and multiply!","Puffshrooms grow in random fields every few minutes.","You'll need many waxes to craft planters, so stock up on them!","In this quest, you'll need to collect Motivating Nectar! It can be obtained from planters that grew in the spider, rose, mushroom, and stump fields!",function(){player.addQuest('Seeing Puffs & Fumes',[['puffshrooms',3],['minutesOfMotivatingNectar',10],['pollen',6000000],['pollenFromSpiderField',750000],['werewolf',1]],'dapperBear');},"Splendid job, chap.","Puffshrooms can level up to require more pollen to pop and give much better rewards!","High leveled puffshrooms can also gain rare, epic, legendary, and mythic rarity! These also give much better rewards!","Have a star jelly and this random junk:",function(){addReward([['honey',10000000],['magicBean',1],['royalJelly',10],['jellyBeans',5],['starJelly',1]])},"How many waxes do you have? Try to buy my plastic planter!","It's a *reuseable* planter, meaning you can plant it again after you harvest it!","The plastic planter takes longer to grow, but will give MUCH more nectar and loot!","Refreshing nectar can be obtained from the strawberry and blue flower fields.","Satisfying nectar can be obtained from the pineapple, pumpkin, and sunflower fields.","Now just take this quest and be done with it:",function(){player.addQuest('My Luck',[['minutesOfSatisfyingNectar',15],['minutesOfRefreshingNectar',10],['bluePollen',10000000],['pollenFromCloverField',2000305],['pollenFromPineapplePatch',2000000],['fieldDiceTokens',1],['tokensFromPlanters',25],['puffshrooms',10]],'dapperBear');},"*gasp* You've done it... I didn't expect you to actually complete it...",function(){addReward([['honey',25000000],['smoothDice',1],['honeysuckle',25],['royalJelly',10],['softWax',3],['oil',1],['cloadVial',1],['tickets',5]])},"I also own a Beequip shop! I sell many beequips you can purchase.","Beequips can be put onto bees to improve them. Some beequips can also apply bonuses to your player.","Each beequip has a potential, color, and level. It can only be put on bees with the same color, and an equal or higher level.","The potenial measures how good it is and much more it will be improved when waxes are used.","You can only hold a certain number of beequips, though. However, from now on, I will reward you with extra beequip slots!","Invigorating nectar can be obtained from the clover, cactus, and mountain top fields. Think you can take this quest as well?",function(){player.addQuest('Healing',[['hoursOfNectar',1],['minutesOfRefreshingNectar',20],['minutesOfInvigoratingNectar',20],['pollen',30240240],['pollenFromMountainTopField',5000459],['melodyTokens',24],['tokensFromPlanters',35],['puffshrooms',15]],'dapperBear');},"Great! If you didn't know, another great way to get waxes is to craft them!","You can use the blender in that weird yellow building in the 15 bee zone.","Anyways, y-you did it... ponduberous, excellent, splendaculous, whatever... have some things.",function(){addReward([['honey',50000000],['hardWax',1],['softWax',3],['honeysuckle',30],['whirligig',10],['magicBean',5]])},"*aHeM* Anyways, on to the next quest...","I suppose you've bought my colorful Candy Planter by now. It'll help lots with collecting gumdrops and jelly beans!","Comforting nectar can be obtained from planters in the dandelion, pine tree, and bamboo fields.","Think you can take this quest as well?",function(){player.addQuest('Goo Raccoon',[['hoursOfComfortingNectar',1],['hoursOfInvigoratingNectar',1],['whitePollen',55555555],['pollenFromPumpkinPatch',10000331],['goo',555555],['gumdrops',25],['gumdropTokens',30],['glueTokens',3],['rarePuffshrooms',1],['moonAmulets',1]],'dapperBear');},"Oh my... I didn't expect you to actually be able to do that...",function(){addReward([['honey',90000000],['loadedDice',1],['glitter',3],['redExtract',1],['blueExtract',1],['tickets',10]])},"A tip on puffshroom farming: Puffshrooms level up when they spread to new fields!","That means that you should follow them around the map instead of staying in 1 field. They might level down when they move back and forth between the same fields.","Also, higher rarity puffshrooms tend to spawn with more higher level puffshrooms and in new fields.","Welp... another chore- er, job for you to complete before the store opens...","I fancy some spices from the pepper patch this time. How about you go in the 35 bee zone and fetch some?",function(){player.addQuest('Enchantéd',[['hoursOfNectar',2],['pollenFromPepperPatch',50000447],['pollenFromBambooField',38000331],['pollenFromRoseField',24000447],['pollenFromSunflowerField',9000331],['pollenFromStumpField',1500447],['focusTokens',150],['glitterTokens',1],['puffshrooms',35],['rarePuffshrooms',3]],'dapperBear');},"Yes, yes, well done and all that. I suppose you need another reward now.",function(){addReward([['honey',150000000],['royalJelly',25],['honeysuckle',25],['swirledWax',1],['magicBean',3],['tickets',10]])},"Maybe if you can complete the next quest as well, I can give you even more tchotchkes... I certainly don't need them, I have everything I need *simpering chuckle*",function(){player.addQuest('Blooming',[['hoursOfComfortingNectar',1],['hoursOfMotivatingNectar',1],['bluePollen',150000000],['pollenFromSunflowerField',25000000],['pollenFromRoseField',25000000],['tokensFromSprouts',100],['blueExtractTokens',3],['magicBeanTokens',3],['magicBean',5],['glitter',3],['itemsUsingTheBlender',15],['rarePuffshrooms',10]],'dapperBear');},"Here, m'lad, take this garbágee...",function(){addReward([['honey',200000000],['oil',3],['enzymes',5],['glitter',5],['magicBean',3],['jellyBeans',5],['causticWax',1]])},"Muahahahwaahahahaw, you're on my 8th quest now, just 3 more torturous quests left! heheheh",function(){player.addQuest('Oblivion',[['epicPuffshroom',1],['hoursOfRefreshingNectar',2],['pollen',600000000],['abilityTokens',1750],['boostTokens',332],['bombTokens',332],['melodyTokens',83],['tokensFromPlanters',50]],'dapperBear');},"Did you like that quest???",function(){addReward([['honey',90000000],['glitter',5],['starJelly',3],['tropicalDrink',5],['tickets',15],['purplePotion',1]])},"Ano'er painful quest comin yar way!",function(){player.addQuest('Color Rush',[['loadedDice',1],['invigoratingVial',1],['satisfyingVial',1],['refreshingVial',1],['comfortingVial',1],['motivatingVial',1],['redPollen',750000000],['bluePollen',750000000],['goo',25000000],['superSmoothie',1],['epicPuffshroom',1]],'dapperBear');},
+    "Ah yes, you did it. I'm not really impressed but have this stuff:",function(){addReward([['honey',1250000000],['superSmoothie',1],['redExtract',5],['blueExtract',5],['glue',5],['glitter',5],['oil',5],['enzymes',5],['tropicalDrink',5]])},"This is your last quest!!!","I'll give you a star egg after this!","...","...Erm, what's that, Mother?","...","...terribly sorry, I will have you scrub it for me after all. Mother says she won't be doing my laundry anymore :(","...oh, Mother, why must you be like this....","I have a new addition to your quest! Now you must help me wash my tuxedo! muawhahaha jk(or am i)",function(){player.addQuest('Scary Gloomy Hypnotizing Doom Shrooms',[['hoursOfNectar',10],['whitePollen',2500000000],['goo',5000000],['abilityTokens',3000],['bitterberryTokens',15],['tokensFromPlanters',100],['tokensFromSprouts',250],['puffshrooms',150],['rarePuffshrooms',15],['epicPuffshrooms',5],['legendaryPuffshrooms',1]],'dapperBear');},"Woah! Ya did it!",function(){addReward([['honey',10000000000],['starEgg',1],['causticWax',3],['swirledWax',3],['hardWax',5],['softWax',15],['whirligig',10],['honeysuckle',100],['superSmoothie',1]])},"I have no more quests for you!","Bye!","buttt wait did ya notice all the references in my quests?? all my quests have a reference in them!","*gasp* oh noes my puffshroom was eaten by a zombie!!","excuse me while i go back to playing PvZ, it's a great game and it even has all the mushrooms!","NOooooOOooOOoo!! The zombies ate my brains! I rage quit!","[Dapper Bear now changes to playing PvZ2]","yay the hypno shroom worked and the zombie did an uno reverse card muahahahaw","[Dapper Bear wins, for the first time in his life]",'oki bye']
     
     
     

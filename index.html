@@ -7442,7 +7442,7 @@ let effects={
         
         desc:"Collects all ability tokens and certain types of loot tokens.",
         trialCooldown:20,trialRate:0.75,
-        statsToAddTo:['battleTokens'],
+        statsToAddTo:['battleTokens','linkTokens'],
         u:128*3/2048,v:0,
         canBeLinked:false,
         tokenLife:4,
@@ -8609,13 +8609,13 @@ let effects={
             
             player.redPollen*=Math.min(player.scorchingStarSize*0.000425+2,5)
             player.convertRate*=Math.min(player.scorchingStarSize*0.000425+2,5)
-            player.beeAttack*=Math.min(player.scorchingStarSize*0.0003+1,3)
+            player.beeAttack*=Math.min(player.scorchingStarSize*0.00025+1,1.5)
             player.instantRedConversion=MATH.applyPercentage(player.instantRedConversion,0.2)
         },
         
         getMessage:(amount)=>{
             
-            return 'Scorching Star Aura\nx'+Math.min(player.scorchingStarSize*0.000425+2,5).toFixed(2)+' red pollen\nx'+Math.min(player.scorchingStarSize*0.000425+2,5).toFixed(2)+' convert rate\nx'+Math.min(player.scorchingStarSize*0.0003+1,3).toFixed(2)+' bee attack\n+20% instant red conversion'
+            return 'Scorching Star Aura\nx'+Math.min(player.scorchingStarSize*0.000425+2,5).toFixed(2)+' red pollen\nx'+Math.min(player.scorchingStarSize*0.000425+2,5).toFixed(2)+' convert rate\nx'+Math.min(player.scorchingStarSize*0.00025+1,1.5).toFixed(2)+' bee attack\n+20% instant red conversion'
         }
     },
     
@@ -8791,7 +8791,7 @@ let effects={
         
         getMessage:(amount)=>{
             
-            return "Scorching Star\nEvery 15 red boost tokens summons a Scorching Star, lasting for 45s. It grows by 75(100 if dark) every second for every flame nearby. It grants up to x5 red pollen, x5 convert rate, and +20% instant red conversion. Cooldown: 1m"
+            return "Scorching Star\nEvery 15 red boost tokens summons a Scorching Star, lasting for 45s. It grows by 75(100 if dark) every second for every flame nearby. It grants up to x5 red pollen, x5 convert rate, x1.5 bee attack, and +20% instant red conversion. Cooldown: 1m"
         }
     },
     
@@ -16804,7 +16804,7 @@ class CoconutCrab {
                     let it=(Math.random()*loots.length)|0
 
                     console.error(loots[it])
-                    objects.tokens.push(new LootToken(30,[fieldInfo[DIS.field].x+((fieldInfo[DIS.field].width*Math.random())|0),fieldInfo[DIS.field].y+1,fieldInfo[DIS.field].z+((fieldInfo[DIS.field].length*Math.random())|0),0],loots[it],loots[it]==='coconut'?MATH.random(1,4)|0:1,true,'Coconut Crab'))
+                    objects.tokens.push(new LootToken(15,[fieldInfo[DIS.field].x+((fieldInfo[DIS.field].width*Math.random())|0),fieldInfo[DIS.field].y+1,fieldInfo[DIS.field].z+((fieldInfo[DIS.field].length*Math.random())|0),0],loots[it],loots[it]==='coconut'?MATH.random(1,4)|0:1,true,'Coconut Crab'))
                     loots.splice(i,1)
 
                 },i*300)
@@ -17044,14 +17044,14 @@ class StumpSnail {
         this.moveTo=[]
         this.starSawHitTimer=0
         this.level=6
-        this.health=player.extraInfo.mob_snail_health||15000000
+        this.health=player.extraInfo.mob_snail_health||15
         this.maxHealth=15000000
         this.pos=[fieldInfo[this.field].x+fieldInfo[this.field].width*0.5-19,fieldInfo[this.field].y+0.3,fieldInfo[this.field].z+fieldInfo[this.field].length*0.5,0]
         this.central=[fieldInfo[this.field].x+fieldInfo[this.field].width*0.5,fieldInfo[this.field].z+fieldInfo[this.field].length*0.5]
         this.flameTimer=0
         this.waitTimer=0
         this.damageTimer=0
-        this.bodySize=2.5
+        this.bodySize=3
         this.runningAmount=0
         this.mindHacked=0
     }
@@ -17082,8 +17082,8 @@ class StumpSnail {
             this.isDead-=dt
             player.extraInfo.mob_snail=this.isDead
             
-            textRenderer.addSingle('Stump Snail',[26,17,-40],COLORS.whiteArr,-1.5,false,false,0,0.2)
-            textRenderer.addSingle(MATH.doTime(this.isDead),[26,17,-40],COLORS.whiteArr,-1.5,false,false,0,-0.2)
+            textRenderer.addSingle('Stump Snail',[-107,20,82],COLORS.whiteArr,-1.5,false,false,0,0.2)
+            textRenderer.addSingle(MATH.doTime(this.isDead),[-107,20,82],COLORS.whiteArr,-1.5,false,false,0,-0.2)
 
             return this.isDead<=0
         }
@@ -17099,14 +17099,18 @@ class StumpSnail {
 
             let loots='',decay=Math.min(player.stats.stumpSnail*0.2,1)
 
-            loots+='coconut,'.repeat(((MATH.random(60,110)*0.5*decay))|0)
-            loots+='tropicalDrink,'.repeat(((MATH.random(4,10)*decay))|0)
-            loots+='microConverter,'.repeat(((MATH.random(4,12)*decay))|0)
-            loots+='starJelly,'.repeat(((MATH.random(2,5)*decay))|0)
-            loots+='glitter,'.repeat(((MATH.random(3,7)*decay))|0)
-            loots+='magicBean,'.repeat(((MATH.random(3,7)*decay))|0)
-            loots+='oil,'.repeat(((MATH.random(3,7)*decay))|0)
-            loots+='glue,'.repeat(((MATH.random(3,7)*decay))|0)
+            loots+='ticket,'.repeat(((MATH.random(50,175)*0.5*decay))|0)
+            loots+='glue,'.repeat(((MATH.random(10,25)*0.5*decay))|0)
+            loots+='gumdrops,'.repeat(((MATH.random(25,150)*0.5*decay))|0)
+            loots+='starJelly,'.repeat(((MATH.random(-1,5)*0.5*decay))|0)
+            loots+='glitter,'.repeat(((MATH.random(-2,7)*0.5*decay))|0)
+            loots+='oil,'.repeat(((MATH.random(-2,7)*0.5*decay))|0)
+            loots+='enzymes,'.repeat(((MATH.random(-2,7)*0.5*decay))|0)
+            loots+='magicBeans,'.repeat(((MATH.random(2,12)*0.5*decay))|0)
+
+            let l=['silverEgg','goldEgg','','giftedSilverEgg','','diamondEgg','','giftedGoldEgg','','mythicEgg','','giftedDiamondEgg','','','giftedMythicEgg','','','','starEgg','']
+
+            loots+=l[Math.min(player.stats.stumpSnail,l.length-1)]
 
             loots=loots.substring(0,loots.length-1).split(',')
 
@@ -17119,7 +17123,7 @@ class StumpSnail {
                     let it=(Math.random()*loots.length)|0
 
                     console.error(loots[it])
-                    objects.tokens.push(new LootToken(30,[fieldInfo[DIS.field].x+((fieldInfo[DIS.field].width*Math.random())|0),fieldInfo[DIS.field].y+1,fieldInfo[DIS.field].z+((fieldInfo[DIS.field].length*Math.random())|0),0],loots[it],loots[it]==='coconut'?MATH.random(1,4)|0:1,true,'Stump Snail'))
+                    objects.tokens.push(new LootToken(15,[fieldInfo[DIS.field].x+((fieldInfo[DIS.field].width*Math.random())|0),fieldInfo[DIS.field].y+1,fieldInfo[DIS.field].z+((fieldInfo[DIS.field].length*Math.random())|0),0],loots[it],MATH.random(1,4)|0,true,'Stump Snail'))
                     loots.splice(i,1)
 
                 },i*300)
