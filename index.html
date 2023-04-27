@@ -5344,7 +5344,7 @@ let triggers={
 
     datsocool_NPC:{
 
-        minX:-74-2.5,maxX:-74+2.5,minY:30,maxY:30,minZ:49.5-2.5,maxZ:49.5+2.5
+        minX:-23-2.5,maxX:-23+2.5,minY:30,maxY:39,minZ:125-2.5,maxZ:125+2.5
     },
 
     noob_shop:{
@@ -17044,7 +17044,7 @@ class StumpSnail {
         this.moveTo=[]
         this.starSawHitTimer=0
         this.level=6
-        this.health=player.extraInfo.mob_snail_health||15
+        this.health=player.extraInfo.mob_snail_health||15000000
         this.maxHealth=15000000
         this.pos=[fieldInfo[this.field].x+fieldInfo[this.field].width*0.5-19,fieldInfo[this.field].y+0.3,fieldInfo[this.field].z+fieldInfo[this.field].length*0.5,0]
         this.central=[fieldInfo[this.field].x+fieldInfo[this.field].width*0.5,fieldInfo[this.field].z+fieldInfo[this.field].length*0.5]
@@ -27036,13 +27036,12 @@ NPCs={
 
     datsocool:{
         
-        viewMatrix:[-68,25,49.5,-MATH.HALF_PI,-0.25],
-        exclaimPos:[-74,24,49.5],
+        viewMatrix:[-23,37.3,125.1,Math.PI,-0.15],
+        exclaimPos:[-23,37.9,125],
         dialogueIndex:0,
         dialogue:window.dialogue_datsocool(player,items,NPCs),
         mesh:new Mesh(),
-        doesntHaveMesh:true,
-        meshParams:{x:50,y:120,z:150,r:0,s:100.2,texture:{face:{u:0,v:1},torso:{texture:false,u:1,v:2},extremities:{u:0,v:0},ears:{u:0,v:0.1}}}
+        meshParams:{x:23,y:36.9,z:-127,r:2,s:0.4,texture:{face:{u:2,v:1},torso:{texture:false,u:1,v:0.7},extremities:{u:0,v:0},ears:{u:0,v:0.1}}}
     },
 }
 

@@ -9290,4 +9290,20 @@ window.textures_bear=function(tex_ctx){
     e(-41,19,10,10)
     e(41,19,10,10)
     tex_ctx.setTransform(1,0,0,1,0,0)
+
+    tex_ctx.translate(128*2+128*0.5,256*0.5+128*0.5)
+    tex_ctx.lineWidth=7
+    tex_ctx.fillStyle='rgb(255,255,255)'
+    tex_ctx.fillRect(-128*0.5,-128*0.5,128,128)
+    tex_ctx.strokeStyle='rgb(0,0,0)'
+    tex_ctx.lineWidth=3
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-16,10)
+    tex_ctx.bezierCurveTo(-20,39,20,39,16,10)
+    tex_ctx.closePath()
+    tex_ctx.stroke()
+    tex_ctx.fillStyle='rgb(0,0,0)'
+    e(-22,-20,3,6)
+    e(22,-20,3,6)
+    tex_ctx.setTransform(1,0,0,1,0,0)
 }
