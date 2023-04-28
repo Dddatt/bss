@@ -6077,6 +6077,109 @@ let triggers={
             player.showGeneratedAmulet('supremeStarAmulet',amulet)
         }
     },
+
+    strawberry_dispenser:{
+
+        isMachine:true,requirements:function(player){
+
+            if(!player.extraInfo||player.extraInfo) return "You need 200 honey to test this thing lol"
+
+        },minX:42,maxX:46,minY:7.5,maxY:10.5,minZ:9,maxZ:14,message:'Use Strawberry Dispenser',func:function(player){
+
+            let numBees=0
+
+            for(let i in objects.bees){
+
+                if(beeInfo[objects.bees[i].type].color==='red') numBees++
+            }
+
+            items.strawberry.amount+=numBees+3
+            player.addEffect('haste',false,false,undefined,5)
+            player.addEffect('redBoost',false,false,undefined,10)
+            player.honey+=1000*numBees
+            player.updateInventory()
+            player.addMessage('+'+MATH.addCommas((1000*numBees)+'')+' Honey')
+            player.addMessage('+'+MATH.addCommas((numBees+3)+'')+' Strawberries')
+            player.addMessage('Activated x10 "Red Boost"')
+            player.addMessage('Activated x5 "Haste"')
+        }
+    },
+    blueberry_dispenser:{
+
+        isMachine:true,requirements:function(player){
+
+            if(player.honey<200) return "You need 200 honey to test this thing lol"
+
+        },minX:-69,maxX:-65,minY:-2,maxY:1,minZ:29.25,maxZ:34.25,message:'Use Blueberry Dispenser',func:function(player){
+
+            let numBees=0
+
+            for(let i in objects.bees){
+
+                if(beeInfo[objects.bees[i].type].color==='blue') numBees++
+            }
+
+            items.blueberry.amount+=numBees+3
+            player.addEffect('haste',false,false,undefined,5)
+            player.addEffect('blueBoost',false,false,undefined,10)
+            player.honey+=1000*numBees
+            player.updateInventory()
+            player.addMessage('+'+MATH.addCommas((1000*numBees)+'')+' Honey')
+            player.addMessage('+'+MATH.addCommas((numBees+3)+'')+' Blueberries')
+            player.addMessage('Activated x10 "Blue Boost"')
+            player.addMessage('Activated x5 "Haste"')
+        }
+    },
+    treat_dispenser:{
+
+        isMachine:true,requirements:function(player){
+
+            if(player.honey<200) return "You need 200 honey to test this thing lol"
+
+        },minX:-56.5,maxX:-48.5,minY:12,maxY:15,minZ:71.75,maxZ:76.75,message:'Use Treat Dispenser',func:function(player){
+
+            let numBees=0
+
+            for(let i in objects.bees){
+
+                if(beeInfo[objects.bees[i].type].color==='white') numBees++
+            }
+
+            items.treat.amount+=objects.bees.length*4+10
+            items.pineapple.amount+=numBees+3
+            player.addEffect('haste',false,false,undefined,5)
+            player.honey+=250*numBees
+            player.updateInventory()
+            player.addMessage('+'+MATH.addCommas((250*numBees)+'')+' Honey')
+            player.addMessage('+'+MATH.addCommas((objects.bees.length*4+10)+'')+' Pineapples')
+            player.addMessage('+'+MATH.addCommas((numBees+3)+'')+' Pineapples')
+            player.addMessage('Activated x5 "Haste"')
+        }
+    },
+    left_green_dispenser:{
+
+        isMachine:true,requirements:function(player){
+            if(player.honey<200) return "You need 200 honey to test this thing lol"
+        },minX:-29.5,maxX:-21.5,minY:0.5,maxY:3.5,minZ:7.75,maxZ:11.75,message:'Test Left Green Dispenser (200 Honey)',func:function(player) {
+            player.health=-1; //lol setting it 0 does nothing
+        }
+    },
+    green_dispenser:{
+
+        isMachine:true,requirements:function(player){
+            if(player.honey<200) return "You need 200 honey to test this thing lol"
+        },minX:-21.5,maxX:-17.5,minY:-2,maxY:1,minZ:-8.5,maxZ:-4.5,message:'Test Green Dispenser (200 Honey)',func:function(player) {
+            player.health=-1; //lol setting it 0 does nothing
+        }
+    },
+    super_high_dispenser:{
+
+        isMachine:true,requirements:function(player){
+            if(player.honey<200) return "You need 200 honey to test this thing lol"
+        },minX:-4,maxX:4,minY:-999.75,maxY:1002.75,minZ:1013,maxZ:1018,message:'Test Weird Super High Dispenser (200 Honey)',func:function(player) {
+            player.health=-1; //lol setting it 0 does nothing
+        }
+    },
 }
 
 let hoverText=document.getElementById('hoverText')
