@@ -278,15 +278,14 @@ window.playerGear={
                 box(0.5,0.65,0.3,0.06,1.8,0.06,[12,0,-25],[1.4,1.4,1.4])
                 box(0.5,0.55,-0.3,0.06,1.8,0.06,[-12,0,-25],[1.4,1.4,1.4])
             },
-            
             applyStats:function(stats,player){
                 
                 stats.gliderSpeed=18*0.7
                 stats.gliderFall=-5*0.75
-            }
+            },
+            desc:'A parachute you can use to glide down the mountain and reach new places!<br><br>Press jump while in the air to open. ',
+            cost:['500000 honey'],
         },
-        desc:'A parachute you can use to glide down the mountain and reach new places! Press jump while in the air to open.<br><br>Press jump while in the air to open. ',
-        cost:['500000 honey'],
 
         glider:{
             
@@ -303,15 +302,14 @@ window.playerGear={
                 box(0.8,0.55,0.3,0.06,2.2,0.06,[12,0,-40],[1.4,1.4,1.4])
                 box(0.8,0.55,-0.3,0.06,2.2,0.06,[-12,0,-40],[1.4,1.4,1.4])
             },
-            
             applyStats:function(stats,player){
                 
                 stats.gliderSpeed=18
                 stats.gliderFall=-5
-            }
+            },
+            desc:'Floats much faster than the Parachute, allowing you to fly through the sky!<br><br>Press jump while in the air to open. ',
+            cost:['5000000 honey'],
         },
-        desc:'Floats much faster than the Parachute, allowing you to fly through the sky!<br><br>Press jump while in the air to open. ',
-        cost:['5000000 honey'],
         
     },
     
@@ -409,7 +407,7 @@ window.playerGear={
 
             },
             desc:'A playful hat that keeps the sun out of your eyes.<br><br>x1.15 pollen<br>x1.05 bee ability rate<br>+10% defense<br>x1.1 jump power',
-            cost:['2500000 honey','15 gumdrops','10 pineapples','1 moonCharm'],
+            cost:['2500000 honey','15 gumdrops','10 pineapple','1 moonCharm'],
         },
 
         beekeeperMask:{
@@ -621,7 +619,7 @@ window.playerGear={
                 
                 sphere(0,0.6,0,0.5*1.414,2,0.25,0,0)
                 cylinder(0,0.65,0,0.28*1.414,0.095,10,1.1,0,0,90,0,0)
-                cylinder(0,0.35,0,0.525*0.5*1.415,0.45,10,0.25,0,0,90,0,0)
+                cylinder(0,0.35,0,0.52*0.5*1.415,0.45,10,0.25,0,0,90,0,0)
                 box(-0.1,0.4,0.32,0.05,0.1,0.1,false,[1.1,0,0])
                 box(0.1,0.4,0.32,0.05,0.1,0.1,false,[1.1,0,0])
                 box(0,0.25,0.32,0.2,0.05,0.1,false,[1.1,0,0])
@@ -765,12 +763,12 @@ window.playerGear={
                 stats.lootLuck+=1
                 stats.convertRate*=1.8
                 stats.honeyFromTokens*=1.5
-                stats.whiteBeeAttack++
+                stats.whiteBeeAttack+=2
                 stats.whiteBombPollen*=1.5
                 stats.beeEnergy*=1.25
                 player.addEffect('petalStormPassive')
             },
-            desc:'Drape these petals about your waist to harness unlimited flower power.<br><br>+300,000 capacity<br>x2 capacity<br>+100% loot luck<br>x1.8 convert rate<br>x1.5 honey from tokens<br>+1 white bee attack<br>x1.5 white bomb pollen<br>x1.25 bee energy<br>+Passive: Petal Storm',
+            desc:'Drape these petals about your waist to harness unlimited flower power.<br><br>+300,000 capacity<br>x2 capacity<br>+100% loot luck<br>x1.8 convert rate<br>x1.5 honey from tokens<br>+2 white bee attack<br>x1.5 white bomb pollen<br>x1.25 bee energy<br>+Passive: Petal Storm',
             cost:['15000000000 honey','15 starJelly','50 glitter','100 glue'],
         }
     },
@@ -905,7 +903,7 @@ window.playerGear={
                 stats.capacity+=125000
                 stats.convertRate*=1.7
             },
-            desc:"The world's most advanced barrel.<br><br>+125000 capacity<br>x1.7 convert rate",
+            desc:"The world's most advanced barrel.<br><br>+125,000 capacity<br>x1.7 convert rate",
             cost:['650000 honey'],
         },
 
@@ -981,7 +979,7 @@ window.playerGear={
             cost:['12500000 honey'],
         },
 
-        porcelainPortOHive:{
+        porcelainOHive:{
             
             mesh:function(box,cylinder,sphere){
                 
