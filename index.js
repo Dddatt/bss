@@ -1009,6 +1009,11 @@ function BeeSwarmSimulator(DATA){
             minX:-23-2.5,maxX:-23+2.5,minY:30,maxY:39,minZ:125-2.5,maxZ:125+2.5
         },
 
+        hbpencil_NPC:{
+
+            minX:-23-2.5,maxX:-23+2.5,minY:40,maxY:49,minZ:125-2.5,maxZ:125+2.5
+        },
+
         noob_shop:{
             
             minX:-50,maxX:-22.5,minY:-2,maxY:11,minZ:-9,maxZ:6
@@ -23001,6 +23006,16 @@ function BeeSwarmSimulator(DATA){
             dialogue:window.dialogue_datsocool(player,items,NPCs),
             mesh:new Mesh(),
             meshParams:{x:23,y:36.9,z:-127,r:2,s:0.4,texture:{face:{u:2,v:1},torso:{texture:false,u:1,v:0.7},extremities:{u:0,v:0},ears:{u:0,v:0.1}}}
+        },
+
+        hbpencil:{
+            
+            viewMatrix:[-23,47.3,125.1,Math.PI,-0.15],
+            exclaimPos:[-23,47.9,125],
+            dialogueIndex:0,
+            dialogue:window.dialogue_hbpencil(player,items,NPCs),
+            mesh:new Mesh(),
+            meshParams:{x:23,y:46.9,z:-127,r:2,s:0.4,texture:{face:{u:2,v:1},torso:{texture:false,u:1,v:0.7},extremities:{u:0,v:0},ears:{u:0,v:0.4}}}
         },
     }
 
