@@ -261,6 +261,58 @@ window.playerGear={
             box(window.amuletOffset[0],1.65+window.amuletOffset[1],0.075,0.1,0.08,0.07,[0,0,100],[1.5,1.5,0.4])
         }
     },
+
+    bronzeSnailAmulet:{
+        
+        mesh:function(box,cylinder,sphere,star){
+            
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12,0.11,10,0.8,0.42,0.17,0.01,90,0)
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12*0.75,0.12,10,0.8*0.7,0.42*0.7,0.17*0.7,0.01,90,0)
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12*0.65,0.13,10,0.8,0.42,0.17,0.01,90,0)
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12*0.35,0.14,10,0.8*0.7,0.42*0.7,0.17*0.7,0.01,90,0)
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12*0.25,0.15,10,0.8,0.42,0.17,0.01,90,0)
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1],-0.09,0.11,0.19,0.085,[35,0,0],[0.8,0.42,0.17])
+        }
+    },
+
+    goldSnailAmulet:{
+        
+        mesh:function(box,cylinder,sphere,star){
+            
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12,0.11,10,1.7,1.6,0,0.01,90,0)
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12*0.75,0.12,10,1.7*0.7,1.6*0.7,0,0.01,90,0)
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12*0.65,0.13,10,1.7,1.6,0,0.01,90,0)
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12*0.35,0.14,10,1.7*0.7,1.6*0.7,0,0.01,90,0)
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12*0.25,0.15,10,1.7,1.6,0,0.01,90,0)
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1],-0.09,0.11,0.19,0.085,[35,0,0],[1.7,1.6,0])
+        }
+    },
+
+    diamondSnailAmulet:{
+        
+        mesh:function(box,cylinder,sphere,star){
+            
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12,0.11,10,0,1.6,1.7,0.01,90,0)
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12*0.75,0.12,10,0,1.6*0.7,1.7*0.7,0.01,90,0)
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12*0.65,0.13,10,0,1.6,1.7,0.01,90,0)
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12*0.35,0.14,10,0,1.6*0.7,1.7*0.7,0.01,90,0)
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12*0.25,0.15,10,0,1.6,1.7,0.01,90,0)
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1],-0.09,0.11,0.19,0.085,[35,0,0],[0,1.6,1.7])
+        }
+    },
+
+    supremeSnailAmulet:{
+        
+        mesh:function(box,cylinder,sphere,star){
+            
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12,0.11,10,0,1.5,0.3,0.01,90,0)
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12*0.75,0.12,10,0,1.5*0.7,0.3*0.7,0.01,90,0)
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12*0.65,0.13,10,0,1.5,0.3,0.01,90,0)
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12*0.35,0.14,10,0,1.5*0.7,0.3*0.7,0.01,90,0)
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12*0.25,0.15,10,0,1.5,0.3,0.01,90,0)
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1],-0.09,0.11,0.19,0.085,[35,0,0],[0,1.5,0.3])
+        }
+    },
     
     glider:{
         
