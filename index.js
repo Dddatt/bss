@@ -17503,7 +17503,7 @@ function BeeSwarmSimulator(DATA){
                 }
                 
                 addCylinder=function(x,y,z,rad,hei,sides,r,g,b,a,rx,ry,rz,r2,shading=true,physics=false){
-                    
+
                     let rad2=r2??rad,vl=verts.length/10,_verts=[],_index=[]
                     
                     for(let t=0,inc=MATH.TWO_PI/sides;t<=MATH.TWO_PI;t+=inc){
@@ -17585,7 +17585,7 @@ function BeeSwarmSimulator(DATA){
                             shape:new CANNON.Cylinder(new CANNON.Vec4(r,rad2,hei,sides)),
                             mass:0,
                             position:new CANNON.Vec3(x,y,z),
-                            quaternion:new CANNON.Quaternion(...rotQuat),
+                            //quaternion:new CANNON.Quaternion(...rotQuat), quats are hard (copied from box)
                             collisionFilterGroup:STATIC_PHYSICS_GROUP,
                             collisionFilterMask:PLAYER_PHYSICS_GROUP|DYNAMIC_PHYSICS_GROUP,
                             
