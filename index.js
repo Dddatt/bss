@@ -516,6 +516,7 @@ function BeeSwarmSimulator(DATA){
 
     ],windShrineDonations=[
 
+        {item:'spiritPetal',rewardType:'honey',rewardAmount:15},
         {item:'treat',rewardType:'honey',rewardAmount:1},
         {item:'strawberry',rewardType:'honey',rewardAmount:1.5},
         {item:'blueberry',rewardType:'honey',rewardAmount:1.5},
@@ -552,7 +553,6 @@ function BeeSwarmSimulator(DATA){
         {item:'cloudVial',rewardType:'honey',rewardAmount:7},
         {item:'antPass',rewardType:'honey',rewardAmount:5},
         {item:'roboPass',rewardType:'honey',rewardAmount:8},
-        {item:'spiritPetal',rewardType:'honey',rewardAmount:15},
         {item:'softWax',rewardType:'honey',rewardAmount:3.5},
         {item:'hardWax',rewardType:'winds',rewardAmount:6},
         {item:'causticWax',rewardType:'winds',rewardAmount:8},
@@ -1059,6 +1059,11 @@ function BeeSwarmSimulator(DATA){
             minX:-107-2,maxX:-98+2,minY:0,maxY:30,minZ:115.5,maxZ:122
         },
 
+        ticketTent_shop:{
+            
+            minX:31-4.5,maxX:31+4.5,minY:0,maxY:5,minZ:-20-5,maxZ:-20+5
+        },
+
         robo_shop:{
 
             minX:55.5,maxX:62,minY:7,maxY:13,minZ:36.5,maxZ:45
@@ -1505,15 +1510,15 @@ function BeeSwarmSimulator(DATA){
         
         red_cannon:{
             
-            isMachine:true,minX:33-4,maxX:33+4,minY:0,maxY:5,minZ:-13-4,maxZ:-13+4,message:'Use Red Cannon',func:function(player){
+            isMachine:true,minX:30-3,maxX:30+3,minY:0,maxY:5,minZ:-9-3,maxZ:-9+3,message:'Use Red Cannon',func:function(player){
                 
                 player.stats.timesUsingTheRedCannon++
-                player.body.position.x=34
+                player.body.position.x=29
                 player.body.position.y=3
-                player.body.position.z=-12
-                player.body.velocity.x=-18.1
+                player.body.position.z=-6
+                player.body.velocity.x=-17
                 player.body.velocity.y=52
-                player.body.velocity.z=27
+                player.body.velocity.z=26
                 player.removeAirFrictionUntilGrounded=true
                 player.isGliding=false
                 player.grounded=false
@@ -1982,15 +1987,25 @@ function BeeSwarmSimulator(DATA){
 
             isMachine:true,requirements:function(player){
 
-                if(player.discoveredBees.indexOf('gummy')>-1) return 'You already own a Gummy Bee!'
+                if(items.gummyBeeEgg.amount) return 'You already own a Gummy Bee!'
                 if(items.gumdrops.amount<2500) return 'You need 2,500 gumdrops to form a Gummy Bee!'
 
             },minX:-8.5-3,maxX:-8.5+3,minY:12,maxY:18,minZ:-40-3,maxZ:-40+3,message:'Combine 2,500 to form a Gummy Bee',func:function(player){
 
                 items.gumdrops.amount-=2500
+                items.gummyBeeEgg.amount++
                 player.updateInventory()
+                player.addMessage('🎉 You formed a Gummy Bee! 🎉',[210,30,210])
                 player.addMessage('-2,500 Gumdrops')
                 player.addMessage('+1 Gummy Bee Egg')
+
+            },contactFunc:function(player){
+                
+                if(!player.lastGummyBeeMessage||TIME-player.lastGummyBeeMessage>3){
+
+                    player.lastGummyBeeMessage=TIME
+                    player.addMessage('Gummy Bee wants Gumdrops!',[0,200,100])
+                }
             }
         },
 
@@ -1998,13 +2013,15 @@ function BeeSwarmSimulator(DATA){
 
             isMachine:true,requirements:function(player){
 
-                if(player.discoveredBees.indexOf('vicious')>-1) return 'You already own a Vicious Bee!'
+                if(items.viciousBeeEgg.amount) return 'You already own a Vicious Bee!'
                 if(items.stinger.amount<250) return 'Turn in 250 stingers to claim a Vicious Bee!'
 
             },minX:2-3,maxX:2+3,minY:2,maxY:9,minZ:60-3,maxZ:60+3,message:'Turn in 250 stingers to claim a Vicious Bee',func:function(player){
 
                 items.stinger.amount-=250
+                items.viciousBeeEgg.amount++
                 player.updateInventory()
+                player.addMessage('🎉 You claimed a Vicious Bee! 🎉',[0,0,0])
                 player.addMessage('-250 Stingers')
                 player.addMessage('+1 Vicious Bee Egg')
             }
@@ -2147,12 +2164,12 @@ function BeeSwarmSimulator(DATA){
         
         crimson:{
             
-            u:128*0/2048,v:256/2048,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:18.2,convertSpeed:3,convertAmount:120,tokens:['redPulse','redBombSync'],attack:6,energy:35,rarity:'event',color:'red',description:"A superhero and defender of all things Red! Together with Cobalt Bee it works to unite bees of all colors.",giftedHiveBonus:{oper:'+',stat:'instantRedConversion',num:0.1},trails:[{length:7,size:0.2,triangle:true,color:[1,0,0,1],skipFrame:3,skipAdd:3,beeOffset:-0.05},{length:7,size:0.075,triangle:true,color:[1,1,1,1],skipFrame:3,skipAdd:3,beeOffset:0.05}]
+            u:128*0/2048,v:256/2048,meshPartId:20,gatherSpeed:4,gatherAmount:10,speed:18.2,convertSpeed:3,convertAmount:120,tokens:['redPulse','redBombSync'],attack:6,energy:35,rarity:'event',color:'red',description:"A superhero and defender of all things Red! Together with Cobalt Bee it works to unite bees of all colors.",giftedHiveBonus:{oper:'+',stat:'instantRedConversion',num:0.1},trails:[{length:7,size:0.2,triangle:true,color:[1,0,0,1],skipFrame:3,skipAdd:3,beeOffset:-0.05},{length:7,size:0.075,triangle:true,color:[1,1,1,1],skipFrame:3,skipAdd:3,beeOffset:0.05}]
         },
         
         cobalt:{
             
-            u:128*1/2048,v:256/2048,meshPartId:0,gatherSpeed:4,gatherAmount:10,speed:18.2,convertSpeed:3,convertAmount:120,tokens:['bluePulse','blueBombSync'],attack:6,energy:35,rarity:'event',color:'blue',description:"A superhero and defender of all things Blue! Together with Crimson Bee it works to unite bees of all colors.",giftedHiveBonus:{oper:'+',stat:'instantBlueConversion',num:0.1},trails:[{length:7,size:0.2,triangle:true,color:[0,0,1,1],skipFrame:3,skipAdd:3,beeOffset:-0.05},{length:7,size:0.075,triangle:true,color:[1,1,1,1],skipFrame:3,skipAdd:3,beeOffset:0.05}]
+            u:128*1/2048,v:256/2048,meshPartId:20,gatherSpeed:4,gatherAmount:10,speed:18.2,convertSpeed:3,convertAmount:120,tokens:['bluePulse','blueBombSync'],attack:6,energy:35,rarity:'event',color:'blue',description:"A superhero and defender of all things Blue! Together with Crimson Bee it works to unite bees of all colors.",giftedHiveBonus:{oper:'+',stat:'instantBlueConversion',num:0.1},trails:[{length:7,size:0.2,triangle:true,color:[0,0,1,1],skipFrame:3,skipAdd:3,beeOffset:-0.05},{length:7,size:0.075,triangle:true,color:[1,1,1,1],skipFrame:3,skipAdd:3,beeOffset:0.05}]
         },
         
         photon:{
@@ -2187,7 +2204,7 @@ function BeeSwarmSimulator(DATA){
         
         windy:{
             
-            u:128*8/2048,v:256/2048,meshPartId:0,gatherSpeed:3,gatherAmount:10,speed:19.6,convertSpeed:2,convertAmount:180,tokens:['whiteBoost','rainCloud','tornado'],attackTokens:[],attack:3,energy:20,rarity:'event',color:'white',description:"An entity made of pure light temporarily taking on the form of a bee.",giftedHiveBonus:{oper:'+',stat:'instantWhiteConversion',num:0.15},trails:[{length:15,size:0.4,color:[0.5,0.5,0.5,0.4],skipFrame:4,skipAdd:4},{length:15,size:0.4,color:[0.5,0.5,0.5,0.4],skipFrame:4,skipAdd:4,vertical:true}]
+            u:128*8/2048,v:256/2048,meshPartId:0,gatherSpeed:3,gatherAmount:10,speed:19.6,convertSpeed:2,convertAmount:180,tokens:['whiteBoost','rainCloud','tornado'],attackTokens:[],attack:3,energy:20,rarity:'event',color:'white',description:"An ethereal bee as powerful and unpredictable as the weather.",giftedHiveBonus:{oper:'+',stat:'instantWhiteConversion',num:0.15},trails:[{length:15,size:0.4,color:[0.5,0.5,0.5,0.4],skipFrame:4,skipAdd:4},{length:15,size:0.4,color:[0.5,0.5,0.5,0.4],skipFrame:4,skipAdd:4,vertical:true}]
         },
         
         bucko:{
@@ -2292,7 +2309,7 @@ function BeeSwarmSimulator(DATA){
 
         digital:{
             
-            u:128*13/2048,v:256*2/2048,meshPartId:19,gatherSpeed:4,gatherAmount:10,speed:11.9,convertSpeed:4,convertAmount:80,attack:1,energy:20,tokens:['glitch','mapCorruption*'],attackTokens:['mindHack'],rarity:'event',color:'white',description:"A virtual bee with malfunctioning AI. It corrupts the game itself.",giftedHiveBonus:{oper:'+',stat:'abilityDuplicationChance',num:0.01}
+            u:128*13/2048,v:256*2/2048,meshPartId:19,gatherSpeed:4,gatherAmount:10,speed:11.9,convertSpeed:4,convertAmount:80,attack:1,energy:20,tokens:['glitch','mapCorruption*'],attackTokens:['mindHack'],rarity:'event',color:'white',description:"A virtual bee with a malfunctioning AI. It corrupts the game itself.",giftedHiveBonus:{oper:'+',stat:'abilityDuplicationChance',num:0.01}
         },
     }
 
@@ -3291,13 +3308,13 @@ function BeeSwarmSimulator(DATA){
             
             update:(amount,player)=>{
                 
-                player.walkSpeed*=amount*0.075+1
+                player.walkSpeed*=player.roboChallenge?amount*0.02+1:amount*0.075+1
                 player.hasteStacks=amount
             },
             
             getMessage:(amount)=>{
                 
-                return 'Haste\nx'+((player.defaultStats.walkSpeed*(amount*0.075+1))/player.defaultStats.walkSpeed).toFixed(1)+' movespeed'
+                return 'Haste\nx'+(player.roboChallenge?amount*0.02+1:amount*0.075+1).toFixed(1)+' movespeed'+(player.roboChallenge?'\n\n(nerfed due to Robo Challenge!)':'')
             }
         },
         
@@ -6042,7 +6059,7 @@ function BeeSwarmSimulator(DATA){
             svg:document.getElementById('roboChallengeBuff'),
             cooldown:document.getElementById('roboChallengeBuff_cooldown'),
             amount:document.getElementById('roboChallengeBuff_amount'),
-            maxCooldown:3*60,
+            maxCooldown:1.5*60,
             tokenLife:4,
             maxAmount:1,
             
@@ -6056,7 +6073,7 @@ function BeeSwarmSimulator(DATA){
             svg:document.getElementById('redDriveBuff'),
             cooldown:document.getElementById('redDriveBuff_cooldown'),
             amount:document.getElementById('redDriveBuff_amount'),
-            maxCooldown:3*60,
+            maxCooldown:1.5*60,
             tokenLife:4,
             maxAmount:1,
             
@@ -6079,7 +6096,7 @@ function BeeSwarmSimulator(DATA){
             svg:document.getElementById('blueDriveBuff'),
             cooldown:document.getElementById('blueDriveBuff_cooldown'),
             amount:document.getElementById('blueDriveBuff_amount'),
-            maxCooldown:3*60,
+            maxCooldown:1.5*60,
             tokenLife:4,
             maxAmount:1,
             
@@ -6102,7 +6119,7 @@ function BeeSwarmSimulator(DATA){
             svg:document.getElementById('whiteDriveBuff'),
             cooldown:document.getElementById('whiteDriveBuff_cooldown'),
             amount:document.getElementById('whiteDriveBuff_amount'),
-            maxCooldown:3*60,
+            maxCooldown:1.5*60,
             tokenLife:4,
             maxAmount:1,
             
@@ -6125,7 +6142,7 @@ function BeeSwarmSimulator(DATA){
             svg:document.getElementById('glitchedDriveBuff'),
             cooldown:document.getElementById('glitchedDriveBuff_cooldown'),
             amount:document.getElementById('glitchedDriveBuff_amount'),
-            maxCooldown:3*60,
+            maxCooldown:1.5*60,
             tokenLife:4,
             maxAmount:1,
             
@@ -7335,10 +7352,19 @@ function BeeSwarmSimulator(DATA){
                         }
                         
                         objects.explosions.push(new Explosion({col:[1,0.2,1],pos:[fieldInfo[player.fieldIn].x+ox,fieldInfo[player.fieldIn].y+0.5,fieldInfo[player.fieldIn].z+oz],life:0.75,size:r*1.5,speed:0.5,aftershock:0.005,height:0.3}))
-                        
+
                     }
+
                 } else {
                     
+                    if(triggers.gummyBee_tame.colliding){
+
+                        items.gumdrops.amount--
+                        player.body.position.set(0,1002,1013)
+                        player.body.velocity.set(0,0,0)
+                        return
+                    }
+
                     player.addMessage('You must be standing in a field to use gumdrops!',COLORS.redArr)
                 }
             }
@@ -8728,6 +8754,43 @@ function BeeSwarmSimulator(DATA){
                 }
             }
         },
+    }
+
+    for(let i in beeInfo){
+
+        if(beeInfo[i].rarity==='event'){
+
+            let id=i+'BeeEgg'
+            
+            pages[0].innerHTML+="<svg id='"+id+"' style='width:200px;height:70px;cursor:pointer;border-radius:5px'><rect width='200' height='70' fill='rgb(255,255,255)'></rect><rect width='70' height='70' fill='rgb(225,225,225)'></rect><text x='132' y='18' style='font-family:trebuchet ms;font-size:16.5px;' fill='rgb(0,0,0)' text-anchor='middle'>"+MATH.doGrammar(i)+" Bee Egg</text><text x='132' y='39' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>A permanent egg that</text><text x='130' y='53' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>always hatches into</text><text x='132' y='66' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>a "+MATH.doGrammar(i)+" Bee!</text><text id='"+id+"_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text><path fill='rgb(255,255,0)' stroke='rgb(0,0,0)' stroke-width='1.5' d='M35 15C 20 17 10 55 35 55M35 15C 50 17 60 55 35 55'></path><path fill='rgb(0,0,0)' d='M20 30 C 20 40 50 40 50 30L50 40C50 50 20 50 20 40'></path><path fill='rgb(0,0,0,0.3)' d='M47 25C 57 56 35 60 23 50C 32 48 41 50 50 35'></path></svg>"
+
+            items[i+'BeeEgg']={
+            
+                canUseOnSlot:(slot)=>{
+
+                    return true
+                },
+                amount:0,u:128*4/2048,v:128*5/2048,value:Infinity,
+                use:function(){
+
+                    for(let j in objects.bees){
+
+                        if(objects.bees[j].type===i){
+                            
+                            player.addMessage('You can only have 1 '+MATH.doGrammar(i)+' Bee!',COLORS.redArr)
+                            return
+                        }
+                    }
+                    
+                    player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type=i
+                    player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted=false
+                    
+                    player.beePopup={type:i,message:'You hatched a...',time:TIME,gifted:false}
+                    
+                    player.updateHive()
+                }
+            }
+        }
     }
 
     for(let i in items){
@@ -11851,6 +11914,8 @@ function BeeSwarmSimulator(DATA){
             this.fallenEggShellEffect=0
             this.runningAmount=0
             this.mindHacked=0
+
+            player.addMessage('🐣 Mondo Chicken has spawned! 🐣',[200,200,100])
         }
         
         die(index){
@@ -13044,8 +13109,14 @@ function BeeSwarmSimulator(DATA){
 
                 if(player.extraInfo.mob_snail>0) return
 
-                player.stats.stumpSnail++
+                let g=Math.min(player.stats.stumpSnail++,4)
+                
+                let amulet=['*'+MATH.random(1.01+g*0.01,1.02+g*0.025).toFixed(2)+' goo']
 
+                amulet.push(...MATH.selectFromArray(['*'+MATH.random(1.05+g*0.08,1.1+g*0.2).toFixed(2)+' convertRate','+'+MATH.random(0.02+g*0.01,0.04+g*0.015).toFixed(2)+' INSTANT_CONVERSION','*'+MATH.random(1.01+g*0.01,1.03+g*0.015).toFixed(2)+' POLLEN','*'+MATH.random(1.05+g*0.016,1.09+g*0.03).toFixed(2)+' pollenFromTools','+'+MATH.random(g*0.01+0.02,g*0.01+0.015).toFixed(2)+' defense','*'+MATH.random(1.01+g*0.01,1.05+g*0.015).toFixed(2)+' honeyFromTokens'],(g*0.5+2)|0))
+
+                player.showGeneratedAmulet(['bronze','silver','gold','diamond','supreme'][g]+'SnailAmulet',amulet)
+                
                 let loots='',decay=Math.min(player.stats.stumpSnail*0.2,1)
 
                 loots+='ticket,'.repeat(((MATH.random(50,175)*0.5*decay))|0)
@@ -19278,6 +19349,8 @@ function BeeSwarmSimulator(DATA){
             out.updateInventory()
         }
 
+        window.endRoboChallenge=out.endRoboChallenge
+
         out.updateRoboChallenge=function(){
 
             if(!out.roboChallenge) return
@@ -19305,7 +19378,7 @@ function BeeSwarmSimulator(DATA){
             Apply:{stats:'*1.2 pollenFromCoconuts',rarity:'common',maxStacks:3},
             Clockwork:{stats:'+3 cogsPerRound,*0.9 markDuration',rarity:'common',maxStacks:3},
             Outsource:{stats:'*1.1 pollenFromTools,*0.95 pollenFromBees',rarity:'common',maxStacks:5},
-            Equalize:{stats:'+1 beeAttack,*0.95 beeAttack',rarity:'common',maxStacks:1},
+            Equalize:{stats:'+1 beeAttack,*0.975 beeAttack',rarity:'common',maxStacks:3},
             'Flash Drive':{stats:'*1.01 beeSpeed,*1.01 walkSpeed,-1% criticalChance',rarity:'common',maxStacks:10},
             Memory:{stats:'*1.03 redBeeAbilityRate,*1.03 blueBeeAbilityRate,*1.03 whiteBeeAbilityRate',rarity:'common',maxStacks:3},
             Binary:{stats:'*0.5 honeyAtHive,*2 convertRateAtHive',rarity:'common',maxStacks:3},
@@ -19320,9 +19393,9 @@ function BeeSwarmSimulator(DATA){
             Sine:{stats:'*1.05 bluePollen',rarity:'common',maxStacks:4},
             Cosine:{stats:'*1.05 redPollen',rarity:'common',maxStacks:4},
             Tangent:{stats:'*1.05 whitePollen',rarity:'common',maxStacks:4},
-            Reduce:{stats:'*1.025 beeAttack,*0.98 redPollen,*0.98 bluePollen,*0.98 whitePollen',rarity:'common',maxStacks:10},
+            Reduce:{stats:'*1.03 beeAttack,*0.98 redPollen,*0.98 bluePollen,*0.98 whitePollen',rarity:'common',maxStacks:10},
             Refractor:{stats:'*1.06 convertRate',rarity:'common',maxStacks:10},
-            RNG:{stats:'*1.07 beeEnergy,*1.02 walkSpeed',rarity:'common',maxStacks:10},
+            NRG:{stats:'*1.07 beeEnergy,*1.02 walkSpeed,-1 cogsPerRound',rarity:'common',maxStacks:10},
             
             
             VPN:{stats:'+2% defense,*0.98 walkSpeed',rarity:'rare',maxStacks:10},
@@ -19330,8 +19403,8 @@ function BeeSwarmSimulator(DATA){
             Inject:{stats:'+1 redBeeAttack,+1 whiteBeeAttack,+1 blueBeeAttack,-1 cogsPerRound',rarity:'rare',maxStacks:3},
             Fragment:{stats:'+4% instantBombConversion',rarity:'rare',maxStacks:4},
             Translation:{stats:'*1.03 beeSpeed',rarity:'rare',maxStacks:3},
-            'Blue Screen':{stats:'*1.08 blueBeeAbilityRate,+2 blueBeeAttack',rarity:'rare',maxStacks:3},
-            Commit:{stats:'+4% superCritChance,-3% criticalChance',rarity:'rare',maxStacks:2},
+            'Blue Screen':{stats:'*1.08 blueBeeAbilityRate,+2 blueBeeAttack,-1 cogsPerRound',rarity:'rare',maxStacks:3},
+            Commit:{stats:'+5% superCritChance,-3% criticalChance',rarity:'rare',maxStacks:2},
             GPU:{stats:'*1.05 walkSpeed',rarity:'rare',maxStacks:2},
             CPU:{stats:'+20% criticalPower,*0.9 walkSpeed',rarity:'rare',maxStacks:1},
             Saturate:{stats:'+2 redBeeAttack,+2 blueBeeAttack,-2 whiteBeeAttack',rarity:'rare',maxStacks:3},
@@ -19361,21 +19434,21 @@ function BeeSwarmSimulator(DATA){
             Furnace:{stats:'*1.07 flamePollen,+5% instantFlameConversion,*1.07 flameLife,-2 cogsPerRound',rarity:'epic',maxStacks:3},
             
             
-            'Cloud 9':{stats:'*1.35 capacity',rarity:'legendary',maxStacks:5},
+            'Cloud 9':{stats:'*1.35 capacity,-1 cogsPerRound',rarity:'legendary',maxStacks:5},
             '180°':{stats:'*1.8 beeAttack,-18% criticalChance',rarity:'legendary',maxStacks:1},
             'Vice Versa':{stats:'*1.5 redBombPollen,*1.5 blueBombPollen,*0.9 whiteBombPollen',rarity:'legendary',maxStacks:1},
             'Schematic Error':{stats:'*1.25 redBombPollen,+3% abilityDuplicationChance',rarity:'legendary',maxStacks:1},
             "d^=b[,7'":{stats:'*2 goo,*0.85 whitePollen',rarity:'legendary',maxStacks:1},
             Unlisted:{stats:'+3% criticalChance,*1.2 superCritPower',rarity:'legendary',maxStacks:1},
             '23.5':{stats:'+2% instantBlueConversion,+3% instantWhiteConversion,+5% instantRedConversion',rarity:'legendary',maxStacks:5},
-            Knock:{stats:'*1.25 beeAttack,-5% defense',rarity:'legendary',maxStacks:1},
+            Knock:{stats:'*1.25 beeAttack,-10% defense',rarity:'legendary',maxStacks:1},
             '12%':{stats:'*0.12 goo,*1.55 whitePollen',rarity:'legendary',maxStacks:1},
             'Plus Minus':{stats:'+6% criticalChance,-2% superCritChance',rarity:'legendary',maxStacks:2},
             '8.2':{stats:'*1.8 pollenFromCoconuts,*1.2 capacity',rarity:'legendary',maxStacks:1},
-            'Friend Credits':{stats:'+5 cogsPerRound,*1.1 honeyFromTokens',rarity:'legendary',maxStacks:3},
-            Technoblade:{stats:'+25% defense',rarity:'legendary',maxStacks:4},
+            'Friend Credits':{stats:'+4 cogsPerRound,*1.1 honeyFromTokens',rarity:'legendary',maxStacks:3},
+            Technoblade:{stats:'+25% defense',rarity:'legendary',maxStacks:1},
             'A-List':{stats:'*1.25 beeSpeed,+4 movementCollection,-2 cogsPerRound',rarity:'legendary',maxStacks:2},
-            '<u style="user-select:text">ยังน่ารัก</u>':{stats:'*1.5 buoyantBeeAttack',rarity:'legendary',maxStacks:1},
+            '<u style="user-select:text">ยังน่ารัก</u>':{stats:'*1.5 buoyantBeeAttack,-1 cogsPerRound',rarity:'legendary',maxStacks:1},
             
         },rarityColor={common:'rgb(180,130,30)',rare:'rgb(210,210,210)',epic:'rgb(250,230,10)',legendary:'rgb(20,240,255)'}
 
@@ -19385,10 +19458,10 @@ function BeeSwarmSimulator(DATA){
             out.roboChallenge.beesPerRound=2
 
             out.roboChallenge.isPlaying=true
-            out.roboChallenge.timer=3*60
+            out.roboChallenge.timer=1.5*60
             document.getElementById('roboMenu').style.display='none'
 
-            let amp=Math.max(0.1,0.6-out.roboChallenge.round*0.1),ef='player.capacity*='+amp+';player.pollenFromTools*='+amp+';player.pollenFromCoconuts*='+amp+';player.movementCollection*='+amp
+            let amp=Math.max(0.1,0.6-out.roboChallenge.round*0.1),ef='player.capacity*='+amp+';player.pollenFromTools*='+amp+';player.pollenFromCoconuts*='+amp+';player.movementCollection*='+amp+';player.walkSpeed*=1.65'
 
             let upgradeStacks={}
 
@@ -19426,7 +19499,7 @@ function BeeSwarmSimulator(DATA){
 
             effects.roboChallengeBuff.getMessage=function(){
 
-                let m='Robo Challenge\nx'+amp+' capacity\nx'+amp+' pollen from tools\nx'+amp+' pollen from coconuts\nx'+amp+' movement collection\n\n------Upgrades------\n\n'+JSON.stringify(upgradeStacks).replaceAll('":','"#').replaceAll('"','').replaceAll(',',')\n').replaceAll('#',' (x').replace('{','').replace('}',')')+'\n'
+                let m='Robo Challenge\nx'+amp+' capacity\nx'+amp+' pollen from tools\nx'+amp+' pollen from coconuts\nx'+amp+' movement collection\nx1.65 walkspeed\n\n------Upgrades------\n\n'+JSON.stringify(upgradeStacks).replaceAll('":','"#').replaceAll('"','').replaceAll(',',')\n').replaceAll('#',' (x').replace('{','').replace('}',')')+'\n'
 
                 return m.split(')').length===2?m.substring(0,m.indexOf('\n\n---')):m
             }
@@ -19478,13 +19551,13 @@ function BeeSwarmSimulator(DATA){
 
                 if(q[0].indexOf('From')>-1){
 
-                    for(let i=0,c=MATH.random(1,3);i<c;i++){
+                    for(let i=0,c=MATH.random(0,3);i<c;i++){
 
                         let m=[Mechsquito,Mechsquito,Mechsquito,Mechsquito,Mechsquito,Cogmower,Cogmower,Cogmower,Cogmower,CogTurret,CogTurret,CogTurret]
 
                         m=m[(Math.random()*m.length)|0]
 
-                        objects.mobs.push(new m(q[0].replace('pollenFrom',''),(out.roboChallenge.round*MATH.random(0.5,0.6)+1)|0,m===CogTurret?MATH.random(0,4)|0:Math.random()<0.8))
+                        objects.mobs.push(new m(q[0].replace('pollenFrom',''),(out.roboChallenge.round*MATH.random(0.5,0.6)+1)|0,m===CogTurret?MATH.random(0,4)|0:(out.roboChallenge.round>5?Math.random()<0.8:0)))
                     }
 
                 } else {
@@ -19728,9 +19801,9 @@ function BeeSwarmSimulator(DATA){
 
                         for(let j in re){
 
-                            let am=out.roboChallenge.round*0.025
+                            let am=out.roboChallenge.round*0.0125
 
-                            am=40000000000*am*am*am*am*am
+                            am=30000000000*am*am*am*am*am
 
                             am*=MATH.random(1/1.1,1.1)-(re.length-1)*0.2
 
@@ -19750,7 +19823,7 @@ function BeeSwarmSimulator(DATA){
                             if(out.roboChallenge.round>20) am*=1.65
                             if(out.roboChallenge.round>25) am*=1.75
 
-                            am=(((am*0.0001)|0)+1)*1000
+                            am=(((am*0.0001)|0)+1)*500
 
                             q.push([re[j],am])
                         }
@@ -20050,6 +20123,8 @@ function BeeSwarmSimulator(DATA){
         
         out.showGeneratedAmulet=function(type,amulet){
 
+            document.exitPointerLock()
+
             let prev_type=type.indexOf('Star')>-1?'Star':0
             prev_type=prev_type||(type.indexOf('Ant')>-1?'Ant':0)
             prev_type=prev_type||(type.indexOf('Stickbug')>-1?'Stickbug':0)
@@ -20146,10 +20221,10 @@ function BeeSwarmSimulator(DATA){
                 document.getElementById('amuletUI').style.display='none'
                 
                 let isOfType=type.indexOf('Star')>-1?'Star':0
-                isOfType=isOfType||type.indexOf('Ant')>-1?'Ant':0
-                isOfType=isOfType||type.indexOf('Stickbug')>-1?'Stickbug':0
-                isOfType=isOfType||type.indexOf('Shell')>-1?'Shell':0
-                isOfType=isOfType||type.indexOf('Cog')>-1?'Cog':0
+                isOfType=isOfType||(type.indexOf('Ant')>-1?'Ant':0)
+                isOfType=isOfType||(type.indexOf('Stickbug')>-1?'Stickbug':0)
+                isOfType=isOfType||(type.indexOf('Shell')>-1?'Shell':0)
+                isOfType=isOfType||(type.indexOf('Cog')>-1?'Cog':0)
 
                 if(isOfType){
 
@@ -21445,11 +21520,15 @@ function BeeSwarmSimulator(DATA){
             })
 
             out.toolMesh.setBuffers()
-            
+
             playerMesh.setMeshFromFunction(function(box,a,cylinder,sphere,applyFinalRotation,c,star){
                 
                 box(0,0,0,0.5,1,0.5,false,[1.45,1.45,1])
                 
+                let totalAmulets=0,currentAmulet=0
+
+                for(let i in out.currentGear) if(i.indexOf('Amulet')>-1) totalAmulets++
+
                 for(let i in out.currentGear){
                     
                     if(i==='tool'||i==='sprinkler') continue
@@ -21468,7 +21547,12 @@ function BeeSwarmSimulator(DATA){
                         
                     } else if(i!=='beequips'){
                         
-                        window.amuletOffset=[0,0]
+                        let theta=((((currentAmulet++)+1)/(totalAmulets+1))-0.5)*(totalAmulets*0.2+1)
+
+                        let x=Math.sin(theta)*1.5,y=Math.cos(theta)*1.5
+
+                        window.amuletOffset=[x,y-1.5]
+
                         gear[i].mesh(box,cylinder,sphere,star)   
                     }
                 }
@@ -21985,7 +22069,7 @@ function BeeSwarmSimulator(DATA){
                 ctx.fillText(t,0,c*20+60)
                 
                 ctx.font='bold 17px arial'
-                ctx.fillText(MATH.doGrammar(beeInfo[bee].color)+'     '+MATH.doGrammar(beeInfo[bee].rarity),0,23)
+                ctx.fillText(MATH.doGrammar(beeInfo[bee].color)+' '+MATH.doGrammar(beeInfo[bee].rarity),0,23)
                 
                 ctx.rotate(Math.cos(TIME*5)*0.1)
                 ctx.drawImage(beeCanvas,beeInfo[bee].u*2048,beeInfo[bee].v*2048,128,128,-45,-95+Math.sin(TIME*2)*7,90,90)
@@ -22110,9 +22194,9 @@ function BeeSwarmSimulator(DATA){
                 }
             }
         
-            if(out.roboChallenge&&out.roboChallenge.isPlaying&&!(frameCount%30)){
+            if(out.roboChallenge&&out.roboChallenge.isPlaying){
 
-                roboQuestMenu.innerHTML="<div style='font-size:21px;margin-top:5px'>Robo Challenge</div><div style='font-size:13px;margin-left:12px;margin-top:5px;margin-bottom:10px'>"+(out.roboChallenge.questCompleted?"<b style='font-size:17px'>DONE!</b><br>Talk to Robo Bear!":"Round: "+out.roboChallenge.round+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Time: "+MATH.doTime(out.roboChallenge.timer))+"</div>"
+                roboQuestSeparator.innerHTML="<div style='font-size:21px;margin-top:5px'>Robo Challenge</div><div style='font-size:13px;margin-left:12px;margin-top:5px;margin-bottom:10px'>"+(out.roboChallenge.questCompleted?"<b style='font-size:17px'>DONE!</b><br>Talk to Robo Bear!":"Round: "+out.roboChallenge.round+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Time: "+MATH.doTime(out.roboChallenge.timer))+"</div>"
 
                 out.roboChallenge.questCompleted=true
 
@@ -22120,17 +22204,13 @@ function BeeSwarmSimulator(DATA){
 
                     let req=out.roboChallenge.quest[i],c=MATH.doStatGrammar(req[0])+' '+MATH.addCommas(req[1]+'')+' '+MATH.doGrammar(req[0])
 
-                    roboQuestMenu.innerHTML+="<div style='border-radius:3px;width:183px;margin-top:0px;margin-bottom:5px;background-color:rgb(255,0,0);color:black;font-family:calibri;font-size:13px;margin-left:10px;position:relative;'><div style='position:absolute;left:0px;top:0px;border-radius:2px;right:"+(183-Math.min(((out.stats[req[0]]-req[2])/req[1])*183,183))+"px;bottom:0px;background-color:rgb(0,250,0);'></div><div style='position:absolute;left:0px;top:0px;border-radius:2px;right:0px;bottom:0px'>"+c+"</div><u style='color:rgb(0,0,0,0)'>"+c+"</u></div>"
+                    roboQuestSeparator.innerHTML+="<div style='border-radius:3px;width:183px;margin-top:0px;margin-bottom:5px;background-color:rgb(255,0,0);color:black;font-family:calibri;font-size:13px;margin-left:10px;position:relative;'><div style='position:absolute;left:0px;top:0px;border-radius:2px;right:"+(183-Math.min(((out.stats[req[0]]-req[2])/req[1])*183,183))+"px;bottom:0px;background-color:rgb(0,250,0);'></div><div style='position:absolute;left:0px;top:0px;border-radius:2px;right:0px;bottom:0px'>"+c+"</div><u style='color:rgb(0,0,0,0)'>"+c+"</u></div>"
                     
                     if(out.stats[req[0]]-req[2]<req[1]){
 
                         out.roboChallenge.questCompleted=false
                     }
                 }
-
-                roboQuestMenu.innerHTML+="<div id='endRoboChallenge' style='position:absolute;left:50%;top:100%;width:150px;border-radius:10px;border:3px solid black;color:black;background-color:rgb(255,30,30);cursor:pointer;font-size:20px;transform:translate(-50%,-50%);padding:3px' onclick='window.endRoboChallenge()'>End Challenge</div>"
-
-                window.endRoboChallenge=out.endRoboChallenge
             }
         }
 
@@ -22217,8 +22297,28 @@ function BeeSwarmSimulator(DATA){
 
                     window.setTimeout(function(){out.addMessage(mess[i][(Math.random()*mess[i].length)|0],[160*0.6,235*0.6,255*0.6])},i*3250+750)
                 }
-                
-                items[windShrineDonations[out.shrineIndex].item].amount-=document.getElementById('shrineAmount').value
+
+                if(windShrineDonations[out.shrineIndex].item==='spiritPetal'){
+
+                    window.setTimeout(function(){
+
+                        player.addMessage('🎉 You\'ve tamed a Windy Bee! 🎉',[160*0.75,235*0.75,255*0.75])
+                        player.addMessage('+1 Windy Bee Egg')
+                        out.updateInventory()
+
+                        if(document.getElementById('shrineAmount').value>1){
+
+                            player.addMessage('Hey! No soft-locking! You donated 1+ petals! >:(')
+
+                            items[windShrineDonations[out.shrineIndex].item].amount--
+                        }
+
+                    },3*3250+750)
+
+                } else {
+
+                    items[windShrineDonations[out.shrineIndex].item].amount-=document.getElementById('shrineAmount').value
+                }
 
                 out.updateInventory()
 
@@ -22459,7 +22559,7 @@ function BeeSwarmSimulator(DATA){
                 
             } else {
                 
-                out.messages=[{message:m,color:'rgb('+color[0]+','+color[1]+','+color[2]+',',size:s*16,life:3},...out.messages]
+                out.messages=[{message:m,color:'rgb('+color[0]+','+color[1]+','+color[2]+',',size:s*16,life:color[0]===30&&color[1]===70&&color[2]===255?3:5},...out.messages]
                 
             }
         }
@@ -23056,6 +23156,13 @@ function BeeSwarmSimulator(DATA){
                 viewMatrix:[58,11,43.5,MATH.HALF_PI,-0.25],
                 cost:['20 cog'],
                 desc:'A glitched computer drive for use in the Robo Challenge.<br><br>Grants x1.25 pollen, x1.25 capacity, and +1 attack'
+            },{
+                amountPurchased:0,maxPurchasedAmount:1,
+                name:'digitalBeeEgg',
+                slot:'item',
+                viewMatrix:[58,12.5,34,MATH.HALF_PI,-0.25],
+                cost:['24232021 honey','5 glitchedDrive','3 redDrive','3 whiteDrive','3 blueDrive'],
+                desc:'A virtual bee with a malfunctioning AI. It corrupts fields to duplicate ability tokens and hacks the mind of enemies!'
             }],
             currentIndex:0,message:'Explore Robo Shop'
         },
@@ -23777,6 +23884,68 @@ function BeeSwarmSimulator(DATA){
             }],
             currentIndex:0,message:'View Demon Mask'
         },
+
+        ticketTent:{
+
+            items:[{
+                amountPurchased:0,maxPurchasedAmount:Infinity,
+                name:'goldEgg',
+                slot:'item',
+                viewMatrix:[28.25+2,4,-17.25,-MATH.HALF_PI,-0.2],
+                cost:['50 ticket'],
+                desc:'Can be used to hatch an epic, legendary, or mythic bee!<br><br>The bee has a small chance to be gifted!'
+            },{
+                amountPurchased:0,maxPurchasedAmount:Infinity,
+                name:'starTreat',
+                slot:'item',
+                viewMatrix:[28.25+2,4,-19.25,-MATH.HALF_PI,-0.2],
+                cost:['1000 ticket'],
+                desc:'Can be fed to any bee to make it gifted!<br><br>It\s best to use Star Treats on event bees as it\'s the only way to make them gifted.'
+            },{
+                amountPurchased:0,maxPurchasedAmount:1,
+                name:'puppyBeeEgg',
+                slot:'item',
+                viewMatrix:[28.25+2,4,-21.25,-MATH.HALF_PI,-0.2],
+                cost:['500 ticket'],
+                desc:"This bee loves to play! It helps with bee bonding and will sometimes reward you treats by playing fetch!<br><br>(Honestly even with the buff in this version you still shouldn't buy it, it's rlly bad)"
+            },{
+                amountPurchased:0,maxPurchasedAmount:1,
+                name:'photonBeeEgg',
+                slot:'item',
+                viewMatrix:[28.25+2,4,-23.25,-MATH.HALF_PI,-0.2],
+                cost:['500 ticket'],
+                desc:'An entity made of pure light! Fires beams from the sky to collect massive amounts of pollen at once.'
+            },{
+                amountPurchased:0,maxPurchasedAmount:1,
+                name:'tabbyBeeEgg',
+                slot:'item',
+                viewMatrix:[33.75-2,4,-23.25,MATH.HALF_PI,-0.2],
+                cost:['500 ticket'],
+                desc:'An affectionate bee who becomes a harder worker as it warms up to you.'
+            },{
+                amountPurchased:0,maxPurchasedAmount:1,
+                name:'tabbyBeeEgg',
+                slot:'item',
+                viewMatrix:[33.75-2,4,-21.25,MATH.HALF_PI,-0.2],
+                cost:['500 ticket'],
+                desc:'A generous bee who spreads the joy of Beesmas by occasionally hands out random gifts to you!'
+            },{
+                amountPurchased:0,maxPurchasedAmount:1,
+                name:'crimsonBeeEgg',
+                slot:'item',
+                viewMatrix:[33.75-2,4,-19.25,MATH.HALF_PI,-0.2],
+                cost:['250 ticket'],
+                desc:'Defender of all things red! Excels in hives with many red bees. Has enhanced abilities when working with Cobalt Bee.'
+            },{
+                amountPurchased:0,maxPurchasedAmount:1,
+                name:'cobaltBeeEgg',
+                slot:'item',
+                viewMatrix:[33.75-2,4,-17.25,MATH.HALF_PI,-0.2],
+                cost:['250 ticket'],
+                desc:'Defender of all things blue! Excels in hives with many blue bees. Has enhanced abilities when working with Crimson Bee.'
+            }],
+            currentIndex:0,message:'Explore Ticket Tent'
+        },
     }
 
     shopGearMesh.setMeshFromFunction(function(box,a,cylinder,sphere,applyFinalRotation,c,star){
@@ -24244,7 +24413,7 @@ function BeeSwarmSimulator(DATA){
             gl.vertexAttribDivisor(glCache.text_instanceInfo,1)
             gl.drawElementsInstanced(gl.TRIANGLES,out.decal_indexAmount,gl.UNSIGNED_SHORT,0,out.decal_instanceData.length*MATH.INV_13)
 
-            let n=player.isNight*0.85
+            let n=player.isNight*0.85,_n=player.isNight
             
             out.decal_instanceData=[
 
@@ -24278,6 +24447,9 @@ function BeeSwarmSimulator(DATA){
                 -102.5,23,121,0,0,0.375,0.5,n,n,n,-2,-2,0,
                 -104.75,23,121,0,0,0.5,0.5,n,n,n,-2,-2,0,
                 -107,23,121,0,0,0.625,0.5,n,n,n,-2,-2,0,
+                
+                28.25,3.66,-17.25,0,0,0.875,0.5,_n,_n,_n,-1.5,-1.5,0,
+                28.25,3.64,-19.25,0,0,0,0.625,_n,_n,_n,-1.5,-1.5,0,
             ]
             
             let t=SIN_TIME*0.5+0.5,_t=t
@@ -25656,8 +25828,8 @@ function BeeSwarmSimulator(DATA){
     _c(-0.085*2,0.3,-0.2,0.075,0.275*0.5,6,0.05,0.01,1,90,0,180)
     _c(-0.085*2,0.3,0,0.05,0.275,6,0.01,0.01,1,90,0,0)
 
-    _b(-0.2,0,0.285,0.2*1.414,0.2*1.414,0.025,0.01,0.07,2,0,0,45)
-    _b(0.2,0,0.285,0.2*1.414,0.2*1.414,0.025,0.01,0.07,2,0,0,45)
+    _b(-0.2,0,0.285,0.2*1.414,0.2*1.414,0.025,0.01,0.09,2,0,0,45)
+    _b(0.2,0,0.285,0.2*1.414,0.2*1.414,0.025,0.04,0.09,2,0,0,45)
 
     _c(0,0.195,0.05,0.175,0.05,10,0.04,0.09,3,0,0,0,0.175,100)
     _c(0,0.35,0.05,0,0.25,10,128*0.5/2048,128*0.5/2048,3,0,0,0,0.2)
@@ -25751,6 +25923,9 @@ function BeeSwarmSimulator(DATA){
     _c(0,0.2+0.05,0.2,0.075,0.02,10,0.01,0.12,19,0,0,0)
     _c(0,0.2+0.1,0.2,0.02,0.1,10,0.01,0.12,19,0,0,0)
     _b(0,0.2+0.1+0.1,0.2,0.1,0.1,0.1,0.01,0.08,19,0,0,0,100)
+
+    _b(-0.085,0.2,0,0.05,0.2,0.4,0.01,0.01,20,20,0,10)
+    _b(0.085,0.2,0,0.05,0.2,0.4,0.01,0.01,20,20,0,-10)
 
     function fluff(x,y,z,r,s){
         
@@ -28114,16 +28289,6 @@ function BeeSwarmSimulator(DATA){
     for(let i=0;i<25;i++)
     player.addSlot(null)
 
-    player.addSlot('vicious')
-    player.addSlot('bear')
-    player.addSlot('puppy')
-    player.addSlot('festive')
-    player.addSlot('digital')
-    player.addSlot('tabby')
-    player.addSlot('buoyant')
-    player.addSlot('buoyant')
-    player.addSlot('buoyant')
-    player.addSlot('buoyant')
     player.addSlot('buoyant')
 
     player.updateHive()
@@ -29117,6 +29282,17 @@ function BeeSwarmSimulator(DATA){
             -61,5.5,35,6,1,-0.25,0.2,0.1,beeInfo.bucko.u,beeInfo.bucko.v,beeInfo.bucko.meshPartId,
             -78.5,11,34,3,1,0,0,BEE_FLY,beeInfo.bucko.u,beeInfo.bucko.v+0.375,beeInfo.bucko.meshPartId,
             53,20,91,3,-0.6,0,-1,BEE_FLY,beeInfo.honey.u,beeInfo.honey.v,beeInfo.honey.meshPartId,
+
+            28.25,3.64,-21.25,1,1,-0.1,0.2,0,beeInfo.puppy.u,beeInfo.puppy.v,beeInfo.puppy.meshPartId,
+            28.25,3.64,-23.25,1,1,0.1,-0.1,0.1,beeInfo.photon.u,beeInfo.photon.v,beeInfo.photon.meshPartId,
+            33.75,3.64,-17.25,1,-1,-0.2,-0.15,-0.1,beeInfo.cobalt.u,beeInfo.cobalt.v,beeInfo.cobalt.meshPartId,
+            33.75,3.64,-19.25,1,-1,0.2,-0.1,0.2,beeInfo.crimson.u,beeInfo.crimson.v,beeInfo.crimson.meshPartId,
+            33.75,3.64,-21.25,1,-1,-0.1,0.05,-0.1,beeInfo.festive.u,beeInfo.festive.v,beeInfo.festive.meshPartId,
+            33.75,3.64,-23.25,1,-1,0,0.1,0.2,beeInfo.tabby.u,beeInfo.tabby.v,beeInfo.tabby.meshPartId,
+
+            31,8.25,-15,4,-0.1,-0.15,0.8,0,beeInfo.photon.u,beeInfo.photon.v,beeInfo.photon.meshPartId,
+            34,7.3,-15,4,-0.1,-0.15,0.6,-0.3,beeInfo.festive.u,beeInfo.festive.v,beeInfo.festive.meshPartId,
+            28,7.3,-15,4,0,-0.1,0.8,0.2,beeInfo.puppy.u,beeInfo.puppy.v,beeInfo.puppy.meshPartId,
         ]
         
         gl.useProgram(tokenGeometryProgram)
@@ -29161,14 +29337,8 @@ function BeeSwarmSimulator(DATA){
         
         if(user.keys.o){
 
-            // player.body.position.set(0,1005,1010)
-            // player.body.velocity.set(0,0,0)
-
-            console.error(player.body.position.x.toFixed(1),player.body.position.y.toFixed(1),player.body.position.z.toFixed(1))
-
-            player.body.position.set(0,50,85)
-
-            
+            player.body.position.set(0,1002,1013)
+            player.body.velocity.set(0,0,0)
 
             for(let i in objects.planters){
 

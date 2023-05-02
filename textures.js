@@ -8830,6 +8830,16 @@ window.textures_decals=function(tex_ctx){
     tex_ctx.scale(2,2.2)
     canvg(tex_ctx.canvas,"<svg><g transform='translate(35,35) scale(1,0.6)'> <path fill='rgb(255, 200, 5)' stroke='black' stroke-width='2' d='M -15 -20L 15 -20C16 -15 15 -15 20 -15L20 15C15 15 15 15 15 20L-15 20C-15 15 -15 15 -20 15L-20 -15C-15 -15 -15 -15 -15 -20'></path> <path stroke='rgb(255,0,0)' fill='rgb(0,0,0,0)' stroke-width='1' d='M-15 -11L15 -11L15 11L-15 11L-15 -11M11 -11L11 11M-11 -11L-11 11'></path> <path stroke='rgb(255,0,0)' fill='rgb(0,0,0,0)' stroke-width='2' d='M-3 -7L-3 -0M3 -7L3 -0M-3 3L0 7L3 3'></path> </g>")
     tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*7,128*4+-2)
+    tex_ctx.scale(2,2)
+    canvg(tex_ctx.canvas,"<svg><path fill='rgb(255,220,70)' stroke='rgb(0,0,0)' stroke-width='1.5' d='M35 15C 20 17 10 55 35 55M35 15C 50 17 60 55 35 55'></path><path stroke='rgb(235,205,0)' stroke-width='2' fill='rgb(0,0,0,0)' d='M 25 25C 25 25 40 25 40 18M 22 34C 25 35 40 35 47 28M 22 44C 25 45 40 45 49 38M 28 52C 25 53 40 53 47 47'></path><path stroke='rgb(255,255,255)' stroke-width='3' fill='rgb(0,0,0,0)' d='M 35 18C 30 20 28 22 27 26'></path><path stroke='rgb(255,255,255)' stroke-width='3' fill='rgb(0,0,0,0)' d='M 35 18C 30 20 28 22 27 26M 25 16C 30 20 28 22 37 26' transform='translate(52,17) rotate(100) scale(0.5,0.5)'></path><path stroke='rgb(255,255,255)' stroke-width='3' fill='rgb(0,0,0,0)' d='M 35 18C 30 20 28 22 27 26M 25 16C 30 20 28 22 37 26' transform='translate(20,22) rotate(28) scale(0.5,0.5)'></path><path stroke='rgb(255,255,255)' stroke-width='3' fill='rgb(0,0,0,0)' d='M 35 18C 30 20 28 22 27 26M 25 16C 30 20 28 22 37 26' transform='translate(57,52) rotate(168) scale(0.5,0.5)'></path><path fill='rgb(0,0,0,0.2)' d='M47 25C 57 56 35 60 23 50C 32 48 41 50 50 35'></path>")
+    tex_ctx.setTransform(1,0,0,1,0,0)
+    
+    tex_ctx.translate(128*0+8,128*5+12)
+    tex_ctx.scale(1.6,1.6)
+    canvg(tex_ctx.canvas,"<svg><path d='M 26 40C 14 39 4 12 30 28C 35 1 45 12 50 26C 68 10 73 31 60 41C 67 58 51 74 41 52C 37 58 2 74 26 40' stroke='rgb(0,0,0)' fill='rgb(186, 157, 54)' stroke-width='2' transform='scale(0.9,0.9) translate(-2,0)'></path><path fill='rgb(255, 255, 110)' d='M5.71,16.85L8.23,26.33L0.00,21.00L-8.23,26.33L-5.71,16.85L-13.31,10.67L-3.53,10.15L-0.00,1.00L3.53,10.15L13.31,10.67L5.71,16.85z' transform='translate(34,23) scale(0.75,0.75) rotate(-7)' stroke='black' stroke-width='1.5'></path><path d='M 31 14L 32 21M 52 23L 46 28M 44 52L 42 45M 16 50L 22 43M 13 25L 19 29' stroke='rgb(240, 255, 145)' fill='rgb(0,0,0,0)' stroke-width='2' transform='translate(2,0)'></path>")
+    tex_ctx.setTransform(1,0,0,1,0,0)
 }
 
 window.textures_bear=function(tex_ctx){
