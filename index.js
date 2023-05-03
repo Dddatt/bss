@@ -835,7 +835,8 @@ function BeeSwarmSimulator(DATA){
 
             document.getElementById('toggleSound').addEventListener('click',function(){
                 
-                player.soundOn=!player.soundOn
+                player.soundOn=false
+                player.addMessage('🔇 Sound is broken 🔇')
                 re()
             })
             
