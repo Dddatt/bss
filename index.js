@@ -331,7 +331,7 @@ function BeeSwarmSimulator(DATA){
             return
         }
         
-        let src=window['/audio/music_'+sound]
+        let src='window.music_'+sound
         
         let SAMPLE_RATE=16000
         
