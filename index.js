@@ -802,8 +802,8 @@ function BeeSwarmSimulator(DATA){
                 togglePollenText.style.color=player.setting_enablePollenText?'rgb(0,150,0)':'rgb(180,0,0)'
                 togglePollenAbv.innerHTML='Abbreviate Pollen: '+(player.setting_enablePollenAbv?'On':'Off')
                 togglePollenAbv.style.color=player.setting_enablePollenAbv?'rgb(0,150,0)':'rgb(180,0,0)'
-                togglePollenText.innerHTML='Sound: '+(player.soundOn?'On':'Off')
-                togglePollenText.style.color=player.soundOn?'rgb(0,150,0)':'rgb(180,0,0)'
+                toggleSound.innerHTML='Sound: '+(player.soundOn?'On':'Off')
+                toggleSound.style.color=player.soundOn?'rgb(0,150,0)':'rgb(180,0,0)'
             }
             
             re()
