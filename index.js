@@ -29336,7 +29336,6 @@ function BeeSwarmSimulator(DATA){
         gl.uniformMatrix4fv(glCache.mob_viewMatrix,gl.FALSE,player.viewMatrix)
         
         if(user.keys.o){
-            //-23,50.4,125
             player.body.position.set(-23,50.4,125)
             player.body.velocity.set(0,0,0)
 
