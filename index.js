@@ -23115,7 +23115,7 @@ function BeeSwarmSimulator(DATA){
             dialogueIndex:0,
             dialogue:window.dialogue_hbpencil(player,items,NPCs),
             mesh:new Mesh(),
-            meshParams:{x:25,y:49.4,z:-127,r:2,s:0.4,texture:{face:{u:2,v:1},torso:{texture:true,u:1,v:2},extremities:{u:0,v:0},ears:{u:0,v:0.1}}}
+            meshParams:{x:25,y:49.4,z:-125,r:2,s:0.4,texture:{face:{u:2,v:1},torso:{texture:true,u:1,v:2},extremities:{u:0,v:0},ears:{u:0,v:0.1}}}
         },
     }
 
