@@ -327,7 +327,9 @@ function BeeSwarmSimulator(DATA){
     function playSound(sound,vol) {
 
         //SOUND IS DISABLED
-        return
+        if (!player.soundOn) {
+            return
+        }
         
         let src=window['music_'+sound]
         
@@ -800,6 +802,8 @@ function BeeSwarmSimulator(DATA){
                 togglePollenText.style.color=player.setting_enablePollenText?'rgb(0,150,0)':'rgb(180,0,0)'
                 togglePollenAbv.innerHTML='Abbreviate Pollen: '+(player.setting_enablePollenAbv?'On':'Off')
                 togglePollenAbv.style.color=player.setting_enablePollenAbv?'rgb(0,150,0)':'rgb(180,0,0)'
+                toggleSound.innerHTML='Sound: '+(player.soundOn?'On':'Off')
+                toggleSound.style.color=player.soundOn?'rgb(0,150,0)':'rgb(180,0,0)'
             }
             
             re()
@@ -826,6 +830,13 @@ function BeeSwarmSimulator(DATA){
             document.getElementById('resetChar').addEventListener('click',function(){
                 
                 player.health=-100
+                re()
+            })
+
+            document.getElementById('toggleSound').addEventListener('click',function(){
+                
+                player.soundOn=false
+                player.addMessage('🔇 Sound is broken 🔇')
                 re()
             })
             
@@ -1007,6 +1018,11 @@ function BeeSwarmSimulator(DATA){
         datsocool_NPC:{
 
             minX:-23-2.5,maxX:-23+2.5,minY:30,maxY:39,minZ:125-2.5,maxZ:125+2.5
+        },
+
+        hbpencil_NPC:{
+
+            minX:-25-2.5,maxX:-25+2.5,minY:47.5,maxY:56.5,minZ:125-2.5,maxZ:125+2.5
         },
 
         noob_shop:{
@@ -19079,6 +19095,8 @@ function BeeSwarmSimulator(DATA){
 
         out.restrictionInfo={}
 
+        out.soundOn=false
+
         out.computeRestrictionInfo=function(){
 
             out.restrictionInfo.wall=[0.3*(out.targetLight<0.9?0:1),0.7*(out.targetLight<0.9?0:1),1.2*(out.targetLight<0.9?0:1)]
@@ -23101,6 +23119,16 @@ function BeeSwarmSimulator(DATA){
             dialogue:window.dialogue_datsocool(player,items,NPCs),
             mesh:new Mesh(),
             meshParams:{x:23,y:36.9,z:-127,r:2,s:0.4,texture:{face:{u:2,v:1},torso:{texture:false,u:1,v:0.7},extremities:{u:0,v:0},ears:{u:0,v:0.1}}}
+        },
+
+        hbpencil:{
+            
+            viewMatrix:[-25,49.8,125.1,Math.PI,-0.15],
+            exclaimPos:[-25,50.4,125],
+            dialogueIndex:0,
+            dialogue:window.dialogue_hbpencil(player,items,NPCs),
+            mesh:new Mesh(),
+            meshParams:{x:25,y:49.4,z:-127,r:2,s:0.4,texture:{face:{u:2,v:1},torso:{texture:true,u:1,v:2},extremities:{u:0,v:0},ears:{u:0,v:0.1}}}
         },
     }
 
@@ -29321,8 +29349,7 @@ function BeeSwarmSimulator(DATA){
         gl.uniformMatrix4fv(glCache.mob_viewMatrix,gl.FALSE,player.viewMatrix)
         
         if(user.keys.o){
-
-            player.body.position.set(0,1002,1013)
+            player.body.position.set(-23,50.4,125)
             player.body.velocity.set(0,0,0)
 
             for(let i in objects.planters){
