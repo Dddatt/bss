@@ -1009,9 +1009,9 @@ function BeeSwarmSimulator(DATA){
             minX:-23-2.5,maxX:-23+2.5,minY:30,maxY:39,minZ:125-2.5,maxZ:125+2.5
         },
 
-        HB_the_Pencil_NPC:{
+        HBpencil_NPC:{
 
-            minX:-23-2.5,maxX:-23+2.5,minY:47,maxY:56,minZ:125-2.5,maxZ:125+2.5
+            minX:-23-2.5,maxX:-23+2.5,minY:47.5,maxY:56.5,minZ:125-2.5,maxZ:125+2.5
         },
 
         noob_shop:{
@@ -23108,14 +23108,14 @@ function BeeSwarmSimulator(DATA){
             meshParams:{x:23,y:36.9,z:-127,r:2,s:0.4,texture:{face:{u:2,v:1},torso:{texture:false,u:1,v:0.7},extremities:{u:0,v:0},ears:{u:0,v:0.1}}}
         },
 
-        HB_the_Pencil:{
+        HBpencil:{
             
-            viewMatrix:[-23,49.3,125.1,Math.PI,-0.15],
-            exclaimPos:[-23,49.9,125],
+            viewMatrix:[-23,49.8,125.1,Math.PI,-0.15],
+            exclaimPos:[-23,50.4,125],
             dialogueIndex:0,
-            dialogue:window.dialogue_HB_the_Pencil(player,items,NPCs),
+            dialogue:window.dialogue_HBpencil(player,items,NPCs),
             mesh:new Mesh(),
-            meshParams:{x:23,y:48.9,z:-127,r:2,s:0.4,texture:{face:{u:2,v:1},torso:{texture:true,u:1,v:2},extremities:{u:0,v:0},ears:{u:0,v:0.1}}}
+            meshParams:{x:23,y:49.4,z:-127,r:2,s:0.4,texture:{face:{u:2,v:1},torso:{texture:true,u:1,v:2},extremities:{u:0,v:0},ears:{u:0,v:0.1}}}
         },
     }
 
@@ -29336,8 +29336,8 @@ function BeeSwarmSimulator(DATA){
         gl.uniformMatrix4fv(glCache.mob_viewMatrix,gl.FALSE,player.viewMatrix)
         
         if(user.keys.o){
-
-            player.body.position.set(0,1002,1013)
+            //-23,50.4,125
+            player.body.position.set(-23,50.4,125)
             player.body.velocity.set(0,0,0)
 
             for(let i in objects.planters){
