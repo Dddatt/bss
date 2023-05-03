@@ -327,9 +327,11 @@ function BeeSwarmSimulator(DATA){
     function playSound(sound,vol) {
 
         //SOUND IS DISABLED
-        return
+        if (!player.soundOn) {
+            return
+        }
         
-        let src=window['music_'+sound]
+        let src=window['audio/music_'+sound]
         
         let SAMPLE_RATE=16000
         
@@ -800,6 +802,8 @@ function BeeSwarmSimulator(DATA){
                 togglePollenText.style.color=player.setting_enablePollenText?'rgb(0,150,0)':'rgb(180,0,0)'
                 togglePollenAbv.innerHTML='Abbreviate Pollen: '+(player.setting_enablePollenAbv?'On':'Off')
                 togglePollenAbv.style.color=player.setting_enablePollenAbv?'rgb(0,150,0)':'rgb(180,0,0)'
+                togglePollenText.innerHTML='Sound: '+(player.soundOn?'On':'Off')
+                togglePollenText.style.color=player.soundOn?'rgb(0,150,0)':'rgb(180,0,0)'
             }
             
             re()
@@ -826,6 +830,12 @@ function BeeSwarmSimulator(DATA){
             document.getElementById('resetChar').addEventListener('click',function(){
                 
                 player.health=-100
+                re()
+            })
+
+            document.getElementById('toggleSound').addEventListener('click',function(){
+                
+                player.soundOn=!player.soundOn
                 re()
             })
             
@@ -19083,6 +19093,8 @@ function BeeSwarmSimulator(DATA){
     player=(function(out){
 
         out.restrictionInfo={}
+
+        out.soundOn=false
 
         out.computeRestrictionInfo=function(){
 
