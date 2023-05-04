@@ -417,8 +417,6 @@ function BeeSwarmSimulator(DATA){
     let texCanvas=document.getElementById('tex-canvas')
     let tex_ctx=texCanvas.getContext('2d',{willReadFrequently:true})
 
-    let devMode = DATA.id==="datsobuoyantbeeadorablethaidramadevworld:D"?true:false
-
     if(!gl){
         
         alert('WebGL2 is not supported. Switch to a compatiable browser or computer to play.')
@@ -495,7 +493,7 @@ function BeeSwarmSimulator(DATA){
     gl.enable(gl.CULL_FACE)
     gl.cullFace(gl.BACK)
 
-    player.devMode = devMode //yey
+    player.devMode = DATA.id==="datsobuoyantbeeadorablethaidramadevworld:D"?true:false //ugh I hope this works :P
 
     let blenderRecipes=[
         
