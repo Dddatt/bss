@@ -493,7 +493,7 @@ function BeeSwarmSimulator(DATA){
     gl.enable(gl.CULL_FACE)
     gl.cullFace(gl.BACK)
 
-    if(DATA.id==="datsobuoyantbeeadorablethaidramadevworld:D"){
+    if(DATA.id=="datsobuoyantbeeadorablethaidramadevworld:D"){
         player.devMode = true
     }
     else {
