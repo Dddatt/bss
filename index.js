@@ -164,7 +164,7 @@ function main(){
                 document.getElementById('mainMenu').style.display='none'
                 BeeSwarmSimulator({id:res[index].id,saveCode:res[index].data.saveCode})
                 if (res[index].id === "datsobuoyantbeeadorablethaidramadevworld:D") {
-                    window.devMode = true
+                    player.devMode = true
                 }
             }
     
@@ -1127,7 +1127,7 @@ function BeeSwarmSimulator(DATA){
             
             minX:-62,maxX:-57,minY:0,maxY:5,minZ:-11.5-3,maxZ:-11.5+3
         },
-        if (window.devMode) {
+        if (player.devMode) {
             become_attack_hive:{
                 
                 isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:2-1,maxZ:2+1,message:'become super op attack hive',func:function(player){
@@ -1539,7 +1539,7 @@ function BeeSwarmSimulator(DATA){
                 player.updateGear()
             },requirements:function(player){
                 
-                if(player.discoveredBees.length<25 || !window.devMode) return 'Discover 25 bee types to use the Red Cannon!'
+                if(player.discoveredBees.length<25 || !player.devMode) return 'Discover 25 bee types to use the Red Cannon!'
             }
         },
         
@@ -1560,7 +1560,7 @@ function BeeSwarmSimulator(DATA){
                 player.updateGear()
             },requirements:function(player){
                 
-                if(player.discoveredBees.length<12 || !window.devMode) return 'Discover 12 bee types to use the Yellow Cannon!'
+                if(player.discoveredBees.length<12 || !player.devMode) return 'Discover 12 bee types to use the Yellow Cannon!'
             }
         },
 
@@ -1581,7 +1581,7 @@ function BeeSwarmSimulator(DATA){
                 player.updateGear()
             },requirements:function(player){
                 
-                if(player.discoveredBees.length<16 || !window.devMode) return 'Discover 16 bee types to use the Blue Cannon!'
+                if(player.discoveredBees.length<16 || !player.devMode) return 'Discover 16 bee types to use the Blue Cannon!'
             }
         },
         
@@ -1602,7 +1602,7 @@ function BeeSwarmSimulator(DATA){
                 player.updateGear()
             },requirements:function(player){
                 
-                if(player.discoveredBees.length<10 || !window.devMode) return 'Discover 10 bee types to use the Slingshot!'
+                if(player.discoveredBees.length<10 || !player.devMode) return 'Discover 10 bee types to use the Slingshot!'
             }
         },
         
@@ -21726,7 +21726,7 @@ function BeeSwarmSimulator(DATA){
             pollenAmount2.textContent=pollenAmount.textContent=MATH.addCommas((out.pollen).toString())+'/'+MATH.addCommas(player.capacity.toString())
             honeyAmount2.textContent=honeyAmount.textContent=MATH.addCommas((out.honey).toString())
             
-            if(user.keys.c&&out.pollen&&window.devMode){
+            if(user.keys.c&&out.pollen&&player.devMode){
                 
                 textRenderer.add(out.pollen,[player.body.position.x,player.body.position.y+1,player.body.position.z],COLORS.honey,1,'⇆')
                 out.honey+=out.pollen
@@ -21792,7 +21792,7 @@ function BeeSwarmSimulator(DATA){
                 out.sprinklerMesh.setBuffers()
             }
             
-            if(out.fieldIn&&user.keys.g&&window.devMode){
+            if(out.fieldIn&&user.keys.g&&player.devMode){
                 
                 updateFlower(out.fieldIn,out.flowerIn.x,out.flowerIn.z,function(f){f.goo=1;},false,true,true)
                 
@@ -29351,7 +29351,7 @@ function BeeSwarmSimulator(DATA){
         gl.useProgram(mobRendererProgram)
         gl.uniformMatrix4fv(glCache.mob_viewMatrix,gl.FALSE,player.viewMatrix)
         
-        if(user.keys.o && window.devMode){
+        if(user.keys.o && player.devMode){
             //player.body.position.set(-23,50.4,125)
             //player.body.velocity.set(0,0,0)
 
@@ -29361,7 +29361,7 @@ function BeeSwarmSimulator(DATA){
             }
         }
 
-        if(user.clickedKeys.l && window.devMode){
+        if(user.clickedKeys.l && player.devMode){
 
             UPDATE_MAP_MESH()
         }
@@ -29476,7 +29476,7 @@ function BeeSwarmSimulator(DATA){
         
         player.updateUI()
         
-        if(user.clickedKeys.h && window.devMode){
+        if(user.clickedKeys.h && player.devMode){
             
             player.addEffect('haste')
             player.addEffect('focus')
