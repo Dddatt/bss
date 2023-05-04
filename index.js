@@ -163,9 +163,6 @@ function main(){
                 document.getElementById('mainInfoMenu').style.display='none'
                 document.getElementById('mainMenu').style.display='none'
                 BeeSwarmSimulator({id:res[index].id,saveCode:res[index].data.saveCode})
-                if (res[index].id === "datsobuoyantbeeadorablethaidramadevworld:D") {
-                    player.devMode = true
-                }
             }
     
             window.deleteSave=function(index){
@@ -419,6 +416,8 @@ function BeeSwarmSimulator(DATA){
 
     let texCanvas=document.getElementById('tex-canvas')
     let tex_ctx=texCanvas.getContext('2d',{willReadFrequently:true})
+
+    player.devMode = DATA.id==="datsobuoyantbeeadorablethaidramadevworld:D"?true:false
 
     if(!gl){
         
@@ -1127,10 +1126,11 @@ function BeeSwarmSimulator(DATA){
             
             minX:-62,maxX:-57,minY:0,maxY:5,minZ:-11.5-3,maxZ:-11.5+3
         },
-        if (player.devMode) {
-            become_attack_hive:{
-                
-                isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:2-1,maxZ:2+1,message:'become super op attack hive',func:function(player){
+
+        become_attack_hive:{
+            
+            isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:2-1,maxZ:2+1,message:'become super op attack hive',func:function(player){
+                if (player.devMode) {
                     player.currentGear={
                         
                         tool:'darkScythe',
@@ -1206,12 +1206,14 @@ function BeeSwarmSimulator(DATA){
                     player.addSlot('digital')
                     player.updateHive()
                 }
-            },
+            }
+        },
+        
+        become_mid_hive:{
             
-            become_mid_hive:{
-                
-                minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:10-1,maxZ:10+1,isMachine:true,message:'become midgame hive, u should make like up to 200k honey a sec with 10-150 dmg per hit and also u look rlly stubby bruh and stuff is soooooooooo sooooooooooo sooooooooooooo veryyyyyyyyyyy unbalanced ughhhh everything sucks and ugly i had to add like a million bee speed so not make the bees snails im sobbing',
-                func:function(player){
+            minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:10-1,maxZ:10+1,isMachine:true,message:'become midgame hive, u should make like up to 200k honey a sec with 10-150 dmg per hit and also u look rlly stubby bruh and stuff is soooooooooo sooooooooooo sooooooooooooo veryyyyyyyyyyy unbalanced ughhhh everything sucks and ugly i had to add like a million bee speed so not make the bees snails im sobbing',
+            func:function(player){
+                if (player.devMode) {
                     player.currentGear={
                         
                         tool:'petalWand',
@@ -1276,11 +1278,13 @@ function BeeSwarmSimulator(DATA){
                     player.addSlot('carpenter')
                     player.updateHive()
                 }
-            },
+            }
+        },
+        
+        become_red_hive:{
             
-            become_red_hive:{
-                
-                isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:4-1,maxZ:4+1,message:'become red hive',func:function(player){
+            isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:4-1,maxZ:4+1,message:'become red hive',func:function(player){
+            if (player.devMode) {
                     player.currentGear={
                         
                         tool:'darkScythe',
@@ -1356,12 +1360,13 @@ function BeeSwarmSimulator(DATA){
                     player.addSlot('digital')
                     player.updateHive()
                 }
-            },
+            }
+        },
+        
+        become_blue_hive:{
             
-            become_blue_hive:{
-                
-                isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:6-1,maxZ:6+1,message:'become blue hive',func:function(player){
-                    
+            isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:6-1,maxZ:6+1,message:'become blue hive',func:function(player){
+                if (player.devMode) {
                     player.currentGear={
                         
                         tool:'tidePopper',
@@ -1440,11 +1445,13 @@ function BeeSwarmSimulator(DATA){
                     player.addEffect('tideBlessing',1)
                     player.addEffect('bubbleBloat',1)
                 }
-            },
+            }
+        },
+        
+        become_white_hive:{
             
-            become_white_hive:{
-                
-                isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:8-1,maxZ:8+1,message:'become white hive',func:function(player){
+            isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:8-1,maxZ:8+1,message:'become white hive',func:function(player){
+                if (player.devMode) {
                     player.currentGear={
                         
                         tool:'gummyBaller',
@@ -1520,17 +1527,18 @@ function BeeSwarmSimulator(DATA){
                     player.addSlot('digital')
                     player.updateHive()
                 }
-            },
-        }
-        red_cannon:{
+            }
+        },
+    
+        redcannon:{
+        
+        isMachine:true,minX:30-3,maxX:30+3,minY:0,maxY:5,minZ:-9-3,maxZ:-9+3,message:'Use Red Cannon',func:function(player){
             
-            isMachine:true,minX:30-3,maxX:30+3,minY:0,maxY:5,minZ:-9-3,maxZ:-9+3,message:'Use Red Cannon',func:function(player){
-                
-                player.stats.timesUsingTheRedCannon++
-                player.body.position.x=29
-                player.body.position.y=3
-                player.body.position.z=-6
-                player.body.velocity.x=-17
+            player.stats.timesUsingTheRedCannon++
+            player.body.position.x=29
+            player.body.position.y=3
+            player.body.position.z=-6
+            player.body.velocity.x=-17
                 player.body.velocity.y=52
                 player.body.velocity.z=26
                 player.removeAirFrictionUntilGrounded=true
