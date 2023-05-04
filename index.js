@@ -417,7 +417,7 @@ function BeeSwarmSimulator(DATA){
     let texCanvas=document.getElementById('tex-canvas')
     let tex_ctx=texCanvas.getContext('2d',{willReadFrequently:true})
 
-    player.devMode = DATA.id==="datsobuoyantbeeadorablethaidramadevworld:D"?true:false
+    let devMode = DATA.id==="datsobuoyantbeeadorablethaidramadevworld:D"?true:false
 
     if(!gl){
         
@@ -494,6 +494,8 @@ function BeeSwarmSimulator(DATA){
     gl.depthFunc(gl.LEQUAL)
     gl.enable(gl.CULL_FACE)
     gl.cullFace(gl.BACK)
+
+    player.devMode = devMode //yey
 
     let blenderRecipes=[
         
@@ -838,7 +840,7 @@ function BeeSwarmSimulator(DATA){
             document.getElementById('toggleSound').addEventListener('click',function(){
                 
                 player.soundOn=false
-                player.addMessage('🔇 Sound is broken 🔇')
+                player.addMessage('🔇 Sound is broken :C 🔇')
                 re()
             })
             
