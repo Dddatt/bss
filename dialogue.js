@@ -1,11 +1,39 @@
 let mulberry32=function(a){
 
-    return function(){
-      let t=a+=0x6D2B79F5
-      t=Math.imul(t^t>>>15,t|1)
-      t^=t+Math.imul(t^t>>>7,t|61)
-      return ((t^t>>>14)>>>0)/4294967296
+    let ret=function(){
+
+        let t=a+=0x6D2B79F5
+        t=Math.imul(t^t>>>15,t|1)
+        t^=t+Math.imul(t^t>>>7,t|61)
+        return ((t^t>>>14)>>>0)/4294967296
     }
+
+    ret()
+    ret()
+    ret()
+    ret()
+    ret()
+    ret()
+    ret()
+    ret()
+    ret()
+    ret()
+    ret()
+    ret()
+    ret()
+    ret()
+    ret()
+    ret()
+    ret()
+    ret()
+    ret()
+    ret()
+    ret()
+    ret()
+    ret()
+    ret()
+
+    return ret
 }
 
 
@@ -78,13 +106,13 @@ window.dialogue_polarBear=function(player,items,NPCs){
         let rew=[['honey',100000+((rand()*12-2)|0)*10000],['treat',10+(rand()*4|0)*5]]
         
         if(rand()<0.5) rew.push(['ticket',1])
-        if(rand()<0.2) rew.push([['glitter','magicBean','oil','enzymes','glue'][(Math.random()*5)|0],1])
+        if(rand()<0.2) rew.push([['glitter','magicBean','oil','enzymes','glue'][(rand()*5)|0],1])
 
         return ["Hey there! You hungry? If you collect the ingredients, I'll cook us up something good.","So good it'll permanently increase the maximum energy of your bees by 5%! I'll even throw in some honey for dessert!","Now, if you'll excuse me, I'm going back to coding. I don't do this in the real game, but I heard polar bears are nerds at coding.",
 
             function(){
 
-                switch(    3||    (Math.random()*8)|0){
+                switch((player.discoveredBees.length>24?rand()*8:rand()*7+1)|0){
 
                     case 0:
 
@@ -103,38 +131,38 @@ window.dialogue_polarBear=function(player,items,NPCs){
                     
                     case 2:
                         
-                        player.addQuest('Microwaved Sweets',[['redPollen',120000],['pollenFromPineTreeForest',80000],['werewolf',1],['spider',1],['gumdropsTokens',3]],'polarBear')
-                        rew.push(['jellyBeans',3])
+                        player.addQuest('Microwaved Sweets',[['redPollen',120000],['pollenFromPineTreeForest',80000],['gumdropsTokens',3]],'polarBear')
+                        rew.push(['jellyBeans',1])
                         
                     break;
                     
                     case 3:
 
-                        player.addQuest('Spiky Stew',[['pollenFromCactusField',100000+diff],['whitePollen',75000]],'polarBear')
+                        player.addQuest('Spiky Stew',[['pollenFromCactusField',100000],['whitePollen',75000]],'polarBear')
                         
                     break;
                     
                     case 4:
 
-                        player.addQuest('Pumpkin Pie',[['pollenFromPumpkinPatch',150000],['pollenFromSunflowerField',60000],['ladybug',2]],'polarBear')
+                        player.addQuest('Pumpkin Pie',[['pollenFromPumpkinPatch',150000],['pollenFromSunflowerField',60000],['ladybug',1]],'polarBear')
                         
                     break;
                     
                     case 5:
 
-                        player.addQuest('Beetle Brew',[['pollenFromPineapplePatch',120000],['pollenFromDandelionField',50000],['ladybug',5],['rhinoBeetle',5]],'polarBear')
+                        player.addQuest('Beetle Brew',[['pollenFromPineapplePatch',120000],['pollenFromDandelionField',50000],['ladybug',1],['rhinoBeetle',1]],'polarBear')
                         
                     break;
                     
                     case 6:
 
-                        player.addQuest('Candied Beetles',[['pollenFromStrawberryField',150000],['pollenFromBlueFlowerField',25000],['rhinoBeetle',6]],'polarBear')
+                        player.addQuest('Candied Beetles',[['pollenFromStrawberryField',150000],['pollenFromBlueFlowerField',25000],['rhinoBeetle',2]],'polarBear')
                         
                     break;
                     
                     case 7:
 
-                        player.addQuest('Scorpion Salad',[['pollenFromRoseField',300000],['scorpion',4]],'polarBear')
+                        player.addQuest('Scorpion Salad',[['pollenFromRoseField',300000],['scorpion',1]],'polarBear')
                         
                     break;
                 }
@@ -144,11 +172,6 @@ window.dialogue_polarBear=function(player,items,NPCs){
         
         ]
     }
-    
-    
-    
-    // {diaglogueAmount:4,dialogue:['a',function(){player.addQuest('name',[['pollen',0]])},'b',function(){addReward([['ticket',1]])}]}
-
 
     return 
 }
@@ -226,8 +249,8 @@ window.dialogue_brownBear=function(player,items,NPCs){
                 
                 if(rand()<0.5){
                     
-                    let n=['redPollen','bluePollen','whitePollen'][(Math.random()*3)|0]
-                    req.push([n,Math.floor(am*(Math.random()*0.25+0.8))])
+                    let n=['redPollen','bluePollen','whitePollen'][(rand()*3)|0]
+                    req.push([n,Math.floor(am*(rand()*0.25+0.8))])
                     
                     n=n[0].toUpperCase()+n.substring(1)
 
@@ -241,7 +264,7 @@ window.dialogue_brownBear=function(player,items,NPCs){
                     
                     types.splice(types.indexOf(n),1)
                     
-                    req.push([n,Math.floor(am*0.5*(Math.random()*0.25+0.8)*(1/((r-1)*0.25+1)))])
+                    req.push([n,Math.floor(am*0.5*(rand()*0.25+0.8)*(1/((r-1)*0.25+1)))])
                     
                     n=n.replace('pollenFrom','').replace('Field','').replace('Patch','').replace('Field','').replace('Forest','').toLowerCase()
                     
@@ -340,7 +363,7 @@ window.dialogue_hbpencil=function(player,items){
         player.updateInventory()
     }
     
-    return ["Um, hi! I'm HB_the_Pencil.","I helped Dat and Astro bugtest this game.","Originally Dat was the only developer with an NPC, but I went ahead and used my rAd ProGRaMMiNg sKilLz to add myself as well.","(totally didn't just copy all of this from his NPC lol) Anyways, my job is to tell you the epic history of this game.","Don't worry, I still have quests, they just aren't as important as the history :D","OK, here we go!","So: almost exactly a year before the release of this game, Dat released Karlson 3D on Khan Academy. It had 25 levels and was one of the best (if not the best) 3D games on Khan.","At the end of the final level, there was a sneaky message board. Here's your first quest:",function(){player.addQuest('Crouching Hitbox, Higher Launching',[['rhinoBeetle',3],['ladybug',3],['pollenFromMountainTopField',1000000000],['flames',25],['stingerUsed',25],['timesUsingTheRedCannon',20],['timesUsingTheBlueCannon',20],['timesUsingTheYellowCannon',20],['timesUsingTheSlingshot',20]],'hbpencil');},'The message board said, "Congratulations! You are now an EPIC GAMER!!!! Thx 4 playing!!! More games to come!".',"This was followed by a smaller, more cryptic message.",function(){addReward([['honey',75000000],['mythicEgg',1],['ticket',5],['invigoratingVial',1]])},'The message said, "The end of a game... The beginning of the best games on KA." Little did we know how true that would turn out to be...',function(){player.addQuest('Waiting for Something New',[['mondoChick',2],['werewolf',5],['rogueViciousBee',3],['royalJellyTokens',15],['tokensFromPlanters',50]],'hbpencil');},"A few weeks later (just before the end of the school year), I found a new game...",function(){addReward([['honey',100000000],['mythicEgg',1],['plasticPlanter',1],['glitter',3],['ticket',5]])},"The game wasn't much at the time: a small character in an empty field, with a 3rd person camera, something nobody had ever really done before on Khan. Eventually, flowers, bees, and tokens showed up...",function(){player.addQuest('Testing Testing',[['whitePollen',1000000],['redPollen',1000000],['bluePollen',1000000],['hasteTokens',500],['bombTokens',500],['melodyTokens',500]],'hbpencil');},"I immediately left a comment and signed myself up for bugtesting. This game looked promising.",function(){addReward([['honey',100000000],['mythicEgg',1],['basicEgg',1]])},"As more and more people found the game, and more and more features were added, we ran into a problem. Khan Academy just couldn't handle the awesomeness of this game anymore.",function(){player.addQuest('Relocation',[['pollenFromAntField',10000000],['ant',50],['tunnelBear',1],['kingBeetle',2],['rogueViciousBee',5],['werewolf',5],['spider',10],['mantis',20],['scorpion',20]],'hbpencil');},"We ended up moving the game to GitHub. Dat had already been using Khan Academy programs to save graphics, so why not use GitHub to import most of the game?",function(){addReward([['honey',250000000],['mythicEgg',1],['tabbyBeeEgg',1],['purplePotion',1],['loadedDice',1]])},"Since then, we've found hundreds of bugs, found ways to implement sound, and become frustrated over codespace limitations.",function(){player.addQuest('Deadline',[['bombTokens',5000],['bubbles',150],['blueAbilityTokens',1000],['redAbilityTokens',1000],['timesUsingTheBlueCannon',50],['fallingCoconuts',35],['mantis',25],['rhinoBeetle',50],['rogueViciousBee',5]],'hbpencil');},"And now, after over a year of development, the game is done!",function(){addReward([['honey',2500000000],['starTreat',5],['mythicEgg',1],['royalJelly',250],['ticket',15],['treat',5270],['magicBean',10]])},"I hope you enjoyed this game! (and questline)","Have you tried doing the other quests yet? (well obviously you have you had to use the cannon to get here, unless you hacked??)","In keeping with Dat's tradition I snuck in 4 or 5 references in my quests >:D","one of them is so cryptic nobody will get it hehehe"]
+    return ["Um, hi! I'm HB_the_Pencil.","I helped Dat and Astro bugtest this game.","Originally Dat was the only developer with an NPC, but I went ahead and used my rAd ProGRaMMiNg sKilLz to add myself as well.","(totally didn't just copy all of this from his NPC lol) Anyways, my job is to tell you the epic history of this game.","Don't worry, I still have quests, they just aren't as important as the history :D","OK, here we go!","So: almost exactly a year before the release of this game, Dat released Karlson 3D on Khan Academy. It had 25 levels and was one of the best (if not the best) 3D games on Khan.","At the end of the final level, there was a sneaky message board. Here's your first quest:",function(){player.addQuest('Crouching Hitbox, Higher Launching',[['rhinoBeetle',3],['ladybug',3],['pollenFromMountainTopField',10000000],['flames',5],['stingerUsed',5],['timesUsingTheRedCannon',25],['timesUsingTheBlueCannon',25],['timesUsingTheYellowCannon',25],['timesUsingTheSlingshot',25]],'hbpencil');},'The message board said, "Congratulations! You are now an EPIC GAMER!!!! Thx 4 playing!!! More games to come!".',"This was followed by a smaller, more cryptic message.",function(){addReward([['honey',7500000],['mythicEgg',1],['ticket',5],['ticket',3]])},'The message said, "The end of a game... The beginning of the best games on KA." Little did we know how true that would turn out to be...',function(){player.addQuest('Waiting for Something New',[['mondoChick',1],['werewolf',2],['rogueViciousBee',3],['royalJellyTokens',10],['tokensFromPlanters',35]],'hbpencil');},"A few weeks later (just before the end of the school year), I found a new game...",function(){addReward([['honey',12500000],['mythicEgg',1],['paperPlanter',1],['glitter',3],['treat',100]])},"The game wasn't much at the time: a small character in an empty field, with a 3rd person camera, something nobody had ever really done before on Khan. Eventually, flowers, bees, and tokens showed up...",function(){player.addQuest('Testing Testing',[['whitePollen',10000000],['redPollen',10000000],['bluePollen',10000000],['hasteTokens',75],['bombTokens',75],['melodyTokens',20]],'hbpencil');},"I immediately left a comment and signed myself up for bugtesting. This game looked promising.",function(){addReward([['honey',100000000],['mythicEgg',1],['basicEgg',1]])},"As more and more people found the game, and more and more features were added, we ran into a problem. Khan Academy just couldn't handle the awesomeness of this game anymore.",function(){player.addQuest('Relocation',[['pollenFromAntField',25000000],['ant',50],['tunnelBear',1],['kingBeetle',2],['rogueViciousBee',3],['werewolf',4],['spider',6],['mantis',8],['scorpion',8]],'hbpencil');},"We ended up moving the game to GitHub. Dat had already been using Khan Academy programs to save graphics, so why not use GitHub to import most of the game?",function(){addReward([['honey',100000000],['mythicEgg',1],['purplePotion',1],['loadedDice',1],['glue',3]])},"Since then, we've found hundreds of bugs, found ways to implement sound, and become frustrated over codespace limitations.",function(){player.addQuest('Deadline',[['bombTokens',500],['bubbles',75],['blueAbilityTokens',350],['redAbilityTokens',350],['timesUsingTheBlueCannon',50],['fallingCoconuts',25],['mantis',14],['rhinoBeetle',20],['rogueViciousBee',4]],'hbpencil');},"And now, after over a year of development, the game is done!",function(){addReward([['honey',250000000],['giftedMythicEgg',1],['royalJelly',25],['ticket',15],['treat',5270],['magicBean',5]])},"I hope you enjoyed this game! (and questline)","Have you tried doing the other quests yet? (well obviously you have you had to use the cannon to get here, unless you hacked??)","In keeping with Dat's tradition I snuck in 4 or 5 references in my quests >:D","one of them is so cryptic nobody will get it hehehe"]
   
 }
 
@@ -446,257 +469,6 @@ window.dialogue_spiritBear=function(player,items){
 }
 
 
-window.dialogue_giftedBuckoBee=function(player,items,NPCs){
-    
-    let addCommas=(s)=>{for(let i=s.length-3;i>0;i-=3){s=s.substring(0,i)+','+s.substr(i,s.length)}return s},doGrammar=(s)=>{let str=s.slice(),_s='';for(let i in str){if(str[i].toUpperCase()===str[i]){_s=_s+' '+str[i]}else{_s=_s+str[i]}}return _s[0].toUpperCase()+_s.substring(1,_s.length)},addReward=(arr)=>{
-        
-        for(let i in player.quests){
-            
-            if(player.quests[i].NPC==='giftedBuckoBee') player.quests.splice(i,1)
-            
-        }
-        
-        for(let i in arr){
-            
-            if(arr[i][0]==='honey'){
-                
-                player.honey+=arr[i][1]
-                
-            } else {
-                
-                items[arr[i][0]].amount+=arr[i][1]
-            }
-            
-            player.addMessage('+'+addCommas(arr[i][1]+'')+' '+doGrammar(arr[i][0])+' (from Gifted Bucko Bee)')
-        }
-        
-        player.updateInventory()
-        NPCs.giftedRileyBee.portionsDone++
-    }
-    
-    return function(diff){
-
-        let rand=mulberry32(NPCs.giftedBuckoBee.seed+diff)
-        
-        let am=Math.floor(4.75*diff*diff*diff*diff+500)
-        
-        let rew=[['honey',diff*diff*150000],['blueExtract',1]]
-        
-        if(!diff%3){
-            
-            rew.push(['royalJelly',1])
-        }
-        
-        if(!diff%2){
-            
-            rew.push(['blueberry',10])
-        }
-        
-        if(diff===10){
-            
-            rew.push(['giftedSilverEgg',1])
-            
-        } else if(diff===20){
-            
-            rew.push(['giftedGoldEgg',1])
-            
-        } else if(diff===35){
-            
-            rew.push(['giftedDiamondEgg',1])
-            
-        } else if(diff===50){
-            
-            rew.push(['giftedMythicEgg',1])
-        }
-        
-        return ["Hoo hah hah! Welcom' back to ze Blue HQ!","B' sure ya complete me quest often! I' give out lots o' rewards!","Buzz buzz...","Her' be yar quest! Make 'ure to spy o' the red bees while ye a' it!",
-    
-            function(){
-                
-                switch((Math.random()*8)|0){
-                    
-                    case 0:
-                        
-                        player.addQuest('Bucko Bee: Pollen',[['bluePollen',diff*diff*160000]],'giftedBuckoBee')
-                        
-                    break;
-                    
-                    case 1:
-                        
-                        player.addQuest('Bucko Bee: Picnic',[['pollenFromBlueFlowerField',diff*diff*55000],['blueberry',15],['ant',20]],'giftedBuckoBee')
-                        
-                    break;
-                    
-                    case 2:
-                        
-                        player.addQuest('Bucko Bee: Cleanup',[['pollenFromBambooField',diff*diff*62500],['goo',diff*diff*5000],['gumdropsTokens',3]],'giftedBuckoBee')
-                        
-                    break;
-                    
-                    case 3:
-                        
-                        player.addQuest('Bucko Bee: Pinecones',[['pollenFromPineTreeForest',diff*diff*100000]],'giftedBuckoBee')
-                        
-                    break;
-                    
-                    case 4:
-                        
-                        player.addQuest('Bucko Bee: Abilities',[['blueAbilityTokens',diff*5+25],['blueBoostTokens',diff*2+20],['blueBombTokens',diff*2+20]],'giftedBuckoBee')
-                        
-                    break;
-                    
-                    case 5:
-                        
-                        player.addQuest('Bucko Bee: Attack',[['attackTokens',(diff*0.5|0)+5],['hasteTokens',15],['rhinoBeetle',Math.min(((diff*0.1)|0)+2,10)],['mantis',Math.min(((diff*0.1)|0)+1,6)]],'giftedBuckoBee')
-                        
-                    break;
-                    
-                    case 6:
-                        
-                        player.addQuest('Bucko Bee: Scrubb',[['bubbles',((diff*diff*0.015)|0)+3],['bluePollen',diff*diff*150000+414],['flyingAnt',5]],'giftedBuckoBee')
-                        
-                    break;
-                    
-                    case 7:
-                        
-                        player.addQuest('Bucko Bee: Variety',[['pollenFromPineTreeForest',diff*diff*45000],['pollenFromBambooField',diff*diff*45000],['pollenFromBlueFlowerField',diff*diff*45000]],'giftedBuckoBee')
-                        
-                    break;
-                }
-            }
-    
-        ,"Buzz!","Here be some buzzy buzz rewards!","Com' back to buzz me 'or another quest!","Buzz...buzz...",function(){addReward(rew)}
-        
-        ]
-    }
-}
-
-window.dialogue_giftedRileyBee=function(player,items,NPCs){
-    
-    let addCommas=(s)=>{for(let i=s.length-3;i>0;i-=3){s=s.substring(0,i)+','+s.substr(i,s.length)}return s},doGrammar=(s)=>{let str=s.slice(),_s='';for(let i in str){if(str[i].toUpperCase()===str[i]){_s=_s+' '+str[i]}else{_s=_s+str[i]}}return _s[0].toUpperCase()+_s.substring(1,_s.length)},addReward=(arr)=>{
-        
-        for(let i in player.quests){
-            
-            if(player.quests[i].NPC==='giftedRileyBee') player.quests.splice(i,1)
-            
-        }
-        
-        for(let i in arr){
-            
-            if(arr[i][0]==='honey'){
-                
-                player.honey+=arr[i][1]
-                
-            } else {
-                
-                items[arr[i][0]].amount+=arr[i][1]
-            }
-            
-            player.addMessage('+'+addCommas(arr[i][1]+'')+' '+doGrammar(arr[i][0])+' (from Gifted Riley Bee)')
-        }
-        
-        player.updateInventory()
-        NPCs.giftedRileyBee.portionsDone++
-    }
-    
-    return function(diff){
-
-        let rand=mulberry32(NPCs.giftedRileyBee.seed+diff)
-        
-        let am=Math.floor(4.75*diff*diff*diff*diff+500)
-        
-        let rew=[['honey',diff*diff*150000],['redExtract',1]]
-        
-        if(!diff%3){
-            
-            rew.push(['royalJelly',1])
-        }
-        
-        if(!diff%2){
-            
-            rew.push(['strawberry',10])
-        }
-        
-        if(diff===10){
-            
-            rew.push(['giftedSilverEgg',1])
-            
-        } else if(diff===20){
-            
-            rew.push(['giftedGoldEgg',1])
-            
-        } else if(diff===35){
-            
-            rew.push(['giftedDiamondEgg',1])
-            
-        } else if(diff===50){
-            
-            rew.push(['giftedMythicEgg',1])
-        }
-        
-        return ["Huzzah! Welcome back to Red HQ!","Make sure to complete my quests often! I'll give out lots of rewards!","Buzz buzz...","Here's your quest! Make sure to spy on the blue bees while you're at it!",
-    
-            function(){
-                
-                switch((Math.random()*8)|0){
-                    
-                    case 0:
-                        
-                        player.addQuest('Riley Bee: Pollen',[['redPollen',diff*diff*160000]],'giftedRileyBee')
-                        
-                    break;
-                    
-                    case 1:
-                        
-                        player.addQuest('Riley Bee: Picnic',[['pollenFromMushroomField',diff*diff*55000],['strawberry',15],['ant',20]],'giftedRileyBee')
-                        
-                    break;
-                    
-                    case 2:
-                        
-                        player.addQuest('Riley Bee: Cleanup',[['pollenFromStrawberryField',diff*diff*62500],['goo',diff*diff*5000],['gumdropsTokens',3]],'giftedRileyBee')
-                        
-                    break;
-                    
-                    case 3:
-                        
-                        player.addQuest('Riley Bee: Roses',[['pollenFromRoseField',diff*diff*100000]],'giftedRileyBee')
-                        
-                    break;
-                    
-                    case 4:
-                        
-                        player.addQuest('Riley Bee: Abilities',[['redAbilityTokens',diff*5+25],['redBoostTokens',diff*2+20],['redBombTokens',diff*2+20]],'giftedRileyBee')
-                        
-                    break;
-                    
-                    case 5:
-                        
-                        player.addQuest('Riley Bee: Attack',[['attackTokens',(diff*0.5|0)+5],['rageTokens',5],['ladybug',Math.min(((diff*0.1)|0)+2,10)],['scorpion',Math.min(((diff*0.1)|0)+1,6)]],'giftedRileyBee')
-                        
-                    break;
-                    
-                    case 6:
-                        
-                        player.addQuest('Riley Bee: Burning Bad',[['flames',((diff*diff*0.015)|0)+3],['redPollen',diff*diff*150000+329],['fireAnt',5]],'giftedRileyBee')
-                        
-                    break;
-                    
-                    case 7:
-                        
-                        player.addQuest('Riley Bee: Variety',[['pollenFromRoseField',diff*diff*45000],['pollenFromStrawberryField',diff*diff*45000],['pollenFromMushroomField',diff*diff*45000]],'giftedRileyBee')
-                        
-                    break;
-                }
-            }
-    
-        ,"Buzz!","Here buzz are some buzzy buzz rewards!","Come back to buzz me for another quest!","Buzz...buzz...",function(){addReward(rew)}
-        
-        ]
-    }
-}
-
-
 window.dialogue_motherBear=function(player,items){
     
     let addCommas=(s)=>{for(let i=s.length-3;i>0;i-=3){s=s.substring(0,i)+','+s.substr(i,s.length)}return s},doGrammar=(s)=>{let str=s.slice(),_s='';for(let i in str){if(str[i].toUpperCase()===str[i]){_s=_s+' '+str[i]}else{_s=_s+str[i]}}return _s[0].toUpperCase()+_s.substring(1,_s.length)},addReward=(arr)=>{
@@ -769,7 +541,333 @@ window.dialogue_dapperBear=function(player,items){
   
 }
 
+window.dialogue_giftedBuckoBee=function(player,items,NPCs){
+    
+    let addCommas=(s)=>{for(let i=s.length-3;i>0;i-=3){s=s.substring(0,i)+','+s.substr(i,s.length)}return s},doGrammar=(s)=>{let str=s.slice(),_s='';for(let i in str){if(str[i].toUpperCase()===str[i]){_s=_s+' '+str[i]}else{_s=_s+str[i]}}return _s[0].toUpperCase()+_s.substring(1,_s.length)},addReward=(arr)=>{
+        
+        for(let i in player.quests){
+            
+            if(player.quests[i].NPC==='giftedBuckoBee') player.quests.splice(i,1)
+            
+        }
+        
+        for(let i in arr){
+            
+            if(arr[i][0]==='honey'){
+                
+                player.honey+=arr[i][1]
+                
+            } else {
+                
+                items[arr[i][0]].amount+=arr[i][1]
+            }
+            
+            player.addMessage('+'+addCommas(arr[i][1]+'')+' '+doGrammar(arr[i][0])+' (from Gifted Bucko Bee)')
+        }
+        
+        player.updateInventory()
+        NPCs.giftedBuckoBee.portionsDone++
+    }
+    
+    return function(diff){
 
+        let rand=mulberry32(NPCs.giftedBuckoBee.seed+diff)
+        
+        let rew=[['honey',diff*diff*70000+100000],['blueExtract',1]]
+        
+        if(diff){
+            
+            if(!diff%3) rew.push(['royalJelly',1])
+            
+            if(!diff%2) rew.push(['blueberry',10])
+            
+            if(diff===10){
+                
+                rew.push(['giftedSilverEgg',1])
+                
+            } else if(diff===20){
+                
+                rew.push(['giftedGoldEgg',1])
+                
+            } else if(diff===35){
+                
+                rew.push(['giftedDiamondEgg',1])
+                
+            } else if(diff===50){
+                
+                rew.push(['giftedMythicEgg',1])
+            }
+        }
+        
+        return ["Hoo hah hah! Welcom' back to ze Blue HQ!","B' sure ya complete me quest often! I' give out lots o' rewards!","Buzz buzz...","Her' be yar quest! Make 'ure to spy o' the red bees while ye a' it!",
+    
+            function(){
+                
+                switch((rand()*8)|0){
+                    
+                    case 0:
+                        
+                        player.addQuest('Bucko Bee: Pollen',[['bluePollen',diff*diff*100000+100000]],'giftedBuckoBee')
+                        
+                    break;
+                    
+                    case 1:
+                        
+                        player.addQuest('Bucko Bee: Picnic',[['pollenFromBlueFlowerField',diff*diff*35000+35000],['blueberry',15],['ant',20]],'giftedBuckoBee')
+                        
+                    break;
+                    
+                    case 2:
+                        
+                        player.addQuest('Bucko Bee: Cleanup',[['pollenFromBambooField',diff*diff*40000+40000],['goo',diff*diff*4000+5000],['gumdropsTokens',3]],'giftedBuckoBee')
+                        
+                    break;
+                    
+                    case 3:
+                        
+                        player.addQuest('Bucko Bee: Pinecones',[['pollenFromPineTreeForest',diff*diff*75000+75000]],'giftedBuckoBee')
+                        
+                    break;
+                    
+                    case 4:
+                        
+                        player.addQuest('Bucko Bee: Abilities',[['blueAbilityTokens',diff*3+25],['blueBoostTokens',diff*2+10],['blueBombTokens',diff*2+10]],'giftedBuckoBee')
+                        
+                    break;
+                    
+                    case 5:
+                        
+                        player.addQuest('Bucko Bee: Attack',[['attackTokens',(diff*0.5|0)+5],['hasteTokens',15],['rhinoBeetle',Math.min(((diff*0.1)|0)+2,10)],['mantis',Math.min(((diff*0.1)|0)+1,6)]],'giftedBuckoBee')
+                        
+                    break;
+                    
+                    case 6:
+                        
+                        player.addQuest('Bucko Bee: Scrubb',[['bubbles',((diff*diff*0.015)|0)+3],['bluePollen',(diff+1)*(diff+1)*75000+414],['flyingAnt',5]],'giftedBuckoBee')
+                        
+                    break;
+                    
+                    case 7:
+                        
+                        player.addQuest('Bucko Bee: Variety',[['pollenFromPineTreeForest',diff*diff*30000+30000],['pollenFromBambooField',diff*diff*22500+22500],['pollenFromBlueFlowerField',diff*diff*15000+15000]],'giftedBuckoBee')
+                        
+                    break;
+                }
+            }
+    
+        ,"Buzz!","Here be some buzzy buzz rewards!","Com' back to buzz me 'or another quest!","Buzz...buzz...",function(){addReward(rew)}
+        
+        ]
+    }
+}
+
+window.dialogue_giftedRileyBee=function(player,items,NPCs){
+    
+    let addCommas=(s)=>{for(let i=s.length-3;i>0;i-=3){s=s.substring(0,i)+','+s.substr(i,s.length)}return s},doGrammar=(s)=>{let str=s.slice(),_s='';for(let i in str){if(str[i].toUpperCase()===str[i]){_s=_s+' '+str[i]}else{_s=_s+str[i]}}return _s[0].toUpperCase()+_s.substring(1,_s.length)},addReward=(arr)=>{
+        
+        for(let i in player.quests){
+            
+            if(player.quests[i].NPC==='giftedRileyBee') player.quests.splice(i,1)
+            
+        }
+        
+        for(let i in arr){
+            
+            if(arr[i][0]==='honey'){
+                
+                player.honey+=arr[i][1]
+                
+            } else {
+                
+                items[arr[i][0]].amount+=arr[i][1]
+            }
+            
+            player.addMessage('+'+addCommas(arr[i][1]+'')+' '+doGrammar(arr[i][0])+' (from Gifted Riley Bee)')
+        }
+        
+        player.updateInventory()
+        NPCs.giftedRileyBee.portionsDone++
+    }
+    
+    return function(diff){
+
+        let rand=mulberry32(NPCs.giftedRileyBee.seed+diff)
+        
+        let rew=[['honey',diff*diff*70000+100000],['redExtract',1]]
+        
+        if(diff){
+            
+            if(!diff%3) rew.push(['royalJelly',1])
+            
+            if(!diff%2) rew.push(['strawberry',10])
+            
+            if(diff===10){
+                
+                rew.push(['giftedSilverEgg',1])
+                
+            } else if(diff===20){
+                
+                rew.push(['giftedGoldEgg',1])
+                
+            } else if(diff===35){
+                
+                rew.push(['giftedDiamondEgg',1])
+                
+            } else if(diff===50){
+                
+                rew.push(['giftedMythicEgg',1])
+            }
+        }
+        
+        return ["Huzzah! Welcome back to Red HQ!","Make sure to complete my quests often! I'll give out lots of rewards!","Buzz buzz...","Here's your quest! Make sure to spy on the blue bees while you're at it!",
+    
+            function(){
+                
+                switch((rand()*8)|0){
+                    
+                    case 0:
+                        
+                        player.addQuest('Riley Bee: Pollen',[['redPollen',diff*diff*100000+100000]],'giftedRileyBee')
+                        
+                    break;
+                    
+                    case 1:
+                        
+                        player.addQuest('Riley Bee: Picnic',[['pollenFromMushroomField',diff*diff*35000+35000],['strawberry',15],['ant',20]],'giftedRileyBee')
+                        
+                    break;
+                    
+                    case 2:
+                        
+                        player.addQuest('Riley Bee: Cleanup',[['pollenFromStrawberryField',diff*diff*40000+40000],['goo',diff*diff*4000+5000],['gumdropsTokens',3]],'giftedRileyBee')
+                        
+                    break;
+                    
+                    case 3:
+                        
+                        player.addQuest('Riley Bee: Roses',[['pollenFromRoseField',diff*diff*75000+75000]],'giftedRileyBee')
+                        
+                    break;
+                    
+                    case 4:
+                        
+                        player.addQuest('Riley Bee: Abilities',[['redAbilityTokens',diff*3+25],['redBoostTokens',diff*2+10],['redBombTokens',diff*2+10]],'giftedRileyBee')
+                        
+                    break;
+                    
+                    case 5:
+                        
+                        player.addQuest('Riley Bee: Attack',[['attackTokens',(diff*0.5|0)+5],['rageTokens',5],['ladybug',Math.min(((diff*0.1)|0)+2,10)],['scorpion',Math.min(((diff*0.1)|0)+1,6)]],'giftedRileyBee')
+                        
+                    break;
+                    
+                    case 6:
+                        
+                        player.addQuest('Riley Bee: Burning Bad',[['flames',((diff*diff*0.015)|0)+3],['redPollen',(diff+1)*(diff+1)*75000+329],['fireAnt',5]],'giftedRileyBee')
+                        
+                    break;
+                    
+                    case 7:
+                        
+                        player.addQuest('Riley Bee: Variety',[['pollenFromRoseField',diff*diff*30000+30000],['pollenFromStrawberryField',diff*diff*22500+22500],['pollenFromMushroomField',diff*diff*15000+15000]],'giftedRileyBee')
+                        
+                    break;
+                }
+            }
+    
+        ,"Buzz!","Here buzz are some buzzy buzz rewards!","Come back to buzz me for another quest!","Buzz...buzz...",function(){addReward(rew)}
+        
+        ]
+    }
+}
+
+window.dialogue_honeyBee=function(player,items,NPCs){
+    
+    let addCommas=(s)=>{for(let i=s.length-3;i>0;i-=3){s=s.substring(0,i)+','+s.substr(i,s.length)}return s},doGrammar=(s)=>{let str=s.slice(),_s='';for(let i in str){if(str[i].toUpperCase()===str[i]){_s=_s+' '+str[i]}else{_s=_s+str[i]}}return _s[0].toUpperCase()+_s.substring(1,_s.length)},addReward=(arr)=>{
+        
+        for(let i in player.quests){
+            
+            if(player.quests[i].NPC==='honeyBee') player.quests.splice(i,1)
+            
+        }
+        
+        for(let i in arr){
+            
+            if(arr[i][0]==='honey'){
+                
+                player.honey+=arr[i][1]
+                
+            } else {
+                
+                items[arr[i][0]].amount+=arr[i][1]
+            }
+            
+            player.addMessage('+'+addCommas(arr[i][1]+'')+' '+doGrammar(arr[i][0])+' (from Honey Bee)')
+        }
+        
+        player.updateInventory()
+        NPCs.honeyBee.portionsDone++
+    }
+    
+    return function(diff){
+
+        let rand=mulberry32(NPCs.honeyBee.seed+diff)
+        
+        let rew=[['honey',5*(diff+1)*(diff+1)+1000]]
+        
+        if(rand()<0.5){
+            
+            rew.push(['treat',Math.min((diff*0.5+10)|0,75)])
+            
+        } else {
+            
+            rew.push(['honeysuckle',Math.min((diff*0.5+3)|0,15)])
+        }
+        
+        if(diff){
+            
+            if(!diff%2) rew.push(['royalJelly',1])
+            
+            if(!diff%3) rew.push(['whirligig',1])
+            
+            if(!diff%4) rew.push(['jellyBeans',1])
+            
+            if(!diff%6) rew.push(['ticket',5])
+            
+            if(!diff%7) rew.push(['magicBean',1])
+            
+            if(!diff%10) rew.push(['starJelly',1])
+        }
+        
+        return ["Buzz buzz","Buzz buzz...buzz?","Buzz buzz!","(You can't tell what Honey Bee is trying to say.)","(Its desire for Honey Tokens is as clear as day.)","Buzz!","(It's trying to tell you something...)","(If you complete its quests, it'll boost your conversion rate for a while!)","Buzz buzz BUZZ!",
+        
+            function(){
+                
+                player.addQuest('Honey Bee\'s Honey Hunt',[['honeyTokens',5*(diff+1)]],'honeyBee')
+                
+            }
+    
+        ,"Buzz!","Buzz...buzz buzz!","Buzz buzz buzz?!","(Honey Bee will now bless you with 30 minutes of x2 conversion rate!)","Buzz...buzz...",function(){addReward(rew)}
+        
+        ]
+    }
+}
+
+window.dialogue_antChallengeSign=function(player,items,NPCs){
+    
+    return function(diff){
+
+        return ["The Ant Challenge is a minigame involving waves of ants.","As you collect pollen, the pollen meter fills up.","Filling up the pollen meter will cause ants to fly out and attack. This counts as 1 round.","Every ant defeated contributes as 1 point.","The challenge ends when the player dies or when the 5 minute timer ends.","In the later rounds, lawnmowers will run through the field, damaging the player.","End the challenge with a high score to earn better rewards and Ant Amulets.","A Bronze Ant Amulet will be rewarded if your score between 0-24. Silver: 25-49, Gold: 50-99, Diamond: 100-149, Supreme: 150+","That's it! Have fun!"]
+    }
+}
+
+window.dialogue_gummyBear=function(player,items,NPCs){
+    
+    return function(diff){
+
+        return ["What's sweeter than honey?","Glorious gumdrops... they're just the start!","A sweet and sour, ooey-gooey universe...","Can't you see it too?","...","What's that Gummy Bee?","(Gummy Bee's invisible ghostly presense whipsers from somewhere nearby)","They're not seeing clearly?","YOU'RE ALWAYS RIGHT!","GOO-dbye, beekeeper... HAH!",function(){player.body.position.y=-1000;window.setTimeout(()=>{player.updateHive()},2000)}]
+    }
+}
 
 
 

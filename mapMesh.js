@@ -29,11 +29,7 @@ window.mapMesh=`
 
 
     
-box(23,-1,2,1,1,1,false,[1,0,1],false,false);
-box(23,-1,4,1,1,1,false,[1,0,0],false,false);
-box(23,-1,6,1,1,1,false,[0,0,1],false,false);    
-box(23,-1,8,1,1,1,false,[1,1,1],false,false);
-box(23,-1,10,1,1,1,false,[1,1,0],false,false);    
+ 
 
 box(0,-5,0,59.9,7,100,false,[0.2,0.8,0.2],true,false);
 box(0,-5,26,170,7,70,false,[0.2,0.8,0.2],true,false);

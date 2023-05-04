@@ -8454,13 +8454,16 @@ window.textures_decals=function(tex_ctx){
     e(0,44,2,2)
     tex_ctx.setTransform(1,0,0,1,0,0)
     
-    tex_ctx.translate(128*7+128*0.5+-5,128*0.5+28)
+    tex_ctx.translate(128*7+128*0.5,128*0.5+28)
     tex_ctx.fillStyle='rgb(255, 204, 0)'
     tex_ctx.strokeStyle='black'
+    let aa=tex_ctx.textAlign
+    tex_ctx.textAlign='center'
     tex_ctx.lineWidth=3
     tex_ctx.font='95px arial'
     tex_ctx.fillText('!',0,0)
     tex_ctx.strokeText('!',0,0)
+    tex_ctx.textAlign=aa
     tex_ctx.setTransform(1,0,0,1,0,0)
     
     tex_ctx.translate(128*0+128*0.5,128*1+128*0.5)
@@ -8839,6 +8842,16 @@ window.textures_decals=function(tex_ctx){
     tex_ctx.translate(128*0+8,128*5+12)
     tex_ctx.scale(1.6,1.6)
     canvg(tex_ctx.canvas,"<svg><path d='M 26 40C 14 39 4 12 30 28C 35 1 45 12 50 26C 68 10 73 31 60 41C 67 58 51 74 41 52C 37 58 2 74 26 40' stroke='rgb(0,0,0)' fill='rgb(186, 157, 54)' stroke-width='2' transform='scale(0.9,0.9) translate(-2,0)'></path><path fill='rgb(255, 255, 110)' d='M5.71,16.85L8.23,26.33L0.00,21.00L-8.23,26.33L-5.71,16.85L-13.31,10.67L-3.53,10.15L-0.00,1.00L3.53,10.15L13.31,10.67L5.71,16.85z' transform='translate(34,23) scale(0.75,0.75) rotate(-7)' stroke='black' stroke-width='1.5'></path><path d='M 31 14L 32 21M 52 23L 46 28M 44 52L 42 45M 16 50L 22 43M 13 25L 19 29' stroke='rgb(240, 255, 145)' fill='rgb(0,0,0,0)' stroke-width='2' transform='translate(2,0)'></path>")
+    tex_ctx.setTransform(1,0,0,1,0,0)
+
+    tex_ctx.translate(128*1+8,128*5+5)
+    tex_ctx.scale(1.6,1.6)
+    canvg(tex_ctx.canvas,"<svg><circle cx='38' cy='38' r='20' fill='black'></circle><circle cx='35' cy='35' r='20' fill='black'></circle><circle cx='38' cy='38' r='18' fill='rgb(207, 162, 48)'></circle><circle cx='35' cy='35' r='18' fill='rgb(255, 203, 61)'></circle><circle cx='28' cy='28' r='1.5' fill='black'></circle><circle cx='41' cy='28' r='1.5' fill='black'></circle><path fill='rgb(0,0,0,0)' stroke='black' stroke-width='1' d='M 42 37 C 41 39 30 41 29 37'></path><rect fill='white' x='35' y='39' width='3' height='4' stroke='black' stroke-width='1'></rect>")
+    tex_ctx.setTransform(1,0,0,1,0,0)
+
+    tex_ctx.translate(128*2+8,128*5+5)
+    tex_ctx.scale(1.6,1.6)
+    canvg(tex_ctx.canvas,"<svg><path d='M20 45C20 55 50 55 50 45C65 45 65 20 50 20C50 10 20 10 20 20Z' fill='rgb(255,255,255)' stroke='rgb(0,0,0)' stroke-width='1.5' transform='translate(0,3)'></path><path d='M50 40 C 60 40 60 25 50 25M50 40 L 50 25' fill='rgb(225,225,225)' stroke='rgb(0,0,0)' stroke-width='1.5' transform='translate(0,3)'></path><path d='M50 20C50 25 20 25 20 20' fill='rgb(0,0,0,0)' stroke='rgb(0,0,0)' stroke-width='1.5' transform='translate(0,3)'></path><circle cx='35' cy='53' r='8' fill='rgb(0,0,0,0.2)' transform='scale(1,0.4)'></circle><path d='M 27 36L 30 40L 33 37L 35 41L 38 36L 42 42' fill='rgb(0,0,0,0)' stroke='rgb(0,0,0,0.7)' stroke-width='1.5'></path></svg>")
     tex_ctx.setTransform(1,0,0,1,0,0)
 }
 
@@ -9324,5 +9337,41 @@ window.textures_bear=function(tex_ctx){
     tex_ctx.fillStyle='rgb(0,0,0)'
     e(-22,-20,3,6)
     e(22,-20,3,6)
+    tex_ctx.setTransform(1,0,0,1,0,0)
+
+    tex_ctx.translate(128*3+128*0.5,256*0.5+128*0.5)
+    tex_ctx.lineWidth=7
+    tex_ctx.fillStyle='rgb(242, 102, 242)'
+    tex_ctx.fillRect(-128*0.5,-128*0.5,128,128)
+    e(13,-23,6,6)
+    tex_ctx.fillStyle='rgb(119, 252, 183)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-64,64)
+    tex_ctx.lineTo(-64,20)
+    tex_ctx.bezierCurveTo(-66,-49,-18,-56,-10,-1)
+    tex_ctx.lineTo(-10,64)
+    tex_ctx.moveTo(64,64)
+    tex_ctx.lineTo(64,20)
+    tex_ctx.bezierCurveTo(66,-49,18,-56,10,-1)
+    tex_ctx.lineTo(10,64)
+    tex_ctx.fill()
+    tex_ctx.fillStyle='rgb(242, 102, 242)'
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-12,-25)
+    tex_ctx.bezierCurveTo(-11,49,-30,40,-12,64)
+    tex_ctx.moveTo(12,-25)
+    tex_ctx.bezierCurveTo(11,49,30,40,12,64)
+    tex_ctx.fill()
+    tex_ctx.fillRect(-12,-11,24,75)
+    tex_ctx.fillStyle='rgb(50,255,150)'
+    e(0,49,10,8)
+    tex_ctx.fillStyle='rgb(49, 224, 134)'
+    e(0,52,5,3)
+    tex_ctx.fillStyle='rgb(255, 255, 255)'
+    e(-19,-13,5,9)
+    e(19,-13,5,9)
+    tex_ctx.fillStyle='rgb(50,255,150)'
+    e(16,-16,2,3)
+    e(-22,-16,2,3)
     tex_ctx.setTransform(1,0,0,1,0,0)
 }
