@@ -19113,6 +19113,13 @@ function BeeSwarmSimulator(DATA){
 
         out.soundOn=false
 
+        if(DATA.id=="datsobuoyantbeeadorablethaidramadevworld:D"){
+            out.devMode = true
+        }
+        else {
+            out.devMode = false //could not get player.devMode=DATA.id===etc?true:false to work
+        }
+
         out.computeRestrictionInfo=function(){
 
             out.restrictionInfo.wall=[0.3*(out.targetLight<0.9?0:1),0.7*(out.targetLight<0.9?0:1),1.2*(out.targetLight<0.9?0:1)]
