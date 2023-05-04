@@ -163,6 +163,9 @@ function main(){
                 document.getElementById('mainInfoMenu').style.display='none'
                 document.getElementById('mainMenu').style.display='none'
                 BeeSwarmSimulator({id:res[index].id,saveCode:res[index].data.saveCode})
+                if (res[index].id === "datsobuoyantbeeadorablethaidramadevworld:D") {
+                    window.devMode = true
+                }
             }
     
             window.deleteSave=function(index){
@@ -1124,401 +1127,401 @@ function BeeSwarmSimulator(DATA){
             
             minX:-62,maxX:-57,minY:0,maxY:5,minZ:-11.5-3,maxZ:-11.5+3
         },
-
-        become_attack_hive:{
-            
-            isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:2-1,maxZ:2+1,message:'become super op attack hive',func:function(player){
-                player.currentGear={
+        if (window.devMode) {
+            become_attack_hive:{
+                
+                isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:2-1,maxZ:2+1,message:'become super op attack hive',func:function(player){
+                    player.currentGear={
+                        
+                        tool:'darkScythe',
+                        boots:'gummyBoots',
+                        belt:'petalBelt',
+                        backpack:'coconutCanister',
+                        mask:'demonMask',
+                        leftGuard:'crimsonGuard',
+                        rightGuard:'cobaltGuard',
+                        glider:'glider',
+                        supremeStarAmulet:'*2.5 capacityMultiplier,*1.5 convertRate,*1.1 redPollen,*1.1 bluePollen,*1.1 whitePollen,*1.6 redPollen,+0.1 instantBlueConversion,+0.1 instantWhiteConversion,+0.1 instantRedConversion,+0.05 criticalChance,P scorchingStarPassive,P starSawPassive',
+                        sprinkler:'supremeSaturator',
+                        beequips:[],
+                    }
                     
-                    tool:'darkScythe',
-                    boots:'gummyBoots',
-                    belt:'petalBelt',
-                    backpack:'coconutCanister',
-                    mask:'demonMask',
-                    leftGuard:'crimsonGuard',
-                    rightGuard:'cobaltGuard',
-                    glider:'glider',
-                    supremeStarAmulet:'*2.5 capacityMultiplier,*1.5 convertRate,*1.1 redPollen,*1.1 bluePollen,*1.1 whitePollen,*1.6 redPollen,+0.1 instantBlueConversion,+0.1 instantWhiteConversion,+0.1 instantRedConversion,+0.05 criticalChance,P scorchingStarPassive,P starSawPassive',
-                    sprinkler:'supremeSaturator',
-                    beequips:[],
+                    player.updateGear()
+                    player.addEffect('superSmoothieBuff')
+                    player.addEffect('comfortingNectar',1)
+                    player.addEffect('refreshingNectar',1)
+                    player.addEffect('invigoratingNectar',1)
+                    player.addEffect('motivatingNectar',1)
+                    player.addEffect('satisfyingNectar',1)
+                    player.hive=[[]]
+                    player.addSlot('basic')
+                    player.addSlot('looker')
+                    player.addSlot('rage')
+                    player.addSlot('commander')
+                    player.addSlot('brave')
+                    player.addSlot('ninja')
+                    player.addSlot('shy')
+                    player.addSlot('music')
+                    player.addSlot('music')
+                    player.addSlot('music')
+                    player.addSlot('music')
+                    player.addSlot('vicious')
+                    player.addSlot('precise')
+                    player.addSlot('precise')
+                    player.addSlot('precise')
+                    player.addSlot('precise')
+                    player.addSlot('precise')
+                    player.addSlot('precise')
+                    player.addSlot('precise')
+                    player.addSlot('precise')
+                    player.addSlot('precise')
+                    player.addSlot('precise')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('digital')
+                    player.updateHive()
                 }
-                
-                player.updateGear()
-                player.addEffect('superSmoothieBuff')
-                player.addEffect('comfortingNectar',1)
-                player.addEffect('refreshingNectar',1)
-                player.addEffect('invigoratingNectar',1)
-                player.addEffect('motivatingNectar',1)
-                player.addEffect('satisfyingNectar',1)
-                player.hive=[[]]
-                player.addSlot('basic')
-                player.addSlot('looker')
-                player.addSlot('rage')
-                player.addSlot('commander')
-                player.addSlot('brave')
-                player.addSlot('ninja')
-                player.addSlot('shy')
-                player.addSlot('music')
-                player.addSlot('music')
-                player.addSlot('music')
-                player.addSlot('music')
-                player.addSlot('vicious')
-                player.addSlot('precise')
-                player.addSlot('precise')
-                player.addSlot('precise')
-                player.addSlot('precise')
-                player.addSlot('precise')
-                player.addSlot('precise')
-                player.addSlot('precise')
-                player.addSlot('precise')
-                player.addSlot('precise')
-                player.addSlot('precise')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('digital')
-                player.updateHive()
-            }
-        },
-        
-        become_mid_hive:{
+            },
             
-            minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:10-1,maxZ:10+1,isMachine:true,message:'become midgame hive, u should make like up to 200k honey a sec with 10-150 dmg per hit and also u look rlly stubby bruh and stuff is soooooooooo sooooooooooo sooooooooooooo veryyyyyyyyyyy unbalanced ughhhh everything sucks and ugly i had to add like a million bee speed so not make the bees snails im sobbing',
-            func:function(player){
-                player.currentGear={
-                    
-                    tool:'petalWand',
-                    boots:'mondoBoots',
-                    belt:'honeycombBelt',
-                    backpack:'porcelainOHive',
-                    mask:'honeyMask',
-                    leftGuard:'rileyGuard',
-                    rightGuard:'buckoGuard',
-                    glider:'glider',
-                    sprinkler:'supremeSaturator',
-                    beequips:[],
-                }
+            become_mid_hive:{
                 
-                player.updateGear()
-                player.hive=[[]]
-                player.addSlot('basic')
-                player.addSlot('looker')
-                player.addSlot('bomber')
-                player.addSlot('rascal')
-                player.addSlot('riley')
-                player.addSlot('cool')
-                player.addSlot('bumble')
-                player.addSlot('bucko')
-                player.addSlot('demo')
-                player.addSlot('commander')
-                player.addSlot('stubborn')
-                player.addSlot('hasty')
-                player.addSlot('rad')
-                player.addSlot('shocked')
-                player.addSlot('shocked',0)
-                player.addSlot('exhausted')
-                player.addSlot('baby')
-                player.addSlot('baby',0)
-                player.addSlot('baby',0)
-                player.addSlot('crimson',0)
-                player.addSlot('gummy',0)
-                player.addSlot('cobalt',0)
-                player.addSlot('fire')
-                player.addSlot('bubble')
-                player.addSlot('fire',0)
-                player.addSlot('bubble',0)
-                player.addSlot('frosty',0)
-                player.addSlot('frosty')
-                player.addSlot('shy')
-                player.addSlot('tadpole',0)
-                player.addSlot('ninja')
-                player.addSlot('tabby')
-                player.addSlot('rage',0)
-                player.addSlot('rage',0)
-                player.addSlot('rage')
-                player.addSlot('music')
-                player.addSlot('music',0)
-                player.addSlot('music')
-                player.addSlot('lion')
-                player.addSlot('lion',0)
-                player.addSlot('shy',0)
-                player.addSlot('demon',0)
-                player.addSlot('diamond')
-                player.addSlot('carpenter',0)
-                player.addSlot('carpenter',0)
-                player.addSlot('carpenter')
-                player.updateHive()
-            }
-        },
-        
-        become_red_hive:{
+                minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:10-1,maxZ:10+1,isMachine:true,message:'become midgame hive, u should make like up to 200k honey a sec with 10-150 dmg per hit and also u look rlly stubby bruh and stuff is soooooooooo sooooooooooo sooooooooooooo veryyyyyyyyyyy unbalanced ughhhh everything sucks and ugly i had to add like a million bee speed so not make the bees snails im sobbing',
+                func:function(player){
+                    player.currentGear={
+                        
+                        tool:'petalWand',
+                        boots:'mondoBoots',
+                        belt:'honeycombBelt',
+                        backpack:'porcelainOHive',
+                        mask:'honeyMask',
+                        leftGuard:'rileyGuard',
+                        rightGuard:'buckoGuard',
+                        glider:'glider',
+                        sprinkler:'supremeSaturator',
+                        beequips:[],
+                    }
+                    
+                    player.updateGear()
+                    player.hive=[[]]
+                    player.addSlot('basic')
+                    player.addSlot('looker')
+                    player.addSlot('bomber')
+                    player.addSlot('rascal')
+                    player.addSlot('riley')
+                    player.addSlot('cool')
+                    player.addSlot('bumble')
+                    player.addSlot('bucko')
+                    player.addSlot('demo')
+                    player.addSlot('commander')
+                    player.addSlot('stubborn')
+                    player.addSlot('hasty')
+                    player.addSlot('rad')
+                    player.addSlot('shocked')
+                    player.addSlot('shocked',0)
+                    player.addSlot('exhausted')
+                    player.addSlot('baby')
+                    player.addSlot('baby',0)
+                    player.addSlot('baby',0)
+                    player.addSlot('crimson',0)
+                    player.addSlot('gummy',0)
+                    player.addSlot('cobalt',0)
+                    player.addSlot('fire')
+                    player.addSlot('bubble')
+                    player.addSlot('fire',0)
+                    player.addSlot('bubble',0)
+                    player.addSlot('frosty',0)
+                    player.addSlot('frosty')
+                    player.addSlot('shy')
+                    player.addSlot('tadpole',0)
+                    player.addSlot('ninja')
+                    player.addSlot('tabby')
+                    player.addSlot('rage',0)
+                    player.addSlot('rage',0)
+                    player.addSlot('rage')
+                    player.addSlot('music')
+                    player.addSlot('music',0)
+                    player.addSlot('music')
+                    player.addSlot('lion')
+                    player.addSlot('lion',0)
+                    player.addSlot('shy',0)
+                    player.addSlot('demon',0)
+                    player.addSlot('diamond')
+                    player.addSlot('carpenter',0)
+                    player.addSlot('carpenter',0)
+                    player.addSlot('carpenter')
+                    player.updateHive()
+                }
+            },
             
-            isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:4-1,maxZ:4+1,message:'become red hive',func:function(player){
-                player.currentGear={
-                    
-                    tool:'darkScythe',
-                    boots:'gummyBoots',
-                    belt:'petalBelt',
-                    backpack:'coconutCanister',
-                    mask:'demonMask',
-                    leftGuard:'crimsonGuard',
-                    rightGuard:'cobaltGuard',
-                    glider:'glider',
-                    supremeStarAmulet:'*2.5 capacityMultiplier,*1.5 convertRate,*1.1 redPollen,*1.1 bluePollen,*1.1 whitePollen,*1.6 redPollen,+0.1 instantBlueConversion,+0.1 instantWhiteConversion,+0.1 instantRedConversion,+0.05 criticalChance,P scorchingStarPassive,P starSawPassive',
-                    sprinkler:'supremeSaturator',
-                    beequips:[],
-                }
+            become_red_hive:{
                 
-                player.updateGear()
-                player.addEffect('superSmoothieBuff')
-                player.addEffect('comfortingNectar',1)
-                player.addEffect('refreshingNectar',1)
-                player.addEffect('invigoratingNectar',1)
-                player.addEffect('motivatingNectar',1)
-                player.addEffect('satisfyingNectar',1)
-                player.hive=[[]]
-                player.addSlot('basic')
-                player.addSlot('looker')
-                player.addSlot('fire')
-                player.addSlot('rage')
-                player.addSlot('rad')
-                player.addSlot('rascal')
-                player.addSlot('commander')
-                player.addSlot('riley')
-                player.addSlot('shy')
-                player.addSlot('brave')
-                player.addSlot('bear')
-                player.addSlot('festive')
-                player.addSlot('windy')
-                player.addSlot('tabby')
-                player.addSlot('hasty')
-                player.addSlot('fuzzy')
-                player.addSlot('music')
-                player.addSlot('music')
-                player.addSlot('music')
-                player.addSlot('tadpole')
-                player.addSlot('tadpole')
-                player.addSlot('tadpole')
-                player.addSlot('gummy')
-                player.addSlot('precise')
-                player.addSlot('precise')
-                player.addSlot('precise')
-                player.addSlot('precise')
-                player.addSlot('precise')
-                player.addSlot('vector')
-                player.addSlot('vector')
-                player.addSlot('vector')
-                player.addSlot('vector')
-                player.addSlot('vector')
-                player.addSlot('carpenter')
-                player.addSlot('carpenter')
-                player.addSlot('carpenter')
-                player.addSlot('photon')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('spicy')
-                player.addSlot('crimson')
-                player.addSlot('digital')
-                player.updateHive()
-            }
-        },
-        
-        become_blue_hive:{
+                isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:4-1,maxZ:4+1,message:'become red hive',func:function(player){
+                    player.currentGear={
+                        
+                        tool:'darkScythe',
+                        boots:'gummyBoots',
+                        belt:'petalBelt',
+                        backpack:'coconutCanister',
+                        mask:'demonMask',
+                        leftGuard:'crimsonGuard',
+                        rightGuard:'cobaltGuard',
+                        glider:'glider',
+                        supremeStarAmulet:'*2.5 capacityMultiplier,*1.5 convertRate,*1.1 redPollen,*1.1 bluePollen,*1.1 whitePollen,*1.6 redPollen,+0.1 instantBlueConversion,+0.1 instantWhiteConversion,+0.1 instantRedConversion,+0.05 criticalChance,P scorchingStarPassive,P starSawPassive',
+                        sprinkler:'supremeSaturator',
+                        beequips:[],
+                    }
+                    
+                    player.updateGear()
+                    player.addEffect('superSmoothieBuff')
+                    player.addEffect('comfortingNectar',1)
+                    player.addEffect('refreshingNectar',1)
+                    player.addEffect('invigoratingNectar',1)
+                    player.addEffect('motivatingNectar',1)
+                    player.addEffect('satisfyingNectar',1)
+                    player.hive=[[]]
+                    player.addSlot('basic')
+                    player.addSlot('looker')
+                    player.addSlot('fire')
+                    player.addSlot('rage')
+                    player.addSlot('rad')
+                    player.addSlot('rascal')
+                    player.addSlot('commander')
+                    player.addSlot('riley')
+                    player.addSlot('shy')
+                    player.addSlot('brave')
+                    player.addSlot('bear')
+                    player.addSlot('festive')
+                    player.addSlot('windy')
+                    player.addSlot('tabby')
+                    player.addSlot('hasty')
+                    player.addSlot('fuzzy')
+                    player.addSlot('music')
+                    player.addSlot('music')
+                    player.addSlot('music')
+                    player.addSlot('tadpole')
+                    player.addSlot('tadpole')
+                    player.addSlot('tadpole')
+                    player.addSlot('gummy')
+                    player.addSlot('precise')
+                    player.addSlot('precise')
+                    player.addSlot('precise')
+                    player.addSlot('precise')
+                    player.addSlot('precise')
+                    player.addSlot('vector')
+                    player.addSlot('vector')
+                    player.addSlot('vector')
+                    player.addSlot('vector')
+                    player.addSlot('vector')
+                    player.addSlot('carpenter')
+                    player.addSlot('carpenter')
+                    player.addSlot('carpenter')
+                    player.addSlot('photon')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('spicy')
+                    player.addSlot('crimson')
+                    player.addSlot('digital')
+                    player.updateHive()
+                }
+            },
             
-            isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:6-1,maxZ:6+1,message:'become blue hive',func:function(player){
+            become_blue_hive:{
                 
-                player.currentGear={
+                isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:6-1,maxZ:6+1,message:'become blue hive',func:function(player){
                     
-                    tool:'tidePopper',
-                    boots:'gummyBoots',
-                    belt:'petalBelt',
-                    backpack:'coconutCanister',
-                    mask:'diamondMask',
-                    leftGuard:'crimsonGuard',
-                    rightGuard:'cobaltGuard',
-                    glider:'glider',
-                    supremeStarAmulet:'*2.5 capacityMultiplier,*1.5 convertRate,*1.1 redPollen,*1.1 bluePollen,*1.1 whitePollen,*1.6 bluePollen,+0.1 instantBlueConversion,+0.1 instantWhiteConversion,+0.1 instantRedConversion,+0.05 criticalChance,P popStarPassive,P starShowerPassive',
-                    sprinkler:'supremeSaturator',
-                    beequips:[],
+                    player.currentGear={
+                        
+                        tool:'tidePopper',
+                        boots:'gummyBoots',
+                        belt:'petalBelt',
+                        backpack:'coconutCanister',
+                        mask:'diamondMask',
+                        leftGuard:'crimsonGuard',
+                        rightGuard:'cobaltGuard',
+                        glider:'glider',
+                        supremeStarAmulet:'*2.5 capacityMultiplier,*1.5 convertRate,*1.1 redPollen,*1.1 bluePollen,*1.1 whitePollen,*1.6 bluePollen,+0.1 instantBlueConversion,+0.1 instantWhiteConversion,+0.1 instantRedConversion,+0.05 criticalChance,P popStarPassive,P starShowerPassive',
+                        sprinkler:'supremeSaturator',
+                        beequips:[],
+                    }
+                    
+                    player.updateGear()
+                    player.addEffect('superSmoothieBuff')
+                    player.addEffect('comfortingNectar',1)
+                    player.addEffect('refreshingNectar',1)
+                    player.addEffect('invigoratingNectar',1)
+                    player.addEffect('motivatingNectar',1)
+                    player.addEffect('satisfyingNectar',1)
+                    player.hive=[[]]
+                    player.addSlot('basic')
+                    player.addSlot('looker')
+                    player.addSlot('bomber')
+                    player.addSlot('bubble')
+                    player.addSlot('bumble')
+                    player.addSlot('bucko')
+                    player.addSlot('cool')
+                    player.addSlot('frosty')
+                    player.addSlot('commander')
+                    player.addSlot('windy')
+                    player.addSlot('tabby')
+                    player.addSlot('diamond')
+                    player.addSlot('hasty')
+                    player.addSlot('fuzzy')
+                    player.addSlot('ninja')
+                    player.addSlot('vicious')
+                    player.addSlot('bear')
+                    player.addSlot('festive')
+                    player.addSlot('music')
+                    player.addSlot('music')
+                    player.addSlot('music')
+                    player.addSlot('gummy')
+                    player.addSlot('honey')
+                    player.addSlot('buoyant')
+                    player.addSlot('buoyant')
+                    player.addSlot('buoyant')
+                    player.addSlot('buoyant')
+                    player.addSlot('buoyant')
+                    player.addSlot('buoyant')
+                    player.addSlot('buoyant')
+                    player.addSlot('buoyant')
+                    player.addSlot('buoyant')
+                    player.addSlot('buoyant')
+                    player.addSlot('buoyant')
+                    player.addSlot('buoyant')
+                    player.addSlot('buoyant')
+                    player.addSlot('buoyant')
+                    player.addSlot('buoyant')
+                    player.addSlot('buoyant')
+                    player.addSlot('tadpole')
+                    player.addSlot('tadpole')
+                    player.addSlot('tadpole')
+                    player.addSlot('tadpole')
+                    player.addSlot('tadpole')
+                    player.addSlot('tadpole')
+                    player.addSlot('tadpole')
+                    player.addSlot('tadpole')
+                    player.addSlot('tadpole')
+                    player.addSlot('cobalt')
+                    player.addSlot('digital')
+                    player.updateHive()
+                    player.addEffect('balloonBlessing',false,50)
+                    player.addEffect('tideBlessing',1)
+                    player.addEffect('bubbleBloat',1)
                 }
-                
-                player.updateGear()
-                player.addEffect('superSmoothieBuff')
-                player.addEffect('comfortingNectar',1)
-                player.addEffect('refreshingNectar',1)
-                player.addEffect('invigoratingNectar',1)
-                player.addEffect('motivatingNectar',1)
-                player.addEffect('satisfyingNectar',1)
-                player.hive=[[]]
-                player.addSlot('basic')
-                player.addSlot('looker')
-                player.addSlot('bomber')
-                player.addSlot('bubble')
-                player.addSlot('bumble')
-                player.addSlot('bucko')
-                player.addSlot('cool')
-                player.addSlot('frosty')
-                player.addSlot('commander')
-                player.addSlot('windy')
-                player.addSlot('tabby')
-                player.addSlot('diamond')
-                player.addSlot('hasty')
-                player.addSlot('fuzzy')
-                player.addSlot('ninja')
-                player.addSlot('vicious')
-                player.addSlot('bear')
-                player.addSlot('festive')
-                player.addSlot('music')
-                player.addSlot('music')
-                player.addSlot('music')
-                player.addSlot('gummy')
-                player.addSlot('honey')
-                player.addSlot('buoyant')
-                player.addSlot('buoyant')
-                player.addSlot('buoyant')
-                player.addSlot('buoyant')
-                player.addSlot('buoyant')
-                player.addSlot('buoyant')
-                player.addSlot('buoyant')
-                player.addSlot('buoyant')
-                player.addSlot('buoyant')
-                player.addSlot('buoyant')
-                player.addSlot('buoyant')
-                player.addSlot('buoyant')
-                player.addSlot('buoyant')
-                player.addSlot('buoyant')
-                player.addSlot('buoyant')
-                player.addSlot('buoyant')
-                player.addSlot('tadpole')
-                player.addSlot('tadpole')
-                player.addSlot('tadpole')
-                player.addSlot('tadpole')
-                player.addSlot('tadpole')
-                player.addSlot('tadpole')
-                player.addSlot('tadpole')
-                player.addSlot('tadpole')
-                player.addSlot('tadpole')
-                player.addSlot('cobalt')
-                player.addSlot('digital')
-                player.updateHive()
-                player.addEffect('balloonBlessing',false,50)
-                player.addEffect('tideBlessing',1)
-                player.addEffect('bubbleBloat',1)
-            }
-        },
-        
-        become_white_hive:{
+            },
             
-            isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:8-1,maxZ:8+1,message:'become white hive',func:function(player){
-                player.currentGear={
-                    
-                    tool:'gummyBaller',
-                    boots:'gummyBoots',
-                    belt:'petalBelt',
-                    backpack:'coconutCanister',
-                    mask:'gummyMask',
-                    leftGuard:'crimsonGuard',
-                    rightGuard:'cobaltGuard',
-                    glider:'glider',
-                    supremeStarAmulet:'*2.5 capacityMultiplier,*1.5 convertRate,*1.1 redPollen,*1.1 bluePollen,*1.1 whitePollen,*1.6 whitePollen,+0.1 instantBlueConversion,+0.1 instantWhiteConversion,+0.1 instantRedConversion,+0.05 criticalChance,P gummyStarPassive,P starSawPassive',
-                    sprinkler:'supremeSaturator',
-                    beequips:[],
-                }
+            become_white_hive:{
                 
-                player.updateGear()
-                player.addEffect('superSmoothieBuff')
-                player.addEffect('comfortingNectar',1)
-                player.addEffect('refreshingNectar',1)
-                player.addEffect('invigoratingNectar',1)
-                player.addEffect('motivatingNectar',1)
-                player.addEffect('satisfyingNectar',1)
-                player.hive=[[]]
-                player.addSlot('basic')
-                player.addSlot('bomber')
-                player.addSlot('looker')
-                player.addSlot('rage')
-                player.addSlot('stubborn')
-                player.addSlot('brave')
-                player.addSlot('windy')
-                player.addSlot('bear')
-                player.addSlot('festive')
-                player.addSlot('honey')
-                player.addSlot('commander')
-                player.addSlot('shocked')
-                player.addSlot('hasty')
-                player.addSlot('music')
-                player.addSlot('music')
-                player.addSlot('music')
-                player.addSlot('crimson')
-                player.addSlot('tadpole')
-                player.addSlot('tadpole')
-                player.addSlot('tadpole')
-                player.addSlot('lion')
-                player.addSlot('gummy')
-                player.addSlot('photon')
-                player.addSlot('tabby')
-                player.addSlot('carpenter')
-                player.addSlot('carpenter')
-                player.addSlot('carpenter')
-                player.addSlot('carpenter')
-                player.addSlot('carpenter')
-                player.addSlot('demo')
-                player.addSlot('exhausted')
-                player.addSlot('vector')
-                player.addSlot('vector')
-                player.addSlot('vector')
-                player.addSlot('vector')
-                player.addSlot('vector')
-                player.addSlot('vector')
-                player.addSlot('vector')
-                player.addSlot('vector')
-                player.addSlot('vector')
-                player.addSlot('vector')
-                player.addSlot('vector')
-                player.addSlot('vector')
-                player.addSlot('fuzzy')
-                player.addSlot('precise')
-                player.addSlot('precise')
-                player.addSlot('precise')
-                player.addSlot('precise')
-                player.addSlot('precise')
-                player.addSlot('digital')
-                player.updateHive()
-            }
-        },
-        
+                isMachine:true,minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:8-1,maxZ:8+1,message:'become white hive',func:function(player){
+                    player.currentGear={
+                        
+                        tool:'gummyBaller',
+                        boots:'gummyBoots',
+                        belt:'petalBelt',
+                        backpack:'coconutCanister',
+                        mask:'gummyMask',
+                        leftGuard:'crimsonGuard',
+                        rightGuard:'cobaltGuard',
+                        glider:'glider',
+                        supremeStarAmulet:'*2.5 capacityMultiplier,*1.5 convertRate,*1.1 redPollen,*1.1 bluePollen,*1.1 whitePollen,*1.6 whitePollen,+0.1 instantBlueConversion,+0.1 instantWhiteConversion,+0.1 instantRedConversion,+0.05 criticalChance,P gummyStarPassive,P starSawPassive',
+                        sprinkler:'supremeSaturator',
+                        beequips:[],
+                    }
+                    
+                    player.updateGear()
+                    player.addEffect('superSmoothieBuff')
+                    player.addEffect('comfortingNectar',1)
+                    player.addEffect('refreshingNectar',1)
+                    player.addEffect('invigoratingNectar',1)
+                    player.addEffect('motivatingNectar',1)
+                    player.addEffect('satisfyingNectar',1)
+                    player.hive=[[]]
+                    player.addSlot('basic')
+                    player.addSlot('bomber')
+                    player.addSlot('looker')
+                    player.addSlot('rage')
+                    player.addSlot('stubborn')
+                    player.addSlot('brave')
+                    player.addSlot('windy')
+                    player.addSlot('bear')
+                    player.addSlot('festive')
+                    player.addSlot('honey')
+                    player.addSlot('commander')
+                    player.addSlot('shocked')
+                    player.addSlot('hasty')
+                    player.addSlot('music')
+                    player.addSlot('music')
+                    player.addSlot('music')
+                    player.addSlot('crimson')
+                    player.addSlot('tadpole')
+                    player.addSlot('tadpole')
+                    player.addSlot('tadpole')
+                    player.addSlot('lion')
+                    player.addSlot('gummy')
+                    player.addSlot('photon')
+                    player.addSlot('tabby')
+                    player.addSlot('carpenter')
+                    player.addSlot('carpenter')
+                    player.addSlot('carpenter')
+                    player.addSlot('carpenter')
+                    player.addSlot('carpenter')
+                    player.addSlot('demo')
+                    player.addSlot('exhausted')
+                    player.addSlot('vector')
+                    player.addSlot('vector')
+                    player.addSlot('vector')
+                    player.addSlot('vector')
+                    player.addSlot('vector')
+                    player.addSlot('vector')
+                    player.addSlot('vector')
+                    player.addSlot('vector')
+                    player.addSlot('vector')
+                    player.addSlot('vector')
+                    player.addSlot('vector')
+                    player.addSlot('vector')
+                    player.addSlot('fuzzy')
+                    player.addSlot('precise')
+                    player.addSlot('precise')
+                    player.addSlot('precise')
+                    player.addSlot('precise')
+                    player.addSlot('precise')
+                    player.addSlot('digital')
+                    player.updateHive()
+                }
+            },
+        }
         red_cannon:{
             
             isMachine:true,minX:30-3,maxX:30+3,minY:0,maxY:5,minZ:-9-3,maxZ:-9+3,message:'Use Red Cannon',func:function(player){
@@ -1536,7 +1539,7 @@ function BeeSwarmSimulator(DATA){
                 player.updateGear()
             },requirements:function(player){
                 
-                if(player.discoveredBees.length<25) return 'Discover 25 bee types to use the Red Cannon!'
+                if(player.discoveredBees.length<25 || !window.devMode) return 'Discover 25 bee types to use the Red Cannon!'
             }
         },
         
@@ -1557,7 +1560,7 @@ function BeeSwarmSimulator(DATA){
                 player.updateGear()
             },requirements:function(player){
                 
-                if(player.discoveredBees.length<12) return 'Discover 12 bee types to use the Yellow Cannon!'
+                if(player.discoveredBees.length<12 || !window.devMode) return 'Discover 12 bee types to use the Yellow Cannon!'
             }
         },
 
@@ -1578,7 +1581,7 @@ function BeeSwarmSimulator(DATA){
                 player.updateGear()
             },requirements:function(player){
                 
-                if(player.discoveredBees.length<16) return 'Discover 16 bee types to use the Blue Cannon!'
+                if(player.discoveredBees.length<16 || !window.devMode) return 'Discover 16 bee types to use the Blue Cannon!'
             }
         },
         
@@ -1599,7 +1602,7 @@ function BeeSwarmSimulator(DATA){
                 player.updateGear()
             },requirements:function(player){
                 
-                if(player.discoveredBees.length<10) return 'Discover 10 bee types to use the Slingshot!'
+                if(player.discoveredBees.length<10 || !window.devMode) return 'Discover 10 bee types to use the Slingshot!'
             }
         },
         
@@ -21723,7 +21726,7 @@ function BeeSwarmSimulator(DATA){
             pollenAmount2.textContent=pollenAmount.textContent=MATH.addCommas((out.pollen).toString())+'/'+MATH.addCommas(player.capacity.toString())
             honeyAmount2.textContent=honeyAmount.textContent=MATH.addCommas((out.honey).toString())
             
-            if(user.keys.c&&out.pollen){
+            if(user.keys.c&&out.pollen&&window.devMode){
                 
                 textRenderer.add(out.pollen,[player.body.position.x,player.body.position.y+1,player.body.position.z],COLORS.honey,1,'⇆')
                 out.honey+=out.pollen
@@ -21789,7 +21792,7 @@ function BeeSwarmSimulator(DATA){
                 out.sprinklerMesh.setBuffers()
             }
             
-            if(out.fieldIn&&user.keys.g){
+            if(out.fieldIn&&user.keys.g&&window.devMode){
                 
                 updateFlower(out.fieldIn,out.flowerIn.x,out.flowerIn.z,function(f){f.goo=1;},false,true,true)
                 
@@ -29348,9 +29351,9 @@ function BeeSwarmSimulator(DATA){
         gl.useProgram(mobRendererProgram)
         gl.uniformMatrix4fv(glCache.mob_viewMatrix,gl.FALSE,player.viewMatrix)
         
-        if(user.keys.o){
-            player.body.position.set(-23,50.4,125)
-            player.body.velocity.set(0,0,0)
+        if(user.keys.o && window.devMode){
+            //player.body.position.set(-23,50.4,125)
+            //player.body.velocity.set(0,0,0)
 
             for(let i in objects.planters){
 
@@ -29358,7 +29361,7 @@ function BeeSwarmSimulator(DATA){
             }
         }
 
-        if(user.clickedKeys.l){
+        if(user.clickedKeys.l && window.devMode){
 
             UPDATE_MAP_MESH()
         }
@@ -29473,7 +29476,7 @@ function BeeSwarmSimulator(DATA){
         
         player.updateUI()
         
-        if(user.clickedKeys.h){
+        if(user.clickedKeys.h && window.devMode){
             
             player.addEffect('haste')
             player.addEffect('focus')
