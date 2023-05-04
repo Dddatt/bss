@@ -493,7 +493,12 @@ function BeeSwarmSimulator(DATA){
     gl.enable(gl.CULL_FACE)
     gl.cullFace(gl.BACK)
 
-    player.devMode = DATA.id==="datsobuoyantbeeadorablethaidramadevworld:D"?true:false //ugh I hope this works :P
+    if(DATA.id==="datsobuoyantbeeadorablethaidramadevworld:D"){
+        player.devMode = true
+    }
+    else {
+        player.devMode = false //could not get player.devMode=DATA.id===etc?true:false to work
+    }
 
     let blenderRecipes=[
         
@@ -1211,7 +1216,7 @@ function BeeSwarmSimulator(DATA){
         
         become_mid_hive:{
             
-            minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:10-1,maxZ:10+1,isMachine:true,message:'become midgame hive, u should make like up to 200k honey a sec with 10-150 dmg per hit and also u look rlly stubby bruh and stuff is soooooooooo sooooooooooo sooooooooooooo veryyyyyyyyyyy unbalanced ughhhh everything sucks and ugly i had to add like a million bee speed so not make the bees snails im sobbing',
+            minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:10-1,maxZ:10+1,isMachine:true,message:'become midgame hive',
             func:function(player){
                 if (player.devMode) {
                     player.currentGear={
