@@ -492,13 +492,14 @@ function BeeSwarmSimulator(DATA){
     gl.depthFunc(gl.LEQUAL)
     gl.enable(gl.CULL_FACE)
     gl.cullFace(gl.BACK)
-
+    /*
     if(DATA.id=="datsobuoyantbeeadorablethaidramadevworld:D"){
         player.devMode = true
     }
     else {
         player.devMode = false //could not get player.devMode=DATA.id===etc?true:false to work
     }
+    */
 
     let blenderRecipes=[
         
@@ -1216,8 +1217,7 @@ function BeeSwarmSimulator(DATA){
         
         become_mid_hive:{
             
-            minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:10-1,maxZ:10+1,isMachine:true,message:'become midgame hive',
-            func:function(player){
+            minX:23-1,maxX:23+1,minY:-2,maxY:5,minZ:10-1,maxZ:10+1,isMachine:true,message:'become midgame hive', func:function(player){
                 if (player.devMode) {
                     player.currentGear={
                         
