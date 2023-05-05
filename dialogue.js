@@ -1,4 +1,4 @@
-let mulberry32=function(a){
+window.mulberry32=function(a){
 
     let ret=function(){
 
