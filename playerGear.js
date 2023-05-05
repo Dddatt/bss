@@ -875,7 +875,7 @@ window.playerGear={
                 
                 stats.capacity+=3500
             },
-            desc:'A heavy-duty backpack.<br><br>+350 capacity',
+            desc:'A heavy-duty backpack.<br><br>+3,500 capacity',
             cost:['5000 honey'],
         },
 
@@ -893,7 +893,7 @@ window.playerGear={
                 stats.capacity+=10000
                 stats.convertRate*=1.3
             },
-            desc:'A high-tech container that improves honey conversion speed.<br><br>+10000 capacity<br>x1.3 convert rate',
+            desc:'A high-tech container that improves honey conversion speed.<br><br>+10,000 capacity<br>x1.3 convert rate',
             cost:['22000 honey'],
         },
 
@@ -912,7 +912,7 @@ window.playerGear={
                 stats.capacity+=25000
                 stats.convertRate*=1.4
             },
-            desc:'A humongous jug!<br><br>+25000 capacity<br>x1.4 convert rate',
+            desc:'A humongous jug!<br><br>+25,000 capacity<br>x1.4 convert rate',
             cost:['50000 honey'],
         },
 
@@ -934,7 +934,7 @@ window.playerGear={
                 stats.capacity+=50000
                 stats.convertRate*=1.55
             },
-            desc:'A machine which packs pollen down to increase storage.<br><br>+50000 capacity<br>x1.55 convert rate',
+            desc:'A machine which packs pollen down to increase storage.<br><br>+50,000 capacity<br>x1.55 convert rate',
             cost:['160000 honey'],
         },
 

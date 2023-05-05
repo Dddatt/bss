@@ -163,8 +163,6 @@ function main(){
                 document.getElementById('mainInfoMenu').style.display='none'
                 document.getElementById('mainMenu').style.display='none'
                 BeeSwarmSimulator({id:res[index].id,name:res[index].data.name,saveCode:res[index].data.saveCode})
-
-                console.error(res[index])
             }
     
             window.deleteSave=function(index){
@@ -368,7 +366,7 @@ function BeeSwarmSimulator(DATA){
         gl.uniform1f(glCache.trail_isNight,player.isNight)
     }
 
-    let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,DYNAMIC_PHYSICS_GROUP=8,BEE_COLLECT=0,BEE_FLY=0,then=0,dt,frameCount=0,TIME=0,player,NIGHT_DARKNESS=0.6,NPCs,STATS_TICK=false,globalTimer_puffshroom=0,globalTimer_mondo=0,devWorld=DATA.name===window.atob('YnVveWFudCBiZWUgcmFjY29vbg==')
+    let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,DYNAMIC_PHYSICS_GROUP=8,BEE_COLLECT=0,BEE_FLY=0,then=0,dt,frameCount=0,TIME=0,player,NIGHT_DARKNESS=0.6,NPCs,STATS_TICK=false,globalTimer_puffshroom=0,globalTimer_mondo=0,leavesTimer=45,devWorld=DATA.name===window.atob('YnVveWFudCBiZWUgcmFjY29vbg==')
 
     gl.enable(gl.BLEND)
     gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)
@@ -3650,7 +3648,7 @@ function BeeSwarmSimulator(DATA){
             amount:document.getElementById('inspire_amount'),
             maxCooldown:5,
             maxAmount:50,
-            tokenLife:8,
+            tokenLife:4,
             
             update:(amount,player)=>{
                 
@@ -5220,7 +5218,6 @@ function BeeSwarmSimulator(DATA){
                     for(let i=0;i<24;i++){
                         
                         objects.tokens.push(new LootToken(30,[fieldInfo[player.fieldIn].x+((Math.random()*fieldInfo[player.fieldIn].width)|0),fieldInfo[player.fieldIn].y+1,fieldInfo[player.fieldIn].z+((Math.random()*fieldInfo[player.fieldIn].length)|0)],'honey',amountPerToken,false,'Coin Scatter'))
-                        
                     }
                 }
             },
@@ -8002,7 +7999,7 @@ function BeeSwarmSimulator(DATA){
                     howManyToFeed.style.display='none'
                     
                     items.strawberry.amount-=amount
-                    player.stats.stawberry+=Number(amount)
+                    player.stats.strawberry+=Number(amount)
                     player.updateInventory()
                     
                     let isFavorite=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='strawberry',bondToAdd=amount*25*(isFavorite?2:1)*player.bondFromTreats|0
@@ -8194,7 +8191,7 @@ function BeeSwarmSimulator(DATA){
                 
                 return slot.type!=='basic'
             },
-            amount:1,u:128*4/2048,v:128*5/2048,value:60,
+            amount:0,u:128*4/2048,v:128*5/2048,value:60,
             use:function(){
                 
                 items.basicEgg.amount--
@@ -8905,6 +8902,42 @@ function BeeSwarmSimulator(DATA){
                 
                 return {bee:b[b.length-1]===','?b.substr(0,b.length-1):b,player:p[p.length-1]===','?p.substr(0,p.length-1):p}
             }
+        },
+
+        books:{
+            
+            svgCode:`<svg onmousedown='window.functionToRunOnBeequipClick(#ID)' style='width:200px;height:70px;cursor:pointer;border-radius:8px'><rect width='200' height='70' fill='rgb(255,255,255)'></rect><rect width='70' height='70' fill='rgb(225,225,225)'></rect><text x='132' y='15' style='font-family:trebuchet ms;font-size:16.5px;' fill='rgb(0,0,0)' text-anchor='middle'>Books</text><text x='132' y='33' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>A set of books for</text><text x='132' y='46' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>bees to read. Improves</text><text x='132' y='59' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>the performance of bees.</text><text style=''></text><g transform='rotate(-15) translate(-30,-5)'><rect fill='rgb(242, 141, 119)' x='35' y='35' width='20' height='27' stroke='black' stroke-width='1.5' rx='2'></rect><path fill='rgb(0,0,0,0)' stroke='rgb(222, 199, 151)' stroke-width='7' d='M 35 47C 41 45 47 42 47 35'></path><path fill='rgb(0,0,0,0)' stroke='rgb(207, 119, 101)' stroke-width='2' d='M 38 47L 39 44L 43 44L 43 40L 48 40L 43 40'></path></g><g transform='rotate(20) translate(12,-27)'><rect fill='rgb(217, 159, 0)' x='35' y='35' width='20' height='27' stroke='black' stroke-width='1.5' rx='2'></rect><path fill='rgb(0,0,0,0)' stroke='rgb(0,0,0,0.1)' stroke-width='4' d='M 40 63L 45 47L 50 63'></path><path fill='rgb(0,0,0,0)' stroke='rgb(0,0,0,0.15)' stroke-width='1.5' d='M 39 42L 42 39L 44 41L 47 39L 51 42'></path></g></svg>`,
+            potentials:[1,2,3,3,3,4,5],
+            level:9,
+            color:'any',
+            reqStr:"<br><br><p style='font-size:13px;font-family:comic sans ms;'>Bee must know a Mark ability.</p><br>",
+            canUseOnSlot:function(slot){
+                
+                return slot.type&&beeInfo[slot.type].tokens.join('').indexOf('Mark')>-1||slot.type==='precise'
+            },
+            
+            generateStats:function(potential){
+                
+                let b='',p='',np=potential/5 
+                
+                b+='*'+(MATH.random(0.89,0.95)*(np*0.1+1)).toFixed(2)+' abilityRate(+0),'
+                
+                b+='*'+(MATH.random(1.03,1.09)*(np*0.1+1)).toFixed(2)+' maxEnergy(+0),'
+                
+                if(Math.random()<0.4+np*0.2){
+                    
+                    p+='*'+(MATH.random(1.02,1.06)*(np*0.01+1)).toFixed(2)+' pollenFromBees(+0),'
+                }
+                
+                if(Math.random()<0.4+np*0.2){
+                    
+                    p+='*'+(MATH.random(1.02,1.06)*(np*0.01+1)).toFixed(2)+' pollenFromTools(+0),'
+                }
+                
+                return {bee:b[b.length-1]===','?b.substr(0,b.length-1):b,player:p[p.length-1]===','?p.substr(0,p.length-1):p}
+            },
+            
+            extraAbility:'gathering_inspire'
         },
         
         coffeeMug:{
@@ -11879,15 +11912,20 @@ function BeeSwarmSimulator(DATA){
                     
                     this.respawnTimer-=dt
 
-                    textRenderer.addSingle(this.grammaredName,this.resMessPos,COLORS.whiteArr,-1.5,false,false,0,0.2)
-                    textRenderer.addSingle(MATH.doTime(this.respawnTimer),this.resMessPos,COLORS.whiteArr,-1.5,false,false,0,-0.2)
-
                     player.extraInfo[this.id]=this.respawnTimer
                     
-                    if(this.respawnTimer<=0&&!player.fieldIn){
+                    if(this.respawnTimer<=0){
                         
-                        this.state='hide'
-                        this.health=this.maxHealth
+                        if(!player.fieldIn){
+
+                            this.state='hide'
+                            this.health=this.maxHealth
+                        }
+
+                    } else {
+
+                        textRenderer.addSingle(this.grammaredName,this.resMessPos,COLORS.whiteArr,-1.5,false,false,0,0.2)
+                        textRenderer.addSingle(MATH.doTime(this.respawnTimer),this.resMessPos,COLORS.whiteArr,-1.5,false,false,0,-0.2)
                     }
                     
                 break
@@ -12821,7 +12859,6 @@ function BeeSwarmSimulator(DATA){
 
                         let it=(Math.random()*loots.length)|0
 
-                        console.error(loots[it])
                         objects.tokens.push(new LootToken(15,[fieldInfo[DIS.field].x+((fieldInfo[DIS.field].width*Math.random())|0),fieldInfo[DIS.field].y+1,fieldInfo[DIS.field].z+((fieldInfo[DIS.field].length*Math.random())|0),0],loots[it],loots[it]==='coconut'?MATH.random(1,4)|0:1,true,'Coconut Crab'))
                         loots.splice(i,1)
 
@@ -13146,7 +13183,6 @@ function BeeSwarmSimulator(DATA){
 
                         let it=(Math.random()*loots.length)|0
 
-                        console.error(loots[it])
                         objects.tokens.push(new LootToken(15,[fieldInfo[DIS.field].x+((fieldInfo[DIS.field].width*Math.random())|0),fieldInfo[DIS.field].y+1,fieldInfo[DIS.field].z+((fieldInfo[DIS.field].length*Math.random())|0),0],loots[it],MATH.random(1,4)|0,true,'Stump Snail'))
                         loots.splice(i,1)
 
@@ -20520,6 +20556,8 @@ function BeeSwarmSimulator(DATA){
                 }
             }
             
+            player.itemDragging=false
+            player.beequipDragging=false
             out.currentNPC=i
             actionWarning.style.display='none'
             dialogueBox.style.display='block'
@@ -20537,6 +20575,8 @@ function BeeSwarmSimulator(DATA){
             if(shops[out.currentShop].increments)
                 shops[out.currentShop].currentIncrement=0
             
+            player.itemDragging=false
+            player.beequipDragging=false
             document.exitPointerLock()
             shopUI.style.display='block'
             shops[out.currentShop].currentIndex=0
@@ -21338,6 +21378,7 @@ function BeeSwarmSimulator(DATA){
         out.generateBeequip('pencil')
         out.generateBeequip('bobertPlushie')
         out.generateBeequip('coffeeMug')
+        out.generateBeequip('books')
 
         out.beesPageBee=false
 
@@ -22335,15 +22376,20 @@ function BeeSwarmSimulator(DATA){
 
                     window.setTimeout(function(){
 
-                        player.addMessage('🎉 You\'ve tamed a Windy Bee! 🎉',[160*0.75,235*0.75,255*0.75])
-                        player.addMessage('+1 Windy Bee Egg')
+                        if(items.windyBeeEgg.amount>0){
+
+                            player.addMessage('Hey! Stop being greedy! You have a Windy Bee already! >:(',COLORS.redArr)
+                            return
+                        }
+
+                        out.addMessage('🎉 You\'ve tamed a Windy Bee! 🎉',[160*0.75,235*0.75,255*0.75])
+                        out.addMessage('+1 Windy Bee Egg')
+                        items[windShrineDonations[out.shrineIndex].item].amount--
                         out.updateInventory()
 
                         if(document.getElementById('shrineAmount').value>1){
 
-                            player.addMessage('Hey! No soft-locking! You donated 1+ petals! >:(')
-
-                            items[windShrineDonations[out.shrineIndex].item].amount--
+                            out.addMessage('Hey! No soft-locking! You donated 1+ petals! >:(',COLORS.redArr)
                         }
 
                     },3*3250+750)
@@ -22351,13 +22397,17 @@ function BeeSwarmSimulator(DATA){
                 } else {
 
                     items[windShrineDonations[out.shrineIndex].item].amount-=document.getElementById('shrineAmount').value
+
+                    out.stats[windShrineDonations[out.shrineIndex].item+'ToTheWindShrine']+=document.getElementById('shrineAmount').value
                 }
 
                 out.updateInventory()
 
                 window.setTimeout(function(){
 
-                    let info=windShrineDonations[out.shrineIndex],amountOfTokens,amountDonated=document.getElementById('shrineAmount').value
+                    if(windShrineDonations[out.shrineIndex].item==='spiritPetal'&&items.windyBeeEgg.amount>0) return
+
+                    let info=windShrineDonations[out.shrineIndex],amountOfTokens,amountDonated=windShrineDonations[out.shrineIndex].item==='spiritPetal'?1000:document.getElementById('shrineAmount').value
 
                     switch(info.rewardType){
 
@@ -22942,11 +22992,31 @@ function BeeSwarmSimulator(DATA){
                 }
             }
             
-            if(player.fieldIn&&(player._flowerIn.x!==player.flowerIn.x||player._flowerIn.z!==player.flowerIn.z)){
+            if(player.fieldIn){
                 
-                collectPollen({x:player.flowerIn.x,z:player.flowerIn.z,pattern:[[0,0]],amount:player.movementCollection,stackOffset:0.4,yOffset:1,gooTrail:out.currentGear.boots==='gummyBoots'})
+                if(player._flowerIn.x!==player.flowerIn.x||player._flowerIn.z!==player.flowerIn.z){
+
+                    collectPollen({x:player.flowerIn.x,z:player.flowerIn.z,pattern:[[0,0]],amount:player.movementCollection,stackOffset:0.4,yOffset:1,gooTrail:out.currentGear.boots==='gummyBoots'})
+                    player._flowerIn={...player.flowerIn}
+                }
                 
-                player._flowerIn={...player.flowerIn}
+                leavesTimer-=dt
+
+                if(leavesTimer<=0){
+
+                    leavesTimer=45
+
+                    let tt='treat'
+
+                    if(player.fieldIn==='SunflowerField'&&Math.random()<0.85) tt='sunflowerSeed'
+                    if(player.fieldIn==='PineapplePatch'&&Math.random()<0.85) tt='pineapple'
+                    if(player.fieldIn==='CoconutField'&&Math.random()<0.4) tt='coconut'
+
+                    if(fieldInfo[player.fieldIn].generalColorComp.r>0.5&&Math.random()<0.85) tt='strawberry'
+                    if(fieldInfo[player.fieldIn].generalColorComp.b>0.5&&Math.random()<0.85) tt='blueberry'
+
+                    objects.tokens.push(new LootToken(8,[fieldInfo[player.fieldIn].x+((Math.random()*fieldInfo[player.fieldIn].width)|0),fieldInfo[player.fieldIn].y+1,fieldInfo[player.fieldIn].z+((Math.random()*fieldInfo[player.fieldIn].length)|0)],tt,1,false,'Leaves'))
+                }
             }
             
             out.toolCooldown-=dt
@@ -24290,6 +24360,7 @@ function BeeSwarmSimulator(DATA){
             pencil:[128*6/1024,0],
             bobertPlushie:[128*1/1024,128*5/1024],
             coffeeMug:[128*2/1024,128*5/1024],
+            books:[128*3/1024,128*5/1024],
             exclaim:[128*7/1024,0],
             lightrays:[128*0/1024,128/1024],
             circle:[128*1/1024,128/1024],
@@ -28950,6 +29021,9 @@ function BeeSwarmSimulator(DATA){
 
     uiCanvas.requestPointerLock()
 
+    if(!player.discoveredBees.length) items.basicEgg.amount=1
+
+    window.setInterval(()=>{SAVE_GAME();player.addMessage('Game Autosaved!')},30000)
 
     function loop(now){
 
