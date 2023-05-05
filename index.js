@@ -368,7 +368,7 @@ function BeeSwarmSimulator(DATA){
         gl.uniform1f(glCache.trail_isNight,player.isNight)
     }
 
-    let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,DYNAMIC_PHYSICS_GROUP=8,BEE_COLLECT=0,BEE_FLY=0,then=0,dt,frameCount=0,TIME=0,player,NIGHT_DARKNESS=0.6,NPCs,STATS_TICK=false,globalTimer_puffshroom=0,globalTimer_mondo=0,devWorld=true||DATA.name===window.atob('YnVveWFudCBiZWUgcmFjY29vbg==')
+    let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,DYNAMIC_PHYSICS_GROUP=8,BEE_COLLECT=0,BEE_FLY=0,then=0,dt,frameCount=0,TIME=0,player,NIGHT_DARKNESS=0.6,NPCs,STATS_TICK=false,globalTimer_puffshroom=0,globalTimer_mondo=0,devWorld=DATA.name===window.atob('YnVveWFudCBiZWUgcmFjY29vbg==')
 
     gl.enable(gl.BLEND)
     gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)
@@ -9025,9 +9025,7 @@ function BeeSwarmSimulator(DATA){
             this.moveOffset=[MATH.random(-5,5),0,MATH.random(-5,5)]
             this.moveDir=[]
             
-            
-            this.computeLevel(9)
-            // this.computeLevel(lvl||1)
+            this.computeLevel(lvl||1)
             
             this.convertTimer=0
             this.flowerCollecting=[]
@@ -20331,6 +20329,11 @@ function BeeSwarmSimulator(DATA){
             gummyMorph:0,
             gummyStar:0,
         }
+
+        for(let i=0;i<20;i++){
+
+            out.stats['beesToLevel'+i]=0
+        }
         
         for(let i in items){
             
@@ -20424,13 +20427,20 @@ function BeeSwarmSimulator(DATA){
             
             for(let i in req){
                 
-                req[i].push(req[i][0]==='beeTypes'?0:out.stats[req[i][0]])
+                req[i].push(req[i][0]==='beeTypes'||req[i][0].indexOf('beesToLevel')>-1?0:out.stats[req[i][0]])
             }
             
             out.quests=[{name:name,req:req,NPC:NPC},...out.quests]
             
             NPCs[NPC].activeQuest=true
-            questButton.onclick()
+            
+            if(currentPage||currentPage===0)
+                pages[currentPage].style.display='none'
+            
+            currentPage=1
+            pages[currentPage].style.display='block'
+            out.itemDragging=false
+            out.beequipDragging=false
         }
         
         dialogueBox.onclick=function(){
@@ -21030,7 +21040,15 @@ function BeeSwarmSimulator(DATA){
             out.cloudBoostAmount=1.15
             out.beeColorAmounts={r:0,b:0,w:0}
             
+            for(let i=0;i<20;i++)
+                out.stats['beesToLevel'+i]=0
+
             for(let i in objects.bees){
+
+                for(let k=0;k<=player.hive[objects.bees[i].hiveY][objects.bees[i].hiveX].level;k++){
+
+                    out.stats['beesToLevel'+k]++
+                }
 
                 if(out.discoveredBees.indexOf(objects.bees[i].type)<0){
 
@@ -21210,7 +21228,7 @@ function BeeSwarmSimulator(DATA){
             mask:'none',
             leftGuard:'none',
             rightGuard:'none',
-            glider:'parachute',
+            glider:'none',
             sprinkler:'none',
             beequips:[]
         }
@@ -21718,13 +21736,6 @@ function BeeSwarmSimulator(DATA){
             
             pollenAmount2.textContent=pollenAmount.textContent=MATH.addCommas((out.pollen).toString())+'/'+MATH.addCommas(player.capacity.toString())
             honeyAmount2.textContent=honeyAmount.textContent=MATH.addCommas((out.honey).toString())
-            
-            if(user.keys.c&&out.pollen){
-                
-                textRenderer.add(out.pollen,[player.body.position.x,player.body.position.y+1,player.body.position.z],COLORS.honey,1,'⇆')
-                out.honey+=out.pollen
-                out.pollen=0
-            }
             
             let p=Math.min(out.pollen/out.capacity,1)
             
@@ -22794,7 +22805,7 @@ function BeeSwarmSimulator(DATA){
                 out.body.velocity.z/=dt*out.friction+1
             }
             
-            if((out.body.velocity.y<5||out.removeAirFrictionUntilGrounded)&&user.clickedKeys[' ']){
+            if((out.body.velocity.y<5||out.removeAirFrictionUntilGrounded)&&user.clickedKeys[' ']&&out.currentGear.glider!=='none'){
                 
                 if(!out.isGliding){
                     
@@ -23911,7 +23922,7 @@ function BeeSwarmSimulator(DATA){
                 name:'basicEgg',
                 slot:'item',
                 viewMatrix:[10-4.5,1,13.5-4.5,MATH.HALF_PI+MATH.QUATER_PI,0.02],
-                cost:[(n,i=1)=>(Math.min(1000*Math.pow(1.45,n)*i,10000000)|0)+' honey'],
+                cost:[(n,i=1)=>(Math.min(500*Math.pow(1.4,n)*i,10000000)|0)+' honey'],
                 desc:'Can be used to hatch a Basic Bee!'
             }],
             currentIndex:0,message:'Explore Basic Egg Shop'
@@ -28042,7 +28053,7 @@ function BeeSwarmSimulator(DATA){
                 
                 updateFlower(params.field||player.fieldIn,_x,_z,function(f){
                     
-                    let amountToCollect=Math.min(amount[f.color[0]]*0.5,f.height*100),amp=amountToCollect*0.01
+                    let amountToCollect=Math.min(amount[f.color[0]],f.height*100),amp=amountToCollect*0.01
                     
                     f.height-=Math.min(params.depleteAll?f.height:amp/((f.level-1)*0.2+1),f.height)
                     
@@ -29427,16 +29438,6 @@ function BeeSwarmSimulator(DATA){
         gl.useProgram(mobRendererProgram)
         gl.uniformMatrix4fv(glCache.mob_viewMatrix,gl.FALSE,player.viewMatrix)
         
-        if(user.keys.o){
-            
-            console.error(player.body.position.x,player.body.position.y,player.body.position.z)
-        }
-
-        if(user.clickedKeys.l){
-
-            UPDATE_MAP_MESH()
-        }
-        
         player.attacked=[]
         
         for(let i=objects.mobs.length;i--;){
@@ -29503,7 +29504,6 @@ function BeeSwarmSimulator(DATA){
         player.updateAntChallenge()
         player.updateRoboChallenge()
 
-        
         gl.depthMask(false)
         
         gl.bindBuffer(gl.ARRAY_BUFFER,meshes.cylinder_explosion.vertBuffer)
@@ -29546,15 +29546,6 @@ function BeeSwarmSimulator(DATA){
         textRenderer.draw()
         
         player.updateUI()
-        
-        if(user.clickedKeys.h){
-            
-            player.addEffect('haste')
-            player.addEffect('focus')
-            player.addEffect('melody')
-            player.addEffect('bombCombo')
-            player.addEffect('flameHeat',0.05)
-        }
         
         user.update()
 
