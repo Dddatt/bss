@@ -7509,6 +7509,27 @@ window.textures_bees=function(tex_ctx){
     tex_ctx.fillRect(0,213,128,128/3|0|0+1)
     star('rgb(217, 28, 201)')
     tex_ctx.setTransform(1,0,0,1,0,0)
+
+    tex_ctx.translate(128*14,256*2+768)
+    tex_ctx.fillStyle='rgb(255, 255, 99)'
+    tex_ctx.fillRect(0,0,128,128)
+    tex_ctx.strokeStyle='rgb(0,0,0,0.2)'
+    tex_ctx.lineWidth=11
+    tex_ctx.translate(128/2,128/2)
+    tex_ctx.beginPath()
+    tex_ctx.moveTo(-30,-30)
+    tex_ctx.bezierCurveTo(-28,-44,-12,-10,-32,-11)
+    tex_ctx.moveTo(16,-34)
+    tex_ctx.bezierCurveTo(39,-26,5,-17,25,-14)
+    tex_ctx.moveTo(-29,23)
+    tex_ctx.bezierCurveTo(-14,22,-19,37,0,32)
+    tex_ctx.bezierCurveTo(25,22,-8,25,28,22)
+    tex_ctx.stroke()
+    tex_ctx.translate(-128/2,-128/2)
+    tex_ctx.fillRect(0,128,128,128)
+    tex_ctx.fillRect(0,128-1,128,128/3|0)
+    tex_ctx.fillRect(0,213,128,128/3|0+1)
+    tex_ctx.setTransform(1,0,0,1,0,0)
 }
 
 window.textures_flowers=function(tex_ctx){

@@ -298,6 +298,26 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         <text id='emergencyCoconutShieldPassive_amount' x='29' y='29' style='font-family:tahoma;font-size:12px;' text-anchor='end' fill='rgb(255,255,255)'></text>
         
     </svg>
+
+    <svg id='coconutHastePassive' style='width:30px;height:30px;display:none;'>
+
+        <circle cx='15' cy='15' r='14' fill='rgb(115,163,0)' stroke='rgb(0,0,0)' stroke-width='2'></circle>
+        
+        <circle cx='15' cy='15' r='8' fill='rgb(150,75,0)' stroke='rgb(0,0,0)' stroke-width='1'></circle>
+        
+        <circle cx='17' cy='16' r='1.5' fill='rgb(94, 51, 7)'></circle><circle cx='12' cy='13' r='1.5' fill='rgb(94, 51, 7)'></circle><circle cx='17' cy='12' r='1.5' fill='rgb(94, 51, 7)'></circle>
+        
+        <g transform='translate(6,3) scale(0.75,0.75)'>
+        <path d='M18 9L15 21M12 26L15 21M16 26L15 21M11 11L16 15M23 15L16 15' stroke='rgb(255,255,255)' stroke-width='2'></path>
+        <path d='M5 7 L11 7M2 15L12 15M3 23L11 23' stroke='rgb(255,255,255)' stroke-width='1.5' opacity='0.5'></path>
+        <circle cx='18' cy='9' r='4'fill='rgb(255,255,255)'></circle></g>
+
+        <rect id='coconutHastePassive_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0.45'></rect>
+        <text id='coconutHastePassive_amount' x='29' y='29' style='font-family:tahoma;font-size:12px;' text-anchor='end' fill='rgb(255,255,255)'></text>
+        
+    </svg>
+
+    
     
     <svg id='xFlamePassive' style='width:30px;height:30px;display:none;'>
         <circle cx='15' cy='15' r='14' fill='rgb(115,163,0)' stroke='rgb(0,0,0)' stroke-width='2'></circle>
@@ -1422,6 +1442,17 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
         <text id='haste_amount' x='28' y='28' style='font-family:calibri;font-size:13px;' text-anchor='end'></text>
         
     </svg>
+
+    <svg id='coconutSurge' style='width:30px;height:30px;display:none'>
+        
+        <rect width='30' height='30' fill='rgb(138, 80, 33)'></rect>
+        <rect id='coconutSurge_cooldown' width='30' height='0' style='fill:rgb(0,0,0);' opacity='0.45'></rect>
+        <path d='M18 9L15 21M12 26L15 21M16 26L15 21M11 11L16 15M23 15L16 15' stroke='rgb(130,130,130)' stroke-width='2'></path>
+        <path d='M5 7 L11 7M2 15L12 15M3 23L11 23' stroke='rgb(130,130,130)' stroke-width='1.5' opacity='0.5'></path>
+        <circle cx='18' cy='9' r='4'fill='rgb(130,130,130)'></circle>
+        <text id='coconutSurge_amount' x='28' y='28' style='font-family:calibri;font-size:13px;' text-anchor='end'></text>
+        
+    </svg>
     
     <svg id='focus' style='width:30px;height:30px;display:none'>
         
@@ -2294,13 +2325,13 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
     
     <canvas id='thumbnailCanv' style='position:fixed;left:50%;top:50%;z-index:-1;transform:translate(-50%,-50%);'></canvas>
 
-    <div style='position:fixed;left:50%;top:10%;text-align:center;font-size:45px;text-align:center;background-color:rgb(255,255,255,0.6);border-radius:15px;padding:5px;padding-left:25px;padding-right:25px;transform:translate(-50%,-50%);backdrop-filter:blur(10px)'>Bee Swarm Simulator</div>
+    <div style='position:fixed;left:50%;top:10%;text-align:center;font-size:45px;text-align:center;background-color:rgb(255,255,255,0.6);border-radius:15px;padding:5px;padding-left:25px;padding-right:25px;transform:translate(-50%,-50%);width:5000px;backdrop-filter:blur(10px)'>Bee Swarm Simulator</div>
     
-    <button id='mainPlay' style='margin-left:50%;margin-top:19%;width:300px;height:70px;background-color:rgb(157, 255, 150);transform:translate(-50%,-50%);font-family:comic sans ms;font-size:35px'>Play</button>
+    <button id='mainPlay' style='position:fixed;left:50%;top:50%;width:300px;height:70px;background-color:rgb(157, 255, 150);transform:translate(-50%,-130%);font-family:comic sans ms;font-size:35px'>Play</button>
 
-    <button id='mainInfo' style='margin-left:50%;margin-top:25px;width:300px;height:70px;background-color:rgb(248, 129, 129);transform:translate(-50%,-50%);font-family:comic sans ms;font-size:23px'>Instructions & Info</button>
+    <button id='mainInfo' style='position:fixed;left:50%;top:50%;width:300px;height:70px;background-color:rgb(248, 129, 129);transform:translate(-50%,0%);font-family:comic sans ms;font-size:23px'>Instructions & Info</button>
 
-    <button id='mainNew' style='margin-left:50%;margin-top:25px;width:300px;height:70px;background-color:rgb(248, 255, 150);transform:translate(-50%,-50%);font-family:comic sans ms;font-size:23px'>Open In New Window</button>
+    <button id='mainNew' style='position:fixed;left:50%;top:50%;width:300px;height:70px;background-color:rgb(248, 255, 150);transform:translate(-50%,130%);font-family:comic sans ms;font-size:23px'>Open In New Window</button>
     
 </div>
 
@@ -2338,25 +2369,28 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
 
 </div>
 
-<div id='UIBar' style='position:absolute;margin:0px;z-index:0;width:210px;height:30px;background-color:rgba(195,195,195,0.9);margin-top:105px;'>
+<div id='UIBar' style='position:absolute;margin:0px;z-index:0;width:170px;height:30px;background-color:rgba(195,195,195);margin-top:103px;padding:2px;border-radius:2px'>
     
     <svg id='inventoryButton' style='width:30px;height:30px;transition-duration:0.4s;'>
         
         <path fill='rgb(255,255,255)' d='M15 27C0 28 5 5 15 5ZM15 27C30 28 25 5 15 5'></path>
         
-        <path stroke='rgb(195,195,195)' stroke-width='4' d='M5 15L 10 12L15 18L20 13L25 15'></path>
+        <path stroke='rgb(195,195,195)' fill='rgb(0,0,0,0)' stroke-width='4' d='M5 15L 10 12L15 18L20 13L25 15'></path>
         
     </svg>
     
     <svg id='questButton' style='width:30px;height:30px;transition-duration:0.4s;'>
         
-        <rect fill='rgb(255,255,255)' x='5' y='5' width='20' height='20'></rect>
+        <path fill='rgb(255,255,255)' d='M 0 6 L 10 2L 20 6L 30 2L 30 24L 20 28L 10 24 L 0 28' transform='translate(3,0) scale(0.8,1)'></path>
+        <text fill='rgb(195,195,195)' stroke='rgb(195,195,195)' stroke-width='0.3' x='10' y='21' style='font-family:arial;font-size:18px'>?</text>
         
     </svg>
 
     <svg id='beesButton' style='width:30px;height:30px;transition-duration:0.4s;'>
         
-        <rect fill='rgb(255,255,255)' x='5' y='5' width='20' height='20' rx='5'></rect>
+        <rect fill='rgb(255,255,255)' x='2.5' y='2.5' width='25' height='25' rx='3'></rect>
+        
+        <path fill='rgb(255,255,255,0)' stroke='rgb(195,195,195)' stroke-width='3' d='M10 7 L 10 14M20 7 L 20 14M11 18 L 15 22L 19 18'></path>
         
     </svg>
     
@@ -2377,7 +2411,12 @@ sound is currently disabled to stop my computer from becoming a waffle cooker
     
     <svg id='beequipButton' style='width:30px;height:30px;transition-duration:0.4s;'>
         
-        <rect fill='rgb(255,255,255)' x='5' y='5' width='20' height='20'></rect>
+        <path fill='rgb(255,255,255)' transform='scale(0.056,0.056)' d='M511.883,298.395c-2.781-27.281-54.391-46.141-129.406-51.844c-7.172-42.047-15.469-90.563-17.891-103.75
+		c-5.563-30.203-45.344-47.094-74.891-25.313c-15.5,11.422-29.359,12.234-36.703,12.234s-15.5,1.625-36.703-12.234
+		c-30.719-20.094-69.328-4.891-74.875,25.313c-2.969,16.109-14.688,84.844-22.391,130.203
+		C45.211,293.817-2.711,323.114,0.117,350.723c4.25,41.625,122.266,63.671,263.578,49.218
+		C405.039,385.488,516.148,340.036,511.883,298.395z M132.289,308.348l8.156-42.406c0,0,145.188,22.828,226.75-19.578l8.156,35.891
+		C375.352,282.254,287.258,337.708,132.289,308.348z'></path>
         
     </svg>
     

@@ -243,7 +243,7 @@ function main(){
     
                 let date=new Date(res[i].data.lastSaved),dgh=date.getHours()
     
-                let lastSavedDate=`${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getDate().toString().padStart(2,'0')}/${date.getFullYear()}&nbsp;&nbsp;${(dgh>=12?dgh-12:dgh).toString().padStart(2,'0')}:${date.getMinutes().toString().padStart(2,'0')}:${date.getSeconds().toString().padStart(2,'0')} ${dgh>=12?'PM':'AM'}`
+                let lastSavedDate=`${(date.getMonth()+1).toString().padStart(2,'0')}/${date.getDate().toString().padStart(2,'0')}/${date.getFullYear()}&nbsp;&nbsp;${(dgh>=12?dgh-12:dgh).toString().padStart(2,'0').replace('00','12')}:${date.getMinutes().toString().padStart(2,'0')}:${date.getSeconds().toString().padStart(2,'0')} ${dgh>=12?'PM':'AM'}`
     
                 div.innerHTML="<input id='saveName"+i+"' style='margin-top:3px;margin-left:3px;font-size:22px;background-color:rgb(0,0,0,0);border:none;font-family:comic sans ms;padding-left:4px;padding-bottom:5px;background-color:rgb(0,0,0,0.1)' spellcheck='false' size='17' value='"+res[i].data.name+"' onchange='window.renameSave("+i+")'><div style='margin-top:7px;margin-left:5px;font-size:14px;color:rgb(60,60,60)'>Last Saved: "+lastSavedDate+"</div><div style='margin-left:460px;margin-top:-25px;width:52px;height:27px;transform:translate(-50%,-50%);background-color:rgb(210,50,50);border-radius:4px;border:2px solid black;text-align:center;font-size:16px;cursor:pointer' onclick='window.deleteSave("+i+")'>Delete</div><div style='margin-left:395px;margin-top:-31px;width:52px;height:27px;transform:translate(-50%,-50%);background-color:rgb(195,100,255);border-radius:4px;border:2px solid black;text-align:center;font-size:16px;cursor:pointer' onclick='window.getSave("+i+")'>Export</div><div style='margin-left:330px;margin-top:-31px;width:52px;height:27px;transform:translate(-50%,-50%);background-color:rgb(50,210,50);border-radius:4px;border:2px solid black;text-align:center;font-size:16px;cursor:pointer' onclick='window.initSave("+i+")'>Play</div>"
     
@@ -366,7 +366,7 @@ function BeeSwarmSimulator(DATA){
         gl.uniform1f(glCache.trail_isNight,player.isNight)
     }
 
-    let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,DYNAMIC_PHYSICS_GROUP=8,BEE_COLLECT=0,BEE_FLY=0,then=0,dt,frameCount=0,TIME=0,player,NIGHT_DARKNESS=0.6,NPCs,STATS_TICK=false,globalTimer_puffshroom=0,globalTimer_mondo=0,leavesTimer=45,devWorld=DATA.name===window.atob('YnVveWFudCBiZWUgcmFjY29vbg==')
+    let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,DYNAMIC_PHYSICS_GROUP=8,BEE_COLLECT=0,BEE_FLY=0,then=0,dt,frameCount=0,TIME=0,player,NIGHT_DARKNESS=0.6,NPCs,STATS_TICK=false,leavesTimer=45,devWorld=DATA.name===window.atob('YnVveWFudCBiZWUgcmFjY29vbg==')
 
     gl.enable(gl.BLEND)
     gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)
@@ -733,6 +733,7 @@ function BeeSwarmSimulator(DATA){
             pages[currentPage].style.display='block'
             player.itemDragging=false
             player.beequipDragging=false
+            player.beequipLookingAt=false
             player.updateBeequipPage()
             
         } else {
@@ -771,6 +772,14 @@ function BeeSwarmSimulator(DATA){
 
             minX:65,maxX:71,minY:18,maxY:28,minZ:-24,maxZ:-18,isMachine:true,message:'Inspect Wind Shrine',requirements:function(player){
                 
+                if(!player.extraInfo.windShrineDonate)
+                    player.extraInfo.windShrineDonate=1
+
+                if(Date.now()-player.extraInfo.windShrineDonate<30*60*1000){
+
+                    return "The Wind Shrine is on cooldown! ("+MATH.doTime((60*60-(Date.now()-player.extraInfo.windShrineDonate)*0.001)+'')+')'
+                }
+
                 if(document.getElementById('shrineMenu').style.display==='block') return "You're looking at the Wind Shrine"
             },
             func:function(player){
@@ -956,7 +965,7 @@ function BeeSwarmSimulator(DATA){
 
         redHQ_shop:{
             
-            minX:36,maxX:46,minY:-2,maxY:7,minZ:10,maxZ:30
+            minX:36,maxX:46,minY:-2,maxY:7,minZ:21,maxZ:30
         },
 
         ace_shop:{
@@ -1032,6 +1041,21 @@ function BeeSwarmSimulator(DATA){
         demon_shop:{
             
             minX:-62,maxX:-57,minY:0,maxY:5,minZ:-11.5-3,maxZ:-11.5+3
+        },
+
+        lair_shop:{
+
+            minX:-20,maxX:20,minY:990,maxY:1010,minZ:1003,maxZ:1011
+        },
+
+        coconutCave_shop:{
+
+            minX:6,maxX:15,minY:10,maxY:18,minZ:-42,maxZ:-30
+        },
+
+        sprinkler_shop:{
+
+            minX:47.925-2,maxX:47.925+5.5,minY:10,maxY:18,minZ:59.075-6.5,maxZ:59.075+6.5
         },
         
         red_cannon:{
@@ -1193,7 +1217,7 @@ function BeeSwarmSimulator(DATA){
                     player.addMessage('🌙 The moon seems happy! 🌙')
                 }
 
-                amulet.push(('*'+Math.min(1+player.stats.moonAmulets*0.02,1.5).toFixed(2)+' capacityMultiplier').replace('0 ',' '))
+                amulet.push(('*'+Math.min(1+player.stats.moonAmulets*0.02,1.5).toFixed(2)+' capacityMultiplier').replace('0 ',' '),('*'+Math.min(1.25+player.stats.moonAmulets*0.05,2.5).toFixed(2)+' convertRate'))
 
                 let g=Math.min(player.stats.moonAmulets,25)
 
@@ -1204,7 +1228,7 @@ function BeeSwarmSimulator(DATA){
 
                 if(Math.random()<0.25+g*0.0125){
 
-                    amulet.push('+'+MATH.random(0.08+g*0.01,0.15+g*0.02).toFixed(2)+' lootLuck')
+                    amulet.push('*'+MATH.random(1.02+g*0.01,1.08+g*0.02).toFixed(2)+' lootLuck')
                 }
 
                 if(Math.random()<0.6){
@@ -1511,6 +1535,32 @@ function BeeSwarmSimulator(DATA){
             }
         },
 
+        giftedRoyalJelly_dispenser:{
+
+            isMachine:true,requirements:function(player){
+
+                if(!player.extraInfo.giftedRoyalJellyDispenser)
+                    player.extraInfo.giftedRoyalJellyDispenser=1
+
+                if(Date.now()-player.extraInfo.giftedRoyalJellyDispenser<2*60*60*1000){
+
+                    return "The Gifted Royal Jelly Dispenser is on cooldown! ("+MATH.doTime((2*60*60-(Date.now()-player.extraInfo.giftedRoyalJellyDispenser)*0.001)+'')+')'
+                }
+
+            },minX:-37.85-1.5,maxX:-37.85+1.5,minY:10,maxY:16,minZ:-13.25-1.5,maxZ:-13.25+1.5,message:'Claim 1 Royal Jelly per Gifted Bee You Own',func:function(player){
+
+                player.extraInfo.giftedRoyalJellyDispenser=Math.floor(Date.now())
+
+                let am=0
+
+                for(let i in objects.bees) if(objects.bees[i].gifted) am++
+
+                items.royalJelly.amount+=am
+                player.updateInventory()
+                player.addMessage('+'+am+' Royal Jelly')
+            }
+        },
+
         gummyBee_tame:{
 
             isMachine:true,requirements:function(player){
@@ -1562,7 +1612,7 @@ function BeeSwarmSimulator(DATA){
                 if(!player.extraInfo.sproutSummoner)
                     player.extraInfo.sproutSummoner=1
 
-                if(Date.now()-player.extraInfo.sproutSummoner<20*60*1000){
+                if(Date.now()-player.extraInfo.sproutSummoner<20*60*60*1000){
 
                     return "The Sprout Summoner is on cooldown! ("+MATH.doTime((2*60*60-(Date.now()-player.extraInfo.sproutSummoner)*0.001)+'')+')'
                 }
@@ -1588,6 +1638,105 @@ function BeeSwarmSimulator(DATA){
                 objects.mobs.push(new Sprout(f,type))
             }
         },
+
+        fieldBooster:{
+
+            isMachine:true,requirements:function(player){
+
+                if(!player.extraInfo.fieldBooster)
+                    player.extraInfo.fieldBooster=1
+
+                if(Date.now()-player.extraInfo.fieldBooster<30*60*1000){
+
+                    return "The Field Booster is on cooldown! ("+MATH.doTime((30*60-(Date.now()-player.extraInfo.fieldBooster)*0.001)+'')+')'
+                }
+                
+            },minX:-8-1.5,maxX:-8+1.5,minY:34.5-2,maxY:34.5+1.5,minZ:83.5-1.5,maxZ:83.5+1.5,message:'Use Field Booster',func:function(player){
+
+                player.extraInfo.fieldBooster=Math.floor(Date.now())
+
+                let f=['3SunflowerField','3DandelionField','2SpiderField','2CloverField','2PineapplePatch','1PumpkinPatch','1CactusField']
+
+                f=f[(Math.random()*f.length)|0]
+                let am=f[0]
+                f=f.substring(1,f.length)
+
+                player.addEffect(f[0].toLowerCase()+f.substring(1,f.length)+'Boost',false,false,undefined,am)
+                player.addMessage('Activated x'+am+' "'+MATH.doGrammar(f[0].toLowerCase()+f.substring(1,f.length))+' Boost"')
+            }
+        },
+
+        redFieldBooster:{
+
+            isMachine:true,requirements:function(player){
+
+                if(!player.extraInfo.redFieldBooster)
+                    player.extraInfo.redFieldBooster=1
+
+                if(Date.now()-player.extraInfo.redFieldBooster<30*60*1000){
+
+                    return "The Red Field Booster is on cooldown! ("+MATH.doTime((30*60-(Date.now()-player.extraInfo.redFieldBooster)*0.001)+'')+')'
+                }
+                
+            },minX:42-1.5,maxX:42+1.5,minY:3.5-2,maxY:3.5+1.5,minZ:17-1.5,maxZ:17+1.5,message:'Use Red Field Booster',func:function(player){
+                
+                player.extraInfo.redFieldBooster=Math.floor(Date.now())
+
+                let f=['3MushroomField','2StrawberryField','1RoseField']
+
+                f=f[(Math.random()*f.length)|0]
+                let am=f[0]
+                f=f.substring(1,f.length)
+
+                player.addEffect(f[0].toLowerCase()+f.substring(1,f.length)+'Boost',false,false,undefined,am)
+                player.addMessage('Activated x'+am+' "'+MATH.doGrammar(f[0].toLowerCase()+f.substring(1,f.length))+' Boost"')
+            }
+        },
+
+        blueFieldBooster:{
+
+            isMachine:true,requirements:function(player){
+
+                if(!player.extraInfo.blueFieldBooster)
+                    player.extraInfo.blueFieldBooster=1
+
+                if(Date.now()-player.extraInfo.blueFieldBooster<30*60*1000){
+
+                    return "The Blue Field Booster is on cooldown! ("+MATH.doTime((30*60-(Date.now()-player.extraInfo.blueFieldBooster)*0.001)+'')+')'
+                }
+                
+            },minX:-65-1.5,maxX:-65+1.5,minY:10-2,maxY:10+1.5,minZ:37.5-1.5,maxZ:37.5+1.5,message:'Use Blue Field Booster',func:function(player){
+                
+                player.extraInfo.blueFieldBooster=Math.floor(Date.now())
+
+                let f=['3BlueFlowerField','2BambooField','1PineTreeForest']
+
+                f=f[(Math.random()*f.length)|0]
+                let am=f[0]
+                f=f.substring(1,f.length)
+
+                player.addEffect(f[0].toLowerCase()+f.substring(1,f.length)+'Boost',false,false,undefined,am)
+                player.addMessage('Activated x'+am+' "'+MATH.doGrammar(f[0].toLowerCase()+f.substring(1,f.length))+' Boost"')
+            }
+        },
+
+        enterTunnel:{
+
+            isMachine:true,minX:-69.8-1,maxX:-69.8+1,minY:17,maxY:20,minZ:59-1,maxZ:59+1,message:'Enter Mysterious Hole',func:function(player){
+                
+                player.body.position.set(-3,-23,45)
+                player.body.velocity.set(0,0,0)
+            }
+        },
+
+        exitTunnel:{
+            
+            isMachine:true,minX:-34-1.17,maxX:-34+1.17,minY:-25,maxY:-22,minZ:45-1.17,maxZ:45+1.17,message:'Exit Tunnel',func:function(player){
+                
+                player.body.position.set(10.3,3.9,18.75)
+                player.body.velocity.set(0,11,0)
+            }
+        },
     }
 
     if(devWorld){
@@ -1606,7 +1755,7 @@ function BeeSwarmSimulator(DATA){
                     rightGuard:'cobaltGuard',
                     glider:'glider',
                     supremeStarAmulet:'*2.5 capacityMultiplier,*1.5 convertRate,*1.1 redPollen,*1.1 bluePollen,*1.1 whitePollen,*1.6 redPollen,+0.1 instantBlueConversion,+0.1 instantWhiteConversion,+0.1 instantRedConversion,+0.05 criticalChance,P scorchingStarPassive,P starSawPassive',
-                    sprinkler:'supremeSaturator',
+                    sprinkler:'superSaturator',
                     beequips:[],
                 }
                 
@@ -1686,7 +1835,7 @@ function BeeSwarmSimulator(DATA){
                     leftGuard:'rileyGuard',
                     rightGuard:'buckoGuard',
                     glider:'glider',
-                    sprinkler:'supremeSaturator',
+                    sprinkler:'superSaturator',
                     beequips:[],
                 }
                 
@@ -1756,7 +1905,7 @@ function BeeSwarmSimulator(DATA){
                     rightGuard:'cobaltGuard',
                     glider:'glider',
                     supremeStarAmulet:'*2.5 capacityMultiplier,*1.5 convertRate,*1.1 redPollen,*1.1 bluePollen,*1.1 whitePollen,*1.6 redPollen,+0.1 instantBlueConversion,+0.1 instantWhiteConversion,+0.1 instantRedConversion,+0.05 criticalChance,P scorchingStarPassive,P starSawPassive',
-                    sprinkler:'supremeSaturator',
+                    sprinkler:'superSaturator',
                     beequips:[],
                 }
                 
@@ -1837,7 +1986,7 @@ function BeeSwarmSimulator(DATA){
                     rightGuard:'cobaltGuard',
                     glider:'glider',
                     supremeStarAmulet:'*2.5 capacityMultiplier,*1.5 convertRate,*1.1 redPollen,*1.1 bluePollen,*1.1 whitePollen,*1.6 bluePollen,+0.1 instantBlueConversion,+0.1 instantWhiteConversion,+0.1 instantRedConversion,+0.05 criticalChance,P popStarPassive,P starShowerPassive',
-                    sprinkler:'supremeSaturator',
+                    sprinkler:'superSaturator',
                     beequips:[],
                 }
                 
@@ -1866,7 +2015,6 @@ function BeeSwarmSimulator(DATA){
                 player.addSlot('ninja')
                 player.addSlot('vicious')
                 player.addSlot('bear')
-                player.addSlot('festive')
                 player.addSlot('music')
                 player.addSlot('music')
                 player.addSlot('music')
@@ -1888,6 +2036,7 @@ function BeeSwarmSimulator(DATA){
                 player.addSlot('buoyant')
                 player.addSlot('buoyant')
                 player.addSlot('buoyant')
+                player.addSlot('buoyant')
                 player.addSlot('tadpole')
                 player.addSlot('tadpole')
                 player.addSlot('tadpole')
@@ -1897,7 +2046,7 @@ function BeeSwarmSimulator(DATA){
                 player.addSlot('tadpole')
                 player.addSlot('tadpole')
                 player.addSlot('tadpole')
-                player.addSlot('cobalt')
+                player.addSlot('tadpole')
                 player.addSlot('digital')
                 player.updateHive()
                 player.addEffect('balloonBlessing',false,50)
@@ -1920,7 +2069,7 @@ function BeeSwarmSimulator(DATA){
                     rightGuard:'cobaltGuard',
                     glider:'glider',
                     supremeStarAmulet:'*2.5 capacityMultiplier,*1.5 convertRate,*1.1 redPollen,*1.1 bluePollen,*1.1 whitePollen,*1.6 whitePollen,+0.1 instantBlueConversion,+0.1 instantWhiteConversion,+0.1 instantRedConversion,+0.05 criticalChance,P gummyStarPassive,P starSawPassive',
-                    sprinkler:'supremeSaturator',
+                    sprinkler:'superSaturator',
                     beequips:[],
                 }
                 
@@ -2242,7 +2391,7 @@ function BeeSwarmSimulator(DATA){
         
         baby:{
             
-            u:128*8/2048,v:256*2/2048,meshPartId:0,gatherSpeed:5,gatherAmount:10,speed:10.5,convertSpeed:5,convertAmount:80,attack:0,energy:15,tokens:['babyLove'],rarity:'legendary',color:'white',description:"This little bee isn't very good at bee tasks yet, but it's guaranteed to bring you joy (and luck).",giftedHiveBonus:{oper:'+',stat:'lootLuck',num:0.25},favoriteTreat:'strawberry'
+            u:128*8/2048,v:256*2/2048,meshPartId:0,gatherSpeed:5,gatherAmount:10,speed:10.5,convertSpeed:5,convertAmount:80,attack:0,energy:15,tokens:['babyLove'],rarity:'legendary',color:'white',description:"This little bee isn't very good at bee tasks yet, but it's guaranteed to bring you joy (and luck).",giftedHiveBonus:{oper:'*',stat:'lootLuck',num:1.25},favoriteTreat:'strawberry'
         },
 
         vicious:{
@@ -3252,7 +3401,7 @@ function BeeSwarmSimulator(DATA){
         
         haste:{
             
-            desc:"Grants x1.1 movespeed for 25s. Stacks up to 10x, for a maximum of x2 movespeed.",
+            desc:"Grants x1.1 walkspeed for 25s. Stacks up to 10x, for a maximum of x2 walkspeed.",
             trialCooldown:15,trialRate:0.5,
             statsToAddTo:['hasteTokens'],
             u:0,v:0,
@@ -3271,7 +3420,7 @@ function BeeSwarmSimulator(DATA){
             
             getMessage:(amount)=>{
                 
-                return 'Haste\nx'+(player.roboChallenge?amount*0.02+1:amount*0.075+1).toFixed(1)+' movespeed'+(player.roboChallenge?'\n\n(nerfed due to Robo Challenge!)':'')
+                return 'Haste\nx'+(player.roboChallenge?amount*0.02+1:amount*0.075+1).toFixed(1)+' walkspeed'+(player.roboChallenge?'\n\n(nerfed due to Robo Challenge!)':'')
             }
         },
         
@@ -3290,7 +3439,7 @@ function BeeSwarmSimulator(DATA){
             
             getMessage:(amount)=>{
                 
-                return 'Haste++\nx2 movespeed'
+                return 'Haste++\nx2 walkspeed'
             }
         },
         
@@ -3629,12 +3778,12 @@ function BeeSwarmSimulator(DATA){
                 player.redPollen*=1.5
                 player.whitePollen*=1.5
                 player.bluePollen*=1.5
-                player.lootLuck+=0.5
+                player.lootLuck*=1.5
             },
             
             getMessage:(amount)=>{
                 
-                return 'Baby Love\nx1.5 pollen\n+50% Loot Luck'
+                return 'Baby Love\nx1.5 pollen\nx1.5 loot luck'
             }
         },
         
@@ -4080,13 +4229,16 @@ function BeeSwarmSimulator(DATA){
                     for(let i=objects.balloons.length;i--;){
                         
                         let b=objects.balloons[i]
-                        
-                        let type=['focus','melody','haste','whiteBomb','link','blueBomb','whiteBomb_','blueBomb_','whiteBoost','blueBoost','pollenMarkToken','honeyMarkToken']
-                        
-                        type=type[(Math.random()*type.length)|0]
-                        
-                        objects.tokens.push(new Token(effects[type].tokenLife,[b.pos[0],Math.round(params.bee.pos)+0.5,b.pos[2]],type,{field:b.field,x:b.x,z:b.z,bee:params.bee}))
-                        objects.explosions.push(new ReverseExplosion({col:[0,1,0.4],pos:b.pos,life:0.75,size:b.displaySize+1,alpha:0.9,height:1,primitive:'explosions',transformHeight:true}))
+
+                        if(b.state==='float'){
+                            
+                            let type=['focus','melody','haste','whiteBomb','link','blueBomb','whiteBomb_','blueBomb_','whiteBoost','blueBoost','pollenMarkToken','honeyMarkToken']
+                            
+                            type=type[(Math.random()*type.length)|0]
+                            
+                            objects.tokens.push(new Token(effects[type].tokenLife,[b.pos[0],Math.round(params.bee.pos)+0.5,b.pos[2]],type,{field:b.field,x:b.x,z:b.z,bee:params.bee}))
+                            objects.explosions.push(new ReverseExplosion({col:[0,1,0.4],pos:b.pos,life:0.75,size:b.displaySize+1,alpha:0.9,height:1,primitive:'explosions',transformHeight:true}))
+                        }
                     }
                     
                     objects.balloons.push(new Balloon(params.field,params.x,params.z,true,params.bee.level))
@@ -4132,14 +4284,14 @@ function BeeSwarmSimulator(DATA){
             
             update:(amount,player)=>{
                 
-                player.capacity*=amount*0.03+1
+                player.capacity*=amount*0.02+1
                 player.honeyAtHive*=amount*0.015+1
                 player.buoyantBeeAttack*=Math.min(amount*0.02+1,3)
             },
             
             getMessage:(amount)=>{
                 
-                return 'Balloon Blessing\nx'+(amount*0.03+1).toFixed(2)+' capacity\nx'+(amount*0.015+1).toFixed(3)+' honey at hive\nx'+Math.min(amount*0.02+1,3).toFixed(2)+' buoyant bee attack'
+                return 'Balloon Blessing\nx'+(amount*0.02+1).toFixed(2)+' capacity\nx'+(amount*0.015+1).toFixed(3)+' honey at hive\nx'+Math.min(amount*0.02+1,3).toFixed(2)+' buoyant bee attack'
             }
         },
         
@@ -4282,7 +4434,7 @@ function BeeSwarmSimulator(DATA){
             
             getMessage:(amount)=>{
                 
-                return 'Oil\nx1.05 bee speed\nx1.05 movespeed'
+                return 'Oil\nx1.05 bee speed\nx1.05 walkspeed'
             }
         },
         
@@ -4430,7 +4582,7 @@ function BeeSwarmSimulator(DATA){
             
             getMessage:(amount)=>{
                 
-                return 'Super Smoothie\nx1.5 capacity\nx1.6 pollen\nx1.4 pollen from bees\nx1.4 pollen from tools\nx2 convert rate\nx1.1 honey at hive\n+17% instant conversion\n+7% critical chance\nx1.05 walkspeed\nx1.1 bee movespeed\n+1% super-crit chance'
+                return 'Super Smoothie\nx1.5 capacity\nx1.6 pollen\nx1.4 pollen from bees\nx1.4 pollen from tools\nx2 convert rate\nx1.1 honey at hive\n+17% instant conversion\n+7% critical chance\nx1.05 walkspeed\nx1.1 bee speed\n+1% super-crit chance'
             }
         },
         
@@ -4466,13 +4618,13 @@ function BeeSwarmSimulator(DATA){
             update:(amount,player)=>{
                 
                 player.bluePollen*=Math.min(player.popStarSize*0.0125+2,5)
-                player.instantBlueConversion=MATH.applyPercentage(player.instantBlueConversion,0.2)
+                player.instantBlueConversion=MATH.applyPercentage(player.instantBlueConversion,0.05)
                 player.bubblePollen*=1.25
             },
             
             getMessage:(amount)=>{
                 
-                return 'Pop Star Aura\nx'+Math.min(player.popStarSize*0.0125+2,5)+' blue pollen\n+20% instant blue conversion\nx1.25 bubble pollen'
+                return 'Pop Star Aura\nx'+Math.min(player.popStarSize*0.0125+2,5)+' blue pollen\n+5% instant blue conversion\nx1.25 bubble pollen'
             }
         },
         
@@ -4531,13 +4683,13 @@ function BeeSwarmSimulator(DATA){
             
             update:(amount,player)=>{
                 
-                player.convertRate*=(amount*5+1).toFixed(2)
+                player.convertRateAtHive*=(amount*6+1).toFixed(2)
                 player.blueFieldCapacity*=(amount*5+1).toFixed(2)
             },
             
             getMessage:(amount)=>{
                 
-                return 'Bubble Bloat\nx'+(amount*5+1).toFixed(2)+' convert rate\nx'+(amount*5+1).toFixed(2)+' blue field capacity'
+                return 'Bubble Bloat\nx'+(amount*6+1).toFixed(2)+' convert rate at hive\nx'+(amount*5+1).toFixed(2)+' blue field capacity'
             }
         },
         
@@ -4884,14 +5036,14 @@ function BeeSwarmSimulator(DATA){
                 
                 player.bluePollen*=amount*0.15+1
                 player.honeyFromTokens*=amount*0.15+1
-                player.convertRate*=amount*0.15+1
+                player.convertRateAtHive*=amount*0.15+1
                 player.pollenFromTools*=amount*0.15+1
                 player.pollenFromBees*=amount*0.15+1
             },
             
             getMessage:(amount)=>{
                 
-                return 'Tidal Blessing\nx'+(amount*0.15+1).toFixed(2)+' blue pollen\nx'+(amount*0.15+1).toFixed(2)+' convert rate\nx'+(amount*0.15+1).toFixed(2)+' honey from tokens\nx'+(amount*0.15+1).toFixed(2)+' pollen from tools\nx'+(amount*0.15+1).toFixed(2)+' pollen from bees'
+                return 'Tidal Blessing\nx'+(amount*0.15+1).toFixed(2)+' blue pollen\nx'+(amount*0.15+1).toFixed(2)+' convert rate at hive\nx'+(amount*0.15+1).toFixed(2)+' honey from tokens\nx'+(amount*0.15+1).toFixed(2)+' pollen from tools\nx'+(amount*0.15+1).toFixed(2)+' pollen from bees'
             }
         },
         
@@ -4913,6 +5065,27 @@ function BeeSwarmSimulator(DATA){
             getMessage:(amount)=>{
                 
                 return 'Coconut Shield\n+100% defense\nx1.25 bee attack'
+            }
+        },
+
+        coconutSurge:{
+            
+            u:128*6/2048,v:256*2/2048,
+            svg:document.getElementById('coconutSurge'),
+            cooldown:document.getElementById('coconutSurge_cooldown'),
+            amount:document.getElementById('coconutSurge_amount'),
+            maxCooldown:2,
+            maxAmount:1,
+            
+            update:(amount,player)=>{
+                
+                player.walkSpeed*=1.15
+                player.beeSpeed*=1.5
+            },
+            
+            getMessage:(amount)=>{
+                
+                return 'Coconut Surge\nx1.15 walkspeed\nx1.5 bee speed'
             }
         },
         
@@ -5048,6 +5221,31 @@ function BeeSwarmSimulator(DATA){
             getMessage:(amount)=>{
                 
                 return 'Emergency Coconut Shield\nTaking damage from a monster will activate a shield, granting 100% defense, x1.25 bee attack and will drop 5 falling coconuts if in a field. Cooldown: 1m'
+            }
+        },
+
+        coconutHastePassive:{
+            
+            isPassive:true,
+            svg:document.getElementById('coconutHastePassive'),
+            cooldown:document.getElementById('coconutHastePassive_cooldown'),
+            amount:document.getElementById('coconutHastePassive_amount'),
+            maxCooldown:1,
+            triggerVal:1,
+            triggerType:'fallingCoconuts',
+            currentVal:0,
+            currentCooldown:0,
+            startVal:0,
+            
+            activate(){
+                
+                player.addEffect('haste')
+                player.addEffect('coconutSurge')
+            },
+            
+            getMessage:(amount)=>{
+                
+                return 'Coconut Haste\nCatching a falling coconut will apply a stack of "Haste" and grant "Coconut Surge", giving x1.2 walkspeed and x1.5 bee speed for 2s.'
             }
         },
         
@@ -5273,7 +5471,7 @@ function BeeSwarmSimulator(DATA){
             
             getMessage:(amount)=>{
                 
-                return "Diamond Drain\nEvery 35th blue ability token summons a diamond that converts the sqrt of (convert rate x blue pollen) x capacity x 0.05. Honey converted is multiplied by 2x, and the diamond pollinates 15 flowers in the field. Cooldown: 35s"
+                return "Diamond Drain\nEvery 35th blue ability token summons a diamond that converts your convert total of pollen into honey. Honey converted is multiplied by 2x, and the diamond pollinates 15 flowers in the field. Cooldown: 35s"
             }
         },
         
@@ -6804,14 +7002,6 @@ function BeeSwarmSimulator(DATA){
 
                 let beeStats=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee.split(','),numStatsToAdd=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.potential>=3?2:1,statsToAdd=[],permBeeStats=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee.split(',')
 
-                for(let i in beeStats){
-
-                    if(beeStats[i][1]==='0'){
-
-                        beeStats.splice(i,1)
-                    }
-                }
-
                 for(let i=0;i<numStatsToAdd;i++){
 
                     let j=(Math.random()*beeStats.length)|0
@@ -6868,14 +7058,6 @@ function BeeSwarmSimulator(DATA){
 
                 let beeStats=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee.split(','),numStatsToAdd=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.potential>=3&&Math.random()<0.5?3:2,statsToAdd=[],permBeeStats=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee.split(',')
 
-                for(let i in beeStats){
-
-                    if(beeStats[i][1]==='0'){
-
-                        beeStats.splice(i,1)
-                    }
-                }
-
                 for(let i=0;i<numStatsToAdd;i++){
 
                     let j=(Math.random()*beeStats.length)|0
@@ -6919,7 +7101,9 @@ function BeeSwarmSimulator(DATA){
                 if(Math.random()<0.75){
 
                     player.addMessage('The wax destroyed the beequip!',COLORS.redArr)
-                    player.beequipLookingAt=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.id
+
+                    for(let i in player.currentGear.beequips) if(player.currentGear.beequips[i].id===player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.id) player.beequipLookingAt=Number(i)
+
                     window.deleteBeequip()
                     return
                 }
@@ -6929,14 +7113,6 @@ function BeeSwarmSimulator(DATA){
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.waxes.push('1causticWax')
 
                 let beeStats=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee.split(','),numStatsToAdd=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.potential>=4&&Math.random()<0.75?4:3,statsToAdd=[],permBeeStats=player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.stats.bee.split(',')
-
-                for(let i in beeStats){
-
-                    if(beeStats[i][1]==='0'){
-
-                        beeStats.splice(i,1)
-                    }
-                }
 
                 for(let i=0;i<numStatsToAdd;i++){
 
@@ -8198,6 +8374,9 @@ function BeeSwarmSimulator(DATA){
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type='basic'
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted=Math.random()<1/100
                 
+                for(let i in player.currentGear.beequips) if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip&&player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.id===player.currentGear.beequips[i].id) player.currentGear.beequips[i].bee=undefined
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip=undefined
+
                 player.beePopup={type:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type,message:'You hatched a...',time:TIME,gifted:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted}
                 
                 player.updateHive()
@@ -8242,6 +8421,9 @@ function BeeSwarmSimulator(DATA){
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type=type
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted=Math.random()<1/100
                 
+                for(let i in player.currentGear.beequips) if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip&&player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.id===player.currentGear.beequips[i].id) player.currentGear.beequips[i].bee=undefined
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip=undefined
+
                 player.beePopup={type:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type,message:'You hatched a...',time:TIME,gifted:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted}
                 
                 player.updateHive()
@@ -8286,6 +8468,9 @@ function BeeSwarmSimulator(DATA){
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type=type
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted=Math.random()<1/100
                 
+                for(let i in player.currentGear.beequips) if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip&&player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.id===player.currentGear.beequips[i].id) player.currentGear.beequips[i].bee=undefined
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip=undefined
+
                 player.beePopup={type:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type,message:'You hatched a...',time:TIME,gifted:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted}
                 
                 player.updateHive()
@@ -8330,6 +8515,9 @@ function BeeSwarmSimulator(DATA){
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type=type
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted=Math.random()<1/100
                 
+                for(let i in player.currentGear.beequips) if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip&&player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.id===player.currentGear.beequips[i].id) player.currentGear.beequips[i].bee=undefined
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip=undefined
+
                 player.beePopup={type:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type,message:'You hatched a...',time:TIME,gifted:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted}
                 
                 player.updateHive()
@@ -8361,6 +8549,9 @@ function BeeSwarmSimulator(DATA){
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type=type
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted=Math.random()<1/100
                 
+                for(let i in player.currentGear.beequips) if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip&&player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.id===player.currentGear.beequips[i].id) player.currentGear.beequips[i].bee=undefined
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip=undefined
+
                 player.beePopup={type:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type,message:'You hatched a...',time:TIME,gifted:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted}
                 
                 player.updateHive()
@@ -8405,6 +8596,9 @@ function BeeSwarmSimulator(DATA){
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type=type
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted=true
                 
+                for(let i in player.currentGear.beequips) if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip&&player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.id===player.currentGear.beequips[i].id) player.currentGear.beequips[i].bee=undefined
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip=undefined
+
                 player.beePopup={type:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type,message:'You hatched a...',time:TIME,gifted:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted}
                 
                 
@@ -8450,6 +8644,9 @@ function BeeSwarmSimulator(DATA){
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type=type
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted=true
                 
+                for(let i in player.currentGear.beequips) if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip&&player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.id===player.currentGear.beequips[i].id) player.currentGear.beequips[i].bee=undefined
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip=undefined
+
                 player.beePopup={type:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type,message:'You hatched a...',time:TIME,gifted:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted}
                 
                 player.updateHive()
@@ -8494,6 +8691,9 @@ function BeeSwarmSimulator(DATA){
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type=type
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted=true
                 
+                for(let i in player.currentGear.beequips) if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip&&player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.id===player.currentGear.beequips[i].id) player.currentGear.beequips[i].bee=undefined
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip=undefined
+
                 player.beePopup={type:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type,message:'You hatched a...',time:TIME,gifted:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted}
                 
                 player.updateHive()
@@ -8525,6 +8725,9 @@ function BeeSwarmSimulator(DATA){
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type=type
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted=true
                 
+                for(let i in player.currentGear.beequips) if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip&&player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.id===player.currentGear.beequips[i].id) player.currentGear.beequips[i].bee=undefined
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip=undefined
+
                 player.beePopup={type:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type,message:'You hatched a...',time:TIME,gifted:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted}
                 
                 player.updateHive()
@@ -8564,6 +8767,9 @@ function BeeSwarmSimulator(DATA){
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type=type
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted=true
                 
+                for(let i in player.currentGear.beequips) if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip&&player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip&&player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.id===player.currentGear.beequips[i].id) player.currentGear.beequips[i].bee=undefined
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip=undefined
+
                 player.beePopup={type:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type,message:'You hatched a...',time:TIME,gifted:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted}
                 
                 player.updateHive()
@@ -8608,6 +8814,9 @@ function BeeSwarmSimulator(DATA){
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type=type
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted=Math.random()<1/100
                 
+                for(let i in player.currentGear.beequips) if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip&&player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.id===player.currentGear.beequips[i].id) player.currentGear.beequips[i].bee=undefined
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip=undefined
+                
                 player.beePopup={type:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type,message:'You got a...',time:TIME,gifted:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted}
                 
                 player.updateHive()
@@ -8651,6 +8860,9 @@ function BeeSwarmSimulator(DATA){
                 items.starJelly.amount--
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type=type
                 player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted=true
+
+                for(let i in player.currentGear.beequips) if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip&&player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.id===player.currentGear.beequips[i].id) player.currentGear.beequips[i].bee=undefined
+                player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip=undefined
                 
                 player.beePopup={type:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type,message:'You got a...',time:TIME,gifted:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted}
                 
@@ -8761,7 +8973,7 @@ function BeeSwarmSimulator(DATA){
             svgCode:`<svg onmousedown='window.functionToRunOnBeequipClick(#ID)' style='width:200px;height:70px;cursor:pointer;border-radius:8px'><rect width='200' height='70' fill='rgb(255,255,255)'></rect><rect width='70' height='70' fill='rgb(225,225,225)'></rect><text x='132' y='15' style='font-family:trebuchet ms;font-size:16.5px;' fill='rgb(0,0,0)' text-anchor='middle'>Pencil</text><text x='132' y='33' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>A special pencil only</text><text x='132' y='46' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>for the smartest of</text><text x='132' y='59' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>bees(and people).</text><text style=''></text><g transform='scale(0.9,0.9) rotate(20) translate(12,-15)'><rect x='34' y='16' width='7' height='40' stroke='black' stroke-width='2' fill='rgb(86, 252, 136)'></rect><rect x='34' y='15' width='7' height='7' stroke='black' stroke-width='2' fill='rgb(250, 110, 147)'></rect><rect x='34' y='20' width='7' height='4' stroke='black' stroke-width='2' fill='rgb(170,170,170)'></rect><path stroke='black' stroke-width='2' fill='rgb(214, 193, 101)' d='M 34 57 L 41 57L 37.5 65z'></path><rect x='36.6' y='61' width='1' height='1' stroke='black' stroke-width='2' fill='rgb(0,0,0)'></rect></g></svg>`,
             potentials:[1,2,2,2,3],
             level:4,
-            color:'any',
+            color:'blue',
             reqStr:"<br><br><br><br>",
             canUseOnSlot:function(slot){
                 
@@ -8793,7 +9005,7 @@ function BeeSwarmSimulator(DATA){
         
         bobertPlushie:{
             
-            svgCode:`<svg onmousedown='window.functionToRunOnBeequipClick(#ID)' style='width:200px;height:70px;cursor:pointer;border-radius:8px'><rect width='200' height='70' fill='rgb(255,255,255)'></rect><rect width='70' height='70' fill='rgb(225,225,225)'></rect><text x='132' y='15' style='font-family:trebuchet ms;font-size:16.5px;' fill='rgb(0,0,0)' text-anchor='middle'>Bobert Plushie</text><text x='132' y='33' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>A slightly deformed</text><text x='132' y='46' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>plushie. He loves to</text><text x='132' y='59' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>terrorize bees and you.</text><text style=''></text><circle cx='38' cy='38' r='20' fill='black'></circle><circle cx='35' cy='35' r='20' fill='black'></circle><circle cx='38' cy='38' r='18' fill='rgb(207, 162, 48)'></circle><circle cx='35' cy='35' r='18' fill='rgb(255, 203, 61)'></circle><circle cx='28' cy='28' r='1.5' fill='black'></circle><circle cx='41' cy='28' r='1.5' fill='black'></circle><path fill='rgb(0,0,0,0)' stroke='black' stroke-width='1' d='M 42 37 C 41 39 30 41 29 37'></path><rect fill='white' x='35' y='39' width='3' height='4' stroke='black' stroke-width='1'></rect></svg>`,
+            svgCode:`<svg onmousedown='window.functionToRunOnBeequipClick(#ID)' style='width:200px;height:70px;cursor:pointer;border-radius:8px'><rect width='200' height='70' fill='rgb(255,255,255)'></rect><rect width='70' height='70' fill='rgb(225,225,225)'></rect><text x='132' y='15' style='font-family:trebuchet ms;font-size:16.5px;' fill='rgb(0,0,0)' text-anchor='middle'>Bobert Plushie</text><text x='132' y='33' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>A slightly deformed</text><text x='132' y='46' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>plushie. It loves to</text><text x='132' y='59' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>terrorize bees and you.</text><text style=''></text><circle cx='38' cy='38' r='20' fill='black'></circle><circle cx='35' cy='35' r='20' fill='black'></circle><circle cx='38' cy='38' r='18' fill='rgb(207, 162, 48)'></circle><circle cx='35' cy='35' r='18' fill='rgb(255, 203, 61)'></circle><circle cx='28' cy='28' r='1.5' fill='black'></circle><circle cx='41' cy='28' r='1.5' fill='black'></circle><path fill='rgb(0,0,0,0)' stroke='black' stroke-width='1' d='M 42 37 C 41 39 30 41 29 37'></path><rect fill='white' x='35' y='39' width='3' height='4' stroke='black' stroke-width='1'></rect></svg>`,
             potentials:[1,2,2,2,2,2,2,2,3,3,3,3,4],
             level:5,
             color:'white',
@@ -8942,7 +9154,7 @@ function BeeSwarmSimulator(DATA){
         
         coffeeMug:{
             
-            svgCode:`<svg onmousedown='window.functionToRunOnBeequipClick(#ID)' style='width:200px;height:70px;cursor:pointer;border-radius:8px'><rect width='200' height='70' fill='rgb(255,255,255)'></rect><rect width='70' height='70' fill='rgb(225,225,225)'></rect><text x='132' y='15' style='font-family:trebuchet ms;font-size:16.5px;' fill='rgb(0,0,0)' text-anchor='middle'>Coffee Mug</text><text x='132' y='33' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>Bees drink whatever</text><text x='132' y='46' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>is in this coffee mug</text><text x='132' y='59' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>for a boost of energy!</text><text style=''></text><path d='M20 45C20 55 50 55 50 45C65 45 65 20 50 20C50 10 20 10 20 20Z' fill='rgb(255,255,255)' stroke='rgb(0,0,0)' stroke-width='1.5' transform='translate(0,3)'></path><path d='M50 40 C 60 40 60 25 50 25M50 40 L 50 25' fill='rgb(225,225,225)' stroke='rgb(0,0,0)' stroke-width='1.5' transform='translate(0,3)'></path><path d='M50 20C50 25 20 25 20 20' fill='rgb(0,0,0,0)' stroke='rgb(0,0,0)' stroke-width='1.5' transform='translate(0,3)'></path><circle cx='35' cy='53' r='8' fill='rgb(0,0,0,0.2)' transform='scale(1,0.4)'></circle><path d='M 27 36L 30 40L 33 37L 35 41L 38 36L 42 42' fill='rgb(0,0,0,0)' stroke='rgb(0,0,0,0.7)' stroke-width='1.5'></path></svg>`,
+            svgCode:`<svg onmousedown='window.functionToRunOnBeequipClick(#ID)' style='width:200px;height:70px;cursor:pointer;border-radius:8px'><rect width='200' height='70' fill='rgb(255,255,255)'></rect><rect width='70' height='70' fill='rgb(225,225,225)'></rect><text x='132' y='15' style='font-family:trebuchet ms;font-size:16.5px;' fill='rgb(0,0,0)' text-anchor='middle'>Coffee Mug</text><text x='132' y='33' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>Bees drink *whatever*</text><text x='132' y='46' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>is in this coffee mug</text><text x='132' y='59' style='font-family:trebuchet ms;font-size:11px;' fill='rgb(0,0,0)' text-anchor='middle'>for a boost of energy!</text><text style=''></text><path d='M20 45C20 55 50 55 50 45C65 45 65 20 50 20C50 10 20 10 20 20Z' fill='rgb(255,255,255)' stroke='rgb(0,0,0)' stroke-width='1.5' transform='translate(0,3)'></path><path d='M50 40 C 60 40 60 25 50 25M50 40 L 50 25' fill='rgb(225,225,225)' stroke='rgb(0,0,0)' stroke-width='1.5' transform='translate(0,3)'></path><path d='M50 20C50 25 20 25 20 20' fill='rgb(0,0,0,0)' stroke='rgb(0,0,0)' stroke-width='1.5' transform='translate(0,3)'></path><circle cx='35' cy='53' r='8' fill='rgb(0,0,0,0.2)' transform='scale(1,0.4)'></circle><path d='M 27 36L 30 40L 33 37L 35 41L 38 36L 42 42' fill='rgb(0,0,0,0)' stroke='rgb(0,0,0,0.7)' stroke-width='1.5'></path></svg>`,
             potentials:[2,2,3,3,3,4,4,5],
             level:10,
             color:'any',
@@ -8972,7 +9184,11 @@ function BeeSwarmSimulator(DATA){
                 if(Math.random()<np*0.75){
                     
                     p+='*'+MATH.random(1.02,1.05).toFixed(2)+' convertRate(+0),'
+                }
+
+                if(Math.random()<np*0.4+0.2){
                     
+                    p+='*1.305 lootLuck(+0),'
                 }
                 
                 return {bee:b[b.length-1]===','?b.substr(0,b.length-1):b,player:p[p.length-1]===','?p.substr(0,p.length-1):p}
@@ -9058,8 +9274,10 @@ function BeeSwarmSimulator(DATA){
             this.moveOffset=[MATH.random(-5,5),0,MATH.random(-5,5)]
             this.moveDir=[]
             
-            this.computeLevel(lvl||1)
+            // this.computeLevel(lvl||1)
             
+            this.computeLevel(20)
+
             this.convertTimer=0
             this.flowerCollecting=[]
             this.state='moveToPlayer'
@@ -9141,7 +9359,7 @@ function BeeSwarmSimulator(DATA){
             }
             
             if(player.hive[this.hiveY][this.hiveX].beequip){
-                
+
                 let stats=player.hive[this.hiveY][this.hiveX].beequip.stats.bee
                 
                 stats=stats.split(',')
@@ -10708,10 +10926,6 @@ function BeeSwarmSimulator(DATA){
         
         constructor(){
             
-            this.field=null
-            this.x=null
-            this.z=null
-            
             this.power=gear.sprinkler[player.currentGear.sprinkler].power
             this.rate=gear.sprinkler[player.currentGear.sprinkler].rate
             this.diameter=gear.sprinkler[player.currentGear.sprinkler].diameter
@@ -11584,7 +11798,7 @@ function BeeSwarmSimulator(DATA){
             this.maxHealth=this.health
             this.spawnPos=spawnPos
             this.pos=spawnPos
-            this.resMessPos=[spawnPos[0],spawnPos[1]+3,spawnPos[2]]
+            this.resMessPos=[spawnPos[0]-(this.type==='tunnelBear'?6:0),spawnPos[1]+3,spawnPos[2]]
             this.state='hide'
             this.bounds=bounds
             this.checkTimer=TIME
@@ -11708,28 +11922,75 @@ function BeeSwarmSimulator(DATA){
 
                                 amountOfTokens+=12
 
-                                dropTable=['treat','treat','treat','treat','treat','redExtract','blueExtract','redExtract','blueExtract','redExtract','blueExtract','gumdrops','ticket','royalJelly','gumdrops','ticket','royalJelly','gumdrops','ticket','royalJelly','microConverter','fieldDice','fieldDice','fieldDice','smoothDice','smoothDice','loadedDice','antPass','moonCharm','antPass','moonCharm','oil','enzymes','glitter','glue']
-                                dropAmountTable={treat:[15,15,15,20,25,25,25,50,50,50,50,100,100,100,150,150,175,175,250,350,500],redExtract:[1,1,1,1,1,1,1,3,3,3,5,5,10],blueExtract:[1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[3,3,3,3,5,5,5,15,15,25],ticket:[1,1,1,1,3,3,3,5,5,10],royalJelly:[1,1,3,3,3,3,3,5,5,10],microConverter:[1,1,1,1,1,3,3,5],fieldDice:[1,1,1,1,1,3,3,5],smoothDice:[1,1,1,1,1,1,2,2,2,3],loadedDice:[1],antPass:[1,1,1,1,1,3,3,3,5],moonCharm:[3,3,3,3,5,5,5,15,15,25],oil:[1,1,1,1,1,3,3,5],enzymes:[1,1,1,1,1,3,3,5],glitter:[1,1,1,1,1,3,3,5],glue:[1,1,1,1,1,3,3,5]}
+                                dropTable=['treat','treat','treat','treat','treat','redExtract','blueExtract','redExtract','blueExtract','redExtract','blueExtract','gumdrops','ticket','royalJelly','gumdrops','ticket','royalJelly','gumdrops','ticket','royalJelly','microConverter','fieldDice','fieldDice','fieldDice','smoothDice','smoothDice','loadedDice','antPass','moonCharm','antPass','moonCharm','oil','enzymes','glitter','glue','purplePotion','roboPass']
+                                dropAmountTable={treat:[15,15,15,20,25,25,25,50,50,50,50,100,100,100,150,150,175,175,250,350,500],redExtract:[1,1,1,1,1,1,1,3,3,3,5,5,10],blueExtract:[1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[3,3,3,3,5,5,5,15,15,25],ticket:[1,1,1,1,3,3,3,5,5,10],royalJelly:[1,1,3,3,3,3,3,5,5,10],microConverter:[1,1,1,1,1,3,3,5],fieldDice:[1,1,1,1,1,3,3,5],smoothDice:[1,1,1,1,1,1,2,2,2,3],loadedDice:[1],antPass:[1,1,1,1,1,3,3,3,5],moonCharm:[3,3,3,3,5,5,5,15,15,25],oil:[1,1,1,1,1,3,3,5],enzymes:[1,1,1,1,1,3,3,5],glitter:[1,1,1,1,1,3,3,5],glue:[1,1,1,1,1,3,3,5],purplePotion:[1],roboPass:[1,1,1,2]}
+
+                                if(Math.random()<0.5){
+
+                                    let amulet=['*'+MATH.random(1.1,1.5).toFixed(2)+' capacityMultiplier','*'+MATH.random(1.15,1.5).toFixed(2)+' convertRate']
+                                    
+                                    if(Math.random()<0.333){
+
+                                        amulet.push('+1 redBeeAttack','+1 blueBeeAttack','+1 whiteBeeAttack')
+
+                                    } else {
+
+                                        amulet.push(Math.random()<0.5?'+1 redBeeAttack':'+1 blueBeeAttack')
+                                    }
+
+                                    amulet.push(...MATH.selectFromArray(['*'+MATH.random(1.02,1.07).toFixed(2)+' POLLEN','*'+MATH.random(1.05,1.2).toFixed(2)+' bluePollen','*'+MATH.random(1.05,1.2).toFixed(2)+' redPollen','*'+MATH.random(1.05,1.15).toFixed(2)+' whitePollen'],2))
+
+                                    player.showGeneratedAmulet('kingBeetleAmulet',amulet)
+                                }
+
+                            break
+
+                            case 'tunnelBear':
+
+                                amountOfTokens+=14
+
+                                dropTable=['treat','treat','treat','treat','treat','sunflowerSeed','sunflowerSeed','pineapple','pineapple','redExtract','blueExtract','redExtract','blueExtract','redExtract','blueExtract','gumdrops','ticket','royalJelly','gumdrops','ticket','royalJelly','gumdrops','ticket','royalJelly','microConverter','fieldDice','fieldDice','fieldDice','smoothDice','smoothDice','loadedDice','antPass','moonCharm','antPass','moonCharm','oil','enzymes','glitter','glue','loadedDice','purplePotion','superSmoothie','roboPass']
+                                dropTable=[...dropTable,...dropTable,'giftedSilverEgg','giftedGoldEgg','giftedDiamondEgg']
+                                dropAmountTable={treat:[25,25,25,50,50,50,100,100,250,500,1000,5000,10000],sunflowerSeed:[10,10,15,15,20,20,25,50],pineapple:[10,10,15,15,20,20,25,50],redExtract:[1,1,1,1,1,1,1,3,3,3,5,5,10],blueExtract:[1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[3,3,3,3,5,5,5,15,15,25],ticket:[1,1,1,1,3,3,3,5,5,10],royalJelly:[1,1,3,3,3,3,3,5,5,10],microConverter:[1,1,1,1,1,3,3,5],fieldDice:[1,1,1,1,1,3,3,5],smoothDice:[1,1,1,1,1,1,2,2,2,3],loadedDice:[1],antPass:[1,1,1,1,1,3,3,3,5],moonCharm:[3,3,3,3,5,5,5,15,15,25],oil:[1,1,1,1,1,3,3,5],enzymes:[1,1,1,1,1,3,3,5],glitter:[1,1,1,1,1,3,3,5],glue:[1,1,1,1,1,3,3,5],loadedDice:[1],purplePotion:[1],superSmoothie:[1],giftedSilverEgg:[1],giftedGoldEgg:[1],giftedDiamondEgg:[1],roboPass:[1,1,1,1,1,2,2,3]}
 
                             break
                         }
                         
-                        let radius=amountOfTokens*0.2+1.5
+                        let radius=amountOfTokens*0.2+1.5,line=-amountOfTokens*2
 
                         for(let i=0,inc=MATH.TWO_PI/amountOfTokens;i<MATH.TWO_PI;i+=inc){
                             
-                            let r=1-Math.pow(1-0.2,player.lootLuck*1.5)
+                            let r=1-Math.pow(1-(this.type==='tunnelBear'?0.3:this.type==='kingBeetle'?0.25:0.2),player.lootLuck*1.5)
                             
-                            if(Math.random()<r){
-                                
-                                let ty=dropTable[(Math.random()*dropTable.length)|0],am=dropAmountTable[ty][(Math.random()*dropAmountTable[ty].length)|0]
-                                
-                                objects.tokens.push(new LootToken(45,[this.pos[0]+Math.cos(i)*radius,this.pos[1],this.pos[2]+Math.sin(i)*radius],ty,am,true,MATH.doGrammar(this.type)))
-                                
+                            if(this.type==='tunnelBear'){
+
+                                line+=2
+
+                                if(Math.random()<r){
+                                    
+                                    let ty=dropTable[(Math.random()*dropTable.length)|0],am=dropAmountTable[ty][(Math.random()*dropAmountTable[ty].length)|0]
+                                    
+                                    objects.tokens.push(new LootToken(45,[this.pos[0]+line,this.pos[1]-1,this.pos[2]],ty,am,true,MATH.doGrammar(this.type)))
+                                    
+                                } else {
+                                    
+                                    objects.tokens.push(new LootToken(45,[this.pos[0]+line,this.pos[1]-1,this.pos[2]],'honey',10000,true,MATH.doGrammar(this.type)))
+                                    
+                                }
+
                             } else {
-                                
-                                objects.tokens.push(new LootToken(45,[this.pos[0]+Math.cos(i)*radius,this.pos[1],this.pos[2]+Math.sin(i)*radius],'honey',{rhinoBeetle:15,ladybug:15,spider:50,werewolf:500,scorpion:300,mantis:300,kingBeetle:1500}[this.type],true,MATH.doGrammar(this.type)))
-                                
+
+                                if(Math.random()<r){
+                                    
+                                    let ty=dropTable[(Math.random()*dropTable.length)|0],am=dropAmountTable[ty][(Math.random()*dropAmountTable[ty].length)|0]
+                                    
+                                    objects.tokens.push(new LootToken(45,[this.pos[0]+Math.cos(i)*radius,this.pos[1],this.pos[2]+Math.sin(i)*radius],ty,am,true,MATH.doGrammar(this.type)))
+                                    
+                                } else {
+                                    
+                                    objects.tokens.push(new LootToken(45,[this.pos[0]+Math.cos(i)*radius,this.pos[1],this.pos[2]+Math.sin(i)*radius],'honey',{rhinoBeetle:15,ladybug:15,spider:50,werewolf:500,scorpion:300,mantis:300,kingBeetle:1500}[this.type],true,MATH.doGrammar(this.type)))
+                                    
+                                }
                             }
                         }
                         
@@ -11770,7 +12031,7 @@ function BeeSwarmSimulator(DATA){
                         
                         this.damageTimer-=dt
                         
-                        if(this.damageTimer<=0&&this.aimTimer>0&&Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1])+Math.abs(player.body.position.z-this.pos[2])<1.5){
+                        if(this.damageTimer<=0&&this.aimTimer>0&&Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.y-this.pos[1])+Math.abs(player.body.position.z-this.pos[2])<(this.type==='tunnelBear'?5:1.5)){
                             
                             player.damage({rhinoBeetle:20,ladybug:18,spider:25,werewolf:35,scorpion:30,mantis:30,kingBeetle:75,tunnelBear:10000}[this.type])
                             this.damageTimer=1.5
@@ -11782,17 +12043,17 @@ function BeeSwarmSimulator(DATA){
                         
                         if(!this.aimPos){
                             
-                            if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])>(this.type==='tunnelBear'?0:6)){
+                            if(Math.abs(player.body.position.x-this.pos[0])+Math.abs(player.body.position.z-this.pos[2])>(this.type==='tunnelBear'?4:6)){
                                 
-                                this.pos[0]+=d[0]*dt*5
-                                this.pos[2]+=d[1]*dt*5
+                                this.pos[0]+=d[0]*dt*(this.type==='tunnelBear'?2:5)
+                                this.pos[2]+=d[1]*dt*(this.type==='tunnelBear'?2:5)
                                 
                             } else {
                                 
                                 this.aimPos=[player.body.position.x,player.body.position.y,player.body.position.z]
                                 this.landPos=this.pos.slice()
                                 this.lungeState=0
-                                this.aimTimer=1.5
+                                this.aimTimer=this.type==='tunnelBear'?0:1.5
                             }
                             
                         } else {
@@ -11853,14 +12114,14 @@ function BeeSwarmSimulator(DATA){
                     gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
                     gl.drawElements(gl.TRIANGLES,meshes[this.type].indexAmount,gl.UNSIGNED_SHORT,0)
                     
-                    this.pos[1]+=this.type==='werewolf'||this.type==='mantis'?3:1
+                    this.pos[1]+=this.type==='werewolf'||this.type==='mantis'||this.type==='tunnelBear'?3:1
                     textRenderer.addCTX(MATH.doGrammar(this.type)+' (Level '+this.level+')',[this.pos[0],this.pos[1]+0.4,this.pos[2]],COLORS.whiteArr,100)
                     
                     textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],0,0,...textRenderer.decalUV['rect'],0.6,0,0,2.5,0.4,0)
                     textRenderer.addDecalRaw(this.pos[0],this.pos[1],this.pos[2],(-0.5+(this.health/this.maxHealth)*0.5)/(this.health/this.maxHealth),0,...textRenderer.decalUV['rect'],0.2,0.85,0.2,this.health*2.5/this.maxHealth,0.4,0)
                     
                     textRenderer.addSingle('HP: '+MATH.addCommas((this.health|0)+''),this.pos,COLORS.whiteArr,-1,false,false)
-                    this.pos[1]-=this.type==='werewolf'||this.type==='mantis'?3:1
+                    this.pos[1]-=this.type==='werewolf'||this.type==='mantis'||this.type==='tunnelBear'?3:1
                     
                 break
                 
@@ -11936,9 +12197,9 @@ function BeeSwarmSimulator(DATA){
 
     class MondoChick {
         
-        constructor(field){
+        constructor(){
             
-            this.field=field
+            this.field='MountainTopField'
             this.state='attack'
             this.starSawHitTimer=0
             this.level=7
@@ -11982,6 +12243,33 @@ function BeeSwarmSimulator(DATA){
             switch(this.state){
                 
                 case 'dead':
+
+                    let loots='',decay=Math.max((this.timeLimit/(10*60)),0.25)
+
+                    loots+='honey,'.repeat(((MATH.random(100,225)*0.5*decay))|0)
+                    loots+='treat,'.repeat(((MATH.random(50,125)*0.5*decay))|0)
+                    loots+='bitterberry,'.repeat(((MATH.random(8,15)*0.5*decay))|0)
+                    loots+='neonberry,'.repeat(((MATH.random(4,10)*0.5*decay))|0)
+                    loots+='fieldDice,'.repeat(((MATH.random(1,7)*0.5*decay))|0)
+                    loots+='microConverter,'.repeat(((MATH.random(1,5)*0.5*decay))|0)
+                    loots+='magicBean,'.repeat(((MATH.random(1,4)*0.5*decay))|0)
+
+                    loots=loots.substring(0,loots.length-1).split(',')
+
+                    for(let i=loots.length;i--;){
+                        
+                        let DIS=this
+
+                        window.setTimeout(function(){
+
+                            let it=(Math.random()*loots.length)|0
+
+                            objects.tokens.push(new LootToken(15,[fieldInfo[DIS.field].x+((fieldInfo[DIS.field].width*Math.random())|0),fieldInfo[DIS.field].y+1,fieldInfo[DIS.field].z+((fieldInfo[DIS.field].length*Math.random())|0),0],loots[it],loots[it]==='honey'?MATH.random(500,1500)|0:MATH.random(1,4)|0,true,'Mondo Chick'))
+
+                            loots.splice(i,1)
+
+                        },i*300)
+                    }
                     
                     return true
                     
@@ -13296,6 +13584,166 @@ function BeeSwarmSimulator(DATA){
             gl.vertexAttribPointer(glCache.mob_vertPos,3,gl.FLOAT,gl.FLASE,24,0)
             gl.vertexAttribPointer(glCache.mob_vertColor,3,gl.FLOAT,gl.FLASE,24,12)
             gl.drawElements(gl.TRIANGLES,meshes.stumpSnail.indexAmount,gl.UNSIGNED_SHORT,0)
+        }
+    }
+
+    class FireflyPatch {
+        
+        constructor(){
+
+            window.setTimeout(()=>{
+                
+                this.flyBack=true
+                window.setTimeout(()=>this.splice=true,20*1000)
+                
+            },1.75*60*1000)
+
+            this.fireflies=[]
+            this.cycle=3
+
+            this.field=['SpiderField','StrawberryField','RoseField','CactusField','BambooField','PineapplePatch'][(Math.random()*6)|0]
+            this.x=MATH.random(0.4,0.6)*fieldInfo[this.field].width
+            this.z=MATH.random(0.4,0.6)*fieldInfo[this.field].length
+
+            let x=fieldInfo[this.field].x+this.x,z=fieldInfo[this.field].z+this.z,r=MATH.random(3,5)
+
+            for(let i=0;i<8;i++){
+
+                let t=Math.random()*MATH.TWO_PI
+
+                this.fireflies.push({pos:[-60,20,-30],toPos:[(Math.sin(t)*r+x)|0,fieldInfo[this.field].y+0.75,(Math.cos(t)*r+z)|0],vel:[0,0,0],state:'moveToFlower'})
+            }
+        }
+        
+        die(index){
+            
+            objects.mobs.splice(index,1)
+        }
+
+        update(){
+
+            let isAllWaitingAir=this.fireflies.length
+
+            for(let i in this.fireflies){
+
+                let f=this.fireflies[i]
+
+                if(this.flyBack){
+
+                    vec3.sub(f.vel,[-60,20,-30],f.pos)
+                    vec3.normalize(f.vel,f.vel)
+
+                    vec3.scaleAndAdd(f.pos,f.pos,f.vel,dt*4)
+
+                } else {
+
+                    switch(f.state){
+
+                        case 'moveToFlower':
+    
+                            vec3.sub(f.vel,f.toPos,f.pos)
+                            vec3.normalize(f.vel,f.vel)
+    
+                            vec3.scaleAndAdd(f.pos,f.pos,f.vel,dt*4)
+    
+                            if(Math.abs(f.toPos[0]-f.pos[0])+Math.abs(f.toPos[1]-f.pos[1])+Math.abs(f.toPos[2]-f.pos[2])<0.5){
+    
+                                f.state='waitSquish'
+                                f.pos=f.toPos.slice()
+                                vec3.sub(f.vel,[fieldInfo[this.field].x+this.x,fieldInfo[this.field].y+0.75,fieldInfo[this.field].z+this.z],f.pos)
+                            }
+    
+                        break
+    
+                        case 'waitSquish':
+    
+                            if(Math.abs(player.body.position.x-f.pos[0])+Math.abs(player.body.position.y-f.pos[1])+Math.abs(player.body.position.z-f.pos[2])<4){
+    
+                                f.state='flyUp'
+                                f.toPos[1]+=5
+
+                                let tt='treat'
+
+                                if(Math.random()<0.8) tt=Math.random()<0.5?'pineapple':'sunflowerSeed'
+
+                                if(fieldInfo[this.field].generalColorComp.r>0.5&&Math.random()<0.85) tt='strawberry'
+                                if(fieldInfo[this.field].generalColorComp.b>0.5&&Math.random()<0.85) tt='blueberry'
+
+                                if(Math.random()<0.1) tt=Math.random()<0.5?'gumdrops':'royalJelly'
+                                
+                                objects.tokens.push(new LootToken(30,[f.pos[0],fieldInfo[this.field].y+1,f.pos[2]],tt,1,false,'Fireflies'))
+                            }
+    
+                        break
+    
+                        case 'flyUp':
+    
+                            vec3.sub(f.vel,f.toPos,f.pos)
+                            vec3.normalize(f.vel,f.vel)
+    
+                            vec3.scaleAndAdd(f.pos,f.pos,f.vel,dt*4)
+    
+                            if(Math.abs(f.toPos[0]-f.pos[0])+Math.abs(f.toPos[1]-f.pos[1])+Math.abs(f.toPos[2]-f.pos[2])<0.5){
+    
+                                f.state='waitAir'
+                                f.pos=f.toPos.slice()
+                                vec3.sub(f.vel,[fieldInfo[this.field].x+this.x,fieldInfo[this.field].y+0.75,fieldInfo[this.field].z+this.z],f.pos)
+                            }
+    
+                        break
+    
+                        case 'waitAir':
+    
+                            isAllWaitingAir--
+    
+                        break
+                    }
+                }
+
+                meshes.bees.instanceData.push(f.pos[0],f.pos[1],f.pos[2],1,f.vel[0],f.vel[1],f.vel[2],BEE_FLY,0.875,0.625,0)
+                textRenderer.addDecalRaw(...f.pos,0,0,...textRenderer.decalUV.glow,1,1,0.2,2.5,2.5,0)
+                textRenderer.addDecalRaw(...f.pos,0,0,...textRenderer.decalUV.lightrays,1,1,0.2,3,3,TIME+i*0.5)
+                meshes.explosions.instanceData.push(...f.pos,1,1,0.2,0.2,0.95,1)
+                
+            }
+
+            if(!isAllWaitingAir){
+
+                let tt='moonCharm'
+
+                if(Math.random()<0.08) tt=Math.random()<0.1?'starJelly':'glitter'
+
+                objects.tokens.push(new LootToken(30,[fieldInfo[this.field].x+this.x,fieldInfo[this.field].y+1,fieldInfo[this.field].z+this.z],tt,1,false,'Fireflies'))
+
+                objects.explosions.push(new Explosion({col:[0,1,1],pos:[fieldInfo[this.field].x+this.x,fieldInfo[this.field].y+1,fieldInfo[this.field].z+this.z],life:0.75,size:6,speed:0.2,aftershock:0.05}))
+
+                this.cycle--
+
+                if(this.cycle<=0){
+                    
+                    let _f=['SpiderField','StrawberryField','RoseField','CactusField','BambooField','PineapplePatch']
+
+                    _f.splice(_f.indexOf(this.field),1)
+
+                    this.field=_f[(Math.random()*5)|0]
+                    this.cycle=3
+                }
+
+                this.x=MATH.random(0.4,0.6)*fieldInfo[this.field].width
+                this.z=MATH.random(0.4,0.6)*fieldInfo[this.field].length
+                
+                let x=fieldInfo[this.field].x+this.x,z=fieldInfo[this.field].z+this.z,r=MATH.random(3,5)
+
+                for(let i in this.fireflies){
+
+                    let f=this.fireflies[i],t=Math.random()*MATH.TWO_PI
+                    
+                    f.toPos=[(Math.sin(t)*r+x)|0,fieldInfo[this.field].y+0.75,(Math.cos(t)*r+z)|0]
+                    f.state='moveToFlower'
+                }
+            }
+
+            return this.splice
         }
     }
 
@@ -15242,7 +15690,7 @@ function BeeSwarmSimulator(DATA){
         
         die(index){
             
-            let am=Math.ceil(Math.min(Math.sqrt(player.convertRate*player.bluePollen)*player.capacity*0.05,player.pollen))
+            let am=Math.ceil(Math.min(player.convertTotal,player.pollen))
             
             player.honey+=Math.ceil(am*2*player.honeyPerPollen)
             player.pollen-=am
@@ -19162,21 +19610,44 @@ function BeeSwarmSimulator(DATA){
             out.restrictionInfo.allowed_sprinkler=legendaryTypes>=1?true:'Discover 1 legendary bee type to enter the Sprinkler Shop!'
             out.restrictionInfo.allowed_ace=epicTypes>=5?true:'Discover 5 epic bee types to enter the Ace Shop!'
             out.restrictionInfo.allowed_dapper=out.currentGear.mask!=='helmet'&&out.currentGear.mask!=='none'&&out.currentGear.boots!=='basicBoots'&&out.currentGear.boots!=='none'?true:'You must wear a nice hat and cool boots to enter the Dapper Shop!'
+            out.restrictionInfo.allowed_cocoCave=out.extraInfo.mob_coco<=0
         }
         
-        out.extraInfo={}
+        out.extraInfo={beequipIds:0}
 
         out.drives={
             
-            red:50,
-            blue:50,
-            white:50,
-            glitched:50
+            red:0,
+            blue:0,
+            white:0,
+            glitched:0
         }
 
         out.endRoboChallenge=function(){
 
             out.addMessage('The Robo Challenge is over! Your score is '+out.roboChallenge.round+'!',[0,150,0])
+
+            let arr=[['honey',out.roboChallenge.round*out.roboChallenge.round*out.roboChallenge.round*out.roboChallenge.round*out.roboChallenge.round*25+10000],[['redDrive','blueDrive','whiteDrive','glitchedDrive'][(Math.random()*(out.roboChallenge.round>=10?4:3))|0],1]]
+
+            arr.push(...MATH.selectFromArray([['starJelly',1],['softWax',MATH.random(1,4)|0],['hardWax',1],['fieldDice',MATH.random(1,4)|0],['smoothDice',MATH.random(1,2)|0],['loadedDice',1],['oil',MATH.random(1,4)|0],['glue',MATH.random(1,4)|0],['neonberry',MATH.random(1,4)|0],['whirligig',MATH.random(1,7)|0],['honeysuckle',MATH.random(1,15)|0],['microConverter',MATH.random(1,4)|0],['jellyBeans',MATH.random(1,6)|0],],Math.min(out.roboChallenge.round/6,3)|0))
+
+            if(out.roboChallenge.round>11&&Math.random()<0.25) arr.push(['purplePotion',1])
+            if(out.roboChallenge.round>14) arr.push(['atomicTreat',1])
+            if(out.roboChallenge.round>17&&Math.random()<0.2) arr.push(['superSmoothie',1])
+
+            for(let i in arr){
+            
+                if(arr[i][0]==='honey'){
+                    
+                    player.honey+=arr[i][1]
+                    
+                } else {
+                    
+                    items[arr[i][0]].amount+=arr[i][1]
+                }
+                
+                out.addMessage('+'+MATH.addCommas(arr[i][1]+'')+' '+MATH.doGrammar(arr[i][0])+' (from Robo Challenge)')
+            }
 
             document.getElementById('roboMenu').style.display='none'
             document.getElementById('roboQuestMenu').style.display='none'
@@ -19195,7 +19666,7 @@ function BeeSwarmSimulator(DATA){
 
                     case 'bronze':
 
-                        amulet.push('*'+MATH.random(1.05,1.12).toFixed(2)+' capacityMultiplier')
+                        amulet.push('*'+MATH.random(1.1,1.2).toFixed(2)+' capacityMultiplier')
                         amulet.push('*'+MATH.random(1.03,1.05).toFixed(2)+' beeAttack')
 
                         if(Math.random()<0.25){
@@ -19216,7 +19687,7 @@ function BeeSwarmSimulator(DATA){
 
                         case 'silver':
 
-                        amulet.push('*'+MATH.random(1.12,1.17).toFixed(2)+' capacityMultiplier')
+                        amulet.push('*'+MATH.random(1.2,1.3).toFixed(2)+' capacityMultiplier')
                         amulet.push('*'+MATH.random(1.05,1.08).toFixed(2)+' beeAttack')
 
                         if(Math.random()<0.25){
@@ -19245,7 +19716,7 @@ function BeeSwarmSimulator(DATA){
 
                     case 'gold':
 
-                        amulet.push('*'+MATH.random(1.17,1.27).toFixed(2)+' capacityMultiplier')
+                        amulet.push('*'+MATH.random(1.3,1.4).toFixed(2)+' capacityMultiplier')
                         amulet.push('*'+MATH.random(1.06,1.1).toFixed(2)+' beeAttack')
 
                         if(Math.random()<0.25){
@@ -19274,7 +19745,7 @@ function BeeSwarmSimulator(DATA){
 
                     case 'diamond':
 
-                        amulet.push('*'+MATH.random(1.27,1.34).toFixed(2)+' capacityMultiplier')
+                        amulet.push('*'+MATH.random(1.4,1.5).toFixed(2)+' capacityMultiplier')
                         amulet.push('*'+MATH.random(1.07,1.12).toFixed(2)+' beeAttack')
 
                         if(Math.random()<0.25){
@@ -19319,7 +19790,7 @@ function BeeSwarmSimulator(DATA){
 
                     case 'supreme':
 
-                        amulet.push('*'+MATH.random(1.35,1.5).toFixed(2)+' capacityMultiplier')
+                        amulet.push('*'+MATH.random(1.5,1.6).toFixed(2)+' capacityMultiplier')
                         amulet.push('*'+MATH.random(1.1,1.15).toFixed(2)+' beeAttack')
 
                         if(Math.random()<0.25){
@@ -19354,7 +19825,7 @@ function BeeSwarmSimulator(DATA){
                             } else {
 
                             if(Math.random()<0.5){
-                            amulet.push('*'+MATH.random(1.08,1.15).toFixed(2)+' superCritPower')
+                                amulet.push('*'+MATH.random(1.08,1.15).toFixed(2)+' superCritPower')
                             } else {
                                 amulet.push('*'+MATH.random(1.2,1.3).toFixed(2)+' tokenLifespan')
                             }
@@ -20589,7 +21060,7 @@ function BeeSwarmSimulator(DATA){
             
             let cost
 
-            if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'){
+            if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'||shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='beequip'){
 
                 cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost.slice()
                 itemDesc.innerHTML=shops[out.currentShop].items[shops[out.currentShop].currentIndex].desc
@@ -20631,7 +21102,7 @@ function BeeSwarmSimulator(DATA){
                 
                 let cost
 
-                if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'){
+                if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'||shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='beequip'){
 
                     cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost.slice()
                     itemDesc.innerHTML=shops[out.currentShop].items[shops[out.currentShop].currentIndex].desc
@@ -20674,7 +21145,7 @@ function BeeSwarmSimulator(DATA){
 
                 let cost
 
-                if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'){
+                if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'||shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='beequip'){
 
                     cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost.slice()
                     itemDesc.innerHTML=shops[out.currentShop].items[shops[out.currentShop].currentIndex].desc
@@ -20716,10 +21187,10 @@ function BeeSwarmSimulator(DATA){
                 
                 if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].owned){
                     
-                    if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot!=='item'){
+                    if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot!=='item'&&shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot!=='beequip'){
 
                         out.currentGear[shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot]=shops[out.currentShop].items[shops[out.currentShop].currentIndex].name
-//
+
                         out.updateGear()
                     }
                         
@@ -20728,7 +21199,7 @@ function BeeSwarmSimulator(DATA){
                 
                 let cost
 
-                if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'){
+                if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'||shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='beequip'){
 
                     cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost.slice()
 
@@ -20796,6 +21267,32 @@ function BeeSwarmSimulator(DATA){
                     if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].amountPurchased>=shops[out.currentShop].items[shops[out.currentShop].currentIndex].maxPurchasedAmount){
 
                         shops[out.currentShop].items[shops[out.currentShop].currentIndex].owned=true
+                    }
+
+                } else if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='beequip'){
+                    
+                    if(out.currentGear.beequips.length>=6){
+
+                        player.addMessage('You can\'t hold more than 6 beequips!',COLORS.redArr)
+
+                        for(let i in cost){
+                    
+                            let c=cost[i].split(' ')
+                            
+                            if(c[1]==='honey'){
+                                
+                                player.honey+=Number(c[0])
+                                
+                            } else {
+                                
+                                items[c[1]].amount+=Number(c[0])
+                            }
+                        }
+
+                    } else {
+
+                        out.generateBeequip(shops[out.currentShop].items[shops[out.currentShop].currentIndex].name)
+                        out.addMessage('Recieived '+MATH.doGrammar(shops[out.currentShop].items[shops[out.currentShop].currentIndex].name))
                     }
 
                 } else {
@@ -20919,7 +21416,7 @@ function BeeSwarmSimulator(DATA){
                 
                 let f=out.hiveBalloon.pollen/out.capacity
                 
-                f*=0.00075
+                f*=0.00045
                 out.hiveBalloon.pollen-=out.hiveBalloon.pollen*f
             }
             
@@ -20969,12 +21466,12 @@ function BeeSwarmSimulator(DATA){
             
             if(out.hive[out.hive.length-1].length<5){
                 
-                out.hive[out.hive.length-1].push({type:bee,level:1,bond:bond,gifted:gifted,mutation})
+                out.hive[out.hive.length-1].push({type:bee,level:1,bond:bond,gifted:gifted,mutation:mutation,radioactive:radioactive,beequip:beequip})
                 
             } else {
                 
                 out.hive.push([])
-                out.hive[out.hive.length-1].push({type:bee,level:1,bond:bond,gifted:gifted,mutation})
+                out.hive[out.hive.length-1].push({type:bee,level:1,bond:bond,gifted:gifted,mutation:mutation,radioactive:radioactive,beequip:beequip})
             }
         }
         
@@ -21277,7 +21774,7 @@ function BeeSwarmSimulator(DATA){
             
             let p=beequips[type].potentials[(Math.random()*beequips[type].potentials.length)|0],st=beequips[type].generateStats(p)
 
-            out.currentGear.beequips.push({type:type,bee:null,stats:st,id:out.currentGear.beequips.length,potential:p,waxes:[]})
+            out.currentGear.beequips.push({type:type,bee:null,stats:st,id:out.extraInfo.beequipIds++,potential:p,waxes:[]})
             
             out.updateBeequipPage()
         }
@@ -21333,7 +21830,7 @@ function BeeSwarmSimulator(DATA){
                         
                         let toAdd=s[i].replace('*','x')
                         
-                        toAdd=toAdd.substr(0,toAdd.indexOf(' ')+1)+MATH.doGrammar(toAdd.substring(toAdd.indexOf(' ')+1,toAdd.indexOf('(')))+toAdd.substring(toAdd.indexOf('('),toAdd.length)
+                        toAdd=toAdd.substr(0,toAdd.indexOf(' ')+1)+MATH.doGrammar(toAdd.substring(toAdd.indexOf(' ')+1,toAdd.indexOf('(')))+'<l style="color:rgb(20,160,20)">'+toAdd.substring(toAdd.indexOf('('),toAdd.length)+'</l>'
                         
                         stats+="<p style='color:"+(Number(toAdd.substr(1,toAdd.indexOf(' ')))<1?'rgb(200,0,0)':'rgb(20,160,20)')+";font-size:14px;margin-top:-10px'>"+toAdd+"</p>"
                         
@@ -21372,13 +21869,6 @@ function BeeSwarmSimulator(DATA){
                 
             }
         }
-        
-        out.generateBeequip('candycane')
-        out.generateBeequip('boombox')
-        out.generateBeequip('pencil')
-        out.generateBeequip('bobertPlushie')
-        out.generateBeequip('coffeeMug')
-        out.generateBeequip('books')
 
         out.beesPageBee=false
 
@@ -21837,12 +22327,6 @@ function BeeSwarmSimulator(DATA){
                 out.sprinklerMesh.setBuffers()
             }
             
-            if(out.fieldIn&&user.keys.g){
-                
-                updateFlower(out.fieldIn,out.flowerIn.x,out.flowerIn.z,function(f){f.goo=1;},false,true,true)
-                
-            }
-            
             if(out.itemDragging||out.beequipDragging){
                 
                 ctx.textAlign='end'
@@ -21982,7 +22466,7 @@ function BeeSwarmSimulator(DATA){
                     
                     let cost,canBuy=true
 
-                    if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'){
+                    if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'||shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='beequip'){
 
                         cost=shops[out.currentShop].items[shops[out.currentShop].currentIndex].cost.slice()
                         
@@ -22006,7 +22490,7 @@ function BeeSwarmSimulator(DATA){
                         }
                     }
                     
-                    if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'){
+                    if(shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='item'||shops[out.currentShop].items[shops[out.currentShop].currentIndex].slot==='beequip'){
 
                         purchaseButton.innerHTML=shops[out.currentShop].items[shops[out.currentShop].currentIndex].owned?'Sold Out':canBuy?'Purchase':'Not Enough'
 
@@ -22150,7 +22634,9 @@ function BeeSwarmSimulator(DATA){
                 } else {
                     
                     out.targetLight=NIGHT_DARKNESS
-                    out.sunSwitchTimer=1.5*60
+                    out.sunSwitchTimer=1.75*60
+
+                    objects.mobs.push(new FireflyPatch())
 
                     let vicAm=0
 
@@ -22355,6 +22841,8 @@ function BeeSwarmSimulator(DATA){
             }
 
             document.getElementById('shrineDonate').onclick=function(){
+
+                player.extraInfo.windShrineDonate=Math.floor(Date.now())
 
                 document.getElementById('shrineX').onclick()
 
@@ -23256,7 +23744,7 @@ function BeeSwarmSimulator(DATA){
             seed:0,
             repeatable:true,
             viewMatrix:[53-2.5,20+0.5,91-3,MATH.HALF_PI+MATH.QUATER_PI,-0.2],
-            exclaimPos:[53-1.5,19,91-2],
+            exclaimPos:[53-1.5,20,91-2],
             dialogueIndex:0,
             dialogue:[],
             mesh:new Mesh(),
@@ -23915,17 +24403,65 @@ function BeeSwarmSimulator(DATA){
             items:[{
 
                 amountPurchased:0,maxPurchasedAmount:Infinity,
+                name:'pencil',
+                slot:'beequip',
+                viewMatrix:[-97.75,23,121-2,Math.PI,0],
+                cost:['50000 honey','5 ticket','1 royalJelly'],
+                desc:'A special pencil beequip only for the smartest of bees(and people).<br><br>Stats and potential of each beequip are randomly generated.'
+            },{
+
+                amountPurchased:0,maxPurchasedAmount:Infinity,
+                name:'bobertPlushie',
+                slot:'beequip',
+                viewMatrix:[-99.65,23,121-2,Math.PI,0],
+                cost:['200000 honey','7 ticket','50 treat'],
+                desc:'A slightly deformed plushie beequip. It loves to terrorize bees and you.<br><br>Stats and potential of each beequip are randomly generated.'
+            },{
+
+                amountPurchased:0,maxPurchasedAmount:Infinity,
+                name:'boombox',
+                slot:'beequip',
+                viewMatrix:[-101.55,23,121-2,Math.PI,0],
+                cost:['1250000 honey','9 ticket','1 microConverter'],
+                desc:'Energize and motivate your bees with upbeat musical hits by Bee Gees or Beethoven from!<br><br>Stats and potential of each beequip are randomly generated.'
+            },{
+
+                amountPurchased:0,maxPurchasedAmount:Infinity,
+                name:'candycane',
+                slot:'beequip',
+                viewMatrix:[-103.45,23,121-2,Math.PI,0],
+                cost:['5000000 honey','11 ticket','1 stinger','1 redExtract'],
+                desc:'This stick of candy causes dramatic bee hyperactivity, sticks to pollen, and turns into a sharp, deadly weapon.<br><br>Stats and potential of each beequip are randomly generated.'
+            },{
+
+                amountPurchased:0,maxPurchasedAmount:Infinity,
+                name:'books',
+                slot:'beequip',
+                viewMatrix:[-105.35,23,121-2,Math.PI,0],
+                cost:['25000000 honey','13 ticket','2 whirligig'],
+                desc:'A set of books for bees to read. Improves the performance of bees.<br><br>Stats and potential of each beequip are randomly generated.'
+            },{
+
+                amountPurchased:0,maxPurchasedAmount:Infinity,
+                name:'coffeeMug',
+                slot:'beequip',
+                viewMatrix:[-107.25,23,121-2,Math.PI,0],
+                cost:['100000000 honey','15 ticket','10 honeysuckle'],
+                desc:'Bees drink *whatever* is in this coffee mug for a boost of energy!<br><br>Stats and potential of each beequip are randomly generated.'
+            },{
+
+                amountPurchased:0,maxPurchasedAmount:Infinity,
                 name:'comfortingVial',
                 slot:'item',
-                viewMatrix:[-98,23,121-2,Math.PI,0],
-                cost:[n=>Math.floor(Math.min(Math.pow(1.2,n)*1000000,1000000000000))+' honey','10 ticket','4 moonCharm'],
+                viewMatrix:[-98,26,121-2,Math.PI,0],
+                cost:[n=>Math.floor(Math.min(Math.pow(1.2,n)*1000000,1000000000000))+' honey','10 ticket','5 moonCharm'],
                 desc:'Instantly grants 1h of Comforting nectar.'
             },{
 
                 amountPurchased:0,maxPurchasedAmount:Infinity,
                 name:'invigoratingVial',
                 slot:'item',
-                viewMatrix:[-100.25,23,121-2,Math.PI,0],
+                viewMatrix:[-100.25,26,121-2,Math.PI,0],
                 cost:[n=>Math.floor(Math.min(Math.pow(1.2,n)*1000000,1000000000000))+' honey','10 ticket','1 redExtract'],
                 desc:'Instantly grants 1h of Invigoration nectar.'
             },{
@@ -23933,15 +24469,15 @@ function BeeSwarmSimulator(DATA){
                 amountPurchased:0,maxPurchasedAmount:Infinity,
                 name:'motivatingVial',
                 slot:'item',
-                viewMatrix:[-102.5,23,121-2,Math.PI,0],
-                cost:[n=>Math.floor(Math.min(Math.pow(1.2,n)*1000000,1000000000000))+' honey','10 ticket','12 sunflowerSeed'],
+                viewMatrix:[-102.5,26,121-2,Math.PI,0],
+                cost:[n=>Math.floor(Math.min(Math.pow(1.2,n)*1000000,1000000000000))+' honey','10 ticket','14 sunflowerSeed'],
                 desc:'Instantly grants 1h of Motivating nectar.'
             },{
 
                 amountPurchased:0,maxPurchasedAmount:Infinity,
                 name:'refreshingVial',
                 slot:'item',
-                viewMatrix:[-104.75,23,121-2,Math.PI,0],
+                viewMatrix:[-104.75,26,121-2,Math.PI,0],
                 cost:[n=>Math.floor(Math.min(Math.pow(1.2,n)*1000000,1000000000000))+' honey','10 ticket','1 enzymes'],
                 desc:'Instantly grants 1h of Refreshing nectar.'
             },{
@@ -23949,7 +24485,7 @@ function BeeSwarmSimulator(DATA){
                 amountPurchased:0,maxPurchasedAmount:Infinity,
                 name:'satisfyingVial',
                 slot:'item',
-                viewMatrix:[-107,23,121-2,Math.PI,0],
+                viewMatrix:[-107,26,121-2,Math.PI,0],
                 cost:[n=>Math.floor(Math.min(Math.pow(1.2,n)*1000000,1000000000000))+' honey','10 ticket','7 gumdrops'],
                 desc:'Instantly grants 1h of Satisfying nectar.'
             }],
@@ -24045,7 +24581,7 @@ function BeeSwarmSimulator(DATA){
                 slot:'item',
                 viewMatrix:[-28.5+5.5,4.5,46,-MATH.HALF_PI,0.02],
                 cost:[(n,i=3)=>(i/3)+' ticket'],
-                desc:'Can be used to purchase special items and activate machines!'
+                desc:'Can be used to cover fields in goo, granting bonus honey!'
             }],
             currentIndex:0,message:'Explore Gumdrop Shop',currentIncrement:0,increments:[3,30,30e1]
         },
@@ -24139,6 +24675,104 @@ function BeeSwarmSimulator(DATA){
             }],
             currentIndex:0,message:'Explore Ticket Tent'
         },
+
+        lair:{
+
+            items:[{
+
+                name:'gummyMask',
+                slot:'mask',
+                viewMatrix:[-1.5,1003.5,1005.5+3.5,-0.35,0],
+                displayPos:[-2.75,1003.2,1005.5],
+                displayRot:[10,20,0],
+                displayScale:[1.5,1.5,1.5],
+            },{
+
+                name:'gummyBoots',
+                slot:'boots',
+                viewMatrix:[1.5,1003.5,1005.5+3.5,0.35,0],
+                displayPos:[2.85,1004.3,1005.5],
+                displayRot:[10,-20,0],
+                displayScale:[1.5,1.5,1.5],
+            },{
+
+                name:'gummyBaller',
+                slot:'tool',
+                viewMatrix:[0,1006,1005.5+3.5,0,0.2],
+                displayPos:[0,1005.8,1005],
+                displayRot:[20,0,-30],
+                displayScale:[0.9,0.9,0.9],
+            }],
+            currentIndex:0,message:'Explore Gummy Lair Shop'
+        },
+
+        coconutCave:{
+
+            items:[{
+
+                name:'coconutCanister',
+                slot:'backpack',
+                viewMatrix:[10.75+4,14.8+1.5,-34.3,-MATH.HALF_PI,-0.3],
+                displayPos:[10.75,14.9,-34.5],
+                displayRot:[0,-100,0],
+                displayScale:[1.2,1.2,1.2],
+            },{
+
+                name:'coconutClogs',
+                slot:'boots',
+                viewMatrix:[10.75+4,14.7+1.5,-38.5,-MATH.HALF_PI,-0.3],
+                displayPos:[10.75,14.9,-38.5],
+                displayRot:[0,82,0],
+                displayScale:[1.45,1.45,1.45],
+            }],
+            currentIndex:0,message:'Explore Coconut Cave Shop'
+        },
+
+        sprinkler:{
+
+            items:[{
+
+                name:'basicSprinkler',
+                slot:'sprinkler',
+                viewMatrix:[48+4,14+1.5,63.075,-MATH.HALF_PI,-0.3],
+                displayPos:[48,14,63.075],
+                displayRot:[0,0,0],
+                displayScale:[1.2,1.2,1.2],
+            },{
+
+                name:'silverSoakers',
+                slot:'sprinkler',
+                viewMatrix:[48+4,14+1.5,61.075,-MATH.HALF_PI,-0.3],
+                displayPos:[48,14,61.075],
+                displayRot:[0,0,0],
+                displayScale:[1.2,1.2,1.2],
+            },{
+
+                name:'goldenGushers',
+                slot:'sprinkler',
+                viewMatrix:[48+4,14+1.5,59.075,-MATH.HALF_PI,-0.3],
+                displayPos:[48,14,59.075],
+                displayRot:[0,0,0],
+                displayScale:[1.2,1.2,1.2],
+            },{
+
+                name:'diamondDiluters',
+                slot:'sprinkler',
+                viewMatrix:[48+4,14+1.5,57.075,-MATH.HALF_PI,-0.3],
+                displayPos:[48,14,57.075],
+                displayRot:[0,0,0],
+                displayScale:[1.2,1.2,1.2],
+            },{
+
+                name:'superSaturator',
+                slot:'sprinkler',
+                viewMatrix:[48+4,14+1.5,55.075,-MATH.HALF_PI,-0.3],
+                displayPos:[48,14,55.075],
+                displayRot:[0,90,0],
+                displayScale:[1.2,1.2,1.2],
+            }],
+            currentIndex:0,message:'Explore sprinkler Shop'
+        },
     }
 
     shopGearMesh.setMeshFromFunction(function(box,a,cylinder,sphere,applyFinalRotation,c,star){
@@ -24153,32 +24787,21 @@ function BeeSwarmSimulator(DATA){
 
                 let si=s[j]
 
-                if(si.slot!=='item'){
+                if(si.slot!=='item'&&si.slot!=='beequip'){
 
                     mat4.fromRotationTranslationScale(shopGearMesh.matrix,quat.fromEuler([],...(si.displayRot||[0,0,0])),si.displayPos,si.displayScale||[1,1,1])
                 
-                    gear[si.slot][si.name].mesh(box,cylinder,sphere,star,applyFinalRotation,false)
+                    if(si.slot==='sprinkler'){
+
+                        gear[si.slot][si.name].shopMesh(0,0,0,box,cylinder,sphere,star,applyFinalRotation,false)
+
+                    } else {
+
+                        gear[si.slot][si.name].mesh(box,cylinder,sphere,star,applyFinalRotation,false)
+                    }
                 }
             }
         }
-
-        // for(let i in gear){
-
-        //     if(i.indexOf('Amulet')>-1||i==='glider') continue
-
-        //     for(let j in gear[i]){
-
-        //         if(j==='none') continue
-
-        //         shops.cool.items.push({name:j,slot:i,viewMatrix:[25-(num%10)*4,1,10+((num/10)|0)*6,-Math.PI,-0.4]})
-        //         mat4.fromRotationTranslation(shopGearMesh.matrix,quat.fromEuler([],0,i==='backpack'?0:180,0),[25-(num%10)*4,-0.5,13+((num/10)|0)*6])
-                
-        //         gear[i][j].mesh(box,cylinder,sphere,star,applyFinalRotation)
-
-        //         num++
-
-        //     }
-        // }
     })
 
     shopGearMesh.setBuffers()
@@ -24221,10 +24844,30 @@ function BeeSwarmSimulator(DATA){
 
                         } else {
 
-                            if(player.currentGear.beequips[player.beequipLookingAt].bee&&player.hive[player.currentGear.beequips[player.beequipLookingAt].bee[1]][player.currentGear.beequips[player.beequipLookingAt].bee[0]].beequip===player.beequipDragging){
-                                
-                                player.hive[player.currentGear.beequips[player.beequipLookingAt].bee[1]][player.currentGear.beequips[player.beequipLookingAt].bee[0]].beequip=null
-                                
+                            if(player.currentGear.beequips[player.beequipLookingAt].bee){
+
+                                for(let i in player.currentGear.beequips){
+                                    
+                                    if(player.currentGear.beequips[i].id===player.hive[player.currentGear.beequips[player.beequipLookingAt].bee[1]][player.currentGear.beequips[player.beequipLookingAt].bee[0]].beequip.id){
+                                        
+                                        player.hive[player.currentGear.beequips[player.beequipLookingAt].bee[1]][player.currentGear.beequips[player.beequipLookingAt].bee[0]].beequip=undefined
+                                        
+                                        player.currentGear.beequips[i].bee=undefined
+                                        break
+                                    }
+                                }
+                            }
+
+                            if(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip){
+
+                                for(let i in player.currentGear.beequips){
+                                    
+                                    if(player.currentGear.beequips[i].id===player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip.id){
+                                        
+                                        player.currentGear.beequips[i].bee=undefined
+                                        break
+                                    }
+                                }
                             }
                             
                             player.hive[player.hiveIndex[1]][player.hiveIndex[0]].beequip=player.beequipDragging
@@ -24637,11 +25280,18 @@ function BeeSwarmSimulator(DATA){
                 -31,10.1,-43,0,0,0.877,0.375,n,n,n,-4,-4,0,
                 -10,37.75,90.5,0,0,0.75,0.5,n,n,n,-4.5,-4,0,
 
-                -98,23,121,0,0,0.125,0.5,n,n,n,-2,-2,0,
-                -100.25,23,121,0,0,0.25,0.5,n,n,n,-2,-2,0,
-                -102.5,23,121,0,0,0.375,0.5,n,n,n,-2,-2,0,
-                -104.75,23,121,0,0,0.5,0.5,n,n,n,-2,-2,0,
-                -107,23,121,0,0,0.625,0.5,n,n,n,-2,-2,0,
+                -98,26,121,0,0,0.125,0.5,n,n,n,-2,-2,0,
+                -100.25,26,121,0,0,0.25,0.5,n,n,n,-2,-2,0,
+                -102.5,26,121,0,0,0.375,0.5,n,n,n,-2,-2,0,
+                -104.75,26,121,0,0,0.5,0.5,n,n,n,-2,-2,0,
+                -107,26,121,0,0,0.625,0.5,n,n,n,-2,-2,0,
+
+                -97.75,23,121,0,0,out.decalUV.pencil[0],out.decalUV.pencil[1],n,n,n,-2,-2,0,
+                -99.65,23,121,0,0,out.decalUV.bobertPlushie[0],out.decalUV.bobertPlushie[1],n,n,n,-2,-2,0,
+                -101.55,23,121,0,0,out.decalUV.boombox[0],out.decalUV.boombox[1],n,n,n,-2,-2,0,
+                -103.45,23,121,0,0,out.decalUV.candycane[0],out.decalUV.candycane[1],n,n,n,-2,-2,0,
+                -105.35,23,121,0,0,out.decalUV.books[0],out.decalUV.books[1],n,n,n,-2,-2,0,
+                -107.25,23,121,0,0,out.decalUV.coffeeMug[0],out.decalUV.coffeeMug[1],n,n,n,-2,-2,0,
                 
                 28.25,3.66,-17.25,0,0,0.875,0.5,_n,_n,_n,-1.5,-1.5,0,
                 28.25,3.64,-19.25,0,0,0,0.625,_n,_n,_n,-1.5,-1.5,0,
@@ -26522,6 +27172,28 @@ function BeeSwarmSimulator(DATA){
 
     meshes.kingBeetle.indexAmount=index.length
 
+    meshes.tunnelBear={}
+    meshes.tunnelBear.vertBuffer=gl.createBuffer()
+    meshes.tunnelBear.indexBuffer=gl.createBuffer()
+    verts=[]
+    index=[]
+
+    b(0,1.5-1.5,0,1.5,2,0.8,0,0,0)
+    b(-0.4,0.3-1.5,0,0.75,1.4,0.8,0,0,0,0.01,0,-10)
+    b(0.4,0.3-1.5,0,0.75,1.4,0.8,0,0,0,0.01,0,10)
+    b(0.9,1.6-1.5,0,0.75,1.5,0.8,0,0,0,0.01,0,40)
+    b(-0.9,1.6-1.5,0,0.75,1.5,0.8,0,0,0,0.01,0,-40)
+    b(0,2.8-1.5,0,1.6,1.6,0.8,0,0,0)
+    c(-0.7,3.5-1.5,0,0.5,0.8,10,0,0,0)
+    c(0.7,3.5-1.5,0,0.5,0.8,10,0,0,0)
+
+    gl.bindBuffer(gl.ARRAY_BUFFER,meshes.tunnelBear.vertBuffer)
+    gl.bufferData(gl.ARRAY_BUFFER,Float32Array.from(verts),gl.STATIC_DRAW)
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,meshes.tunnelBear.indexBuffer)
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,Uint16Array.from(index),gl.STATIC_DRAW)
+
+    meshes.tunnelBear.indexAmount=index.length
+
     meshes.mechsquito={}
     meshes.mechsquito.vertBuffer=gl.createBuffer()
     meshes.mechsquito.indexBuffer=gl.createBuffer()
@@ -28114,6 +28786,54 @@ function BeeSwarmSimulator(DATA){
         instantConversion.w=crit.w===2?1:instantConversion.w
         instantConversion.b=crit.b===2?1:instantConversion.b
         
+        function collectFunction(f){
+                    
+            let amountToCollect=Math.min(amount[f.color[0]],f.height*100),amp=amountToCollect*0.01
+            
+            f.height-=Math.min(params.depleteAll?f.height:amp/((f.level-1)*0.2+1),f.height)
+            
+            amountToCollect*=multiplier[f.color[0]]
+            amountToCollect*=f.level
+            
+            if(f.goo){
+                
+                amountToCollect*=player.goo
+                totalGoo+=amountToCollect
+                
+                if(params.isGummyBaller){
+                    
+                    player.addEffect('gummyBall',(f.goo*0.45)/180)
+                    f.goo*=0.5
+                }
+            }
+            
+            if(params.replenish) f.height+=params.replenish
+            if(params.gooTrail) f.goo=1
+            
+            if(f.balloon){
+                
+                amountToCollect*=f.color==='blue'?1.2:1.1
+                amountToCollect*=f.balloon.golden?1.05:1
+    
+                f.balloon.pollen+=amountToCollect
+                otherAccum[f.color[0]]+=amountToCollect*(1-instantConversion[f.color[0]])
+                
+            } if(f.puffshrooms.length){
+                
+                for(let j in f.puffshrooms){
+    
+                    f.puffshrooms[j].pollen+=amountToCollect
+                }
+                
+                otherAccum[f.color[0]]+=amountToCollect*(1-instantConversion[f.color[0]])
+                
+            } else {
+                
+                total[f.color[0]]+=amountToCollect
+            }
+            
+        }
+
         for(let i in pattern){
             
             let p=pattern[i]
@@ -28122,53 +28842,7 @@ function BeeSwarmSimulator(DATA){
             
             if(_x>=0&&_x<f.width&&_z>=0&&_z<f.length){
                 
-                updateFlower(params.field||player.fieldIn,_x,_z,function(f){
-                    
-                    let amountToCollect=Math.min(amount[f.color[0]],f.height*100),amp=amountToCollect*0.01
-                    
-                    f.height-=Math.min(params.depleteAll?f.height:amp/((f.level-1)*0.2+1),f.height)
-                    
-                    amountToCollect*=multiplier[f.color[0]]
-                    amountToCollect*=f.level
-                    
-                    if(f.goo){
-                        
-                        amountToCollect*=player.goo
-                        totalGoo+=amountToCollect
-                        
-                        if(params.isGummyBaller){
-                            
-                            player.addEffect('gummyBall',(f.goo*0.45)/180)
-                            f.goo*=0.5
-                        }
-                    }
-                    
-                    if(params.replenish) f.height+=params.replenish
-                    if(params.gooTrail) f.goo=1
-                    
-                    if(f.balloon){
-                        
-                        amountToCollect*=f.color==='blue'?1.2:1.1
-                        amountToCollect*=f.balloon.golden?1.05:1
-
-                        f.balloon.pollen+=amountToCollect
-                        otherAccum[f.color[0]]+=amountToCollect*(1-instantConversion[f.color[0]])
-                        
-                    } if(f.puffshrooms.length){
-                        
-                        for(let j in f.puffshrooms){
-
-                            f.puffshrooms[j].pollen+=amountToCollect
-                        }
-                        
-                        otherAccum[f.color[0]]+=amountToCollect*(1-instantConversion[f.color[0]])
-                        
-                    } else {
-                        
-                        total[f.color[0]]+=amountToCollect
-                    }
-                    
-                },true,params.gooTrail||params.isGummyBaller,false)
+                updateFlower(params.field||player.fieldIn,_x,_z,collectFunction,true,params.gooTrail||params.isGummyBaller,false)
             }
         }
         
@@ -28537,7 +29211,9 @@ function BeeSwarmSimulator(DATA){
 
     window.functionToRunOnBeequipClick=function(id){
         
-        player.beequipLookingAt=id
+        for(let i in player.currentGear.beequips) if(player.currentGear.beequips[i].id===id) player.beequipLookingAt=Number(i)
+
+
         player.updateBeequipPage()
     }
 
@@ -28550,13 +29226,7 @@ function BeeSwarmSimulator(DATA){
 
     window.selectBeequip=function(){
         
-        for(let i in player.currentGear.beequips){
-            
-            if(player.currentGear.beequips[i].id===player.beequipLookingAt){
-
-                player.beequipDragging=player.currentGear.beequips[i]
-            }
-        }
+        player.beequipDragging=player.currentGear.beequips[player.beequipLookingAt]
         
         player.updateBeequipPage()
     }
@@ -28566,15 +29236,9 @@ function BeeSwarmSimulator(DATA){
         if(player.currentGear.beequips[player.beequipLookingAt].bee){
 
             player.hive[player.currentGear.beequips[player.beequipLookingAt].bee[1]][player.currentGear.beequips[player.beequipLookingAt].bee[0]].beequip=null
-            
         }
         
         player.currentGear.beequips.splice(player.beequipLookingAt,1)
-        
-        for(let i in player.currentGear.beequips){
-            
-            player.currentGear.beequips[i].id=Number(i)
-        }
         
         player.beequipDragging=false
         player.beequipLookingAt=false
@@ -28743,6 +29407,7 @@ function BeeSwarmSimulator(DATA){
             NPCs[i].dialogueIndex=save.NPCs[i].index
             NPCs[i].seed=save.NPCs[i].seed
             NPCs[i].portionsDone=save.NPCs[i].portionsDone
+            NPCs[i].translatored=save.NPCs[i].translatored
 
             NPCs[i].activeQuest=activeQuests[i]
         }
@@ -28770,7 +29435,7 @@ function BeeSwarmSimulator(DATA){
         save.owned={}
         save.amountPurchased={}
         save.currentGear=player.currentGear
-        save.effects=player.effects
+        save.effects=player.effects.slice()
         save.passives={}
         save.NPCs={}
         save.hotbar=[]
@@ -28867,6 +29532,7 @@ function BeeSwarmSimulator(DATA){
                 save.NPCs[i]={index:NPCs[i].dialogueIndex}
 
                 save.NPCs[i].seed=NPCs[i].seed
+                save.NPCs[i].translatored=NPCs[i].translatored
                 save.NPCs[i].portionsDone=NPCs[i].portionsDone
             }
         }
@@ -28929,6 +29595,9 @@ function BeeSwarmSimulator(DATA){
 
     } else {
 
+        items.basicEgg.amount=1
+        player.updateInventory()
+
         let tut=['Welcome to Bee Swarm Simulator!',5000,'Click the egg icon on the bar on','the left to open your inventory!',4000,'Click on the Basic Egg to select it!',4000,'Hover your mouse over a hive slot','and click to hatch it!',4000,'Collect pollen in fields with your bee!',4000,'After filling up your bag, stand near','your hive to convert the pollen into honey!',4000,'Use honey to buy more bee eggs and new tools!',5000,'Talk to bears and complete their quests!',3000,'Have fun!'],t=1000
 
         for(let i in tut){
@@ -28943,7 +29612,6 @@ function BeeSwarmSimulator(DATA){
             }
         }
     }
-
 
     function SAVE_GAME(){
 
@@ -29008,6 +29676,8 @@ function BeeSwarmSimulator(DATA){
 
     objects.mobs.push(new BugMob([-53+25*0.5,-0.75,8.5],{minX:-55,maxX:-53+25,minZ:6.5,maxZ:6.5+20,minY:-10,maxY:3.5},7,2500,'kingBeetle','mob_king1'))
 
+    objects.mobs.push(new BugMob([4,-22,45],{minX:-50,maxX:10,minZ:40,maxZ:50,minY:-27,maxY:-19},9,10000,'tunnelBear','mob_tun1'))
+
 
     objects.mobs.push(new CoconutCrab())
     objects.mobs.push(new StumpSnail())
@@ -29021,9 +29691,38 @@ function BeeSwarmSimulator(DATA){
 
     uiCanvas.requestPointerLock()
 
-    if(!player.discoveredBees.length) items.basicEgg.amount=1
-
     window.setInterval(()=>{SAVE_GAME();player.addMessage('Game Autosaved!')},30000)
+
+    function setGlobalPuffshroomSpawn(){
+
+        window.setTimeout(()=>{
+
+            let field=[]
+
+            for(let i in fieldInfo) if(i!=='AntField') field.push(i)
+
+            field=field[(Math.random()*field.length)|0]
+
+            objects.mobs.push(new Puffshroom(field,MATH.random(0.25,0.75)*fieldInfo[field].width|0,z=MATH.random(0.25,0.75)*fieldInfo[field].length|0,5*60,1,'puffshroom'))
+
+            setGlobalPuffshroomSpawn()
+
+        },((60*20)-((Date.now()*0.001)%(60*20)))*1000)
+
+    }setGlobalPuffshroomSpawn()
+
+    function setGlobalMondoChickSpawn(){
+
+        window.setTimeout(()=>{
+
+            objects.mobs.push(new MondoChick())
+
+            setGlobalMondoChickSpawn()
+
+        },((60*60)-((Date.now()*0.001)%(60*60)))*1000)
+        
+    }setGlobalMondoChickSpawn()
+
 
     function loop(now){
 
@@ -29046,33 +29745,6 @@ function BeeSwarmSimulator(DATA){
         }
         
         if(STATS_TICK){
-
-            if(frameCount%200===1){
-
-                let t=(Date.now()*0.001)%(60*20)
-
-                if(t<globalTimer_puffshroom){
-
-                    let field=[]
-
-                    for(let i in fieldInfo) if(i!=='AntField') field.push(i)
-
-                    field=field[(Math.random()*field.length)|0]
-
-                    objects.mobs.push(new Puffshroom(field,MATH.random(0.25,0.75)*fieldInfo[field].width|0,z=MATH.random(0.25,0.75)*fieldInfo[field].length|0,5*60,1,'puffshroom'))
-                }
-                
-                globalTimer_puffshroom=t
-
-                t=(Date.now()*0.001)%(60*60)
-
-                if(t<globalTimer_mondo){
-
-                    objects.mobs.push(new MondoChick('MountainTopField'))
-                }
-
-                globalTimer_mondo=t
-            }
 
             player.resetStats()
             
@@ -29167,6 +29839,49 @@ function BeeSwarmSimulator(DATA){
                 player.capacity*=(player.whiteFieldCapacity-1)*fieldInfo[player.fieldIn].generalColorComp.w+1
             }
 
+            for(let i in triggers){
+                
+                triggers[i].colliding=player.body.position.x>triggers[i].minX&&player.body.position.x<triggers[i].maxX&&player.body.position.y>triggers[i].minY&&player.body.position.y<triggers[i].maxY&&player.body.position.z>triggers[i].minZ&&player.body.position.z<triggers[i].maxZ
+                
+                if(triggers[i].colliding&&triggers[i].contactFunc){
+
+                    triggers[i].contactFunc(player)
+                    continue
+                }
+
+                if(triggers[i].isMachine){
+                    
+                    if(triggers[i].colliding){
+                        
+                        actionWarning.style.display='block'
+
+                        let useReq=triggers[i].requirements?triggers[i].requirements(player):false
+
+                        if(!useReq){
+
+                            actionName.innerHTML=triggers[i].message
+                            actionNameBox.style.backgroundColor='rgb(30,70,255,0.8)'
+                            document.getElementById('actionEButton').style.display='block'
+                            
+                            if(user.clickedKeys.e){
+                                
+                                triggers[i].func(player)
+                            }
+
+                        } else {
+                            
+                            actionName.innerHTML=useReq
+                            actionNameBox.style.backgroundColor='rgb(255,0,0,0.6)'
+                            document.getElementById('actionEButton').style.display='none'
+                        }
+
+                    } else if(actionName.innerHTML===triggers[i].message){
+
+                        actionName.style.display='block'
+                    }
+                }
+            }
+
         }
         
         for(let i=objects.marks.length;i--;){
@@ -29174,49 +29889,6 @@ function BeeSwarmSimulator(DATA){
             if(objects.marks[i].update()){
                 
                 objects.marks[i].die(i)
-            }
-        }
-        
-        for(let i in triggers){
-            
-            triggers[i].colliding=player.body.position.x>triggers[i].minX&&player.body.position.x<triggers[i].maxX&&player.body.position.y>triggers[i].minY&&player.body.position.y<triggers[i].maxY&&player.body.position.z>triggers[i].minZ&&player.body.position.z<triggers[i].maxZ
-            
-            if(triggers[i].colliding&&triggers[i].contactFunc){
-
-                triggers[i].contactFunc(player)
-                continue
-            }
-
-            if(triggers[i].isMachine){
-                
-                if(triggers[i].colliding){
-                    
-                    actionWarning.style.display='block'
-
-                    let useReq=triggers[i].requirements?triggers[i].requirements(player):false
-
-                    if(!useReq){
-
-                        actionName.innerHTML=triggers[i].message
-                        actionNameBox.style.backgroundColor='rgb(30,70,255,0.8)'
-                        document.getElementById('actionEButton').style.display='block'
-                        
-                        if(user.clickedKeys.e){
-                            
-                            triggers[i].func(player)
-                        }
-
-                    } else {
-                        
-                        actionName.innerHTML=useReq
-                        actionNameBox.style.backgroundColor='rgb(255,0,0,0.6)'
-                        document.getElementById('actionEButton').style.display='none'
-                    }
-
-                } else if(actionName.innerHTML===triggers[i].message){
-
-                    actionName.style.display='block'
-                }
             }
         }
         

@@ -9,10 +9,10 @@ window.drawThumbnail=function(canv){
 
     let ctx=canv.getContext('2d'),Xscale=canv.width/600,Yscale=canv.height/600,Sscale=(Xscale+Yscale)*0.5
 
-    ctx.font='20px arial'
-    ctx.fillText('temp. removed cuz drawing background is really slow and laggy ill add it back l8r',10,150)
-    return
-    //removed to stop large loading times
+    // ctx.font='20px arial'
+    // ctx.fillText('temp. removed cuz drawing background is really slow and laggy ill add it back l8r',10,150)
+    // return
+    // //removed to stop large loading times
 
 
 

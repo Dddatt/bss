@@ -19,7 +19,14 @@ window.playerGear={
 
                 cylinder(x,y,z,0.125,1.25,10,0.3,0.3,0.3,1,90,0,0)
                 cylinder(x,y+1.25*0.5,z,0.16,0.15,10,0.3,0.3,0.3,1,90,0,0)
-            }
+            },
+            shopMesh:function(x,y,z,box,cylinder){
+
+                cylinder(x,y,z,0.125,1.25,10,0.3,0.3,0.3,90,0,0)
+                cylinder(x,y+1.25*0.5,z,0.16,0.15,10,0.3,0.3,0.3,90,0,0)
+            },
+            desc:'When planted in the ground, causes nearby flowers to regrow faster!<br><br>Count: 1<br>Diameter: 10<br>Power: 20<br>Rate: 4s<br><br>Press "R" to place a sprinkler.',
+            cost:['1111111 honey'],
         },
 
         silverSoakers:{
@@ -32,7 +39,14 @@ window.playerGear={
 
                 cylinder(x,y,z,0.125,1.25,10,0.7,0.7,0.7,1,90,0,0)
                 cylinder(x,y+1.25*0.5,z,0.16,0.15,10,0.7,0.7,0.7,1,90,0,0)
-            }
+            },
+            shopMesh:function(x,y,z,box,cylinder){
+
+                cylinder(x,y,z,0.125,1.25,10,0.7,0.7,0.7,90,0,0)
+                cylinder(x,y+1.25*0.5,z,0.16,0.15,10,0.7,0.7,0.7,90,0,0)
+            },
+            desc:'Two sprinklers which fire faster!<br><br>Count: 2<br>Diameter: 10<br>Power: 20<br>Rate: 3.5s<br><br>Press "R" to place a sprinkler.',
+            cost:['22222222 honey'],
         },
 
         goldenGushers:{
@@ -45,10 +59,17 @@ window.playerGear={
 
                 cylinder(x,y,z,0.125,1.25,10,0.9,0.9,0.2,1,90,0,0)
                 cylinder(x,y+1.25*0.5,z,0.16,0.15,10,0.9,0.9,0.2,1,90,0,0)
-            }
+            },
+            shopMesh:function(x,y,z,box,cylinder){
+
+                cylinder(x,y,z,0.125,1.25,10,0.9,0.9,0.2,90,0,0)
+                cylinder(x,y+1.25*0.5,z,0.16,0.15,10,0.9,0.9,0.2,90,0,0)
+            },
+            desc:'Three gorgeous sprinklers with enormous range.<br><br>Count: 3<br>Diameter: 11<br>Power: 25<br>Rate: 3.5s<br><br>Press "R" to place a sprinkler.',
+            cost:['333333333 honey'],
         },
 
-        diamondDrenchers:{
+        diamondDiluters:{
 
             count:4,
             diameter:11,
@@ -58,10 +79,17 @@ window.playerGear={
 
                 cylinder(x,y,z,0.125,1.25,10,0,0.9,0.9,1,90,0,0)
                 cylinder(x,y+1.25*0.5,z,0.16,0.15,10,0,0.9,0.9,1,90,0,0)
-            }
+            },
+            shopMesh:function(x,y,z,box,cylinder){
+
+                cylinder(x,y,z,0.125,1.25,10,0,0.9,0.9,90,0,0)
+                cylinder(x,y+1.25*0.5,z,0.16,0.15,10,0,0.9,0.9,90,0,0)
+            },
+            desc:'Four enhanced sprinklers made of durable artificial diamond!<br><br>Count: 4<br>Diameter: 11<br>Power: 25<br>Rate: 3s<br><br>Press "R" to place a sprinkler.',
+            cost:['4444444444 honey'],
         },
         
-        supremeSaturator:{
+        superSaturator:{
 
             count:1,
             diameter:15,
@@ -76,7 +104,19 @@ window.playerGear={
                 cylinder(x-0.4,y+1.1,z,0.25,0.35,10,0.2,10,10,1,0,0,0,0.25,false)
                 cylinder(x,y+0.7,z,0.3,0.375,10,0.5,0.5,0.5,1,0,0,0,0.25,false)
                 cylinder(x,y+0.7,z,0.1,0.5,10,0.2,10,10,1,0,0,0,0.1,false)
-            }
+            },
+            shopMesh:function(x,y,z,box,cylinder){
+
+                cylinder(x,y+0.25,z,0.15,2.5,10,0.9,0.9,0.5,90,0,0)
+                cylinder(x,y+1.5,z,0.2,0.15,10,1,1,0.5,90,0,0)
+                box(x,y+0.7,z,0.9,0.9,0.35,false,[0.2,10,10])
+                cylinder(x+0.4,y+1.1,z,0.25,0.35,10,0.2,10,10,0,0,0,0.25,false)
+                cylinder(x-0.4,y+1.1,z,0.25,0.35,10,0.2,10,10,0,0,0,0.25,false)
+                cylinder(x,y+0.7,z,0.3,0.375,10,0.5,0.5,0.5,0,0,0,0.25,false)
+                cylinder(x,y+0.7,z,0.1,0.5,10,0.2,10,10,0,0,0,0.1,false)
+            },
+            desc:'The ultimate sprinkler. Nobody knows how it works or where it came from.<br><br>Count: 1<br>Diameter: 15<br>Power: 50<br>Rate: 1s<br><br>Press "R" to place a sprinkler.',
+            cost:['55555555555 honey'],
         }
     },
     
@@ -311,6 +351,19 @@ window.playerGear={
             cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12*0.35,0.14,10,0,1.5*0.7,0.3*0.7,0.01,90,0)
             cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12*0.25,0.15,10,0,1.5,0.3,0.01,90,0)
             box(window.amuletOffset[0],1.5+window.amuletOffset[1],-0.09,0.11,0.19,0.085,[35,0,0],[0,1.5,0.3])
+        }
+    },
+
+    kingBeetleAmulet:{
+        
+        mesh:function(box,cylinder,sphere,star){
+            
+            sphere(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.3,1,1.5,1.5,1.5)
+
+            box(window.amuletOffset[0],1.62+window.amuletOffset[1],0.07,0.04,0.12,0.12,[45,0,0],[0,1.3,0])
+            box(window.amuletOffset[0],1.45+window.amuletOffset[1],0.1,0.08,0.1,0.1,[45,0,0],[1.3,0,0])
+            box(window.amuletOffset[0]-0.07,1.55+window.amuletOffset[1],0.16,0.05,0.15,0.05,[45,0,45],[1.3,1.3,0])
+            box(window.amuletOffset[0]+0.07,1.55+window.amuletOffset[1],0.16,0.05,0.15,0.05,[45,0,-45],[1.3,1.3,0])
         }
     },
     
@@ -650,8 +703,8 @@ window.playerGear={
                 stats.bluePollen*=1.35
                 stats.whitePollen*=1.35
                 stats.redPollen*=1.35
-                stats.instantBlueConversion=window.applyPercentage(stats.instantBlueConversion,0.15)
                 stats.convertRate*=2
+                stats.convertRateAtHive*=2
                 stats.bubblePollen*=2
                 stats.redBeeAbilityRate*=1.2
                 stats.blueBeeAbilityRate*=1.2
@@ -660,7 +713,7 @@ window.playerGear={
                 player.addEffect('diamondDrainPassive')
                 player.addEffect('bubbleBombsPassive')
             },
-            desc:'Proudly show off your extreme wealth to the world. Shine so brightly that others will complain.<br><br>x3 capacity<br>x1.75 blue field capacity<br>x1.5 blue pollen<br>x1.35 pollen<br>+15% instant blue conversion<br>x2 convert rate<br>x2 bubble pollen<br>+35% defense<br>x1.2 bee ability rate<br>+Passive: Diamond Drain<br>+Passive: Bubble Bombs',
+            desc:'Proudly show off your extreme wealth to the world. Shine so brightly that others will complain.<br><br>x3 capacity<br>x1.75 blue field capacity<br>x1.5 blue pollen<br>x1.35 pollen<br>x2 convert rate<br>x2 convert rate at hive<br>x2 bubble pollen<br>+35% defense<br>x1.2 bee ability rate<br>+Passive: Diamond Drain<br>+Passive: Bubble Bombs',
             cost:['5000000000 honey','250 blueExtract','1 diamondEgg','75 glitter','100 oil'],
         },
         
@@ -715,10 +768,10 @@ window.playerGear={
             applyStats:function(stats,player){
                 
                 stats.capacity+=5000
-                stats.lootLuck+=0.25
+                stats.lootLuck*=1.15
                 stats.convertRate*=1.1
             },
-            desc:'Attaches to your waist to expand the size of your container.<br><br>+5,000 capacity<br>+25% loot luck<br>x1.1 convert rate',
+            desc:'Attaches to your waist to expand the size of your container.<br><br>+5,000 capacity<br>x1.15 loot luck<br>x1.1 convert rate',
             cost:['14000 honey','1 sunflowerSeed'],
         },
 
@@ -734,11 +787,11 @@ window.playerGear={
             applyStats:function(stats,player){
                 
                 stats.capacity+=25000
-                stats.lootLuck+=0.5
+                stats.lootLuck*=1.25
                 stats.convertRate*=1.3
                 stats.beeSpeed*=1.15
             },
-            desc:'A convenient pouch designed for easy access.<br><br>+25,000 capacity<br>+50% loot luck<br>x1.3 convert rate<br>x1.15 bee speed',
+            desc:'A convenient pouch designed for easy access.<br><br>+25,000 capacity<br>x1.25 loot luck<br>x1.3 convert rate<br>x1.15 bee speed',
             cost:['400000 honey','10 pineapple','10 sunflowerSeed','1 stinger'],
         },
 
@@ -759,10 +812,10 @@ window.playerGear={
             applyStats:function(stats,player){
                 
                 stats.capacity+=100000
-                stats.lootLuck+=0.75
+                stats.lootLuck*=1.5
                 stats.convertRate*=1.5
             },
-            desc:'A highly-embellished belt bag imported from a lost land, as big as a tambourine.<br><br>+100,000 capacity<br>+75% loot luck<br>x1.5 convert rate',
+            desc:'A highly-embellished belt bag imported from a lost land, as big as a tambourine.<br><br>+100,000 capacity<br>x1.5 loot luck<br>x1.5 convert rate',
             cost:['12500000 honey','50 pineapple','50 sunflowerSeed','3 stinger'],
         },
         
@@ -783,14 +836,14 @@ window.playerGear={
                 
                 stats.capacity+=200000
                 stats.capacityMultiplier*=1.75
-                stats.lootLuck+=1
+                stats.lootLuck*=1.75
                 stats.convertRate*=1.75
                 stats.honeyFromTokens*=1.5
                 stats.whiteBeeAttack++
                 stats.whiteBombPollen*=1.3
                 stats.beeEnergy*=1.15
             },
-            desc:'A luxurious faux honeycomb you can wear as a belt to greatly enhance your pollen capacity.<br><br>+200,000 capacity<br>x1.75 capacity<br>+100% loot luck<br>x1.75 convert rate<br>x1.5 honey from tokens<br>+1 white bee attack<br>x1.3 white bomb pollen<br>x1.15 bee energy',
+            desc:'A luxurious faux honeycomb you can wear as a belt to greatly enhance your pollen capacity.<br><br>+200,000 capacity<br>x1.75 capacity<br>x1.75 loot luck<br>x1.75 convert rate<br>x1.5 honey from tokens<br>+1 white bee attack<br>x1.3 white bomb pollen<br>x1.15 bee energy',
             cost:['75000000 honey','50 glue','35 enzymes','25 oil'],
         },
         
@@ -811,7 +864,7 @@ window.playerGear={
                 
                 stats.capacity+=300000
                 stats.capacityMultiplier*=2
-                stats.lootLuck+=1
+                stats.lootLuck*=2
                 stats.convertRate*=1.8
                 stats.honeyFromTokens*=1.5
                 stats.whiteBeeAttack+=2
@@ -819,7 +872,7 @@ window.playerGear={
                 stats.beeEnergy*=1.25
                 player.addEffect('petalStormPassive')
             },
-            desc:'Drape these petals about your waist to harness unlimited flower power.<br><br>+300,000 capacity<br>x2 capacity<br>+100% loot luck<br>x1.8 convert rate<br>x1.5 honey from tokens<br>+2 white bee attack<br>x1.5 white bomb pollen<br>x1.25 bee energy<br>+Passive: Petal Storm',
+            desc:'Drape these petals about your waist to harness unlimited flower power.<br><br>+300,000 capacity<br>x2 capacity<br>x2 loot luck<br>x1.8 convert rate<br>x1.5 honey from tokens<br>+2 white bee attack<br>x1.5 white bomb pollen<br>x1.25 bee energy<br>+Passive: Petal Storm',
             cost:['15000000000 honey','15 starJelly','50 glitter','100 glue'],
         }
     },
@@ -1098,7 +1151,7 @@ window.playerGear={
                 player.addEffect('emergencyCoconutShieldPassive')
             },
             desc:'A back-mounted coconut that protects you during emergencies.<br><br>+2,500,000 capacity<br>x5 convert rate<br>+15% instant conversion<br>+10% instant white conversion<br>x1.25 pollen<br>x1.25 white pollen<br>+2 bee attack<br>+10% defense<br>x1.1 honey at hive<br>+Passive: Emergengy Shield<br>+Passive: Inspire Coconuts',
-            cost:['25000000000 honey','150 tropicalDrink','250 redExtract','250 blueExtract'],
+            cost:['25000000000 honey','75 tropicalDrink','100 redExtract','100 blueExtract'],
         }
     },
     
@@ -1121,7 +1174,7 @@ window.playerGear={
             applyStats:function(stats,player){
                 
                 stats.movementCollection+=15
-                stats.walkSpeed*=1.15
+                stats.walkSpeed*=1.2
                 stats.jumpPower*=1.4
                 stats.pollenFromCoconuts*=2
                 stats.goo*=1.25
@@ -1132,9 +1185,10 @@ window.playerGear={
                 stats.whitePollen*=1.1
                 stats.beeAttack*=1.1
                 stats.convertRateAtHive*=2
+                player.addEffect('coconutHastePassive')
             },
-            desc:'Squishy boots that leave a trail of Goo wherever you go.<br><br>+15 movement collection<br>x1.25 goo<br>x1.3 bee speed<br>x1.25 honey from tokens<br>x1.1 pollen<br>x1.1 bee attack<br>x2 pollen from coconuts<br>x2 convert rate at hive<br>x1.15 movespeed<br>x1.4 jump power<br>+Passive: Goo Trail<br>+Passive: Coconut Haste',
-            cost:['100000000000 honey','500 glue','250 glitter','250 redExtract','250 blueExtract'],
+            desc:'Squishy boots that leave a trail of Goo wherever you go.<br><br>+15 movement collection<br>x1.25 goo<br>x1.3 bee speed<br>x1.25 honey from tokens<br>x1.1 pollen<br>x1.1 bee attack<br>x2 pollen from coconuts<br>x2 convert rate at hive<br>x1.2 movespeed<br>x1.4 jump power<br>+Passive: Goo Trail<br>+Passive: Coconut Haste',
+            cost:['100000000000 honey','350 glue','150 glitter','150 redExtract','150 blueExtract'],
         },
 
         coconutClogs:{
@@ -1164,8 +1218,8 @@ window.playerGear={
             applyStats:function(stats,player){
                 
                 stats.movementCollection+=12
-                stats.walkSpeed*=1.125
-                stats.jumpPower*=1.375
+                stats.walkSpeed*=1.175
+                stats.jumpPower*=1.385
                 stats.pollenFromCoconuts*=2
                 stats.redPollen*=1.1
                 stats.whitePollen*=1.1
@@ -1174,9 +1228,10 @@ window.playerGear={
                 stats.beeAttack*=1.05
                 stats.convertRateAtHive*=1.5
                 stats.beeSpeed*=1.25
+                player.addEffect('coconutHastePassive')
             },
-            desc:'Kick around coconuts with this pair of clunky kicks for a surge of speed.<br><br>+12 movement collection<br>x1.25 honey from tokens<br>x1.1 pollen<br>x1.25 bee speed<br>x1.05 bee attack<br>x2 pollen from coconuts<br>x1.5 convert rate at hive<br>x1.125 movespeed<br>x1.375 jump power<br>+Passive: Coconut Haste',
-            cost:['10000000000 honey','100 coconut','25 tropicalDrink','50 glue','50 oil'],
+            desc:'Kick around coconuts with this pair of clunky kicks for a surge of speed.<br><br>+12 movement collection<br>x1.25 honey from tokens<br>x1.1 pollen<br>x1.25 bee speed<br>x1.05 bee attack<br>x2 pollen from coconuts<br>x1.5 convert rate at hive<br>x1.175 movespeed<br>x1.385 jump power<br>+Passive: Coconut Haste',
+            cost:['10000000000 honey','100 coconut','25 tropicalDrink','35 glue','50 oil'],
         },
         
         mondoBoots:{
@@ -1194,12 +1249,12 @@ window.playerGear={
             applyStats:function(stats,player){
                 
                 stats.movementCollection+=10
-                stats.walkSpeed*=1.1
-                stats.jumpPower*=1.35
+                stats.walkSpeed*=1.15
+                stats.jumpPower*=1.375
                 stats.pollenFromBees*=1.25
                 stats.beeSpeed*=1.2
             },
-            desc:'Practical and stylish boots that aid in the beekeeping process.<br><br>+10 movement collection<br>x1.25 pollen from bees<br>x1.2 bee speed<br>x1.1 movespeed<br>x1.35 jump power',
+            desc:'Practical and stylish boots that aid in the beekeeping process.<br><br>+10 movement collection<br>x1.25 pollen from bees<br>x1.2 bee speed<br>x1.15 movespeed<br>x1.375 jump power',
             cost:['15000000 honey','5 oil','3 redExtract','3 blueExtract'],
         },
 
@@ -1216,10 +1271,10 @@ window.playerGear={
             applyStats:function(stats,player){
                 
                 stats.movementCollection+=1
-                stats.walkSpeed*=1.05
+                stats.walkSpeed*=1.1
                 stats.beeSpeed*=1.05
             },
-            desc:'Move faster and collect pollen as you walk through flowers!<br><br>+1 movement collection<br>x1.05 bee speed<br>x1.05 movespeed',
+            desc:'Move faster and collect pollen as you walk through flowers!<br><br>+1 movement collection<br>x1.05 bee speed<br>x1.1 movespeed',
             cost:['5000 honey','3 sunflowerSeed','3 blueberry','3 strawberry'],
         },
 
@@ -1236,11 +1291,11 @@ window.playerGear={
             applyStats:function(stats,player){
                 
                 stats.movementCollection+=5
-                stats.walkSpeed*=1.075
+                stats.walkSpeed*=1.125
                 stats.jumpPower*=1.3
                 stats.beeSpeed*=1.1
             },
-            desc:'A durable pair of boots helpful for traversing the mountain.<br><br>+5 movement collection<br>x1.1 bee speed<br>x1.075 movespeed<br>x1.3 jump power',
+            desc:'A durable pair of boots helpful for traversing the mountain.<br><br>+5 movement collection<br>x1.1 bee speed<br>x1.125 movespeed<br>x1.3 jump power',
             cost:['2000000 honey','20 pineapple','20 blueberry','20 strawberry'],
         },
     },
