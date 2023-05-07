@@ -454,13 +454,13 @@ window.playerGear={
             
             applyStats:function(stats,player){
                 
-                stats.bluePollen*=1.1
-                stats.whitePollen*=1.1
-                stats.redPollen*=1.1
+                stats.bluePollen*=1.15
+                stats.whitePollen*=1.15
+                stats.redPollen*=1.15
                 stats.defense+=0.1
 
             },
-            desc:'A hard hat that grants bonus pollen and helps prevent head injuries.<br><br>x1.1 pollen<br>+10% defense',
+            desc:'A hard hat that grants bonus pollen and helps prevent head injuries.<br><br>x1.15 pollen<br>+10% defense',
             cost:['30000 honey','1 pineapple'],
         },
 
@@ -501,9 +501,9 @@ window.playerGear={
             
             applyStats:function(stats,player){
                 
-                stats.bluePollen*=1.15
-                stats.whitePollen*=1.15
-                stats.redPollen*=1.15
+                stats.bluePollen*=1.2
+                stats.whitePollen*=1.2
+                stats.redPollen*=1.2
                 stats.jumpPower*=1.1
                 stats.redBeeAbilityRate*=1.05
                 stats.blueBeeAbilityRate*=1.05
@@ -511,7 +511,7 @@ window.playerGear={
                 stats.defense+=0.1
 
             },
-            desc:'A playful hat that keeps the sun out of your eyes.<br><br>x1.15 pollen<br>x1.05 bee ability rate<br>+10% defense<br>x1.1 jump power',
+            desc:'A playful hat that keeps the sun out of your eyes.<br><br>x1.2 pollen<br>x1.05 bee ability rate<br>+10% defense<br>x1.1 jump power',
             cost:['2500000 honey','15 gumdrops','10 pineapple','1 moonCharm'],
         },
 
@@ -1315,10 +1315,10 @@ window.playerGear={
             applyStats:function(stats,player){
                 
                 stats.capacity+=15000
-                stats.criticalChance+=0.02
+                stats.criticalChance+=0.03
                 stats.criticalPower+=0.25
             },
-            desc:'A left shoulder pad crafted by a Looker Bee.<br><br>+15,000 capacity<br>+2% critical chance<br>+25% critical power',
+            desc:'A left shoulder pad crafted by a Looker Bee.<br><br>+15,000 capacity<br>+3% critical chance<br>+25% critical power',
             cost:['100000 honey','5 sunflowerSeed'],
         },
 
@@ -1333,12 +1333,12 @@ window.playerGear={
             applyStats:function(stats,player){
                 
                 stats.capacity+=15000
-                stats.whitePollen*=1.07
+                stats.whitePollen*=1.1
                 stats.whiteBombPollen*=1.15
                 stats.redBombPollen*=1.15
                 stats.blueBombPollen*=1.15
             },
-            desc:'A left shoulder pad crafted by a Bomber Bee.<br><br>+15,000 capacity<br>x1.07 white pollen<br>x1.15 bomb pollen',
+            desc:'A left shoulder pad crafted by a Bomber Bee.<br><br>+15,000 capacity<br>x1.1 white pollen<br>x1.15 bomb pollen',
             cost:['100000 honey','5 pineapple'],
         },
         
@@ -1450,9 +1450,9 @@ window.playerGear={
                 
                 stats.capacity+=15000
                 stats.walkSpeed*=1.07
-                stats.beeSpeed*=1.05
+                stats.beeSpeed*=1.07
             },
-            desc:'A right shoulder pad crafted by a Hasty Bee.<br><br>+15,000 capacity<br>x1.07 movespeed<br>x1.05 bee speed',
+            desc:'A right shoulder pad crafted by a Hasty Bee.<br><br>+15,000 capacity<br>x1.07 movespeed<br>x1.07 bee speed',
             cost:['100000 honey','1 moonCharm'],
         },
 
@@ -1467,10 +1467,10 @@ window.playerGear={
             applyStats:function(stats,player){
                 
                 stats.capacity+=15000
-                stats.whitePollen*=1.07
+                stats.whitePollen*=1.1
                 stats.whiteBeeAttack+=1
             },
-            desc:'A right shoulder pad crafted by a Brave Bee.<br><br>+15,000 capacity<br>x1.07 white pollen<br>+1 white bee attack',
+            desc:'A right shoulder pad crafted by a Brave Bee.<br><br>+15,000 capacity<br>x1.1 white pollen<br>+1 white bee attack',
             cost:['100000 honey','1 stinger'],
         },
 
