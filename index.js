@@ -543,10 +543,16 @@ function BeeSwarmSimulator(DATA){
 
                             if(items[hotbarSlots[i].itemType].amount>0){
 
-                                player.stats[hotbarSlots[i].itemType]++
+                                let itemCountBefore=items[hotbarSlots[i].itemType].amount
+                                
                                 items[hotbarSlots[i].itemType].use()
-                                items[hotbarSlots[i].itemType].cooldown=TIME
-                                player.updateInventory()
+
+                                if(items[hotbarSlots[i].itemType].amount!==itemCountBefore){
+
+                                    items[hotbarSlots[i].itemType].cooldown=TIME
+                                    player.stats[hotbarSlots[i].itemType]++
+                                    player.updateInventory()
+                                }
                             }
 
                         },1000*items[hotbarSlots[i].itemType].maxCooldown)
@@ -595,10 +601,17 @@ function BeeSwarmSimulator(DATA){
                         
                         if(items[hotbarSlots[i].itemType].amount>0){
 
-                            player.stats[hotbarSlots[i].itemType]++
+                            let itemCountBefore=items[hotbarSlots[i].itemType].amount
+                            
                             items[hotbarSlots[i].itemType].use()
-                            items[hotbarSlots[i].itemType].cooldown=TIME
-                            player.updateInventory()
+
+                            if(items[hotbarSlots[i].itemType].amount!==itemCountBefore){
+
+                                
+                                items[hotbarSlots[i].itemType].cooldown=TIME
+                                player.stats[hotbarSlots[i].itemType]++
+                                player.updateInventory()
+                            }
                         }
                         
                     } else {
@@ -1233,7 +1246,7 @@ function BeeSwarmSimulator(DATA){
                     player.addMessage('🌙 The moon seems happy! 🌙')
                 }
 
-                amulet.push(('*'+Math.min(1+player.stats.moonAmulets*0.02,1.5).toFixed(2)+' capacityMultiplier').replace('0 ',' '),('*'+Math.min(1.25+player.stats.moonAmulets*0.05,2.5).toFixed(2)+' convertRate'))
+                amulet.push(('*'+Math.min(1+player.stats.moonAmulets*0.02,1.5).toFixed(2)+' capacityMultiplier').replace('0 ',' '),('*'+Math.min(1+player.stats.moonAmulets*0.03,1.75).toFixed(2)+' convertRate'))
 
                 let g=Math.min(player.stats.moonAmulets,25)
 
@@ -3596,22 +3609,22 @@ function BeeSwarmSimulator(DATA){
             }
         },
         
-        haste__:{
+        haste_:{
             
-            svg:document.getElementById('haste__'),
-            cooldown:document.getElementById('haste___cooldown'),
-            amount:document.getElementById('haste___amount'),
+            svg:document.getElementById('haste_'),
+            cooldown:document.getElementById('haste__cooldown'),
+            amount:document.getElementById('haste__amount'),
             maxCooldown:60,
             maxAmount:1,
             
             update:(amount,player)=>{
                 
-                player.walkSpeed*=2
+                player.walkSpeed*=1.5
             },
             
             getMessage:(amount)=>{
                 
-                return 'Haste++\nx2 walkspeed'
+                return 'Haste+\nx1.5 walkspeed'
             }
         },
         
@@ -5258,6 +5271,26 @@ function BeeSwarmSimulator(DATA){
             getMessage:(amount)=>{
                 
                 return 'Coconut Surge\nx1.15 walkspeed\nx1.5 bee speed'
+            }
+        },
+
+        conversionBoost:{
+            
+            u:128*6/2048,v:256*2/2048,
+            svg:document.getElementById('conversionBoost'),
+            cooldown:document.getElementById('conversionBoost_cooldown'),
+            amount:document.getElementById('conversionBoost_amount'),
+            maxCooldown:30*60,
+            maxAmount:1,
+            
+            update:(amount,player)=>{
+                
+                player.convertRate*=2
+            },
+            
+            getMessage:(amount)=>{
+                
+                return 'Conversion Boost\nx2 convert rate'
             }
         },
         
@@ -7110,11 +7143,20 @@ function BeeSwarmSimulator(DATA){
 
         honeysuckle:{
             
-            amount:0,u:128*1/2048,v:128*11/2048,value:13,cooldown:15,
+            amount:0,u:128*1/2048,v:128*11/2048,value:13,cooldown:30,autoUse:true,
             use:function(){
 
-                player.addMessage('im too lazy to make a whole system for the',COLORS.redArr)
-                player.addMessage('honeysuckle so ig ill make it a weak micro converter',COLORS.redArr)
+                if(player.pollen<player.capacity*0.9){
+
+                    player.addMessage('Your container needs to be full!',COLORS.redArr)
+                    return
+                }
+
+                let am=Math.min(player.convertTotal*0.25,player.pollen)
+
+                textRenderer.add((am*player.honeyPerPollen)|0,[player.body.position.x,player.body.position.y+2,player.body.position.z],COLORS.honey,1,'⇆')
+                player.honey+=(am*player.honeyPerPollen)|0
+                player.pollen-=am
 
                 items.honeysuckle.amount--
 
@@ -7123,7 +7165,7 @@ function BeeSwarmSimulator(DATA){
 
         whirligig:{
             
-            amount:0,u:128*2/2048,v:128*11/2048,value:30,cooldown:15,
+            amount:0,u:128*2/2048,v:128*11/2048,value:30,cooldown:60,
             use:function(){
 
                 if(player.antChallenge){
@@ -9073,7 +9115,7 @@ function BeeSwarmSimulator(DATA){
         
         glitter:{
             
-            amount:0,u:0,v:128*7/2048,value:25,
+            amount:0,u:0,v:128*7/2048,value:25,cooldown:15.1*60,
             use:function(){
                 
                 if(player.fieldIn){
@@ -25095,17 +25137,19 @@ function BeeSwarmSimulator(DATA){
                     } else {
                         
                         if(TIME-items[player.itemDragging].cooldown>items[player.itemDragging].maxCooldown){
-                            
-                            if(['treat','atomicTreat','starTreat','pineapple','sunflowerSeed','blueberry','strawberry','moonCharm','bitterberry','neonberry'].indexOf(player.itemDragging)<0) player.stats[player.itemDragging]++
 
                             let bef=items[player.itemDragging].amount
                             
                             items[player.itemDragging].use()
-                            items[player.itemDragging].cooldown=TIME
 
                             let aft=items[player.itemDragging].amount
 
-                            if(bef>aft&&!items[player.itemDragging].canUseOnSlot) player.addMessage('-1 '+MATH.doGrammar(player.itemDragging))
+                            if(bef>aft&&!items[player.itemDragging].canUseOnSlot){
+                                
+                                items[player.itemDragging].cooldown=TIME
+                                player.addMessage('-1 '+MATH.doGrammar(player.itemDragging))
+                                if(['treat','atomicTreat','starTreat','pineapple','sunflowerSeed','blueberry','strawberry','moonCharm','bitterberry','neonberry'].indexOf(player.itemDragging)<0) player.stats[player.itemDragging]++
+                            }
                             
                             player.updateInventory()
                             
@@ -25169,10 +25213,16 @@ function BeeSwarmSimulator(DATA){
                         
                         if(items[hotbarSlots[n].itemType].amount>0){
 
-                            player.stats[hotbarSlots[n].itemType]++
+                            let itemCountBefore=items[hotbarSlots[n].itemType].amount
+                            
                             items[hotbarSlots[n].itemType].use()
-                            items[hotbarSlots[n].itemType].cooldown=TIME
-                            player.updateInventory()
+
+                            if(items[hotbarSlots[n].itemType].amount!==itemCountBefore){
+
+                                items[hotbarSlots[n].itemType].cooldown=TIME
+                                player.stats[hotbarSlots[n].itemType]++
+                                player.updateInventory()
+                            }
                         }
                         
                     } else {

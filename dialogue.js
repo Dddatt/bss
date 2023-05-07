@@ -395,6 +395,7 @@ window.dialogue_scienceBear=function(player,items){
     let addCommas=(s)=>{for(let i=s.length-3;i>0;i-=3){s=s.substring(0,i)+','+s.substr(i,s.length)}return s},doGrammar=(s)=>{let str=s.slice(),_s='';for(let i in str){if(str[i].toUpperCase()===str[i]){_s=_s+' '+str[i]}else{_s=_s+str[i]}}return _s[0].toUpperCase()+_s.substring(1,_s.length)},addReward=(arr)=>{
         
         player.addEffect('scienceEnhancement')
+        player.addMessage('Activated "Science Enhancement"')
         
         for(let i in player.quests){
             
@@ -786,6 +787,9 @@ window.dialogue_honeyBee=function(player,items,NPCs){
     
     let addCommas=(s)=>{for(let i=s.length-3;i>0;i-=3){s=s.substring(0,i)+','+s.substr(i,s.length)}return s},doGrammar=(s)=>{let str=s.slice(),_s='';for(let i in str){if(str[i].toUpperCase()===str[i]){_s=_s+' '+str[i]}else{_s=_s+str[i]}}return _s[0].toUpperCase()+_s.substring(1,_s.length)},addReward=(arr)=>{
         
+        player.addEffect('conversionBoost')
+        player.addMessage('Activated "Conversion Boost"')
+
         for(let i in player.quests){
             
             if(player.quests[i].NPC==='honeyBee') player.quests.splice(i,1)
@@ -844,7 +848,7 @@ window.dialogue_honeyBee=function(player,items,NPCs){
         
             function(){
                 
-                player.addQuest('Honey Bee\'s Honey Hunt',[['honeyTokens',5*(diff+1)]],'honeyBee')
+                player.addQuest('Honey Bee\'s Honey Hunt',[['honeyTokens',2*(diff+1)+5]],'honeyBee')
                 
             }
     
