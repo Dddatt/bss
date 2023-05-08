@@ -9047,6 +9047,7 @@ function BeeSwarmSimulator(DATA){
                 if(250000-max>1)
                     player.addMessage('After using '+MATH.addCommas((250000-max)+'')+' jellies...')
 
+                player.stats.royalJelly+=(250000-max)
                 player.beePopup={type:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type,message:'You got a...',time:TIME,gifted:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted}
 
                 player.updateInventory()
@@ -9107,6 +9108,7 @@ function BeeSwarmSimulator(DATA){
                 if(250000-max>1)
                     player.addMessage('After using '+MATH.addCommas((250000-max)+'')+' jellies...')
 
+                player.stats.starJelly+=(250000-max)
                 player.beePopup={type:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].type,message:'You got a...',time:TIME,gifted:player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted}
 
                 player.updateInventory()
