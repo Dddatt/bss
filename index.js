@@ -14593,7 +14593,7 @@ function BeeSwarmSimulator(DATA){
             this.mesh=type
             this.meshScale=0.75
             this.level=((round*MATH.random(0.4,0.6)*0.5)|0)+1
-            this.health=((this.level*MATH.random(125,250))|0)+15
+            this.health=((this.level*this.level*this.level*0.4*MATH.random(2,6))|0)+5
             this.movespeed=2
             this.attack=10
             this.bodySize=0.75
