@@ -9005,7 +9005,7 @@ function BeeSwarmSimulator(DATA){
 
                 let max=250000
                 
-                while((max--)>=0&&items.royalJelly.amount-->=0){
+                while((max--)>=0&&items.royalJelly.amount-->0){
 
                     let types={mythic:1/4000,legendary:0.075-(1/4000),epic:0.325,rare:0.6},r=Math.random(),type,c=0
                     
@@ -21588,8 +21588,9 @@ function BeeSwarmSimulator(DATA){
                 
                 items[i].amount=Math.floor(items[i].amount)
 
-                if(items[i].amount===0){
+                if(items[i].amount<=0){
                     
+                    items[i].amount=0
                     items[i].svg.style.display='none'
                     
                 } else {
