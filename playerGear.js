@@ -541,7 +541,7 @@ window.playerGear={
 
             },
             desc:'A veiled hat only worn by real-deal beekeepers.<br><br>x1.25 pollen<br>x1.25 pollen from bees<br>x1.1 bee ability rate<br>+25% defense',
-            cost:['20000000 honey','3 enzymes','1 glue','1 glitter'],
+            cost:['10000000 honey','3 enzymes','1 glue','1 glitter'],
         },
 
         honeyMask:{
@@ -574,7 +574,7 @@ window.playerGear={
 
             },
             desc:'This handsome mask is guaranteed to bring satisfaction into your life.<br><br>x1.75 capacity<br>x1.4 pollen<br>x1.35 pollen from bees<br>x1.15 bee ability rate<br>x1.5 honey from tokens<br>x1.8 convert rate<br>+30% defense<br>+Passive: Coin Scatter',
-            cost:['100000000 honey','35 oil','15 enzymes','1 goldEgg','999 treat'],
+            cost:['75000000 honey','35 oil','15 enzymes','1 goldEgg','999 treat'],
         },
 
         fireMask:{
@@ -607,7 +607,7 @@ window.playerGear={
 
             },
             desc:'Ignite your mind to enhance your red bees.<br><br>x1.75 capacity<br>x1.6 red pollen<br>+20% instant red conversion<br>+50% instant flame conversion<br>+1 bee attack<br>+1 red bee attack<br>x1.15 bee ability rate<br>+35% defense<br>+Passive: Ignite',
-            cost:['100000000 honey','30 redExtract','15 enzymes','5 glue','300 strawberry'],
+            cost:['50000000 honey','30 redExtract','15 enzymes','5 glue','300 strawberry'],
         },
 
         bubbleMask:{
@@ -637,7 +637,7 @@ window.playerGear={
 
             },
             desc:'Harness the power of the sea to enhance your blue pollen gathering.<br><br>x2 capacity<br>x1.6 blue pollen<br>+20% instant blue conversion<br>x2 bubble pollen<br>x1.15 bee ability rate<br>+30% defense<br>+Passive: Bubble Bombs',
-            cost:['100000000 honey','30 blueExtract','15 oil','5 glue','300 blueberry'],
+            cost:['50000000 honey','30 blueExtract','15 oil','5 glue','300 blueberry'],
         },
         
         gummyMask:{
@@ -816,7 +816,7 @@ window.playerGear={
                 stats.convertRate*=1.5
             },
             desc:'A highly-embellished belt bag imported from a lost land, as big as a tambourine.<br><br>+100,000 capacity<br>x1.5 loot luck<br>x1.5 convert rate',
-            cost:['12500000 honey','50 pineapple','50 sunflowerSeed','3 stinger'],
+            cost:['5000000 honey','50 pineapple','50 sunflowerSeed','3 stinger'],
         },
         
         honeycombBelt:{
@@ -844,7 +844,7 @@ window.playerGear={
                 stats.beeEnergy*=1.15
             },
             desc:'A luxurious faux honeycomb you can wear as a belt to greatly enhance your pollen capacity.<br><br>+200,000 capacity<br>x1.75 capacity<br>x1.75 loot luck<br>x1.75 convert rate<br>x1.5 honey from tokens<br>+1 white bee attack<br>x1.3 white bomb pollen<br>x1.15 bee energy',
-            cost:['75000000 honey','50 glue','35 enzymes','25 oil'],
+            cost:['50000000 honey','50 glue','35 enzymes','25 oil'],
         },
         
         petalBelt:{
@@ -1056,7 +1056,7 @@ window.playerGear={
                 stats.redBeeAttack+=1
             },
             desc:'A Port-O-Hive dipped in shiny red pain. Works best for red bees and red pollen.<br>+450,000 capacity<br>x2.5 convert rate<br>+10% instant red conversion<br>x1.1 red pollen<br>+1 red bee attack',
-            cost:['12500000 honey'],
+            cost:['7500000 honey'],
         },
 
         bluePortOHive:{
@@ -1080,7 +1080,7 @@ window.playerGear={
                 stats.blueBeeAttack+=1
             },
             desc:'A Port-O-Hive dipped in shiny blue paint. Works best for blue bees and blue pollen.<br>+450,000 capacity<br>x2.5 convert rate<br>+10% instant blue conversion<br>x1.1 blue pollen<br>+1 blue bee attack',
-            cost:['12500000 honey'],
+            cost:['7500000 honey'],
         },
 
         porcelainOHive:{
@@ -1114,7 +1114,7 @@ window.playerGear={
                 stats.whiteBeeAttack+=1
             },
             desc:'A Port-O-Hive dipped in shiny blue paint. Works best for blue bees and blue pollen.<br>+450,000 capacity<br>x2.5 convert rate<br>+10% instant blue conversion<br>x1.1 blue pollen<br>+1 blue bee attack',
-            cost:['250000000 honey'],
+            cost:['150000000 honey'],
         },
         
         coconutCanister:{
@@ -1151,7 +1151,7 @@ window.playerGear={
                 player.addEffect('emergencyCoconutShieldPassive')
             },
             desc:'A back-mounted coconut that protects you during emergencies.<br><br>+2,500,000 capacity<br>x5 convert rate<br>+15% instant conversion<br>+10% instant white conversion<br>x1.25 pollen<br>x1.25 white pollen<br>+2 bee attack<br>+10% defense<br>x1.1 honey at hive<br>+Passive: Emergengy Shield<br>+Passive: Inspire Coconuts',
-            cost:['25000000000 honey','75 tropicalDrink','100 redExtract','100 blueExtract'],
+            cost:['20000000000 honey','75 tropicalDrink','100 redExtract','100 blueExtract'],
         }
     },
     
@@ -1188,7 +1188,7 @@ window.playerGear={
                 player.addEffect('coconutHastePassive')
             },
             desc:'Squishy boots that leave a trail of Goo wherever you go.<br><br>+15 movement collection<br>x1.25 goo<br>x1.3 bee speed<br>x1.25 honey from tokens<br>x1.1 pollen<br>x1.1 bee attack<br>x2 pollen from coconuts<br>x2 convert rate at hive<br>x1.2 movespeed<br>x1.4 jump power<br>+Passive: Goo Trail<br>+Passive: Coconut Haste',
-            cost:['100000000000 honey','350 glue','150 glitter','150 redExtract','150 blueExtract'],
+            cost:['50000000000 honey','350 glue','150 glitter','150 redExtract','150 blueExtract'],
         },
 
         coconutClogs:{
@@ -1231,7 +1231,7 @@ window.playerGear={
                 player.addEffect('coconutHastePassive')
             },
             desc:'Kick around coconuts with this pair of clunky kicks for a surge of speed.<br><br>+12 movement collection<br>x1.25 honey from tokens<br>x1.1 pollen<br>x1.25 bee speed<br>x1.05 bee attack<br>x2 pollen from coconuts<br>x1.5 convert rate at hive<br>x1.175 movespeed<br>x1.385 jump power<br>+Passive: Coconut Haste',
-            cost:['10000000000 honey','100 coconut','25 tropicalDrink','35 glue','50 oil'],
+            cost:['5000000000 honey','100 coconut','25 tropicalDrink','35 glue','50 oil'],
         },
         
         mondoBoots:{
@@ -1255,7 +1255,7 @@ window.playerGear={
                 stats.beeSpeed*=1.2
             },
             desc:'Practical and stylish boots that aid in the beekeeping process.<br><br>+10 movement collection<br>x1.25 pollen from bees<br>x1.2 bee speed<br>x1.15 movespeed<br>x1.375 jump power',
-            cost:['15000000 honey','5 oil','3 redExtract','3 blueExtract'],
+            cost:['7500000 honey','5 oil','3 redExtract','3 blueExtract'],
         },
 
         basicBoots:{
@@ -1382,7 +1382,7 @@ window.playerGear={
                 stats.criticalChance+=0.05
             },
             desc:'A red guard reserved for the most dedicated red beekeepers.<br><br>+75,000 capacity<br>x1.15 red pollen<br>x1.15 convert rate<br>+5% instant red conversion<br>+5% critical chance<br>+1 red bee attack',
-            cost:['5000000 honey','1 redExtract','50 strawberry','3 royalJelly','3 stinger'],
+            cost:['3500000 honey','1 redExtract','50 strawberry','3 royalJelly','3 stinger'],
         },
 
         rileyGuard:{
@@ -1405,7 +1405,7 @@ window.playerGear={
                 stats.criticalChance+=0.08
             },
             desc:'A piece of armor forged by the leader of red bees!<br><br>+150,000 capacity<br>x1.25 red pollen<br>x1.25 convert rate<br>+15% instant red conversion<br>+8% critical chance<br>+2 red bee attack',
-            cost:['35000000 honey','5 redExtract','100 strawberry','1 glue','5 stinger'],
+            cost:['20000000 honey','5 redExtract','100 strawberry','1 glue','5 stinger'],
         },
 
         crimsonGuard:{
@@ -1514,7 +1514,7 @@ window.playerGear={
                 stats.criticalPower+=0.5
             },
             desc:'A blue guard reserved for the most dedicated blue beekeepers.<br><br>+75,000 capacity<br>x1.15 blue pollen<br>x1.15 convert rate<br>+5% instant blue conversion<br>+50% critical power<br>+1 blue bee attack',
-            cost:['5000000 honey','1 blueExtract','50 blueberry','3 royalJelly','3 moonCharm'],
+            cost:['3500000 honey','1 blueExtract','50 blueberry','3 royalJelly','3 moonCharm'],
         },
 
         buckoGuard:{
@@ -1537,7 +1537,7 @@ window.playerGear={
                 stats.criticalPower+=0.75
             },
             desc:'A piece of armor forged by the leader of blue bees!<br><br>+150,000 capacity<br>x1.25 blue pollen<br>x1.25 convert rate<br>+10% instant blue conversion<br>+75% critical power<br>+2 blue bee attack',
-            cost:['35000000 honey','5 blueExtract','100 blueberry','1 glue','5 moonCharm'],
+            cost:['20000000 honey','5 blueExtract','100 blueberry','1 glue','5 moonCharm'],
         },
 
         cobaltGuard:{

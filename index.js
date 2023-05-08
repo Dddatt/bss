@@ -403,6 +403,7 @@ function BeeSwarmSimulator(DATA){
         {item:'swirledWax',req:[['hardWax',1],['softWax',2],['purplePotion',1],['royalJelly',75]]},
         {item:'causticWax',req:[['hardWax',3],['neonberry',5],['gumdrops',10],['royalJelly',175]]},
         {item:'turpentine',req:[['superSmoothie',3],['causticWax',3],['starJelly',5],['honeysuckle',50]]},
+        {item:'diamondEgg',req:[['goldEgg',1],['swirledWax',1],['royalJelly',100]]},
 
     ],windShrineDonations=[
 
@@ -2663,15 +2664,15 @@ function BeeSwarmSimulator(DATA){
                 
                 if(player.fieldIn==='DandelionField'){
 
-                    player.redPollen*=amount*0.5+1
-                    player.whitePollen*=amount*0.5+1
-                    player.bluePollen*=amount*0.5+1
+                    player.redPollen*=amount*0.75+1
+                    player.whitePollen*=amount*0.75+1
+                    player.bluePollen*=amount*0.75+1
                 }
             },
             
             getMessage:(amount)=>{
                 
-                return 'Dandelion Field Boost\nx'+(amount*0.5+1)+' pollen in dandelion field'
+                return 'Dandelion Field Boost\nx'+(amount*0.75+1)+' pollen in dandelion field'
             }
         },
 
@@ -2689,15 +2690,15 @@ function BeeSwarmSimulator(DATA){
                 
                 if(player.fieldIn==='SunflowerField'){
 
-                    player.redPollen*=amount*0.5+1
-                    player.whitePollen*=amount*0.5+1
-                    player.bluePollen*=amount*0.5+1
+                    player.redPollen*=amount*0.75+1
+                    player.whitePollen*=amount*0.75+1
+                    player.bluePollen*=amount*0.75+1
                 }
             },
             
             getMessage:(amount)=>{
                 
-                return 'Sunflower Field Boost\nx'+(amount*0.5+1)+' pollen in sunflower field'
+                return 'Sunflower Field Boost\nx'+(amount*0.75+1)+' pollen in sunflower field'
             }
         },
 
@@ -2715,15 +2716,15 @@ function BeeSwarmSimulator(DATA){
                 
                 if(player.fieldIn==='BlueFlowerField'){
 
-                    player.redPollen*=amount*0.5+1
-                    player.whitePollen*=amount*0.5+1
-                    player.bluePollen*=amount*0.5+1
+                    player.redPollen*=amount*0.75+1
+                    player.whitePollen*=amount*0.75+1
+                    player.bluePollen*=amount*0.75+1
                 }
             },
             
             getMessage:(amount)=>{
                 
-                return 'Blue Flower Field Boost\nx'+(amount*0.5+1)+' pollen in blue flower field'
+                return 'Blue Flower Field Boost\nx'+(amount*0.75+1)+' pollen in blue flower field'
             }
         },
 
@@ -2741,15 +2742,15 @@ function BeeSwarmSimulator(DATA){
                 
                 if(player.fieldIn==='MushroomField'){
 
-                    player.redPollen*=amount*0.5+1
-                    player.whitePollen*=amount*0.5+1
-                    player.bluePollen*=amount*0.5+1
+                    player.redPollen*=amount*0.75+1
+                    player.whitePollen*=amount*0.75+1
+                    player.bluePollen*=amount*0.75+1
                 }
             },
             
             getMessage:(amount)=>{
                 
-                return 'Mushroom Field Boost\nx'+(amount*0.5+1)+' pollen in mushroom field'
+                return 'Mushroom Field Boost\nx'+(amount*0.75+1)+' pollen in mushroom field'
             }
         },
 
@@ -2767,15 +2768,15 @@ function BeeSwarmSimulator(DATA){
                 
                 if(player.fieldIn==='CloverField'){
 
-                    player.redPollen*=amount*0.5+1
-                    player.whitePollen*=amount*0.5+1
-                    player.bluePollen*=amount*0.5+1
+                    player.redPollen*=amount*0.75+1
+                    player.whitePollen*=amount*0.75+1
+                    player.bluePollen*=amount*0.75+1
                 }
             },
             
             getMessage:(amount)=>{
                 
-                return 'Clover Field Boost\nx'+(amount*0.5+1)+' pollen in clover field'
+                return 'Clover Field Boost\nx'+(amount*0.75+1)+' pollen in clover field'
             }
         },
 
@@ -2793,15 +2794,15 @@ function BeeSwarmSimulator(DATA){
                 
                 if(player.fieldIn==='StrawberryField'){
 
-                    player.redPollen*=amount*0.5+1
-                    player.whitePollen*=amount*0.5+1
-                    player.bluePollen*=amount*0.5+1
+                    player.redPollen*=amount*0.75+1
+                    player.whitePollen*=amount*0.75+1
+                    player.bluePollen*=amount*0.75+1
                 }
             },
             
             getMessage:(amount)=>{
                 
-                return 'Strawberry Field Boost\nx'+(amount*0.5+1)+' pollen in strawberry field'
+                return 'Strawberry Field Boost\nx'+(amount*0.75+1)+' pollen in strawberry field'
             }
         },
 
@@ -2819,15 +2820,15 @@ function BeeSwarmSimulator(DATA){
                 
                 if(player.fieldIn==='SpiderField'){
 
-                    player.redPollen*=amount*0.5+1
-                    player.whitePollen*=amount*0.5+1
-                    player.bluePollen*=amount*0.5+1
+                    player.redPollen*=amount*0.75+1
+                    player.whitePollen*=amount*0.75+1
+                    player.bluePollen*=amount*0.75+1
                 }
             },
             
             getMessage:(amount)=>{
                 
-                return 'Spider Field Boost\nx'+(amount*0.5+1)+' pollen in spider field'
+                return 'Spider Field Boost\nx'+(amount*0.75+1)+' pollen in spider field'
             }
         },
 
@@ -2845,15 +2846,15 @@ function BeeSwarmSimulator(DATA){
                 
                 if(player.fieldIn==='BambooField'){
 
-                    player.redPollen*=amount*0.5+1
-                    player.whitePollen*=amount*0.5+1
-                    player.bluePollen*=amount*0.5+1
+                    player.redPollen*=amount*0.75+1
+                    player.whitePollen*=amount*0.75+1
+                    player.bluePollen*=amount*0.75+1
                 }
             },
             
             getMessage:(amount)=>{
                 
-                return 'Bamboo Field Boost\nx'+(amount*0.5+1)+' pollen in bamboo field'
+                return 'Bamboo Field Boost\nx'+(amount*0.75+1)+' pollen in bamboo field'
             }
         },
 
@@ -2871,15 +2872,15 @@ function BeeSwarmSimulator(DATA){
                 
                 if(player.fieldIn==='PineapplePatch'){
 
-                    player.redPollen*=amount*0.5+1
-                    player.whitePollen*=amount*0.5+1
-                    player.bluePollen*=amount*0.5+1
+                    player.redPollen*=amount*0.75+1
+                    player.whitePollen*=amount*0.75+1
+                    player.bluePollen*=amount*0.75+1
                 }
             },
             
             getMessage:(amount)=>{
                 
-                return 'Pineapple Patch Boost\nx'+(amount*0.5+1)+' pollen in pineapple patch'
+                return 'Pineapple Patch Boost\nx'+(amount*0.75+1)+' pollen in pineapple patch'
             }
         },
 
@@ -2897,15 +2898,15 @@ function BeeSwarmSimulator(DATA){
                 
                 if(player.fieldIn==='StumpField'){
 
-                    player.redPollen*=amount*0.5+1
-                    player.whitePollen*=amount*0.5+1
-                    player.bluePollen*=amount*0.5+1
+                    player.redPollen*=amount*0.75+1
+                    player.whitePollen*=amount*0.75+1
+                    player.bluePollen*=amount*0.75+1
                 }
             },
             
             getMessage:(amount)=>{
                 
-                return 'Stump Field Boost\nx'+(amount*0.5+1)+' pollen in stump field'
+                return 'Stump Field Boost\nx'+(amount*0.75+1)+' pollen in stump field'
             }
         },
 
@@ -2923,15 +2924,15 @@ function BeeSwarmSimulator(DATA){
                 
                 if(player.fieldIn==='CactusField'){
 
-                    player.redPollen*=amount*0.5+1
-                    player.whitePollen*=amount*0.5+1
-                    player.bluePollen*=amount*0.5+1
+                    player.redPollen*=amount*0.75+1
+                    player.whitePollen*=amount*0.75+1
+                    player.bluePollen*=amount*0.75+1
                 }
             },
             
             getMessage:(amount)=>{
                 
-                return 'Cactus Field Boost\nx'+(amount*0.5+1)+' pollen in cactus field'
+                return 'Cactus Field Boost\nx'+(amount*0.75+1)+' pollen in cactus field'
             }
         },
 
@@ -2949,15 +2950,15 @@ function BeeSwarmSimulator(DATA){
                 
                 if(player.fieldIn==='PumpkinPatch'){
 
-                    player.redPollen*=amount*0.5+1
-                    player.whitePollen*=amount*0.5+1
-                    player.bluePollen*=amount*0.5+1
+                    player.redPollen*=amount*0.75+1
+                    player.whitePollen*=amount*0.75+1
+                    player.bluePollen*=amount*0.75+1
                 }
             },
             
             getMessage:(amount)=>{
                 
-                return 'Pumpkin Patch Boost\nx'+(amount*0.5+1)+' pollen in pumpkin patch'
+                return 'Pumpkin Patch Boost\nx'+(amount*0.75+1)+' pollen in pumpkin patch'
             }
         },
 
@@ -2975,15 +2976,15 @@ function BeeSwarmSimulator(DATA){
                 
                 if(player.fieldIn==='PineTreeForest'){
 
-                    player.redPollen*=amount*0.5+1
-                    player.whitePollen*=amount*0.5+1
-                    player.bluePollen*=amount*0.5+1
+                    player.redPollen*=amount*0.75+1
+                    player.whitePollen*=amount*0.75+1
+                    player.bluePollen*=amount*0.75+1
                 }
             },
             
             getMessage:(amount)=>{
                 
-                return 'Pine Tree Forest Boost\nx'+(amount*0.5+1)+' pollen in pine tree forest'
+                return 'Pine Tree Forest Boost\nx'+(amount*0.75+1)+' pollen in pine tree forest'
             }
         },
 
@@ -3001,15 +3002,15 @@ function BeeSwarmSimulator(DATA){
                 
                 if(player.fieldIn==='RoseField'){
 
-                    player.redPollen*=amount*0.5+1
-                    player.whitePollen*=amount*0.5+1
-                    player.bluePollen*=amount*0.5+1
+                    player.redPollen*=amount*0.75+1
+                    player.whitePollen*=amount*0.75+1
+                    player.bluePollen*=amount*0.75+1
                 }
             },
             
             getMessage:(amount)=>{
                 
-                return 'Rose Field Boost\nx'+(amount*0.5+1)+' pollen in rose field'
+                return 'Rose Field Boost\nx'+(amount*0.75+1)+' pollen in rose field'
             }
         },
 
@@ -3027,15 +3028,15 @@ function BeeSwarmSimulator(DATA){
                 
                 if(player.fieldIn==='MountainTopField'){
 
-                    player.redPollen*=amount*0.5+1
-                    player.whitePollen*=amount*0.5+1
-                    player.bluePollen*=amount*0.5+1
+                    player.redPollen*=amount*0.75+1
+                    player.whitePollen*=amount*0.75+1
+                    player.bluePollen*=amount*0.75+1
                 }
             },
             
             getMessage:(amount)=>{
                 
-                return 'Mountain Top Field Boost\nx'+(amount*0.5+1)+' pollen in mountain top field'
+                return 'Mountain Top Field Boost\nx'+(amount*0.75+1)+' pollen in mountain top field'
             }
         },
 
@@ -3053,15 +3054,15 @@ function BeeSwarmSimulator(DATA){
                 
                 if(player.fieldIn==='CoconutField'){
 
-                    player.redPollen*=amount*0.5+1
-                    player.whitePollen*=amount*0.5+1
-                    player.bluePollen*=amount*0.5+1
+                    player.redPollen*=amount*0.75+1
+                    player.whitePollen*=amount*0.75+1
+                    player.bluePollen*=amount*0.75+1
                 }
             },
             
             getMessage:(amount)=>{
                 
-                return 'Coconut Field Boost\nx'+(amount*0.5+1)+' pollen in coconut field'
+                return 'Coconut Field Boost\nx'+(amount*0.75+1)+' pollen in coconut field'
             }
         },
 
@@ -3079,15 +3080,15 @@ function BeeSwarmSimulator(DATA){
                 
                 if(player.fieldIn==='PepperPatch'){
 
-                    player.redPollen*=amount*0.5+1
-                    player.whitePollen*=amount*0.5+1
-                    player.bluePollen*=amount*0.5+1
+                    player.redPollen*=amount*0.75+1
+                    player.whitePollen*=amount*0.75+1
+                    player.bluePollen*=amount*0.75+1
                 }
             },
             
             getMessage:(amount)=>{
                 
-                return 'Pepper Patch Boost\nx'+(amount*0.5+1)+' pollen in pepper patch'
+                return 'Pepper Patch Boost\nx'+(amount*0.75+1)+' pollen in pepper patch'
             }
         },
 
@@ -3876,14 +3877,14 @@ function BeeSwarmSimulator(DATA){
         
         blueBoost:{
             
-            desc:"Grants x1.1 blue pollen for 15s. Stacks up to 10x, for a maximum of x2 blue pollen.",
-            trialCooldown:25,trialRate:0.6,
+            desc:"Grants x1.1 blue pollen for 25s. Stacks up to 10x, for a maximum of x2 blue pollen.",
+            trialCooldown:20,trialRate:0.4,
             statsToAddTo:['blueBoostTokens','blueAbilityTokens','boostTokens','markOrBoostTokens'],
             u:128*2/2048,v:128/2048,
             svg:document.getElementById('blueBoost'),
             cooldown:document.getElementById('blueBoost_cooldown'),
             amount:document.getElementById('blueBoost_amount'),
-            maxCooldown:15,
+            maxCooldown:25,
             maxAmount:10,
             tokenLife:4,
             
@@ -3900,14 +3901,14 @@ function BeeSwarmSimulator(DATA){
         
         redBoost:{
             
-            desc:"Grants x1.1 red pollen for 15s. Stacks up to 10x, for a maximum of x2 red pollen.",
-            trialCooldown:25,trialRate:0.6,
+            desc:"Grants x1.1 red pollen for 25s. Stacks up to 10x, for a maximum of x2 red pollen.",
+            trialCooldown:20,trialRate:0.4,
             statsToAddTo:['redBoostTokens','redAbilityTokens','boostTokens','markOrBoostTokens'],
             u:128*3/2048,v:128/2048,
             svg:document.getElementById('redBoost'),
             cooldown:document.getElementById('redBoost_cooldown'),
             amount:document.getElementById('redBoost_amount'),
-            maxCooldown:15,
+            maxCooldown:25,
             maxAmount:10,
             tokenLife:4,
             
@@ -3924,14 +3925,14 @@ function BeeSwarmSimulator(DATA){
         
         whiteBoost:{
             
-            desc:"Grants x1.1 white pollen for 15s. Stacks up to 10x, for a maximum of x2 white pollen.",
-            trialCooldown:15,trialRate:0.8,
+            desc:"Grants x1.1 white pollen for 25s. Stacks up to 10x, for a maximum of x2 white pollen.",
+            trialCooldown:15,trialRate:0.5,
             statsToAddTo:['boostTokens','markOrBoostTokens'],
             u:128*4/2048,v:128/2048,
             svg:document.getElementById('whiteBoost'),
             cooldown:document.getElementById('whiteBoost_cooldown'),
             amount:document.getElementById('whiteBoost_amount'),
-            maxCooldown:15,
+            maxCooldown:25,
             maxAmount:10,
             tokenLife:4,
             
@@ -3949,7 +3950,7 @@ function BeeSwarmSimulator(DATA){
         babyLove:{
             
             desc:"Grants x1.5 pollen and +50% loot luck for 30s.",
-            trialCooldown:35,trialRate:0.6,
+            trialCooldown:30,trialRate:0.4,
             u:128*1/2048,v:256*4/2048,
             svg:document.getElementById('babyLove'),
             cooldown:document.getElementById('babyLove_cooldown'),
@@ -19400,7 +19401,7 @@ function BeeSwarmSimulator(DATA){
                 }
             },
             desc:'A bubble wand dipped in liquidy soap.<br><br>Collects 6 pollen from 16 flowers every 0.8s. Collects x2 more blue pollen.<br><br>Every 10th swing creates a bubble on the field.',
-            cost:['3500000 honey']
+            cost:['2500000 honey']
         },
 
         scythe:{
@@ -19454,7 +19455,7 @@ function BeeSwarmSimulator(DATA){
                 }
             },
             desc:'A red scythe forged and heated in fire.<br><br>Collects 8 pollen from 6 flowers every 0.47s. Collects x2 more red pollen.<br><br>Every 10th swing summons a flame nearby.',
-            cost:['3500000 honey']
+            cost:['2500000 honey']
         },
 
         goldenRake:{
@@ -19479,13 +19480,13 @@ function BeeSwarmSimulator(DATA){
                 }
             },
             desc:'A shiny golden rake with improved pollen collection.<br><br>Collects 7 pollen from 16 flowers every 0.75s.<br><br>Every 5th swing is supercharged and collects more flowers from longer lines.',
-            cost:['20000000 honey']
+            cost:['12500000 honey']
         },
 
         sparkStaff:{
             
             collectPattern:[[2,1],[-2,1],[0,-2]],
-            collectAmount:30,
+            collectAmount:35,
             cooldown:0.5,
             mesh:function(box,cylinder,sphere,star){
                 
@@ -19515,11 +19516,9 @@ function BeeSwarmSimulator(DATA){
 
                     a.splice(r,1)
                 }
-
-
             },
-            desc:'A wand powered by static electricity.<br><br>Collects 30 pollen from 3 random flowers every 0.5s.<br><br>Unlike in the real game, this tool is good :D',
-            cost:['60000000 honey']
+            desc:'A wand powered by static electricity.<br><br>Collects 35 pollen from 3 random flowers every 0.5s.<br><br>Unlike in the real game, this tool is good :D',
+            cost:['40000000 honey']
         },
 
         porcelainDipper:{
@@ -19570,7 +19569,7 @@ function BeeSwarmSimulator(DATA){
                 }
             },
             desc:'A dipper drizzled with brittle liquid porcelain.<br><br>Collects 3 pollen from 49 flowers every 0.7s. Collects x1.5 more white pollen.<br><br>Every 10th swing summons a pillar of light that collects massive pollen.',
-            cost:['150000000 honey'],
+            cost:['100000000 honey'],
 
         },
         
@@ -19626,7 +19625,7 @@ function BeeSwarmSimulator(DATA){
                 ParticleRenderer.add({x:player.body.position.x+x,y:player.body.position.y+1.65,z:player.body.position.z+z,vx:MATH.random(-0.9,0.9),vy:Math.random()*0.5+0.2,vz:MATH.random(-0.9,0.9),grav:-1.5,size:MATH.random(20,50),col:[0.9,0.7,0.3],life:0.7,rotVel:MATH.random(-3,3),alpha:0.35})
             },
             desc:'A luxurious flower with enchanted petals.<br><br>Collects 10 pollen from 49 flowers every 0.7s.<br><br>Every 3rd swing summons a flying petal shuriken that collects tokens and causes bees to convert pollen.',
-            cost:['1500000000 honey','5 starJelly','25 enzymes','25 glitter']
+            cost:['1000000000 honey','5 starJelly','25 enzymes','25 glitter']
         },
         
         darkScythe:{
@@ -21587,6 +21586,8 @@ function BeeSwarmSimulator(DATA){
 
             for(let i in items){
                 
+                items[i].amount=Math.floor(items[i].amount)
+
                 if(items[i].amount===0){
                     
                     items[i].svg.style.display='none'
@@ -24404,7 +24405,7 @@ function BeeSwarmSimulator(DATA){
                 name:'hiveSlot',
                 slot:'item',
                 viewMatrix:[-10,37,74,MATH.HALF_PI,0],
-                cost:[n=>Math.floor(Math.pow(1.75,n)*3000000)+' honey'],
+                cost:[n=>Math.floor(Math.pow(1.5,n)*1000000)+' honey'],
                 desc:'Increases the capacity of your hive, allowing you to hatch an additional bee!'
             }],
             currentIndex:0,message:'Explore Top Shop'
@@ -24785,7 +24786,7 @@ function BeeSwarmSimulator(DATA){
                 name:'basicEgg',
                 slot:'item',
                 viewMatrix:[10-4.5,1,13.5-4.5,MATH.HALF_PI+MATH.QUATER_PI,0.02],
-                cost:[(n,i=1)=>(Math.min(500*Math.pow(1.4,n)*i,10000000)|0)+' honey'],
+                cost:[(n,i=1)=>(Math.min(500*Math.pow(1.35,n)*i,10000000)|0)+' honey'],
                 desc:'Can be used to hatch a Basic Bee!'
             }],
             currentIndex:0,message:'Explore Basic Egg Shop'
@@ -24824,7 +24825,7 @@ function BeeSwarmSimulator(DATA){
                 name:'ticket',
                 slot:'item',
                 viewMatrix:[-11.75-4.5,35,88.25-4.5,MATH.HALF_PI+MATH.QUATER_PI,0.02],
-                cost:[(n,i=1)=>Math.min(Math.floor(100000*Math.pow(1.003,n)*i),1000000000000)+' honey'],
+                cost:[(n,i=1)=>Math.min(Math.floor(5000*Math.pow(1.003,n)*i),1000000000000)+' honey'],
                 desc:'Can be used to purchase special items and activate machines!'
             }],
             currentIndex:0,message:'Explore Ticket Shop',currentIncrement:0,increments:[1,10,10e1,50e1]
@@ -30569,13 +30570,13 @@ function BeeSwarmSimulator(DATA){
 
     loop(0)
 
+    window.exposeCheats=function(){
+
+        window.exposed_player=player
+        window.exposed_items=items
+        window.exposed_NPCs=NPCs
+    }
 }
 
 console.log=0
 
-window.exposeCheats=function(){
-
-    window.exposed_player=player
-    window.exposed_items=items
-    window.exposed_NPCs=NPCsw
-}
