@@ -277,7 +277,7 @@ window.dialogue_brownBear=function(player,items,NPCs){
                     
                     types.splice(types.indexOf(n),1)
                     
-                    req.push([n,Math.floor(am*0.5*(rand()*0.25+0.8)*(1/((r-1)*0.25+1)))*(n==='pollenFromStumpField'||n==='pollenFromCoconutField'?0.35:1)])
+                    req.push([n,Math.floor(am*0.5*(n==='pollenFromStumpField'||n==='pollenFromCoconutField'?0.35:1)*(rand()*0.25+0.8)*(1/((r-1)*0.25+1)))])
                     
                     n=n.replace('pollenFrom','').replace('Field','').replace('Patch','').replace('Field','').replace('Forest','').toLowerCase()
                     
