@@ -1,6 +1,6 @@
 window.glsl_static_geometry_vsh = `#version 300 es
 
-    precision lowp float;
+    precision highp float;
     
     in vec3 vertPos;
     in vec4 vertColor;
@@ -23,7 +23,7 @@ window.glsl_static_geometry_vsh = `#version 300 es
 `
 window.glsl_static_geometry_fsh = `#version 300 es
     
-    precision lowp float;
+    precision highp float;
     
     in float pixFog;
     in vec4 pixColor;
@@ -44,7 +44,7 @@ window.glsl_static_geometry_fsh = `#version 300 es
 `
 window.glsl_dynamic_geometry_vsh = `#version 300 es
 
-    precision lowp float;
+    precision highp float;
     
     in vec3 vertPos;
     in vec3 vertColor;
@@ -66,7 +66,7 @@ window.glsl_dynamic_geometry_vsh = `#version 300 es
 `
 window.glsl_dynamic_geometry_fsh = `#version 300 es
     
-    precision lowp float;
+    precision highp float;
     
     in vec3 pixColor;
     in vec3 pixNormal;
@@ -84,7 +84,7 @@ window.glsl_dynamic_geometry_fsh = `#version 300 es
 `
 window.glsl_token_geometry_vsh = `#version 300 es
 
-    precision lowp float;
+    precision highp float;
     
     in vec3 vertPos;
     in vec2 vertUV;
@@ -112,7 +112,7 @@ window.glsl_token_geometry_vsh = `#version 300 es
 
 window.glsl_token_geometry_fsh = `#version 300 es
     
-    precision lowp float;
+    precision highp float;
     
     in vec3 pixUV;
     
@@ -128,7 +128,7 @@ window.glsl_token_geometry_fsh = `#version 300 es
 `
 window.glsl_flower_geometry_vsh = `#version 300 es
 
-    precision lowp float;
+    precision highp float;
     
     in vec3 vertPos;
     in vec4 vertUV;
@@ -152,7 +152,7 @@ window.glsl_flower_geometry_vsh = `#version 300 es
 
 window.glsl_flower_geometry_fsh = `#version 300 es
     
-    precision lowp float;
+    precision highp float;
     
     in vec4 pixUV;
     in float pixFog;
@@ -174,7 +174,7 @@ window.glsl_flower_geometry_fsh = `#version 300 es
 `
 window.glsl_bee_geometry_vsh = `#version 300 es
 
-    precision lowp float;
+    precision highp float;
     
     in vec3 vertPos;
     in vec4 vertUV;
@@ -224,7 +224,7 @@ window.glsl_bee_geometry_vsh = `#version 300 es
 `
 window.glsl_bee_geometry_fsh = `#version 300 es
     
-    precision lowp float;
+    precision highp float;
     
     in vec3 pixUV;
     in float pixFog;
@@ -242,7 +242,7 @@ window.glsl_bee_geometry_fsh = `#version 300 es
 
 window.glsl_particle_renderer_vsh = `#version 300 es
     
-    precision lowp float;
+    precision highp float;
     
     uniform mat4 viewMatrix;
     
@@ -272,7 +272,7 @@ window.glsl_particle_renderer_vsh = `#version 300 es
 
 window.glsl_particle_renderer_fsh = `#version 300 es
     
-    precision lowp float;
+    precision highp float;
     
     in float particleSize;
     in vec2 particlePos;
@@ -305,7 +305,7 @@ window.glsl_particle_renderer_fsh = `#version 300 es
 
 window.glsl_explosion_renderer_vsh = `#version 300 es
 
-    precision lowp float;
+    precision highp float;
     
     in vec3 vertPos;
     
@@ -325,7 +325,7 @@ window.glsl_explosion_renderer_vsh = `#version 300 es
 `
 window.glsl_explosion_renderer_fsh = `#version 300 es
     
-    precision lowp float;
+    precision highp float;
     
     in vec4 pixColor;
     
@@ -338,7 +338,7 @@ window.glsl_explosion_renderer_fsh = `#version 300 es
 `
 window.glsl_text_renderer_vsh = `#version 300 es
     
-    precision lowp float;
+    precision highp float;
     
     uniform mat4 viewMatrix;
     
@@ -378,7 +378,7 @@ window.glsl_text_renderer_vsh = `#version 300 es
 `
 window.glsl_text_renderer_fsh = `#version 300 es
     
-    precision lowp float;
+    precision highp float;
     
     uniform sampler2D tex;
     
@@ -402,7 +402,7 @@ window.glsl_text_renderer_fsh = `#version 300 es
 `
 window.glsl_mob_renderer_vsh = `#version 300 es
 
-    precision lowp float;
+    precision highp float;
     
     in vec3 vertPos;
     in vec3 vertColor;
@@ -426,7 +426,7 @@ window.glsl_mob_renderer_vsh = `#version 300 es
 `
 window.glsl_mob_renderer_fsh = `#version 300 es
     
-    precision lowp float;
+    precision highp float;
     
     in vec4 pixColor;
     
@@ -439,7 +439,7 @@ window.glsl_mob_renderer_fsh = `#version 300 es
 `
 window.glsl_trail_renderer_vsh = `#version 300 es
 
-    precision lowp float;
+    precision highp float;
     
     in vec3 vertPos;
     in vec4 vertCol;
@@ -457,7 +457,7 @@ window.glsl_trail_renderer_vsh = `#version 300 es
 `
 window.glsl_trail_renderer_fsh = `#version 300 es
     
-    precision lowp float;
+    precision highp float;
     
     in vec4 pixColor;
     
