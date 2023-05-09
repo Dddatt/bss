@@ -14001,7 +14001,7 @@ function BeeSwarmSimulator(DATA){
             this.state='attack'
             this.starSawHitTimer=0
             this.level=level
-            this.health=((level-1)*(level-1)*50+50)*0.5
+            this.health=((level-1)*(level-1)*50+50)*0.25
 
             if(isMega) this.health=this.health*1.5
 
@@ -14211,7 +14211,7 @@ function BeeSwarmSimulator(DATA){
             this.state='attack'
             this.starSawHitTimer=0
             this.level=level
-            this.health=((level-1)*(level-1)*70+100)*0.5
+            this.health=((level-1)*(level-1)*70+100)*0.25
 
             if(isGold) this.health=this.health*1.65
 
@@ -14375,7 +14375,7 @@ function BeeSwarmSimulator(DATA){
             this.state='attack'
             this.starSawHitTimer=0
             this.level=level
-            this.health=((level-1)*(level-1)*75+250)*0.5
+            this.health=((level-1)*(level-1)*75+250)*0.25
             this.maxHealth=this.health
 
             switch(this.side){
@@ -20805,7 +20805,7 @@ function BeeSwarmSimulator(DATA){
 
                 out.antChallenge.round++
                 out.antChallenge.spawnDelay=2
-                out.antChallenge.pollenReq+=500*out.antChallenge.round
+                out.antChallenge.pollenReq+=200*out.antChallenge.round+100
 
                 let _p=[
                     [
