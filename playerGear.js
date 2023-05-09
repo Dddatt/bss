@@ -1101,8 +1101,8 @@ window.playerGear={
             
             applyStats:function(stats,player){
                 
-                stats.capacity+=150000
-                stats.convertRate*=3.5
+                stats.capacity+=1000000
+                stats.convertRate*=3
                 stats.instantRedConversion=window.applyPercentage(stats.instantRedConversion,0.1)
                 stats.instantBlueConversion=window.applyPercentage(stats.instantBlueConversion,0.1)
                 stats.instantWhiteConversion=window.applyPercentage(stats.instantWhiteConversion,0.1)
@@ -1113,7 +1113,7 @@ window.playerGear={
                 stats.blueBeeAttack+=1
                 stats.whiteBeeAttack+=1
             },
-            desc:'A Port-O-Hive dipped in shiny blue paint. Works best for blue bees and blue pollen.<br>+450,000 capacity<br>x2.5 convert rate<br>+10% instant blue conversion<br>x1.1 blue pollen<br>+1 blue bee attack',
+            desc:'A rare and precious Port-O-Hive that boosts white pollen.<br>+1,000,000 capacity<br>x3 convert rate<br>+10% instant conversion<br>x1.5 white pollen<br>x1.1 red pollen<br>x1.1 blue pollen<br>+1 bee attack',
             cost:['150000000 honey'],
         },
         
