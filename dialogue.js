@@ -222,7 +222,7 @@ window.dialogue_brownBear=function(player,items,NPCs){
             
             if(!(diff%5)) rew.push(['fieldDice',1])
             
-            if(!(diff%6)) rew.push(['gumdrop',2])
+            if(!(diff%6)) rew.push(['gumdrops',2])
             
             if(!(diff%7)) rew.push(['enzymes',1])
             
