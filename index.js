@@ -8171,7 +8171,7 @@ function BeeSwarmSimulator(DATA){
                 
                 return slot.type!==null
             },
-            amount:0,u:128*1/2048,v:128*13/2048,value:500,
+            amount:0,u:128*1/2048,v:128*13/2048,value:1000,
             use:function(){
                 
                 howManyToFeed.style.display='block'
