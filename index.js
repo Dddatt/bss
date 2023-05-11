@@ -12447,7 +12447,7 @@ function BeeSwarmSimulator(DATA){
             this.state='attack'
             this.starSawHitTimer=0
             this.level=7
-            this.health=300000
+            this.health=150000
             this.maxHealth=this.health
             this.pos=[fieldInfo[this.field].x+0.5*fieldInfo[this.field].width,fieldInfo[this.field].y+2.5,fieldInfo[this.field].z+0.5*fieldInfo[this.field].length]
             this.checkTimer=TIME
@@ -12495,6 +12495,8 @@ function BeeSwarmSimulator(DATA){
                 case 'attack':
                     
                     if(this.health<=0||this.timeLimit<=0){
+                        
+                        if(this.timeLimit<=0) return true
                         
                         player.stats.mondoChick++
                         this.state='dead'
@@ -13318,8 +13320,8 @@ function BeeSwarmSimulator(DATA){
             this.field='CoconutField'
             this.state='alignClaws'
             this.starSawHitTimer=0
-            this.level=12
-            this.health=250000
+            this.level=10
+            this.health=100000
             this.maxHealth=this.health
             this.pos=[fieldInfo[this.field].x,fieldInfo[this.field].y+0.3,fieldInfo[this.field].z+2.5,0]
             this.flameTimer=0
@@ -16433,7 +16435,7 @@ function BeeSwarmSimulator(DATA){
                 break
             }
 
-            let seconds=(this.maxGrowth*perc*perc*1.95*nectarBonus[fieldInfo[this.field].nectarType.replace('Nectar','')])*player.nectarMultiplier
+            let seconds=this.maxGrowth*perc*perc*3*nectarBonus[fieldInfo[this.field].nectarType.replace('Nectar','')]*player.nectarMultiplier
 
             player.addEffect(fieldInfo[this.field].nectarType,seconds/(6*60*60))
 
@@ -17471,7 +17473,7 @@ function BeeSwarmSimulator(DATA){
 
             player.stats.puffshrooms++
 
-            if(this.type!=='puffshroom') player.stats[this.type+'Puffshrooms']++
+            if(this.type!=='puffshroom') player.stats[this.type+'s']++
 
             if(this.life>0){
 
@@ -29335,7 +29337,7 @@ function BeeSwarmSimulator(DATA){
     },function(){
         
         return Math.random()<0.75?2:Math.random()<0.25?3:1
-    },{w:0.25,b:0.75,r:0}),'comforting'
+    },{w:0.25,b:0.75,r:0},'comforting')
 
     createField('PineapplePatch',-71.5,12.5,79,19,14,function(){
         
