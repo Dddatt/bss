@@ -383,25 +383,25 @@ function BeeSwarmSimulator(DATA){
 
     let blenderRecipes=[
         
-        {item:'gumdrops',req:[['pineapple',2],['strawberry',2],['blueberry',2]]},
-        {item:'moonCharm',req:[['royalJelly',2],['pineapple',3],['gumdrops',3]]},
+        {item:'gumdrops',req:[['pineapple',1],['strawberry',1],['blueberry',1],['sunflowerSeed',1]]},
+        {item:'moonCharm',req:[['royalJelly',1],['pineapple',2],['gumdrops',2]]},
         {item:'redExtract',req:[['strawberry',35],['royalJelly',5]]},
         {item:'blueExtract',req:[['blueberry',35],['royalJelly',5]]},
         {item:'enzymes',req:[['pineapple',35],['royalJelly',5]]},
         {item:'oil',req:[['sunflowerSeed',35],['royalJelly',5]]},
-        {item:'glue',req:[['gumdrops',35],['royalJelly',5]]},
+        {item:'glue',req:[['gumdrops',25],['royalJelly',5]]},
         {item:'tropicalDrink',req:[['coconut',5],['oil',1],['enzymes',1]]},
-        {item:'glitter',req:[['moonCharm',20],['magicBean',1]]},
+        {item:'glitter',req:[['moonCharm',7],['magicBean',1]]},
         {item:'starJelly',req:[['royalJelly',75],['glitter',3]]},
-        {item:'purplePotion',req:[['neonberry',3],['redExtract',2],['blueExtract',2],['glue',2]]},
-        {item:'superSmoothie',req:[['neonberry',3],['starJelly',1],['purplePotion',1],['tropicalDrink',3]]},
+        {item:'purplePotion',req:[['neonberry',3],['redExtract',1],['blueExtract',1],['glue',1]]},
+        {item:'superSmoothie',req:[['neonberry',3],['starJelly',1],['purplePotion',1],['tropicalDrink',2]]},
         {item:'fieldDice',req:[['softWax',1],['whirligig',1],['redExtract',1],['blueExtract',1]]},
         {item:'smoothDice',req:[['fieldDice',2],['whirligig',2],['softWax',2],['oil',2]]},
         {item:'loadedDice',req:[['smoothDice',2],['hardWax',1],['oil',2],['glue',1]]},
         {item:'softWax',req:[['honeysuckle',5],['oil',1],['enzymes',1],['royalJelly',5]]},
-        {item:'hardWax',req:[['softWax',2],['enzymes',2],['bitterberry',5],['royalJelly',25]]},
-        {item:'swirledWax',req:[['hardWax',1],['softWax',2],['purplePotion',1],['royalJelly',75]]},
-        {item:'causticWax',req:[['hardWax',3],['neonberry',5],['gumdrops',10],['royalJelly',175]]},
+        {item:'hardWax',req:[['softWax',2],['enzymes',1],['bitterberry',3],['royalJelly',5]]},
+        {item:'swirledWax',req:[['hardWax',1],['softWax',2],['purplePotion',1],['royalJelly',15]]},
+        {item:'causticWax',req:[['hardWax',2],['neonberry',5],['gumdrops',10],['royalJelly',25]]},
         {item:'turpentine',req:[['superSmoothie',3],['causticWax',3],['starJelly',5],['honeysuckle',50]]},
         {item:'diamondEgg',req:[['goldEgg',1],['swirledWax',1],['royalJelly',100]]},
 
@@ -7206,7 +7206,7 @@ function BeeSwarmSimulator(DATA){
                 
                 return slot.beequip&&slot.beequip.waxes.length<5
             },
-            amount:0,u:128*2/2048,v:128*9/2048,value:16,
+            amount:0,u:128*2/2048,v:128*9/2048,value:7,
             use:function(){
                 
                 player.addMessage('The wax improved the beequip!')
@@ -16435,7 +16435,7 @@ function BeeSwarmSimulator(DATA){
                 break
             }
 
-            let seconds=this.maxGrowth*perc*perc*3*nectarBonus[fieldInfo[this.field].nectarType.replace('Nectar','')]*player.nectarMultiplier
+            let seconds=this.maxGrowth*perc*perc*2.5*nectarBonus[fieldInfo[this.field].nectarType.replace('Nectar','')]*player.nectarMultiplier
 
             player.addEffect(fieldInfo[this.field].nectarType,seconds/(6*60*60))
 
