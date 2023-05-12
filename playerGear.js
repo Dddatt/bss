@@ -844,7 +844,7 @@ window.playerGear={
                 stats.beeEnergy*=1.15
             },
             desc:'A luxurious faux honeycomb you can wear as a belt to greatly enhance your pollen capacity.<br><br>+200,000 capacity<br>x1.75 capacity<br>x1.75 loot luck<br>x1.75 convert rate<br>x1.5 honey from tokens<br>+1 white bee attack<br>x1.3 white bomb pollen<br>x1.15 bee energy',
-            cost:['50000000 honey','50 glue','35 enzymes','25 oil'],
+            cost:['50000000 honey','25 glue','25 enzymes','25 oil'],
         },
         
         petalBelt:{
@@ -873,7 +873,7 @@ window.playerGear={
                 player.addEffect('petalStormPassive')
             },
             desc:'Drape these petals about your waist to harness unlimited flower power.<br><br>+300,000 capacity<br>x2 capacity<br>x2 loot luck<br>x1.8 convert rate<br>x1.5 honey from tokens<br>+2 white bee attack<br>x1.5 white bomb pollen<br>x1.25 bee energy<br>+Passive: Petal Storm',
-            cost:['15000000000 honey','15 starJelly','50 glitter','100 glue'],
+            cost:['15000000000 honey','15 starJelly','50 glitter','75 glue'],
         }
     },
     
@@ -1424,13 +1424,13 @@ window.playerGear={
                 stats.capacity+=300000
                 stats.instantRedConversion=window.applyPercentage(stats.instantRedConversion,0.2)
                 stats.redBombPollen*=1.5
-                stats.redBeeAttack+=2
-                stats.whiteBeeAttack+=1
+                stats.redBeeAttack+=3
+                stats.whiteBeeAttack+=2
                 stats.criticalChance+=0.1
                 player.addEffect('focusPulserPassive')
             },
-            desc:'A guard bestowed with the heroic power of Crimson Bee - Defender of the red bees.<br><br>+300,000 capacity<br>x1.35 red pollen<br>x1.4 convert rate<br>+20% instant red conversion<br>x1.5 red bomb pollen<br>+2 red attack<br>+1 white bee attack<br>+10% critical chance<br>+Passive: Focus Pulser',
-            cost:['200000000 honey','100 redExtract','100 stinger','50 oil','25 glitter'],
+            desc:'A guard bestowed with the heroic power of Crimson Bee - Defender of the red bees.<br><br>+300,000 capacity<br>x1.35 red pollen<br>x1.4 convert rate<br>+20% instant red conversion<br>x1.5 red bomb pollen<br>+3 red attack<br>+2 white bee attack<br>+10% critical chance<br>+Passive: Focus Pulser',
+            cost:['200000000 honey','100 redExtract','15 stinger','50 oil','25 glitter'],
         },
     },
     
@@ -1556,13 +1556,13 @@ window.playerGear={
                 stats.bluePollen*=1.35
                 stats.instantBlueConversion=window.applyPercentage(stats.instantBlueConversion,0.2)
                 stats.blueBombPollen*=1.5
-                stats.blueBeeAttack+=2
-                stats.whiteBeeAttack+=1
+                stats.blueBeeAttack+=3
+                stats.whiteBeeAttack+=2
                 stats.criticalPower+=1
                 player.addEffect('hastePulserPassive')
             },
-            desc:'A guard bestowed with the heroic power of Cobalt Bee - Defender of the blue bees.<br><br>+300,000 capacity<br>x1.35 red pollen<br>x1.4 convert rate<br>+20% instant blue conversion<br>x1.5 blue bomb pollen<br>+2 blue bee attack<br>+1 white bee attack<br>+100% critical power<br>+Passive: Haste Pulser',
-            cost:['200000000 honey','100 blueExtract','100 stinger','50 enzymes','25 glitter'],
+            desc:'A guard bestowed with the heroic power of Cobalt Bee - Defender of the blue bees.<br><br>+300,000 capacity<br>x1.35 red pollen<br>x1.4 convert rate<br>+20% instant blue conversion<br>x1.5 blue bomb pollen<br>+3 blue bee attack<br>+2 white bee attack<br>+100% critical power<br>+Passive: Haste Pulser',
+            cost:['200000000 honey','100 blueExtract','15 stinger','50 enzymes','25 glitter'],
         },
     }
 }
