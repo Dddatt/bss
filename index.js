@@ -1621,7 +1621,7 @@ function BeeSwarmSimulator(DATA){
             isMachine:true,requirements:function(player){
 
                 if(items.gummyBeeEgg.amount) return 'You already own a Gummy Bee!'
-                if(items.gumdrops.amount<2500) return 'You need 1,500 gumdrops to form a Gummy Bee!'
+                if(items.gumdrops.amount<1500) return 'You need 1,500 gumdrops to form a Gummy Bee!'
 
             },minX:-8.5-3,maxX:-8.5+3,minY:12,maxY:18,minZ:-40-3,maxZ:-40+3,message:'Combine 1,500 to form a Gummy Bee',func:function(player){
 
@@ -1647,7 +1647,7 @@ function BeeSwarmSimulator(DATA){
             isMachine:true,requirements:function(player){
 
                 if(items.viciousBeeEgg.amount) return 'You already own a Vicious Bee!'
-                if(items.stinger.amount<250) return 'Turn in 200 stingers to claim a Vicious Bee!'
+                if(items.stinger.amount<200) return 'Turn in 200 stingers to claim a Vicious Bee!'
 
             },minX:2-3,maxX:2+3,minY:2,maxY:9,minZ:60-3,maxZ:60+3,message:'Turn in 200 stingers to claim a Vicious Bee',func:function(player){
 
@@ -12716,6 +12716,8 @@ function BeeSwarmSimulator(DATA){
                 case 'attack':
                     
                     if(this.health<=0||this.timeLimit<=0){
+                        
+                        if(this.timeLimit<=0) return true
                         
                         player.stats.rogueViciousBee++
                         this.state='dead'
