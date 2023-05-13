@@ -805,9 +805,9 @@ function BeeSwarmSimulator(DATA){
                 if(!player.extraInfo.windShrineDonate)
                     player.extraInfo.windShrineDonate=1
 
-                if(Date.now()-player.extraInfo.windShrineDonate<30*60*1000){
+                if(Date.now()-player.extraInfo.windShrineDonate<5*60*1000){
 
-                    return "The Wind Shrine is on cooldown! ("+MATH.doTime((60*60-(Date.now()-player.extraInfo.windShrineDonate)*0.001)+'')+')'
+                    return "The Wind Shrine is on cooldown! ("+MATH.doTime((5*60-(Date.now()-player.extraInfo.windShrineDonate)*0.001)+'')+')'
                 }
 
                 if(document.getElementById('shrineMenu').style.display==='block') return "You're looking at the Wind Shrine"
@@ -1613,6 +1613,18 @@ function BeeSwarmSimulator(DATA){
                 items.royalJelly.amount+=am
                 player.updateInventory()
                 player.addMessage('+'+am+' Royal Jelly')
+            }
+        },
+
+        gummyBee_enter:{
+
+            minX:-8.5-3,maxX:-8.5+3,minY:12,maxY:18,minZ:-40-3,maxZ:-40+3,contactFunc:function(player){
+                
+                if(!player.lastGummyBeeMessage||TIME-player.lastGummyBeeMessage>3){
+
+                    player.lastGummyBeeMessage=TIME
+                    player.addMessage('Gummy Bee wants Gumdrops!',[0,200,100])
+                }
             }
         },
 
@@ -13334,6 +13346,7 @@ function BeeSwarmSimulator(DATA){
             this.mindHacked=0
             this.stateAlternate=2
             this.timeToDefeat=0
+            this.isDead=player.extraInfo.mob_coco
         }
         
         die(index){
@@ -13368,11 +13381,13 @@ function BeeSwarmSimulator(DATA){
                 return this.isDead<=0
             }
             
-            if(this.health<=0||player.extraInfo.mob_coco>0){
+            if(this.health<=0){
                 
-                this.isDead=180*60/player.monsterRespawnTime
+                player.computeRestrictionInfo()
 
-                if(player.extraInfo.mob_coco>0) return
+                window.setTimeout(()=>UPDATE_MAP_MESH(),500)
+
+                this.isDead=180*60/player.monsterRespawnTime
 
                 let loots='',decay=MATH.constrain(Math.pow(2,-0.001*this.timeToDefeat),0.1,1)
 
@@ -13645,6 +13660,7 @@ function BeeSwarmSimulator(DATA){
             this.bodySize=3
             this.runningAmount=0
             this.mindHacked=0
+            this.isDead=player.extraInfo.mob_snail
         }
         
         die(index){
@@ -13679,12 +13695,10 @@ function BeeSwarmSimulator(DATA){
                 return this.isDead<=0
             }
             
-            if(this.health<=0||player.extraInfo.mob_snail>0){
+            if(this.health<=0){
                 
-                player.extraInfo.mob_snail_health=10000000
                 this.isDead=300*60/player.monsterRespawnTime
-
-                if(player.extraInfo.mob_snail>0) return
+                player.extraInfo.mob_snail_health=5000000
 
                 let g=Math.min(player.stats.stumpSnail++,4)
                 
