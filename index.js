@@ -507,6 +507,7 @@ function BeeSwarmSimulator(DATA){
         itemSVGCode[name]='<svg style="width:70px;height:70px;transform:SCALE">'+(itemSVGCode[name][itemSVGCode[name].length-1]).substr(0,itemSVGCode[name][itemSVGCode[name].length-1].indexOf('</svg>'))+'<title>'+MATH.doGrammar(name)+'</title></svg>'
     }
 
+    // CHQ: hartbarSlots are activated by mouse - one must click and drag mouse to respective location
     for(let i in hotbarSlots){
         
         hotbarSlots[i].onmousedown=function(){
@@ -7972,11 +7973,11 @@ function BeeSwarmSimulator(DATA){
                 howManyMessage.innerHTML='How many bitterberries will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
                 document.getElementById('feedUntilGifted').style.display='none'
 
-                howManyToFeed.onmousemove=feedAmount.oninput=function(){
+                // howManyToFeed.onmousemove=feedAmount.oninput=function(){
                     
-                    let a=feedAmount.value
-                    feedAmount.value=MATH.constrain(a,1,items.bitterberry.amount)
-                }
+                //     let a=feedAmount.value
+                //     feedAmount.value=MATH.constrain(a,1,items.bitterberry.amount)
+                // }
                 
                 document.getElementById('cancelFeeding').onclick=function(){
                     howManyToFeed.style.display='none'
@@ -8047,11 +8048,11 @@ function BeeSwarmSimulator(DATA){
                 howManyMessage.innerHTML='How many neonberries will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
                 document.getElementById('feedUntilGifted').style.display='none'
 
-                howManyToFeed.onmousemove=feedAmount.oninput=function(){
+                // howManyToFeed.onmousemove=feedAmount.oninput=function(){
                     
-                    let a=feedAmount.value
-                    feedAmount.value=MATH.constrain(a,1,items.neonberry.amount)
-                }
+                //     let a=feedAmount.value
+                //     feedAmount.value=MATH.constrain(a,1,items.neonberry.amount)
+                // }
                 
                 document.getElementById('cancelFeeding').onclick=function(){
                     howManyToFeed.style.display='none'
@@ -8098,11 +8099,11 @@ function BeeSwarmSimulator(DATA){
                 howManyMessage.innerHTML='How many moon charms will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
                 document.getElementById('feedUntilGifted').style.display='none'
 
-                howManyToFeed.onmousemove=feedAmount.oninput=function(){
+                // howManyToFeed.onmousemove=feedAmount.oninput=function(){
                     
-                    let a=feedAmount.value
-                    feedAmount.value=MATH.constrain(a,1,items.moonCharm.amount)
-                }
+                //     let a=feedAmount.value
+                //     feedAmount.value=MATH.constrain(a,1,items.moonCharm.amount)
+                // }
                 
                 document.getElementById('cancelFeeding').onclick=function(){
                     howManyToFeed.style.display='none'
@@ -8144,11 +8145,11 @@ function BeeSwarmSimulator(DATA){
                 howManyMessage.innerHTML='How many treats will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
                 document.getElementById('feedUntilGifted').style.display='none'
                 
-                howManyToFeed.onmousemove=feedAmount.oninput=function(){
+                // howManyToFeed.onmousemove=feedAmount.oninput=function(){
                     
-                    let a=feedAmount.value
-                    feedAmount.value=MATH.constrain(a,1,items.treat.amount)
-                }
+                //     let a=feedAmount.value
+                //     feedAmount.value=MATH.constrain(a,1,items.treat.amount)
+                // }
                 
                 document.getElementById('cancelFeeding').onclick=function(){
                     howManyToFeed.style.display='none'
@@ -8191,11 +8192,11 @@ function BeeSwarmSimulator(DATA){
                 howManyMessage.innerHTML='How many star treats will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
                 document.getElementById('feedUntilGifted').style.display='none'
                 
-                howManyToFeed.onmousemove=feedAmount.oninput=function(){
+                // howManyToFeed.onmousemove=feedAmount.oninput=function(){
                     
-                    let a=feedAmount.value
-                    feedAmount.value=MATH.constrain(a,1,items.starTreat.amount)
-                }
+                //     let a=feedAmount.value
+                //     feedAmount.value=MATH.constrain(a,1,items.starTreat.amount)
+                // }
                 
                 document.getElementById('cancelFeeding').onclick=function(){
                     howManyToFeed.style.display='none'
@@ -8242,11 +8243,11 @@ function BeeSwarmSimulator(DATA){
                 howManyMessage.innerHTML='How many atomic treats will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
                 document.getElementById('feedUntilGifted').style.display='none'
                 
-                howManyToFeed.onmousemove=feedAmount.oninput=function(){
+                // howManyToFeed.onmousemove=feedAmount.oninput=function(){
                     
-                    let a=feedAmount.value
-                    feedAmount.value=MATH.constrain(a,1,items.atomicTreat.amount)
-                }
+                //     let a=feedAmount.value
+                //     feedAmount.value=MATH.constrain(a,1,items.atomicTreat.amount)
+                // }
                 
                 document.getElementById('cancelFeeding').onclick=function(){
                     howManyToFeed.style.display='none'
@@ -8314,11 +8315,11 @@ function BeeSwarmSimulator(DATA){
                 
                 document.getElementById('feedUntilGifted').style.display=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='blueberry'&&!player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted?'block':'none'
                 
-                howManyToFeed.onmousemove=feedAmount.oninput=function(){
+                // howManyToFeed.onmousemove=feedAmount.oninput=function(){
                     
-                    let a=feedAmount.value
-                    feedAmount.value=MATH.constrain(a,1,items.blueberry.amount)
-                }
+                //     let a=feedAmount.value
+                //     feedAmount.value=MATH.constrain(a,1,items.blueberry.amount)
+                // }
                 
                 document.getElementById('cancelFeeding').onclick=function(){
                     howManyToFeed.style.display='none'
@@ -8387,11 +8388,11 @@ function BeeSwarmSimulator(DATA){
                 
                 document.getElementById('feedUntilGifted').style.display=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='strawberry'&&!player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted?'block':'none'
                 
-                howManyToFeed.onmousemove=feedAmount.oninput=function(){
+                // howManyToFeed.onmousemove=feedAmount.oninput=function(){
                     
-                    let a=feedAmount.value
-                    feedAmount.value=MATH.constrain(a,1,items.strawberry.amount)
-                }
+                //     let a=feedAmount.value
+                //     feedAmount.value=MATH.constrain(a,1,items.strawberry.amount)
+                // }
                 
                 document.getElementById('cancelFeeding').onclick=function(){
                     howManyToFeed.style.display='none'
@@ -8459,11 +8460,11 @@ function BeeSwarmSimulator(DATA){
                 
                 document.getElementById('feedUntilGifted').style.display=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='pineapple'&&!player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted?'block':'none'
                 
-                howManyToFeed.onmousemove=feedAmount.oninput=function(){
+                // howManyToFeed.onmousemove=feedAmount.oninput=function(){
                     
-                    let a=feedAmount.value
-                    feedAmount.value=MATH.constrain(a,1,items.pineapple.amount)
-                }
+                //     let a=feedAmount.value
+                //     feedAmount.value=MATH.constrain(a,1,items.pineapple.amount)
+                // }
                 
                 document.getElementById('cancelFeeding').onclick=function(){
                     howManyToFeed.style.display='none'
@@ -8531,11 +8532,11 @@ function BeeSwarmSimulator(DATA){
                 
                 document.getElementById('feedUntilGifted').style.display=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='sunflowerSeed'&&!player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted?'block':'none'
                 
-                howManyToFeed.onmousemove=feedAmount.oninput=function(){
+                // howManyToFeed.onmousemove=feedAmount.oninput=function(){
                     
-                    let a=feedAmount.value
-                    feedAmount.value=MATH.constrain(a,1,items.sunflowerSeed.amount)
-                }
+                //     let a=feedAmount.value
+                //     feedAmount.value=MATH.constrain(a,1,items.sunflowerSeed.amount)
+                // }
                 
                 document.getElementById('cancelFeeding').onclick=function(){
                     howManyToFeed.style.display='none'
