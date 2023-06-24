@@ -6755,8 +6755,12 @@ function BeeSwarmSimulator(DATA){
 
     let toolParticle=0
 
+    // CHQ: For the restrictions to ensure that the player has at least enough treats to feed the bees with the amount they are specifying
     let howManyToFeed=document.getElementById('howManyToFeed'),howManyMessage=document.getElementById('howManyMessage'),feedAmount=document.getElementById('feedAmount')
 
+
+    // CHQ: The list of all of the items in the game. Includes the things that a player can feed bees with, weapons, tools and powerups that the player can use, new bees,
+      
     let items={
 
         translator:{
@@ -7973,11 +7977,13 @@ function BeeSwarmSimulator(DATA){
                 howManyMessage.innerHTML='How many bitterberries will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
                 document.getElementById('feedUntilGifted').style.display='none'
 
-                // howManyToFeed.onmousemove=feedAmount.oninput=function(){
-                    
-                //     let a=feedAmount.value
-                //     feedAmount.value=MATH.constrain(a,1,items.bitterberry.amount)
-                // }
+                // CHQ: Limit the amount of treats fed to what the player actually have in inventory. 
+                //      How: using constrain method of Math to set the feed amount to the lower of the 
+                //           amount the player specified and the amount that the user actually has
+                howManyToFeed.onmousemove=feedAmount.oninput=function(){
+                    let a=feedAmount.value
+                    feedAmount.value=MATH.constrain(a,1,items.bitterberry.amount)
+                }
                 
                 document.getElementById('cancelFeeding').onclick=function(){
                     howManyToFeed.style.display='none'
@@ -7990,7 +7996,9 @@ function BeeSwarmSimulator(DATA){
                     items.bitterberry.amount-=amount
                     player.stats.bitterberry+=Number(amount)
                     player.updateInventory()
-                    
+
+
+                    // CHQ: randomly gives powerup to bees
                     if(Math.random()<1-Math.pow(1-(1/(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].radioactive>0?30:100)),amount)){
                         
                         player.addMessage('☢️ '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' bee gained a mutation! ☢️',[50,225,90])
@@ -8048,11 +8056,13 @@ function BeeSwarmSimulator(DATA){
                 howManyMessage.innerHTML='How many neonberries will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
                 document.getElementById('feedUntilGifted').style.display='none'
 
-                // howManyToFeed.onmousemove=feedAmount.oninput=function(){
-                    
-                //     let a=feedAmount.value
-                //     feedAmount.value=MATH.constrain(a,1,items.neonberry.amount)
-                // }
+                // CHQ: Limit the amount of treats fed to what the player actually have in inventory. 
+                //      How: using constrain method of Math to set the feed amount to the lower of the 
+                //           amount the player specified and the amount that the user actually has                
+                howManyToFeed.onmousemove=feedAmount.oninput=function(){
+                    let a=feedAmount.value
+                    feedAmount.value=MATH.constrain(a,1,items.neonberry.amount)
+                }
                 
                 document.getElementById('cancelFeeding').onclick=function(){
                     howManyToFeed.style.display='none'
@@ -8099,11 +8109,13 @@ function BeeSwarmSimulator(DATA){
                 howManyMessage.innerHTML='How many moon charms will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
                 document.getElementById('feedUntilGifted').style.display='none'
 
-                // howManyToFeed.onmousemove=feedAmount.oninput=function(){
-                    
-                //     let a=feedAmount.value
-                //     feedAmount.value=MATH.constrain(a,1,items.moonCharm.amount)
-                // }
+                // CHQ: Limit the amount of treats fed to what the player actually have in inventory. 
+                //      How: using constrain method of Math to set the feed amount to the lower of the 
+                //           amount the player specified and the amount that the user actually has
+                howManyToFeed.onmousemove=feedAmount.oninput=function(){
+                    let a=feedAmount.value
+                    feedAmount.value=MATH.constrain(a,1,items.moonCharm.amount)
+                }
                 
                 document.getElementById('cancelFeeding').onclick=function(){
                     howManyToFeed.style.display='none'
@@ -8144,12 +8156,14 @@ function BeeSwarmSimulator(DATA){
                 feedAmount.value=1
                 howManyMessage.innerHTML='How many treats will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
                 document.getElementById('feedUntilGifted').style.display='none'
-                
-                // howManyToFeed.onmousemove=feedAmount.oninput=function(){
-                    
-                //     let a=feedAmount.value
-                //     feedAmount.value=MATH.constrain(a,1,items.treat.amount)
-                // }
+
+                // CHQ: Limit the amount of treats fed to what the player actually have in inventory. 
+                //      How: using constrain method of Math to set the feed amount to the lower of the 
+                //           amount the player specified and the amount that the user actually has
+                howManyToFeed.onmousemove=feedAmount.oninput=function(){
+                    let a=feedAmount.value
+                    feedAmount.value=MATH.constrain(a,1,items.treat.amount)
+                }
                 
                 document.getElementById('cancelFeeding').onclick=function(){
                     howManyToFeed.style.display='none'
@@ -8191,12 +8205,14 @@ function BeeSwarmSimulator(DATA){
                 feedAmount.value=1
                 howManyMessage.innerHTML='How many star treats will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
                 document.getElementById('feedUntilGifted').style.display='none'
-                
-                // howManyToFeed.onmousemove=feedAmount.oninput=function(){
-                    
-                //     let a=feedAmount.value
-                //     feedAmount.value=MATH.constrain(a,1,items.starTreat.amount)
-                // }
+
+                // CHQ: Limit the amount of treats fed to what the player actually have in inventory. 
+                //      How: using constrain method of Math to set the feed amount to the lower of the 
+                //           amount the player specified and the amount that the user actually has
+                howManyToFeed.onmousemove=feedAmount.oninput=function(){
+                    let a=feedAmount.value
+                    feedAmount.value=MATH.constrain(a,1,items.starTreat.amount)
+                }
                 
                 document.getElementById('cancelFeeding').onclick=function(){
                     howManyToFeed.style.display='none'
@@ -8242,12 +8258,14 @@ function BeeSwarmSimulator(DATA){
                 feedAmount.value=1
                 howManyMessage.innerHTML='How many atomic treats will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
                 document.getElementById('feedUntilGifted').style.display='none'
-                
-                // howManyToFeed.onmousemove=feedAmount.oninput=function(){
-                    
-                //     let a=feedAmount.value
-                //     feedAmount.value=MATH.constrain(a,1,items.atomicTreat.amount)
-                // }
+
+                // CHQ: Limit the amount of treats fed to what the player actually have in inventory. 
+                //      How: using constrain method of Math to set the feed amount to the lower of the 
+                //           amount the player specified and the amount that the user actually has
+                howManyToFeed.onmousemove=feedAmount.oninput=function(){
+                    let a=feedAmount.value
+                    feedAmount.value=MATH.constrain(a,1,items.atomicTreat.amount)
+                }
                 
                 document.getElementById('cancelFeeding').onclick=function(){
                     howManyToFeed.style.display='none'
@@ -8314,12 +8332,14 @@ function BeeSwarmSimulator(DATA){
                 howManyMessage.innerHTML='How many blueberries will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
                 
                 document.getElementById('feedUntilGifted').style.display=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='blueberry'&&!player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted?'block':'none'
-                
-                // howManyToFeed.onmousemove=feedAmount.oninput=function(){
-                    
-                //     let a=feedAmount.value
-                //     feedAmount.value=MATH.constrain(a,1,items.blueberry.amount)
-                // }
+
+                // CHQ: Limit the amount of treats fed to what the player actually have in inventory. 
+                //      How: using constrain method of Math to set the feed amount to the lower of the 
+                //           amount the player specified and the amount that the user actually has
+                howManyToFeed.onmousemove=feedAmount.oninput=function(){
+                    let a=feedAmount.value
+                    feedAmount.value=MATH.constrain(a,1,items.blueberry.amount)
+                }
                 
                 document.getElementById('cancelFeeding').onclick=function(){
                     howManyToFeed.style.display='none'
@@ -8387,12 +8407,14 @@ function BeeSwarmSimulator(DATA){
                 howManyMessage.innerHTML='How many strawberries will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
                 
                 document.getElementById('feedUntilGifted').style.display=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='strawberry'&&!player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted?'block':'none'
-                
-                // howManyToFeed.onmousemove=feedAmount.oninput=function(){
-                    
-                //     let a=feedAmount.value
-                //     feedAmount.value=MATH.constrain(a,1,items.strawberry.amount)
-                // }
+
+                // CHQ: Limit the amount of treats fed to what the player actually have in inventory. 
+                //      How: using constrain method of Math to set the feed amount to the lower of the 
+                //           amount the player specified and the amount that the user actually has
+                howManyToFeed.onmousemove=feedAmount.oninput=function(){
+                    let a=feedAmount.value
+                    feedAmount.value=MATH.constrain(a,1,items.strawberry.amount)
+                }
                 
                 document.getElementById('cancelFeeding').onclick=function(){
                     howManyToFeed.style.display='none'
@@ -8459,12 +8481,14 @@ function BeeSwarmSimulator(DATA){
                 howManyMessage.innerHTML='How many pineapples will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
                 
                 document.getElementById('feedUntilGifted').style.display=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='pineapple'&&!player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted?'block':'none'
-                
-                // howManyToFeed.onmousemove=feedAmount.oninput=function(){
-                    
-                //     let a=feedAmount.value
-                //     feedAmount.value=MATH.constrain(a,1,items.pineapple.amount)
-                // }
+
+                // CHQ: Limit the amount of treats fed to what the player actually have in inventory. 
+                //      How: using constrain method of Math to set the feed amount to the lower of the 
+                //           amount the player specified and the amount that the user actually has
+                howManyToFeed.onmousemove=feedAmount.oninput=function(){
+                    let a=feedAmount.value
+                    feedAmount.value=MATH.constrain(a,1,items.pineapple.amount)
+                }
                 
                 document.getElementById('cancelFeeding').onclick=function(){
                     howManyToFeed.style.display='none'
@@ -8531,12 +8555,14 @@ function BeeSwarmSimulator(DATA){
                 howManyMessage.innerHTML='How many sunflower seeds will you feed to '+MATH.doGrammar(player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type)+' Bee?'
                 
                 document.getElementById('feedUntilGifted').style.display=beeInfo[player.hive[player.hiveIndex[1]][player.hiveIndex[0]].bee.type].favoriteTreat==='sunflowerSeed'&&!player.hive[player.hiveIndex[1]][player.hiveIndex[0]].gifted?'block':'none'
-                
-                // howManyToFeed.onmousemove=feedAmount.oninput=function(){
-                    
-                //     let a=feedAmount.value
-                //     feedAmount.value=MATH.constrain(a,1,items.sunflowerSeed.amount)
-                // }
+
+                // CHQ: Limit the amount of treats fed to what the player actually have in inventory. 
+                //      How: using constrain method of Math to set the feed amount to the lower of the 
+                //           amount the player specified and the amount that the user actually has
+                howManyToFeed.onmousemove=feedAmount.oninput=function(){
+                    let a=feedAmount.value
+                    feedAmount.value=MATH.constrain(a,1,items.sunflowerSeed.amount)
+                }
                 
                 document.getElementById('cancelFeeding').onclick=function(){
                     howManyToFeed.style.display='none'
