@@ -29927,6 +29927,7 @@ function BeeSwarmSimulator(DATA){
         }
     }
 
+    // CHQ: This is the function that saves the game
     function SAVE_GAME(){
 
         let code=GENERATE_SAVE_CODE()
