@@ -44,7 +44,8 @@ function main(){
             }
         })
     }
-    
+
+    // CHQ: found where the code to save progress is
     async function saveToDB(id, data) {
     
         return new Promise(async (resolve, reject) => {
@@ -384,14 +385,15 @@ function BeeSwarmSimulator(DATA){
     let blenderRecipes=[
         
         {item:'gumdrops',req:[['pineapple',1],['strawberry',1],['blueberry',1],['sunflowerSeed',1]]},
-        {item:'moonCharm',req:[['royalJelly',1],['pineapple',2],['gumdrops',2]]},
+      //  {item:'moonCharm',req:[['royalJelly',1],['pineapple',2],['gumdrops',2]]},
         {item:'redExtract',req:[['strawberry',35],['royalJelly',5]]},
         {item:'blueExtract',req:[['blueberry',35],['royalJelly',5]]},
         {item:'enzymes',req:[['pineapple',35],['royalJelly',5]]},
         {item:'oil',req:[['sunflowerSeed',35],['royalJelly',5]]},
         {item:'glue',req:[['gumdrops',10],['royalJelly',5]]},
         {item:'tropicalDrink',req:[['coconut',5],['oil',1],['enzymes',1]]},
-        {item:'glitter',req:[['moonCharm',5],['magicBean',1]]},
+        // {item:'glitter',req:[['moonCharm',5],['magicBean',1]]},
+                {item:'glitter',req:[['magicBean',2]]},
         {item:'starJelly',req:[['royalJelly',75],['glitter',3]]},
         {item:'purplePotion',req:[['neonberry',3],['redExtract',1],['blueExtract',1],['glue',1]]},
         {item:'superSmoothie',req:[['neonberry',3],['starJelly',1],['purplePotion',1],['tropicalDrink',2]]},
@@ -507,7 +509,7 @@ function BeeSwarmSimulator(DATA){
         itemSVGCode[name]='<svg style="width:70px;height:70px;transform:SCALE">'+(itemSVGCode[name][itemSVGCode[name].length-1]).substr(0,itemSVGCode[name][itemSVGCode[name].length-1].indexOf('</svg>'))+'<title>'+MATH.doGrammar(name)+'</title></svg>'
     }
 
-    // CHQ: hartbarSlots are activated by mouse - one must click and drag mouse to respective location
+    // CHQ: hotbarSlots are activated by mouse - one must click and drag mouse to respective location
     for(let i in hotbarSlots){
         
         hotbarSlots[i].onmousedown=function(){
@@ -725,6 +727,7 @@ function BeeSwarmSimulator(DATA){
                 
                 SAVE_GAME()
                 player.addMessage('Game Saved!')
+                console.error('\n\n\n\n\nGame manually saved on ' + Date.now()+'\n\n\n\n\n');
             }
 
             document.getElementById('resetChar').onclick=function(){
@@ -12172,9 +12175,13 @@ function BeeSwarmSimulator(DATA){
                             case 'spider':
 
                                 amountOfTokens+=7
-                                dropTable=['treat','treat','treat','pineapple','sunflowerSeed','gumdrops','treat','treat','treat','pineapple','sunflowerSeed','gumdrops','glue','enzymes','oil','fieldDice','ticket','ticket','royalJelly','ticket','royalJelly','moonCharm','moonCharm','magicBean','magicBean','magicBean','magicBean','microConverter','microConverter','microConverter']
-                                dropAmountTable={treat:[1,1,1,1,5,5,5,10,10,15],enzymes:[1,1,1,1,1,1,1,2,2,3],oil:[1,1,1,1,1,1,1,2,2,3],fieldDice:[1,1,1,1,1,2,2,3],glue:[1,1,1,1,1,1,3,3,5],pineapple:[1,1,1,1,1,1,1,3,3,3,5,5,10],sunflowerSeed:[1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[1,1,1,1,1,1,1,5,5,10],ticket:[1,1,1,1,1,1,1,1,3,3,5],royalJelly:[1,1,1,1,1,1,1,3,3,5],moonCharm:[1,1,1,1,3,3,5],magicBean:[1,1,1,1,1,1,2,2,3,5],microConverter:[1,1,1,1,3,5]}
+                                // dropTable=['treat','treat','treat','pineapple','sunflowerSeed','gumdrops','treat','treat','treat','pineapple','sunflowerSeed','gumdrops','glue','enzymes','oil','fieldDice','ticket','ticket','royalJelly','ticket','royalJelly','moonCharm','moonCharm','magicBean','magicBean','magicBean','magicBean','microConverter','microConverter','microConverter']
+                                // dropAmountTable={treat:[1,1,1,1,5,5,5,10,10,15],enzymes:[1,1,1,1,1,1,1,2,2,3],oil:[1,1,1,1,1,1,1,2,2,3],fieldDice:[1,1,1,1,1,2,2,3],glue:[1,1,1,1,1,1,3,3,5],pineapple:[1,1,1,1,1,1,1,3,3,3,5,5,10],sunflowerSeed:[1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[1,1,1,1,1,1,1,5,5,10],ticket:[1,1,1,1,1,1,1,1,3,3,5],royalJelly:[1,1,1,1,1,1,1,3,3,5],moonCharm:[1,1,1,1,3,3,5],magicBean:[1,1,1,1,1,1,2,2,3,5],microConverter:[1,1,1,1,3,5]}
 
+                                dropTable=['treat','treat','treat','pineapple','sunflowerSeed','gumdrops','treat','treat','treat','pineapple','sunflowerSeed','gumdrops','glue','enzymes','oil','fieldDice','ticket','ticket','royalJelly','ticket','royalJelly','magicBean','magicBean','magicBean','magicBean','microConverter','microConverter','microConverter']
+                                dropAmountTable={treat:[1,1,1,1,5,5,5,10,10,15],enzymes:[1,1,1,1,1,1,1,2,2,3],oil:[1,1,1,1,1,1,1,2,2,3],fieldDice:[1,1,1,1,1,2,2,3],glue:[1,1,1,1,1,1,3,3,5],pineapple:[1,1,1,1,1,1,1,3,3,3,5,5,10],sunflowerSeed:[1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[1,1,1,1,1,1,1,5,5,10],ticket:[1,1,1,1,1,1,1,1,3,3,5],royalJelly:[1,1,1,1,1,1,1,3,3,5],magicBean:[1,1,1,1,1,1,2,2,3,5],microConverter:[1,1,1,1,3,5]}
+
+                                
                             break
 
                             case 'werewolf':
@@ -25121,6 +25128,8 @@ function BeeSwarmSimulator(DATA){
     }
 
     let user=(function(out){
+
+        let cameraRotationSpeed = 0.12;
         
         out.mouseX=0
         out.mouseY=0
@@ -25212,9 +25221,10 @@ function BeeSwarmSimulator(DATA){
                 }
                 
             } else {
-                
-                if(!player.pointerLocked)
-                    uiCanvas.requestPointerLock()
+
+                // CHQ: stop the pointer lock, which intereferes with menu selection
+                // if(!player.pointerLocked)
+                    // uiCanvas.requestPointerLock()
             }
             
         }
@@ -25231,19 +25241,47 @@ function BeeSwarmSimulator(DATA){
             out.mouseY=e.y
             
             if(player.pointerLocked){
-                
-                player.yaw+=e.movementX*player.sensitivity
-                player.pitch=MATH.constrain(player.pitch-e.movementY*player.sensitivity,-MATH.HALF_PI,MATH.HALF_PI)
+                // CHQ: disabling the camera panning based on mouse capture
+                // player.yaw+=e.movementX*player.sensitivity
+                // player.pitch=MATH.constrain(player.pitch-e.movementY*player.sensitivity,-MATH.HALF_PI,MATH.HALF_PI)
             }
         }
         
+        // CHQ: keys to press for certain displays
         document.onkeydown=function(e){
-            
+
+            // 38 - up arrow
+            // 40 - down
+            // 37 - left
+            // 39 - right
+           
             out.keys[e.key.toLowerCase()]=true
             out.clickedKeys[e.key.toLowerCase()]=true
-            
+
+            if(e.keyCode == '38')
+            {
+                player.pitch-=(cameraRotationSpeed/2);
+            }
+            else if(e.keyCode == '40')
+            {
+                player.pitch+=(cameraRotationSpeed/2);
+            }
+            if(e.keyCode == '37')
+            {
+                player.yaw-=cameraRotationSpeed;
+            }
+            else if(e.keyCode == '39')
+            {
+                player.yaw+=cameraRotationSpeed;
+            }
+             
+             
             if(e.key==='i') inventoryButton.onclick()
             if(e.key==='q') questButton.onclick()
+            if(e.key==='b') beesButton.onclick()
+            
+            if(e.key==='n') beequipButton.onclick()
+            if(e.key==='p') settingsButton.onclick()
 
             if(player.currentMachineTrigger&&e.key==='e') player.currentMachineTrigger.func(player)
         }
@@ -29927,7 +29965,6 @@ function BeeSwarmSimulator(DATA){
         }
     }
 
-    // CHQ: This is the function that saves the game
     function SAVE_GAME(){
 
         let code=GENERATE_SAVE_CODE()
@@ -30004,9 +30041,11 @@ function BeeSwarmSimulator(DATA){
         
     },false)
 
-    uiCanvas.requestPointerLock()
 
-    window.setInterval(()=>{SAVE_GAME();player.addMessage('Game Autosaved!')},30000)
+    // CHQ: stop the pointer lock, which intereferes with menu selection
+    // uiCanvas.requestPointerLock()
+
+    window.setInterval(()=>{SAVE_GAME();player.addMessage('Game Autosaved!'); console.error('\n\n\n\n\nGame automatically saved on ' + Date.now()+'\n\n\n\n\n');},30000)
 
     function setGlobalPuffshroomSpawn(){
 
@@ -30628,4 +30667,3 @@ function BeeSwarmSimulator(DATA){
 }
 
 console.log=0
-
