@@ -2,8 +2,8 @@
 
 # Bee Swarm Simulator Ripoff Edition
 
-## [Game Webpage](https://dddatt.github.io/bss)
+## [Game Webpage](https://conrad1451.github.io/bss)
 
-An HTML remake of Bee Swarm Simulator, made with WebGL2 and JS.
+An HTML remake of a remake of Bee Swarm Simulator, made with WebGL2 and JS.
 
 </div>
