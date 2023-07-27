@@ -386,6 +386,7 @@ function BeeSwarmSimulator(DATA){
         
         {item:'gumdrops',req:[['pineapple',1],['strawberry',1],['blueberry',1],['sunflowerSeed',1]]},
       //  {item:'moonCharm',req:[['royalJelly',1],['pineapple',2],['gumdrops',2]]},
+                {item:'ticket',req:[['moonCharm',1]]},
         {item:'redExtract',req:[['strawberry',35],['royalJelly',5]]},
         {item:'blueExtract',req:[['blueberry',35],['royalJelly',5]]},
         {item:'enzymes',req:[['pineapple',35],['royalJelly',5]]},
