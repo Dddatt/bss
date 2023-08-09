@@ -116,7 +116,7 @@ window.dialogue_polarBear=function(player,items,NPCs){
 
                     case 0:
 
-                        player.addQuest('Keep Calm and Eat Chicken',[['mondoChick',1],['moonCharmTokens',3],['moonCharm',5]],'polarBear')
+                        player.addQuest('Keep Calm and Eat Chicken',[['mondoChick',1]],'polarBear')
                         rew.push(['moonCharm',5])
                         rew.push(['neonberry',1])
                         
