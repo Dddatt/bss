@@ -9202,7 +9202,8 @@ function BeeSwarmSimulator(DATA){
         if(beeInfo[i].rarity==='event'){
 
             let id=i+'BeeEgg'
-            
+
+            // CHQ: Label for eggs in inventory
             pages[0].innerHTML+="<svg id='"+id+"' style='width:200px;height:70px;cursor:pointer;border-radius:5px'><rect width='200' height='70' fill='rgb(255,255,255)'></rect><rect width='70' height='70' fill='rgb(225,225,225)'></rect><text x='132' y='18' style='font-family:trebuchet ms;font-size:16.5px;' fill='rgb(0,0,0)' text-anchor='middle'>"+MATH.doGrammar(i)+" Bee Egg</text><text x='132' y='39' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>A permanent egg that</text><text x='130' y='53' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>always hatches into</text><text x='132' y='66' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>a "+MATH.doGrammar(i)+" Bee!</text><text id='"+id+"_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text><path fill='rgb(255,255,0)' stroke='rgb(0,0,0)' stroke-width='1.5' d='M35 15C 20 17 10 55 35 55M35 15C 50 17 60 55 35 55'></path><path fill='rgb(0,0,0)' d='M20 30 C 20 40 50 40 50 30L50 40C50 50 20 50 20 40'></path><path fill='rgb(0,0,0,0.3)' d='M47 25C 57 56 35 60 23 50C 32 48 41 50 50 35'></path></svg>"
 
             items[i+'BeeEgg']={
@@ -20155,6 +20156,7 @@ function BeeSwarmSimulator(DATA){
             if(!out.roboChallenge.questCompleted)
                 out.roboChallenge.timer-=dt
 
+            // CHQ: Robo challenge can only end when the time runs out, not even the player dying will end the game
             if(out.roboChallenge.timer<=0&&out.roboChallenge.isPlaying){
 
                 out.endRoboChallenge()
@@ -20684,6 +20686,8 @@ function BeeSwarmSimulator(DATA){
                     document.getElementById('roboActiveBees').innerHTML=''
                     document.getElementById('roboActiveBees').style.display='block'
 
+                    // CHQ: Draw the active bees in the robo challenge on the canvas that displays active bees for the challenge
+                    // note: still need to find where active bees are reset after the challenge ends
                     for(let i in out.roboChallenge.activeBees){
 
                         let b=out.roboChallenge.activeBees[i]
@@ -22255,6 +22259,7 @@ function BeeSwarmSimulator(DATA){
                     col[i]='rgb('+color[0]+','+color[1]+','+color[2]+')'
                 }
 
+                // CHQ: Label for bee description in bee page
                 pages[2].innerHTML+="<div style='margin-left:3px;margin-top:-118px;width:188px;height:26px;background-color:rgb(245,235,90);border-radius:2px;padding-left:3px;padding-top:2px;font-family:trebuchet ms;font-size:19px;text-align:center'><div style='position:absolute;left:8px;top:7px;width:20px;height:20px;font-size:19px;background-color:rgb(255,0,0);cursor:pointer;border:2px solid black;border-radius:4px;padding-top:0px'><div style='margin-top:-3px' onclick='window.exitBeesPageBee()'>x</div></div>&nbsp;&nbsp;"+MATH.doGrammar(out.beesPageBee)+" Bee</div><div style='margin-left:90px;margin-top:5px;width:103px;height:16px;background-color:rgb(230,220,150);border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center'>"+MATH.doGrammar(beeInfo[out.beesPageBee].rarity)+"</div><div style='margin-left:90px;margin-top:3px;width:103px;height:16px;background-color:rgb(230,220,150);border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center'>"+MATH.doGrammar(beeInfo[out.beesPageBee].color)+"</div><div style='margin-left:90px;margin-top:3px;width:103px;height:16px;background-color:"+col[0]+";border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center'>Energy: "+beeInfo[out.beesPageBee].energy+"</div><div style='margin-left:90px;margin-top:3px;width:103px;height:16px;background-color:"+col[1]+";border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center'>Speed: "+beeInfo[out.beesPageBee].speed+"</div><div style='margin-left:90px;margin-top:3px;width:103px;height:16px;background-color:"+col[2]+";border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center'>Attack: "+beeInfo[out.beesPageBee].attack+"</div><div style='margin-left:0px;margin-top:-15px;width:90px;height:16px;background-color:rgb(0,0,0,0);border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center'><b>x"+count+"</b>"+(gifted?'&nbsp;&nbsp;&nbsp;&nbsp;⭐':'')+"</div><div style='margin-left:5px;margin-top:5px;width:188px;height:16px;background-color:"+col[3]+";border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center;padding-top:1px;padding-bottom:1px;'>Collects "+beeInfo[out.beesPageBee].gatherAmount+" pollen in "+beeInfo[out.beesPageBee].gatherSpeed+"s</div><div style='margin-left:5px;margin-top:3px;width:188px;height:16px;background-color:"+col[4]+";border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center;padding-top:1px;padding-bottom:1px;'>Makes "+beeInfo[out.beesPageBee].convertAmount+" honey in "+beeInfo[out.beesPageBee].convertSpeed+"s</div><div style='margin-left:5px;margin-top:3px;width:188px;background-color:rgb(230,220,150);border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center;padding-top:1px;padding-bottom:1px;'><b>⭐ Gifted Hive Bonus ⭐</b><div style='margin-top:-8px'>"+giftedBonusStr+"</div></div>"
 
                 let tokens=[]
