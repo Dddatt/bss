@@ -385,18 +385,14 @@ function BeeSwarmSimulator(DATA){
     let blenderRecipes=[
         
         {item:'microConverter',req:[['honeysuckle',1]]},
-                // {item:'microConverter',req:[['pineapple',1]]},
         {item:'gumdrops',req:[['pineapple',1],['strawberry',1],['blueberry',1],['sunflowerSeed',1]]},
-      //  {item:'moonCharm',req:[['royalJelly',1],['pineapple',2],['gumdrops',2]]},
-                // {item:'ticket',req:[['moonCharm',1]]},
         {item:'redExtract',req:[['strawberry',35],['royalJelly',5]]},
         {item:'blueExtract',req:[['blueberry',35],['royalJelly',5]]},
         {item:'enzymes',req:[['pineapple',35],['royalJelly',5]]},
         {item:'oil',req:[['sunflowerSeed',35],['royalJelly',5]]},
         {item:'glue',req:[['gumdrops',10],['royalJelly',5]]},
         {item:'tropicalDrink',req:[['coconut',5],['oil',1],['enzymes',1]]},
-        // {item:'glitter',req:[['moonCharm',5],['magicBean',1]]},
-                {item:'glitter',req:[['magicBean',2]]},
+        {item:'glitter',req:[['magicBean',2]]},
         {item:'starJelly',req:[['royalJelly',75],['glitter',3]]},
         {item:'purplePotion',req:[['neonberry',3],['redExtract',1],['blueExtract',1],['glue',1]]},
         {item:'superSmoothie',req:[['neonberry',3],['starJelly',1],['purplePotion',1],['tropicalDrink',2]]},
@@ -420,10 +416,8 @@ function BeeSwarmSimulator(DATA){
         {item:'sunflowerSeed',rewardType:'honey',rewardAmount:1.5},
         {item:'bitterberry',rewardType:'winds',rewardAmount:1},
         {item:'neonberry',rewardType:'winds',rewardAmount:1},
-        {item:'moonCharm',rewardType:'winds',rewardAmount:1},
         {item:'royalJelly',rewardType:'honey',rewardAmount:2},
         {item:'starJelly',rewardType:'winds',rewardAmount:6},
-        {item:'moonCharm',rewardType:'winds',rewardAmount:1},
         {item:'starTreat',rewardType:'winds',rewardAmount:14},
         {item:'atomicTreat',rewardType:'winds',rewardAmount:6},
         {item:'ticket',rewardType:'winds',rewardAmount:1.1},
@@ -12179,9 +12173,6 @@ function BeeSwarmSimulator(DATA){
                             case 'spider':
 
                                 amountOfTokens+=7
-                                // dropTable=['treat','treat','treat','pineapple','sunflowerSeed','gumdrops','treat','treat','treat','pineapple','sunflowerSeed','gumdrops','glue','enzymes','oil','fieldDice','ticket','ticket','royalJelly','ticket','royalJelly','moonCharm','moonCharm','magicBean','magicBean','magicBean','magicBean','microConverter','microConverter','microConverter']
-                                // dropAmountTable={treat:[1,1,1,1,5,5,5,10,10,15],enzymes:[1,1,1,1,1,1,1,2,2,3],oil:[1,1,1,1,1,1,1,2,2,3],fieldDice:[1,1,1,1,1,2,2,3],glue:[1,1,1,1,1,1,3,3,5],pineapple:[1,1,1,1,1,1,1,3,3,3,5,5,10],sunflowerSeed:[1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[1,1,1,1,1,1,1,5,5,10],ticket:[1,1,1,1,1,1,1,1,3,3,5],royalJelly:[1,1,1,1,1,1,1,3,3,5],moonCharm:[1,1,1,1,3,3,5],magicBean:[1,1,1,1,1,1,2,2,3,5],microConverter:[1,1,1,1,3,5]}
-
                                 dropTable=['treat','treat','treat','pineapple','sunflowerSeed','gumdrops','treat','treat','treat','pineapple','sunflowerSeed','gumdrops','glue','enzymes','oil','fieldDice','ticket','ticket','royalJelly','ticket','royalJelly','magicBean','magicBean','magicBean','magicBean','microConverter','microConverter','microConverter']
                                 dropAmountTable={treat:[1,1,1,1,5,5,5,10,10,15],enzymes:[1,1,1,1,1,1,1,2,2,3],oil:[1,1,1,1,1,1,1,2,2,3],fieldDice:[1,1,1,1,1,2,2,3],glue:[1,1,1,1,1,1,3,3,5],pineapple:[1,1,1,1,1,1,1,3,3,3,5,5,10],sunflowerSeed:[1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[1,1,1,1,1,1,1,5,5,10],ticket:[1,1,1,1,1,1,1,1,3,3,5],royalJelly:[1,1,1,1,1,1,1,3,3,5],magicBean:[1,1,1,1,1,1,2,2,3,5],microConverter:[1,1,1,1,3,5]}
 
@@ -12191,8 +12182,8 @@ function BeeSwarmSimulator(DATA){
                             case 'werewolf':
 
                                 amountOfTokens+=9
-                                dropTable=['treat','treat','treat','pineapple','sunflowerSeed','gumdrops','treat','treat','treat','pineapple','sunflowerSeed','gumdrops','gumdrops','glue','enzymes','oil','fieldDice','fieldDice','smoothDice','treat','treat','treat','pineapple','sunflowerSeed','gumdrops','treat','treat','treat','pineapple','sunflowerSeed','gumdrops','glue','glue','enzymes','oil','fieldDice','fieldDice','smoothDice','loadedDice','ticket','royalJelly','ticket','royalJelly','ticket','ticket','royalJelly','antPass','moonCharm','moonCharm','magicBean','microConverter','microConverter','microConverter','microConverter']
-                                dropAmountTable={treat:[1,1,1,1,5,5,5,15,20,35],enzymes:[1,1,1,1,1,1,1,2,2,3],oil:[1,1,1,1,1,1,1,2,2,3],fieldDice:[1,1,1,1,1,2,2,3],smoothDice:[1,1,1,1,1,1,1,1,1,1,3],loadedDice:[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3],glue:[1,1,1,1,1,1,1,3,3,5,10,15],pineapple:[1,1,1,1,1,1,3,3,3,5,5,10,15,25],sunflowerSeed:[1,1,1,1,1,1,3,3,3,5,5,10,15,25],gumdrops:[1,1,1,1,1,1,5,5,5,10,10,15],ticket:[1,1,1,1,1,1,3,3,5,10],royalJelly:[1,1,1,1,1,1,3,3,5,10,15],antPass:[1],moonCharm:[1,1,1,1,3,3,5],magicBean:[1,1,1,1,1,2,2,3,5],microConverter:[1,1,1,1,3,5]}
+                                dropTable=['treat','treat','treat','pineapple','sunflowerSeed','gumdrops','treat','treat','treat','pineapple','sunflowerSeed','gumdrops','gumdrops','glue','enzymes','oil','fieldDice','fieldDice','smoothDice','treat','treat','treat','pineapple','sunflowerSeed','gumdrops','treat','treat','treat','pineapple','sunflowerSeed','gumdrops','glue','glue','enzymes','oil','fieldDice','fieldDice','smoothDice','loadedDice','ticket','royalJelly','ticket','royalJelly','ticket','ticket','royalJelly','antPass','magicBean','microConverter','microConverter','microConverter','microConverter']
+                                dropAmountTable={treat:[1,1,1,1,5,5,5,15,20,35],enzymes:[1,1,1,1,1,1,1,2,2,3],oil:[1,1,1,1,1,1,1,2,2,3],fieldDice:[1,1,1,1,1,2,2,3],smoothDice:[1,1,1,1,1,1,1,1,1,1,3],loadedDice:[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3],glue:[1,1,1,1,1,1,1,3,3,5,10,15],pineapple:[1,1,1,1,1,1,3,3,3,5,5,10,15,25],sunflowerSeed:[1,1,1,1,1,1,3,3,3,5,5,10,15,25],gumdrops:[1,1,1,1,1,1,5,5,5,10,10,15],ticket:[1,1,1,1,1,1,3,3,5,10],royalJelly:[1,1,1,1,1,1,3,3,5,10,15],antPass:[1],magicBean:[1,1,1,1,1,2,2,3,5],microConverter:[1,1,1,1,3,5]}
 
                             break
 
@@ -12216,8 +12207,8 @@ function BeeSwarmSimulator(DATA){
 
                                 amountOfTokens+=12
 
-                                dropTable=['treat','treat','treat','treat','treat','redExtract','blueExtract','redExtract','blueExtract','redExtract','blueExtract','gumdrops','ticket','royalJelly','gumdrops','ticket','royalJelly','gumdrops','ticket','royalJelly','microConverter','microConverter','microConverter','fieldDice','fieldDice','fieldDice','smoothDice','smoothDice','loadedDice','antPass','moonCharm','antPass','moonCharm','oil','enzymes','glitter','glue','purplePotion','roboPass','magicBean','magicBean','magicBean','magicBean']
-                                dropAmountTable={treat:[15,15,15,20,25,25,25,50,50,50,50,100,100,100,150,150,175,175,250,350,500],redExtract:[1,1,1,1,1,1,1,3,3,3,5,5,10],blueExtract:[1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[3,3,3,3,5,5,5,15,15,25],ticket:[1,1,1,1,3,3,3,5,5,10],royalJelly:[1,1,3,3,3,3,3,5,5,10],microConverter:[1,1,1,1,1,3,3,5],fieldDice:[1,1,1,1,1,3,3,5],smoothDice:[1,1,1,1,1,1,2,2,2,3],loadedDice:[1],antPass:[1,1,1,1,1,3,3,3,5],moonCharm:[3,3,3,3,5,5,5,15,15,25],oil:[1,1,1,1,1,3,3,5],enzymes:[1,1,1,1,1,3,3,5],glitter:[1,1,1,1,1,3,3,5],glue:[1,1,1,1,1,3,3,5],purplePotion:[1],roboPass:[1,1,1,2],magicBean:[1,1,1,1,1,2,2,3,3,4,5]}
+                                dropTable=['treat','treat','treat','treat','treat','redExtract','blueExtract','redExtract','blueExtract','redExtract','blueExtract','gumdrops','ticket','royalJelly','gumdrops','ticket','royalJelly','gumdrops','ticket','royalJelly','microConverter','microConverter','microConverter','fieldDice','fieldDice','fieldDice','smoothDice','smoothDice','loadedDice','antPass','antPass','oil','enzymes','glitter','glue','purplePotion','roboPass','magicBean','magicBean','magicBean','magicBean']
+                                dropAmountTable={treat:[15,15,15,20,25,25,25,50,50,50,50,100,100,100,150,150,175,175,250,350,500],redExtract:[1,1,1,1,1,1,1,3,3,3,5,5,10],blueExtract:[1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[3,3,3,3,5,5,5,15,15,25],ticket:[1,1,1,1,3,3,3,5,5,10],royalJelly:[1,1,3,3,3,3,3,5,5,10],microConverter:[1,1,1,1,1,3,3,5],fieldDice:[1,1,1,1,1,3,3,5],smoothDice:[1,1,1,1,1,1,2,2,2,3],loadedDice:[1],antPass:[1,1,1,1,1,3,3,3,5],oil:[1,1,1,1,1,3,3,5],enzymes:[1,1,1,1,1,3,3,5],glitter:[1,1,1,1,1,3,3,5],glue:[1,1,1,1,1,3,3,5],purplePotion:[1],roboPass:[1,1,1,2],magicBean:[1,1,1,1,1,2,2,3,3,4,5]}
 
                                 if(Math.random()<0.5){
 
@@ -12243,9 +12234,9 @@ function BeeSwarmSimulator(DATA){
 
                                 amountOfTokens+=14
 
-                                dropTable=['treat','treat','treat','treat','treat','sunflowerSeed','sunflowerSeed','pineapple','pineapple','redExtract','blueExtract','redExtract','blueExtract','redExtract','blueExtract','gumdrops','ticket','royalJelly','gumdrops','ticket','royalJelly','gumdrops','ticket','royalJelly','microConverter','microConverter','microConverter','fieldDice','fieldDice','fieldDice','smoothDice','smoothDice','loadedDice','antPass','moonCharm','antPass','moonCharm','oil','enzymes','glitter','glue','loadedDice','purplePotion','superSmoothie','roboPass','magicBean','magicBean','magicBean','magicBean','magicBean']
+                                dropTable=['treat','treat','treat','treat','treat','sunflowerSeed','sunflowerSeed','pineapple','pineapple','redExtract','blueExtract','redExtract','blueExtract','redExtract','blueExtract','gumdrops','ticket','royalJelly','gumdrops','ticket','royalJelly','gumdrops','ticket','royalJelly','microConverter','microConverter','microConverter','fieldDice','fieldDice','fieldDice','smoothDice','smoothDice','loadedDice','antPass','antPass','oil','enzymes','glitter','glue','loadedDice','purplePotion','superSmoothie','roboPass','magicBean','magicBean','magicBean','magicBean','magicBean']
                                 dropTable=[...dropTable,...dropTable,'giftedSilverEgg','giftedGoldEgg','giftedDiamondEgg']
-                                dropAmountTable={treat:[25,25,25,50,50,50,100,100,250,500,1000,5000,10000],sunflowerSeed:[10,10,15,15,20,20,25,50],pineapple:[10,10,15,15,20,20,25,50],redExtract:[1,1,1,1,1,1,1,3,3,3,5,5,10],blueExtract:[1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[3,3,3,3,5,5,5,15,15,25],ticket:[1,1,1,1,3,3,3,5,5,10],royalJelly:[1,1,3,3,3,3,3,5,5,10],microConverter:[1,1,1,1,1,3,3,5],fieldDice:[1,1,1,1,1,3,3,5],smoothDice:[1,1,1,1,1,1,2,2,2,3],loadedDice:[1],antPass:[1,1,1,1,1,3,3,3,5],moonCharm:[3,3,3,3,5,5,5,15,15,25],oil:[1,1,1,1,1,3,3,5],enzymes:[1,1,1,1,1,3,3,5],glitter:[1,1,1,1,1,3,3,5],glue:[1,1,1,1,1,3,3,5],loadedDice:[1],purplePotion:[1],superSmoothie:[1],giftedSilverEgg:[1],giftedGoldEgg:[1],giftedDiamondEgg:[1],roboPass:[1,1,1,1,1,2,2,3],magicBean:[1,1,1,3,3,5]}
+                                dropAmountTable={treat:[25,25,25,50,50,50,100,100,250,500,1000,5000,10000],sunflowerSeed:[10,10,15,15,20,20,25,50],pineapple:[10,10,15,15,20,20,25,50],redExtract:[1,1,1,1,1,1,1,3,3,3,5,5,10],blueExtract:[1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[3,3,3,3,5,5,5,15,15,25],ticket:[1,1,1,1,3,3,3,5,5,10],royalJelly:[1,1,3,3,3,3,3,5,5,10],microConverter:[1,1,1,1,1,3,3,5],fieldDice:[1,1,1,1,1,3,3,5],smoothDice:[1,1,1,1,1,1,2,2,2,3],loadedDice:[1],antPass:[1,1,1,1,1,3,3,3,5],oil:[1,1,1,1,1,3,3,5],enzymes:[1,1,1,1,1,3,3,5],glitter:[1,1,1,1,1,3,3,5],glue:[1,1,1,1,1,3,3,5],loadedDice:[1],purplePotion:[1],superSmoothie:[1],giftedSilverEgg:[1],giftedGoldEgg:[1],giftedDiamondEgg:[1],roboPass:[1,1,1,1,1,2,2,3],magicBean:[1,1,1,3,3,5]}
 
                             break
                         }
@@ -24775,7 +24766,7 @@ function BeeSwarmSimulator(DATA){
                 name:'comfortingVial',
                 slot:'item',
                 viewMatrix:[-98,26,121-2,Math.PI,0],
-                cost:[n=>Math.floor(Math.min(Math.pow(1.125,n)*1000000,1000000000000))+' honey','5 ticket','5 moonCharm'],
+                cost:[n=>Math.floor(Math.min(Math.pow(1.125,n)*1000000,1000000000000))+' honey','7 ticket'],
                 desc:'Instantly grants 1h of Comforting nectar.'
             },{
 
