@@ -14000,7 +14000,8 @@ function BeeSwarmSimulator(DATA){
 
             if(!isAllWaitingAir){
 
-                let tt='moonCharm'
+                let tt='starTreat'
+                //let tt='moonCharm'
 
                 if(Math.random()<0.07) tt=Math.random()<0.1?'starJelly':'glitter'
 
