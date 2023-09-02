@@ -44,7 +44,8 @@ function main(){
             }
         })
     }
-    
+
+    // CHQ: found where the code to save progress is
     async function saveToDB(id, data) {
     
         return new Promise(async (resolve, reject) => {
@@ -383,15 +384,19 @@ function BeeSwarmSimulator(DATA){
 
     let blenderRecipes=[
         
+        {item:'microConverter',req:[['honeysuckle',1]]},
+                // {item:'microConverter',req:[['pineapple',1]]},
         {item:'gumdrops',req:[['pineapple',1],['strawberry',1],['blueberry',1],['sunflowerSeed',1]]},
-        {item:'moonCharm',req:[['royalJelly',1],['pineapple',2],['gumdrops',2]]},
+      //  {item:'moonCharm',req:[['royalJelly',1],['pineapple',2],['gumdrops',2]]},
+                // {item:'ticket',req:[['moonCharm',1]]},
         {item:'redExtract',req:[['strawberry',35],['royalJelly',5]]},
         {item:'blueExtract',req:[['blueberry',35],['royalJelly',5]]},
         {item:'enzymes',req:[['pineapple',35],['royalJelly',5]]},
         {item:'oil',req:[['sunflowerSeed',35],['royalJelly',5]]},
         {item:'glue',req:[['gumdrops',10],['royalJelly',5]]},
         {item:'tropicalDrink',req:[['coconut',5],['oil',1],['enzymes',1]]},
-        {item:'glitter',req:[['moonCharm',5],['magicBean',1]]},
+        // {item:'glitter',req:[['moonCharm',5],['magicBean',1]]},
+                {item:'glitter',req:[['magicBean',2]]},
         {item:'starJelly',req:[['royalJelly',75],['glitter',3]]},
         {item:'purplePotion',req:[['neonberry',3],['redExtract',1],['blueExtract',1],['glue',1]]},
         {item:'superSmoothie',req:[['neonberry',3],['starJelly',1],['purplePotion',1],['tropicalDrink',2]]},
@@ -507,7 +512,7 @@ function BeeSwarmSimulator(DATA){
         itemSVGCode[name]='<svg style="width:70px;height:70px;transform:SCALE">'+(itemSVGCode[name][itemSVGCode[name].length-1]).substr(0,itemSVGCode[name][itemSVGCode[name].length-1].indexOf('</svg>'))+'<title>'+MATH.doGrammar(name)+'</title></svg>'
     }
 
-    // CHQ: hartbarSlots are activated by mouse - one must click and drag mouse to respective location
+    // CHQ: hotbarSlots are activated by mouse - one must click and drag mouse to respective location
     for(let i in hotbarSlots){
         
         hotbarSlots[i].onmousedown=function(){
@@ -725,6 +730,7 @@ function BeeSwarmSimulator(DATA){
                 
                 SAVE_GAME()
                 player.addMessage('Game Saved!')
+                console.error('\n\n\n\n\nGame manually saved on ' + Date.now()+'\n\n\n\n\n');
             }
 
             document.getElementById('resetChar').onclick=function(){
@@ -9196,7 +9202,8 @@ function BeeSwarmSimulator(DATA){
         if(beeInfo[i].rarity==='event'){
 
             let id=i+'BeeEgg'
-            
+
+            // CHQ: Label for eggs in inventory
             pages[0].innerHTML+="<svg id='"+id+"' style='width:200px;height:70px;cursor:pointer;border-radius:5px'><rect width='200' height='70' fill='rgb(255,255,255)'></rect><rect width='70' height='70' fill='rgb(225,225,225)'></rect><text x='132' y='18' style='font-family:trebuchet ms;font-size:16.5px;' fill='rgb(0,0,0)' text-anchor='middle'>"+MATH.doGrammar(i)+" Bee Egg</text><text x='132' y='39' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>A permanent egg that</text><text x='130' y='53' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>always hatches into</text><text x='132' y='66' style='font-family:trebuchet ms;font-size:12px;' fill='rgb(0,0,0)' text-anchor='middle'>a "+MATH.doGrammar(i)+" Bee!</text><text id='"+id+"_amount' x='67' y='67' style='font-family:calibri;font-size:14px;' fill='rgb(0,0,0)' text-anchor='end'></text><path fill='rgb(255,255,0)' stroke='rgb(0,0,0)' stroke-width='1.5' d='M35 15C 20 17 10 55 35 55M35 15C 50 17 60 55 35 55'></path><path fill='rgb(0,0,0)' d='M20 30 C 20 40 50 40 50 30L50 40C50 50 20 50 20 40'></path><path fill='rgb(0,0,0,0.3)' d='M47 25C 57 56 35 60 23 50C 32 48 41 50 50 35'></path></svg>"
 
             items[i+'BeeEgg']={
@@ -12172,9 +12179,13 @@ function BeeSwarmSimulator(DATA){
                             case 'spider':
 
                                 amountOfTokens+=7
-                                dropTable=['treat','treat','treat','pineapple','sunflowerSeed','gumdrops','treat','treat','treat','pineapple','sunflowerSeed','gumdrops','glue','enzymes','oil','fieldDice','ticket','ticket','royalJelly','ticket','royalJelly','moonCharm','moonCharm','magicBean','magicBean','magicBean','magicBean','microConverter','microConverter','microConverter']
-                                dropAmountTable={treat:[1,1,1,1,5,5,5,10,10,15],enzymes:[1,1,1,1,1,1,1,2,2,3],oil:[1,1,1,1,1,1,1,2,2,3],fieldDice:[1,1,1,1,1,2,2,3],glue:[1,1,1,1,1,1,3,3,5],pineapple:[1,1,1,1,1,1,1,3,3,3,5,5,10],sunflowerSeed:[1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[1,1,1,1,1,1,1,5,5,10],ticket:[1,1,1,1,1,1,1,1,3,3,5],royalJelly:[1,1,1,1,1,1,1,3,3,5],moonCharm:[1,1,1,1,3,3,5],magicBean:[1,1,1,1,1,1,2,2,3,5],microConverter:[1,1,1,1,3,5]}
+                                // dropTable=['treat','treat','treat','pineapple','sunflowerSeed','gumdrops','treat','treat','treat','pineapple','sunflowerSeed','gumdrops','glue','enzymes','oil','fieldDice','ticket','ticket','royalJelly','ticket','royalJelly','moonCharm','moonCharm','magicBean','magicBean','magicBean','magicBean','microConverter','microConverter','microConverter']
+                                // dropAmountTable={treat:[1,1,1,1,5,5,5,10,10,15],enzymes:[1,1,1,1,1,1,1,2,2,3],oil:[1,1,1,1,1,1,1,2,2,3],fieldDice:[1,1,1,1,1,2,2,3],glue:[1,1,1,1,1,1,3,3,5],pineapple:[1,1,1,1,1,1,1,3,3,3,5,5,10],sunflowerSeed:[1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[1,1,1,1,1,1,1,5,5,10],ticket:[1,1,1,1,1,1,1,1,3,3,5],royalJelly:[1,1,1,1,1,1,1,3,3,5],moonCharm:[1,1,1,1,3,3,5],magicBean:[1,1,1,1,1,1,2,2,3,5],microConverter:[1,1,1,1,3,5]}
 
+                                dropTable=['treat','treat','treat','pineapple','sunflowerSeed','gumdrops','treat','treat','treat','pineapple','sunflowerSeed','gumdrops','glue','enzymes','oil','fieldDice','ticket','ticket','royalJelly','ticket','royalJelly','magicBean','magicBean','magicBean','magicBean','microConverter','microConverter','microConverter']
+                                dropAmountTable={treat:[1,1,1,1,5,5,5,10,10,15],enzymes:[1,1,1,1,1,1,1,2,2,3],oil:[1,1,1,1,1,1,1,2,2,3],fieldDice:[1,1,1,1,1,2,2,3],glue:[1,1,1,1,1,1,3,3,5],pineapple:[1,1,1,1,1,1,1,3,3,3,5,5,10],sunflowerSeed:[1,1,1,1,1,1,1,3,3,3,5,5,10],gumdrops:[1,1,1,1,1,1,1,5,5,10],ticket:[1,1,1,1,1,1,1,1,3,3,5],royalJelly:[1,1,1,1,1,1,1,3,3,5],magicBean:[1,1,1,1,1,1,2,2,3,5],microConverter:[1,1,1,1,3,5]}
+
+                                
                             break
 
                             case 'werewolf':
@@ -20145,6 +20156,7 @@ function BeeSwarmSimulator(DATA){
             if(!out.roboChallenge.questCompleted)
                 out.roboChallenge.timer-=dt
 
+            // CHQ: Robo challenge can only end when the time runs out, not even the player dying will end the game
             if(out.roboChallenge.timer<=0&&out.roboChallenge.isPlaying){
 
                 out.endRoboChallenge()
@@ -20674,6 +20686,8 @@ function BeeSwarmSimulator(DATA){
                     document.getElementById('roboActiveBees').innerHTML=''
                     document.getElementById('roboActiveBees').style.display='block'
 
+                    // CHQ: Draw the active bees in the robo challenge on the canvas that displays active bees for the challenge
+                    // note: still need to find where active bees are reset after the challenge ends
                     for(let i in out.roboChallenge.activeBees){
 
                         let b=out.roboChallenge.activeBees[i]
@@ -22245,6 +22259,7 @@ function BeeSwarmSimulator(DATA){
                     col[i]='rgb('+color[0]+','+color[1]+','+color[2]+')'
                 }
 
+                // CHQ: Label for bee description in bee page
                 pages[2].innerHTML+="<div style='margin-left:3px;margin-top:-118px;width:188px;height:26px;background-color:rgb(245,235,90);border-radius:2px;padding-left:3px;padding-top:2px;font-family:trebuchet ms;font-size:19px;text-align:center'><div style='position:absolute;left:8px;top:7px;width:20px;height:20px;font-size:19px;background-color:rgb(255,0,0);cursor:pointer;border:2px solid black;border-radius:4px;padding-top:0px'><div style='margin-top:-3px' onclick='window.exitBeesPageBee()'>x</div></div>&nbsp;&nbsp;"+MATH.doGrammar(out.beesPageBee)+" Bee</div><div style='margin-left:90px;margin-top:5px;width:103px;height:16px;background-color:rgb(230,220,150);border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center'>"+MATH.doGrammar(beeInfo[out.beesPageBee].rarity)+"</div><div style='margin-left:90px;margin-top:3px;width:103px;height:16px;background-color:rgb(230,220,150);border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center'>"+MATH.doGrammar(beeInfo[out.beesPageBee].color)+"</div><div style='margin-left:90px;margin-top:3px;width:103px;height:16px;background-color:"+col[0]+";border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center'>Energy: "+beeInfo[out.beesPageBee].energy+"</div><div style='margin-left:90px;margin-top:3px;width:103px;height:16px;background-color:"+col[1]+";border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center'>Speed: "+beeInfo[out.beesPageBee].speed+"</div><div style='margin-left:90px;margin-top:3px;width:103px;height:16px;background-color:"+col[2]+";border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center'>Attack: "+beeInfo[out.beesPageBee].attack+"</div><div style='margin-left:0px;margin-top:-15px;width:90px;height:16px;background-color:rgb(0,0,0,0);border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center'><b>x"+count+"</b>"+(gifted?'&nbsp;&nbsp;&nbsp;&nbsp;⭐':'')+"</div><div style='margin-left:5px;margin-top:5px;width:188px;height:16px;background-color:"+col[3]+";border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center;padding-top:1px;padding-bottom:1px;'>Collects "+beeInfo[out.beesPageBee].gatherAmount+" pollen in "+beeInfo[out.beesPageBee].gatherSpeed+"s</div><div style='margin-left:5px;margin-top:3px;width:188px;height:16px;background-color:"+col[4]+";border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center;padding-top:1px;padding-bottom:1px;'>Makes "+beeInfo[out.beesPageBee].convertAmount+" honey in "+beeInfo[out.beesPageBee].convertSpeed+"s</div><div style='margin-left:5px;margin-top:3px;width:188px;background-color:rgb(230,220,150);border-radius:2px;padding-left:3px;font-family:trebuchet ms;font-size:13px;text-align:center;padding-top:1px;padding-bottom:1px;'><b>⭐ Gifted Hive Bonus ⭐</b><div style='margin-top:-8px'>"+giftedBonusStr+"</div></div>"
 
                 let tokens=[]
@@ -25121,6 +25136,8 @@ function BeeSwarmSimulator(DATA){
     }
 
     let user=(function(out){
+
+        let cameraRotationSpeed = 0.12;
         
         out.mouseX=0
         out.mouseY=0
@@ -25212,9 +25229,10 @@ function BeeSwarmSimulator(DATA){
                 }
                 
             } else {
-                
-                if(!player.pointerLocked)
-                    uiCanvas.requestPointerLock()
+
+                // CHQ: stop the pointer lock, which intereferes with menu selection
+                // if(!player.pointerLocked)
+                    // uiCanvas.requestPointerLock()
             }
             
         }
@@ -25231,19 +25249,47 @@ function BeeSwarmSimulator(DATA){
             out.mouseY=e.y
             
             if(player.pointerLocked){
-                
-                player.yaw+=e.movementX*player.sensitivity
-                player.pitch=MATH.constrain(player.pitch-e.movementY*player.sensitivity,-MATH.HALF_PI,MATH.HALF_PI)
+                // CHQ: disabling the camera panning based on mouse capture
+                // player.yaw+=e.movementX*player.sensitivity
+                // player.pitch=MATH.constrain(player.pitch-e.movementY*player.sensitivity,-MATH.HALF_PI,MATH.HALF_PI)
             }
         }
         
+        // CHQ: keys to press for certain displays
         document.onkeydown=function(e){
-            
+
+            // 38 - up arrow
+            // 40 - down
+            // 37 - left
+            // 39 - right
+           
             out.keys[e.key.toLowerCase()]=true
             out.clickedKeys[e.key.toLowerCase()]=true
-            
+
+            if(e.keyCode == '38')
+            {
+                player.pitch-=(cameraRotationSpeed/2);
+            }
+            else if(e.keyCode == '40')
+            {
+                player.pitch+=(cameraRotationSpeed/2);
+            }
+            if(e.keyCode == '37')
+            {
+                player.yaw-=cameraRotationSpeed;
+            }
+            else if(e.keyCode == '39')
+            {
+                player.yaw+=cameraRotationSpeed;
+            }
+             
+             
             if(e.key==='i') inventoryButton.onclick()
             if(e.key==='q') questButton.onclick()
+            if(e.key==='b') beesButton.onclick()
+            
+            if(e.key==='n') beequipButton.onclick()
+            if(e.key==='p') settingsButton.onclick()
 
             if(player.currentMachineTrigger&&e.key==='e') player.currentMachineTrigger.func(player)
         }
@@ -29927,7 +29973,6 @@ function BeeSwarmSimulator(DATA){
         }
     }
 
-    // CHQ: This is the function that saves the game
     function SAVE_GAME(){
 
         let code=GENERATE_SAVE_CODE()
@@ -30004,9 +30049,11 @@ function BeeSwarmSimulator(DATA){
         
     },false)
 
-    uiCanvas.requestPointerLock()
 
-    window.setInterval(()=>{SAVE_GAME();player.addMessage('Game Autosaved!')},30000)
+    // CHQ: stop the pointer lock, which intereferes with menu selection
+    // uiCanvas.requestPointerLock()
+
+    window.setInterval(()=>{SAVE_GAME();player.addMessage('Game Autosaved!'); console.error('\n\n\n\n\nGame automatically saved on ' + Date.now()+'\n\n\n\n\n');},30000)
 
     function setGlobalPuffshroomSpawn(){
 
@@ -30628,4 +30675,3 @@ function BeeSwarmSimulator(DATA){
 }
 
 console.log=0
-
