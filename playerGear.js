@@ -512,7 +512,7 @@ window.playerGear={
 
             },
             desc:'A playful hat that keeps the sun out of your eyes.<br><br>x1.2 pollen<br>x1.05 bee ability rate<br>+10% defense<br>x1.1 jump power',
-            cost:['2500000 honey','15 gumdrops','10 pineapple','1 moonCharm'],
+            cost:['2500000 honey','15 gumdrops','10 pineapple'],
         },
 
         beekeeperMask:{
@@ -1453,7 +1453,7 @@ window.playerGear={
                 stats.beeSpeed*=1.07
             },
             desc:'A right shoulder pad crafted by a Hasty Bee.<br><br>+15,000 capacity<br>x1.07 movespeed<br>x1.07 bee speed',
-            cost:['100000 honey','1 moonCharm'],
+            cost:['100000 honey','1 pineapple'],
         },
 
         braveGuard:{
@@ -1491,7 +1491,7 @@ window.playerGear={
                 stats.instantBlueConversion=window.applyPercentage(stats.instantBlueConversion,0.03)
             },
             desc:'A durable pad worn on the right shoulder of blue beekeepers.<br><br>+25,000 capacity<br>x1.1 blue pollen<br>x1.1 convert rate<br>+3% instant blue conversion<br>+1 blue bee attack',
-            cost:['1000000 honey','30 blueberry','1 royalJelly','1 moonCharm'],
+            cost:['1000000 honey','30 blueberry','1 royalJelly','1 pineapple'],
         },
 
         eliteBlueGuard:{
@@ -1514,7 +1514,7 @@ window.playerGear={
                 stats.criticalPower+=0.5
             },
             desc:'A blue guard reserved for the most dedicated blue beekeepers.<br><br>+75,000 capacity<br>x1.15 blue pollen<br>x1.15 convert rate<br>+5% instant blue conversion<br>+50% critical power<br>+1 blue bee attack',
-            cost:['3500000 honey','1 blueExtract','50 blueberry','3 royalJelly','3 moonCharm'],
+            cost:['3500000 honey','1 blueExtract','50 blueberry','3 royalJelly'],
         },
 
         buckoGuard:{
@@ -1537,7 +1537,7 @@ window.playerGear={
                 stats.criticalPower+=0.75
             },
             desc:'A piece of armor forged by the leader of blue bees!<br><br>+150,000 capacity<br>x1.25 blue pollen<br>x1.25 convert rate<br>+10% instant blue conversion<br>+75% critical power<br>+2 blue bee attack',
-            cost:['20000000 honey','5 blueExtract','100 blueberry','1 glue','5 moonCharm'],
+            cost:['20000000 honey','5 blueExtract','200 blueberry','1 glue'],
         },
 
         cobaltGuard:{
