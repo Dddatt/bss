@@ -21022,35 +21022,51 @@ function BeeSwarmSimulator(DATA){
 
             document.getElementById('newAmuletStats').innerHTML=amulet.map(x=>x.split(' ')[0]+' '+MATH.doGrammar(x.split(' ')[1].replace('INSTANT_CONVERSION','instantConversion').replace('POLLEN','pollen'))).map(x=>x[0]==='+'?'+'+((Number(x.substr(1,x.indexOf(' ')))*100)|0)+'%'+x.substr(x.indexOf(' '),x.length):x).join('<br>').replaceAll('*','x').replace(' Multiplier','').replaceAll(' Passive','').replaceAll('P ','Passive: ')
 
+            
+            document.getElementById('cancelAmuletChange').onclick=function(){
+
+                document.getElementById('amuletUIWarn').style.display='none'
+            }
+            
+            document.getElementById('confirmReplaceAmulet').onclick=function(){
+
+                document.getElementById('amuletUIWarn').style.display='none'
+            }
+            
             document.getElementById('keepAmulet').onclick=function(){
 
                 document.getElementById('amuletUI').style.display='none'
             }
             
             document.getElementById('replaceAmulet').onclick=function(){
-
                 document.getElementById('amuletUI').style.display='none'
-                
-                let isOfType=type.indexOf('Star')>-1?'Star':0
-                isOfType=isOfType||(type.indexOf('Ant')>-1?'Ant':0)
-                isOfType=isOfType||(type.indexOf('Stickbug')>-1?'Stickbug':0)
-                isOfType=isOfType||(type.indexOf('Shell')>-1?'Shell':0)
-                isOfType=isOfType||(type.indexOf('Cog')>-1?'Cog':0)
-
-                if(isOfType){
-
-                    for(let i in out.currentGear){
-
-                        if(i.indexOf('Amulet')>-1&&i.indexOf(isOfType)>-1){
-
-                            delete out.currentGear[i]
-                        }
-                    }
-                }
-
-                out.currentGear[type]=final
-                out.updateGear()
+                document.getElementById('amuletUIWarn').style.display='block'
             }
+            
+            // document.getElementById('replaceAmulet').onclick=function(){
+
+            //     document.getElementById('amuletUI').style.display='none'
+                
+            //     let isOfType=type.indexOf('Star')>-1?'Star':0
+            //     isOfType=isOfType||(type.indexOf('Ant')>-1?'Ant':0)
+            //     isOfType=isOfType||(type.indexOf('Stickbug')>-1?'Stickbug':0)
+            //     isOfType=isOfType||(type.indexOf('Shell')>-1?'Shell':0)
+            //     isOfType=isOfType||(type.indexOf('Cog')>-1?'Cog':0)
+
+            //     if(isOfType){
+
+            //         for(let i in out.currentGear){
+
+            //             if(i.indexOf('Amulet')>-1&&i.indexOf(isOfType)>-1){
+
+            //                 delete out.currentGear[i]
+            //             }
+            //         }
+            //     }
+
+            //     out.currentGear[type]=final
+            //     out.updateGear()
+            // }
         }
 
         out.sunSwitchTimer=5*60
