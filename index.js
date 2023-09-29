@@ -21036,8 +21036,8 @@ function BeeSwarmSimulator(DATA){
             }
             
             document.getElementById('replaceAmulet').onclick=function(){
-                document.getElementById('amuletUI').style.display='none'
                 document.getElementById('amuletUIWarn').style.display='block'
+                //document.getElementById('amuletUI').style.display='none'
             }
             
             document.getElementById('confirmReplaceAmulet').onclick=function(){
