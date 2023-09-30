@@ -22335,7 +22335,7 @@ function BeeSwarmSimulator(DATA){
 
             } else {
 
-                pages[2].innerHTML='<div style="margin-top:3px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">You have '+objects.bees.length+' bees</div><div style="margin-top:3px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">Discovered '+out.discoveredBees.length+' bee types</div><div style="margin-top:2px;margin-bottom:5px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">Discovered '+out.discoveredGifteds.length+' gifted types</div>'
+                pages[2].innerHTML='<div style="margin-top:3px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">You have '+objects.bees.length+' bees</div><div style="margin-top:3px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">Discovered '+out.discoveredBees.length+' bee types</div><div style="margin-top:2px;margin-bottom:5px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">Discovered '+out.discoveredGifteds.length+' gifted types</div><div style="margin-top:2px;margin-bottom:5px;background-color:rgb(240,20,20);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">Red: '+out.beeColorAmounts.r+' | Blue: '+out.beeColorAmounts.b+' | White: '+out.beeColorAmounts.w+'</div>'
 
                 let sortedBeeInfo={},unsorted=[]
 
