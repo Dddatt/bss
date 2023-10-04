@@ -21926,7 +21926,17 @@ function BeeSwarmSimulator(DATA){
             out.ownsCobaltBee=false
             out.cloudBoostAmount=1.15
             out.beeColorAmounts={r:0,b:0,w:0}
-            out.beeRarityAmounts={"common":0,"rare":0,"epic":0,"legendary":0,"mythic":0}
+
+            out.beeRarityAmounts = new Map();
+
+            out.beeRarityAmounts.set("common", 0);
+            out.beeRarityAmounts.set("rare", 0);// = numRare;
+            out.beeRarityAmounts.set("epic", 0);// = numRare;[e] = numEpic;
+            out.beeRarityAmounts.set("legendary", 0);// = numRare;[e] = numEpic;[l] = numLegendary;
+            out.beeRarityAmounts.set("mythic", 0);// = numRare;[m] = numMythic;
+            
+
+            // out.beeRarityAmounts={"common":0,"rare":0,"epic":0,"legendary":0,"mythic":0}
             
             for(let i=0;i<20;i++)
                 out.stats['beesToLevel'+i]=0
