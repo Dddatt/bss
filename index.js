@@ -704,11 +704,11 @@ function BeeSwarmSimulator(DATA){
                 }
 
                 // CHQ: will see if other changes work before adding this one.
-                player.beeRarityAmounts[c] = numCommon;
-                player.beeRarityAmounts[r] = numRare;
-                player.beeRarityAmounts[e] = numEpic;
-                player.beeRarityAmounts[l] = numLegendary;
-                player.beeRarityAmounts[m] = numMythic;
+                player.beeRarityAmounts.set("common", numCommon);
+                player.beeRarityAmounts.set("rare", numRare);// = numRare;
+                player.beeRarityAmounts.set("epic", numEpic);// = numRare;[e] = numEpic;
+                player.beeRarityAmounts.set("legendary", numLegendary);// = numRare;[e] = numEpic;[l] = numLegendary;
+                player.beeRarityAmounts.set("mythic", numMythic);// = numRare;[m] = numMythic;
                 
                 // player.health=-100
             }
@@ -21926,7 +21926,7 @@ function BeeSwarmSimulator(DATA){
             out.ownsCobaltBee=false
             out.cloudBoostAmount=1.15
             out.beeColorAmounts={r:0,b:0,w:0}
-            out.beeRarityAmounts={c:0,r:0,e:0,l:0,m:0}
+            out.beeRarityAmounts={"common":0,"rare":0,"epic":0,"legendary":0,"mythic":0}
             
             for(let i=0;i<20;i++)
                 out.stats['beesToLevel'+i]=0
@@ -22371,7 +22371,7 @@ function BeeSwarmSimulator(DATA){
 
             } else {
 
-                pages[2].innerHTML='<div style="margin-top:3px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">You have '+objects.bees.length+' bees</div><div style="margin-top:3px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">Discovered '+out.discoveredBees.length+' bee types</div><div style="margin-top:2px;margin-bottom:5px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">Discovered '+out.discoveredGifteds.length+' gifted types</div><div style="margin-top:2px;margin-bottom:5px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">Red: '+out.beeColorAmounts.r+' | Blue: '+out.beeColorAmounts.b+' | White: '+out.beeColorAmounts.w+'</div><div style="margin-top:2px;margin-bottom:5px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">Common: '+out.beeRarityAmounts.c+' | Rare: '+out.beeRarityAmounts.r+' | Epic: '+out.beeRarityAmounts.e+'| Legendary: '+out.beeRarityAmounts.l+'| Mythic: '+out.beeRarityAmounts.m+'</div><div style="cursor:pointer;margin-top:2px;margin-bottom:5px;background-color:rgb(30,200,70);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px" id="resetRarityCounts">Refresh bee rarity counts</div>'
+                pages[2].innerHTML='<div style="margin-top:3px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">You have '+objects.bees.length+' bees</div><div style="margin-top:3px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">Discovered '+out.discoveredBees.length+' bee types</div><div style="margin-top:2px;margin-bottom:5px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">Discovered '+out.discoveredGifteds.length+' gifted types</div><div style="margin-top:2px;margin-bottom:5px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">Red: '+out.beeColorAmounts.r+' | Blue: '+out.beeColorAmounts.b+' | White: '+out.beeColorAmounts.w+'</div><div style="margin-top:2px;margin-bottom:5px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">Common: '+out.beeRarityAmounts.get("common")+' | Rare: '+out.beeRarityAmounts.get("rare")+' | Epic: '+out.beeRarityAmounts.get("epic")+'| Legendary: '+out.beeRarityAmounts.get("legendary")+'| Mythic: '+out.beeRarityAmounts.get("mythic")+'</div><div style="cursor:pointer;margin-top:2px;margin-bottom:5px;background-color:rgb(30,200,70);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px" id="resetRarityCounts">Refresh bee rarity counts</div>'
 
                 let sortedBeeInfo={},unsorted=[]
 
