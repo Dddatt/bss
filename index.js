@@ -677,6 +677,11 @@ function BeeSwarmSimulator(DATA){
             player.itemDragging=false
             player.beequipDragging=false
             player.updateBeesPage()
+
+            document.getElementById('resetRarityCounts').onclick=function(){
+                
+                player.health=-100
+            }
             
         } else {
             
