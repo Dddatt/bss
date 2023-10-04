@@ -679,8 +679,38 @@ function BeeSwarmSimulator(DATA){
             player.updateBeesPage()
 
             document.getElementById('resetRarityCounts').onclick=function(){
+
+                // let numBees=0
+
+                let numCommon = 0;
+                let numRare = 0;
+                let numEpic = 0;
+                let numLegendary = 0;
+                let numMythic = 0;
+
+                for(let i in objects.bees){
+                    if(beeInfo[objects.bees[i].type].rarity==='common')
+                    {++numCommon;} 
+                    else if(beeInfo[objects.bees[i].type].rarity==='rare')
+                    {++numRare;} 
+                    else if(beeInfo[objects.bees[i].type].rarity==='epic')
+                    {++numEpic;} 
+                    else if(beeInfo[objects.bees[i].type].rarity==='legendary')
+                    {++numLegendary;} 
+                    else if(beeInfo[objects.bees[i].type].rarity==='mythic')
+                    {++numMythic;}    
+                    
+                    // if(beeInfo[objects.bees[i].type].color==='red') numBees++
+                }
+
+                // CHQ: will see if other changes work before adding this one.
+                // player.beeRarityAmounts[c] = numCommon;
+                // player.beeRarityAmounts[r] = numRare;
+                // player.beeRarityAmounts[e] = numEpic;
+                // player.beeRarityAmounts[l] = numLegendary;
+                // player.beeRarityAmounts[m] = numMythic;
                 
-                player.health=-100
+                // player.health=-100
             }
             
         } else {
@@ -21896,6 +21926,7 @@ function BeeSwarmSimulator(DATA){
             out.ownsCobaltBee=false
             out.cloudBoostAmount=1.15
             out.beeColorAmounts={r:0,b:0,w:0}
+            out.beeRarityAmounts={c:0,r:0,e:0,l:0,m:0}
             
             for(let i=0;i<20;i++)
                 out.stats['beesToLevel'+i]=0
@@ -22340,7 +22371,7 @@ function BeeSwarmSimulator(DATA){
 
             } else {
 
-                pages[2].innerHTML='<div style="margin-top:3px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">You have '+objects.bees.length+' bees</div><div style="margin-top:3px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">Discovered '+out.discoveredBees.length+' bee types</div><div style="margin-top:2px;margin-bottom:5px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">Discovered '+out.discoveredGifteds.length+' gifted types</div><div style="margin-top:2px;margin-bottom:5px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">Red: '+out.beeColorAmounts.r+' | Blue: '+out.beeColorAmounts.b+' | White: '+out.beeColorAmounts.w+'</div><div style="cursor:pointer;margin-top:2px;margin-bottom:5px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px" id="resetRarityCounts">Refresh bee rarity counts</div>'
+                pages[2].innerHTML='<div style="margin-top:3px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">You have '+objects.bees.length+' bees</div><div style="margin-top:3px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">Discovered '+out.discoveredBees.length+' bee types</div><div style="margin-top:2px;margin-bottom:5px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">Discovered '+out.discoveredGifteds.length+' gifted types</div><div style="margin-top:2px;margin-bottom:5px;background-color:rgb(240,240,240);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px">Red: '+out.beeColorAmounts.r+' | Blue: '+out.beeColorAmounts.b+' | White: '+out.beeColorAmounts.w+'</div><div style="cursor:pointer;margin-top:2px;margin-bottom:5px;background-color:rgb(30,200,70);text-align:center;font-size:15px;border-radius:8px;font-family:trebuchet ms;padding:3px" id="resetRarityCounts">Refresh bee rarity counts</div>'
 
                 let sortedBeeInfo={},unsorted=[]
 
