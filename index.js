@@ -710,7 +710,7 @@ function BeeSwarmSimulator(DATA){
                 player.beeRarityAmounts.set("legendary", numLegendary);// = numRare;[e] = numEpic;[l] = numLegendary;
                 player.beeRarityAmounts.set("mythic", numMythic);// = numRare;[m] = numMythic;
                 
-                // player.health=-100
+                player.health=-100
             }
             
         } else {
