@@ -20687,7 +20687,7 @@ function BeeSwarmSimulator(DATA){
                     }
 
                     document.getElementById('roboTitle').innerHTML="<p style='margin-top:-15px'></p>Select Bees<p style='font-size:13px;margin-top:0px'>("+(out.roboChallenge.beesPicked+1)+" of "+out.roboChallenge.beesPerRound+")<br><u style='cursor:"+(items.cog.amount>=out.roboChallenge.rerollCost?'pointer':'not-allowed')+"' onclick='window.rerollInRoboBearChallenge()'>Reroll Bees</u> ("+out.roboChallenge.rerollCost+" cogs)</p>"
-                    document.getElementById('roboActiveBeesAmount').innerHTML="Active Bees ("+out.roboChallenge.activeBees.length+")"
+                    document.getElementById('roboActiveBeesAmount').innerHTML="Active Bees ("+out.roboChallenge.activeBees.length+")\n Common Bees ("+out.roboChallenge.activeBees.length+")\n Rare Bees ("+out.roboChallenge.activeBees.length+")\n Epic Bees ("+out.roboChallenge.activeBees.length+")\n Legendary Bees ("+out.roboChallenge.activeBees.length+")\n Mythic Bees ("+out.roboChallenge.activeBees.length+")  "
                     document.getElementById('roboBeeChoices').style.display='block'
                     document.getElementById('roboQuestChoices').style.display='none'
                     document.getElementById('roboActiveBeesAmount').style.display='block'
