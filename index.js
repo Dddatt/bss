@@ -19968,6 +19968,9 @@ function BeeSwarmSimulator(DATA){
 
             let amulet=[],t
 
+            // CHQ: This part determines what medal you are awarded from the RoboChallenge
+
+            //prev_type - the old medal type
             if(out.roboChallenge.round>=5) t='bronze'
             if(out.roboChallenge.round>=10) t='silver'
             if(out.roboChallenge.round>=15) t='gold'
@@ -20638,6 +20641,7 @@ function BeeSwarmSimulator(DATA){
                                 am=am*MATH.random(0.15,0.4)
                             }
 
+                            // CHQ: I think this is what determines how many cogs can be awarded based on the quest you choose
                             if(re[j]==='pollen'){
 
                                 am*=1.25
@@ -20780,6 +20784,8 @@ function BeeSwarmSimulator(DATA){
 
                         document.getElementById('roboBeeChoice'+(i+1)).onclick=function(){
 
+                            // CHQ: hint for how to fix problem of the bees not waking up: 
+                            // more comments to come
                             out.roboChallenge.activeBees.push([Number(_bee[0]),Number(_bee[1])])
                             out.roboChallenge.beesPicked++
                             out.updateRoboUI()
@@ -20805,6 +20811,9 @@ function BeeSwarmSimulator(DATA){
             }
         }
 
+
+        // CHQ: This determines the conditions of the game for each round of RoboChallenge, including how
+        // many bees and which of them will be awake.
         window.roboStartRound=out.startRoboChallenge
         window.roboSkipBeePage=function(){
 
@@ -21001,6 +21010,7 @@ function BeeSwarmSimulator(DATA){
             document.getElementById('amuletUI').style.display='block'
             document.getElementById('amuletType').innerHTML=MATH.doGrammar(type)
 
+            // CHQ: This line shows the benefits that the current line gives you
             let uncleaned=player.currentGear[prev_type]?player.currentGear[prev_type].split(','):[],cleaned=[]
 
             for(let i in uncleaned){
