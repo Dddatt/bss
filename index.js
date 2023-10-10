@@ -678,40 +678,7 @@ function BeeSwarmSimulator(DATA){
             player.beequipDragging=false
             player.updateBeesPage()
 
-            document.getElementById('resetRarityCounts').onclick=function(){
 
-                // let numBees=0
-
-                let numCommon = 0;
-                let numRare = 0;
-                let numEpic = 0;
-                let numLegendary = 0;
-                let numMythic = 0;
-
-                for(let i in objects.bees){
-                    if(beeInfo[objects.bees[i].type].rarity==='common')
-                    {++numCommon;} 
-                    else if(beeInfo[objects.bees[i].type].rarity==='rare')
-                    {++numRare;} 
-                    else if(beeInfo[objects.bees[i].type].rarity==='epic')
-                    {++numEpic;} 
-                    else if(beeInfo[objects.bees[i].type].rarity==='legendary')
-                    {++numLegendary;} 
-                    else if(beeInfo[objects.bees[i].type].rarity==='mythic')
-                    {++numMythic;}    
-                    
-                    // if(beeInfo[objects.bees[i].type].color==='red') numBees++
-                }
-
-                // CHQ: will see if other changes work before adding this one.
-                player.beeRarityAmounts.set("common", numCommon);
-                player.beeRarityAmounts.set("rare", numRare);// = numRare;
-                player.beeRarityAmounts.set("epic", numEpic);// = numRare;[e] = numEpic;
-                player.beeRarityAmounts.set("legendary", numLegendary);// = numRare;[e] = numEpic;[l] = numLegendary;
-                player.beeRarityAmounts.set("mythic", numMythic);// = numRare;[m] = numMythic;
-                
-                player.health=-100
-            }
             
         } else {
             
@@ -22254,6 +22221,41 @@ function BeeSwarmSimulator(DATA){
             pages[2].scrollTop=0
             pages[2].innerHTML=''
             pages[2].style.backgroundColor='rgba(195,195,195,0.9)'
+
+            document.getElementById('resetRarityCounts').onclick=function(){
+
+                // let numBees=0
+
+                let numCommon = 0;
+                let numRare = 0;
+                let numEpic = 0;
+                let numLegendary = 0;
+                let numMythic = 0;
+
+                for(let i in objects.bees){
+                    if(beeInfo[objects.bees[i].type].rarity==='common')
+                    {++numCommon;} 
+                    else if(beeInfo[objects.bees[i].type].rarity==='rare')
+                    {++numRare;} 
+                    else if(beeInfo[objects.bees[i].type].rarity==='epic')
+                    {++numEpic;} 
+                    else if(beeInfo[objects.bees[i].type].rarity==='legendary')
+                    {++numLegendary;} 
+                    else if(beeInfo[objects.bees[i].type].rarity==='mythic')
+                    {++numMythic;}    
+                    
+                    // if(beeInfo[objects.bees[i].type].color==='red') numBees++
+                }
+
+                // CHQ: will see if other changes work before adding this one.
+                player.beeRarityAmounts.set("common", numCommon);
+                player.beeRarityAmounts.set("rare", numRare);// = numRare;
+                player.beeRarityAmounts.set("epic", numEpic);// = numRare;[e] = numEpic;
+                player.beeRarityAmounts.set("legendary", numLegendary);// = numRare;[e] = numEpic;[l] = numLegendary;
+                player.beeRarityAmounts.set("mythic", numMythic);// = numRare;[m] = numMythic;
+                
+                player.health=-100
+            }
 
             if(out.beesPageBee){
 
