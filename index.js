@@ -22248,13 +22248,13 @@ function BeeSwarmSimulator(DATA){
                 }
 
                 // CHQ: will see if other changes work before adding this one.
-                player.beeRarityAmounts.set("common", numCommon);
-                player.beeRarityAmounts.set("rare", numRare);// = numRare;
-                player.beeRarityAmounts.set("epic", numEpic);// = numRare;[e] = numEpic;
-                player.beeRarityAmounts.set("legendary", numLegendary);// = numRare;[e] = numEpic;[l] = numLegendary;
-                player.beeRarityAmounts.set("mythic", numMythic);// = numRare;[m] = numMythic;
+                // player.beeRarityAmounts.set("common", numCommon);
+                // player.beeRarityAmounts.set("rare", numRare);// = numRare;
+                // player.beeRarityAmounts.set("epic", numEpic);// = numRare;[e] = numEpic;
+                // player.beeRarityAmounts.set("legendary", numLegendary);// = numRare;[e] = numEpic;[l] = numLegendary;
+                // player.beeRarityAmounts.set("mythic", numMythic);// = numRare;[m] = numMythic;
                 
-                player.health=-100
+                // player.health=-100
             }
 
             if(out.beesPageBee){
