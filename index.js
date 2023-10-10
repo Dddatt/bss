@@ -20785,6 +20785,7 @@ function BeeSwarmSimulator(DATA){
                         document.getElementById('roboBeeChoice'+(i+1)).onclick=function(){
 
                             // CHQ: hint for how to fix problem of the bees not waking up: 
+                            // more comments to come
                             out.roboChallenge.activeBees.push([Number(_bee[0]),Number(_bee[1])])
                             out.roboChallenge.beesPicked++
                             out.updateRoboUI()
