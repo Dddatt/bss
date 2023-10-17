@@ -25344,14 +25344,14 @@ function BeeSwarmSimulator(DATA){
             }
              
              
-            if(e.key==='i') inventoryButton.onclick()
-            if(e.key==='q') questButton.onclick()
-            if(e.key==='b') beesButton.onclick()
+            if(e.key==='i' || e.key==='I') inventoryButton.onclick()
+            if(e.key==='q' || e.key==='Q') questButton.onclick()
+            if(e.key==='b' || e.key==='B') beesButton.onclick()
             
-            if(e.key==='n') beequipButton.onclick()
-            if(e.key==='p') settingsButton.onclick()
+            if(e.key==='n' || e.key==='N') beequipButton.onclick()
+            if(e.key==='p' || e.key==='P') settingsButton.onclick()
 
-            if(player.currentMachineTrigger&&e.key==='e') player.currentMachineTrigger.func(player)
+            if(player.currentMachineTrigger&&(e.key==='e' || e.key==='E')) player.currentMachineTrigger.func(player)
         }
         
         document.onkeyup=function(e){
@@ -30181,6 +30181,8 @@ function BeeSwarmSimulator(DATA){
                         e.currentVal=player.stats[e.triggerType]-e.startVal
                         e.amount.textContent=e.currentVal
                         
+                        // CHQ: I believe the following lines of code can be edited so that the current val is
+                        // shown on the UI as "currentVal/triggerVal" rather than just "triggerVal"
                         if(e.currentVal>=e.triggerVal){
                             
                             e.currentCooldown=e.maxCooldown
