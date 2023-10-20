@@ -507,6 +507,7 @@ function BeeSwarmSimulator(DATA){
     }
 
     // CHQ: hotbarSlots are activated by mouse - one must click and drag mouse to respective location
+    //updates to come soon. in next hour
     for(let i in hotbarSlots){
         
         hotbarSlots[i].onmousedown=function(){
