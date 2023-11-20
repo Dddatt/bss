@@ -19821,7 +19821,7 @@ function BeeSwarmSimulator(DATA){
                 
             },
             desc:'Absorb goo to conjure up a delectable arsenal of gummy wrecking balls. Cover the field in goo and collect pollen with a giant gummyball. Ricochet off Marks and Honey Tokens to build up your gummyball combo for massive gooey gains.',
-            cost:['10000000000000 honey','1000 glue','2500 gumdrops','50 causticWax','3 turpentine']
+            cost:['10000000000000 honey','500 glue','2500 gumdrops','25 causticWax','3 turpentine']
         },
     }
 
