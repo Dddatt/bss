@@ -2109,11 +2109,11 @@ function BeeSwarmSimulator(DATA){
                 isMachine:true,requirements:function(player){
                     
                     let helpedBeesmasNPCs=Object.keys(player.extraInfo.beesmasMachines).length
-                    // if(helpedBeesmasNPCs<i)
-                    //     return 'Help '+i+' NPCs prepare for Beesmas to open the '+g.name+' Gift Box! ('+helpedBeesmasNPCs+'/'+i+')'
+                    if(helpedBeesmasNPCs<i)
+                        return 'Help '+i+' NPCs prepare for Beesmas to open the '+g.name+' Gift Box! ('+helpedBeesmasNPCs+'/'+i+')'
                     
-                    // if(player.extraInfo.openedGifts[i])
-                    //     return 'You already opened the '+g.name+' Gift Box!'
+                    if(player.extraInfo.openedGifts[i])
+                        return 'You already opened the '+g.name+' Gift Box!'
                     
                 },minX:g.pos[0]-3,maxX:g.pos[0]+3,minY:g.pos[1]-1.5,maxY:g.pos[1]+1.5,minZ:g.pos[2]-3,maxZ:g.pos[2]+3,message:'Open the '+g.name+' Gift Box',func:function(player){
                     
