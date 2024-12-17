@@ -85,7 +85,11 @@ function main(){
     window.deleteFromDB=deleteFromDB
     
     function copyThumbnail(t){
-    
+        
+        if(!window.innerWidth){
+            setTimeout(copyThumbnail,100)
+            return
+        }
         let canv=document.getElementById(t+'_thumbnailCanvCopy')
     
         let ctx=canv.getContext('2d')
@@ -439,8 +443,7 @@ function BeeSwarmSimulator(DATA){
 
     gl.viewport(0,0,width,height)
 
-    window.onresize=function(){
-        
+    function windowResize(){
         width=window.thisProgramIsInFullScreen?500:window.innerWidth+1
         height=window.thisProgramIsInFullScreen?500:window.innerHeight+1
         
@@ -492,6 +495,7 @@ function BeeSwarmSimulator(DATA){
 
         initMobileControls()
     }
+    window.onresize=windowResize
 
     let PLAYER_PHYSICS_GROUP=2,STATIC_PHYSICS_GROUP=4,DYNAMIC_PHYSICS_GROUP=8,BEE_COLLECT=0,BEE_FLY=0,then=0,dt,frameCount=0,TIME=0,player,NIGHT_DARKNESS=0.55,NPCs,STATS_TICK=false,leavesTimer=45,snowflakeTimer=2,testRealm=DATA.name===window.atob('VGVzdFJlYWxt'),minNPC
     
@@ -855,7 +859,7 @@ function BeeSwarmSimulator(DATA){
                 player.extraInfo.enableLowGraph=!player.extraInfo.enableLowGraph
                 re()
                 window.setTimeout(()=>{
-                    window.onresize()
+                    windowResize()
                     setTimeout(UPDATE_MAP_MESH,50)
                 },50)
             }
@@ -26950,7 +26954,7 @@ function BeeSwarmSimulator(DATA){
         out.startHoneyStorm=()=>{
 
             CURRENTLY_HONEY_STORM=1
-            window.onresize()
+            windowResize()
 
             let spawnToken=()=>{
                 
@@ -26975,14 +26979,14 @@ function BeeSwarmSimulator(DATA){
             window.setTimeout(()=>{
 
                 CURRENTLY_HONEY_STORM=0
-                window.onresize()
+                windowResize()
 
             },30000)
         }
         out.startSnowStorm=()=>{
 
             CURRENTLY_SNOW_STORM=1
-            window.onresize()
+            windowResize()
 
             let spawnToken=()=>{
                 
@@ -27002,7 +27006,7 @@ function BeeSwarmSimulator(DATA){
             window.setTimeout(()=>{
 
                 CURRENTLY_SNOW_STORM=0
-                window.onresize()
+                windowResize()
 
             },30000)
         }
@@ -27010,7 +27014,7 @@ function BeeSwarmSimulator(DATA){
         out.startMythicStorm=()=>{
 
             CURRENTLY_MYTHIC_STORM=1
-            window.onresize()
+            windowResize()
 
             let runCycle=()=>{
                 
@@ -27035,7 +27039,7 @@ function BeeSwarmSimulator(DATA){
             window.setTimeout(()=>{
 
                 CURRENTLY_MYTHIC_STORM=0
-                window.onresize()
+                windowResize()
 
             },1000*3*60)
             }
@@ -27044,7 +27048,7 @@ function BeeSwarmSimulator(DATA){
         
     })({})
 
-    window.onresize()
+    windowResize()
     
     function computeSceneViewMatrix(x,y,z,yaw,pitch){
         
@@ -33478,7 +33482,7 @@ function BeeSwarmSimulator(DATA){
 
         let save={}
 
-        save.version='3.0.0'
+        save.version='2.0.0'
         save.extraInfo=player.extraInfo
         save.honey=player.honey
         save.pollen=player.pollen
@@ -33835,7 +33839,7 @@ function BeeSwarmSimulator(DATA){
             clearBeesmasSaveData()
 
         if(player.extraInfo.enableLowGraph)
-            setTimeout(window.onresize,50)
+            setTimeout(windowResize,50)
     }
 
     if(DATA.saveCode){
