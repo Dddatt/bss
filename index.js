@@ -33478,7 +33478,7 @@ function BeeSwarmSimulator(DATA){
 
         let save={}
 
-        save.version='2.0.0'
+        save.version='3.0.0'
         save.extraInfo=player.extraInfo
         save.honey=player.honey
         save.pollen=player.pollen
