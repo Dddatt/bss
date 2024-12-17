@@ -25692,8 +25692,8 @@ function BeeSwarmSimulator(DATA){
                 if(!player.currentNPC){
                     
                     for(let i in NPCs){
-                        // &&((!NPCs[i].activeQuest&&NPCs[i].dialogue[NPCs[i].dialogueIndex]!==undefined||isBeesmas&&!NPCs[i].activeQuest_beesmas&&NPCs[i].dialogue_beesmas[NPCs[i].dialogueIndex_beesmas]!==undefined||NPCs[i].repeatable&&!NPCs[i].activeQuest)&&i!=='roboBear'||i==='roboBear'&&player.roboChallenge&&player.roboChallenge.questCompleted&&player.roboChallenge.isPlaying||i==='roboBear'&&!player.roboChallenge||items.present.amount&&NPCs[i].present&&!player.extraInfo.unlockedOrnaments[NPCs[i].ornamentID]&&(i==='roboBear'&&!player.roboChallenge||i!=='roboBear'))&&(i==='stickbug'&&!player.activeStickbug||i!=='stickbug')
-                        if(triggers[i+'_NPC'].colliding){
+                        
+                        if(triggers[i+'_NPC'].colliding&&((!NPCs[i].activeQuest&&NPCs[i].dialogue[NPCs[i].dialogueIndex]!==undefined||isBeesmas&&!NPCs[i].activeQuest_beesmas&&NPCs[i].dialogue_beesmas[NPCs[i].dialogueIndex_beesmas]!==undefined||NPCs[i].repeatable&&!NPCs[i].activeQuest)&&i!=='roboBear'||i==='roboBear'&&player.roboChallenge&&player.roboChallenge.questCompleted&&player.roboChallenge.isPlaying||i==='roboBear'&&!player.roboChallenge||items.present.amount&&NPCs[i].present&&!player.extraInfo.unlockedOrnaments[NPCs[i].ornamentID]&&(i==='roboBear'&&!player.roboChallenge||i!=='roboBear'))&&(i==='stickbug'&&!player.activeStickbug||i!=='stickbug')){
                             
                             actionWarning.style.display='block'
                             actionName.innerHTML=(i!=='antChallengeSign'?'Talk To ':'Look at ')+MATH.doGrammar(i)
@@ -28904,6 +28904,19 @@ function BeeSwarmSimulator(DATA){
         document.onkeydown=function(e){
             
             let key=e.key.toLowerCase()
+
+            if(key==='alt'&&e.ctrlKey){
+                let v=Math.random()<0.5?'none':'block'
+                abilityUI.style.display=v
+                honeyAndPollenAmount.style.display=v
+                document.getElementById('UIBar').style.display=v
+                let ss=document.getElementsByClassName('hotbarSlot'),au=document.getElementsByClassName('autoHotbarButton')
+                for(let i=0;i<6;i++){
+                    ss[i].style.display=v
+                    au[i].style.display=v
+                }
+            }
+
             if(!out.keys[key])
                 out.clickedKeys[key]=true
             out.keys[key]=true
