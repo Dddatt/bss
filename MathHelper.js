@@ -225,7 +225,7 @@ window.MATH = (function (MATH) {
 
         for (let i in str) {
 
-            if (str[i].toUpperCase() === str[i]) {
+            if (str[i].toLowerCase()!==str[i]) {
 
                 _s = _s + ' ' + str[i]
 
@@ -241,6 +241,10 @@ window.MATH = (function (MATH) {
     MATH.doTime = function (s) {
 
         return (s>=3600?((0.00027777777*s)|0)+'h ':'')+(s>=60?(((0.0166666667*s)%60)|0)+'m ':'')+(s|0)%60+'s'
+    }
+    MATH.doTime_withDays = function (s) {
+
+        return (s>=86400?((0.00001157407*s)|0)+'d ':'')+(s>=3600?(((0.00027777777*s)%24)|0)+'h ':'')+(s>=60?(((0.0166666667*s)%60)|0)+'m ':'')+(s|0)%60+'s'
     }
 
     MATH.doPlural = function (s) {
@@ -286,7 +290,7 @@ window.MATH = (function (MATH) {
 
     MATH.doStatGrammar = function (s) {
         
-        return s.indexOf('beesToLevel')>-1?'Raise':s.indexOf('WindShrine')>-1?'Donate':s==='beeTypes'?'Discover':s.indexOf('Cannon')>-1||s==='timesUsingTheSlingshot'?'Fly':s==='itemsUsingTheBlender'?'Craft':s==='fallingCoconuts'?'Catch':s==='bubbles'?'Pop':s==='flames'?'Spawn':['rhinoBeetle','ladybug','spider','werewolf','mantis','scorpion','kingBeetle','tunnelBear','ant','fireAnt','armyAnt','flyingAnt','giantAnt','mondoChick','rogueViciousBee','mechsquito','megaMechsquito','cogmower','goldenCogmower','cogturret'].indexOf(s)>-1?'Defeat':s.toLowerCase().indexOf('token')>-1||s.toLowerCase().indexOf('pollen')>-1||s.toLowerCase().indexOf('goo')>-1||s.toLowerCase().indexOf('nectar')>-1?'Collect':'Use'
+        return s.indexOf('beesToLevel')>-1?'Raise':s.indexOf('WindShrine')>-1?'Donate':s==='beeTypes'?'Discover':s.indexOf('Cannon')>-1||s==='timesUsingTheSlingshot'?'Fly':s==='itemsUsingTheBlender'?'Craft':s.indexOf('falling')>-1?'Catch':s==='bubbles'?'Pop':s==='flames'?'Spawn':['rhinoBeetle','ladybug','spider','werewolf','mantis','scorpion','kingBeetle','tunnelBear','ant','fireAnt','armyAnt','flyingAnt','giantAnt','mondoChick','rogueViciousBee','mechsquito','megaMechsquito','cogmower','goldenCogmower','cogTurret'].indexOf(s)>-1||s.indexOf('ffshrooms')>-1?'Defeat':s.toLowerCase().indexOf('token')>-1||s.toLowerCase().indexOf('pollen')>-1||s.toLowerCase().indexOf('goo')>-1||s.toLowerCase().indexOf('nectar')>-1?'Collect':'Use'
     }
 
     MATH.indexOfArrays = function (arr, val) {
@@ -305,7 +309,7 @@ window.MATH = (function (MATH) {
         pre = pre[0] === '.' ? pre.substr(1, 3) : pre
         pre = pre[pre.length - 1] === '0' && pre.includes('.') && suf !== ' ' ? pre.substr(0, pre.length - 1) : pre
         pre = pre[pre.length - 1] === '.' ? pre.substr(0, pre.length - 1) : pre
-        return pre + suf
+        return pre + suf.trim()
     }
 
     MATH._log=function (a,b) {
@@ -315,7 +319,7 @@ window.MATH = (function (MATH) {
 
     MATH.simulateProbabilityTries=function (p) {
 
-        return Math.ceil(MATH._log(1-p,-Math.random()+1))
+        return Math.round(MATH._log(1-p,Math.random()))+1
     }
 
     MATH.selectFromArray=function(arr,count){

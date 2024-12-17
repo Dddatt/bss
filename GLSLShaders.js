@@ -1,3 +1,56 @@
+(function(){
+    window.glsl_shadow_map_vsh = `#version 300 es
+
+    precision highp float;
+    
+    in vec3 vertPos;
+    in vec4 vertColor;
+    in vec3 vertUV;
+    in vec3 vertNormal;
+    
+    uniform mat4 viewMatrix;
+    
+    void main(){
+        
+        float useless=vertColor.x+vertUV.x+vertNormal.x;
+
+        gl_Position=viewMatrix*vec4(vertPos+useless*0.0000001,1);
+    }
+`
+window.glsl_shadow_map_fsh = `#version 300 es
+    
+    void main(){}
+`
+window.glsl_visual_vsh = `#version 300 es
+
+    precision highp float;
+    
+    in vec2 vertPos;
+
+    out vec2 uv;
+    
+    void main(){
+        uv=vertPos*0.5+0.5;
+        gl_Position=vec4(vertPos,0,1);
+    }
+`
+window.glsl_visual_fsh = `#version 300 es
+    
+    precision highp float;
+
+    in vec2 uv;
+    uniform sampler2D tex;
+    out vec4 fragColor;
+
+    void main(){
+
+        float d=texture(tex,uv).r;
+
+        d=pow(d,40.);
+
+        fragColor=vec4(d,d,d,1);
+    }
+`
 window.glsl_static_geometry_vsh = `#version 300 es
 
     precision highp float;
@@ -5,10 +58,13 @@ window.glsl_static_geometry_vsh = `#version 300 es
     in vec3 vertPos;
     in vec4 vertColor;
     in vec3 vertUV;
+    in vec3 vertNormal;
     
     out float pixFog;
     out vec4 pixColor;
     out vec3 pixUV;
+    out vec3 pixNormal;
+    out vec3 pixPos;
     
     uniform mat4 viewMatrix;
     
@@ -17,6 +73,8 @@ window.glsl_static_geometry_vsh = `#version 300 es
         vec4 pos=viewMatrix*vec4(vertPos,1);
         pixColor=vertColor;
         pixUV=vertUV;
+        pixNormal=vertNormal;
+        pixPos=vertPos;
         pixFog=pos.z;
         gl_Position=pos;
     }
@@ -28,18 +86,91 @@ window.glsl_static_geometry_fsh = `#version 300 es
     in float pixFog;
     in vec4 pixColor;
     in vec3 pixUV;
+    in vec3 pixNormal;
+    in vec3 pixPos;
+    
+    out vec4 fragColor;
+    
+    uniform sampler2D tex;
+    uniform sampler2D shadowMap;
+    uniform float isNight;
+    uniform vec3 camPos;
+
+    mat4 shadowMatrix=mat4(SHADOW_MATRIX);
+
+    float hash(vec2 p){
+        return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453)-0.5; 
+    }
+
+    void main(){
+
+        vec4 proj=shadowMatrix*vec4(pixPos,1);
+        proj.xyz/=proj.w;
+        proj.xyz=proj.xyz*0.5+0.5;
+        float currentDepth=proj.z-dot(normalize(vec3(SHADOW_POS)-pixPos),pixNormal)*0.0004;
+        float shadow=1.0;
+        float shadowDarkness=0.025*isNight*isNight;
+        
+        // for(float i=0.0;i<9.0;i++){
+        //     float projDepth=texture(shadowMap,proj.xy+vec2(hash(proj.xy-i*120.421),hash(proj.yx+i*140.179))*0.002).r;
+            
+        //     if(projDepth<=currentDepth)
+        //         shadow-=shadowDarkness;
+        // }
+
+        for(int x=-1;x<=1;x++){
+            for(int y=-1;y<=1;y++){
+                float projDepth=texture(shadowMap,proj.xy+vec2(x,y)*0.0005).r;
+                
+                if(projDepth<=currentDepth)
+                    shadow-=shadowDarkness;
+            }
+        }
+        
+        if(proj.w<1.0||proj.x<0.0||proj.x>1.0||proj.y<0.0||proj.y>1.0||proj.z<0.0||proj.z>1.0) shadow=1.0;
+
+        vec4 t=texture(tex,pixUV.xy);
+
+        vec3 toCam=normalize(camPos-pixPos);
+        vec3 toLight=normalize(vec3(50,100,-50)-pixPos);
+        vec3 halfVec=normalize(toCam+toLight);
+        
+        float specular=max(dot(halfVec,pixNormal),0.);
+        specular*=specular;
+        specular*=specular;
+        specular*=specular;
+        specular*=specular;
+        specular*=specular;
+        specular*=specular;
+        
+        float specInst=0.4*isNight;
+
+        BEESMAS{
+        fragColor=vec4(mix((mix(mix(pixColor.rgb,t.rgb,t.a),pixColor.rgb,pixUV.z)+specular*specInst)*shadow,FOGCOLB,smoothstep(-30.0,130.0,EXTRAFOGpixFog))*isNight,pixColor.w);
+        }ELSE{
+        fragColor=vec4(mix((mix(mix(pixColor.rgb,t.rgb,t.a),pixColor.rgb,pixUV.z)+specular*specInst)*shadow,FOGCOL,smoothstep(20.0,120.0,EXTRAFOGpixFog))*isNight,pixColor.w);
+        }
+    }
+`
+window.glsl_static_geometry_fsh_LOW = `#version 300 es
+    
+    precision highp float;
+    
+    in float pixFog;
+    in vec4 pixColor;
+    in vec3 pixUV;
+    in vec3 pixNormal;
+    in vec3 pixPos;
     
     out vec4 fragColor;
     
     uniform sampler2D tex;
     uniform float isNight;
-    
+
     void main(){
-        
+
         vec4 t=texture(tex,pixUV.xy);
-        
-        fragColor=vec4(mix(mix(mix(pixColor.rgb,t.rgb,t.a),pixColor.rgb,pixUV.z),vec3(1,1,0.7),smoothstep(20.0,120.0,pixFog)*0.7)*isNight,pixColor.w);
-        
+        fragColor=vec4(mix(mix(pixColor.rgb,t.rgb,t.a),pixColor.rgb,pixUV.z)*isNight,pixColor.w);
     }
 `
 window.glsl_dynamic_geometry_vsh = `#version 300 es
@@ -80,6 +211,21 @@ window.glsl_dynamic_geometry_fsh = `#version 300 es
         vec3 normal=normalize(pixNormal);
         float shade=dot(normal,LIGHT_DIR)*0.5+0.55;
         fragColor=vec4(pixColor*shade*isNight,1.0);
+    }
+`
+window.glsl_dynamic_geometry_fsh_LOW = `#version 300 es
+    
+    precision highp float;
+    
+    in vec3 pixColor;
+    
+    out vec4 fragColor;
+    
+    uniform float isNight;
+    
+    void main(){
+        
+        fragColor=vec4(pixColor*isNight,1.0);
     }
 `
 window.glsl_token_geometry_vsh = `#version 300 es
@@ -145,7 +291,32 @@ window.glsl_flower_geometry_vsh = `#version 300 es
         vec4 pos=viewMatrix*vec4(vertPos,1);
         pixUV=vertUV;
         goo=vertGoo;
-        pixFog=smoothstep(20.0,120.0,pos.z)*0.7;
+        BEESMAS{
+            pixFog=smoothstep(-30.0,130.0,EXTRAFOGpos.z);
+        }ELSE{
+            pixFog=smoothstep(20.0,120.0,EXTRAFOGpos.z);
+        }
+        gl_Position=pos;
+    }
+`
+window.glsl_flower_geometry_vsh_LOW = `#version 300 es
+
+    precision highp float;
+    
+    in vec3 vertPos;
+    in vec4 vertUV;
+    in float vertGoo;
+    
+    out vec4 pixUV;
+    out float goo;
+    
+    uniform mat4 viewMatrix;
+    
+    void main(){
+        
+        vec4 pos=viewMatrix*vec4(vertPos,1);
+        pixUV=vertUV;
+        goo=vertGoo;
         gl_Position=pos;
     }
 `
@@ -168,8 +339,30 @@ window.glsl_flower_geometry_fsh = `#version 300 es
         vec3 c=mix(vec3(0,0.6,0),texture(tex,pixUV.xy).rgb*min(pixUV.w,1.0),pixUV.z);
         
         c=c.g<=0.1?vec3(0,0.35,0):c;
-
-        fragColor=vec4(mix(goo<0.0?mix(c,vec3(0.1,1,0.5),-goo):mix(c,vec3(1,0.2,1),goo),vec3(1,1,0.7),pixFog)*isNight,1.0);
+        BEESMAS{
+            fragColor=vec4(mix(goo<0.0?mix(c,vec3(0.1,1,0.5),-goo):mix(c,vec3(1,0.2,1),goo),FOGCOLB,pixFog)*isNight,1.0);
+        }ELSE{
+            fragColor=vec4(mix(goo<0.0?mix(c,vec3(0.1,1,0.5),-goo):mix(c,vec3(1,0.2,1),goo),FOGCOL,pixFog)*isNight,1.0);
+        }
+    }
+`
+window.glsl_flower_geometry_fsh_LOW = `#version 300 es
+    
+    precision highp float;
+    
+    in vec4 pixUV;
+    in float goo;
+    
+    out vec4 fragColor;
+    
+    uniform sampler2D tex;
+    uniform float isNight;
+    
+    void main(){
+        
+        vec3 c=mix(vec3(0,0.6,0),texture(tex,pixUV.xy).rgb*min(pixUV.w,1.0),pixUV.z);
+        c=c.g<=0.1?vec3(0,0.35,0):c;
+        fragColor=vec4((goo<0.0?mix(c,vec3(0.1,1,0.5),-goo):mix(c,vec3(1,0.2,1),goo))*isNight,1);
     }
 `
 window.glsl_bee_geometry_vsh = `#version 300 es
@@ -210,7 +403,61 @@ window.glsl_bee_geometry_vsh = `#version 300 es
         vec3 uu=vec3(quaternion.y*u.z-quaternion.z*u.y,quaternion.z*u.x-quaternion.x*u.z,quaternion.x*u.y-quaternion.y*u.x);
         
         vec4 pos=viewMatrix*vec4(vp+u*quaternion.w+uu*2.0+instance_pos.xyz,1);
-        pixFog=smoothstep(20.0,120.0,pos.z)*0.7;
+
+        BEESMAS{
+            pixFog=smoothstep(-30.0,130.0,EXTRAFOGpos.z);
+        }ELSE{
+            pixFog=smoothstep(20.0,120.0,EXTRAFOGpos.z);
+        }
+
+        return pos;
+    }
+    
+    void main(){
+
+        pixUV=vertUV.xyz+vec3(instance_uv.xy,0);
+
+        gl_Position=instance_uv.z!=vertUV.w&&vertUV.w!=0.0?vec4(9999999,9999999,9999999,1):computePos();
+    }
+`
+
+window.glsl_bee_geometry_vsh_LOW = `#version 300 es
+
+    precision highp float;
+    
+    in vec3 vertPos;
+    in vec4 vertUV;
+    
+    in vec4 instance_pos;
+    in vec4 instance_rotation;
+    in vec3 instance_uv;
+    
+    out vec3 pixUV;
+    
+    uniform mat4 viewMatrix;
+
+    vec4 computePos(){
+
+        vec3 vp=vertPos*instance_pos.w;
+
+        vec3 del=normalize(instance_rotation.xyz);
+        
+        float pitch=asin(-del.y)*0.5;
+        float yaw=atan(del.x,del.z)*0.5;
+        float roll=instance_rotation.w*0.5;
+        
+        vec3 s=vec3(sin(pitch),sin(yaw),sin(roll));
+        vec3 c=vec3(cos(pitch),cos(yaw),cos(roll));
+        
+        vec4 quaternion=vec4(s.x*c.y,c.x*s.y,-s.x*s.y,c.x*c.y);
+        
+        quaternion=vec4(quaternion.x*c.z+quaternion.y*s.z,quaternion.y*c.z-quaternion.x*s.z,quaternion.z*c.z+quaternion.w*s.z,(quaternion.w*c.z-quaternion.z*s.z)*2.0);
+        
+        vec3 u=vec3(quaternion.y*vp.z-quaternion.z*vp.y,quaternion.z*vp.x-quaternion.x*vp.z,quaternion.x*vp.y-quaternion.y*vp.x);
+        
+        vec3 uu=vec3(quaternion.y*u.z-quaternion.z*u.y,quaternion.z*u.x-quaternion.x*u.z,quaternion.x*u.y-quaternion.y*u.x);
+        
+        vec4 pos=viewMatrix*vec4(vp+u*quaternion.w+uu*2.0+instance_pos.xyz,1);
 
         return pos;
     }
@@ -235,8 +482,27 @@ window.glsl_bee_geometry_fsh = `#version 300 es
     uniform float isNight;
     
     void main(){
-        
-        fragColor=pixUV.z>0.1?vec4(mix(texture(tex,pixUV.xy).rgb*pixUV.z,vec3(1,1,0.7),pixFog)*isNight,1):vec4(mix(vec3(0.1,0.4,1),vec3(1,1,0.7),pixFog)*isNight,0.4);
+        BEESMAS{
+            fragColor=pixUV.z>0.1?vec4(mix(texture(tex,pixUV.xy).rgb*pixUV.z,FOGCOLB,pixFog)*isNight,1):vec4(mix(vec3(0.1,0.4,1),FOGCOLB,pixFog*0.4)*isNight,0.4);
+        }ELSE{
+            fragColor=pixUV.z>0.1?vec4(mix(texture(tex,pixUV.xy).rgb*pixUV.z,FOGCOL,pixFog)*isNight,1):vec4(mix(vec3(0.1,0.4,1),FOGCOL,pixFog*0.4)*isNight,0.4);
+        }
+    }
+`
+window.glsl_bee_geometry_fsh_LOW = `#version 300 es
+    
+    precision highp float;
+    
+    in vec3 pixUV;
+    in float pixFog;
+    
+    out vec4 fragColor;
+    
+    uniform sampler2D tex;
+    uniform float isNight;
+    
+    void main(){
+        fragColor=pixUV.z>0.1?vec4(texture(tex,pixUV.xy).rgb*pixUV.z*isNight,1):vec4(vec3(0.1,0.4,1)*isNight,0.4);
     }
 `
 
@@ -373,7 +639,11 @@ window.glsl_text_renderer_vsh = `#version 300 es
         gl_Position=pos.w<1.0&&pos.w>0.0?vec4(pos.xyz,1.0):pos;
 
         pixColor=instance_color;
-        fogAmount=smoothstep(20.0,120.0,originPos.z)*0.7;
+        BEESMAS{
+            fogAmount=smoothstep(-30.0,130.0,EXTRAFOGoriginPos.z);
+        }ELSE{
+            fogAmount=smoothstep(20.0,120.0,EXTRAFOGoriginPos.z);
+        }
     }
 `
 window.glsl_text_renderer_fsh = `#version 300 es
@@ -391,13 +661,37 @@ window.glsl_text_renderer_fsh = `#version 300 es
     void main(){
 
         vec4 c=texture(tex,pixUV);
-
-        vec3 col=mix(c.xyz,vec3(1,1,0.7),fogAmount)*pixColor;
+        BEESMAS{
+            vec3 col=mix(c.xyz,FOGCOLB,fogAmount)*pixColor;
+        }ELSE{
+            vec3 col=mix(c.xyz,FOGCOL,fogAmount)*pixColor;
+        }
 
         if(c.a<0.01)
             discard;
 
         fragColor=vec4(col,c.a);
+    }
+`
+
+window.glsl_text_renderer_fsh_LOW = `#version 300 es
+    
+    precision highp float;
+    
+    uniform sampler2D tex;
+    
+    in vec2 pixUV;
+    in vec3 pixColor;
+    
+    out vec4 fragColor;
+    
+    void main(){
+
+        vec4 c=texture(tex,pixUV);
+        if(c.a<0.01)
+            discard;
+
+        fragColor=vec4(c.xyz*pixColor,c.a);
     }
 `
 window.glsl_mob_renderer_vsh = `#version 300 es
@@ -468,3 +762,4 @@ window.glsl_trail_renderer_fsh = `#version 300 es
         fragColor=pixColor;
     }
 `
+})()

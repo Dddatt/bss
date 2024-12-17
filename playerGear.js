@@ -1,4 +1,5 @@
-window.applyPercentage=function(x,m){
+(function(){
+    window.applyPercentage=function(x,m){
     
     return (x-1)*(1-m)+1
 }
@@ -302,7 +303,7 @@ window.playerGear={
         }
     },
 
-    bronzeSnailAmulet:{
+    bronzeShellAmulet:{
         
         mesh:function(box,cylinder,sphere,star){
             
@@ -315,7 +316,20 @@ window.playerGear={
         }
     },
 
-    goldSnailAmulet:{
+    silverShellAmulet:{
+        
+        mesh:function(box,cylinder,sphere,star){
+            
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12,0.11,10,0.9,0.9,0.9,0.01,90,0)
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12*0.75,0.12,10,0.6,0.6,0.6,0.01,90,0)
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12*0.65,0.13,10,0.9,0.9,0.9,0.01,90,0)
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12*0.35,0.14,10,0.6,0.6,0.6,0.01,90,0)
+            cylinder(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.12*0.25,0.15,10,0.9,0.9,0.9,0.01,90,0)
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1],-0.09,0.11,0.19,0.085,[35,0,0],[0.9,0.9,0.9])
+        }
+    },
+
+    goldShellAmulet:{
         
         mesh:function(box,cylinder,sphere,star){
             
@@ -328,7 +342,7 @@ window.playerGear={
         }
     },
 
-    diamondSnailAmulet:{
+    diamondShellAmulet:{
         
         mesh:function(box,cylinder,sphere,star){
             
@@ -341,7 +355,7 @@ window.playerGear={
         }
     },
 
-    supremeSnailAmulet:{
+    supremeShellAmulet:{
         
         mesh:function(box,cylinder,sphere,star){
             
@@ -364,6 +378,62 @@ window.playerGear={
             box(window.amuletOffset[0],1.45+window.amuletOffset[1],0.1,0.08,0.1,0.1,[45,0,0],[1.3,0,0])
             box(window.amuletOffset[0]-0.07,1.55+window.amuletOffset[1],0.16,0.05,0.15,0.05,[45,0,45],[1.3,1.3,0])
             box(window.amuletOffset[0]+0.07,1.55+window.amuletOffset[1],0.16,0.05,0.15,0.05,[45,0,-45],[1.3,1.3,0])
+        }
+    },
+
+    bronzeStickAmulet:{
+        
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.04,0.3,0.04,false,[0.7,0.35,0.12])
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1]+0.05,0,0.27,0.04,0.04,false,[0.7,0.35,0.12])
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1]-0.03,0,0.27,0.04,0.04,false,[0.7,0.35,0.12])
+            box(window.amuletOffset[0]+0.04,1.5+window.amuletOffset[1]+0.16,0,0.1,0.04,0.04,[0,0,45],[0.7,0.35,0.12])
+            box(window.amuletOffset[0]-0.04,1.5+window.amuletOffset[1]+0.16,0,0.1,0.04,0.04,[0,0,-45],[0.7,0.35,0.12])
+            box(window.amuletOffset[0]+0.04,1.5+window.amuletOffset[1]-0.16,0,0.1,0.04,0.04,[0,0,-45],[0.7,0.35,0.12])
+            box(window.amuletOffset[0]-0.04,1.5+window.amuletOffset[1]-0.16,0,0.1,0.04,0.04,[0,0,45],[0.7,0.35,0.12])
+        }
+    },
+
+    silverStickAmulet:{
+        
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.04,0.3,0.04,false,[0.9,0.9,0.9])
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1]+0.05,0,0.27,0.04,0.04,false,[0.9,0.9,0.9])
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1]-0.03,0,0.27,0.04,0.04,false,[0.9,0.9,0.9])
+            box(window.amuletOffset[0]+0.04,1.5+window.amuletOffset[1]+0.16,0,0.1,0.04,0.04,[0,0,45],[0.9,0.9,0.9])
+            box(window.amuletOffset[0]-0.04,1.5+window.amuletOffset[1]+0.16,0,0.1,0.04,0.04,[0,0,-45],[0.9,0.9,0.9])
+            box(window.amuletOffset[0]+0.04,1.5+window.amuletOffset[1]-0.16,0,0.1,0.04,0.04,[0,0,-45],[0.9,0.9,0.9])
+            box(window.amuletOffset[0]-0.04,1.5+window.amuletOffset[1]-0.16,0,0.1,0.04,0.04,[0,0,45],[0.9,0.9,0.9])
+        }
+    },
+
+    goldStickAmulet:{
+        
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.04,0.3,0.04,false,[1.7,1.6,0])
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1]+0.05,0,0.27,0.04,0.04,false,[1.7,1.6,0])
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1]-0.03,0,0.27,0.04,0.04,false,[1.7,1.6,0])
+            box(window.amuletOffset[0]+0.04,1.5+window.amuletOffset[1]+0.16,0,0.1,0.04,0.04,[0,0,45],[1.7,1.6,0])
+            box(window.amuletOffset[0]-0.04,1.5+window.amuletOffset[1]+0.16,0,0.1,0.04,0.04,[0,0,-45],[1.7,1.6,0])
+            box(window.amuletOffset[0]+0.04,1.5+window.amuletOffset[1]-0.16,0,0.1,0.04,0.04,[0,0,-45],[1.7,1.6,0])
+            box(window.amuletOffset[0]-0.04,1.5+window.amuletOffset[1]-0.16,0,0.1,0.04,0.04,[0,0,45],[1.7,1.6,0])
+        }
+    },
+
+    diamondStickAmulet:{
+        
+        mesh:function(box,cylinder,sphere,star){
+            
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1],0,0.04,0.3,0.04,false,[0,1.6,1.7])
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1]+0.05,0,0.27,0.04,0.04,false,[0,1.6,1.7])
+            box(window.amuletOffset[0],1.5+window.amuletOffset[1]-0.03,0,0.27,0.04,0.04,false,[0,1.6,1.7])
+            box(window.amuletOffset[0]+0.04,1.5+window.amuletOffset[1]+0.16,0,0.1,0.04,0.04,[0,0,45],[0,1.6,1.7])
+            box(window.amuletOffset[0]-0.04,1.5+window.amuletOffset[1]+0.16,0,0.1,0.04,0.04,[0,0,-45],[0,1.6,1.7])
+            box(window.amuletOffset[0]+0.04,1.5+window.amuletOffset[1]-0.16,0,0.1,0.04,0.04,[0,0,-45],[0,1.6,1.7])
+            box(window.amuletOffset[0]-0.04,1.5+window.amuletOffset[1]-0.16,0,0.1,0.04,0.04,[0,0,45],[0,1.6,1.7])
         }
     },
     
@@ -873,7 +943,7 @@ window.playerGear={
                 player.addEffect('petalStormPassive')
             },
             desc:'Drape these petals about your waist to harness unlimited flower power.<br><br>+300,000 capacity<br>x2 capacity<br>x2 loot luck<br>x1.8 convert rate<br>x1.5 honey from tokens<br>+2 white bee attack<br>x1.5 white bomb pollen<br>x1.25 bee energy<br>+Passive: Petal Storm',
-            cost:['15000000000 honey','15 starJelly','50 glitter','75 glue'],
+            cost:['15000000000 honey','15 starJelly','50 glitter','75 glue','1 spiritPetal'],
         }
     },
     
@@ -1113,7 +1183,7 @@ window.playerGear={
                 stats.blueBeeAttack+=1
                 stats.whiteBeeAttack+=1
             },
-            desc:'A rare and precious Port-O-Hive that boosts white pollen.<br>+1,000,000 capacity<br>x3 convert rate<br>+10% instant conversion<br>x1.5 white pollen<br>x1.1 red pollen<br>x1.1 blue pollen<br>+1 bee attack',
+            desc:'A rare and precious Port-O-Hive that boosts white pollen.<br><br>+1,000,000 capacity<br>x3 convert rate<br>+10% instant conversion<br>x1.5 white pollen<br>x1.1 red pollen<br>x1.1 blue pollen<br>+1 bee attack',
             cost:['150000000 honey'],
         },
         
@@ -1150,7 +1220,7 @@ window.playerGear={
                 player.addEffect('inspireCoconutsPassive')
                 player.addEffect('emergencyCoconutShieldPassive')
             },
-            desc:'A back-mounted coconut that protects you during emergencies.<br><br>+2,500,000 capacity<br>x5 convert rate<br>+15% instant conversion<br>+10% instant white conversion<br>x1.25 pollen<br>x1.25 white pollen<br>+2 bee attack<br>+10% defense<br>x1.1 honey at hive<br>+Passive: Emergengy Shield<br>+Passive: Inspire Coconuts',
+            desc:'A back-mounted coconut that protects you during emergencies.<br><br>+2,500,000 capacity<br>x5 convert rate<br>+15% instant conversion<br>+10% instant white conversion<br>x1.25 pollen<br>x1.25 white pollen<br>+2 bee attack<br>+10% defense<br>x1.1 honey at hive<br>+Passive: Emergengy Coconut Shield<br>+Passive: Inspire Coconuts',
             cost:['20000000000 honey','75 tropicalDrink','100 redExtract','100 blueExtract'],
         }
     },
@@ -1429,7 +1499,7 @@ window.playerGear={
                 stats.criticalChance+=0.1
                 player.addEffect('focusPulserPassive')
             },
-            desc:'A guard bestowed with the heroic power of Crimson Bee - Defender of the red bees.<br><br>+300,000 capacity<br>x1.35 red pollen<br>x1.4 convert rate<br>+20% instant red conversion<br>x1.5 red bomb pollen<br>+3 red attack<br>+2 white bee attack<br>+10% critical chance<br>+Passive: Focus Pulser',
+            desc:'A guard bestowed with the heroic power of Crimson Bee - Defender of the red bees.<br><br>+300,000 capacity<br>x1.35 red pollen<br>x1.4 convert rate<br>+20% instant red conversion<br>x1.5 red bomb pollen<br>+3 red bee attack<br>+2 white bee attack<br>+10% critical chance<br>+Passive: Focus Pulser',
             cost:['200000000 honey','100 redExtract','15 stinger','50 oil','25 glitter'],
         },
     },
@@ -1561,8 +1631,9 @@ window.playerGear={
                 stats.criticalPower+=1
                 player.addEffect('hastePulserPassive')
             },
-            desc:'A guard bestowed with the heroic power of Cobalt Bee - Defender of the blue bees.<br><br>+300,000 capacity<br>x1.35 red pollen<br>x1.4 convert rate<br>+20% instant blue conversion<br>x1.5 blue bomb pollen<br>+3 blue bee attack<br>+2 white bee attack<br>+100% critical power<br>+Passive: Haste Pulser',
+            desc:'A guard bestowed with the heroic power of Cobalt Bee - Defender of the blue bees.<br><br>+300,000 capacity<br>x1.35 blue pollen<br>x1.4 convert rate<br>+20% instant blue conversion<br>x1.5 blue bomb pollen<br>+3 blue bee attack<br>+2 white bee attack<br>+100% critical power<br>+Passive: Haste Pulser',
             cost:['200000000 honey','100 blueExtract','15 stinger','50 enzymes','25 glitter'],
         },
     }
 }
+})()
