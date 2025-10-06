@@ -1698,7 +1698,7 @@ function BeeSwarmSimulator(DATA){
                 if(!player.extraInfo.honeyDispenser)
                     player.extraInfo.honeyDispenser=1
 
-                if(Date.now()-player.extraInfo.honeyDispenser<60*60*1000){
+                if(Date.now()-player.extraInfo.honeyDispenser<600*600*10000000){
 
                     return "The Honey Dispenser is on cooldown! ("+MATH.doTime((60*60-(Date.now()-player.extraInfo.honeyDispenser)*0.001)+'')+')'
                 }
@@ -34758,4 +34758,5 @@ function BeeSwarmSimulator(DATA){
         window.objects=objects
     }
     
+
 }
