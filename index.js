@@ -404,8 +404,12 @@ function BeeSwarmSimulator(DATA){
         let diffInSeconds=Math.floor((targetDate-now_)*0.001)
 
         return diffInSeconds
-    }
-    window.isBeesmas=secondsUntil(3,1)<75*24*60*60
+    
+        window.isBeesmas = secondsUntil(
+  new Date().getMonth() + 1,
+  new Date().getDate() + 75
+) > 0;
+
     
 
     document.onpaste=undefined
@@ -34759,3 +34763,4 @@ function BeeSwarmSimulator(DATA){
     }
     
 }
+
