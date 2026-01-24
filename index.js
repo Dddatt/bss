@@ -1,4 +1,3 @@
-
 function main(){
 
     //IndexedDB code from Willard
@@ -406,7 +405,7 @@ function BeeSwarmSimulator(DATA){
 
         return diffInSeconds
     }
-    window.isBeesmas = secondsUntil(3,1) < 9999999999
+    window.isBeesmas=secondsUntil(3,1)<75*24*60*60
     
 
     document.onpaste=undefined
@@ -34760,4 +34759,3 @@ function BeeSwarmSimulator(DATA){
     }
     
 }
-
