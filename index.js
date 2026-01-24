@@ -405,7 +405,7 @@ function BeeSwarmSimulator(DATA){
 
         return diffInSeconds
     }
-    window.isBeesmas=secondsUntil(3,1)<75*24*60*60
+    window.isBeesmas = true;
     
 
     document.onpaste=undefined
@@ -34760,4 +34760,5 @@ function BeeSwarmSimulator(DATA){
     
 
 }
+
 
