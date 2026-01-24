@@ -24593,8 +24593,8 @@ function BeeSwarmSimulator(DATA){
                     topDesc:13,fntSize:10
                 },{
                     name:'Gold Egg',
-                    items:[['goldEgg',1]],
-                    cost:[0,10],
+                    items:[['goldEgg',100]],
+                    cost:[0,0],
                     svgs:[['goldEgg',0,11,0.75,0.75]],
                     desc:'<br>Hatches into an Epic, Legendary, or Mythic Bee!',
                     topDesc:13,fntSize:10
@@ -34759,3 +34759,4 @@ function BeeSwarmSimulator(DATA){
     }
     
 }
+
