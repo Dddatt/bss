@@ -1171,17 +1171,17 @@ window.playerGear={
             
             applyStats:function(stats,player){
                 
-                stats.capacity+=1000000
+                stats.capacity+=10000000000
                 stats.convertRate*=3
-                stats.instantRedConversion=window.applyPercentage(stats.instantRedConversion,0.1)
-                stats.instantBlueConversion=window.applyPercentage(stats.instantBlueConversion,0.1)
-                stats.instantWhiteConversion=window.applyPercentage(stats.instantWhiteConversion,0.1)
-                stats.whitePollen*=1.5
-                stats.bluePollen*=1.1
-                stats.redPollen*=1.1
-                stats.redBeeAttack+=1
-                stats.blueBeeAttack+=1
-                stats.whiteBeeAttack+=1
+                stats.instantRedConversion=window.applyPercentage(stats.instantRedConversion,10.1)
+                stats.instantBlueConversion=window.applyPercentage(stats.instantBlueConversion,10.1)
+                stats.instantWhiteConversion=window.applyPercentage(stats.instantWhiteConversion,10.1)
+                stats.whitePollen*=10
+                stats.bluePollen*=10
+                stats.redPollen*=10
+                stats.redBeeAttack+=10
+                stats.blueBeeAttack+=10
+                stats.whiteBeeAttack+=10
             },
             desc:'A rare and precious Port-O-Hive that boosts white pollen.<br><br>+1,000,000 capacity<br>x3 convert rate<br>+10% instant conversion<br>x1.5 white pollen<br>x1.1 red pollen<br>x1.1 blue pollen<br>+1 bee attack',
             cost:['150000000 honey'],
