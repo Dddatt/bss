@@ -520,7 +520,7 @@ function BeeSwarmSimulator(DATA){
         {item:'glue',req:[['gumdrops',10],['royalJelly',5]]},
         {item:'tropicalDrink',req:[['coconut',5],['oil',1],['enzymes',1]]},
         {item:'glitter',req:[['moonCharm',5],['magicBean',1]]},
-        {item:'starJelly',req:[['royalJelly',75],['glitter',3]]},
+        {item:'starJelly',req:[['royalJelly',5]]},
         {item:'purplePotion',req:[['neonberry',3],['redExtract',1],['blueExtract',1],['glue',1]]},
         {item:'superSmoothie',req:[['neonberry',3],['starJelly',1],['purplePotion',1],['tropicalDrink',2]]},
         {item:'fieldDice',req:[['softWax',1],['whirligig',1],['redExtract',1],['blueExtract',1]]},
@@ -531,7 +531,8 @@ function BeeSwarmSimulator(DATA){
         {item:'swirledWax',req:[['hardWax',1],['softWax',2],['purplePotion',1],['royalJelly',15]]},
         {item:'causticWax',req:[['hardWax',2],['neonberry',5],['gumdrops',10],['royalJelly',25]]},
         {item:'turpentine',req:[['superSmoothie',3],['causticWax',3],['starJelly',5],['honeysuckle',50]]},
-        {item:'diamondEgg',req:[['goldEgg',1],['swirledWax',1],['royalJelly',100]]},
+        {item:'diamondEgg',req:['royalJelly',10]},
+        {item:'magicbean',req:['royalJelly',1]},
 
     ],windShrineDonations=[
 
@@ -1827,15 +1828,15 @@ function BeeSwarmSimulator(DATA){
             isMachine:true,requirements:function(player){
 
                 if(items.gummyBeeEgg.amount) return 'You already own a Gummy Bee!'
-                if(items.gumdrops.amount<1500) return 'You need 2,500 gumdrops to form a Gummy Bee!'
+                if(items.gumdrops.amount<15)turn 'You need 2,500 gumdrops to form a Gummy Bee!'
 
             },minX:-8.5-3,maxX:-8.5+3,minY:12,maxY:18,minZ:-40-3,maxZ:-40+3,message:'Combine 2,500 gumdrops to form a Gummy Bee',func:function(player){
 
-                items.gumdrops.amount-=2500
+                items.gumdrops.amount-=2
                 items.gummyBeeEgg.amount++
                 player.updateInventory()
                 player.addMessage('🎉 You formed a Gummy Bee! 🎉',[210,30,210])
-                player.addMessage('-2,500 Gumdrops')
+                player.addMessage('-2 Gumdrops')
                 player.addMessage('+1 Gummy Bee Egg')
 
             }
@@ -1846,7 +1847,7 @@ function BeeSwarmSimulator(DATA){
             isMachine:true,requirements:function(player){
 
                 if(items.viciousBeeEgg.amount) return 'You already own a Vicious Bee!'
-                if(items.stinger.amount<200) return 'Turn in 200 stingers to claim a Vicious Bee!'
+                if(items.stinger.amount<2) return 'Turn in 200 stingers to claim a Vicious Bee!'
 
             },minX:2-3,maxX:2+3,minY:2,maxY:9,minZ:60-3,maxZ:60+3,message:'Turn in 200 stingers to claim a Vicious Bee',func:function(player){
 
@@ -1854,7 +1855,7 @@ function BeeSwarmSimulator(DATA){
                 items.viciousBeeEgg.amount++
                 player.updateInventory()
                 player.addMessage('🎉 You claimed a Vicious Bee! 🎉',[0,0,0])
-                player.addMessage('-200 Stingers')
+                player.addMessage('-2 Stingers')
                 player.addMessage('+1 Vicious Bee Egg')
             }
         },
@@ -1881,7 +1882,7 @@ function BeeSwarmSimulator(DATA){
 
                 f=f[(Math.random()*f.length)|0]
 
-                let type=['rare','epic','gummy','legendary','supreme']
+                let type=['supreme']
 
                 type=type[(Math.pow(Math.random(),3)*Math.pow(Math.random(),3)*type.length)|0]
 
@@ -1909,7 +1910,7 @@ function BeeSwarmSimulator(DATA){
 
                 player.extraInfo.fieldBooster=Math.ceil(Date.now())
 
-                let f=['3SunflowerField','3DandelionField','2SpiderField','2CloverField','2PineapplePatch','1PumpkinPatch','1CactusField']
+                let f=['3sunflowerField','3DandelionField','2SpiderField','2CloverField','2PineapplePatch','1PumpkinPatch','1CactusField', '100PineTreeForest']
 
                 f=f[(Math.random()*f.length)|0]
                 let am=f[0]
@@ -1963,7 +1964,7 @@ function BeeSwarmSimulator(DATA){
                 
                 player.extraInfo.blueFieldBooster=Math.ceil(Date.now())
 
-                let f=['3BlueFlowerField','2BambooField','1PineTreeForest']
+                let f=['100PineTreeForest']
 
                 f=f[(Math.random()*f.length)|0]
                 let am=f[0]
@@ -5913,8 +5914,8 @@ function BeeSwarmSimulator(DATA){
             
             update:(amount,player)=>{
                 
-                player.beeAttack*=1.25
-                player.defense=1
+                player.beeAttack*=10
+                player.defense=100
             },
             
             getMessage:(amount)=>{
@@ -9253,7 +9254,7 @@ function BeeSwarmSimulator(DATA){
             amount:0,u:128*5/2048,v:128*5/2048,value:90,
             use:function(){
                 
-                let types={mythic:1/4000,legendary:0.075-(1/4000),epic:0.325,rare:0.6},r=Math.random(),type,c=0
+                let types={mythic:1/40,legendary:0.075-(1/40),epic:0.325,rare:0.6},r=Math.random(),type,c=0
                 
                 for(let i in types){
                     
@@ -9347,7 +9348,7 @@ function BeeSwarmSimulator(DATA){
             amount:0,u:128*7/2048,v:128*5/2048,value:200,
             use:function(){
                 
-                let types={mythic:0.05,legendary:0.95},r=Math.random(),type,c=0
+                let types={mythic:0.50,legendary:0.50},r=Math.random(),type,c=0
                 
                 for(let i in types){
                     
@@ -9717,7 +9718,7 @@ function BeeSwarmSimulator(DATA){
                 
                 while((max--)>=0&&(items.starJelly.amount--)>=0){
 
-                    let types={mythic:1/4000,legendary:0.075-(1/4000),epic:0.325,rare:0.6},r=Math.random(),type,c=0
+                    let types={mythic:1/40,legendary:0.075-(1/40),epic:0.325,rare:0.6},r=Math.random(),type,c=0
                     
                     for(let i in types){
                         
@@ -21920,7 +21921,7 @@ function BeeSwarmSimulator(DATA){
                 ParticleRenderer.add({x:player.body.position.x+x,y:player.body.position.y+y,z:player.body.position.z+z,vx:-player.bodyDir[2]*2,vy:1.75,vz:player.bodyDir[0]*2,grav:0,size:MATH.random(70,120),col:[1,0,Math.random()],life:1,rotVel:MATH.random(-3,3),alpha:4.5})
             },
             desc:'Swipe through flames to unlock their dark potential. Ensue dark chaos in fields and refuel burning flames, collecting more pollen and dealing more damage. Tend a destructive field of violet fire to enhance your Super-Crit power and Instant Red Conversion.',
-            cost:['2500000000000 honey','1000 redExtract','200 stinger','50 hardWax','15 superSmoothie']
+            cost:['25 honey']
         },
         
         tidePopper:{
@@ -21969,7 +21970,7 @@ function BeeSwarmSimulator(DATA){
                 
             },
             desc:'Pierce through flowers and bubbles with torriental waves, washing away tokens and converting pollen from bees. Swings faster and ramps up the more you pop, then unleashes tidal waves in a violent surge at 500 bubbles. Splash Balloons with tall waves to earn Tide Blessing and re-energize tidal waves with the destruction of bubbles.',
-            cost:['2500000000000 honey','1000 blueExtract','200 stinger','30 swirledWax','15 superSmoothie']
+            cost:['25 honey']
         },
         
         gummyBaller:{
@@ -22009,7 +22010,7 @@ function BeeSwarmSimulator(DATA){
                 
             },
             desc:'Absorb goo to conjure up a delectable arsenal of gummy wrecking balls. Cover the field in goo and collect pollen with a giant gummyball. Ricochet off Marks and Honey Tokens to build up your gummyball combo for massive gooey gains. Jump to release your gummyball prematurely in a field.',
-            cost:['10000000000000 honey','500 glue','2500 gumdrops','25 causticWax','5 turpentine']
+            cost:['25 honey']
         },
     }
 
