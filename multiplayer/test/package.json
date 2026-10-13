@@ -1,0 +1,6 @@
+{
+  "//": "Compatibility shim. On Node >= 22 a bare directory is not expanded by `node --test` (it is resolved as a module instead), so this package.json makes `node --test multiplayer/test/` load all.mjs, which imports every *.test.mjs exactly once. The recommended form on every Node version is: node --test \"test/**/*.test.mjs\"",
+  "private": true,
+  "type": "module",
+  "main": "all.mjs"
+}

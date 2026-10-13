@@ -34339,6 +34339,12 @@ function BeeSwarmSimulator(DATA){
         gl.uniformMatrix4fv(glCache.dynamic_modelMatrix,gl.FALSE,player.toolMatrix)
         player.toolMesh.render()
 
+        // [Multiplayer hook] render remote players in the shared world.
+        // No-op in single-player: BSSMultiplayer only installs this when a
+        // multiplayer mode is active, and it never writes to the local player.
+        if(window.BSSMultiplayer&&window.BSSMultiplayer.renderRemotePlayers)
+            window.BSSMultiplayer.renderRemotePlayers({gl:gl,glCache:glCache,program:dynamicGeometryProgram,Mesh:Mesh,mat4:mat4,MATH:MATH,viewMatrix:player.viewMatrix})
+
         if(player.activeStickbug)
             player.activeStickbug.update()
         
@@ -34756,6 +34762,14 @@ function BeeSwarmSimulator(DATA){
         window.flowers=flowers
         window.NPCs=NPCs
         window.objects=objects
+        // [Multiplayer hook] extra globals read by multiplayer/mp-client.js.
+        // Purely additive; harmless when multiplayer is never used.
+        window.Mesh=Mesh
+        window.mat4=mat4
+        window.MATH=MATH
+        window.gl=gl
+        window.glCache=glCache
+        window.textures=textures
     }
     
 }

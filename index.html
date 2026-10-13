@@ -4519,6 +4519,9 @@
     <button id='mainInfo' style='position:fixed;left:50%;top:50%;width:300px;height:70px;background-color:rgb(248, 129, 129);transform:translate(-50%,0%);font-family:comic sans ms;font-size:23px'>Instructions & Info</button>
 
     <button id='mainNew' style='position:fixed;left:50%;top:50%;width:300px;height:70px;background-color:rgb(248, 255, 150);transform:translate(-50%,130%);font-family:comic sans ms;font-size:23px'>Open In New Window</button>
+
+    <!-- OPTIONAL MULTIPLAYER: entry point. Single-player is still the default. -->
+    <button id='mainMultiplayer' style='position:fixed;left:50%;top:50%;width:300px;height:70px;background-color:rgb(160,210,255);transform:translate(-50%,260%);font-family:comic sans ms;font-size:23px'>Multiplayer</button>
     
 </div>
 
@@ -4780,6 +4783,107 @@
     </div>
 </div>
 
+<!-- =====================================================================
+     OPTIONAL MULTIPLAYER MENU (additive; driven by multiplayer/mp-client.js)
+     Nothing here runs until the player picks a multiplayer mode.
+     ===================================================================== -->
+<div id='mpMenu' style='position:fixed;z-index:2;top:0px;left:0px;bottom:0px;right:0px;background-color:rgb(255,255,255);display:none;overflow-y:auto;font-family:comic sans ms'>
+
+    <div style='margin-top:14px;font-size:38px;text-align:center'>Multiplayer</div>
+    <button id='mp_back' style='position:fixed;left:110px;top:40px;width:120px;height:50px;background-color:rgb(174,216,255);font-family:comic sans ms;font-size:20px'>Back</button>
+
+    <div style='text-align:center;font-size:15px;color:rgb(70,70,70);margin-bottom:6px'>
+        Single-player stays exactly as it was. Multiplayer is opt-in and needs no account.
+    </div>
+
+    <div style='text-align:center;margin-bottom:10px'>
+        <button id='mpModeSingle' style='width:200px;height:46px;background-color:rgb(157,255,150);font-size:16px;margin:3px'>Single-player</button>
+        <button id='mpModePeer' style='width:200px;height:46px;background-color:rgb(160,210,255);font-size:16px;margin:3px'>Peer-to-peer (WebRTC)</button>
+        <button id='mpModeServer' style='width:200px;height:46px;background-color:rgb(200,255,180);font-size:16px;margin:3px'>Server-based</button>
+    </div>
+
+    <div style='text-align:center;margin-bottom:8px'>
+        Max players (2-12, one hive each): <input id='mpMaxPlayers' type='number' min='2' max='12' value='6' style='width:60px'>
+    </div>
+
+    <!-- ---- MODE A: peer-to-peer -------------------------------------- -->
+    <div id='mpPeerPanel' style='display:none;max-width:900px;margin:0 auto;padding:8px'>
+        <div style='background-color:rgb(255,240,200);border:2px solid rgb(220,180,0);border-radius:6px;padding:8px;font-size:13px'>
+            <b>Read this first.</b> Peer-to-peer connects browsers directly with WebRTC and uses <b>no server at all</b>,
+            but direct connections CANNOT get through carrier-grade NAT, symmetric NAT, strict corporate firewalls or
+            some mobile networks. If it will not connect, use Server-based mode instead.
+            <br><br>
+            <label><input id='mpStun' type='checkbox'> Try a public STUN server</label>
+            &nbsp;(helps on many home networks, still cannot fix symmetric NAT).
+        </div>
+
+        <div style='margin-top:8px'>
+            <button id='mpHostTab' style='width:150px;height:40px;background-color:rgb(160,210,255);font-size:16px'>Host</button>
+            <button id='mpJoinTab' style='width:150px;height:40px;background-color:rgb(200,255,180);font-size:16px'>Join</button>
+        </div>
+
+        <div id='mpHostPanel'>
+            <div style='font-size:13px;margin-top:6px'>Create <b>one offer code per guest</b>, send each code to that guest
+                (Discord, chat, email - anything), then paste their answer code back and press "Use pasted answer".</div>
+            <div id='mpSlots'></div>
+        </div>
+
+        <div id='mpJoinPanel' style='display:none'>
+            <div style='font-size:13px;margin-top:6px'>Paste the host's OFFER code below, press "Create answer code",
+                then send the answer code back to the host.</div>
+            <textarea id='mpGuestOffer' placeholder='paste the host offer code here' style='width:100%;height:70px;font-size:11px'></textarea>
+            <button id='mpGuestMakeAnswer' style='width:200px;height:40px;background-color:rgb(200,255,180);font-size:15px'>Create answer code</button>
+            <div style='font-size:13px;margin-top:4px'>Send this back to the host:</div>
+            <textarea id='mpGuestAnswer' readonly placeholder='your answer code appears here' style='width:100%;height:70px;font-size:11px'></textarea>
+        </div>
+    </div>
+
+    <!-- ---- MODE B: server-based ------------------------------------- -->
+    <div id='mpServerPanel' style='display:none;max-width:900px;margin:0 auto;padding:8px'>
+        <div style='background-color:rgb(225,245,255);border:2px solid rgb(60,140,220);border-radius:6px;padding:8px;font-size:13px'>
+            <b>How to run a server</b> (any always-on machine works: a spare PC, a VPS, a Raspberry Pi - no paid service needed).
+            On the machine that will host, run:<br>
+            <code style='background:rgb(255,255,255);padding:2px 4px'>node multiplayer/server.mjs</code><br><br>
+            That machine prints the URLs to share.<br>
+            &bull; Players on the <b>same LAN</b> use <code>ws://&lt;lan-ip&gt;:8787/ws</code><br>
+            &bull; Players on the <b>internet</b> need TCP <b>8787 FORWARDED</b> on the router, then use
+            <code>ws://&lt;public-ip&gt;:8787/ws</code><br>
+            &bull; A server on <b>localhost is only reachable by you</b>.<br><br>
+            The server address below is just text - nothing is hardcoded.
+        </div>
+        <div style='margin-top:8px'>
+            Server address:
+            <input id='mpServerUrl' type='text' value='ws://localhost:8787/ws' style='width:320px;font-size:14px'>
+            <button id='mpConnect' style='width:130px;height:38px;background-color:rgb(157,255,150);font-size:15px'>Connect</button>
+        </div>
+    </div>
+
+    <!-- ---- shared session panel -------------------------------------- -->
+    <div style='max-width:900px;margin:10px auto;padding:8px;font-size:14px'>
+        <div style='margin-bottom:6px'>
+            <button id='mpDisconnect' style='height:34px;font-size:14px'>Disconnect</button>
+            <button id='mpReconnect' style='height:34px;font-size:14px'>Reconnect</button>
+            <button id='mpReset' style='height:34px;font-size:14px'>Reset</button>
+        </div>
+        <div>Status: <span id='mpStatus'>idle</span></div>
+        <div id='mpStats' style='color:rgb(70,70,70)'></div>
+        <div style='display:flex;gap:10px;margin-top:6px;flex-wrap:wrap'>
+            <div id='mpPlayers' style='flex:1;min-width:240px;border:1px solid rgb(200,200,200);border-radius:6px;padding:4px'></div>
+            <div style='flex:1;min-width:240px'>
+                <div id='mpChatLog' style='height:150px;overflow-y:auto;border:1px solid rgb(200,200,200);border-radius:6px;padding:4px;background:rgb(250,250,250)'></div>
+                <div style='margin-top:4px'>
+                    <input id='mpChatInput' type='text' maxlength='200' placeholder='say something' style='width:70%;font-size:14px'>
+                    <button id='mpSend' style='height:28px;font-size:14px'>Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Always-visible mode badge -->
+<div id='mpBadge' style='display:none;position:fixed;left:6px;top:6px;z-index:3;color:rgb(255,255,255);background-color:rgb(60,60,60);border-radius:6px;padding:4px 8px;font-family:comic sans ms;font-size:13px'>Mode: Single-player</div>
+
+
 <script src="resources/gl-matrix-min.js"></script>
 <script src='resources/cannon.min.js'></script>
 <script src="resources/canvg.min.js"></script>
@@ -4793,6 +4897,11 @@
 <script src='mapMesh.js'></script>
 <script src='thumbnail.js'></script>
 <script src='index.js'></script>
+
+<!-- OPTIONAL MULTIPLAYER: additive files, loaded AFTER the game. Neither file
+     creates a socket until a multiplayer mode is chosen. -->
+<script src='multiplayer/mp-core.js'></script>
+<script src='multiplayer/mp-client.js'></script>
 
 
 </body>
